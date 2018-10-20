@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "author": "bizen241",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
   "devDependencies": {
     "prettier": "^1.14.3",
     "tslint": "^5.11.0",
