@@ -3,5 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "author": "bizen241",
+  "devDependencies": {
+    "prettier": "^1.14.3"
+  },
   "private": true
 }
