@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "author": "bizen241",
+  "scripts": {
+    "build:server": "rimraf out && tsc --project config/tsconfig.server.json"
+  },
   "dependencies": {
     "express": "^4.16.4"
   },
