@@ -5,7 +5,8 @@
   "author": "bizen241",
   "scripts": {
     "start": "node out/server/index.js",
-    "build:server": "rimraf out && tsc --project config/tsconfig.server.json"
+    "build:server": "rimraf out && tsc --project config/tsconfig.server.json",
+    "test:jest": "jest"
   },
   "dependencies": {
     "express": "^4.16.4",
