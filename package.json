@@ -5,9 +5,11 @@
   "author": "bizen241",
   "scripts": {
     "start": "node out/server/index.js",
+    "build": "yarn build:server",
     "build:server": "rimraf out && tsc --project config/tsconfig.server.json",
     "test:jest": "jest",
-    "test:cov": "jest --coverage"
+    "test:cov": "jest --coverage",
+    "test:ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {
     "express": "^4.16.4",
