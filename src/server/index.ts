@@ -1,5 +1,9 @@
 import { createApp } from "./app";
+import { processEnv } from "./env";
 
 const app = createApp();
 
-app.listen(3000, "localhost");
+const port = processEnv.serverPort || 3000;
+const host = processEnv.serverHost || "localhost";
+
+app.listen(port, host);
