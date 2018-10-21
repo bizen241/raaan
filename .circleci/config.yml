@@ -1,0 +1,19 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-v1-{{ checksum "yarn.lock" }}
+            - yarn-v1-
+      - run: yarn install
+      - save_cache:
+          paths:
+            - ~/.cache/yarn
+          key: yarn-v1-{{ checksum "yarn.lock" }}
+      - run: yarn build
+      - run: yarn test:ci
