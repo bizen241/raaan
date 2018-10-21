@@ -12,6 +12,7 @@
     "test:ci": "jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {
+    "dotenv": "^6.1.0",
     "express": "^4.16.4",
     "node-fetch": "^2.2.0"
   },
