@@ -3,9 +3,7 @@ import { join } from "path";
 
 const htmlPath = join(process.cwd(), "assets/index.html");
 
-export const createApp = () => {
-  const app = express();
-
+export const createApp = (app: express.Express = express()) => {
   app.get("*", (_, res) => {
     res.sendFile(htmlPath);
   });
