@@ -1,21 +1,16 @@
-import { Server } from "http";
-import fetch from "node-fetch";
-import { createApp } from "../app";
+import { fetch, TestServer } from "./helpers";
 
-let server: Server;
+const server = new TestServer();
 
-beforeAll(done => {
-  const app = createApp();
-
-  server = app.listen(3000, "localhost", done);
+beforeAll(async () => {
+  await server.start();
 });
-
-afterAll(done => {
-  server.close(done);
+afterAll(async () => {
+  await server.stop();
 });
 
 test("server", async () => {
-  const response = await fetch("http://localhost:3000");
+  const response = await fetch("/");
 
   expect(response.status).toEqual(200);
 });
