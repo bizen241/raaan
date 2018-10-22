@@ -6,5 +6,11 @@ module.exports = {
     }
   },
   testMatch: ["**/__tests__/**.test.{ts, tsx}"],
-  collectCoverageFrom: ["src/**.{ts,tsx}", "!src/client/index.ts", "!src/server/index.ts", "!**/__tests__/**"]
+  collectCoverageFrom: [
+    "src/**.{ts,tsx}",
+    "!src/client/index.ts",
+    "!src/server/index.ts",
+    "!src/typings/**",
+    "!**/__tests__/**"
+  ]
 };
