@@ -10,7 +10,7 @@ afterAll(() => {
   process.env = env;
 });
 
-test("defined", () => {
+test("custom", () => {
   const SERVER_PORT = "5000";
   const SERVER_HOST = "localhost";
 
@@ -25,10 +25,11 @@ test("defined", () => {
   expect(processEnv.serverHost).toEqual(SERVER_HOST);
 });
 
-test("undefined", () => {
+test("default", () => {
   process.env = {};
 
   const processEnv = getProcessEnv();
 
-  expect(processEnv.serverPort).toEqual(undefined);
+  expect(processEnv.serverPort).toEqual(3000);
+  expect(processEnv.serverHost).toEqual("localhost");
 });
