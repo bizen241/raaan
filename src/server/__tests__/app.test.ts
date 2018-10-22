@@ -8,5 +8,5 @@ test("server", async () => {
 
   createApp(app);
 
-  expect(spyUse).toBeCalledTimes(0);
+  expect(spyUse).toBeCalledTimes(1);
 });
