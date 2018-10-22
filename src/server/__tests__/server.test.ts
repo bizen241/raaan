@@ -1,16 +1,16 @@
-import { fetch, TestServer } from "./helpers";
+import { testFetch, TestServer } from "./helpers";
 
-const server = new TestServer();
+const testServer = new TestServer();
 
 beforeAll(async () => {
-  await server.start();
+  await testServer.start();
 });
 afterAll(async () => {
-  await server.stop();
+  await testServer.stop();
 });
 
 test("server", async () => {
-  const response = await fetch("/");
+  const response = await testFetch("/");
 
   expect(response.status).toEqual(200);
 });

@@ -13,7 +13,7 @@ export const testProcessEnv: ProcessEnv = {
 
 const base = `http://${serverHost}:${serverPort}`;
 
-export const fetch = (path: string, init?: RequestInit) => {
+export const testFetch = (path: string, init?: RequestInit) => {
   const url = new URL(path, base);
 
   return nodeFetch(url.toString(), init);
