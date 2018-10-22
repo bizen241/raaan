@@ -1,16 +1,12 @@
-import { testFetch, TestServer } from "./helpers";
-
-const testServer = new TestServer();
-
-beforeAll(async () => {
-  await testServer.start();
-});
-afterAll(async () => {
-  await testServer.stop();
-});
+import * as express from "express";
+import { createApp } from "../app";
 
 test("server", async () => {
-  const response = await testFetch("/");
+  const app = express();
 
-  expect(response.status).toEqual(200);
+  const spyUse = jest.spyOn(app, "use");
+
+  createApp(app);
+
+  expect(spyUse).toBeCalledTimes(0);
 });
