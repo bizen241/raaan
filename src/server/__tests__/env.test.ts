@@ -10,26 +10,32 @@ afterAll(() => {
   process.env = env;
 });
 
-test("custom", () => {
-  const SERVER_PORT = "5000";
-  const SERVER_HOST = "localhost";
-
+test("filled", () => {
   process.env = {
-    SERVER_PORT,
-    SERVER_HOST
+    SERVER_PORT: "5000",
+    SERVER_HOST: "localhost",
+    DATABASE_URL: "porsgres://postgres@localhost/database"
   };
 
   const processEnv = getProcessEnv();
 
-  expect(processEnv.serverPort).toEqual(Number(SERVER_PORT));
-  expect(processEnv.serverHost).toEqual(SERVER_HOST);
+  expect(processEnv.serverPort).toEqual(Number(process.env.SERVER_PORT));
+  expect(processEnv.serverHost).toEqual(process.env.SERVER_HOST);
 });
 
-test("default", () => {
-  process.env = {};
+test("only required", () => {
+  process.env = {
+    DATABASE_URL: "porsgres://postgres@localhost/database"
+  };
 
   const processEnv = getProcessEnv();
 
   expect(processEnv.serverPort).toEqual(3000);
   expect(processEnv.serverHost).toEqual("localhost");
+});
+
+test("missing DATABASE_URL", () => {
+  process.env = {};
+
+  expect(getProcessEnv).toThrowError();
 });
