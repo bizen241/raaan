@@ -12,7 +12,7 @@ afterAll(() => {
 
 test("filled", () => {
   process.env = {
-    SERVER_PORT: "5000",
+    SERVER_PORT: "8000",
     SERVER_HOST: "localhost",
     DATABASE_URL: "porsgres://postgres@localhost/database"
   };
