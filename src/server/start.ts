@@ -2,7 +2,7 @@ import { Server } from "http";
 import { createApp } from "./app";
 import { ProcessEnv } from "./env";
 
-export const start = (processEnv: ProcessEnv) => {
+export const startServer = async (processEnv: ProcessEnv) => {
   return new Promise<Server>(resolve => {
     const { serverPort, serverHost } = processEnv;
 
