@@ -2,10 +2,6 @@ import { getProcessEnv } from "../env";
 
 const { env } = process;
 
-beforeEach(() => {
-  process.env = { ...env };
-});
-
 afterAll(() => {
   process.env = env;
 });
