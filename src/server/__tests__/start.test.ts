@@ -4,7 +4,7 @@ import { testProcessEnv } from "./helpers";
 const spyLog = jest.spyOn(console, "log");
 spyLog.mockImplementation(message => message);
 
-test("start", async done => {
+test("start", async () => {
   const server = await start(testProcessEnv);
 
   expect(console.log).toBeCalled();
@@ -13,5 +13,7 @@ test("start", async done => {
   spyLog.mockReset();
   spyLog.mockRestore();
 
-  server.close(() => done());
+  return new Promise(resolve => {
+    server.close(() => resolve());
+  });
 });
