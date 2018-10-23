@@ -3,6 +3,10 @@ jobs:
   build:
     docker:
       - image: circleci/node:10
+      - image: circleci/postgres:10-alpine
+        environment:
+          POSTGRES_USER: raaan
+          POSTGRES_DB: raaan_test
     working_directory: ~/repo
     steps:
       - checkout
