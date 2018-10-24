@@ -7,6 +7,8 @@ import { ProcessEnv } from "./env";
 export const startServer = async (processEnv: ProcessEnv) => {
   const database = await connectDatabase(processEnv);
 
+  await database.synchronize();
+
   return new Promise<{ server: Server; database: Connection }>(resolve => {
     const { serverPort, serverHost } = processEnv;
 
