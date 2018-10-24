@@ -1,5 +1,14 @@
+import { connectDatabase } from "../database";
 import { startServer } from "../start";
 import { testProcessEnv } from "./helpers";
+
+beforeAll(async done => {
+  const database = await connectDatabase(testProcessEnv);
+  await database.dropDatabase();
+  await database.close();
+
+  done();
+});
 
 test("start", async () => {
   const spyLog = jest.spyOn(console, "log");
