@@ -8,12 +8,12 @@ export class TestDatabase {
   async connect() {
     this.connection = await connectDatabase(testProcessEnv);
 
-    await this.connection.synchronize();
+    await this.connection.synchronize(true);
   }
 
   async reset() {
     if (this.connection !== undefined) {
-      await this.connection.synchronize();
+      await this.connection.synchronize(true);
     }
   }
 
