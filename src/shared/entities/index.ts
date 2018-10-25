@@ -1,3 +1,3 @@
-export type EntityType = "User";
+export type EntityType = "Session" | "User";
 
 export * from "./UserEntity";
