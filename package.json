@@ -9,7 +9,7 @@
     "build:server": "rimraf out && tsc --project config/tsconfig.server.json",
     "test:jest": "jest",
     "test:cov": "jest --coverage",
-    "test:ci": "jest --coverage && cat ./coverage/lcov.info | coveralls",
+    "test:ci": "jest --coverage --runInBand && cat ./coverage/lcov.info | coveralls",
     "db": "typeorm"
   },
   "dependencies": {
