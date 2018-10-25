@@ -1,0 +1,33 @@
+import { getManager } from "typeorm";
+import * as uuid from "uuid";
+import { TestDatabase } from "../../__tests__/helpers";
+import { createSession, SessionEntity } from "../SessionEntity";
+import { createUser } from "../UserEntity";
+
+const testDatabase = new TestDatabase();
+
+beforeAll(async () => {
+  await testDatabase.connect();
+});
+beforeEach(async () => {
+  await testDatabase.reset();
+});
+afterAll(async () => {
+  await testDatabase.close();
+});
+
+test("sessions", async () => {
+  const sessionRepository = getManager().getRepository(SessionEntity);
+  const session = createSession({
+    user: createUser({ name: "name", role: "Read" }),
+    sessionId: uuid(),
+    userAgent: "userAgent",
+    csrfToken: uuid(),
+    expireAt: new Date()
+  });
+  await sessionRepository.save(session);
+
+  const sessions = await sessionRepository.find();
+
+  expect(sessions.length).toBe(1);
+});
