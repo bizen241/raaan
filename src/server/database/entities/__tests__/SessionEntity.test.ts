@@ -22,7 +22,6 @@ test("sessions", async () => {
     user: createUser({ name: "name", permission: "Read" }),
     sessionId: uuid(),
     userAgent: "userAgent",
-    csrfToken: uuid(),
     expireAt: new Date()
   });
   await sessionRepository.save(session);
