@@ -19,7 +19,7 @@ afterAll(async () => {
 test("sessions", async () => {
   const sessionRepository = getManager().getRepository(SessionEntity);
   const session = createSession({
-    user: createUser({ name: "name", role: "Read" }),
+    user: createUser({ name: "name", permission: "Read" }),
     sessionId: uuid(),
     userAgent: "userAgent",
     csrfToken: uuid(),

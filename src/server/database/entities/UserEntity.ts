@@ -1,10 +1,10 @@
 import { Column, Entity } from "typeorm";
-import { Role } from "../../../shared/entities";
+import { Permission } from "../../../shared/entities";
 import { BaseEntity, BaseEntityConstructor } from "./BaseEntity";
 
 interface UserConstructor extends BaseEntityConstructor {
   name: string;
-  role: Role;
+  permission: Permission;
 }
 
 @Entity("users")
@@ -15,16 +15,16 @@ export class UserEntity extends BaseEntity<"User"> {
   name!: string;
 
   @Column()
-  role!: Role;
+  permission!: Permission;
 
-  constructor({ id, name, role }: Partial<UserConstructor> = {}) {
+  constructor({ id, name, permission }: Partial<UserConstructor> = {}) {
     super(id);
 
     if (name !== undefined) {
       this.name = name;
     }
-    if (role !== undefined) {
-      this.role = role;
+    if (permission !== undefined) {
+      this.permission = permission;
     }
   }
 }
