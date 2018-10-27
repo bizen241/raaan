@@ -1,5 +1,4 @@
 import * as dotenv from "dotenv";
-import * as uuid from "uuid";
 dotenv.config();
 
 export interface ProcessEnv {
@@ -15,11 +14,14 @@ export const getProcessEnv = (): ProcessEnv => {
   if (DATABASE_URL === undefined) {
     throw new Error("DATABASE_URL is not defined");
   }
+  if (SESSION_SECRET === undefined) {
+    throw new Error("SESSION_SECRET is not defined");
+  }
 
   return {
     serverPort: SERVER_PORT !== undefined && !isNaN(Number(SERVER_PORT)) ? Number(SERVER_PORT) : 3000,
     serverHost: SERVER_HOST || "localhost",
-    sessionSecret: SESSION_SECRET || uuid(),
+    sessionSecret: SESSION_SECRET,
     databaseUrl: DATABASE_URL
   };
 };
