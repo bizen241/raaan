@@ -12,5 +12,6 @@ if (TEST_DATABASE_URL === undefined) {
 export const testProcessEnv: ProcessEnv = {
   serverPort: 8000,
   serverHost: "localhost",
+  sessionSecret: "secret",
   databaseUrl: TEST_DATABASE_URL
 };
