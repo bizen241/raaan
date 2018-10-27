@@ -12,7 +12,7 @@ export const startServer = async (processEnv: ProcessEnv) => {
   return new Promise<{ server: Server; database: Connection }>(resolve => {
     const { serverPort, serverHost } = processEnv;
 
-    const server = createApp().listen(serverPort, serverHost, () => {
+    const server = createApp(processEnv).listen(serverPort, serverHost, () => {
       console.log(`server: listening on port ${serverPort}`);
 
       resolve({ server, database });

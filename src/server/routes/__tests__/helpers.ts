@@ -5,7 +5,7 @@ import { createApp } from "../../app";
 
 const { serverPort, serverHost } = testProcessEnv;
 const base = `http://${serverHost}:${serverPort}`;
-const app = createApp();
+const app = createApp(testProcessEnv);
 
 export class TestServer {
   server = createServer(app);
