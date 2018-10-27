@@ -1,12 +1,13 @@
 import * as express from "express";
 import { createApp } from "../app";
+import { testProcessEnv } from "./helpers";
 
-test("server", async () => {
+test("app", async () => {
   const app = express();
 
   const spyUse = jest.spyOn(app, "use");
 
-  createApp(app);
+  createApp(testProcessEnv, app);
 
-  expect(spyUse).toBeCalledTimes(1);
+  expect(spyUse).toBeCalledTimes(2);
 });

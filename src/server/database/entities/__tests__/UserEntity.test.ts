@@ -17,7 +17,7 @@ afterAll(async () => {
 
 test("without id", async () => {
   const userRepository = getManager().getRepository(UserEntity);
-  const user = createUser({ name: "name", role: "Admin" });
+  const user = createUser({ name: "name", permission: "Admin" });
   await userRepository.save(user);
 
   const users = await userRepository.find();
@@ -28,7 +28,7 @@ test("without id", async () => {
 test("with id", async () => {
   const userRepository = getManager().getRepository(UserEntity);
   const userId = uuid();
-  const user = createUser({ id: userId, name: "name", role: "Admin" });
+  const user = createUser({ id: userId, name: "name", permission: "Admin" });
   await userRepository.save(user);
 
   const savedUser = await userRepository.findOne(userId);

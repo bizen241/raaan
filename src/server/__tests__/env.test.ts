@@ -1,17 +1,20 @@
 import { getProcessEnv } from "../env";
 
-const { env } = process;
+const { env: oldEnv } = process;
 
 afterAll(() => {
-  process.env = env;
+  process.env = oldEnv;
 });
 
+const env: NodeJS.ProcessEnv = {
+  SERVER_PORT: "8000",
+  SERVER_HOST: "localhost",
+  SESSION_SECRET: "secret",
+  DATABASE_URL: "porsgres://postgres@localhost/database"
+};
+
 test("filled", () => {
-  process.env = {
-    SERVER_PORT: "8000",
-    SERVER_HOST: "localhost",
-    DATABASE_URL: "porsgres://postgres@localhost/database"
-  };
+  process.env = { ...env };
 
   const processEnv = getProcessEnv();
 
@@ -21,6 +24,7 @@ test("filled", () => {
 
 test("only required", () => {
   process.env = {
+    SESSION_SECRET: "secret",
     DATABASE_URL: "porsgres://postgres@localhost/database"
   };
 
@@ -30,8 +34,20 @@ test("only required", () => {
   expect(processEnv.serverHost).toEqual("localhost");
 });
 
+test("missing SESSION_SECRET", () => {
+  process.env = {
+    ...env,
+    SESSION_SECRET: undefined
+  };
+
+  expect(getProcessEnv).toThrowError();
+});
+
 test("missing DATABASE_URL", () => {
-  process.env = {};
+  process.env = {
+    ...env,
+    DATABASE_URL: undefined
+  };
 
   expect(getProcessEnv).toThrowError();
 });

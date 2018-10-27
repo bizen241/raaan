@@ -6,7 +6,6 @@ interface SessionConstructor extends BaseEntityConstructor {
   user: UserEntity;
   sessionId: string;
   userAgent: string;
-  csrfToken: string;
   expireAt: Date;
 }
 
@@ -23,13 +22,10 @@ export class SessionEntity extends BaseEntity<"Session"> {
   @Column()
   userAgent!: string;
 
-  @Column()
-  csrfToken!: string;
-
   @Column("timestamp without time zone")
   expireAt!: Date;
 
-  constructor({ id, user, sessionId, userAgent, csrfToken, expireAt }: Partial<SessionConstructor> = {}) {
+  constructor({ id, user, sessionId, userAgent, expireAt }: Partial<SessionConstructor> = {}) {
     super(id);
 
     if (user !== undefined) {
@@ -40,9 +36,6 @@ export class SessionEntity extends BaseEntity<"Session"> {
     }
     if (userAgent !== undefined) {
       this.userAgent = userAgent;
-    }
-    if (csrfToken !== undefined) {
-      this.csrfToken = csrfToken;
     }
     if (expireAt !== undefined) {
       this.expireAt = expireAt;
