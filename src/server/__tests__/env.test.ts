@@ -7,12 +7,12 @@ afterAll(() => {
 });
 
 const env: NodeJS.ProcessEnv = {
-  DATABASE_URL: "database-url",
-  GITHUB_CLIENT_ID: "github-client-id",
-  GITHUB_CLIENT_SECRET: "github-client-secret",
-  SERVER_HOST: "server-host",
-  SERVER_PORT: "server-port",
-  SESSION_SECRET: "session-secret"
+  DATABASE_URL: "postgres://postgres:postgres@localhost/db_name",
+  GITHUB_CLIENT_ID: "12345678901234567890",
+  GITHUB_CLIENT_SECRET: "1234567890123456789012345678901234567890",
+  SERVER_HOST: "localhost",
+  SERVER_PORT: "3000",
+  SESSION_SECRET: "secret"
 };
 
 test("filled", () => {
@@ -26,9 +26,9 @@ test("filled", () => {
 
 test("only required", () => {
   process.env = {
-    DATABASE_URL: "database-url",
-    GITHUB_CLIENT_ID: "github-client-id",
-    GITHUB_CLIENT_SECRET: "github-client-secret",
+    DATABASE_URL: "postgres://postgres:postgres@localhost/db_name",
+    GITHUB_CLIENT_ID: "12345678901234567890",
+    GITHUB_CLIENT_SECRET: "1234567890123456789012345678901234567890",
     SESSION_SECRET: "secret"
   };
 
@@ -62,7 +62,7 @@ test("missing GITHUB_CLIENT_SECRET", () => {
     GITHUB_CLIENT_SECRET: undefined
   };
 
-  expect(getProcessEnv).toThrowError(/GITHUB_CLIENT_ID/);
+  expect(getProcessEnv).toThrowError(/GITHUB_CLIENT_SECRET/);
 });
 
 test("missing SESSION_SECRET", () => {
@@ -71,5 +71,5 @@ test("missing SESSION_SECRET", () => {
     SESSION_SECRET: undefined
   };
 
-  expect(getProcessEnv).toThrowError(/GITHUB_CLIENT_SECRET/);
+  expect(getProcessEnv).toThrowError(/SESSION_SECRET/);
 });
