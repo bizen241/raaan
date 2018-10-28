@@ -18,7 +18,7 @@ afterAll(async () => {
   await testDatabase.close();
 });
 
-test("success", async () => {
+test("save session", async () => {
   const req = httpMocks.createRequest();
   const res = httpMocks.createResponse();
 
@@ -40,27 +40,4 @@ test("success", async () => {
   const session = await getManager().findOne(SessionEntity, { sessionId }, {});
 
   expect(session).toBeDefined();
-});
-
-test("failure", async () => {
-  const req = httpMocks.createRequest();
-  const res = httpMocks.createResponse();
-
-  const sessionId = uuid();
-
-  req.session = createSession({
-    user: createUser({
-      name: "name",
-      permission: "Read"
-    }),
-    sessionId,
-    userAgent: "",
-    expireAt: new Date()
-  });
-
-  await saveSession(req, res);
-
-  const session = await getManager().findOne(SessionEntity, { sessionId }, {});
-
-  expect(session).toBeUndefined();
 });
