@@ -29,9 +29,12 @@ export class GitHubClient extends OAuth2Client {
 
     const githubUser = await response.json();
     const { id, login } = githubUser;
+    if (typeof id !== "number" || typeof login !== "string") {
+      throw createError(403);
+    }
 
     return {
-      id,
+      id: id.toString(),
       name: login
     };
   }
