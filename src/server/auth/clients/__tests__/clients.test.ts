@@ -4,18 +4,16 @@ import { createAuthClients } from "..";
 import { testProcessEnv } from "../../../__tests__/helpers";
 import { createSession } from "../../../database/entities";
 import { guestUser } from "../../../database/setup/guest";
+import { authTestHelpers } from "../../__tests__/helpers";
 
-const sessionId = "9cc8d99f-c7e0-4f97-96c9-ae3e4d431b3e";
-const state = "9cc8d99f-c7e0-4f97-96c9-ae3e4d431b3e.cnNHbxcZzIEU2KwGFv3iBPho7j3WbSqJvmLkrSRslGU";
-const code = "1234567890";
-const accessToken = "1234567890123456789012345678901234567890";
+const { accessToken, code, secret, sessionId, state } = authTestHelpers;
+const clients = createAuthClients(testProcessEnv);
 const session = createSession({
   user: guestUser,
   sessionId,
   expireAt: new Date(),
   userAgent: "user-agent"
 });
-const secret = testProcessEnv.sessionSecret;
 
 jest.mock("node-fetch");
 (fetch as jest.Mock)
@@ -64,7 +62,6 @@ jest.mock("node-fetch");
   });
 
 test("1. authorization request error", async () => {
-  const clients = createAuthClients(testProcessEnv);
   const req = createRequest();
   req.query = {
     error: "application_suspended"
@@ -74,7 +71,6 @@ test("1. authorization request error", async () => {
 });
 
 test("2. failed to unsign session id", async () => {
-  const clients = createAuthClients(testProcessEnv);
   const req = createRequest();
   req.session = session;
   req.secret = secret;
@@ -86,7 +82,6 @@ test("2. failed to unsign session id", async () => {
 });
 
 test("3. response is not ok", async () => {
-  const clients = createAuthClients(testProcessEnv);
   const req = createRequest();
   req.session = session;
   req.secret = secret;
@@ -99,7 +94,6 @@ test("3. response is not ok", async () => {
 });
 
 test("4. access_token is not string", async () => {
-  const clients = createAuthClients(testProcessEnv);
   const req = createRequest();
   req.session = session;
   req.secret = secret;
@@ -112,7 +106,6 @@ test("4. access_token is not string", async () => {
 });
 
 test("5. response is not ok", async () => {
-  const clients = createAuthClients(testProcessEnv);
   const req = createRequest();
   req.session = session;
   req.secret = secret;
@@ -125,7 +118,6 @@ test("5. response is not ok", async () => {
 });
 
 test("6. id is not number", async () => {
-  const clients = createAuthClients(testProcessEnv);
   const req = createRequest();
   req.session = session;
   req.secret = secret;
@@ -138,7 +130,6 @@ test("6. id is not number", async () => {
 });
 
 test("7. login is not string", async () => {
-  const clients = createAuthClients(testProcessEnv);
   const req = createRequest();
   req.session = session;
   req.secret = secret;
