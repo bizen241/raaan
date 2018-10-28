@@ -3,10 +3,7 @@ import { getManager } from "typeorm";
 import { setSessionId } from "./cookie";
 
 export const saveSession = async (req: Request, res: Response) => {
-  const session = setSessionId(req, res);
-  if (session == null) {
-    return;
-  }
+  setSessionId(req, res);
 
-  await getManager().save(session);
+  await getManager().save(req.session);
 };

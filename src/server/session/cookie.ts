@@ -5,13 +5,11 @@ import { Request, Response } from "express";
 const cookieName = "sid";
 
 export const setSessionId = (req: Request, res: Response) => {
-  const { session, secret } = req;
-  const { sessionId } = session;
+  const { secret } = req;
+  const { sessionId } = req.session;
   const signedSessionId = sign(sessionId, secret);
 
   res.setHeader("set-cookie", serialize(cookieName, signedSessionId));
-
-  return session;
 };
 
 export const getSessionId = (req: Request) => {
