@@ -1,4 +1,6 @@
+import { getManager } from "typeorm";
 import { connectDatabase } from "../database";
+import { UserEntity } from "../database/entities";
 import { startServer } from "../start";
 import { testProcessEnv } from "./helpers";
 
@@ -16,6 +18,9 @@ test("start", async () => {
 
   expect(spyLog).toBeCalled();
   expect(spyLog.mock.results[0].value).toEqual(`server: listening on port ${testProcessEnv.serverPort}`);
+
+  const guestUser = await getManager().findOne(UserEntity, { permission: "Guest" });
+  expect(guestUser).toBeDefined();
 
   spyLog.mockRestore();
 
