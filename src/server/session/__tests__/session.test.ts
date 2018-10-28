@@ -32,7 +32,7 @@ test("guest user", async done => {
 
   const sessionMiddleware = createSessionMidleware(testProcessEnv);
   sessionMiddleware(req, res, () => {
-    expect(req.session && req.session.user.permission).toEqual("Guest");
+    expect(req.session.user.permission).toEqual("Guest");
 
     done();
   });
@@ -66,7 +66,7 @@ test("valid session", async done => {
 
   const sessionMiddleware = createSessionMidleware(testProcessEnv);
   sessionMiddleware(req, res, () => {
-    expect(req.session && req.session.user.id).toEqual(userId);
+    expect(req.session.user.id).toEqual(userId);
 
     done();
   });
@@ -84,7 +84,7 @@ test("invalid session", async done => {
 
   const sessionMiddleware = createSessionMidleware(testProcessEnv);
   sessionMiddleware(req, res, () => {
-    expect(req.session && req.session.sessionId).not.toEqual(sessionId);
+    expect(req.session.sessionId).not.toEqual(sessionId);
 
     done();
   });
@@ -102,7 +102,7 @@ test("deleted session", async done => {
 
   const sessionMiddleware = createSessionMidleware(testProcessEnv);
   sessionMiddleware(req, res, () => {
-    expect(req.session && req.session.sessionId).not.toEqual(sessionId);
+    expect(req.session.sessionId).not.toEqual(sessionId);
 
     done();
   });
