@@ -6,10 +6,6 @@ const cookieName = "sid";
 
 export const setSessionId = (req: Request, res: Response) => {
   const { session, secret } = req;
-  if (session === undefined || secret === undefined) {
-    return null;
-  }
-
   const { sessionId } = session;
   const signedSessionId = sign(sessionId, secret);
 
@@ -21,7 +17,7 @@ export const setSessionId = (req: Request, res: Response) => {
 export const getSessionId = (req: Request) => {
   const { secret } = req;
   const cookieHeader = req.headers.cookie;
-  if (secret === undefined || cookieHeader === undefined) {
+  if (cookieHeader === undefined) {
     return null;
   }
 
