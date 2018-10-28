@@ -3,17 +3,7 @@ import { sign } from "cookie-signature";
 import * as httpMocks from "node-mocks-http";
 import * as uuid from "uuid";
 import { testProcessEnv } from "../../__tests__/helpers";
-import { getSessionId, setSessionId } from "../cookie";
-
-test("failed to set sessionId", () => {
-  const req = httpMocks.createRequest();
-  const res = httpMocks.createResponse();
-
-  const session = setSessionId(req, res);
-
-  expect(session).toEqual(null);
-  expect(res.getHeader("set-cookie")).toEqual(undefined);
-});
+import { getSessionId } from "../cookie";
 
 test("multiple cookies", () => {
   const sessionId = uuid();
