@@ -1,7 +1,7 @@
 import { AuthProviderName } from "../auth";
-import { BaseEntity } from "./Base";
+import { Base } from "./Base";
 
-export interface AccountEntity extends BaseEntity<"Account"> {
+export interface Account extends Base<"Account"> {
   userId: string;
   provider: AuthProviderName;
   accountId: string;

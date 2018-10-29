@@ -1,5 +1,5 @@
-import { BaseEntity } from "./Base";
+import { Base } from "./Base";
 
-export interface SessionEntity extends BaseEntity<"Session"> {
+export interface Session extends Base<"Session"> {
   userAgent: string;
 }
