@@ -10,7 +10,7 @@ export const prepareApi = (processEnv: ProcessEnv, app: Express) => {
     apiDoc: createApiDoc(processEnv),
     app,
     docsPath: "/docs",
-    paths: resolve(process.cwd(), "out/server/api/paths")
+    paths: resolve(process.cwd(), "out/server/routes/api")
   });
 
   app.use("/api/docs/ui", swagger.serve, swagger.setup(null, { swaggerUrl: "/api/docs" }));

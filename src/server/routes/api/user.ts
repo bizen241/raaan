@@ -1,5 +1,5 @@
 import { OperationFunction } from "express-openapi";
-import { createApiDoc } from "../operation";
+import { createApiDoc } from "../../api/operation";
 
 export const GET: OperationFunction = async (_, res) => {
   res.sendStatus(404);
