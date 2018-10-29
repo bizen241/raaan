@@ -8,7 +8,9 @@ import { ProcessEnv } from "../env";
 import { getSessionId } from "./cookie";
 
 const loadSession = async (sessionId: string) => {
-  const session = await getManager()
+  const manager = getManager();
+
+  const session = await manager
     .findOne(
       SessionEntity,
       { sessionId },
@@ -19,6 +21,12 @@ const loadSession = async (sessionId: string) => {
     .catch(() => {
       throw createError(403);
     });
+
+  if (session !== undefined) {
+    session.accessCount += 1;
+  }
+
+  await manager.save(session);
 
   return session;
 };
