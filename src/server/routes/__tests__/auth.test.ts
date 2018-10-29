@@ -25,11 +25,12 @@ const testServer = new TestServer();
 beforeAll(async () => {
   await testServer.start();
 });
-beforeEach(() => {
-  receivedProvider = undefined;
-});
 afterAll(async () => {
   await testServer.stop();
+});
+
+beforeEach(() => {
+  receivedProvider = undefined;
 });
 
 test("authorize with valid provider", async () => {

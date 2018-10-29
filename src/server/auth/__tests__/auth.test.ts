@@ -1,11 +1,10 @@
 import fetch from "node-fetch";
 import { createRequest, createResponse } from "node-mocks-http";
-import { getManager } from "typeorm";
 import { createAuthMiddleware } from "..";
 import { testProcessEnv } from "../../__tests__/helpers";
 import { TestDatabase } from "../../database/__tests__/helpers";
 import { createSession } from "../../database/entities";
-import { guestUser } from "../../database/setup/guest";
+import { getGuestUser } from "../../database/setup/guest";
 import { authTestHelpers } from "./helpers";
 
 const testDatabase = new TestDatabase();
@@ -13,12 +12,12 @@ const testDatabase = new TestDatabase();
 beforeAll(async () => {
   await testDatabase.connect();
 });
-beforeEach(async () => {
-  await testDatabase.reset();
-  await getManager().save(guestUser);
-});
 afterAll(async () => {
   await testDatabase.close();
+});
+
+beforeEach(async () => {
+  await testDatabase.reset();
 });
 
 let tokenUrl: string;
@@ -29,6 +28,8 @@ const { accessToken, code, secret, sessionId, state } = authTestHelpers;
 test("authorize with github", async () => {
   const req = createRequest();
   const res = createResponse();
+
+  const guestUser = await getGuestUser();
 
   req.session = createSession({
     user: guestUser,
@@ -79,6 +80,8 @@ jest.mock("node-fetch");
 test("authenticate with github", async () => {
   const req = createRequest();
   const res = createResponse();
+
+  const guestUser = await getGuestUser();
 
   req.session = createSession({
     user: guestUser,
