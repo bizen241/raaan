@@ -24,9 +24,9 @@ const loadSession = async (sessionId: string) => {
 
   if (session !== undefined) {
     session.accessCount += 1;
-  }
 
-  await manager.save(session);
+    await manager.save(session);
+  }
 
   return session;
 };
