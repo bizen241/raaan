@@ -1,5 +1,5 @@
 import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { EntityType } from "../../../shared/entities";
+import { EntityType } from "../../../shared/api/entities";
 
 export interface BaseEntityConstructor {
   id?: string;

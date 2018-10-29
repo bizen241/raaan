@@ -1,6 +1,6 @@
 import { EntityType } from ".";
 
-export interface BaseEntity<T extends EntityType> {
+export interface Base<T extends EntityType> {
   type: T;
   id: string;
   createdAt: number;
