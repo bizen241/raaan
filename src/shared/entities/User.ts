@@ -1,4 +1,4 @@
-import { BaseEntity } from "./BaseEntity";
+import { BaseEntity } from "./Base";
 
 export type Permission = "Owner" | "Admin" | "Write" | "Read" | "Guest" | "Ghost";
 
