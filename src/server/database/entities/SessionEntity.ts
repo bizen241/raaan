@@ -22,6 +22,9 @@ export class SessionEntity extends BaseEntity<"Session"> {
   @Column()
   userAgent!: string;
 
+  @Column({ default: 0 })
+  accessCount!: number;
+
   @Column("timestamp without time zone")
   expireAt!: Date;
 

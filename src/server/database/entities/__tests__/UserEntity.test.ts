@@ -20,7 +20,7 @@ test("without id", async () => {
   const user = createUser({ name: "name", permission: "Admin" });
   await userRepository.save(user);
 
-  const users = await userRepository.find();
+  const users = await userRepository.find({ permission: "Admin" });
 
   expect(users.length).toBe(1);
 });

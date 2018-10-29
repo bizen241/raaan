@@ -7,23 +7,21 @@ import { createSessionMidleware } from "..";
 import { testProcessEnv } from "../../__tests__/helpers";
 import { TestDatabase } from "../../database/__tests__/helpers";
 import { createSession, createUser } from "../../database/entities";
-import { guestUser } from "../../database/setup/guest";
 
 const testDatabase = new TestDatabase();
 
 beforeAll(async () => {
   await testDatabase.connect();
 });
-beforeEach(async () => {
-  await testDatabase.reset();
-});
 afterAll(async () => {
   await testDatabase.close();
 });
 
-test("guest user", async done => {
-  getManager().save(guestUser);
+beforeEach(async () => {
+  await testDatabase.reset();
+});
 
+test("guest user", async done => {
   const req = httpMocks.createRequest({
     method: "GET",
     url: "/"
