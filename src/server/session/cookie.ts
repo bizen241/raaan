@@ -7,9 +7,16 @@ const cookieName = "sid";
 export const setSessionId = (req: Request, res: Response) => {
   const { secret } = req;
   const { sessionId } = req.session;
-  const signedSessionId = sign(sessionId, secret);
 
-  res.setHeader("set-cookie", serialize(cookieName, signedSessionId));
+  const signedSessionId = sign(sessionId, secret);
+  const sessionIdCookie = serialize(cookieName, signedSessionId, {
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax",
+    secure: req.hostname === "localhost" ? false : true
+  });
+
+  res.setHeader("set-cookie", sessionIdCookie);
 };
 
 export const getSessionId = (req: Request) => {
