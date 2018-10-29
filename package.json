@@ -24,6 +24,7 @@
     "http-errors": "^1.7.1",
     "node-fetch": "^2.2.0",
     "pg": "^7.5.0",
+    "swagger-ui-express": "^4.0.1",
     "typeorm": "^0.2.8",
     "uuid": "^3.3.2"
   },
