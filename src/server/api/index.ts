@@ -1,0 +1,14 @@
+import { Express } from "express";
+import { initialize } from "express-openapi";
+import { resolve } from "path";
+import { ProcessEnv } from "../env";
+import { createApiDoc } from "./doc";
+
+export const prepareApi = (processEnv: ProcessEnv, app: Express) => {
+  initialize({
+    apiDoc: createApiDoc(processEnv),
+    app,
+    docsPath: "/docs",
+    paths: resolve(process.cwd(), "out/server/api/paths")
+  });
+};
