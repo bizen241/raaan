@@ -1,5 +1,5 @@
 import { OpenAPIV2 } from "openapi-types";
-import { Permission } from "../../shared/entities";
+import { Permission } from "../../shared/api/entities";
 
 const securityScheme: OpenAPIV2.SecuritySchemeApiKey = {
   type: "apiKey",

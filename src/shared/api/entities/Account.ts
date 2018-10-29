@@ -1,4 +1,4 @@
-import { AuthProviderName } from "../auth";
+import { AuthProviderName } from "../../auth";
 import { Base } from "./Base";
 
 export interface Account extends Base<"Account"> {

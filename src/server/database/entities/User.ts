@@ -1,5 +1,5 @@
 import { Column, Entity } from "typeorm";
-import { Permission } from "../../../shared/entities";
+import { Permission } from "../../../shared/api/entities";
 import { BaseEntity, BaseEntityConstructor } from "./Base";
 
 interface UserConstructor extends BaseEntityConstructor {
