@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne } from "typeorm";
-import { BaseEntity, BaseEntityConstructor } from "./BaseEntity";
-import { UserEntity } from "./UserEntity";
+import { BaseEntity, BaseEntityConstructor } from "./Base";
+import { UserEntity } from "./User";
 
 interface SessionConstructor extends BaseEntityConstructor {
   user: UserEntity;

@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne } from "typeorm";
 import { AuthProviderName } from "../../../shared/auth";
-import { BaseEntity, BaseEntityConstructor } from "./BaseEntity";
-import { UserEntity } from "./UserEntity";
+import { BaseEntity, BaseEntityConstructor } from "./Base";
+import { UserEntity } from "./User";
 
 interface AccountConstructor extends BaseEntityConstructor {
   user: UserEntity;

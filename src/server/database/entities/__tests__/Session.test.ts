@@ -1,8 +1,8 @@
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { TestDatabase } from "../../__tests__/helpers";
-import { createSession, SessionEntity } from "../SessionEntity";
-import { createUser } from "../UserEntity";
+import { createSession, SessionEntity } from "../Session";
+import { createUser } from "../User";
 
 const testDatabase = new TestDatabase();
 

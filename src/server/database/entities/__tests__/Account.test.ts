@@ -1,7 +1,7 @@
 import { getManager } from "typeorm";
 import { TestDatabase } from "../../__tests__/helpers";
-import { AccountEntity, createAccount } from "../AccountEntity";
-import { createUser } from "../UserEntity";
+import { AccountEntity, createAccount } from "../Account";
+import { createUser } from "../User";
 
 const testDatabase = new TestDatabase();
 

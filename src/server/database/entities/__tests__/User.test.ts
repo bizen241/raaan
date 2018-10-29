@@ -1,7 +1,7 @@
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { TestDatabase } from "../../__tests__/helpers";
-import { createUser, UserEntity } from "../UserEntity";
+import { createUser, UserEntity } from "../User";
 
 const testDatabase = new TestDatabase();
 

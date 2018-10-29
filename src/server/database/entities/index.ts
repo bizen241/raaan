@@ -1,9 +1,9 @@
-export * from "./AccountEntity";
-export * from "./SessionEntity";
-export * from "./UserEntity";
+export * from "./Account";
+export * from "./Session";
+export * from "./User";
 
-import { AccountEntity } from "./AccountEntity";
-import { SessionEntity } from "./SessionEntity";
-import { UserEntity } from "./UserEntity";
+import { AccountEntity } from "./Account";
+import { SessionEntity } from "./Session";
+import { UserEntity } from "./User";
 
 export const entities = [AccountEntity, SessionEntity, UserEntity];

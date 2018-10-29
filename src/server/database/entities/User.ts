@@ -1,6 +1,6 @@
 import { Column, Entity } from "typeorm";
 import { Permission } from "../../../shared/entities";
-import { BaseEntity, BaseEntityConstructor } from "./BaseEntity";
+import { BaseEntity, BaseEntityConstructor } from "./Base";
 
 interface UserConstructor extends BaseEntityConstructor {
   name: string;
