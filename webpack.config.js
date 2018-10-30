@@ -4,8 +4,10 @@ const CopyPlugin = require("copy-webpack-plugin");
 const HtmlPlugin = require("html-webpack-plugin");
 const { join } = require("path");
 const webpack = require("webpack");
+const webpackDevServer = require("webpack-dev-server");
 
 const mode = process.env.NODE_ENV === "production" ? "production" : "development";
+const isDevelopment = mode === "development";
 
 /**
  * @type Array<webpack.Plugin>
@@ -17,6 +19,23 @@ const plugins = [
   }),
   new CopyPlugin([join(__dirname, "assets/favicon.ico")])
 ];
+
+/**
+ * @type webpackDevServer.Configuration | undefined
+ */
+const webpackDevServerConfiguration = isDevelopment
+  ? {
+      historyApiFallback: true,
+      proxy: [
+        {
+          context: ["/auth", "/api"],
+          target: "http://localhost:3000"
+        }
+      ],
+      host: "localhost",
+      port: 8080
+    }
+  : undefined;
 
 /**
  * @type webpack.Configuration
@@ -47,7 +66,8 @@ const webpackConfiguration = {
       }
     ]
   },
-  plugins
+  plugins,
+  devServer: webpackDevServerConfiguration
 };
 
 module.exports = webpackConfiguration;
