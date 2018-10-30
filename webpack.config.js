@@ -1,6 +1,7 @@
 // @ts-check
 
 const CopyPlugin = require("copy-webpack-plugin");
+const HtmlPlugin = require("html-webpack-plugin");
 const { join } = require("path");
 const webpack = require("webpack");
 
@@ -9,7 +10,13 @@ const mode = process.env.NODE_ENV === "production" ? "production" : "development
 /**
  * @type Array<webpack.Plugin>
  */
-const plugins = [new CopyPlugin([join(__dirname, "assets/favicon.ico")])];
+const plugins = [
+  new HtmlPlugin({
+    inject: false,
+    template: join(__dirname, "assets/index.ejs")
+  }),
+  new CopyPlugin([join(__dirname, "assets/favicon.ico")])
+];
 
 /**
  * @type webpack.Configuration
