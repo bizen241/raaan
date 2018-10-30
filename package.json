@@ -5,7 +5,8 @@
   "author": "bizen241",
   "scripts": {
     "start": "node out/server/index.js",
-    "build": "yarn build:server",
+    "build": "run-s build:client build:server",
+    "build:client": "rimraf dist && cross-env NODE_ENV=production webpack",
     "build:server": "rimraf out && tsc --project config/tsconfig.server.json",
     "watch:server": "run-p watch:server:*",
     "watch:server:ts": "tsc --project config/tsconfig.server.json --watch",
