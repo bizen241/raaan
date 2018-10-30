@@ -1,9 +1,15 @@
 // @ts-check
 
+const CopyPlugin = require("copy-webpack-plugin");
 const { join } = require("path");
 const webpack = require("webpack");
 
 const mode = process.env.NODE_ENV === "production" ? "production" : "development";
+
+/**
+ * @type Array<webpack.Plugin>
+ */
+const plugins = [new CopyPlugin([join(__dirname, "assets/favicon.ico")])];
 
 /**
  * @type webpack.Configuration
@@ -33,7 +39,8 @@ const webpackConfiguration = {
         ]
       }
     ]
-  }
+  },
+  plugins
 };
 
 module.exports = webpackConfiguration;
