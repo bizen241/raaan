@@ -3,5 +3,6 @@
   "compilerOptions": {
     "jsx": "react",
     "module": "commonjs"
-  }
+  },
+  "exclude": ["../src/server", "node_modules"]
 }
