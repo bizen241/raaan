@@ -4,8 +4,9 @@
     [
       "@babel/preset-env",
       {
-        "useBuildIns": "usage"
+        "useBuiltIns": "usage"
       }
-    ]
+    ],
+    "@lingui/babel-preset-react"
   ]
 }

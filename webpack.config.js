@@ -23,7 +23,7 @@ const plugins = [
   new CopyPlugin([
     {
       from: "assets",
-      ignore: ["*.ejs", "*.svg"]
+      ignore: ["*.ejs", "*.svg", "locales/**/*"]
     }
   ])
 ];
@@ -76,6 +76,9 @@ const webpackConfiguration = {
       {
         test: /\.tsx?$/,
         use: [
+          {
+            loader: "babel-loader"
+          },
           {
             loader: "ts-loader",
             options: {

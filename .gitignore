@@ -1,8 +1,12 @@
 /node_modules
 
+*.log
+
 .env
 
 /dist
 /out
 
 /coverage
+/assets/locales/_build
+/assets/locales/**/*.js
