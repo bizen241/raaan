@@ -34,7 +34,7 @@ if (!isDevelopment) {
       swDest: "sw.js",
       clientsClaim: true,
       skipWaiting: true,
-      exclude: [/\.png$/],
+      exclude: [/\.png$/, /\.txt$/],
       navigateFallback: "/",
       navigateFallbackBlacklist: [/^\/api/, /^\/auth/]
     })
