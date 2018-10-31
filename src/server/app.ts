@@ -1,3 +1,4 @@
+import * as compression from "compression";
 import * as express from "express";
 import { join } from "path";
 import * as serveStatic from "serve-static";
@@ -12,6 +13,7 @@ export const createApp = (processEnv: ProcessEnv, app: express.Express = express
   app.use(createSessionMidleware(processEnv));
   app.use(createAuthMiddleware(processEnv));
 
+  app.use(compression());
   app.use(serveStatic(join(process.cwd(), "dist")));
 
   prepareApi(processEnv, app);
