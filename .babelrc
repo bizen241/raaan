@@ -6,6 +6,7 @@
       {
         "useBuiltIns": "usage"
       }
-    ]
+    ],
+    "@lingui/babel-preset-react"
   ]
 }
