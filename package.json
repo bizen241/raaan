@@ -48,6 +48,7 @@
     "@types/html-webpack-plugin": "^3.2.0",
     "@types/http-errors": "^1.6.1",
     "@types/jest": "^23.3.5",
+    "@types/lingui__core": "^2.1.1",
     "@types/lingui__react": "^2.5.0",
     "@types/node-fetch": "^2.1.2",
     "@types/react": "^16.4.18",
