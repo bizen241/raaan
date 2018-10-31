@@ -32,7 +32,7 @@
     "express-openapi": "3.1.0",
     "http-errors": "1.7.1",
     "node-fetch": "2.2.0",
-    "pg": "7.5.0",
+    "pg": "7.6.0",
     "react": "16.6.0",
     "react-dom": "16.6.0",
     "swagger-ui-express": "4.0.1",
