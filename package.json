@@ -19,6 +19,7 @@
     "db": "typeorm"
   },
   "dependencies": {
+    "@lingui/react": "^2.7.0",
     "compression": "^1.7.3",
     "cookie": "^0.3.1",
     "cookie-signature": "^1.1.0",
