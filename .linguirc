@@ -1,6 +1,6 @@
 {
   "format": "minimal",
-  "localeDir": "assets/locale",
+  "localeDir": "assets/locales",
   "sourceLocale": "en",
   "srcPathDirs": ["src/client"]
 }
