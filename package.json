@@ -5,7 +5,8 @@
   "author": "bizen241",
   "scripts": {
     "start": "node out/server/index.js",
-    "build": "run-s build:client build:server",
+    "build": "run-s build:intl build:client build:server",
+    "build:intl": "run-s intl:extract intl:compile",
     "build:client": "rimraf dist && cross-env NODE_ENV=production webpack",
     "build:server": "rimraf out && tsc --project config/tsconfig.server.json",
     "watch": "run-p watch:client watch:server",
@@ -16,6 +17,9 @@
     "test:jest": "jest",
     "test:cov": "jest --coverage",
     "test:ci": "jest --coverage --runInBand && cat ./coverage/lcov.info | coveralls",
+    "intl:extract": "lingui extract --clean",
+    "intl:compile": "lingui compile",
+    "intl:add": "lingui add-locale",
     "db": "typeorm"
   },
   "dependencies": {
