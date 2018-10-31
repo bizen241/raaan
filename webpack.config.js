@@ -1,10 +1,13 @@
 // @ts-check
 
+/// <reference path="src/typings/webpack.d.ts" />
+
 const CopyPlugin = require("copy-webpack-plugin");
 const HtmlPlugin = require("html-webpack-plugin");
 const { join } = require("path");
 const webpack = require("webpack");
 const webpackDevServer = require("webpack-dev-server");
+const WorkboxPlugin = require("workbox-webpack-plugin");
 
 const mode = process.env.NODE_ENV === "production" ? "production" : "development";
 const isDevelopment = mode === "development";
@@ -17,8 +20,26 @@ const plugins = [
     inject: false,
     template: join(__dirname, "assets/index.ejs")
   }),
-  new CopyPlugin([join(__dirname, "assets/favicon.ico")])
+  new CopyPlugin([
+    {
+      from: "assets",
+      ignore: ["*.ejs", "*.svg"]
+    }
+  ])
 ];
+
+if (!isDevelopment) {
+  plugins.push(
+    new WorkboxPlugin.GenerateSW({
+      swDest: "sw.js",
+      clientsClaim: true,
+      skipWaiting: true,
+      exclude: [/\.png$/, /\.txt$/],
+      navigateFallback: "/",
+      navigateFallbackBlacklist: [/^\/api/, /^\/auth/]
+    })
+  );
+}
 
 /**
  * @type webpackDevServer.Configuration | undefined
