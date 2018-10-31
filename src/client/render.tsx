@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { installApp } from "./install";
 
 export const renderApp = () => {
   ReactDOM.render(
@@ -8,4 +9,8 @@ export const renderApp = () => {
     </div>,
     document.getElementById("root")
   );
+
+  if (process.env.NODE_ENV === "production") {
+    installApp();
+  }
 };
