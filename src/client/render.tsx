@@ -5,7 +5,9 @@ import { installApp } from "./install";
 export const renderApp = () => {
   ReactDOM.render(
     <div>
-      <a href="/auth/github">Welcome to Raaan!</a>
+      <main>
+        <a href="/auth/github">Welcome to Raaan!</a>
+      </main>
     </div>,
     document.getElementById("root")
   );
