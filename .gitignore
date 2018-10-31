@@ -8,3 +8,5 @@
 /out
 
 /coverage
+/assets/locale/_build
+/assets/locale/**/*.js
