@@ -1,6 +1,6 @@
 import { EntityType } from "../../../shared/api/entities";
 import { Base } from "../../../shared/api/entities/Base";
-import { createEntityStore, EntityStore } from "../../../shared/api/entities/store";
+import { createEntityStore, EntityStore } from "../../../shared/api/response/entity";
 import { AccountEntity, EntityClass, SessionEntity, UserEntity } from "../../database/entities";
 import { BaseEntity } from "../../database/entities/BaseEntity";
 
