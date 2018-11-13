@@ -39,6 +39,7 @@
     "react-dom": "16.6.0",
     "swagger-ui-express": "4.0.1",
     "typeorm": "0.2.8",
+    "url-join": "^4.0.0",
     "uuid": "3.3.2"
   },
   "devDependencies": {
