@@ -1,8 +1,8 @@
-export const installApp = async () => {
+export const installApp = async (serviceWorker: ServiceWorkerContainer) => {
   try {
-    let isFirstInstall = navigator.serviceWorker.controller == null;
+    let isFirstInstall = serviceWorker.controller == null;
 
-    navigator.serviceWorker.addEventListener("controllerchange", () => {
+    serviceWorker.addEventListener("controllerchange", () => {
       if (isFirstInstall) {
         isFirstInstall = false;
       } else {
@@ -10,8 +10,8 @@ export const installApp = async () => {
       }
     });
 
-    const registration = await navigator.serviceWorker.register("/sw.js");
-    await navigator.serviceWorker.ready;
+    const registration = await serviceWorker.register("/sw.js");
+    await serviceWorker.ready;
 
     const isLocalhost = location.hostname === "localhost";
 

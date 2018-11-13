@@ -19,6 +19,6 @@ export const renderApp = () => {
   );
 
   if (process.env.NODE_ENV === "production") {
-    installApp();
+    installApp(navigator.serviceWorker);
   }
 };
