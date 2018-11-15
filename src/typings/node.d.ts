@@ -8,4 +8,8 @@ declare namespace NodeJS {
     SERVER_PORT?: string;
     SESSION_SECRET?: string;
   }
+
+  interface Global {
+    fetch: any;
+  }
 }
