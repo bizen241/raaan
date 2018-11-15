@@ -4,6 +4,7 @@ import { resolve } from "path";
 import * as swagger from "swagger-ui-express";
 import { ProcessEnv } from "../env";
 import { createApiDoc } from "./doc";
+import { securityHandlers } from "./security";
 
 export const prepareApi = (processEnv: ProcessEnv, app: Express) => {
   initialize({
@@ -11,7 +12,8 @@ export const prepareApi = (processEnv: ProcessEnv, app: Express) => {
     app,
     docsPath: "/docs",
     paths: resolve(process.cwd(), "out/server/routes/api"),
-    pathsIgnore: /__tests__/
+    pathsIgnore: /__tests__/,
+    securityHandlers
   });
 
   app.use("/api/docs/ui", swagger.serve, swagger.setup(null, { swaggerUrl: "/api/docs" }));

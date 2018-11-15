@@ -1,3 +1,4 @@
+import { SecurityHandler } from "openapi-security-handler";
 import { OpenAPIV2 } from "openapi-types";
 import { Permission } from "../../shared/api/entities";
 
@@ -14,4 +15,16 @@ export const securityDefinitions: { [P in Permission]: OpenAPIV2.SecuritySchemeA
   Read: securityScheme,
   Guest: securityScheme,
   Ghost: securityScheme
+};
+
+const createSecurityHandler = (permission: Permission): SecurityHandler => req =>
+  req.session.user.permission === permission;
+
+export const securityHandlers: { [P in Permission]: SecurityHandler } = {
+  Owner: createSecurityHandler("Owner"),
+  Admin: createSecurityHandler("Admin"),
+  Write: createSecurityHandler("Write"),
+  Read: createSecurityHandler("Read"),
+  Guest: createSecurityHandler("Guest"),
+  Ghost: createSecurityHandler("Ghost")
 };
