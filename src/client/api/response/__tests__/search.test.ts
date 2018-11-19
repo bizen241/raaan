@@ -9,7 +9,7 @@ test("merge search result", () => {
       pages: {
         2: {
           ids: [],
-          next: null
+          hasNextPage: false
         }
       },
       fetchedAt: new Date().valueOf()
@@ -24,7 +24,7 @@ test("merge search result", () => {
     },
     {
       ids: [],
-      next: null,
+      hasNextPage: true,
       entities: createEntityStore()
     }
   );
