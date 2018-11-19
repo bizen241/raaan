@@ -18,19 +18,12 @@ export const responseSearchResult = (res: Response, page: number, entities: Enti
   try {
     const entityIds = entities.map(entity => entity.id);
 
-    const isFirstPage = page === 1;
-    const isEmpty = entityIds.length === 0;
-
-    const startIndex = isFirstPage ? 0 : 1;
+    const startIndex = page === 1 ? 0 : 1;
     const endIndex = startIndex + entityCountPerPage;
 
-    const hasPrev = !isFirstPage && !isEmpty;
-    const hasNext = entityIds.length - 1 === endIndex + 1;
-
     const searchResult: SearchResult = {
-      ids: entityIds.slice(startIndex, endIndex),
-      prev: hasPrev ? null : entityIds[0],
-      next: hasNext ? null : entityIds[endIndex + 1],
+      ids: entityIds.slice(startIndex, endIndex + 1),
+      hasNextPage: entityIds.length - 1 === endIndex + 1,
       entities: normalizeEntities(entities)
     };
 

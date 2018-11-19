@@ -4,7 +4,7 @@ import { SearchResult } from "../../../shared/api/response/search";
 
 export interface SearchResultPage {
   ids: string[];
-  next: string | null;
+  hasNextPage: boolean;
 }
 
 export interface SearchResultEntry {
@@ -68,7 +68,7 @@ export const mergeSearchResultStore = <E extends EntityObject>(
   const pages =
     entry === undefined ? undefined : isSearchResultEntryOutdated(entry, params, result) ? undefined : entry.pages;
 
-  const { ids, next } = result;
+  const { ids, hasNextPage } = result;
 
   return {
     ...store,
@@ -77,7 +77,7 @@ export const mergeSearchResultStore = <E extends EntityObject>(
         ...pages,
         [params.page]: {
           ids,
-          next
+          hasNextPage
         }
       },
       fetchedAt: new Date().valueOf()
