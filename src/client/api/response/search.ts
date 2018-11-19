@@ -4,13 +4,15 @@ import { SearchResult } from "../../../shared/api/response/search";
 
 export interface SearchResultPage {
   ids: string[];
-  prev: string | null;
   next: string | null;
-  createdAt: number;
 }
 
 export interface SearchResultEntry {
-  [page: number]: SearchResultPage | undefined;
+  pages: {
+    [page: number]: SearchResultPage | undefined;
+  };
+  fetchedAt: number;
+  isDownloaded?: boolean;
 }
 
 export interface SearchResultStore {
@@ -28,55 +30,57 @@ const getQueryString = <E extends EntityObject>(params: SearchParams<E>) => {
   return urlSearchParams.toString();
 };
 
-export const getSearchResultEntry = <E extends EntityObject>(store: SearchResultStore, params: SearchParams<E>) => {
-  const query = getQueryString(params);
-
-  return store[query];
-};
-
-const setSearchResultEntry = <E extends EntityObject>(
-  store: SearchResultStore,
+const isSearchResultEntryOutdated = <E extends EntityObject>(
   entry: SearchResultEntry,
-  params: SearchParams<E>
+  params: SearchParams<E>,
+  result: SearchResult
 ) => {
-  const query = getQueryString(params);
+  const pages = { ...entry.pages };
+  pages[params.page] = undefined;
 
-  store[query] = entry;
+  const resultIds = result.ids;
+
+  for (const page of Object.values(pages)) {
+    if (page === undefined) {
+      return;
+    }
+
+    for (const entityId of page.ids) {
+      const isConflicted = resultIds.includes(entityId);
+
+      if (isConflicted) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 };
 
-export const mergeSearchResult = <E extends EntityObject>(
+export const mergeSearchResultStore = <E extends EntityObject>(
   store: SearchResultStore,
-  result: SearchResult,
-  params: SearchParams<E>
+  params: SearchParams<E>,
+  result: SearchResult
 ): SearchResultStore => {
-  const { page: pageNumber } = params;
-  const { ids, prev, next } = result;
+  const query = getQueryString(params);
 
-  const page: SearchResultPage = {
-    ids,
-    prev,
-    next,
-    createdAt: new Date().valueOf()
+  const entry = store[query];
+  const pages =
+    entry === undefined ? undefined : isSearchResultEntryOutdated(entry, params, result) ? undefined : entry.pages;
+
+  const { ids, next } = result;
+
+  return {
+    ...store,
+    [query]: {
+      pages: {
+        ...pages,
+        [params.page]: {
+          ids,
+          next
+        }
+      },
+      fetchedAt: new Date().valueOf()
+    }
   };
-
-  const entry: SearchResultEntry = {
-    ...getSearchResultEntry(store, params),
-    [pageNumber]: page
-  };
-
-  const prevPage = entry[pageNumber - 1];
-  if (prevPage !== undefined && prevPage) {
-    console.log("hoge");
-  }
-
-  const nextPage = entry[pageNumber + 1];
-  if (nextPage !== undefined) {
-    console.log("fuga");
-  }
-
-  const mergedStore = { ...store };
-
-  setSearchResultEntry(store, entry, params);
-
-  return mergedStore;
 };
