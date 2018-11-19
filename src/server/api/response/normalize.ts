@@ -39,7 +39,8 @@ const base = <T extends EntityType>({ type, id, createdAt, updatedAt }: BaseEnti
   type,
   id,
   createdAt: createdAt.valueOf(),
-  updatedAt: updatedAt.valueOf()
+  updatedAt: updatedAt.valueOf(),
+  fetchedAt: new Date().valueOf()
 });
 
 type Normalizer<E> = (store: EntityStore, entity: E) => void;

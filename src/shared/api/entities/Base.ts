@@ -5,4 +5,6 @@ export interface Base<T extends EntityType> {
   id: string;
   createdAt: number;
   updatedAt: number;
+  fetchedAt: number;
+  isDownloaded?: boolean;
 }
