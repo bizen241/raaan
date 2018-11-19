@@ -9,7 +9,7 @@ interface AccountConstructor extends BaseEntityConstructor {
   accountId: string;
 }
 
-@Entity("accounts")
+@Entity()
 export class AccountEntity extends BaseEntity<"Account"> {
   type: "Account" = "Account";
 

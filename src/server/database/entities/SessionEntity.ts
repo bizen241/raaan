@@ -9,7 +9,7 @@ interface SessionConstructor extends BaseEntityConstructor {
   expireAt: Date;
 }
 
-@Entity("sessions")
+@Entity()
 export class SessionEntity extends BaseEntity<"Session"> {
   type: "Session" = "Session";
 

@@ -7,7 +7,7 @@ interface UserConstructor extends BaseEntityConstructor {
   permission: Permission;
 }
 
-@Entity("users")
+@Entity()
 export class UserEntity extends BaseEntity<"User"> {
   type: "User" = "User";
 
