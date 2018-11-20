@@ -1,3 +1,4 @@
+import * as createError from "http-errors";
 import { SecurityHandler } from "openapi-security-handler";
 import { OpenAPIV2 } from "openapi-types";
 import { Permission } from "../../shared/api/entities";
@@ -17,12 +18,12 @@ export const securityDefinitions: { [P in Permission]: OpenAPIV2.SecuritySchemeA
   Ghost: securityScheme
 };
 
-const Ghost: Permission[] = ["Ghost"];
-const Guest: Permission[] = ["Guest", ...Ghost];
-const Read: Permission[] = ["Read", ...Guest];
-const Write: Permission[] = ["Write", ...Read];
-const Admin: Permission[] = ["Admin", ...Write];
-const Owner: Permission[] = ["Owner", ...Admin];
+const Owner: Permission[] = ["Owner"];
+const Admin: Permission[] = ["Admin", ...Owner];
+const Write: Permission[] = ["Write", ...Admin];
+const Read: Permission[] = ["Read", ...Write];
+const Guest: Permission[] = ["Guest", ...Read];
+const Ghost: Permission[] = ["Ghost", ...Guest];
 
 const permissionMap: { [P in Permission]: Permission[] } = {
   Owner,
@@ -34,7 +35,13 @@ const permissionMap: { [P in Permission]: Permission[] } = {
 };
 
 const createSecurityHandler = (permission: Permission): SecurityHandler => req => {
-  return permissionMap[permission].includes(req.session.user.permission);
+  const hasPermission = permissionMap[permission].includes(req.session.user.permission);
+
+  if (hasPermission) {
+    return true;
+  } else {
+    throw createError(403);
+  }
 };
 
 export const securityHandlers: { [P in Permission]: SecurityHandler } = {
