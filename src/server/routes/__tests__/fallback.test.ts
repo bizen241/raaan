@@ -9,15 +9,15 @@ afterAll(async () => {
   await testServer.stop();
 });
 
-test("home", async () => {
+test("GET /", async () => {
   const response = await testServer.fetch("/");
 
   expect(response.status).toEqual(200);
   expect(response.headers.get("content-type")).toContain("text/html");
 });
 
-test("help", async () => {
-  const response = await testServer.fetch("/help");
+test("GET /config", async () => {
+  const response = await testServer.fetch("/config");
 
   expect(response.status).toEqual(200);
   expect(response.headers.get("content-type")).toContain("text/html");
