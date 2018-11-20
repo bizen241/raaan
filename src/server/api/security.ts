@@ -17,8 +17,25 @@ export const securityDefinitions: { [P in Permission]: OpenAPIV2.SecuritySchemeA
   Ghost: securityScheme
 };
 
-const createSecurityHandler = (permission: Permission): SecurityHandler => req =>
-  req.session.user.permission === permission;
+const Ghost: Permission[] = ["Ghost"];
+const Guest: Permission[] = ["Guest", ...Ghost];
+const Read: Permission[] = ["Read", ...Guest];
+const Write: Permission[] = ["Write", ...Read];
+const Admin: Permission[] = ["Admin", ...Write];
+const Owner: Permission[] = ["Owner", ...Admin];
+
+const permissionMap: { [P in Permission]: Permission[] } = {
+  Owner,
+  Admin,
+  Write,
+  Read,
+  Guest,
+  Ghost
+};
+
+const createSecurityHandler = (permission: Permission): SecurityHandler => req => {
+  return permissionMap[permission].includes(req.session.user.permission);
+};
 
 export const securityHandlers: { [P in Permission]: SecurityHandler } = {
   Owner: createSecurityHandler("Owner"),
