@@ -1,27 +1,14 @@
-import { createRequest, createResponse } from "node-mocks-http";
-import * as uuid from "uuid";
-import { createSession, createUser } from "../../../database/entities";
+import { EntityStore } from "../../../../shared/api/response/entity";
 import { GET } from "../user";
+import { createHttpMocks, users } from "./helpers";
 
-test("user", async () => {
-  const req = createRequest();
-  const res = createResponse();
-
-  req.session = createSession({
-    user: createUser({
-      id: uuid(),
-      name: "Guest",
-      permission: "Guest"
-    }),
-    sessionId: uuid(),
-    expireAt: new Date(),
-    userAgent: "user-agent"
-  });
-
-  req.session.user.createdAt = new Date();
-  req.session.user.updatedAt = new Date();
+test("GET /user", async () => {
+  const { req, res } = createHttpMocks("Read");
 
   await GET(req, res, () => null);
 
   expect(res.statusCode).toBe(200);
+
+  const data = JSON.parse(res._getData()) as EntityStore;
+  expect(data.User[users.Read.id]).toBeDefined();
 });
