@@ -1,7 +1,7 @@
 import { OpenAPIV2 } from "openapi-types";
 import { Permission } from "../../shared/api/entities";
 
-type Tag = "user";
+type Tag = "user" | "users";
 
 interface Parameters {
   summary: string;
