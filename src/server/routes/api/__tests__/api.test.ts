@@ -5,6 +5,8 @@ import { testProcessEnv } from "../../../__tests__/helpers";
 import { TestServer } from "../../__tests__/helpers";
 import { sessions, users } from "./helpers";
 
+jest.setTimeout(100000);
+
 const testServer = new TestServer();
 
 const fetchAs = async (permission: Permission, method: string, path: string, body?: any) => {
