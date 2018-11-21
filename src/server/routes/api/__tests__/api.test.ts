@@ -1,5 +1,5 @@
 import { sign } from "cookie-signature";
-import { getManager } from "typeorm";
+// import { getManager } from "typeorm";
 import { Permission } from "../../../../shared/api/entities";
 import { testProcessEnv } from "../../../__tests__/helpers";
 import { TestServer } from "../../__tests__/helpers";
