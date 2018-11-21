@@ -15,24 +15,16 @@ export const normalizeEntities = (entities: EntityClass[]): EntityStore => {
 };
 
 const normalizeEntity = (store: EntityStore, entity: EntityClass) => {
-  if (store[entity.type][entity.id] !== undefined) {
+  const { type, id } = entity;
+
+  if (store[type][id] !== undefined) {
     return;
   }
   if (Object.keys(entity).length <= 2) {
     return;
   }
 
-  switch (entity.type) {
-    case "Account": {
-      return normalizeAccount(store, entity);
-    }
-    case "Session": {
-      return normalizeSession(store, entity);
-    }
-    case "User": {
-      return normalizeUser(store, entity);
-    }
-  }
+  normalizers[type](store, entity);
 };
 
 const base = <T extends EntityType>({ type, id, createdAt, updatedAt }: BaseEntity<T>): Base<T> => ({
@@ -77,4 +69,10 @@ const normalizeUser: Normalizer<UserEntity> = (store, entity) => {
     name,
     permission
   };
+};
+
+const normalizers: { [T in EntityType]: Normalizer<any> } = {
+  Account: normalizeAccount,
+  Session: normalizeSession,
+  User: normalizeUser
 };
