@@ -1,29 +1,31 @@
 import { sign } from "cookie-signature";
-// import { getManager } from "typeorm";
+import { getManager } from "typeorm";
 import { Permission } from "../../../../shared/api/entities";
 import { testProcessEnv } from "../../../__tests__/helpers";
 import { TestServer } from "../../__tests__/helpers";
-import { sessions /* , users */ } from "./helpers";
+import { sessions, users } from "./helpers";
 
 const testServer = new TestServer();
 
 const fetchAs = async (permission: Permission, method: string, path: string, body?: any) => {
   const { sessionId } = sessions[permission];
 
-  return testServer.fetch(path, {
+  const response = await testServer.fetch(path, {
     method,
     body: body && JSON.stringify(body),
     headers: {
       Cookie: `sid=${sign(sessionId, testProcessEnv.sessionSecret)}`
     }
   });
+
+  return response;
 };
 
 beforeAll(async () => {
   await testServer.start();
 
-  // await getManager().save(Object.values(users));
-  // await getManager().save(Object.values(sessions));
+  await getManager().save(Object.values(users));
+  await getManager().save(Object.values(sessions));
 });
 afterAll(async () => {
   await testServer.stop();

@@ -18,7 +18,7 @@
     "test:ts": "tsc --noEmit",
     "test:jest": "jest",
     "test:cov": "jest --coverage",
-    "test:ci": "yarn test:ts && jest --coverage --runInBand && cat ./coverage/lcov.info | coveralls",
+    "test:ci": "yarn test:ts && jest --coverage --runInBand --detectOpenHandles && cat ./coverage/lcov.info | coveralls",
     "intl:extract": "lingui extract --clean",
     "intl:compile": "lingui compile",
     "intl:add": "lingui add-locale",
