@@ -3,9 +3,7 @@ import { getManager } from "typeorm";
 import { Permission } from "../../../../shared/api/entities";
 import { testProcessEnv } from "../../../__tests__/helpers";
 import { TestServer } from "../../__tests__/helpers";
-import { sessions, users } from "./helpers";
-
-jest.setTimeout(10000);
+import { sessions /* , users */ } from "./helpers";
 
 const testServer = new TestServer();
 
@@ -24,8 +22,8 @@ const fetchAs = async (permission: Permission, method: string, path: string, bod
 beforeAll(async () => {
   await testServer.start();
 
-  await getManager().save(Object.values(users));
-  await getManager().save(Object.values(sessions));
+  // await getManager().save(Object.values(users));
+  // await getManager().save(Object.values(sessions));
 });
 afterAll(async () => {
   await testServer.stop();
