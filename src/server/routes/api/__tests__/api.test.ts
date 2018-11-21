@@ -1,27 +1,12 @@
 import { sign } from "cookie-signature";
 import { getManager } from "typeorm";
-import { Permission } from "../../../../shared/api/entities";
 import { testProcessEnv } from "../../../__tests__/helpers";
 import { TestServer } from "../../__tests__/helpers";
 import { sessions, users } from "./helpers";
 
-jest.setTimeout(100000);
+jest.setTimeout(10000);
 
 const testServer = new TestServer();
-
-const fetchAs = async (permission: Permission, method: string, path: string, body?: any) => {
-  const { sessionId } = sessions[permission];
-
-  const response = await testServer.fetch(path, {
-    method,
-    body: body && JSON.stringify(body),
-    headers: {
-      Cookie: `sid=${sign(sessionId, testProcessEnv.sessionSecret)}`
-    }
-  });
-
-  return response;
-};
 
 beforeAll(async () => {
   await testServer.start();
@@ -34,21 +19,42 @@ afterAll(async () => {
 });
 
 test("GET /api/user failure", async () => {
-  const response = await fetchAs("Guest", "GET", "/api/user");
+  const { sessionId } = sessions.Guest;
+
+  const response = await testServer.fetch("/api/user", {
+    method: "GET",
+    headers: {
+      Cookie: `sid=${sign(sessionId, testProcessEnv.sessionSecret)}`
+    }
+  });
 
   expect(response.status).toEqual(403);
   expect(response.headers.get("content-type")).toContain("text/html");
 });
 
 test("GET /api/user success", async () => {
-  const response = await fetchAs("Read", "GET", "/api/user");
+  const { sessionId } = sessions.Read;
+
+  const response = await testServer.fetch("/api/user", {
+    method: "GET",
+    headers: {
+      Cookie: `sid=${sign(sessionId, testProcessEnv.sessionSecret)}`
+    }
+  });
 
   expect(response.status).toEqual(200);
   expect(response.headers.get("content-type")).toContain("application/json");
 });
 
 test("GET /api/users success", async () => {
-  const response = await fetchAs("Guest", "GET", "/api/users");
+  const { sessionId } = sessions.Guest;
+
+  const response = await testServer.fetch("/api/users", {
+    method: "GET",
+    headers: {
+      Cookie: `sid=${sign(sessionId, testProcessEnv.sessionSecret)}`
+    }
+  });
 
   expect(response.status).toEqual(200);
   expect(response.headers.get("content-type")).toContain("application/json");
