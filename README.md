@@ -1,10 +1,10 @@
-# Raaan
+# Raan
 
-[![CircleCI](https://circleci.com/gh/bizen241/raaan.svg?style=svg)](https://circleci.com/gh/bizen241/raaan)
+[![CircleCI](https://circleci.com/gh/bizen241/raan.svg?style=svg)](https://circleci.com/gh/bizen241/raan)
 
-[![Coverage Status](https://coveralls.io/repos/github/bizen241/raaan/badge.svg?branch=master)](https://coveralls.io/github/bizen241/raaan?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/bizen241/raan/badge.svg?branch=master)](https://coveralls.io/github/bizen241/raan?branch=master)
 
-Raaan is a learning management system.
+Raan is a learning management system.
 
 ## License
 

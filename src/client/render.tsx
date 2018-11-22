@@ -10,7 +10,7 @@ export const renderApp = () => {
       <div>
         <main>
           <a href="/auth/github">
-            <Trans>Welcome to Raaan!</Trans>
+            <Trans>Welcome to Raan!</Trans>
           </a>
         </main>
       </div>

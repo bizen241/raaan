@@ -1,7 +1,7 @@
 {
   "$schema": "http://json.schemastore.org/web-manifest",
-  "name": "Raaan",
-  "short_name": "Raaan",
+  "name": "Raan",
+  "short_name": "Raan",
   "start_url": "/?utm_source=homescreen",
   "display": "standalone",
   "background_color": "#ffffff",

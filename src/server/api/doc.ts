@@ -5,7 +5,7 @@ import { securityDefinitions } from "./security";
 export const createApiDoc = (_: ProcessEnv): OpenAPIV2.Document => ({
   swagger: "2.0",
   info: {
-    title: "Raaan",
+    title: "Raan",
     version: "0.0.0"
   },
   basePath: "/api",
