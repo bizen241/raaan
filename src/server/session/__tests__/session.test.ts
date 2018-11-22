@@ -7,6 +7,7 @@ import { createSessionMidleware } from "..";
 import { testProcessEnv } from "../../__tests__/helpers";
 import { TestDatabase } from "../../database/__tests__/helpers";
 import { createSession, createUser } from "../../database/entities";
+import { insertSessions } from "./helpers";
 
 const testDatabase = new TestDatabase();
 
@@ -19,6 +20,8 @@ afterAll(async () => {
 
 beforeEach(async () => {
   await testDatabase.reset();
+
+  await insertSessions();
 });
 
 test("guest user", async done => {

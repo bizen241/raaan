@@ -4,7 +4,7 @@ import { createAuthMiddleware } from "..";
 import { testProcessEnv } from "../../__tests__/helpers";
 import { TestDatabase } from "../../database/__tests__/helpers";
 import { createSession } from "../../database/entities";
-import { getGuestUser } from "../../database/setup/guest";
+import { insertSessions, users } from "../../session/__tests__/helpers";
 import { authTestHelpers } from "./helpers";
 
 const testDatabase = new TestDatabase();
@@ -18,6 +18,8 @@ afterAll(async () => {
 
 beforeEach(async () => {
   await testDatabase.reset();
+
+  await insertSessions();
 });
 
 let tokenUrl: string;
@@ -29,10 +31,8 @@ test("authorize with github", async () => {
   const req = createRequest();
   const res = createResponse();
 
-  const guestUser = await getGuestUser();
-
   req.session = createSession({
-    user: guestUser,
+    user: users.Guest,
     sessionId,
     expireAt: new Date(),
     userAgent: "user-agent"
@@ -81,10 +81,8 @@ test("authenticate with github", async () => {
   const req = createRequest();
   const res = createResponse();
 
-  const guestUser = await getGuestUser();
-
   req.session = createSession({
-    user: guestUser,
+    user: users.Guest,
     sessionId,
     expireAt: new Date(),
     userAgent: "user-agent"

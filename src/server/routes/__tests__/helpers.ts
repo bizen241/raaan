@@ -4,7 +4,6 @@ import { Connection } from "typeorm";
 import { testProcessEnv } from "../../__tests__/helpers";
 import { createApp } from "../../app";
 import { connectDatabase } from "../../database";
-import { setGuestUser } from "../../database/setup/guest";
 
 const { serverPort, serverHost } = testProcessEnv;
 const base = `http://${serverHost}:${serverPort}`;
@@ -49,8 +48,6 @@ export class TestServer {
     this.connection = await connectDatabase(testProcessEnv);
 
     await this.connection.synchronize(true);
-
-    await setGuestUser();
   }
 
   async stopDatabase() {

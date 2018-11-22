@@ -1,6 +1,7 @@
 import { EntityStore } from "../../../../shared/api/response/entity";
+import { users } from "../../../session/__tests__/helpers";
 import { GET } from "../user";
-import { createHttpMocks, users } from "./helpers";
+import { createHttpMocks } from "./helpers";
 
 test("GET /user", async () => {
   const { req, res } = createHttpMocks("Read");

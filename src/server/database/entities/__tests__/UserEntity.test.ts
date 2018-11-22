@@ -8,11 +8,12 @@ const testDatabase = new TestDatabase();
 beforeAll(async () => {
   await testDatabase.connect();
 });
-beforeEach(async () => {
-  await testDatabase.reset();
-});
 afterAll(async () => {
   await testDatabase.close();
+});
+
+beforeEach(async () => {
+  await testDatabase.reset();
 });
 
 test("without id", async () => {
