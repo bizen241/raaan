@@ -14,7 +14,7 @@ const fetchAs = async (permission: Permission, method: string, path: string, bod
     method,
     body: body && JSON.stringify(body),
     headers: {
-      Cookie: encodeURIComponent(`sid=${sign(sessionId, testProcessEnv.sessionSecret)}`)
+      Cookie: `sid=${encodeURIComponent(sign(sessionId, testProcessEnv.sessionSecret))}`
     }
   });
 };
