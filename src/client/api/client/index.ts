@@ -12,14 +12,6 @@ export const getCurrentUser = () => {
   return request<EntityStore>("GET", "user");
 };
 
-export const getCurrentUserConfig = () => {
-  return request<EntityStore>("GET", "user/config");
-};
-
-export const getCurrentUserSessions = () => {
-  return request<EntityStore>("GET", "user/sessions");
-};
-
 export const getEntity = (entityType: EntityType, entityId: string) => {
   return request<EntityStore>("GET", join(endpoints[entityType], entityId));
 };

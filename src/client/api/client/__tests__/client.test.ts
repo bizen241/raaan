@@ -1,14 +1,5 @@
 import * as uuid from "uuid";
-import {
-  createEntity,
-  deleteEntity,
-  getCurrentUser,
-  getCurrentUserConfig,
-  getCurrentUserSessions,
-  getEntity,
-  searchEntity,
-  updateEntity
-} from "..";
+import { createEntity, deleteEntity, getCurrentUser, getEntity, searchEntity, updateEntity } from "..";
 
 let passedUrl: string;
 let passedMethod: string | undefined;
@@ -31,20 +22,6 @@ test("get current user", async () => {
   await getCurrentUser();
 
   expect(passedUrl).toBe(`${origin}/api/user`);
-  expect(passedMethod).toBe("GET");
-});
-
-test("get current user's config", async () => {
-  await getCurrentUserConfig();
-
-  expect(passedUrl).toBe(`${origin}/api/user/config`);
-  expect(passedMethod).toBe("GET");
-});
-
-test("get current user's sessions", async () => {
-  await getCurrentUserSessions();
-
-  expect(passedUrl).toBe(`${origin}/api/user/sessions`);
   expect(passedMethod).toBe("GET");
 });
 
