@@ -1,11 +1,11 @@
-import { Account } from "./Account";
-import { Session } from "./Session";
 import { User } from "./User";
+import { UserAccount } from "./UserAccount";
+import { UserSession } from "./UserSession";
 
-export * from "./Account";
-export * from "./Session";
 export * from "./User";
+export * from "./UserAccount";
+export * from "./UserSession";
 
-export type EntityType = "Account" | "Session" | "User";
+export type EntityType = "User" | "UserAccount" | "UserSession";
 
-export type EntityObject = Account | Session | User;
+export type EntityObject = User | UserAccount | UserSession;

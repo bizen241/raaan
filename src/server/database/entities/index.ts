@@ -1,10 +1,10 @@
-import { AccountEntity } from "./AccountEntity";
-import { SessionEntity } from "./SessionEntity";
+import { AccountEntity } from "./UserAccountEntity";
 import { UserEntity } from "./UserEntity";
+import { SessionEntity } from "./UserSessionEntity";
 
-export * from "./AccountEntity";
-export * from "./SessionEntity";
+export * from "./UserAccountEntity";
 export * from "./UserEntity";
+export * from "./UserSessionEntity";
 
 export type EntityClass = AccountEntity | SessionEntity | UserEntity;
 

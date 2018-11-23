@@ -37,30 +37,6 @@ const base = <T extends EntityType>({ type, id, createdAt, updatedAt }: BaseEnti
 
 type Normalizer<E> = (store: EntityStore, entity: E) => void;
 
-const normalizeAccount: Normalizer<AccountEntity> = (store, entity) => {
-  const { id, provider, accountId, user } = entity;
-
-  store.Account[id] = {
-    ...base(entity),
-    accountId,
-    provider,
-    userId: user.id
-  };
-
-  normalizeEntity(store, user);
-};
-
-const normalizeSession: Normalizer<SessionEntity> = (store, entity) => {
-  const { id, userAgent, user } = entity;
-
-  store.Session[id] = {
-    ...base(entity),
-    userAgent
-  };
-
-  normalizeEntity(store, user);
-};
-
 const normalizeUser: Normalizer<UserEntity> = (store, entity) => {
   const { id, name, permission } = entity;
 
@@ -71,8 +47,32 @@ const normalizeUser: Normalizer<UserEntity> = (store, entity) => {
   };
 };
 
+const normalizeUserAccount: Normalizer<AccountEntity> = (store, entity) => {
+  const { id, provider, accountId, user } = entity;
+
+  store.UserAccount[id] = {
+    ...base(entity),
+    accountId,
+    provider,
+    userId: user.id
+  };
+
+  normalizeEntity(store, user);
+};
+
+const normalizeUserSession: Normalizer<SessionEntity> = (store, entity) => {
+  const { id, userAgent, user } = entity;
+
+  store.UserSession[id] = {
+    ...base(entity),
+    userAgent
+  };
+
+  normalizeEntity(store, user);
+};
+
 const normalizers: { [T in EntityType]: Normalizer<any> } = {
-  Account: normalizeAccount,
-  Session: normalizeSession,
-  User: normalizeUser
+  User: normalizeUser,
+  UserAccount: normalizeUserAccount,
+  UserSession: normalizeUserSession
 };

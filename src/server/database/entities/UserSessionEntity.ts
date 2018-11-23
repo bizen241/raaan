@@ -10,8 +10,8 @@ interface SessionConstructor extends BaseEntityConstructor {
 }
 
 @Entity()
-export class SessionEntity extends BaseEntity<"Session"> {
-  type: "Session" = "Session";
+export class SessionEntity extends BaseEntity<"UserSession"> {
+  type: "UserSession" = "UserSession";
 
   @ManyToOne(() => UserEntity)
   user!: UserEntity;

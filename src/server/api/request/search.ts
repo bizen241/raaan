@@ -1,4 +1,4 @@
-import { Account, EntityObject, EntityType, Session, User } from "../../../shared/api/entities";
+import { EntityObject, EntityType, User, UserAccount, UserSession } from "../../../shared/api/entities";
 import { SearchParams } from "../../../shared/api/request/search";
 
 type SearchQuery<E extends EntityObject> = { [P in keyof SearchParams<E>]: string | undefined };
@@ -10,20 +10,6 @@ const page = (query: { page: string | undefined }) => ({ page: (query.page && Nu
 
 type Parser<E extends EntityObject> = (query: SearchQuery<E>) => SearchParams<E>;
 
-const parseAccount: Parser<Account> = query => {
-  return {
-    type: "Account",
-    ...page(query)
-  };
-};
-
-const parseSession: Parser<Session> = query => {
-  return {
-    type: "Session",
-    ...page(query)
-  };
-};
-
 const parseUser: Parser<User> = query => {
   return {
     type: "User",
@@ -31,8 +17,22 @@ const parseUser: Parser<User> = query => {
   };
 };
 
+const parseUserAccount: Parser<UserAccount> = query => {
+  return {
+    type: "UserAccount",
+    ...page(query)
+  };
+};
+
+const parseUserSession: Parser<UserSession> = query => {
+  return {
+    type: "UserSession",
+    ...page(query)
+  };
+};
+
 const parsers: { [T in EntityType]: Parser<any> } = {
-  Account: parseAccount,
-  Session: parseSession,
-  User: parseUser
+  User: parseUser,
+  UserAccount: parseUserAccount,
+  UserSession: parseUserSession
 };

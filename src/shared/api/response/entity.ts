@@ -1,17 +1,17 @@
-import { Account, EntityObject, Session, User } from "../entities";
+import { EntityObject, User, UserAccount, UserSession } from "../entities";
 
 export interface EntityMap<E extends EntityObject> {
   [id: string]: E | undefined;
 }
 
 export interface EntityStore {
-  Account: EntityMap<Account>;
-  Session: EntityMap<Session>;
   User: EntityMap<User>;
+  UserAccount: EntityMap<UserAccount>;
+  UserSession: EntityMap<UserSession>;
 }
 
 export const createEntityStore = (): EntityStore => ({
-  Account: {},
-  Session: {},
-  User: {}
+  User: {},
+  UserAccount: {},
+  UserSession: {}
 });

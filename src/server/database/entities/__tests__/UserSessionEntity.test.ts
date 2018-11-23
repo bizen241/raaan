@@ -1,7 +1,8 @@
 import { getManager } from "typeorm";
+import * as uuid from "uuid";
 import { TestDatabase } from "../../__tests__/helpers";
-import { AccountEntity, createAccount } from "../AccountEntity";
 import { createUser } from "../UserEntity";
+import { createSession, SessionEntity } from "../UserSessionEntity";
 
 const testDatabase = new TestDatabase();
 
@@ -16,19 +17,20 @@ beforeEach(async () => {
   await testDatabase.reset();
 });
 
-test("accounts", async () => {
-  const accountRepository = getManager().getRepository(AccountEntity);
-  const account = createAccount({
+test("sessions", async () => {
+  const sessionRepository = getManager().getRepository(SessionEntity);
+  const session = createSession({
     user: createUser({
       name: "name",
       permission: "Read"
     }),
-    accountId: "12345678",
-    provider: "github"
+    sessionId: uuid(),
+    userAgent: "userAgent",
+    expireAt: new Date()
   });
-  await accountRepository.save(account);
+  await sessionRepository.save(session);
 
-  const accounts = await accountRepository.find();
+  const sessions = await sessionRepository.find();
 
-  expect(accounts.length).toBe(1);
+  expect(sessions.length).toBe(1);
 });

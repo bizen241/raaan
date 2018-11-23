@@ -10,8 +10,8 @@ interface AccountConstructor extends BaseEntityConstructor {
 }
 
 @Entity()
-export class AccountEntity extends BaseEntity<"Account"> {
-  type: "Account" = "Account";
+export class AccountEntity extends BaseEntity<"UserAccount"> {
+  type: "UserAccount" = "UserAccount";
 
   @ManyToOne(() => UserEntity)
   user!: UserEntity;
