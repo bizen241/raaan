@@ -16,7 +16,7 @@ beforeEach(async () => {
   await testDatabase.reset();
 });
 
-test("GET /users", async () => {
+test("GET /api/users", async () => {
   const { req, res } = createHttpMocks("Guest");
 
   await GET(req, res, () => null);

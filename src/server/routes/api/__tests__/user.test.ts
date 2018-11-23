@@ -3,7 +3,7 @@ import { users } from "../../../session/__tests__/helpers";
 import { GET } from "../user";
 import { createHttpMocks } from "./helpers";
 
-test("GET /user", async () => {
+test("GET /api/user", async () => {
   const { req, res } = createHttpMocks("Read");
 
   await GET(req, res, () => null);
