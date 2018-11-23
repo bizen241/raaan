@@ -3,7 +3,7 @@ import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { testProcessEnv } from "../../__tests__/helpers";
 import { TestDatabase } from "../../database/__tests__/helpers";
-import { createSession, createUser, SessionEntity } from "../../database/entities";
+import { createUser, createUserSession, UserSessionEntity } from "../../database/entities";
 import { saveSession } from "../save";
 
 const testDatabase = new TestDatabase();
@@ -25,7 +25,7 @@ test("save session", async () => {
 
   const sessionId = uuid();
 
-  req.session = createSession({
+  req.session = createUserSession({
     user: createUser({
       name: "name",
       permission: "Read"
@@ -38,7 +38,7 @@ test("save session", async () => {
 
   await saveSession(req, res);
 
-  const session = await getManager().findOne(SessionEntity, { sessionId }, {});
+  const session = await getManager().findOne(UserSessionEntity, { sessionId }, {});
 
   expect(session).toBeDefined();
 });

@@ -2,12 +2,12 @@ import fetch from "node-fetch";
 import { createRequest } from "node-mocks-http";
 import { createAuthClients } from "..";
 import { testProcessEnv } from "../../../__tests__/helpers";
-import { createSession, createUser } from "../../../database/entities";
+import { createUser, createUserSession } from "../../../database/entities";
 import { authTestHelpers } from "../../__tests__/helpers";
 
 const { accessToken, code, secret, sessionId, state } = authTestHelpers;
 const clients = createAuthClients(testProcessEnv);
-const session = createSession({
+const session = createUserSession({
   user: createUser({
     name: "Guest",
     permission: "Guest"

@@ -2,7 +2,7 @@ import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { TestDatabase } from "../../__tests__/helpers";
 import { createUser } from "../UserEntity";
-import { createSession, SessionEntity } from "../UserSessionEntity";
+import { createUserSession, UserSessionEntity } from "../UserSessionEntity";
 
 const testDatabase = new TestDatabase();
 
@@ -18,8 +18,8 @@ beforeEach(async () => {
 });
 
 test("sessions", async () => {
-  const sessionRepository = getManager().getRepository(SessionEntity);
-  const session = createSession({
+  const sessionRepository = getManager().getRepository(UserSessionEntity);
+  const session = createUserSession({
     user: createUser({
       name: "name",
       permission: "Read"

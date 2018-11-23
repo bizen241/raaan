@@ -1,16 +1,10 @@
 import { Column, Entity, ManyToOne } from "typeorm";
 import { AuthProviderName } from "../../../shared/auth";
-import { BaseEntity, BaseEntityConstructor } from "./BaseEntity";
+import { BaseEntity } from "./BaseEntity";
 import { UserEntity } from "./UserEntity";
 
-interface AccountConstructor extends BaseEntityConstructor {
-  user: UserEntity;
-  provider: AuthProviderName;
-  accountId: string;
-}
-
 @Entity()
-export class AccountEntity extends BaseEntity<"UserAccount"> {
+export class UserAccountEntity extends BaseEntity<"UserAccount"> {
   type: "UserAccount" = "UserAccount";
 
   @ManyToOne(() => UserEntity)
@@ -21,20 +15,27 @@ export class AccountEntity extends BaseEntity<"UserAccount"> {
 
   @Column()
   accountId!: string;
-
-  constructor({ id, user, provider, accountId }: Partial<AccountConstructor> = {}) {
-    super(id);
-
-    if (user !== undefined) {
-      this.user = user;
-    }
-    if (provider !== undefined) {
-      this.provider = provider;
-    }
-    if (accountId !== undefined) {
-      this.accountId = accountId;
-    }
-  }
 }
 
-export const createAccount = (params: AccountConstructor) => new AccountEntity(params);
+interface AccountConstructor {
+  id?: string;
+  user: UserEntity;
+  provider: AuthProviderName;
+  accountId: string;
+}
+
+export const createUserAccount = ({ user, provider, accountId }: AccountConstructor) => {
+  const account = new UserAccountEntity();
+
+  if (user !== undefined) {
+    account.user = user;
+  }
+  if (provider !== undefined) {
+    account.provider = provider;
+  }
+  if (accountId !== undefined) {
+    account.accountId = accountId;
+  }
+
+  return account;
+};

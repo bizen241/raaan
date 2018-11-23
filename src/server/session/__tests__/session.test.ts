@@ -6,7 +6,7 @@ import * as uuid from "uuid";
 import { createSessionMidleware } from "..";
 import { testProcessEnv } from "../../__tests__/helpers";
 import { TestDatabase } from "../../database/__tests__/helpers";
-import { createSession, createUser } from "../../database/entities";
+import { createUser, createUserSession } from "../../database/entities";
 import { insertSessions } from "./helpers";
 
 const testDatabase = new TestDatabase();
@@ -49,8 +49,7 @@ test("valid session", async done => {
   await getManager().save(user);
 
   const sessionId = uuid();
-  const session = createSession({
-    id: uuid(),
+  const session = createUserSession({
     user,
     sessionId,
     userAgent: "",

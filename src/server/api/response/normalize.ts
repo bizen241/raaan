@@ -1,7 +1,7 @@
 import { EntityType } from "../../../shared/api/entities";
 import { Base } from "../../../shared/api/entities/Base";
 import { createEntityStore, EntityStore } from "../../../shared/api/response/entity";
-import { AccountEntity, EntityClass, SessionEntity, UserEntity } from "../../database/entities";
+import { EntityClass, UserAccountEntity, UserEntity, UserSessionEntity } from "../../database/entities";
 import { BaseEntity } from "../../database/entities/BaseEntity";
 
 export const normalizeEntities = (entities: EntityClass[]): EntityStore => {
@@ -47,7 +47,7 @@ const normalizeUser: Normalizer<UserEntity> = (store, entity) => {
   };
 };
 
-const normalizeUserAccount: Normalizer<AccountEntity> = (store, entity) => {
+const normalizeUserAccount: Normalizer<UserAccountEntity> = (store, entity) => {
   const { id, provider, accountId, user } = entity;
 
   store.UserAccount[id] = {
@@ -60,7 +60,7 @@ const normalizeUserAccount: Normalizer<AccountEntity> = (store, entity) => {
   normalizeEntity(store, user);
 };
 
-const normalizeUserSession: Normalizer<SessionEntity> = (store, entity) => {
+const normalizeUserSession: Normalizer<UserSessionEntity> = (store, entity) => {
   const { id, userAgent, user } = entity;
 
   store.UserSession[id] = {

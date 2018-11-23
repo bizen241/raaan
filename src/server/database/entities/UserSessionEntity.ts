@@ -1,16 +1,9 @@
 import { Column, Entity, ManyToOne } from "typeorm";
-import { BaseEntity, BaseEntityConstructor } from "./BaseEntity";
+import { BaseEntity } from "./BaseEntity";
 import { UserEntity } from "./UserEntity";
 
-interface SessionConstructor extends BaseEntityConstructor {
-  user: UserEntity;
-  sessionId: string;
-  userAgent: string;
-  expireAt: Date;
-}
-
 @Entity()
-export class SessionEntity extends BaseEntity<"UserSession"> {
+export class UserSessionEntity extends BaseEntity<"UserSession"> {
   type: "UserSession" = "UserSession";
 
   @ManyToOne(() => UserEntity)
@@ -27,23 +20,30 @@ export class SessionEntity extends BaseEntity<"UserSession"> {
 
   @Column("timestamp without time zone")
   expireAt!: Date;
-
-  constructor({ id, user, sessionId, userAgent, expireAt }: Partial<SessionConstructor> = {}) {
-    super(id);
-
-    if (user !== undefined) {
-      this.user = user;
-    }
-    if (sessionId !== undefined) {
-      this.sessionId = sessionId;
-    }
-    if (userAgent !== undefined) {
-      this.userAgent = userAgent;
-    }
-    if (expireAt !== undefined) {
-      this.expireAt = expireAt;
-    }
-  }
 }
 
-export const createSession = (params: SessionConstructor) => new SessionEntity(params);
+interface SessionConstructor {
+  user: UserEntity;
+  sessionId: string;
+  userAgent: string;
+  expireAt: Date;
+}
+
+export const createUserSession = ({ user, sessionId, userAgent, expireAt }: SessionConstructor) => {
+  const session = new UserSessionEntity();
+
+  if (user !== undefined) {
+    session.user = user;
+  }
+  if (sessionId !== undefined) {
+    session.sessionId = sessionId;
+  }
+  if (userAgent !== undefined) {
+    session.userAgent = userAgent;
+  }
+  if (expireAt !== undefined) {
+    session.expireAt = expireAt;
+  }
+
+  return session;
+};

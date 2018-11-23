@@ -3,7 +3,7 @@ import { createRequest, createResponse } from "node-mocks-http";
 import { createAuthMiddleware } from "..";
 import { testProcessEnv } from "../../__tests__/helpers";
 import { TestDatabase } from "../../database/__tests__/helpers";
-import { createSession } from "../../database/entities";
+import { createUserSession } from "../../database/entities";
 import { insertSessions, users } from "../../session/__tests__/helpers";
 import { authTestHelpers } from "./helpers";
 
@@ -31,7 +31,7 @@ test("authorize with github", async () => {
   const req = createRequest();
   const res = createResponse();
 
-  req.session = createSession({
+  req.session = createUserSession({
     user: users.Guest,
     sessionId,
     expireAt: new Date(),
@@ -81,7 +81,7 @@ test("authenticate with github", async () => {
   const req = createRequest();
   const res = createResponse();
 
-  req.session = createSession({
+  req.session = createUserSession({
     user: users.Guest,
     sessionId,
     expireAt: new Date(),

@@ -1,6 +1,6 @@
 import { getManager } from "typeorm";
 import { TestDatabase } from "../../__tests__/helpers";
-import { AccountEntity, createAccount } from "../UserAccountEntity";
+import { createUserAccount, UserAccountEntity } from "../UserAccountEntity";
 import { createUser } from "../UserEntity";
 
 const testDatabase = new TestDatabase();
@@ -16,9 +16,9 @@ beforeEach(async () => {
   await testDatabase.reset();
 });
 
-test("accounts", async () => {
-  const accountRepository = getManager().getRepository(AccountEntity);
-  const account = createAccount({
+test("UserAccount", async () => {
+  const accountRepository = getManager().getRepository(UserAccountEntity);
+  const account = createUserAccount({
     user: createUser({
       name: "name",
       permission: "Read"

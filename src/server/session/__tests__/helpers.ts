@@ -1,7 +1,7 @@
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { Permission } from "../../../shared/api/entities";
-import { createSession, createUser, SessionEntity, UserEntity } from "../../database/entities";
+import { createUser, createUserSession, UserEntity, UserSessionEntity } from "../../database/entities";
 
 const createUserFromPermission = (permission: Permission) =>
   createUser({
@@ -20,14 +20,14 @@ export const users: { [P in Permission]: UserEntity } = {
 };
 
 const createSessionFromPermission = (permission: Permission) =>
-  createSession({
+  createUserSession({
     user: users[permission],
     sessionId: uuid(),
     expireAt: new Date(),
     userAgent: "user-agent"
   });
 
-export const sessions: { [P in Permission]: SessionEntity } = {
+export const sessions: { [P in Permission]: UserSessionEntity } = {
   Owner: createSessionFromPermission("Owner"),
   Admin: createSessionFromPermission("Admin"),
   Write: createSessionFromPermission("Write"),

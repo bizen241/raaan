@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
-import { createSession, SessionEntity } from "../database/entities";
+import { createUserSession, UserSessionEntity } from "../database/entities";
 import { getGuestUser } from "../database/setup/guest";
 import { ProcessEnv } from "../env";
 import { getSessionId } from "./cookie";
@@ -12,7 +12,7 @@ const loadSession = async (sessionId: string) => {
 
   const session = await manager
     .findOne(
-      SessionEntity,
+      UserSessionEntity,
       { sessionId },
       {
         relations: ["user"]
@@ -56,7 +56,7 @@ export const createSessionMidleware = (env: ProcessEnv): RequestHandler => {
         throw createError(500);
       });
 
-      req.session = createSession({
+      req.session = createUserSession({
         user: guestUser,
         sessionId: uuid(),
         expireAt: new Date(),

@@ -3,7 +3,7 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { AuthProviderName } from "../../shared/auth";
-import { AccountEntity, createAccount, createUser, UserEntity } from "../database/entities";
+import { createUser, createUserAccount, UserAccountEntity, UserEntity } from "../database/entities";
 import { ProcessEnv } from "../env";
 import { saveSession } from "../session/save";
 import { createAuthClients, UserProfile } from "./clients";
@@ -27,7 +27,7 @@ export const createAuthMiddleware = (processEnv: ProcessEnv): RequestHandler => 
     req.authenticate = async provider => {
       try {
         const userProfile = await clients[provider].authenticate(req);
-        const user = await saveUserAccount(provider, userProfile, req.session.user).catch(() => {
+        const user = await saveUserAndAccount(provider, userProfile, req.session.user).catch(() => {
           throw createError(500);
         });
 
@@ -48,21 +48,21 @@ export const createAuthMiddleware = (processEnv: ProcessEnv): RequestHandler => 
   };
 };
 
-const saveUserAccount = async (provider: AuthProviderName, userProfile: UserProfile, sessionUser: UserEntity) => {
+const saveUserAndAccount = async (provider: AuthProviderName, userProfile: UserProfile, sessionUser: UserEntity) => {
   const manager = getManager();
 
   const account = await manager.findOne(
-    AccountEntity,
+    UserAccountEntity,
     { provider, accountId: userProfile.id },
     {
       relations: ["user"]
     }
   );
 
-  return account !== undefined ? account.user : await createUserAccount(provider, userProfile, sessionUser);
+  return account !== undefined ? account.user : await createUserAndAccount(provider, userProfile, sessionUser);
 };
 
-const createUserAccount = async (provider: AuthProviderName, userProfile: UserProfile, sessionUser: UserEntity) => {
+const createUserAndAccount = async (provider: AuthProviderName, userProfile: UserProfile, sessionUser: UserEntity) => {
   const user =
     sessionUser.permission !== "Guest"
       ? sessionUser
@@ -71,7 +71,7 @@ const createUserAccount = async (provider: AuthProviderName, userProfile: UserPr
           permission: "Read"
         });
 
-  const account = createAccount({
+  const account = createUserAccount({
     accountId: userProfile.id,
     provider,
     user

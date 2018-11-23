@@ -1,11 +1,6 @@
 import { Column, Entity } from "typeorm";
 import { Permission } from "../../../shared/api/entities";
-import { BaseEntity, BaseEntityConstructor } from "./BaseEntity";
-
-interface UserConstructor extends BaseEntityConstructor {
-  name: string;
-  permission: Permission;
-}
+import { BaseEntity } from "./BaseEntity";
 
 @Entity()
 export class UserEntity extends BaseEntity<"User"> {
@@ -16,17 +11,26 @@ export class UserEntity extends BaseEntity<"User"> {
 
   @Column()
   permission!: Permission;
-
-  constructor({ id, name, permission }: Partial<UserConstructor> = {}) {
-    super(id);
-
-    if (name !== undefined) {
-      this.name = name;
-    }
-    if (permission !== undefined) {
-      this.permission = permission;
-    }
-  }
 }
 
-export const createUser = (params: UserConstructor) => new UserEntity(params);
+interface UserConstructor {
+  id?: string;
+  name: string;
+  permission: Permission;
+}
+
+export const createUser = ({ id, name, permission }: UserConstructor) => {
+  const user = new UserEntity();
+
+  if (id !== undefined) {
+    user.id = id;
+  }
+  if (name !== undefined) {
+    user.name = name;
+  }
+  if (permission !== undefined) {
+    user.permission = permission;
+  }
+
+  return user;
+};
