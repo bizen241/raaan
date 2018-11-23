@@ -9,5 +9,5 @@ export const GET: OperationFunction = async (req, res) => {
 GET.apiDoc = createApiDoc({
   summary: "Get the authenticated user",
   tag: "user",
-  permission: "Read"
+  permission: "Guest"
 });
