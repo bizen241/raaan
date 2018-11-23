@@ -31,7 +31,7 @@ const loadSession = async (sessionId: string) => {
   return session;
 };
 
-export const createSessionMidleware = (env: ProcessEnv): RequestHandler => {
+export const createSessionMiddleware = (env: ProcessEnv): RequestHandler => {
   const { sessionSecret } = env;
 
   return async (req, __, next) => {

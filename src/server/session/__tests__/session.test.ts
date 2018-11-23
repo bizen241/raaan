@@ -3,7 +3,7 @@ import { sign } from "cookie-signature";
 import * as httpMocks from "node-mocks-http";
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
-import { createSessionMidleware } from "..";
+import { createSessionMiddleware } from "..";
 import { testProcessEnv } from "../../__tests__/helpers";
 import { TestDatabase } from "../../database/__tests__/helpers";
 import { createUser, createUserSession } from "../../database/entities";
@@ -31,7 +31,7 @@ test("guest user", async done => {
   });
   const res = httpMocks.createResponse();
 
-  const sessionMiddleware = createSessionMidleware(testProcessEnv);
+  const sessionMiddleware = createSessionMiddleware(testProcessEnv);
   sessionMiddleware(req, res, () => {
     expect(req.session.user.permission).toEqual("Guest");
 
@@ -64,7 +64,7 @@ test("valid session", async done => {
   });
   const res = httpMocks.createResponse();
 
-  const sessionMiddleware = createSessionMidleware(testProcessEnv);
+  const sessionMiddleware = createSessionMiddleware(testProcessEnv);
   sessionMiddleware(req, res, () => {
     expect(req.session.user.id).toEqual(userId);
 
@@ -82,7 +82,7 @@ test("invalid session", async done => {
   });
   const res = httpMocks.createResponse();
 
-  const sessionMiddleware = createSessionMidleware(testProcessEnv);
+  const sessionMiddleware = createSessionMiddleware(testProcessEnv);
   sessionMiddleware(req, res, () => {
     expect(req.session.sessionId).not.toEqual(sessionId);
 
@@ -100,7 +100,7 @@ test("deleted session", async done => {
   });
   const res = httpMocks.createResponse();
 
-  const sessionMiddleware = createSessionMidleware(testProcessEnv);
+  const sessionMiddleware = createSessionMiddleware(testProcessEnv);
   sessionMiddleware(req, res, () => {
     expect(req.session.sessionId).not.toEqual(sessionId);
 
