@@ -7,11 +7,9 @@ test("merge search result", () => {
   const searchResultStore: SearchResultStore = {
     [query]: {
       pages: {
-        2: {
-          ids: [],
-          hasNextPage: false
-        }
+        2: []
       },
+      count: 100,
       fetchedAt: new Date().valueOf()
     }
   };
@@ -24,7 +22,7 @@ test("merge search result", () => {
     },
     {
       ids: [],
-      hasNextPage: true,
+      count: 0,
       entities: createEntityStore()
     }
   );
@@ -32,5 +30,5 @@ test("merge search result", () => {
   const mergedSearchEntry = mergedSearchResultStore[query];
 
   expect(mergedSearchEntry && mergedSearchEntry.pages[1]).toBeDefined();
-  expect(mergedSearchEntry && mergedSearchEntry.pages[2]).toBeDefined();
+  expect(mergedSearchEntry && mergedSearchEntry.pages[2]).toBeUndefined();
 });
