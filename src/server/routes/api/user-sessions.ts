@@ -1,28 +1,38 @@
 import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
+import { FindConditions, getManager } from "typeorm";
 import { UserSession } from "../../../shared/api/entities";
-import { createApiDoc } from "../../api/operation";
+import { createApiDoc, errorBoundary } from "../../api/operation";
 import { parseSearchParams } from "../../api/request/search";
 import { responseSearchResult, skip, take } from "../../api/response";
 import { UserSessionEntity } from "../../database/entities";
 
-export const GET: OperationFunction = async (req, res) => {
-  const { page } = parseSearchParams<UserSession>("UserSession", req.query);
+export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
+  const currentUser = req.session.user;
 
-  const [userSessions, count] = await getManager()
-    .findAndCount(UserSessionEntity, {
-      where: {},
-      relations: ["user"],
-      skip: skip(page),
-      take
-    })
-    .catch(() => {
-      throw createError(500);
-    });
+  const { page, userId, userAgent } = parseSearchParams<UserSession>("UserSession", req.query);
 
-  responseSearchResult(res, userSessions, count);
-};
+  if (userId !== currentUser.id && currentUser.permission !== "Admin") {
+    next(createError(403));
+
+    return;
+  }
+
+  const where: FindConditions<UserSession> = {};
+
+  if (userAgent !== undefined) {
+    where.userAgent = userAgent;
+  }
+
+  const result = await getManager().findAndCount(UserSessionEntity, {
+    where,
+    relations: ["user"],
+    skip: skip(page),
+    take
+  });
+
+  responseSearchResult(res, ...result);
+});
 
 GET.apiDoc = createApiDoc({
   summary: "Get user sessions",

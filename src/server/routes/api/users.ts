@@ -1,25 +1,31 @@
 import { OperationFunction } from "express-openapi";
-import { getManager } from "typeorm";
+import { FindConditions, getManager } from "typeorm";
 import { User } from "../../../shared/api/entities";
-import { createApiDoc } from "../../api/operation";
+import { createApiDoc, errorBoundary } from "../../api/operation";
 import { parseSearchParams } from "../../api/request/search";
 import { responseSearchResult, skip, take } from "../../api/response";
 import { UserEntity } from "../../database/entities";
 
-export const GET: OperationFunction = async (req, res) => {
+export const GET: OperationFunction = errorBoundary(async (req, res) => {
   const { page, name, permission } = parseSearchParams<User>("User", req.query);
 
-  const [users, count] = await getManager().findAndCount(UserEntity, {
-    where: {
-      name,
-      permission
-    },
+  const where: FindConditions<User> = {};
+
+  if (name !== undefined) {
+    where.name = name;
+  }
+  if (permission !== undefined) {
+    where.permission = permission;
+  }
+
+  const result = await getManager().findAndCount(UserEntity, {
+    where,
     skip: skip(page),
     take
   });
 
-  responseSearchResult(res, users, count);
-};
+  responseSearchResult(res, ...result);
+});
 
 GET.apiDoc = createApiDoc({
   summary: "Get users",
