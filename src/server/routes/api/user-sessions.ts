@@ -18,8 +18,13 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
     return;
   }
 
-  const where: FindConditions<UserSession> = {};
+  const where: FindConditions<UserSessionEntity> = {};
 
+  if (userId !== undefined) {
+    where.user = {
+      id: userId
+    };
+  }
   if (userAgent !== undefined) {
     where.userAgent = userAgent;
   }
@@ -37,5 +42,5 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
 GET.apiDoc = createApiDoc({
   summary: "Get user sessions",
   tag: "user-sessions",
-  permission: "Guest"
+  permission: "Read"
 });

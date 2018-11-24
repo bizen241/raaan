@@ -3,7 +3,7 @@ import * as createError from "http-errors";
 import { OpenAPIV2 } from "openapi-types";
 import { Permission } from "../../shared/api/entities";
 
-type Tag = "user" | "users" | "user-sessions";
+type Tag = "user" | "users" | "user-accounts" | "user-sessions";
 
 interface Parameters {
   summary: string;
