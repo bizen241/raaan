@@ -3,8 +3,8 @@ import { SearchParams } from "../../../shared/api/request/search";
 
 type SearchQuery<E extends EntityObject> = { [P in keyof SearchParams<E>]: string | undefined };
 
-export const parseSearchParams = <E extends EntityObject>(type: EntityType, query: SearchQuery<E>) =>
-  parsers[type](query);
+export const parseSearchParams = <E extends EntityObject>(type: E["type"], query: SearchQuery<E>) =>
+  parsers[type](query) as SearchParams<E>;
 
 const page = (query: { page: string | undefined }) => ({ page: (query.page && Number(query.page)) || 1 });
 

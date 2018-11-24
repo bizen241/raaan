@@ -2,15 +2,11 @@ import { EntityObject } from "../../../shared/api/entities";
 import { SearchParams } from "../../../shared/api/request/search";
 import { SearchResult } from "../../../shared/api/response/search";
 
-export interface SearchResultPage {
-  ids: string[];
-  hasNextPage: boolean;
-}
-
 export interface SearchResultEntry {
   pages: {
-    [page: number]: SearchResultPage | undefined;
+    [page: number]: string[] | undefined;
   };
+  count: number;
   fetchedAt: number;
   isDownloaded?: boolean;
 }
@@ -30,11 +26,15 @@ const getQueryString = <E extends EntityObject>(params: SearchParams<E>) => {
   return urlSearchParams.toString();
 };
 
-const isSearchResultEntryOutdated = <E extends EntityObject>(
+const isSearchResultConflicted = <E extends EntityObject>(
   entry: SearchResultEntry,
   params: SearchParams<E>,
   result: SearchResult
 ) => {
+  if (result.count !== entry.count) {
+    return true;
+  }
+
   const pages = { ...entry.pages };
   pages[params.page] = undefined;
 
@@ -45,7 +45,7 @@ const isSearchResultEntryOutdated = <E extends EntityObject>(
       return;
     }
 
-    for (const entityId of page.ids) {
+    for (const entityId of page) {
       const isConflicted = resultIds.includes(entityId);
 
       if (isConflicted) {
@@ -63,23 +63,19 @@ export const mergeSearchResultStore = <E extends EntityObject>(
   result: SearchResult
 ): SearchResultStore => {
   const query = getQueryString(params);
-
   const entry = store[query];
-  const pages =
-    entry === undefined ? undefined : isSearchResultEntryOutdated(entry, params, result) ? undefined : entry.pages;
+  const { ids, count } = result;
 
-  const { ids, hasNextPage } = result;
+  const pages = entry && isSearchResultConflicted(entry, params, result) ? undefined : entry && entry.pages;
 
   return {
     ...store,
     [query]: {
       pages: {
         ...pages,
-        [params.page]: {
-          ids,
-          hasNextPage
-        }
+        [params.page]: ids
       },
+      count,
       fetchedAt: new Date().valueOf()
     }
   };

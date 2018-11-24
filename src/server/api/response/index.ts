@@ -14,17 +14,15 @@ export const responseFindResult = (res: Response, ...entities: EntityClass[]) =>
   }
 };
 
-export const responseSearchResult = (res: Response, page: number, entities: EntityClass[]) => {
+export const skip = (page: number) => entityCountPerPage * (page - 1);
+export const take = entityCountPerPage;
+
+export const responseSearchResult = (res: Response, entities: EntityClass[], count: number) => {
   try {
-    const entityIds = entities.map(entity => entity.id);
-
-    const startIndex = page === 1 ? 0 : 1;
-    const endIndex = startIndex + entityCountPerPage;
-
     const searchResult: SearchResult = {
-      ids: entityIds.slice(startIndex, endIndex + 1),
-      hasNextPage: entityIds.length - 1 === endIndex + 1,
-      entities: normalizeEntities(entities)
+      ids: entities.map(entity => entity.id),
+      entities: normalizeEntities(entities),
+      count
     };
 
     res.status(200).json(searchResult);
