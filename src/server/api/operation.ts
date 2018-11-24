@@ -1,3 +1,5 @@
+import { RequestHandler } from "express";
+import * as createError from "http-errors";
 import { OpenAPIV2 } from "openapi-types";
 import { Permission } from "../../shared/api/entities";
 
@@ -34,3 +36,7 @@ export const createApiDoc = ({ summary, tag, permission }: Parameters): OpenAPIV
     }
   ]
 });
+
+export const errorBoundary = (fn: RequestHandler): RequestHandler => (req, res, next) => {
+  fn(req, res, next).catch(() => next(createError(500)));
+};
