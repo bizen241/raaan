@@ -65,6 +65,7 @@ const normalizeUserSession: Normalizer<UserSessionEntity> = (store, entity) => {
 
   store.UserSession[id] = {
     ...base(entity),
+    userId: user.id,
     userAgent
   };
 
