@@ -13,9 +13,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   const { page, userId, userAgent } = parseSearchParams<UserSession>("UserSession", req.query);
 
   if (userId !== currentUser.id && currentUser.permission !== "Admin") {
-    next(createError(403));
-
-    return;
+    return next(createError(403));
   }
 
   const where: FindConditions<UserSessionEntity> = {};
