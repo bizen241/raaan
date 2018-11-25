@@ -2,7 +2,7 @@ import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
 import { FindConditions, getManager } from "typeorm";
 import { UserSession } from "../../../shared/api/entities";
-import { createApiDoc, errorBoundary } from "../../api/operation";
+import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { parseSearchParams } from "../../api/request/search";
 import { responseSearchResult, skip, take } from "../../api/response";
 import { UserSessionEntity } from "../../database/entities";
@@ -37,8 +37,12 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   responseSearchResult(res, ...result);
 });
 
-GET.apiDoc = createApiDoc({
+GET.apiDoc = createOperationDoc<UserSession>({
   summary: "Get user sessions",
   tag: "user-sessions",
-  permission: "Read"
+  permission: "Read",
+  query: {
+    userAgent: null,
+    userId: null
+  }
 });

@@ -1,7 +1,7 @@
 import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
 import { getManager } from "typeorm";
-import { createApiDoc, errorBoundary } from "../../../api/operation";
+import { createOperationDoc, errorBoundary } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
 import { UserEntity } from "../../../database/entities";
 
@@ -20,7 +20,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   responseFindResult(res, result);
 });
 
-GET.apiDoc = createApiDoc({
+GET.apiDoc = createOperationDoc({
   summary: "Get an user",
   tag: "users",
   permission: "Read"

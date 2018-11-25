@@ -1,7 +1,7 @@
 import { OperationFunction } from "express-openapi";
 import { FindConditions, getManager } from "typeorm";
 import { User } from "../../../shared/api/entities";
-import { createApiDoc, errorBoundary } from "../../api/operation";
+import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { parseSearchParams } from "../../api/request/search";
 import { responseSearchResult, skip, take } from "../../api/response";
 import { UserEntity } from "../../database/entities";
@@ -27,8 +27,12 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
   responseSearchResult(res, ...result);
 });
 
-GET.apiDoc = createApiDoc({
+GET.apiDoc = createOperationDoc<User>({
   summary: "Get users",
   tag: "users",
-  permission: "Guest"
+  permission: "Guest",
+  query: {
+    name: null,
+    permission: null
+  }
 });
