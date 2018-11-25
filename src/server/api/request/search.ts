@@ -18,15 +18,21 @@ const parseUser: Parser<User> = query => {
 };
 
 const parseUserAccount: Parser<UserAccount> = query => {
+  const { userId } = query;
+
   return {
     type: "UserAccount",
+    userId,
     ...page(query)
   };
 };
 
 const parseUserSession: Parser<UserSession> = query => {
+  const { userId } = query;
+
   return {
     type: "UserSession",
+    userId,
     ...page(query)
   };
 };

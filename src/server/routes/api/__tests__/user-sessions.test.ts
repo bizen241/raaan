@@ -1,3 +1,4 @@
+import { UserSession } from "../../../../shared/api/entities";
 import { SearchResult } from "../../../../shared/api/response/search";
 import { TestDatabase } from "../../../database/__tests__/helpers";
 import { insertSessions } from "../../../session/__tests__/helpers";
@@ -21,6 +22,10 @@ beforeEach(async () => {
 
 test("GET /api/user-sessions", async () => {
   const { req, res } = createHttpMocks("Read");
+
+  req.query = {
+    userId: req.session.user.id
+  } as { [P in keyof UserSession]: string };
 
   await GET(req, res, () => null);
 
