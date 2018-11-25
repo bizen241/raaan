@@ -21,7 +21,7 @@ beforeEach(async () => {
   await testDatabase.reset();
 });
 
-test("GET /api/users", async () => {
+test("GET /api/user-accounts", async () => {
   await getManager().save(users.Read);
   await getManager().save(
     createUserAccount({
