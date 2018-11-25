@@ -1,10 +1,11 @@
 import { getManager } from "typeorm";
-import { UserSession } from "../../../../shared/api/entities";
+import { UserAccount } from "../../../../shared/api/entities";
 import { SearchResult } from "../../../../shared/api/response/search";
 import { SearchQuery } from "../../../api/request/search";
 import { TestDatabase } from "../../../database/__tests__/helpers";
-import { sessions, users } from "../../../session/__tests__/helpers";
-import { GET } from "../user-sessions";
+import { createUserAccount } from "../../../database/entities";
+import { users } from "../../../session/__tests__/helpers";
+import { GET } from "../user-accounts";
 import { createHttpMocks } from "./helpers";
 
 const testDatabase = new TestDatabase();
@@ -20,13 +21,19 @@ beforeEach(async () => {
   await testDatabase.reset();
 });
 
-test("GET /api/user-sessions", async () => {
+test("GET /api/users", async () => {
   await getManager().save(users.Read);
-  await getManager().save(sessions.Read);
+  await getManager().save(
+    createUserAccount({
+      user: users.Read,
+      accountId: "",
+      provider: "github"
+    })
+  );
 
   const { req, res } = createHttpMocks("Read");
 
-  const query: SearchQuery<UserSession> = {
+  const query: SearchQuery<UserAccount> = {
     userId: req.session.user.id
   };
 

@@ -1,12 +1,12 @@
 import { EntityObject, EntityType, User, UserAccount, UserSession } from "../../../shared/api/entities";
 import { SearchParams } from "../../../shared/api/request/search";
 
-type SearchQuery<E extends EntityObject> = { [P in keyof SearchParams<E>]: string | undefined };
+export type SearchQuery<E extends EntityObject> = { [P in keyof SearchParams<E>]?: string };
 
 export const parseSearchParams = <E extends EntityObject>(type: E["type"], query: SearchQuery<E>) =>
   parsers[type](query) as SearchParams<E>;
 
-const page = (query: { page: string | undefined }) => ({ page: (query.page && Number(query.page)) || 1 });
+const page = (query: { page?: string }) => ({ page: (query.page && Number(query.page)) || 1 });
 
 type Parser<E extends EntityObject> = (query: SearchQuery<E>) => SearchParams<E>;
 
