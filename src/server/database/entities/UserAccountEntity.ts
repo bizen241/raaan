@@ -24,9 +24,12 @@ interface AccountConstructor {
   accountId: string;
 }
 
-export const createUserAccount = ({ user, provider, accountId }: AccountConstructor) => {
+export const createUserAccount = ({ id, user, provider, accountId }: AccountConstructor) => {
   const account = new UserAccountEntity();
 
+  if (id !== undefined) {
+    account.id = id;
+  }
   if (user !== undefined) {
     account.user = user;
   }
