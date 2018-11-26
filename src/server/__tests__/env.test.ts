@@ -7,12 +7,15 @@ afterAll(() => {
 });
 
 const env: NodeJS.ProcessEnv = {
-  DATABASE_URL: "postgres://postgres:postgres@localhost/db_name",
-  GITHUB_CLIENT_ID: "12345678901234567890",
-  GITHUB_CLIENT_SECRET: "1234567890123456789012345678901234567890",
   SERVER_HOST: "localhost",
   SERVER_PORT: "3000",
-  SESSION_SECRET: "secret"
+  DATABASE_URL: "postgres://postgres:postgres@localhost/db_name",
+  SESSION_SECRET: "secret",
+  ADMIN_ACCOUNT_PROVIDER: "github",
+  ADMIN_ACCOUNT_ID: "12345678",
+  ADMIN_ACCOUNT_NAME: "name",
+  GITHUB_CLIENT_ID: "12345678901234567890",
+  GITHUB_CLIENT_SECRET: "1234567890123456789012345678901234567890"
 };
 
 test("filled", () => {
@@ -27,9 +30,12 @@ test("filled", () => {
 test("only required", () => {
   process.env = {
     DATABASE_URL: "postgres://postgres:postgres@localhost/db_name",
+    SESSION_SECRET: "secret",
+    ADMIN_ACCOUNT_PROVIDER: "github",
+    ADMIN_ACCOUNT_ID: "12345678",
+    ADMIN_ACCOUNT_NAME: "name",
     GITHUB_CLIENT_ID: "12345678901234567890",
-    GITHUB_CLIENT_SECRET: "1234567890123456789012345678901234567890",
-    SESSION_SECRET: "secret"
+    GITHUB_CLIENT_SECRET: "1234567890123456789012345678901234567890"
   };
 
   const processEnv = getProcessEnv();
@@ -45,6 +51,42 @@ test("missing DATABASE_URL", () => {
   };
 
   expect(getProcessEnv).toThrowError(/DATABASE_URL/);
+});
+
+test("missing SESSION_SECRET", () => {
+  process.env = {
+    ...env,
+    SESSION_SECRET: undefined
+  };
+
+  expect(getProcessEnv).toThrowError(/SESSION_SECRET/);
+});
+
+test("missing ADMIN_ACCOUNT_PROVIDER", () => {
+  process.env = {
+    ...env,
+    ADMIN_ACCOUNT_PROVIDER: undefined
+  };
+
+  expect(getProcessEnv).toThrowError(/ADMIN_ACCOUNT_PROVIDER/);
+});
+
+test("missing ADMIN_ACCOUNT_ID", () => {
+  process.env = {
+    ...env,
+    ADMIN_ACCOUNT_ID: undefined
+  };
+
+  expect(getProcessEnv).toThrowError(/ADMIN_ACCOUNT_ID/);
+});
+
+test("missing ADMIN_ACCOUNT_NAME", () => {
+  process.env = {
+    ...env,
+    ADMIN_ACCOUNT_NAME: undefined
+  };
+
+  expect(getProcessEnv).toThrowError(/ADMIN_ACCOUNT_NAME/);
 });
 
 test("missing GITHUB_CLIENT_ID", () => {
@@ -63,13 +105,4 @@ test("missing GITHUB_CLIENT_SECRET", () => {
   };
 
   expect(getProcessEnv).toThrowError(/GITHUB_CLIENT_SECRET/);
-});
-
-test("missing SESSION_SECRET", () => {
-  process.env = {
-    ...env,
-    SESSION_SECRET: undefined
-  };
-
-  expect(getProcessEnv).toThrowError(/SESSION_SECRET/);
 });

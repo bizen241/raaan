@@ -10,10 +10,13 @@ if (TEST_DATABASE_URL === undefined) {
 }
 
 export const testProcessEnv: ProcessEnv = {
-  githubClientId: "github-client-id",
-  githubClientSecret: "github-client-secret",
-  databaseUrl: TEST_DATABASE_URL,
   serverHost: "localhost",
   serverPort: 8000,
-  sessionSecret: "secret"
+  databaseUrl: TEST_DATABASE_URL,
+  sessionSecret: "secret",
+  adminAccountProvider: "github",
+  adminAccountId: "12345678",
+  adminAccountName: "name",
+  githubClientId: "12345678901234567890",
+  githubClientSecret: "1234567890123456789012345678901234567890"
 };
