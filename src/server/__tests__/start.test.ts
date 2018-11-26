@@ -22,6 +22,9 @@ test("start", async () => {
   const guestUser = await getManager().findOne(UserEntity, { permission: "Guest" });
   expect(guestUser).toBeDefined();
 
+  const adminUser = await getManager().findOne(UserEntity, { permission: "Admin" });
+  expect(adminUser).toBeDefined();
+
   spyLog.mockRestore();
 
   await database.close();
