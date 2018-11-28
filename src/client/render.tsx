@@ -9,9 +9,10 @@ export const renderApp = () => {
     <I18nProvider language="en" catalogs={catalogs}>
       <div>
         <main>
-          <a href="/auth/github">
+          <h1>
             <Trans>Welcome to Raan!</Trans>
-          </a>
+          </h1>
+          <a href="/auth/github">Login</a>/<a href="/logout">Logout</a>
         </main>
       </div>
     </I18nProvider>,

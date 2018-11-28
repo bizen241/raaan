@@ -36,7 +36,7 @@ if (!isDevelopment) {
       skipWaiting: true,
       exclude: [/\.png$/, /\.txt$/],
       navigateFallback: "/",
-      navigateFallbackBlacklist: [/^\/api/, /^\/auth/]
+      navigateFallbackBlacklist: [/^\/api/, /^\/auth/, /^\/logout/]
     })
   );
 }
@@ -49,7 +49,7 @@ const webpackDevServerConfiguration = isDevelopment
       historyApiFallback: true,
       proxy: [
         {
-          context: ["/auth", "/api"],
+          context: ["/api", "/auth", "/logout"],
           target: "http://localhost:3000"
         }
       ],

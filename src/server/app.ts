@@ -7,6 +7,7 @@ import { createAuthMiddleware } from "./auth";
 import { ProcessEnv } from "./env";
 import { authRouter } from "./routes/auth";
 import { fallbackRouter } from "./routes/fallback";
+import { logoutRouter } from "./routes/logout";
 import { createSessionMiddleware } from "./session";
 
 export const createApp = (processEnv: ProcessEnv, app: express.Express = express()) => {
@@ -19,6 +20,7 @@ export const createApp = (processEnv: ProcessEnv, app: express.Express = express
   prepareApi(processEnv, app);
 
   app.use("/auth", authRouter);
+  app.use("/logout", logoutRouter);
   app.use("*", fallbackRouter);
 
   return app;
