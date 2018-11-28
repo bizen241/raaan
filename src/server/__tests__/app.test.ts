@@ -9,5 +9,5 @@ test("app", async () => {
 
   createApp(testProcessEnv, app);
 
-  expect(spyUse).toBeCalledTimes(7);
+  expect(spyUse).toBeCalledTimes(8);
 });
