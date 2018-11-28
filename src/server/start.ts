@@ -14,9 +14,9 @@ export const startServer = async (processEnv: ProcessEnv) => {
   await setAdminUser(processEnv);
 
   return new Promise<{ server: Server; database: Connection }>(resolve => {
-    const { serverPort, serverHost } = processEnv;
+    const { serverPort } = processEnv;
 
-    const server = createApp(processEnv).listen(serverPort, serverHost, () => {
+    const server = createApp(processEnv).listen(serverPort, () => {
       console.log(`server: listening on port ${serverPort}`);
 
       resolve({ server, database });
