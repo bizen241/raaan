@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "author": "bizen241",
+  "main": "out/server/index.js",
   "scripts": {
     "start": "node out/server/index.js",
     "build": "run-s build:intl build:client build:server",
@@ -22,7 +23,8 @@
     "intl:extract": "lingui extract --clean",
     "intl:compile": "lingui compile",
     "intl:add": "lingui add-locale",
-    "db": "typeorm"
+    "db": "typeorm",
+    "postinstall": "yarn build"
   },
   "dependencies": {
     "@lingui/react": "2.7.0",
