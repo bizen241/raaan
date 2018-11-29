@@ -61,7 +61,7 @@
     "@types/jest": "23.3.10",
     "@types/lingui__core": "2.2.0",
     "@types/lingui__react": "2.5.0",
-    "@types/node-fetch": "2.1.2",
+    "@types/node-fetch": "2.1.4",
     "@types/react": "16.4.18",
     "@types/react-dom": "16.0.9",
     "@types/swagger-ui-express": "3.0.0",
