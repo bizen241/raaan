@@ -15,8 +15,8 @@ export interface ProcessEnv {
 
 export const getProcessEnv = (): ProcessEnv => {
   const {
-    SERVER_HOST,
-    SERVER_PORT,
+    HOST,
+    PORT,
     DATABASE_URL,
     SESSION_SECRET,
     ADMIN_ACCOUNT_PROVIDER,
@@ -49,8 +49,8 @@ export const getProcessEnv = (): ProcessEnv => {
   }
 
   return {
-    serverHost: SERVER_HOST || "localhost",
-    serverPort: SERVER_PORT !== undefined && !isNaN(Number(SERVER_PORT)) ? Number(SERVER_PORT) : 3000,
+    serverHost: HOST || "localhost",
+    serverPort: PORT !== undefined && !isNaN(Number(PORT)) ? Number(PORT) : 3000,
     databaseUrl: DATABASE_URL,
     sessionSecret: SESSION_SECRET,
     adminAccountProvider: ADMIN_ACCOUNT_PROVIDER,

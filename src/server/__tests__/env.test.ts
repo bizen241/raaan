@@ -7,8 +7,8 @@ afterAll(() => {
 });
 
 const env: NodeJS.ProcessEnv = {
-  SERVER_HOST: "localhost",
-  SERVER_PORT: "3000",
+  HOST: "localhost",
+  PORT: "3000",
   DATABASE_URL: "postgres://postgres:postgres@localhost/db_name",
   SESSION_SECRET: "secret",
   ADMIN_ACCOUNT_PROVIDER: "github",
@@ -23,8 +23,8 @@ test("filled", () => {
 
   const processEnv = getProcessEnv();
 
-  expect(processEnv.serverPort).toEqual(Number(process.env.SERVER_PORT));
-  expect(processEnv.serverHost).toEqual(process.env.SERVER_HOST);
+  expect(processEnv.serverPort).toEqual(Number(process.env.PORT));
+  expect(processEnv.serverHost).toEqual(process.env.HOST);
 });
 
 test("only required", () => {
