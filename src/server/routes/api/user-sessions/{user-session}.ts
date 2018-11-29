@@ -30,7 +30,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
 });
 
 GET.apiDoc = createOperationDoc({
-  summary: "Get an user session",
+  summary: "Get a user session",
   tag: "user-sessions",
   permission: "Read"
 });
