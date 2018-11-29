@@ -12,12 +12,12 @@ export interface PathParams {
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   const { user: userId }: PathParams = req.params;
 
-  const result = await getManager().findOne(UserEntity, userId);
-  if (result === undefined) {
+  const loadedUser = await getManager().findOne(UserEntity, userId);
+  if (loadedUser === undefined) {
     return next(createError(404));
   }
 
-  responseFindResult(res, result);
+  responseFindResult(res, loadedUser);
 });
 
 GET.apiDoc = createOperationDoc({
@@ -26,35 +26,49 @@ GET.apiDoc = createOperationDoc({
   permission: "Read"
 });
 
-export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
-  const currentUser = req.session.user;
-  if (currentUser.permission === "Admin") {
-    return next(createError(403));
-  }
-
+export const deleteUser = async (user: UserEntity) => {
   const manager = getManager();
 
   await manager.delete(UserAccountEntity, {
     user: {
-      id: currentUser.id
+      id: user.id
     }
   });
   await manager.delete(UserSessionEntity, {
     user: {
-      id: currentUser.id
+      id: user.id
     }
   });
 
-  currentUser.name = "Ghost";
-  currentUser.permission = "Ghost";
+  user.name = "Ghost";
+  user.permission = "Ghost";
 
-  await manager.save(currentUser);
+  await manager.save(user);
+};
 
-  res.redirect("/logout");
+export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
+  const currentUser = req.session.user;
+  if (currentUser.permission !== "Admin") {
+    return next(createError(403));
+  }
+
+  const { user: userId }: PathParams = req.params;
+
+  const loadedUser = await getManager().findOne(UserEntity, userId);
+  if (loadedUser === undefined) {
+    return next(createError(404));
+  }
+  if (loadedUser.id === currentUser.id) {
+    return next(createError(403));
+  }
+
+  await deleteUser(loadedUser);
+
+  responseFindResult(res, loadedUser);
 });
 
 DELETE.apiDoc = createOperationDoc({
   summary: "Delete an user",
   tag: "users",
-  permission: "Read"
+  permission: "Admin"
 });
