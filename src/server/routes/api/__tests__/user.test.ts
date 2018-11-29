@@ -1,15 +1,42 @@
 import { EntityStore } from "../../../../shared/api/response/entity";
+import { TestDatabase } from "../../../database/__tests__/helpers";
 import { users } from "../../../session/__tests__/helpers";
-import { GET } from "../user";
+import { DELETE, GET } from "../user";
 import { createHttpMocks } from "./helpers";
 
-test("GET /api/user", async () => {
-  const { req, res } = createHttpMocks("Read");
+const testDatabase = new TestDatabase();
 
-  await GET(req, res, () => null);
+beforeAll(async () => {
+  await testDatabase.connect();
+});
+afterAll(async () => {
+  await testDatabase.close();
+});
+
+test("GET /api/user", async () => {
+  const { req, res, next } = createHttpMocks("Read");
+
+  await GET(req, res, next);
 
   expect(res.statusCode).toBe(200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
   expect(data.User[users.Read.id]).toBeDefined();
+});
+
+test("DELETE /api/user success", async () => {
+  const { req, res, next } = createHttpMocks("Read");
+
+  await DELETE(req, res, next);
+
+  expect(res._getStatusCode()).toEqual(302);
+  expect(res._getRedirectUrl()).toEqual("/logout");
+});
+
+test("DELETE /api/user failure", async () => {
+  const { req, res, next } = createHttpMocks("Admin");
+
+  await DELETE(req, res, next);
+
+  expect(res._getStatusCode()).toEqual(403);
 });
