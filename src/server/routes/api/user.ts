@@ -2,6 +2,7 @@ import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
+import { setClearSiteData } from "../logout";
 import { deleteUser } from "./users/{user}";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
@@ -22,7 +23,9 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next) =>
 
   await deleteUser(currentUser);
 
-  res.redirect("/logout");
+  setClearSiteData(res);
+
+  res.sendStatus(200);
 });
 
 DELETE.apiDoc = createOperationDoc({
