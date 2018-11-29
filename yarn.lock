@@ -694,18 +694,28 @@
   resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-transform-js/-/babel-plugin-transform-js-2.7.0.tgz#ca1a28906af28cb91e858b4bda08754c99075158"
   integrity sha512-fBmW2nzv4RhOBy0YoGIg8CWftk1115q+iusUX5q9fwBfVD2LwEekUWitoATKT4dBRLyujEO32Z3u1Xt9XsHFRA==
 
+"@lingui/babel-plugin-transform-js@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-transform-js/-/babel-plugin-transform-js-2.7.2.tgz#0a496c10705b970d48e25a0ab977e39dd2ccffb9"
+  integrity sha512-V2avCZOqiyejz4vM24X+Wz1+bvzdovLUdW9iBRocaH6hcRtA1ttVQ6JAQBw/tACY5sFw73LdrPiVMiD7dw1NtA==
+
 "@lingui/babel-plugin-transform-react@2.7.0":
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-transform-react/-/babel-plugin-transform-react-2.7.0.tgz#c2ad1fc070f09526f8994b2d9fbc973e0c40fefa"
   integrity sha512-wRGoI7ne0ogqEGQiI2DJx0IXrWnh2x9/XPPFDO+9+Zx+EUZ/PXNzMdnv0ZNeWHQw59ye1dh1/R1wJXDGzvzxpA==
 
-"@lingui/babel-preset-react@2.7.0":
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-preset-react/-/babel-preset-react-2.7.0.tgz#487370f1d7de34bffe376378576399751fae5562"
-  integrity sha512-bM8vaWY4ShoSQA+ZujT60e6+QKkc7uAuFQlkbibBcplQ4+IeS/ht61Po8r6kw/OADA1fou1Y4ZCqLASmfGS0EA==
+"@lingui/babel-plugin-transform-react@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-transform-react/-/babel-plugin-transform-react-2.7.2.tgz#b73ab59673e498ddc1dc74922ae82b01485eb5be"
+  integrity sha512-50+GM9LL7V4mB6ekY7hUGmyMLewDQ9bzVXTyRtbTl/78xJoQKSv8Wuz+jlvPcP0fKAFcmcHo3QJPPOkSAbgnOw==
+
+"@lingui/babel-preset-react@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@lingui/babel-preset-react/-/babel-preset-react-2.7.2.tgz#49812536c0ac7feabba28cb0632c4ace32b156a6"
+  integrity sha512-HhQyulJPDXYMK/L5Kvo5ypnqNipFTFmS1laB8dHZ+8hh24KcJ6kft24IylcQn5QU1rFV5XZG1MpNo2NhEbrnlQ==
   dependencies:
-    "@lingui/babel-plugin-transform-js" "2.7.0"
-    "@lingui/babel-plugin-transform-react" "2.7.0"
+    "@lingui/babel-plugin-transform-js" "2.7.2"
+    "@lingui/babel-plugin-transform-react" "2.7.2"
 
 "@lingui/cli@2.7.0":
   version "2.7.0"
