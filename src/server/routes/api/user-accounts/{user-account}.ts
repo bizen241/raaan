@@ -1,18 +1,14 @@
 import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
 import { getManager } from "typeorm";
-import { createOperationDoc, errorBoundary } from "../../../api/operation";
+import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
 import { UserAccountEntity } from "../../../database/entities";
-
-export interface PathParams {
-  "user-account": string;
-}
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   const currentUser = req.session.user;
 
-  const { "user-account": userAccountId }: PathParams = req.params;
+  const { id: userAccountId }: PathParams = req.params;
 
   const result = await getManager().findOne(UserAccountEntity, userAccountId, {
     relations: ["user"]
@@ -21,9 +17,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
     return next(createError(404));
   }
   if (result.user.id !== currentUser.id && currentUser.permission !== "Admin") {
-    next(createError(403));
-
-    return;
+    return next(createError(403));
   }
 
   responseFindResult(res, result);
@@ -32,5 +26,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
 GET.apiDoc = createOperationDoc({
   summary: "Get a user account",
   tag: "user-accounts",
-  permission: "Read"
+  permission: "Read",
+  path: ["id"]
 });

@@ -4,14 +4,19 @@ import * as createError from "http-errors";
 import { OpenAPIV2 } from "openapi-types";
 import { EntityObject, Permission } from "../../shared/api/entities";
 
+export interface PathParams {
+  id?: string;
+}
+
 type Tag = "user" | "users" | "user-accounts" | "user-sessions";
 
 interface OperationDocument<E extends EntityObject> {
   summary: string;
   tag: Tag;
   permission: Permission;
-  body?: { [P in keyof E]?: null };
+  path?: Array<keyof PathParams>;
   query?: { [P in keyof E]?: null };
+  body?: { [P in keyof E]?: null };
 }
 
 const responses: OpenAPIV2.ResponsesObject = {
@@ -29,19 +34,27 @@ const responses: OpenAPIV2.ResponsesObject = {
   }
 };
 
-const createOperationParameters = (location: "body" | "query", source: object = {}): OpenAPIV2.Parameters =>
-  Object.keys(source).map(name => ({
+const createOperationParameters = (location: "path" | "query" | "body", names: string[]): OpenAPIV2.Parameters => {
+  const required = location === "path" ? true : undefined;
+
+  return names.map(name => ({
     in: location,
     type: "string",
-    name
+    name,
+    required
   }));
+};
 
 export const createOperationDoc = <E extends EntityObject>(
   document: OperationDocument<E>
 ): OpenAPIV2.OperationObject => {
-  const { summary, tag, permission, body = {}, query = {} } = document;
+  const { summary, tag, permission, path = [], query = {}, body = {} } = document;
 
-  const parameters = [...createOperationParameters("body", body), ...createOperationParameters("query", query)];
+  const parameters = [
+    ...createOperationParameters("path", path),
+    ...createOperationParameters("query", Object.keys(query)),
+    ...createOperationParameters("body", Object.keys(body))
+  ];
 
   return {
     summary,

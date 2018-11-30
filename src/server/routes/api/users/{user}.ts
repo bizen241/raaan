@@ -1,16 +1,12 @@
 import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
 import { getManager } from "typeorm";
-import { createOperationDoc, errorBoundary } from "../../../api/operation";
+import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
 import { UserAccountEntity, UserEntity, UserSessionEntity } from "../../../database/entities";
 
-export interface PathParams {
-  user: string;
-}
-
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
-  const { user: userId }: PathParams = req.params;
+  const { id: userId }: PathParams = req.params;
 
   const loadedUser = await getManager().findOne(UserEntity, userId);
   if (loadedUser === undefined) {
@@ -23,7 +19,8 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
 GET.apiDoc = createOperationDoc({
   summary: "Get a user",
   tag: "users",
-  permission: "Read"
+  permission: "Read",
+  path: ["id"]
 });
 
 export const deleteUser = async (user: UserEntity) => {
@@ -52,7 +49,7 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next) =>
     return next(createError(403));
   }
 
-  const { user: userId }: PathParams = req.params;
+  const { id: userId }: PathParams = req.params;
 
   const loadedUser = await getManager().findOne(UserEntity, userId);
   if (loadedUser === undefined) {
@@ -70,5 +67,6 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next) =>
 DELETE.apiDoc = createOperationDoc({
   summary: "Delete a user",
   tag: "users",
-  permission: "Admin"
+  permission: "Admin",
+  path: ["id"]
 });
