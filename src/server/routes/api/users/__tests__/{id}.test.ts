@@ -5,7 +5,7 @@ import { TestDatabase } from "../../../../database/__tests__/helpers";
 import { createUserAccount, UserAccountEntity, UserEntity, UserSessionEntity } from "../../../../database/entities";
 import { insertSessions, sessions, users } from "../../../../session/__tests__/helpers";
 import { createHttpMocks } from "../../__tests__/helpers";
-import { DELETE, GET, PathParams } from "../{user}";
+import { DELETE, GET, PathParams } from "../{id}";
 
 const testDatabase = new TestDatabase();
 

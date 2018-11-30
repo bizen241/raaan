@@ -3,7 +3,7 @@ import { EntityStore } from "../../../../../shared/api/response/entity";
 import { TestDatabase } from "../../../../database/__tests__/helpers";
 import { sessions, users } from "../../../../session/__tests__/helpers";
 import { createHttpMocks } from "../../__tests__/helpers";
-import { GET, PathParams } from "../{user-session}";
+import { GET, PathParams } from "../{id}";
 
 const testDatabase = new TestDatabase();
 

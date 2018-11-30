@@ -5,7 +5,7 @@ import { TestDatabase } from "../../../../database/__tests__/helpers";
 import { createUserAccount } from "../../../../database/entities";
 import { users } from "../../../../session/__tests__/helpers";
 import { createHttpMocks } from "../../__tests__/helpers";
-import { GET, PathParams } from "../{user-account}";
+import { GET, PathParams } from "../{id}";
 
 const testDatabase = new TestDatabase();
 
