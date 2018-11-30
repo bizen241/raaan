@@ -1,11 +1,12 @@
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { EntityStore } from "../../../../../shared/api/response/entity";
+import { PathParams } from "../../../../api/operation";
 import { TestDatabase } from "../../../../database/__tests__/helpers";
 import { createUserAccount, UserAccountEntity, UserEntity, UserSessionEntity } from "../../../../database/entities";
 import { insertSessions, sessions, users } from "../../../../session/__tests__/helpers";
 import { createHttpMocks } from "../../__tests__/helpers";
-import { DELETE, GET, PathParams } from "../{id}";
+import { DELETE, GET } from "../{id}";
 
 const testDatabase = new TestDatabase();
 
@@ -26,7 +27,7 @@ test("GET /api/users/{user} -> 200", async () => {
   const { req, res, next } = createHttpMocks("Read");
 
   (req.params as PathParams) = {
-    user: users.Read.id
+    id: users.Read.id
   };
 
   await GET(req, res, next);
@@ -41,7 +42,7 @@ test("GET /api/users/{user} -> 404", async () => {
   const { req, res, next } = createHttpMocks("Read");
 
   (req.params as PathParams) = {
-    user: users.Read.id
+    id: users.Read.id
   };
 
   await getManager().remove(sessions.Read);
@@ -56,7 +57,7 @@ test("DELETE /api/users/{user} -> 200", async () => {
   const { req, res, next } = createHttpMocks("Admin");
 
   (req.params as PathParams) = {
-    user: users.Read.id
+    id: users.Read.id
   };
 
   const manager = getManager();
@@ -96,7 +97,7 @@ test("DELETE /api/users/{user} -> 404", async () => {
   const { req, res, next } = createHttpMocks("Admin");
 
   (req.params as PathParams) = {
-    user: users.Read.id
+    id: users.Read.id
   };
 
   await getManager().remove(sessions.Read);
@@ -111,7 +112,7 @@ test("DELETE /api/users/{user} -> 403", async () => {
   const { req, res, next } = createHttpMocks("Admin");
 
   (req.params as PathParams) = {
-    user: users.Admin.id
+    id: users.Admin.id
   };
 
   await DELETE(req, res, next);

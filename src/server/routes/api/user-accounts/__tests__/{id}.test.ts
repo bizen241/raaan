@@ -1,11 +1,12 @@
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { EntityStore } from "../../../../../shared/api/response/entity";
+import { PathParams } from "../../../../api/operation";
 import { TestDatabase } from "../../../../database/__tests__/helpers";
 import { createUserAccount } from "../../../../database/entities";
 import { users } from "../../../../session/__tests__/helpers";
 import { createHttpMocks } from "../../__tests__/helpers";
-import { GET, PathParams } from "../{id}";
+import { GET } from "../{id}";
 
 const testDatabase = new TestDatabase();
 
@@ -35,11 +36,9 @@ test("GET /api/user-accounts/{user-account}", async () => {
 
   const { req, res } = createHttpMocks("Read");
 
-  const params: PathParams = {
-    "user-account": userAccountId
+  (req.params as PathParams) = {
+    id: userAccountId
   };
-
-  req.params = params;
 
   await GET(req, res, () => null);
 
