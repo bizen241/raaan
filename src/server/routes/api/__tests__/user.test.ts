@@ -29,8 +29,7 @@ test("DELETE /api/user success", async () => {
 
   await DELETE(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(302);
-  expect(res._getRedirectUrl()).toEqual("/logout");
+  expect(res._getStatusCode()).toEqual(200);
 });
 
 test("DELETE /api/user failure", async () => {
