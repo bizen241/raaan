@@ -7,24 +7,51 @@ import { UserSessionEntity } from "../../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   const currentUser = req.session.user;
-
   const { id: userSessionId }: PathParams = req.params;
 
-  const result = await getManager().findOne(UserSessionEntity, userSessionId, {
+  const loadedUserSession = await getManager().findOne(UserSessionEntity, userSessionId, {
     relations: ["user"]
   });
-  if (result === undefined) {
+  if (loadedUserSession === undefined) {
     return next(createError(404));
   }
-  if (result.user.id !== currentUser.id && currentUser.permission !== "Admin") {
+  if (loadedUserSession.user.id !== currentUser.id && currentUser.permission !== "Admin") {
     return next(createError(403));
   }
 
-  responseFindResult(res, result);
+  responseFindResult(res, loadedUserSession);
 });
 
 GET.apiDoc = createOperationDoc({
   summary: "Get a user session",
+  tag: "user-sessions",
+  permission: "Read",
+  path: ["id"]
+});
+
+export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
+  const currentUser = req.session.user;
+  const { id: userSessionId }: PathParams = req.params;
+
+  const manager = getManager();
+
+  const targetUserSession = await manager.findOne(UserSessionEntity, userSessionId, {
+    relations: ["user"]
+  });
+  if (targetUserSession === undefined) {
+    return next(createError(404));
+  }
+  if (targetUserSession.user.id !== currentUser.id && currentUser.permission !== "Admin") {
+    return next(createError(403));
+  }
+
+  await manager.remove(targetUserSession);
+
+  responseFindResult(res, targetUserSession);
+});
+
+DELETE.apiDoc = createOperationDoc({
+  summary: "Delete a user session",
   tag: "user-sessions",
   permission: "Read",
   path: ["id"]
