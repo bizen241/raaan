@@ -7,24 +7,62 @@ import { UserAccountEntity } from "../../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   const currentUser = req.session.user;
-
   const { id: userAccountId }: PathParams = req.params;
 
-  const result = await getManager().findOne(UserAccountEntity, userAccountId, {
+  const loadedUserAccount = await getManager().findOne(UserAccountEntity, userAccountId, {
     relations: ["user"]
   });
-  if (result === undefined) {
+  if (loadedUserAccount === undefined) {
     return next(createError(404));
   }
-  if (result.user.id !== currentUser.id && currentUser.permission !== "Admin") {
+  if (loadedUserAccount.user.id !== currentUser.id && currentUser.permission !== "Admin") {
     return next(createError(403));
   }
 
-  responseFindResult(res, result);
+  responseFindResult(res, loadedUserAccount);
 });
 
 GET.apiDoc = createOperationDoc({
   summary: "Get a user account",
+  tag: "user-accounts",
+  permission: "Read",
+  path: ["id"]
+});
+
+export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
+  const currentUser = req.session.user;
+  const { id: userAccountId }: PathParams = req.params;
+
+  const manager = getManager();
+
+  const targetUserAccount = await manager.findOne(UserAccountEntity, userAccountId, {
+    relations: ["user"]
+  });
+  if (targetUserAccount === undefined) {
+    return next(createError(404));
+  }
+  if (targetUserAccount.user.id !== currentUser.id && currentUser.permission !== "Admin") {
+    return next(createError(403));
+  }
+
+  const loadedUserAccounts = await manager.find(UserAccountEntity, {
+    where: {
+      user: {
+        id: targetUserAccount.user.id
+      }
+    }
+  });
+  if (loadedUserAccounts.length < 2) {
+    return next(createError(405));
+  }
+
+  await manager.remove(targetUserAccount);
+
+  responseFindResult(res, targetUserAccount);
+});
+
+DELETE.apiDoc = createOperationDoc({
+  summary: "Delete a user account",
   tag: "user-accounts",
   permission: "Read",
   path: ["id"]
