@@ -4,7 +4,7 @@ import { createAuthMiddleware } from "..";
 import { testProcessEnv } from "../../__tests__/helpers";
 import { TestDatabase } from "../../database/__tests__/helpers";
 import { createUserSession } from "../../database/entities";
-import { insertSessions, users } from "../../session/__tests__/helpers";
+import { insertSessions, insertUsers, users } from "../../session/__tests__/helpers";
 import { authTestHelpers } from "./helpers";
 
 const testDatabase = new TestDatabase();
@@ -19,6 +19,7 @@ afterAll(async () => {
 beforeEach(async () => {
   await testDatabase.reset();
 
+  await insertUsers();
   await insertSessions();
 });
 

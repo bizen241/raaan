@@ -1,6 +1,6 @@
 import * as express from "express";
 import { createAuthMiddleware } from "../../auth";
-import { insertSessions } from "../../session/__tests__/helpers";
+import { insertSessions, insertUsers } from "../../session/__tests__/helpers";
 import { TestServer } from "./helpers";
 
 let receivedProvider: string | undefined;
@@ -26,6 +26,7 @@ const testServer = new TestServer();
 beforeAll(async () => {
   await testServer.start();
 
+  await insertUsers();
   await insertSessions();
 });
 afterAll(async () => {

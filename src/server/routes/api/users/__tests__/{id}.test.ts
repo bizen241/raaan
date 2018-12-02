@@ -4,7 +4,7 @@ import { EntityStore } from "../../../../../shared/api/response/entity";
 import { PathParams } from "../../../../api/operation";
 import { TestDatabase } from "../../../../database/__tests__/helpers";
 import { createUserAccount, UserAccountEntity, UserEntity, UserSessionEntity } from "../../../../database/entities";
-import { insertSessions, sessions, users } from "../../../../session/__tests__/helpers";
+import { insertSessions, insertUsers, sessions, users } from "../../../../session/__tests__/helpers";
 import { createHttpMocks } from "../../__tests__/helpers";
 import { DELETE, GET } from "../{id}";
 
@@ -20,6 +20,7 @@ afterAll(async () => {
 beforeEach(async () => {
   await testDatabase.reset();
 
+  await insertUsers();
   await insertSessions();
 });
 

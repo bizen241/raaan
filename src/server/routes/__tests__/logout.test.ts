@@ -1,7 +1,7 @@
 import { serialize } from "cookie";
 import { sign } from "cookie-signature";
 import { testProcessEnv } from "../../__tests__/helpers";
-import { insertSessions, sessions } from "../../session/__tests__/helpers";
+import { insertSessions, insertUsers, sessions } from "../../session/__tests__/helpers";
 import { TestServer } from "./helpers";
 
 const testServer = new TestServer();
@@ -9,6 +9,7 @@ const testServer = new TestServer();
 beforeAll(async () => {
   await testServer.start();
 
+  await insertUsers();
   await insertSessions();
 });
 afterAll(async () => {

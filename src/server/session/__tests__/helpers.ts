@@ -36,9 +36,5 @@ export const sessions: { [P in Permission]: UserSessionEntity } = {
   Ghost: createSessionFromPermission("Ghost")
 };
 
-export const insertSessions = async () => {
-  const manager = getManager();
-
-  await manager.save(Object.values(users));
-  await manager.save(Object.values(sessions));
-};
+export const insertUsers = () => getManager().save(Object.values(users));
+export const insertSessions = () => getManager().save(Object.values(sessions));

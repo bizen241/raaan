@@ -7,7 +7,7 @@ import { createSessionMiddleware } from "..";
 import { testProcessEnv } from "../../__tests__/helpers";
 import { TestDatabase } from "../../database/__tests__/helpers";
 import { createUser, createUserSession } from "../../database/entities";
-import { insertSessions } from "./helpers";
+import { insertSessions, insertUsers } from "./helpers";
 
 const testDatabase = new TestDatabase();
 
@@ -21,6 +21,7 @@ afterAll(async () => {
 beforeEach(async () => {
   await testDatabase.reset();
 
+  await insertUsers();
   await insertSessions();
 });
 
