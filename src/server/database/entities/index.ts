@@ -6,6 +6,6 @@ export * from "./UserAccountEntity";
 export * from "./UserEntity";
 export * from "./UserSessionEntity";
 
-export type EntityClass = UserAccountEntity | UserSessionEntity | UserEntity;
+export type Entity = UserAccountEntity | UserSessionEntity | UserEntity;
 
 export const entities = [UserAccountEntity, UserSessionEntity, UserEntity];
