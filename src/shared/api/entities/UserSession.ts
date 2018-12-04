@@ -1,6 +1,6 @@
-import { Base } from "./Base";
+import { BaseObject } from "./BaseObject";
 
-export interface UserSession extends Base<"UserSession"> {
+export interface UserSession extends BaseObject<"UserSession"> {
   userId: string;
   userAgent: string;
 }

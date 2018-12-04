@@ -1,7 +1,7 @@
 import { AuthProviderName } from "../../auth";
-import { Base } from "./Base";
+import { BaseObject } from "./BaseObject";
 
-export interface UserAccount extends Base<"UserAccount"> {
+export interface UserAccount extends BaseObject<"UserAccount"> {
   userId: string;
   provider: AuthProviderName;
   accountId: string;

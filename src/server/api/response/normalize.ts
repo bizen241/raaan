@@ -1,10 +1,10 @@
 import { EntityType } from "../../../shared/api/entities";
-import { Base } from "../../../shared/api/entities/Base";
+import { BaseObject } from "../../../shared/api/entities/BaseObject";
 import { createEntityStore, EntityStore } from "../../../shared/api/response/entity";
-import { EntityClass, UserAccountEntity, UserEntity, UserSessionEntity } from "../../database/entities";
+import { Entity, UserAccountEntity, UserEntity, UserSessionEntity } from "../../database/entities";
 import { BaseEntity } from "../../database/entities/BaseEntity";
 
-export const normalizeEntities = (entities: EntityClass[]): EntityStore => {
+export const normalizeEntities = (entities: Entity[]): EntityStore => {
   const store = createEntityStore();
 
   entities.forEach(entity => {
@@ -14,7 +14,7 @@ export const normalizeEntities = (entities: EntityClass[]): EntityStore => {
   return store;
 };
 
-const normalizeEntity = (store: EntityStore, entity: EntityClass) => {
+const normalizeEntity = (store: EntityStore, entity: Entity) => {
   const { type, id } = entity;
 
   if (store[type][id] !== undefined) {
@@ -27,7 +27,7 @@ const normalizeEntity = (store: EntityStore, entity: EntityClass) => {
   normalizers[type](store, entity);
 };
 
-const base = <T extends EntityType>({ type, id, createdAt, updatedAt }: BaseEntity<T>): Base<T> => ({
+const base = <T extends EntityType>({ type, id, createdAt, updatedAt }: BaseEntity<T>): BaseObject<T> => ({
   type,
   id,
   createdAt: createdAt.valueOf(),
