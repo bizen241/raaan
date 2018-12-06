@@ -6,6 +6,6 @@ export * from "./User";
 export * from "./UserAccount";
 export * from "./UserSession";
 
-export type EntityType = "User" | "UserAccount" | "UserSession";
+export type EntityType = "Content" | "ContentBranch" | "ContentRevision" | "User" | "UserAccount" | "UserSession";
 
 export type EntityObject = User | UserAccount | UserSession;
