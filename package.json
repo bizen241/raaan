@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.2.0",
-    "@babel/preset-env": "7.1.6",
+    "@babel/preset-env": "7.2.0",
     "@babel/preset-react": "7.0.0",
     "@lingui/babel-preset-react": "2.7.2",
     "@lingui/cli": "2.7.2",
