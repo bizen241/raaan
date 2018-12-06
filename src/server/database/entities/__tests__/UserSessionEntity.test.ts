@@ -13,13 +13,11 @@ afterAll(async () => {
   await testDatabase.close();
 });
 
-beforeEach(async () => {
-  await testDatabase.reset();
-});
+test("UserSessionEntity", async () => {
+  const manager = getManager();
 
-test("sessions", async () => {
-  const sessionRepository = getManager().getRepository(UserSessionEntity);
   const session = createUserSession({
+    id: uuid(),
     user: createUser({
       name: "name",
       permission: "Read"
@@ -28,9 +26,10 @@ test("sessions", async () => {
     userAgent: "userAgent",
     expireAt: new Date()
   });
-  await sessionRepository.save(session);
 
-  const sessions = await sessionRepository.find();
+  await manager.save(session);
 
-  expect(sessions.length).toBe(1);
+  const userSessions = await manager.find(UserSessionEntity);
+
+  expect(userSessions.length).toBe(1);
 });

@@ -12,27 +12,14 @@ afterAll(async () => {
   await testDatabase.close();
 });
 
-beforeEach(async () => {
-  await testDatabase.reset();
-});
+test("UserEntity", async () => {
+  const manager = getManager();
 
-test("without id", async () => {
-  const userRepository = getManager().getRepository(UserEntity);
-  const user = createUser({ name: "name", permission: "Admin" });
-  await userRepository.save(user);
+  const user = createUser({ id: uuid(), name: "name", permission: "Admin" });
 
-  const users = await userRepository.find({ permission: "Admin" });
+  await manager.save(user);
+
+  const users = await manager.find(UserEntity);
 
   expect(users.length).toBe(1);
-});
-
-test("with id", async () => {
-  const userRepository = getManager().getRepository(UserEntity);
-  const userId = uuid();
-  const user = createUser({ id: userId, name: "name", permission: "Admin" });
-  await userRepository.save(user);
-
-  const savedUser = await userRepository.findOne(userId);
-
-  expect(savedUser && savedUser.id).toBe(userId);
 });
