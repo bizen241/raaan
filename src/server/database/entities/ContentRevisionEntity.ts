@@ -20,7 +20,7 @@ export class ContentRevisionEntity extends BaseEntity<"ContentRevision"> {
   comment!: string;
 
   @Column()
-  object!: unknown;
+  object!: object;
 
   @Column()
   isDraft!: boolean;
@@ -32,7 +32,7 @@ interface ContentRevisionConstructor {
   author: UserEntity;
   version: number;
   comment: string;
-  object: unknown;
+  object: object;
   isDraft: boolean;
 }
 
