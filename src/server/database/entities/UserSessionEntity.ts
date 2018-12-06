@@ -22,28 +22,25 @@ export class UserSessionEntity extends BaseEntity<"UserSession"> {
   expireAt!: Date;
 }
 
-interface SessionConstructor {
+interface UserSessionConstructor {
+  id?: string;
   user: UserEntity;
   sessionId: string;
   userAgent: string;
   expireAt: Date;
 }
 
-export const createUserSession = ({ user, sessionId, userAgent, expireAt }: SessionConstructor) => {
-  const session = new UserSessionEntity();
+export const createUserSession = ({ id, user, sessionId, userAgent, expireAt }: UserSessionConstructor) => {
+  const userSession = new UserSessionEntity();
 
-  if (user !== undefined) {
-    session.user = user;
-  }
-  if (sessionId !== undefined) {
-    session.sessionId = sessionId;
-  }
-  if (userAgent !== undefined) {
-    session.userAgent = userAgent;
-  }
-  if (expireAt !== undefined) {
-    session.expireAt = expireAt;
+  if (id !== undefined) {
+    userSession.id = id;
   }
 
-  return session;
+  userSession.user = user;
+  userSession.sessionId = sessionId;
+  userSession.userAgent = userAgent;
+  userSession.expireAt = expireAt;
+
+  return userSession;
 };

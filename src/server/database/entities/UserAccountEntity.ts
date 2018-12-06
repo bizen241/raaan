@@ -17,28 +17,23 @@ export class UserAccountEntity extends BaseEntity<"UserAccount"> {
   accountId!: string;
 }
 
-interface AccountConstructor {
+interface UserAccountConstructor {
   id?: string;
   user: UserEntity;
   provider: AuthProviderName;
   accountId: string;
 }
 
-export const createUserAccount = ({ id, user, provider, accountId }: AccountConstructor) => {
-  const account = new UserAccountEntity();
+export const createUserAccount = ({ id, user, provider, accountId }: UserAccountConstructor) => {
+  const userAccount = new UserAccountEntity();
 
   if (id !== undefined) {
-    account.id = id;
-  }
-  if (user !== undefined) {
-    account.user = user;
-  }
-  if (provider !== undefined) {
-    account.provider = provider;
-  }
-  if (accountId !== undefined) {
-    account.accountId = accountId;
+    userAccount.id = id;
   }
 
-  return account;
+  userAccount.user = user;
+  userAccount.provider = provider;
+  userAccount.accountId = accountId;
+
+  return userAccount;
 };

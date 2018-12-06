@@ -25,12 +25,9 @@ export const createUser = ({ id, name, permission }: UserConstructor) => {
   if (id !== undefined) {
     user.id = id;
   }
-  if (name !== undefined) {
-    user.name = name;
-  }
-  if (permission !== undefined) {
-    user.permission = permission;
-  }
+
+  user.name = name;
+  user.permission = permission;
 
   return user;
 };
