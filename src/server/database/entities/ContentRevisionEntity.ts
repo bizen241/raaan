@@ -10,14 +10,11 @@ export class ContentRevisionEntity extends BaseEntity<"ContentRevision"> {
   @ManyToOne(() => ContentBranchEntity)
   branch!: ContentBranchEntity;
 
-  @ManyToOne(() => ContentRevisionEntity)
-  parent!: ContentRevisionEntity;
-
   @ManyToOne(() => UserEntity)
   author!: UserEntity;
 
   @Column()
-  version!: string;
+  version!: number;
 
   @Column()
   comment!: string;
@@ -32,9 +29,8 @@ export class ContentRevisionEntity extends BaseEntity<"ContentRevision"> {
 interface ContentRevisionConstructor {
   id?: string;
   branch: ContentBranchEntity;
-  parent: ContentRevisionEntity;
   author: UserEntity;
-  version: string;
+  version: number;
   comment: string;
   object: unknown;
   isDraft: boolean;
@@ -43,7 +39,6 @@ interface ContentRevisionConstructor {
 export const createContentRevision = ({
   id,
   branch,
-  parent,
   author,
   version,
   comment,
@@ -57,9 +52,6 @@ export const createContentRevision = ({
   }
   if (branch !== undefined) {
     contentRevision.branch = branch;
-  }
-  if (parent !== undefined) {
-    contentRevision.parent = parent;
   }
   if (author !== undefined) {
     contentRevision.author = author;

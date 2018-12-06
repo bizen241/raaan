@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne, OneToOne } from "typeorm";
 import { BaseEntity } from "./BaseEntity";
 import { ContentEntity } from "./ContentEntity";
+import { ContentRevisionEntity } from "./ContentRevisionEntity";
 
 @Entity()
 export class ContentBranchEntity extends BaseEntity<"ContentBranch"> {
@@ -9,6 +10,9 @@ export class ContentBranchEntity extends BaseEntity<"ContentBranch"> {
   @ManyToOne(() => ContentEntity)
   content!: ContentEntity;
 
+  @OneToOne(() => ContentRevisionEntity)
+  latest!: ContentRevisionEntity;
+
   @Column()
   lang!: string;
 }
@@ -16,10 +20,11 @@ export class ContentBranchEntity extends BaseEntity<"ContentBranch"> {
 interface ContentBranchConstructor {
   id?: string;
   content: ContentEntity;
+  latest: ContentRevisionEntity;
   lang: string;
 }
 
-export const createContentBranch = ({ id, content, lang }: ContentBranchConstructor) => {
+export const createContentBranch = ({ id, content, latest, lang }: ContentBranchConstructor) => {
   const contentBranch = new ContentBranchEntity();
 
   if (id !== undefined) {
@@ -27,6 +32,9 @@ export const createContentBranch = ({ id, content, lang }: ContentBranchConstruc
   }
   if (content !== undefined) {
     contentBranch.content = content;
+  }
+  if (latest !== undefined) {
+    contentBranch.latest = latest;
   }
   if (lang !== undefined) {
     contentBranch.lang = lang;
