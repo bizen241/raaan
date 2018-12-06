@@ -19,7 +19,7 @@ export class ContentRevisionEntity extends BaseEntity<"ContentRevision"> {
   @Column()
   comment!: string;
 
-  @Column()
+  @Column({ type: "json" })
   object!: object;
 
   @Column()
