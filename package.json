@@ -36,7 +36,7 @@
     "express-openapi": "3.3.0",
     "http-errors": "1.7.1",
     "node-fetch": "2.3.0",
-    "pg": "7.6.1",
+    "pg": "7.7.1",
     "react": "16.6.3",
     "react-dom": "16.6.3",
     "swagger-ui-express": "4.0.1",
