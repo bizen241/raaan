@@ -50,24 +50,13 @@ export const createContentRevision = ({
   if (id !== undefined) {
     contentRevision.id = id;
   }
-  if (branch !== undefined) {
-    contentRevision.branch = branch;
-  }
-  if (author !== undefined) {
-    contentRevision.author = author;
-  }
-  if (version !== undefined) {
-    contentRevision.version = version;
-  }
-  if (comment !== undefined) {
-    contentRevision.comment = comment;
-  }
-  if (object !== undefined) {
-    contentRevision.object = object;
-  }
-  if (isDraft !== undefined) {
-    contentRevision.isDraft = isDraft;
-  }
+
+  contentRevision.branch = branch;
+  contentRevision.author = author;
+  contentRevision.version = version;
+  contentRevision.comment = comment;
+  contentRevision.object = object;
+  contentRevision.isDraft = isDraft;
 
   return contentRevision;
 };
