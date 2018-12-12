@@ -8,7 +8,7 @@ export interface PathParams {
   id?: string;
 }
 
-type Tag = "user" | "users" | "user-accounts" | "user-sessions";
+type Tag = "contents" | "content-branches" | "content-revisions" | "user" | "users" | "user-accounts" | "user-sessions";
 
 interface OperationDocument<E extends EntityObject> {
   summary: string;
