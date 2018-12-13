@@ -7,7 +7,9 @@ import { UserEntity } from "./UserEntity";
 export class ContentRevisionEntity extends BaseEntity<"ContentRevision"> {
   type: "ContentRevision" = "ContentRevision";
 
-  @ManyToOne(() => ContentBranchEntity)
+  @ManyToOne(() => ContentBranchEntity, {
+    onDelete: "CASCADE"
+  })
   branch!: ContentBranchEntity;
 
   @ManyToOne(() => UserEntity)
