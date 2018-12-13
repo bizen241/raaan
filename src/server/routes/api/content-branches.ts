@@ -7,10 +7,20 @@ import { responseSearchResult, skip, take } from "../../api/response";
 import { ContentBranchEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { page, lang } = parseSearchParams<ContentBranch>("ContentBranch", req.query);
+  const { page, contentId, latestId, lang } = parseSearchParams<ContentBranch>("ContentBranch", req.query);
 
   const where: FindConditions<ContentBranchEntity> = {};
 
+  if (contentId !== undefined) {
+    where.content = {
+      id: contentId
+    };
+  }
+  if (latestId !== undefined) {
+    where.latest = {
+      id: latestId
+    };
+  }
   if (lang !== undefined) {
     where.lang = lang;
   }
@@ -26,8 +36,8 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
 });
 
 GET.apiDoc = createOperationDoc<ContentBranch>({
-  summary: "Search contents",
-  tag: "contents",
+  summary: "Search content branches",
+  tag: "content-branches",
   permission: "Guest",
   query: {
     lang: null
