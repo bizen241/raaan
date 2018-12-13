@@ -10,10 +10,16 @@ export const insertContent = async (contentId?: string) => {
 
   await manager.save(users.Read);
 
-  const content = createContent({ id: uuid() });
-  const branch = createContentBranch({ id: uuid(), content, lang: "ja" });
+  const content = createContent({
+    id: contentId || uuid()
+  });
+  const branch = createContentBranch({
+    id: uuid(),
+    content,
+    lang: "ja"
+  });
   const revision = createContentRevision({
-    id: contentId || uuid(),
+    id: uuid(),
     branch,
     author: users.Read,
     version: 1,
