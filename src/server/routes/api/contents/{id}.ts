@@ -8,7 +8,9 @@ import { ContentEntity } from "../../../database/entities";
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   const { id: contentId }: PathParams = req.params;
 
-  const loadedContent = await getManager().findOne(ContentEntity, contentId);
+  const loadedContent = await getManager().findOne(ContentEntity, contentId, {
+    relations: ["source"]
+  });
   if (loadedContent === undefined) {
     return next(createError(404));
   }
@@ -28,14 +30,16 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next) =>
 
   const manager = getManager();
 
-  const loadedContent = await manager.findOne(ContentEntity, contentId);
+  const loadedContent = await manager.findOne(ContentEntity, contentId, {
+    relations: ["source"]
+  });
   if (loadedContent === undefined) {
     return next(createError(404));
   }
 
   await manager.remove(loadedContent);
 
-  responseFindResult(res, loadedContent);
+  responseFindResult(res);
 });
 
 DELETE.apiDoc = createOperationDoc({

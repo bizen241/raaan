@@ -7,7 +7,7 @@ import { ContentEntity } from "../../../../database/entities";
 import { insertContent } from "../../../../database/entities/__tests__/helpers";
 import { insertSessions, insertUsers } from "../../../../session/__tests__/helpers";
 import { createHttpMocks } from "../../__tests__/helpers";
-import { GET } from "../{id}";
+import { DELETE, GET } from "../{id}";
 
 const testDatabase = new TestDatabase();
 
@@ -62,12 +62,12 @@ test("DELETE /api/contents/{id} -> 404", async () => {
     id: uuid()
   };
 
-  await GET(req, res, next);
+  await DELETE(req, res, next);
 
   expect(res._getStatusCode()).toEqual(404);
 });
 
-test("GET /api/contents/{id} -> 200", async () => {
+test("DELETE /api/contents/{id} -> 200", async () => {
   const { req, res, next } = createHttpMocks("Admin");
 
   const contentId = uuid();
@@ -77,12 +77,12 @@ test("GET /api/contents/{id} -> 200", async () => {
     id: contentId
   };
 
-  await GET(req, res, next);
+  await DELETE(req, res, next);
 
   expect(res._getStatusCode()).toEqual(200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.Content[contentId]).toBeDefined();
+  expect(data.Content[contentId]).toBeUndefined();
 
   const removedContent = await getManager().findOne(ContentEntity, contentId);
   expect(removedContent).toBeUndefined();
