@@ -23,9 +23,7 @@ export const insertContent = async (contentId?: string) => {
       title: "",
       description: "",
       sentences: []
-    },
-    isProposed: true,
-    isMerged: false
+    }
   });
 
   await manager.save(content);

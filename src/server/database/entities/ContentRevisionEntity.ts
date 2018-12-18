@@ -39,19 +39,9 @@ interface ContentRevisionConstructor {
   version: number;
   comment: string;
   data: ContentData;
-  isProposed: boolean;
-  isMerged: boolean;
 }
 
-export const createContentRevision = ({
-  id,
-  content,
-  author,
-  version,
-  comment,
-  data: object,
-  isProposed: isDraft
-}: ContentRevisionConstructor) => {
+export const createContentRevision = ({ id, content, author, version, comment, data }: ContentRevisionConstructor) => {
   const contentRevision = new ContentRevisionEntity();
 
   if (id !== undefined) {
@@ -62,8 +52,9 @@ export const createContentRevision = ({
   contentRevision.author = author;
   contentRevision.version = version;
   contentRevision.comment = comment;
-  contentRevision.data = object;
-  contentRevision.isProposed = isDraft;
+  contentRevision.data = data;
+  contentRevision.isProposed = false;
+  contentRevision.isMerged = false;
 
   return contentRevision;
 };
