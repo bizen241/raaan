@@ -16,7 +16,7 @@ export interface SearchResultStore {
 }
 
 const getQueryString = <E extends EntityObject>(params: SearchParams<E>) => {
-  const urlSearchParams = new URLSearchParams(params);
+  const urlSearchParams = new URLSearchParams(params as any);
 
   const page: keyof Pick<SearchParams<E>, "page"> = "page";
 

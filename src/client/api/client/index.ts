@@ -16,20 +16,20 @@ export const getEntity = (entityType: EntityType, entityId: string) => {
   return request<EntityStore>("GET", join(endpoints[entityType], entityId));
 };
 
-export const createEntity = <E extends EntityObject>(params: SaveParams<E>) => {
-  return request<EntityStore>("POST", endpoints[params.type], params);
+export const createEntity = <E extends EntityObject>(entityType: EntityType, params: SaveParams<E>) => {
+  return request<EntityStore>("POST", endpoints[entityType], params);
 };
 
-export const updateEntity = <E extends EntityObject>(params: SaveParams<E>) => {
-  return request<EntityStore>("PATCH", join(endpoints[params.type], params.id), params);
+export const updateEntity = <E extends EntityObject>(entityType: EntityType, id: string, params: SaveParams<E>) => {
+  return request<EntityStore>("PATCH", join(endpoints[entityType], id), params);
 };
 
 export const deleteEntity = (entityType: EntityType, entityId: string) => {
   return request<EntityStore>("DELETE", join(endpoints[entityType], entityId));
 };
 
-export const searchEntity = <E extends EntityObject>(params: SearchParams<E>) => {
+export const searchEntity = <E extends EntityObject>(entityType: EntityType, params: SearchParams<E>) => {
   const query = stringifySearchParams(params);
 
-  return request<SearchResult>("GET", join(endpoints[params.type], `?${query}`));
+  return request<SearchResult>("GET", join(endpoints[entityType], `?${query}`));
 };

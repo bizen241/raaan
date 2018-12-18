@@ -1,6 +1,6 @@
 import { BaseObject } from "./BaseObject";
 
-export interface ContentRevision extends BaseObject<"ContentRevision"> {
+export interface ContentRevision extends BaseObject {
   branchId: string;
   authorId: string;
   version: number;

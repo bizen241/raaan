@@ -35,9 +35,7 @@ const normalizeEntity = (store: EntityStore, entity: Entity) => {
   normalizers[type](store, entity);
 };
 
-const base = <T extends EntityType>({ type, id, createdAt, updatedAt }: BaseEntity<T>): BaseObject<T> => ({
-  type,
-  id,
+const base = <T extends EntityType>({ createdAt, updatedAt }: BaseEntity<T>): BaseObject => ({
   createdAt: createdAt.valueOf(),
   updatedAt: updatedAt.valueOf(),
   fetchedAt: new Date().valueOf()

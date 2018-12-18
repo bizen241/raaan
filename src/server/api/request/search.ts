@@ -14,7 +14,7 @@ import { AuthProviderName } from "../../../shared/auth";
 
 export type SearchQuery<E extends EntityObject> = { [P in keyof SearchParams<E>]?: string };
 
-export const parseSearchParams = <E extends EntityObject>(type: E["type"], query: SearchQuery<E>) =>
+export const parseSearchParams = <E extends EntityObject>(type: EntityType, query: SearchQuery<E>) =>
   parsers[type](query) as SearchParams<E>;
 
 const bool = (value: string | undefined) => {

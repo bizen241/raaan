@@ -1,6 +1,6 @@
 import { BaseObject } from "./BaseObject";
 
-export interface ContentBranch extends BaseObject<"ContentBranch"> {
+export interface ContentBranch extends BaseObject {
   contentId: any;
   latestId: string;
   lang: string;

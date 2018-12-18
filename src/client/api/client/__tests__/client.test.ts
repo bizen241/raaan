@@ -35,20 +35,14 @@ test("get user", async () => {
 });
 
 test("create user", async () => {
-  await createEntity({
-    type: "User",
-    id: userId
-  });
+  await createEntity("User", {});
 
   expect(passedUrl).toBe(`${origin}/api/users`);
   expect(passedMethod).toBe("POST");
 });
 
 test("update user", async () => {
-  await updateEntity({
-    type: "User",
-    id: userId
-  });
+  await updateEntity("User", userId, {});
 
   expect(passedUrl).toBe(`${origin}/api/users/${userId}`);
   expect(passedMethod).toBe("PATCH");
@@ -62,8 +56,7 @@ test("delete user", async () => {
 });
 
 test("search user", async () => {
-  await searchEntity({
-    type: "User",
+  await searchEntity("User", {
     page: 1
   });
 

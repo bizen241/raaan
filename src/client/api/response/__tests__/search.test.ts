@@ -17,7 +17,6 @@ test("merge search result", () => {
   const mergedSearchResultStore = mergeSearchResultStore(
     searchResultStore,
     {
-      type: "User",
       page: 1
     },
     {
