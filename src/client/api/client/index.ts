@@ -4,7 +4,7 @@ import { EntityObject, EntityType } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { SearchParams } from "../../../shared/api/request/search";
 import { EntityStore } from "../../../shared/api/response/entity";
-import { SearchResult } from "../../../shared/api/response/search";
+import { SearchResponse } from "../../../shared/api/response/search";
 import { stringifySearchParams } from "../request/search";
 import { request } from "./request";
 
@@ -31,5 +31,5 @@ export const deleteEntity = (entityType: EntityType, entityId: string) => {
 export const searchEntity = <E extends EntityObject>(entityType: EntityType, params: SearchParams<E>) => {
   const query = stringifySearchParams(params);
 
-  return request<SearchResult>("GET", join(endpoints[entityType], `?${query}`));
+  return request<SearchResponse>("GET", join(endpoints[entityType], `?${query}`));
 };

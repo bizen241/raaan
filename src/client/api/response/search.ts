@@ -1,8 +1,8 @@
-import { EntityObject } from "../../../shared/api/entities";
+import { EntityObject, EntityType } from "../../../shared/api/entities";
 import { SearchParams } from "../../../shared/api/request/search";
-import { SearchResult } from "../../../shared/api/response/search";
+import { SearchResponse } from "../../../shared/api/response/search";
 
-export interface SearchResultEntry {
+export interface SearchResult {
   pages: {
     [page: number]: string[] | undefined;
   };
@@ -11,9 +11,19 @@ export interface SearchResultEntry {
   isDownloaded?: boolean;
 }
 
-export interface SearchResultStore {
-  [query: string]: SearchResultEntry | undefined;
+export interface SearchResultMap {
+  [query: string]: SearchResult | undefined;
 }
+
+export type SearchResultStore = { [P in EntityType]: SearchResultMap };
+
+export const createSearchResultStore = (): SearchResultStore => ({
+  Content: {},
+  ContentRevision: {},
+  User: {},
+  UserAccount: {},
+  UserSession: {}
+});
 
 const getQueryString = <E extends EntityObject>(params: SearchParams<E>) => {
   const urlSearchParams = new URLSearchParams(params as any);
@@ -27,9 +37,9 @@ const getQueryString = <E extends EntityObject>(params: SearchParams<E>) => {
 };
 
 const isSearchResultConflicted = <E extends EntityObject>(
-  entry: SearchResultEntry,
+  entry: SearchResult,
   params: SearchParams<E>,
-  result: SearchResult
+  result: SearchResponse
 ) => {
   if (result.count !== entry.count) {
     return true;
@@ -57,19 +67,19 @@ const isSearchResultConflicted = <E extends EntityObject>(
   return false;
 };
 
-export const mergeSearchResultStore = <E extends EntityObject>(
-  store: SearchResultStore,
+export const mergeSearchResultMap = <E extends EntityObject>(
+  map: SearchResultMap,
   params: SearchParams<E>,
-  result: SearchResult
-): SearchResultStore => {
+  response: SearchResponse
+): SearchResultMap => {
   const query = getQueryString(params);
-  const entry = store[query];
-  const { ids, count } = result;
+  const target = map[query];
+  const { ids, count } = response;
 
-  const pages = entry && isSearchResultConflicted(entry, params, result) ? undefined : entry && entry.pages;
+  const pages = target && isSearchResultConflicted(target, params, response) ? undefined : target && target.pages;
 
   return {
-    ...store,
+    ...map,
     [query]: {
       pages: {
         ...pages,

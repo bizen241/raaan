@@ -1,10 +1,10 @@
 import { createEntityStore } from "../../../../shared/api/response/entity";
-import { mergeSearchResultStore, SearchResultStore } from "../search";
+import { mergeSearchResultMap, SearchResultMap } from "../search";
 
 test("merge search result", () => {
   const query = "type=User";
 
-  const searchResultStore: SearchResultStore = {
+  const searchResultMap: SearchResultMap = {
     [query]: {
       pages: {
         2: []
@@ -14,8 +14,8 @@ test("merge search result", () => {
     }
   };
 
-  const mergedSearchResultStore = mergeSearchResultStore(
-    searchResultStore,
+  const mergedSearchResultMap = mergeSearchResultMap(
+    searchResultMap,
     {
       page: 1
     },
@@ -26,8 +26,8 @@ test("merge search result", () => {
     }
   );
 
-  const mergedSearchEntry = mergedSearchResultStore[query];
+  const mergedSearchResult = mergedSearchResultMap[query];
 
-  expect(mergedSearchEntry && mergedSearchEntry.pages[1]).toBeDefined();
-  expect(mergedSearchEntry && mergedSearchEntry.pages[2]).toBeUndefined();
+  expect(mergedSearchResult && mergedSearchResult.pages[1]).toBeDefined();
+  expect(mergedSearchResult && mergedSearchResult.pages[2]).toBeUndefined();
 });

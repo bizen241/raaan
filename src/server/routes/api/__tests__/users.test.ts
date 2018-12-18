@@ -1,4 +1,4 @@
-import { SearchResult } from "../../../../shared/api/response/search";
+import { SearchResponse } from "../../../../shared/api/response/search";
 import { TestDatabase } from "../../../database/__tests__/helpers";
 import { GET } from "../users";
 import { createHttpMocks } from "./helpers";
@@ -23,6 +23,6 @@ test("GET /api/users", async () => {
 
   expect(res.statusCode).toEqual(200);
 
-  const data = JSON.parse(res._getData()) as SearchResult;
+  const data = JSON.parse(res._getData()) as SearchResponse;
   expect(data.ids).toBeDefined();
 });

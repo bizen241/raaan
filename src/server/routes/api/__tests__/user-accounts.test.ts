@@ -1,6 +1,6 @@
 import { getManager } from "typeorm";
 import { UserAccount } from "../../../../shared/api/entities";
-import { SearchResult } from "../../../../shared/api/response/search";
+import { SearchResponse } from "../../../../shared/api/response/search";
 import { SearchQuery } from "../../../api/request/search";
 import { TestDatabase } from "../../../database/__tests__/helpers";
 import { createUserAccount } from "../../../database/entities";
@@ -43,6 +43,6 @@ test("GET /api/user-accounts", async () => {
 
   expect(res.statusCode).toEqual(200);
 
-  const data = JSON.parse(res._getData()) as SearchResult;
+  const data = JSON.parse(res._getData()) as SearchResponse;
   expect(data.ids).toBeDefined();
 });

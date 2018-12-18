@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { entityCountPerPage, SearchResult } from "../../../shared/api/response/search";
+import { entityCountPerPage, SearchResponse } from "../../../shared/api/response/search";
 import { Entity } from "../../database/entities";
 import { normalizeEntities } from "./normalize";
 
@@ -13,7 +13,7 @@ export const skip = (page: number) => entityCountPerPage * (page - 1);
 export const take = entityCountPerPage;
 
 export const responseSearchResult = (res: Response, entities: Entity[], count: number) => {
-  const searchResult: SearchResult = {
+  const searchResult: SearchResponse = {
     ids: entities.map(entity => entity.id),
     entities: normalizeEntities(entities),
     count
