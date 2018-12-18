@@ -1,10 +1,11 @@
+import { ContentData } from "../../content";
 import { BaseObject } from "./BaseObject";
 
 export interface ContentRevision extends BaseObject {
-  contentId: string;
   authorId: string;
+  contentId: string;
   version: number;
   comment: string;
-  object: object;
+  data: ContentData;
   isDraft: boolean;
 }

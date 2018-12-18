@@ -10,16 +10,22 @@ export const insertContent = async (contentId?: string) => {
   await manager.save(users.Read);
 
   const content = createContent({
-    id: contentId || uuid()
+    id: contentId || uuid(),
+    owner: users.Write
   });
   const revision = createContentRevision({
     id: uuid(),
+    author: users.Write,
     content,
-    author: users.Read,
     version: 1,
     comment: "",
-    object: {},
-    isDraft: true
+    data: {
+      title: "",
+      description: "",
+      sentences: []
+    },
+    isProposed: true,
+    isMerged: false
   });
 
   await manager.save(content);

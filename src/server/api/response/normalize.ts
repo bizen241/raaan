@@ -43,16 +43,22 @@ const base = <T extends EntityType>({ createdAt, updatedAt }: BaseEntity<T>): Ba
 type Normalizer<E> = (store: EntityStore, entity: E) => void;
 
 const normalizeContent: Normalizer<ContentEntity> = (store, entity) => {
-  const { id, latest } = entity;
+  const { id, owner, latest, isPrivate, isArchived, isLocked } = entity;
 
   store.Content[id] = {
     ...base(entity),
-    latestId: latest.id
+    ownerId: owner.id,
+    latestId: latest.id,
+    title: latest.data.title,
+    description: latest.data.description,
+    isPrivate,
+    isArchived,
+    isLocked
   };
 };
 
 const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (store, entity) => {
-  const { id, content, author, version, comment, object, isDraft } = entity;
+  const { id, content, author, version, comment, data: object, isProposed: isDraft } = entity;
 
   store.ContentRevision[id] = {
     ...base(entity),
@@ -60,7 +66,7 @@ const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (store, enti
     authorId: author.id,
     version,
     comment,
-    object,
+    data: object,
     isDraft
   };
 };

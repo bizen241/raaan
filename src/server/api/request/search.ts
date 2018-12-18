@@ -39,7 +39,7 @@ const parseContent: Parser<Content> = query => {
 };
 
 const parseContentRevision: Parser<ContentRevision> = query => {
-  const { contentId, authorId, version, comment, object, isDraft } = query;
+  const { contentId, authorId, version, comment, data: object, isDraft } = query;
 
   return {
     type: "ContentRevision",
@@ -47,7 +47,7 @@ const parseContentRevision: Parser<ContentRevision> = query => {
     authorId,
     version: Number(version),
     comment,
-    object: object && JSON.parse(object),
+    data: object && JSON.parse(object),
     isDraft: bool(isDraft),
     ...page(query)
   };

@@ -1,4 +1,5 @@
 import { Column, Entity, ManyToOne } from "typeorm";
+import { ContentData } from "../../../shared/content";
 import { BaseEntity } from "./BaseEntity";
 import { ContentEntity } from "./ContentEntity";
 import { UserEntity } from "./UserEntity";
@@ -7,13 +8,13 @@ import { UserEntity } from "./UserEntity";
 export class ContentRevisionEntity extends BaseEntity<"ContentRevision"> {
   type: "ContentRevision" = "ContentRevision";
 
+  @ManyToOne(() => UserEntity)
+  author!: UserEntity;
+
   @ManyToOne(() => ContentEntity, {
     onDelete: "CASCADE"
   })
   content!: ContentEntity;
-
-  @ManyToOne(() => UserEntity)
-  author!: UserEntity;
 
   @Column()
   version!: number;
@@ -22,10 +23,13 @@ export class ContentRevisionEntity extends BaseEntity<"ContentRevision"> {
   comment!: string;
 
   @Column({ type: "json" })
-  object!: object;
+  data!: ContentData;
 
   @Column()
-  isDraft!: boolean;
+  isProposed!: boolean;
+
+  @Column()
+  isMerged!: boolean;
 }
 
 interface ContentRevisionConstructor {
@@ -34,8 +38,9 @@ interface ContentRevisionConstructor {
   author: UserEntity;
   version: number;
   comment: string;
-  object: object;
-  isDraft: boolean;
+  data: ContentData;
+  isProposed: boolean;
+  isMerged: boolean;
 }
 
 export const createContentRevision = ({
@@ -44,8 +49,8 @@ export const createContentRevision = ({
   author,
   version,
   comment,
-  object,
-  isDraft
+  data: object,
+  isProposed: isDraft
 }: ContentRevisionConstructor) => {
   const contentRevision = new ContentRevisionEntity();
 
@@ -57,8 +62,8 @@ export const createContentRevision = ({
   contentRevision.author = author;
   contentRevision.version = version;
   contentRevision.comment = comment;
-  contentRevision.object = object;
-  contentRevision.isDraft = isDraft;
+  contentRevision.data = object;
+  contentRevision.isProposed = isDraft;
 
   return contentRevision;
 };
