@@ -21,10 +21,10 @@ beforeEach(async () => {
 });
 
 test("GET /api/user-sessions", async () => {
-  await getManager().save(users.Read);
-  await getManager().save(sessions.Read);
+  await getManager().save(users.Write);
+  await getManager().save(sessions.Write);
 
-  const { req, res } = createHttpMocks("Read");
+  const { req, res } = createHttpMocks("Write");
 
   const query: SearchQuery<UserSession> = {
     userId: req.session.user.id

@@ -28,7 +28,7 @@ test("save session", async () => {
   req.session = createUserSession({
     user: createUser({
       name: "name",
-      permission: "Read"
+      permission: "Write"
     }),
     sessionId,
     userAgent: "",

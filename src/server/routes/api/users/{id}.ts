@@ -19,7 +19,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
 GET.apiDoc = createOperationDoc({
   summary: "Get a user",
   tag: "users",
-  permission: "Read",
+  permission: "Write",
   path: ["id"]
 });
 

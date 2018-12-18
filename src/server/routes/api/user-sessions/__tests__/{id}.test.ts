@@ -24,7 +24,7 @@ beforeEach(async () => {
 });
 
 test("GET /api/user-sessions/{id} -> 404", async () => {
-  const { req, res, next } = createHttpMocks("Read");
+  const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
     id: uuid()
@@ -39,7 +39,7 @@ test("GET /api/user-sessions/{id} -> 403", async () => {
   const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
-    id: sessions.Read.id
+    id: sessions.Write.id
   };
 
   await GET(req, res, next);
@@ -48,13 +48,13 @@ test("GET /api/user-sessions/{id} -> 403", async () => {
 });
 
 test("GET /api/user-sessions/{id} -> 200", async () => {
-  await getManager().save(users.Read);
-  await getManager().save(sessions.Read);
+  await getManager().save(users.Write);
+  await getManager().save(sessions.Write);
 
-  const { req, res } = createHttpMocks("Read");
+  const { req, res } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
-    id: sessions.Read.id
+    id: sessions.Write.id
   };
 
   await GET(req, res, () => null);
@@ -62,11 +62,11 @@ test("GET /api/user-sessions/{id} -> 200", async () => {
   expect(res.statusCode).toEqual(200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.User[users.Read.id]).toBeDefined();
+  expect(data.User[users.Write.id]).toBeDefined();
 });
 
 test("DELETE /api/user-sessions/{id} -> 404", async () => {
-  const { req, res, next } = createHttpMocks("Read");
+  const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
     id: uuid()
@@ -81,7 +81,7 @@ test("DELETE /api/user-sessions/{id} -> 403", async () => {
   const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
-    id: sessions.Read.id
+    id: sessions.Write.id
   };
 
   await DELETE(req, res, next);
@@ -90,10 +90,10 @@ test("DELETE /api/user-sessions/{id} -> 403", async () => {
 });
 
 test("DELETE /api/user-sessions/{id} -> 200", async () => {
-  const { req, res, next } = createHttpMocks("Read");
+  const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
-    id: sessions.Read.id
+    id: sessions.Write.id
   };
 
   await DELETE(req, res, next);

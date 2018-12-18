@@ -14,18 +14,18 @@ afterAll(async () => {
 });
 
 test("GET /api/user", async () => {
-  const { req, res, next } = createHttpMocks("Read");
+  const { req, res, next } = createHttpMocks("Write");
 
   await GET(req, res, next);
 
   expect(res.statusCode).toBe(200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.User[users.Read.id]).toBeDefined();
+  expect(data.User[users.Write.id]).toBeDefined();
 });
 
 test("DELETE /api/user success", async () => {
-  const { req, res, next } = createHttpMocks("Read");
+  const { req, res, next } = createHttpMocks("Write");
 
   await DELETE(req, res, next);
 

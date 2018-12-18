@@ -45,7 +45,7 @@ test("valid session", async done => {
   const user = createUser({
     id: userId,
     name: "name",
-    permission: "Read"
+    permission: "Write"
   });
   await getManager().save(user);
 

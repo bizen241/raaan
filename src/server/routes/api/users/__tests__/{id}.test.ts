@@ -25,10 +25,10 @@ beforeEach(async () => {
 });
 
 test("GET /api/users/{user} -> 200", async () => {
-  const { req, res, next } = createHttpMocks("Read");
+  const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
-    id: users.Read.id
+    id: users.Write.id
   };
 
   await GET(req, res, next);
@@ -36,18 +36,18 @@ test("GET /api/users/{user} -> 200", async () => {
   expect(res._getStatusCode()).toEqual(200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.User[users.Read.id]).toBeDefined();
+  expect(data.User[users.Write.id]).toBeDefined();
 });
 
 test("GET /api/users/{user} -> 404", async () => {
-  const { req, res, next } = createHttpMocks("Read");
+  const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
-    id: users.Read.id
+    id: users.Write.id
   };
 
-  await getManager().remove(sessions.Read);
-  await getManager().remove(users.Read);
+  await getManager().remove(sessions.Write);
+  await getManager().remove(users.Write);
 
   await GET(req, res, next);
 
@@ -58,7 +58,7 @@ test("DELETE /api/users/{user} -> 200", async () => {
   const { req, res, next } = createHttpMocks("Admin");
 
   (req.params as PathParams) = {
-    id: users.Read.id
+    id: users.Write.id
   };
 
   const manager = getManager();
@@ -69,7 +69,7 @@ test("DELETE /api/users/{user} -> 200", async () => {
       id: accountId,
       accountId: "12345678",
       provider: "github",
-      user: users.Read
+      user: users.Write
     })
   );
 
@@ -77,8 +77,8 @@ test("DELETE /api/users/{user} -> 200", async () => {
 
   expect(res._getStatusCode()).toEqual(200);
 
-  const ghostUser = await manager.findOne(UserEntity, users.Read.id);
-  const deletedSession = await manager.findOne(UserSessionEntity, sessions.Read.id);
+  const ghostUser = await manager.findOne(UserEntity, users.Write.id);
+  const deletedSession = await manager.findOne(UserSessionEntity, sessions.Write.id);
   const deletedAccount = await manager.findOne(UserAccountEntity, accountId);
 
   expect(ghostUser && ghostUser.permission).toBe("Ghost");
@@ -87,7 +87,7 @@ test("DELETE /api/users/{user} -> 200", async () => {
 });
 
 test("DELETE /api/users/{user} -> 403", async () => {
-  const { req, res, next } = createHttpMocks("Read");
+  const { req, res, next } = createHttpMocks("Write");
 
   await DELETE(req, res, next);
 
@@ -98,11 +98,11 @@ test("DELETE /api/users/{user} -> 404", async () => {
   const { req, res, next } = createHttpMocks("Admin");
 
   (req.params as PathParams) = {
-    id: users.Read.id
+    id: users.Write.id
   };
 
-  await getManager().remove(sessions.Read);
-  await getManager().remove(users.Read);
+  await getManager().remove(sessions.Write);
+  await getManager().remove(users.Write);
 
   await DELETE(req, res, next);
 

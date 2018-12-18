@@ -20,7 +20,7 @@ test("UserAccountEntity", async () => {
     id: uuid(),
     user: createUser({
       name: "name",
-      permission: "Read"
+      permission: "Write"
     }),
     accountId: "12345678",
     provider: "github"

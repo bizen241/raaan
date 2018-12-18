@@ -68,7 +68,7 @@ const createUserAndAccount = async (provider: AuthProviderName, userProfile: Use
       ? sessionUser
       : createUser({
           name: userProfile.name,
-          permission: "Read"
+          permission: "Write"
         });
 
   const account = createUserAccount({

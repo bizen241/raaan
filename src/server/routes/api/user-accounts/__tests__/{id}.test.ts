@@ -20,13 +20,13 @@ afterAll(async () => {
 const readUserAccounts = [
   createUserAccount({
     id: uuid(),
-    user: users.Read,
+    user: users.Write,
     accountId: "11111111",
     provider: "github"
   }),
   createUserAccount({
     id: uuid(),
-    user: users.Read,
+    user: users.Write,
     accountId: "22222222",
     provider: "github"
   })
@@ -51,7 +51,7 @@ beforeEach(async () => {
 });
 
 test("GET /api/user-accounts/{id} -> 404", async () => {
-  const { req, res, next } = createHttpMocks("Read");
+  const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
     id: uuid()
@@ -75,7 +75,7 @@ test("GET /api/user-accounts/{id} -> 403", async () => {
 });
 
 test("GET /api/user-accounts/{id} -> 200", async () => {
-  const { req, res, next } = createHttpMocks("Read");
+  const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
     id: readUserAccounts[0].id
@@ -87,11 +87,11 @@ test("GET /api/user-accounts/{id} -> 200", async () => {
 
   const data = JSON.parse(res._getData()) as EntityStore;
   expect(data.UserAccount[readUserAccounts[0].id]).toBeDefined();
-  expect(data.User[users.Read.id]).toBeDefined();
+  expect(data.User[users.Write.id]).toBeDefined();
 });
 
 test("DELETE /api/user-accounts/{id} -> 404", async () => {
-  const { req, res, next } = createHttpMocks("Read");
+  const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
     id: uuid()
@@ -103,7 +103,7 @@ test("DELETE /api/user-accounts/{id} -> 404", async () => {
 });
 
 test("DELETE /api/user-accounts/{id} -> 403", async () => {
-  const { req, res, next } = createHttpMocks("Read");
+  const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
     id: writeUserAccounts[0].id
@@ -115,7 +115,7 @@ test("DELETE /api/user-accounts/{id} -> 403", async () => {
 });
 
 test("DELETE /api/user-accounts/{id} -> 405", async () => {
-  const { req, res, next } = createHttpMocks("Read");
+  const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
     id: readUserAccounts[0].id
@@ -129,7 +129,7 @@ test("DELETE /api/user-accounts/{id} -> 405", async () => {
 });
 
 test("DELETE /api/user-accounts/{id} -> 200", async () => {
-  const { req, res, next } = createHttpMocks("Read");
+  const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
     id: readUserAccounts[0].id

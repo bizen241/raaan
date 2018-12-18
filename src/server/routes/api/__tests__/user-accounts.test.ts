@@ -22,16 +22,16 @@ beforeEach(async () => {
 });
 
 test("GET /api/user-accounts", async () => {
-  await getManager().save(users.Read);
+  await getManager().save(users.Write);
   await getManager().save(
     createUserAccount({
-      user: users.Read,
+      user: users.Write,
       accountId: "",
       provider: "github"
     })
   );
 
-  const { req, res } = createHttpMocks("Read");
+  const { req, res } = createHttpMocks("Write");
 
   const query: SearchQuery<UserAccount> = {
     userId: req.session.user.id

@@ -19,7 +19,7 @@ afterAll(async () => {
 test("GET /logout success", async () => {
   const response = await testServer.fetch("/logout", {
     headers: {
-      Cookie: serialize("sid", sign(sessions.Read.sessionId, testProcessEnv.sessionSecret))
+      Cookie: serialize("sid", sign(sessions.Write.sessionId, testProcessEnv.sessionSecret))
     }
   });
 

@@ -7,7 +7,7 @@ import { createContentRevision } from "../ContentRevisionEntity";
 export const insertContent = async (contentId?: string) => {
   const manager = getManager();
 
-  await manager.save(users.Read);
+  await manager.save(users.Write);
 
   const content = createContent({
     id: contentId || uuid(),

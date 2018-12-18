@@ -14,7 +14,6 @@ export const users: { [P in Permission]: UserEntity } = {
   Owner: createUserFromPermission("Owner"),
   Admin: createUserFromPermission("Admin"),
   Write: createUserFromPermission("Write"),
-  Read: createUserFromPermission("Read"),
   Guest: createUserFromPermission("Guest"),
   Ghost: createUserFromPermission("Ghost")
 };
@@ -31,7 +30,6 @@ export const sessions: { [P in Permission]: UserSessionEntity } = {
   Owner: createSessionFromPermission("Owner"),
   Admin: createSessionFromPermission("Admin"),
   Write: createSessionFromPermission("Write"),
-  Read: createSessionFromPermission("Read"),
   Guest: createSessionFromPermission("Guest"),
   Ghost: createSessionFromPermission("Ghost")
 };

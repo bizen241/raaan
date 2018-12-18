@@ -20,7 +20,7 @@ test("UserSessionEntity", async () => {
     id: uuid(),
     user: createUser({
       name: "name",
-      permission: "Read"
+      permission: "Write"
     }),
     sessionId: uuid(),
     userAgent: "userAgent",

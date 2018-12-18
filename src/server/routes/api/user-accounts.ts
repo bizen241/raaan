@@ -37,7 +37,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
 GET.apiDoc = createOperationDoc<UserAccount>({
   summary: "Search user accounts",
   tag: "user-accounts",
-  permission: "Read",
+  permission: "Write",
   query: {
     provider: null,
     accountId: null,
