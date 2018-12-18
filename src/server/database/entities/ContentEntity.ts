@@ -1,14 +1,14 @@
 import { Entity, JoinColumn, OneToOne } from "typeorm";
 import { BaseEntity } from "./BaseEntity";
-import { ContentBranchEntity } from "./ContentBranchEntity";
+import { ContentRevisionEntity } from "./ContentRevisionEntity";
 
 @Entity()
 export class ContentEntity extends BaseEntity<"Content"> {
   type: "Content" = "Content";
 
-  @OneToOne(() => ContentBranchEntity)
+  @OneToOne(() => ContentRevisionEntity)
   @JoinColumn()
-  source!: ContentBranchEntity;
+  latest!: ContentRevisionEntity;
 }
 
 interface ContentConstructor {

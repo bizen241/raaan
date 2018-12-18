@@ -1,6 +1,5 @@
 import {
   Content,
-  ContentBranch,
   ContentRevision,
   EntityObject,
   EntityType,
@@ -30,33 +29,21 @@ const page = (query: { page?: string }) => ({ page: (query.page && Number(query.
 type Parser<E extends EntityObject> = (query: SearchQuery<E>) => SearchParams<E>;
 
 const parseContent: Parser<Content> = query => {
-  const { sourceId } = query;
+  const { latestId } = query;
 
   return {
     type: "Content",
-    sourceId,
-    ...page(query)
-  };
-};
-
-const parseContentBranch: Parser<ContentBranch> = query => {
-  const { contentId, latestId, lang } = query;
-
-  return {
-    type: "ContentBranch",
-    contentId,
     latestId,
-    lang,
     ...page(query)
   };
 };
 
 const parseContentRevision: Parser<ContentRevision> = query => {
-  const { branchId, authorId, version, comment, object, isDraft } = query;
+  const { contentId, authorId, version, comment, object, isDraft } = query;
 
   return {
     type: "ContentRevision",
-    branchId,
+    contentId,
     authorId,
     version: Number(version),
     comment,
@@ -102,7 +89,6 @@ const parseUserSession: Parser<UserSession> = query => {
 
 const parsers: { [T in EntityType]: Parser<any> } = {
   Content: parseContent,
-  ContentBranch: parseContentBranch,
   ContentRevision: parseContentRevision,
   User: parseUser,
   UserAccount: parseUserAccount,

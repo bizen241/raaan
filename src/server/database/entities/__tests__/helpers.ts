@@ -1,7 +1,6 @@
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { users } from "../../../session/__tests__/helpers";
-import { createContentBranch } from "../ContentBranchEntity";
 import { createContent } from "../ContentEntity";
 import { createContentRevision } from "../ContentRevisionEntity";
 
@@ -13,14 +12,9 @@ export const insertContent = async (contentId?: string) => {
   const content = createContent({
     id: contentId || uuid()
   });
-  const branch = createContentBranch({
-    id: uuid(),
-    content,
-    lang: "ja"
-  });
   const revision = createContentRevision({
     id: uuid(),
-    branch,
+    content,
     author: users.Read,
     version: 1,
     comment: "",
@@ -29,12 +23,9 @@ export const insertContent = async (contentId?: string) => {
   });
 
   await manager.save(content);
-  await manager.save(branch);
   await manager.save(revision);
 
-  content.source = branch;
-  branch.latest = revision;
+  content.latest = revision;
 
   await manager.save(content);
-  await manager.save(branch);
 };

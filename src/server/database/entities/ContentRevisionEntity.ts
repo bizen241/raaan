@@ -1,16 +1,16 @@
 import { Column, Entity, ManyToOne } from "typeorm";
 import { BaseEntity } from "./BaseEntity";
-import { ContentBranchEntity } from "./ContentBranchEntity";
+import { ContentEntity } from "./ContentEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity()
 export class ContentRevisionEntity extends BaseEntity<"ContentRevision"> {
   type: "ContentRevision" = "ContentRevision";
 
-  @ManyToOne(() => ContentBranchEntity, {
+  @ManyToOne(() => ContentEntity, {
     onDelete: "CASCADE"
   })
-  branch!: ContentBranchEntity;
+  content!: ContentEntity;
 
   @ManyToOne(() => UserEntity)
   author!: UserEntity;
@@ -30,7 +30,7 @@ export class ContentRevisionEntity extends BaseEntity<"ContentRevision"> {
 
 interface ContentRevisionConstructor {
   id?: string;
-  branch: ContentBranchEntity;
+  content: ContentEntity;
   author: UserEntity;
   version: number;
   comment: string;
@@ -40,7 +40,7 @@ interface ContentRevisionConstructor {
 
 export const createContentRevision = ({
   id,
-  branch,
+  content,
   author,
   version,
   comment,
@@ -53,7 +53,7 @@ export const createContentRevision = ({
     contentRevision.id = id;
   }
 
-  contentRevision.branch = branch;
+  contentRevision.content = content;
   contentRevision.author = author;
   contentRevision.version = version;
   contentRevision.comment = comment;

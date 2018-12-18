@@ -1,7 +1,7 @@
 import { BaseObject } from "./BaseObject";
 
 export interface ContentRevision extends BaseObject {
-  branchId: string;
+  contentId: string;
   authorId: string;
   version: number;
   comment: string;

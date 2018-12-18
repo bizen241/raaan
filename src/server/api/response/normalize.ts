@@ -2,7 +2,6 @@ import { EntityType } from "../../../shared/api/entities";
 import { BaseObject } from "../../../shared/api/entities/BaseObject";
 import { createEntityStore, EntityStore } from "../../../shared/api/response/entity";
 import {
-  ContentBranchEntity,
   ContentEntity,
   ContentRevisionEntity,
   Entity,
@@ -44,31 +43,20 @@ const base = <T extends EntityType>({ createdAt, updatedAt }: BaseEntity<T>): Ba
 type Normalizer<E> = (store: EntityStore, entity: E) => void;
 
 const normalizeContent: Normalizer<ContentEntity> = (store, entity) => {
-  const { id, source } = entity;
+  const { id, latest } = entity;
 
   store.Content[id] = {
     ...base(entity),
-    sourceId: source.id
-  };
-};
-
-const normalizeContentBranch: Normalizer<ContentBranchEntity> = (store, entity) => {
-  const { id, content, latest, lang } = entity;
-
-  store.ContentBranch[id] = {
-    ...base(entity),
-    contentId: content.id,
-    latestId: latest.id,
-    lang
+    latestId: latest.id
   };
 };
 
 const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (store, entity) => {
-  const { id, branch, author, version, comment, object, isDraft } = entity;
+  const { id, content, author, version, comment, object, isDraft } = entity;
 
   store.ContentRevision[id] = {
     ...base(entity),
-    branchId: branch.id,
+    contentId: content.id,
     authorId: author.id,
     version,
     comment,
@@ -114,7 +102,6 @@ const normalizeUserSession: Normalizer<UserSessionEntity> = (store, entity) => {
 
 const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Content: normalizeContent,
-  ContentBranch: normalizeContentBranch,
   ContentRevision: normalizeContentRevision,
   User: normalizeUser,
   UserAccount: normalizeUserAccount,
