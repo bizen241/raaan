@@ -6,13 +6,17 @@ import { catalogs } from "./intl";
 
 export const renderApp = () => {
   ReactDOM.render(
-    <I18nProvider language="en" catalogs={catalogs}>
+    <I18nProvider language="ja" catalogs={catalogs}>
       <div>
         <main>
-          <h1>
-            <Trans>Welcome to Raan!</Trans>
-          </h1>
-          <a href="/auth/github">Login</a>/<a href="/logout">Logout</a>
+          <h1>Typing</h1>
+          <a href="/auth/github">
+            <Trans>ログイン</Trans>
+          </a>
+          /
+          <a href="/logout">
+            <Trans>ログアウト</Trans>
+          </a>
         </main>
       </div>
     </I18nProvider>,
