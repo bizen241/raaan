@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToOne } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne } from "typeorm";
 import { BaseEntity } from "./BaseEntity";
 import { ContentRevisionEntity } from "./ContentRevisionEntity";
 import { ContentTagEntity } from "./ContentTagEntity";
@@ -16,6 +16,7 @@ export class ContentEntity extends BaseEntity<"Content"> {
   latest!: ContentRevisionEntity;
 
   @ManyToMany(() => ContentTagEntity)
+  @JoinTable()
   tags!: ContentTagEntity[];
 
   @Column()
