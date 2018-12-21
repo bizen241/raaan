@@ -1,6 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToOne } from "typeorm";
 import { BaseEntity } from "./BaseEntity";
 import { ContentRevisionEntity } from "./ContentRevisionEntity";
+import { ContentTagEntity } from "./ContentTagEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity()
@@ -13,6 +14,9 @@ export class ContentEntity extends BaseEntity<"Content"> {
   @OneToOne(() => ContentRevisionEntity)
   @JoinColumn()
   latest!: ContentRevisionEntity;
+
+  @ManyToMany(() => ContentTagEntity)
+  tags!: ContentTagEntity[];
 
   @Column()
   isPrivate!: boolean;

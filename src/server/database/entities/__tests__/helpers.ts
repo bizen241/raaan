@@ -20,9 +20,13 @@ export const insertContent = async (contentId?: string) => {
     version: 1,
     comment: "",
     data: {
+      version: 1,
       title: "",
+      lang: "ja",
+      tags: [],
+      parts: [],
       description: "",
-      sentences: []
+      shuffle: true
     }
   });
 

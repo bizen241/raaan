@@ -1,6 +1,7 @@
 import {
   Content,
   ContentRevision,
+  ContentTag,
   EntityObject,
   EntityType,
   Permission,
@@ -32,7 +33,6 @@ const parseContent: Parser<Content> = query => {
   const { latestId } = query;
 
   return {
-    type: "Content",
     latestId,
     ...page(query)
   };
@@ -42,7 +42,6 @@ const parseContentRevision: Parser<ContentRevision> = query => {
   const { contentId, authorId, version, comment, data: object, isDraft } = query;
 
   return {
-    type: "ContentRevision",
     contentId,
     authorId,
     version: Number(version),
@@ -53,11 +52,19 @@ const parseContentRevision: Parser<ContentRevision> = query => {
   };
 };
 
+const parseContentTag: Parser<ContentTag> = query => {
+  const { name } = query;
+
+  return {
+    name,
+    ...page(query)
+  };
+};
+
 const parseUser: Parser<User> = query => {
   const { name, permission } = query;
 
   return {
-    type: "User",
     name,
     permission: permission as Permission,
     ...page(query)
@@ -68,7 +75,6 @@ const parseUserAccount: Parser<UserAccount> = query => {
   const { provider, accountId, userId } = query;
 
   return {
-    type: "UserAccount",
     provider: provider as AuthProviderName,
     accountId,
     userId,
@@ -80,7 +86,6 @@ const parseUserSession: Parser<UserSession> = query => {
   const { userAgent, userId } = query;
 
   return {
-    type: "UserSession",
     userAgent,
     userId,
     ...page(query)
@@ -90,6 +95,7 @@ const parseUserSession: Parser<UserSession> = query => {
 const parsers: { [T in EntityType]: Parser<any> } = {
   Content: parseContent,
   ContentRevision: parseContentRevision,
+  ContentTag: parseContentTag,
   User: parseUser,
   UserAccount: parseUserAccount,
   UserSession: parseUserSession

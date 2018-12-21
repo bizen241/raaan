@@ -4,6 +4,7 @@ import { createEntityStore, EntityStore } from "../../../shared/api/response/ent
 import {
   ContentEntity,
   ContentRevisionEntity,
+  ContentTagEntity,
   Entity,
   UserAccountEntity,
   UserEntity,
@@ -43,18 +44,22 @@ const base = <T extends EntityType>({ createdAt, updatedAt }: BaseEntity<T>): Ba
 type Normalizer<E> = (store: EntityStore, entity: E) => void;
 
 const normalizeContent: Normalizer<ContentEntity> = (store, entity) => {
-  const { id, owner, latest, isPrivate, isArchived, isLocked } = entity;
+  const { id, owner, latest, tags, isPrivate, isArchived, isLocked } = entity;
 
   store.Content[id] = {
     ...base(entity),
     ownerId: owner.id,
     latestId: latest.id,
+    tagIds: tags.map(tag => tag.id),
+    lang: latest.data.lang,
     title: latest.data.title,
     description: latest.data.description,
     isPrivate,
     isArchived,
     isLocked
   };
+
+  tags.forEach(tag => normalizeEntity(store, tag));
 };
 
 const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (store, entity) => {
@@ -68,6 +73,15 @@ const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (store, enti
     comment,
     data: object,
     isDraft
+  };
+};
+
+const normalizeContentTag: Normalizer<ContentTagEntity> = (store, entity) => {
+  const { id, name } = entity;
+
+  store.ContentTag[id] = {
+    ...base(entity),
+    name
   };
 };
 
@@ -109,6 +123,7 @@ const normalizeUserSession: Normalizer<UserSessionEntity> = (store, entity) => {
 const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Content: normalizeContent,
   ContentRevision: normalizeContentRevision,
+  ContentTag: normalizeContentTag,
   User: normalizeUser,
   UserAccount: normalizeUserAccount,
   UserSession: normalizeUserSession
