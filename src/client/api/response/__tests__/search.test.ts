@@ -2,7 +2,7 @@ import { createEntityStore } from "../../../../shared/api/response/entity";
 import { mergeSearchResultMap, SearchResultMap } from "../search";
 
 test("merge search result", () => {
-  const query = "type=User";
+  const query = "";
 
   const searchResultMap: SearchResultMap = {
     [query]: {

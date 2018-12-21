@@ -60,6 +60,6 @@ test("search user", async () => {
     page: 1
   });
 
-  expect(passedUrl).toBe(`${origin}/api/users?page=1&type=User`);
+  expect(passedUrl).toBe(`${origin}/api/users?page=1`);
   expect(passedMethod).toBe("GET");
 });

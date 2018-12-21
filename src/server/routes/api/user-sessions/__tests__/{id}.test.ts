@@ -39,7 +39,7 @@ test("GET /api/user-sessions/{id} -> 403", async () => {
   const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
-    id: sessions.Write.id
+    id: sessions.Admin.id
   };
 
   await GET(req, res, next);
@@ -81,7 +81,7 @@ test("DELETE /api/user-sessions/{id} -> 403", async () => {
   const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
-    id: sessions.Write.id
+    id: sessions.Admin.id
   };
 
   await DELETE(req, res, next);

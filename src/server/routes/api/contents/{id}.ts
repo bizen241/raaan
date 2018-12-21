@@ -9,7 +9,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   const { id: contentId }: PathParams = req.params;
 
   const loadedContent = await getManager().findOne(ContentEntity, contentId, {
-    relations: ["source"]
+    relations: ["owner", "latest", "tags"]
   });
   if (loadedContent === undefined) {
     return next(createError(404));
@@ -31,7 +31,7 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next) =>
   const manager = getManager();
 
   const loadedContent = await manager.findOne(ContentEntity, contentId, {
-    relations: ["source"]
+    relations: ["owner", "latest", "tags"]
   });
   if (loadedContent === undefined) {
     return next(createError(404));

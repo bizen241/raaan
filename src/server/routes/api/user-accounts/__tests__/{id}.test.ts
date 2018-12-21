@@ -17,7 +17,7 @@ afterAll(async () => {
   await testDatabase.close();
 });
 
-const readUserAccounts = [
+const writeUserAccounts = [
   createUserAccount({
     id: uuid(),
     user: users.Write,
@@ -32,16 +32,16 @@ const readUserAccounts = [
   })
 ];
 
-const writeUserAccounts = [
+const adminUserAccounts = [
   createUserAccount({
     id: uuid(),
-    user: users.Write,
+    user: users.Admin,
     accountId: "11111111",
     provider: "github"
   })
 ];
 
-const insertUserAccounts = () => getManager().save([...readUserAccounts, ...writeUserAccounts]);
+const insertUserAccounts = () => getManager().save([...writeUserAccounts, ...adminUserAccounts]);
 
 beforeEach(async () => {
   await testDatabase.reset();
@@ -66,7 +66,7 @@ test("GET /api/user-accounts/{id} -> 403", async () => {
   const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
-    id: readUserAccounts[0].id
+    id: adminUserAccounts[0].id
   };
 
   await GET(req, res, next);
@@ -78,7 +78,7 @@ test("GET /api/user-accounts/{id} -> 200", async () => {
   const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
-    id: readUserAccounts[0].id
+    id: writeUserAccounts[0].id
   };
 
   await GET(req, res, next);
@@ -86,7 +86,7 @@ test("GET /api/user-accounts/{id} -> 200", async () => {
   expect(res.statusCode).toEqual(200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.UserAccount[readUserAccounts[0].id]).toBeDefined();
+  expect(data.UserAccount[writeUserAccounts[0].id]).toBeDefined();
   expect(data.User[users.Write.id]).toBeDefined();
 });
 
@@ -106,7 +106,7 @@ test("DELETE /api/user-accounts/{id} -> 403", async () => {
   const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
-    id: writeUserAccounts[0].id
+    id: adminUserAccounts[0].id
   };
 
   await DELETE(req, res, next);
@@ -118,10 +118,10 @@ test("DELETE /api/user-accounts/{id} -> 405", async () => {
   const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
-    id: readUserAccounts[0].id
+    id: writeUserAccounts[0].id
   };
 
-  await getManager().remove(readUserAccounts[1]);
+  await getManager().remove(writeUserAccounts[1]);
 
   await DELETE(req, res, next);
 
@@ -132,7 +132,7 @@ test("DELETE /api/user-accounts/{id} -> 200", async () => {
   const { req, res, next } = createHttpMocks("Write");
 
   (req.params as PathParams) = {
-    id: readUserAccounts[0].id
+    id: writeUserAccounts[0].id
   };
 
   await DELETE(req, res, next);
