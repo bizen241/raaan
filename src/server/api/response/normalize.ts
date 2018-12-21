@@ -53,7 +53,7 @@ const normalizeContent: Normalizer<ContentEntity> = (store, entity) => {
     tagIds: tags.map(tag => tag.id),
     lang: latest.data.lang,
     title: latest.data.title,
-    description: latest.data.description,
+    comment: latest.data.comment,
     isPrivate,
     isArchived,
     isLocked

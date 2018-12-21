@@ -6,7 +6,7 @@ export interface Content extends BaseObject {
   tagIds: string[];
   title: string;
   lang: string;
-  description: string;
+  comment: string;
   isPrivate: boolean;
   isArchived: boolean;
   isLocked: boolean;

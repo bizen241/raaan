@@ -25,7 +25,7 @@ export const insertContent = async (contentId?: string) => {
       lang: "ja",
       tags: [],
       parts: [],
-      description: "",
+      comment: "",
       shuffle: true
     }
   });
