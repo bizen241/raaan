@@ -4,7 +4,6 @@ import { createSearchResultStore, mergeSearchResultStore } from "../search";
 
 test("merge SearchResultStore", () => {
   const query = "";
-  fetch("").then(response => response.json);
 
   const entityType: EntityType = "User";
   const searchResultStore = createSearchResultStore();
