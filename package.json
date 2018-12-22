@@ -66,6 +66,7 @@
     "@types/node-fetch": "2.1.4",
     "@types/react": "16.7.13",
     "@types/react-dom": "16.0.11",
+    "@types/react-redux": "^6.0.11",
     "@types/swagger-ui-express": "3.0.0",
     "@types/url-join": "^0.8.2",
     "@types/uuid": "3.4.4",
