@@ -8,14 +8,14 @@ import { mergeEntityStore } from "../api/response/entity";
 import { createSearchResultStore, mergeSearchResultStore, SearchResultStore } from "../api/response/search";
 
 export enum CacheActionType {
-  CacheGetResult = "cache/cache-get-result",
-  CacheSearchResult = "cache/cache-search-result"
+  MergeGetResult = "cache/merge-get-result",
+  MergeSearchResult = "cache/merge-search-result"
 }
 
 export const cacheActions = {
-  cacheGetResult: (result: EntityStore) => createAction(CacheActionType.CacheGetResult, { result }),
-  cacheSearchResult: (entityType: EntityType, params: SearchParams<any>, result: SearchResponse) =>
-    createAction(CacheActionType.CacheSearchResult, { entityType, params, result })
+  mergeGetResult: (result: EntityStore) => createAction(CacheActionType.MergeGetResult, { result }),
+  mergeSearchResult: (entityType: EntityType, params: SearchParams<any>, result: SearchResponse) =>
+    createAction(CacheActionType.MergeSearchResult, { entityType, params, result })
 };
 
 export type CacheActions = ActionUnion<typeof cacheActions>;
@@ -32,13 +32,13 @@ export const initialCacheState: CacheState = {
 
 export const cacheReducer: Reducer<CacheState, CacheActions> = (state = initialCacheState, action) => {
   switch (action.type) {
-    case CacheActionType.CacheGetResult: {
+    case CacheActionType.MergeGetResult: {
       return {
         ...state,
         get: mergeEntityStore(state.get, action.payload.result)
       };
     }
-    case CacheActionType.CacheSearchResult: {
+    case CacheActionType.MergeSearchResult: {
       const { entityType, params, result } = action.payload;
 
       return {
