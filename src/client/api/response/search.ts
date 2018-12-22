@@ -68,26 +68,31 @@ const isSearchResultConflicted = <E extends EntityObject>(
   return false;
 };
 
-export const mergeSearchResultMap = <E extends EntityObject>(
-  map: SearchResultMap,
+export const mergeSearchResultStore = <E extends EntityObject>(
+  store: SearchResultStore,
+  entityType: EntityType,
   params: SearchParams<E>,
   response: SearchResponse
-): SearchResultMap => {
+): SearchResultStore => {
   const query = getQueryString(params);
+  const map = store[entityType];
   const target = map[query];
   const { ids, count } = response;
 
   const pages = target && isSearchResultConflicted(target, params, response) ? undefined : target && target.pages;
 
   return {
-    ...map,
-    [query]: {
-      pages: {
-        ...pages,
-        [params.page]: ids
-      },
-      count,
-      fetchedAt: new Date().valueOf()
+    ...store,
+    [entityType]: {
+      ...map,
+      [query]: {
+        pages: {
+          ...pages,
+          [params.page]: ids
+        },
+        count,
+        fetchedAt: new Date().valueOf()
+      }
     }
   };
 };
