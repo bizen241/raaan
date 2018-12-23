@@ -1,4 +1,4 @@
-import { installApp } from "../install";
+import { install } from "../install";
 
 let controllerChangeHandler: () => void;
 
@@ -11,6 +11,8 @@ const serviceWorkerMock = {
   register: (async () => registrationMock) as any,
   controller: null
 } as ServiceWorkerContainer;
+
+global.navigator.serviceWorker = serviceWorkerMock;
 
 jest.useFakeTimers();
 
@@ -25,10 +27,10 @@ afterAll(() => {
   spyLog.mockRestore();
 });
 
-test("install app / succcess", async () => {
+test("install app succcess", async () => {
   serviceWorkerMock.register = async () => registrationMock;
 
-  await installApp(serviceWorkerMock);
+  await install(() => console.log("update found"));
 
   controllerChangeHandler();
   controllerChangeHandler();
@@ -37,12 +39,12 @@ test("install app / succcess", async () => {
   expect(spyLog.mock.results[0].value).toEqual("update found");
 });
 
-test("install app / failure", async () => {
+test("install app failure", async () => {
   serviceWorkerMock.register = async () => {
     throw new Error();
   };
 
-  await installApp(serviceWorkerMock);
+  await install(() => null);
 
   expect(spyLog).toBeCalledTimes(1);
   expect(spyLog.mock.results[0].value).toEqual("failed to register a ServiceWorker");
