@@ -4,6 +4,7 @@ import { PersistConfig, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
 import { rootReducer } from "../reducers";
+import { migrate } from "./migrations";
 
 const isDevelopment = process.env.NODE_ENV === "development" || location.hostname === "localhost";
 const storeEnhancer = isDevelopment ? composeWithDevTools(applyMiddleware(thunk)) : applyMiddleware(thunk);
@@ -11,7 +12,8 @@ const storeEnhancer = isDevelopment ? composeWithDevTools(applyMiddleware(thunk)
 const persistConfig: PersistConfig = {
   key: "root",
   version: 0,
-  storage
+  storage,
+  migrate
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
