@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { configureStore } from "../../store";
 import { Initializer } from "./Initializer";
+import { Router } from "./Router";
 import { Translator } from "./Translator";
 
 export const App: React.FunctionComponent = () => {
@@ -16,18 +17,7 @@ export const App: React.FunctionComponent = () => {
         <PersistGate persistor={persistor}>
           <Translator>
             <Initializer>
-              <div>
-                <main>
-                  <h1>Typing</h1>
-                  <a href="/auth/github">
-                    <Trans>ログイン</Trans>
-                  </a>
-                  /
-                  <a href="/logout">
-                    <Trans>ログアウト</Trans>
-                  </a>
-                </main>
-              </div>
+              <Router />
             </Initializer>
           </Translator>
         </PersistGate>
