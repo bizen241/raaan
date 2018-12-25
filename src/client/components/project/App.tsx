@@ -12,15 +12,15 @@ export const App: React.FunctionComponent = () => {
 
   return (
     <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <PersistGate persistor={persistor}>
+      <PersistGate persistor={persistor}>
+        <ConnectedRouter history={history}>
           <Translator>
             <Initializer>
               <Router />
             </Initializer>
           </Translator>
-        </PersistGate>
-      </ConnectedRouter>
+        </ConnectedRouter>
+      </PersistGate>
     </Provider>
   );
 };
