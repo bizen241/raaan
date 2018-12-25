@@ -5,6 +5,6 @@ export const NotFound = connector(
   () => ({}),
   () => ({}),
   ({}) => {
-    return <div>NotFOund</div>;
+    return <div>NotFound</div>;
   }
 );
