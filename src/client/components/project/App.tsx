@@ -1,4 +1,3 @@
-import { Trans } from "@lingui/react";
 import { ConnectedRouter } from "connected-react-router";
 import * as React from "react";
 import { Provider } from "react-redux";
