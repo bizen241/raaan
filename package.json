@@ -76,7 +76,7 @@
     "@types/swagger-ui-express": "3.0.0",
     "@types/url-join": "^0.8.2",
     "@types/uuid": "3.4.4",
-    "@types/webpack": "4.4.20",
+    "@types/webpack": "4.4.22",
     "@types/webpack-dev-server": "3.1.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-loader": "8.0.4",
