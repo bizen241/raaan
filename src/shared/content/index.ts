@@ -1,32 +1,32 @@
-interface Part {
+interface Item {
   id: string;
   value: string;
   comment: string;
 }
 
-export interface TextPart extends Part {
+export interface TextItem extends Item {
   type: "text";
   lang: string;
   display: string;
 }
 
-export interface CodePart extends Part {
+export interface CodeItem extends Item {
   type: "code";
   lang: string;
 }
 
-export interface MathPart extends Part {
+export interface MathItem extends Item {
   type: "math";
 }
 
-export type ContentPart = TextPart | CodePart | MathPart;
+export type ContentItem = TextItem | CodeItem | MathItem;
 
 export interface ContentData {
   version: 1;
   title: string;
   lang: string;
   tags: string[];
-  parts: ContentPart[];
+  items: ContentItem[];
   comment: string;
   shuffle: boolean;
 }
