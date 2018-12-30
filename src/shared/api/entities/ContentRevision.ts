@@ -6,6 +6,7 @@ export interface ContentRevision extends BaseObject {
   contentId: string;
   version: number;
   comment: string;
-  data: ContentData;
-  isDraft: boolean;
+  data?: ContentData;
+  title: string;
+  isProposed: boolean;
 }
