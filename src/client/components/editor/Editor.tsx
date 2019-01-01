@@ -1,18 +1,53 @@
 import * as React from "react";
+import { useEffect } from "react";
 import { FunctionComponent } from "react";
 import { ContentItem, TextItem } from "../../../shared/content";
+import { createTextItem } from "../../domain/content";
+import { connector } from "../../reducers";
+import { editorActions } from "../../reducers/editor";
 
-export const ContentItemEditor: FunctionComponent<{
+export const Editor = connector(
+  (state, ownProps: { id: string }) => ({
+    id: ownProps.id,
+    data: state.editor.data
+  }),
+  () => ({
+    ...editorActions
+  }),
+  ({ id, data, load, updateTitle, addItem, updateItem, deleteItem }) => {
+    useEffect(() => {
+      load(id);
+    }, []);
+
+    return (
+      <div>
+        <div>
+          <label>
+            タイトル
+            <input value={data.title} onChange={e => updateTitle(e.currentTarget.value)} />
+          </label>
+        </div>
+        <label>アイテム</label>
+        {data.items.map((item, index) => (
+          <ContentItemEditor key={item.id} index={index} item={item} onUpdate={updateItem} onDelete={deleteItem} />
+        ))}
+        <button onClick={() => addItem(data.items.length, createTextItem())}>追加</button>
+      </div>
+    );
+  }
+);
+
+const ContentItemEditor: FunctionComponent<{
   index: number;
   item: ContentItem;
   onUpdate: (index: number, item: ContentItem) => void;
   onDelete: (index: number) => void;
 }> = ({ index, item, onUpdate, onDelete }) => {
-  const Editor = editors[item.type];
+  const ItemEditor = editors[item.type];
 
   return (
     <div>
-      <Editor item={item} onChange={(textItem: TextItem) => onUpdate(index, textItem)} />
+      <ItemEditor item={item} onChange={(textItem: TextItem) => onUpdate(index, textItem)} />
       <button onClick={() => onDelete(index)}>プレビュー</button>
       <button onClick={() => onDelete(index)}>削除</button>
     </div>
