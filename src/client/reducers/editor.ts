@@ -39,18 +39,24 @@ export const editorActions = {
 export interface EditorState {
   id: string;
   data: ContentData;
+  isOpenedContentPreviewer: boolean;
+  isOpenedContentItemPreviewer: boolean;
 }
 
 export const initialEditorState: EditorState = {
   id: "",
-  data: createContentData()
+  data: createContentData(),
+  isOpenedContentPreviewer: false,
+  isOpenedContentItemPreviewer: false
 };
 
 export const editorReducer: Reducer<EditorState, EditorActions> = (state = initialEditorState, action) => {
   switch (action.type) {
     case EditorActionType.Update: {
       return {
-        ...action.payload
+        ...action.payload,
+        isOpenedContentPreviewer: false,
+        isOpenedContentItemPreviewer: false
       };
     }
     case EditorActionType.UpdateTitle: {
