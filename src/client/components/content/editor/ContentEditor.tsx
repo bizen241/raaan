@@ -1,15 +1,15 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { FunctionComponent } from "react";
-import { ContentItem, TextItem } from "../../../shared/content";
-import { createTextItem } from "../../domain/content";
-import { connector } from "../../reducers";
-import { editorActions } from "../../reducers/editor";
+import { ContentItem, TextItem } from "../../../../shared/content";
+import { createTextItem } from "../../../domain/content";
+import { connector } from "../../../reducers";
+import { editorActions } from "../../../reducers/editor";
 
 export const Editor = connector(
   (state, ownProps: { id: string }) => ({
-    id: ownProps.id,
-    data: state.editor.data
+    ...state.editor,
+    id: ownProps.id
   }),
   () => ({
     ...editorActions
