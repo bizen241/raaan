@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connector } from "../../reducers";
-import { Editor } from "../editor/Editor";
+import { ContentEditor } from "../content/editor/ContentEditor";
 import { PageProps } from "../project/Router";
 
 export const Edit = connector(
@@ -11,7 +11,7 @@ export const Edit = connector(
   ({ id }) => {
     return (
       <div>
-        <Editor id={id} />
+        <ContentEditor id={id} />
       </div>
     );
   }
