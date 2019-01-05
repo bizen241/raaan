@@ -9,7 +9,9 @@ export enum EditorActionType {
   AddItem = "editor/add-item",
   UpdateItem = "editor/update-item",
   MoveItem = "editor/move-item",
-  DeleteItem = "editor/delete-item"
+  DeleteItem = "editor/delete-item",
+  ToggleContentPreviewer = "editor/toggle-content-previewer",
+  ToggleContentItemPreviewer = "editor/toggle-content-item-previewer"
 }
 
 const editorSyncActions = {
@@ -18,15 +20,17 @@ const editorSyncActions = {
   addItem: (index: number, item: ContentItem) => createAction(EditorActionType.AddItem, { index, item }),
   updateItem: (index: number, item: ContentItem) => createAction(EditorActionType.UpdateItem, { index, item }),
   moveItem: (from: number, to: number) => createAction(EditorActionType.MoveItem, { from, to }),
-  deleteItem: (index: number) => createAction(EditorActionType.DeleteItem, { index })
+  deleteItem: (index: number) => createAction(EditorActionType.DeleteItem, { index }),
+  toggleContentPreviewer: () => createAction(EditorActionType.ToggleContentPreviewer),
+  toggleContentItemPreviewer: () => createAction(EditorActionType.ToggleContentItemPreviewer)
 };
 
 export type EditorActions = ActionUnion<typeof editorSyncActions>;
 
 const load = (id: string): AsyncAction => async (dispatch, getState) => {
-  const target = getState().editor.id;
+  const currentId = getState().editor.id;
 
-  if (target === undefined) {
+  if (currentId !== id) {
     dispatch(editorSyncActions.update(id, createContentData()));
   }
 };
@@ -102,6 +106,18 @@ export const editorReducer: Reducer<EditorState, EditorActions> = (state = initi
           ...state.data,
           items: [...parts.slice(0, index), ...parts.slice(index + 1)]
         }
+      };
+    }
+    case EditorActionType.ToggleContentPreviewer: {
+      return {
+        ...state,
+        isOpenedContentPreviewer: !state.isOpenedContentPreviewer
+      };
+    }
+    case EditorActionType.ToggleContentItemPreviewer: {
+      return {
+        ...state,
+        isOpenedContentItemPreviewer: !state.isOpenedContentItemPreviewer
       };
     }
     default:
