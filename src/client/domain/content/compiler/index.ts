@@ -5,8 +5,8 @@ export type CompiledChar = {
   source: string;
   compiled: string[];
 };
-
-export type CompiledItem = CompiledChar[];
+export type CompiledLine = CompiledChar[];
+export type CompiledItem = CompiledLine[];
 
 export const compileContent = (data: ContentData) => {
   const compiledItems: CompiledItem[] = [];
@@ -19,20 +19,26 @@ export const compileContent = (data: ContentData) => {
 };
 
 const compileItem = (item: ContentItem) => {
-  const compiledChars: CompiledChar[] = [];
+  const compiledItem: CompiledItem = [];
 
-  const sanitizedString = item.value;
-  let i = 0;
+  const sanitizedLines = item.value.split("\n");
 
-  while (i < sanitizedString.length) {
-    const compiledChar = compileChar(sanitizedString.slice(i));
+  sanitizedLines.forEach(line => {
+    const compiledLine: CompiledLine = [];
 
-    i = i + compiledChar.source.length;
+    let i = 0;
+    while (i < line.length) {
+      const compiledChar = compileChar(line.slice(i));
 
-    compiledChars.push(compiledChar);
-  }
+      i = i + compiledChar.source.length;
 
-  return compiledChars;
+      compiledLine.push(compiledChar);
+    }
+
+    compiledItem.push(compiledLine);
+  });
+
+  return compiledItem;
 };
 
 const compileChar = (source: string): CompiledChar => {
@@ -93,7 +99,7 @@ const compileYoon = (source: string): CompiledChar => {
   const firstRomans = singleHiragana[firstChar];
   const secondRomans = singleHiragana[secondChar];
 
-  const compiled = [`${firstRomans[0][0]}y${secondRomans[0][0]}`];
+  const compiled = [`${firstRomans[0][0]}y${secondRomans[0][2]}`];
 
   firstRomans.forEach(firstRoman => {
     secondRomans.forEach(secondRoman => {
