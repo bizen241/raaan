@@ -3,20 +3,27 @@ import { useEffect } from "react";
 import { createTextItem } from "../../../domain/content";
 import { connector } from "../../../reducers";
 import { editorActions } from "../../../reducers/editor";
+import { ContentPlayer } from "../player/ContentPlayer";
 import { ContentItemEditor } from "./ContentItemEditor";
 
-export const Editor = connector(
+export const ContentEditor = connector(
   (state, ownProps: { id: string }) => ({
-    ...state.editor,
-    id: ownProps.id
+    id: ownProps.id,
+    editor: state.editor
   }),
   () => ({
     ...editorActions
   }),
-  ({ id, data, load, updateTitle, addItem, updateItem, deleteItem }) => {
+  ({ id, editor, load, updateTitle, addItem, updateItem, deleteItem, toggleContentPreviewer }) => {
     useEffect(() => {
       load(id);
     }, []);
+
+    if (id !== editor.id) {
+      return <div>Loading...</div>;
+    }
+
+    const { data } = editor;
 
     return (
       <div>
@@ -31,6 +38,8 @@ export const Editor = connector(
           <ContentItemEditor key={item.id} index={index} item={item} onUpdate={updateItem} onDelete={deleteItem} />
         ))}
         <button onClick={() => addItem(data.items.length, createTextItem())}>追加</button>
+        <button onClick={toggleContentPreviewer}>プレビュー</button>
+        {editor.isOpenedContentPreviewer ? <ContentPlayer data={data} /> : null}
       </div>
     );
   }
