@@ -28,11 +28,11 @@ const TextItemEditor: FunctionComponent<ContentItemEditorProps<TextItem>> = ({ i
   return (
     <div>
       <label>
-        表示
+        表語
         <textarea value={item.display} onChange={e => onChange({ ...item, display: e.currentTarget.value })} />
       </label>
       <label>
-        入力
+        表音
         <textarea value={item.value} onChange={e => onChange({ ...item, value: e.currentTarget.value })} />
       </label>
     </div>
