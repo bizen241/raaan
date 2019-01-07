@@ -8,10 +8,11 @@ import { compileContent, CompiledItem } from "../domain/content/compiler";
 export enum PlayerActionType {
   Load = "player/load",
   Start = "player/start",
-  Next = "player/next"
+  Next = "player/next",
+  Finish = "player/finish"
 }
 
-interface Result {
+export interface ContentItemResult {
   id: string;
   time: number;
   accuracy: number;
@@ -20,7 +21,8 @@ interface Result {
 export const playerActions = {
   load: (data: ContentData) => createAction(PlayerActionType.Load, { data }),
   start: () => createAction(PlayerActionType.Start),
-  next: (result: Result) => createAction(PlayerActionType.Next, { result })
+  next: (result: ContentItemResult) => createAction(PlayerActionType.Next, { result }),
+  finish: () => createAction(PlayerActionType.Finish)
 };
 
 export type PlayerActions = ActionUnion<typeof playerActions>;
@@ -30,7 +32,7 @@ export interface PlayerState {
   compiled: CompiledItem[];
   plan: number[];
   cursor: number;
-  results: Result[];
+  results: ContentItemResult[];
   isStarted: boolean;
   isFinished: boolean;
 }
@@ -69,9 +71,15 @@ export const playerReducer: Reducer<PlayerState, Actions> = (state = initialPlay
     case PlayerActionType.Next: {
       return {
         ...state,
-        cusror: state.cursor + 1,
+        cursor: state.cursor + 1,
         results: [...state.results, action.payload.result],
         isFinished: state.data.items.length - 1 === state.cursor
+      };
+    }
+    case PlayerActionType.Finish: {
+      return {
+        ...state,
+        isFinished: true
       };
     }
     default:
