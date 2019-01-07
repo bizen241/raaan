@@ -2,6 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { ContentItem } from "../../../../shared/content";
 import { CompiledChar, CompiledItem, CompiledLine } from "../../../domain/content/compiler";
+import { ContentItemResult } from "../../../reducers/player";
 
 interface ContentItemPlayerState {
   untypedLines: CompiledItem;
@@ -19,40 +20,39 @@ interface ContentItemPlayerState {
 export const ContentItemPlayer: React.FunctionComponent<{
   item: ContentItem;
   compiledItem: CompiledItem;
-  onFinish: () => void;
+  onFinish: (result: ContentItemResult) => void;
 }> = ({ item, compiledItem, onFinish }) => {
-  const [state, setState] = useState<ContentItemPlayerState>(() => {
-    const initialState = getInitialState(compiledItem);
+  const [state, setState] = useState<ContentItemPlayerState>(() => getInitialState(compiledItem));
 
-    if (initialState.isCurrentItemFinished === undefined) {
-      onFinish();
-    }
+  useEffect(
+    () => {
+      if (state.isCurrentItemFinished) {
+        onFinish({
+          id: item.id,
+          accuracy: 100,
+          time: 0
+        });
+      }
 
-    return initialState;
-  });
+      const onKeyDown = (e: KeyboardEvent) => {
+        setState(previousState => getNextState(previousState, e));
+      };
 
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      setState(previousState => {
-        const nextState = getNextState(previousState, e);
-
-        if (nextState.isCurrentItemFinished === undefined) {
-          onFinish();
-        }
-
-        return nextState;
-      });
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, []);
+      document.addEventListener("keydown", onKeyDown);
+      return () => document.removeEventListener("keydown", onKeyDown);
+    },
+    [state.isCurrentItemFinished]
+  );
 
   const untypedString = state.untypedChars.map(char => char.compiled[0]).join("");
 
+  if (item.type !== "text") {
+    return null;
+  }
+
   return (
     <div>
-      <p>{item.id}</p>
+      <p>{item.display}</p>
       <p>{item.value}</p>
       <p>
         {state.typedString}/{state.untypedCharStrings[0]}

@@ -13,13 +13,19 @@ export const ContentPlayer = connector(
   () => ({
     ...playerActions
   }),
-  ({ data, attempt, load }) => {
+  ({ data, attempt, load, next }) => {
     useEffect(() => {
       load(data);
     }, []);
 
     if (attempt.data !== data) {
       return <div>Loading...</div>;
+    }
+    if (attempt.data.items.length === 0) {
+      return <div>Empty</div>;
+    }
+    if (attempt.isFinished) {
+      return <div>Finished</div>;
     }
 
     const currentItemIndex = attempt.plan[attempt.cursor];
@@ -28,12 +34,7 @@ export const ContentPlayer = connector(
 
     return (
       <div>
-        <ContentItemPlayer
-          key={attempt.cursor}
-          item={currentItem}
-          compiledItem={currentCompiledItem}
-          onFinish={() => ({})}
-        />
+        <ContentItemPlayer key={attempt.cursor} item={currentItem} compiledItem={currentCompiledItem} onFinish={next} />
       </div>
     );
   }
