@@ -5,6 +5,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { configureStore } from "../../store";
 import { Initializer } from "./Initializer";
 import { Router } from "./Router";
+import { Style } from "./Style";
 import { Translator } from "./Translator";
 
 export const App: React.FunctionComponent = () => {
@@ -16,7 +17,9 @@ export const App: React.FunctionComponent = () => {
         <ConnectedRouter history={history}>
           <Translator>
             <Initializer>
-              <Router />
+              <Style>
+                <Router />
+              </Style>
             </Initializer>
           </Translator>
         </ConnectedRouter>
