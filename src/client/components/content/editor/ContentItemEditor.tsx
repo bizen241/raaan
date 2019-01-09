@@ -1,6 +1,7 @@
 import * as React from "react";
 import { FunctionComponent } from "react";
 import { ContentItem, TextItem } from "../../../../shared/content";
+import { Button, Column, Row, TextArea } from "../../ui";
 
 export const ContentItemEditor: FunctionComponent<{
   index: number;
@@ -11,11 +12,19 @@ export const ContentItemEditor: FunctionComponent<{
   const ItemEditor = editors[item.type];
 
   return (
-    <div>
-      <ItemEditor item={item} onChange={(textItem: TextItem) => onUpdate(index, textItem)} />
-      <button onClick={() => onDelete(index)}>プレビュー</button>
-      <button onClick={() => onDelete(index)}>削除</button>
-    </div>
+    <Column>
+      <Column padding="small">
+        <ItemEditor item={item} onChange={(textItem: TextItem) => onUpdate(index, textItem)} />
+      </Column>
+      <Row padding="small">
+        <Button size="small" onClick={() => onDelete(index)}>
+          プレビュー
+        </Button>
+        <Button size="small" onClick={() => onDelete(index)}>
+          削除
+        </Button>
+      </Row>
+    </Column>
   );
 };
 
@@ -26,23 +35,27 @@ interface ContentItemEditorProps<T> {
 
 const TextItemEditor: FunctionComponent<ContentItemEditorProps<TextItem>> = ({ item, onChange }) => {
   return (
-    <div>
+    <Column>
       <label>
-        表語
-        <textarea value={item.display} onChange={e => onChange({ ...item, display: e.currentTarget.value })} />
+        <Column>
+          表語
+          <TextArea value={item.display} onChange={e => onChange({ ...item, display: e.currentTarget.value })} />
+        </Column>
       </label>
       <label>
-        表音
-        <textarea value={item.value} onChange={e => onChange({ ...item, value: e.currentTarget.value })} />
+        <Column>
+          表音
+          <TextArea value={item.value} onChange={e => onChange({ ...item, value: e.currentTarget.value })} />
+        </Column>
       </label>
-    </div>
+    </Column>
   );
 };
 
 const CodeItemEditor: FunctionComponent<ContentItemEditorProps<TextItem>> = ({ item, onChange }) => {
   return (
     <div>
-      <textarea value={item.value} onChange={e => onChange({ ...item, value: e.currentTarget.value })} />
+      <TextArea value={item.value} onChange={e => onChange({ ...item, value: e.currentTarget.value })} />
     </div>
   );
 };
@@ -50,7 +63,7 @@ const CodeItemEditor: FunctionComponent<ContentItemEditorProps<TextItem>> = ({ i
 const MathItemEditor: FunctionComponent<ContentItemEditorProps<TextItem>> = ({ item, onChange }) => {
   return (
     <div>
-      <textarea value={item.value} onChange={e => onChange({ ...item, value: e.currentTarget.value })} />
+      <TextArea value={item.value} onChange={e => onChange({ ...item, value: e.currentTarget.value })} />
     </div>
   );
 };

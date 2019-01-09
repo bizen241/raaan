@@ -3,8 +3,9 @@ import { connector } from "../../reducers";
 import { createGlobalStyle, Theme, ThemeProvider } from "../../style";
 
 const theme: Theme = {
-  background: "#ddd",
-  border: "#aaa"
+  background: "#fafafa",
+  border: "#aaa",
+  text: "#333"
 };
 
 export const Style = connector(
@@ -34,6 +35,7 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${p => p.theme.background};
     font-family: system-ui, sans-serif;
     font-size: 18px;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
   }
 `;

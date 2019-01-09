@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { createTextItem } from "../../../domain/content";
 import { connector } from "../../../reducers";
 import { editorActions } from "../../../reducers/editor";
+import { Button, Column, Input } from "../../ui";
 import { ContentPlayer } from "../player/ContentPlayer";
 import { ContentItemEditor } from "./ContentItemEditor";
 
@@ -26,21 +27,33 @@ export const ContentEditor = connector(
     const { data } = editor;
 
     return (
-      <div>
-        <div>
+      <Column>
+        <Column padding="small">
           <label>
-            タイトル
-            <input value={data.title} onChange={e => updateTitle(e.currentTarget.value)} />
+            <Column>
+              <span>タイトル</span>
+              <Input value={data.title} onChange={e => updateTitle(e.currentTarget.value)} />
+            </Column>
           </label>
-        </div>
-        <label>アイテム</label>
-        {data.items.map((item, index) => (
-          <ContentItemEditor key={item.id} index={index} item={item} onUpdate={updateItem} onDelete={deleteItem} />
-        ))}
-        <button onClick={() => addItem(data.items.length, createTextItem())}>追加</button>
-        <button onClick={toggleContentPreviewer}>プレビュー</button>
-        {editor.isOpenedContentPreviewer ? <ContentPlayer data={data} /> : null}
-      </div>
+        </Column>
+        <Column padding="small">
+          <label>アイテム</label>
+          {data.items.map((item, index) => (
+            <ContentItemEditor key={item.id} index={index} item={item} onUpdate={updateItem} onDelete={deleteItem} />
+          ))}
+        </Column>
+        <Column padding="small">
+          <Button onClick={() => addItem(data.items.length, createTextItem())}>追加</Button>
+        </Column>
+        <Column padding="small">
+          <Button onClick={toggleContentPreviewer}>プレビュー</Button>
+        </Column>
+        {editor.isOpenedContentPreviewer ? (
+          <Column padding="small">
+            <ContentPlayer data={data} />
+          </Column>
+        ) : null}
+      </Column>
     );
   }
 );
