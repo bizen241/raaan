@@ -1,7 +1,7 @@
 import { Reducer } from "redux";
 import { ContentData, ContentItem } from "../../shared/content";
 import { ActionUnion, AsyncAction, createAction } from "../actions/helpers";
-import { createContentData } from "../domain/content";
+import { contentItemCreators, createContentData } from "../domain/content";
 
 export enum EditorActionType {
   Update = "editor/update",
@@ -17,7 +17,7 @@ export enum EditorActionType {
 const editorSyncActions = {
   update: (id: string, data: ContentData) => createAction(EditorActionType.Update, { id, data }),
   updateTitle: (value: string) => createAction(EditorActionType.UpdateTitle, { value }),
-  addItem: (index: number, item: ContentItem) => createAction(EditorActionType.AddItem, { index, item }),
+  addItem: (index: number, type: ContentItem["type"]) => createAction(EditorActionType.AddItem, { index, type }),
   updateItem: (index: number, item: ContentItem) => createAction(EditorActionType.UpdateItem, { index, item }),
   moveItem: (from: number, to: number) => createAction(EditorActionType.MoveItem, { from, to }),
   deleteItem: (index: number) => createAction(EditorActionType.DeleteItem, { index }),
@@ -43,6 +43,8 @@ export const editorActions = {
 export interface EditorState {
   id: string;
   data: ContentData;
+  textLang: string;
+  codeLang: string;
   isOpenedContentPreviewer: boolean;
   isOpenedContentItemPreviewer: boolean;
 }
@@ -50,6 +52,8 @@ export interface EditorState {
 export const initialEditorState: EditorState = {
   id: "",
   data: createContentData(),
+  textLang: "ja",
+  codeLang: "js",
   isOpenedContentPreviewer: false,
   isOpenedContentItemPreviewer: false
 };
@@ -58,6 +62,7 @@ export const editorReducer: Reducer<EditorState, EditorActions> = (state = initi
   switch (action.type) {
     case EditorActionType.Update: {
       return {
+        ...state,
         ...action.payload,
         isOpenedContentPreviewer: false,
         isOpenedContentItemPreviewer: false
@@ -73,27 +78,32 @@ export const editorReducer: Reducer<EditorState, EditorActions> = (state = initi
       };
     }
     case EditorActionType.AddItem: {
-      const index = action.payload.index;
+      const { index, type } = action.payload;
       const parts = state.data.items;
+
+      const item = contentItemCreators[type]();
 
       return {
         ...state,
         data: {
           ...state.data,
-          items: [...parts.slice(0, index), action.payload.item, ...parts.slice(index)]
+          items: [...parts.slice(0, index), item, ...parts.slice(index)]
         }
       };
     }
     case EditorActionType.UpdateItem: {
+      const { index, item } = action.payload;
       const parts = [...state.data.items];
-      parts[action.payload.index] = action.payload.item;
+      parts[index] = item;
 
       return {
         ...state,
         data: {
           ...state.data,
           items: parts
-        }
+        },
+        textLang: item.type === "text" ? item.lang : state.textLang,
+        codeLang: item.type === "code" ? item.lang : state.codeLang
       };
     }
     case EditorActionType.DeleteItem: {

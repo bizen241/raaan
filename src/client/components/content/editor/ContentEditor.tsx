@@ -1,9 +1,8 @@
 import * as React from "react";
 import { useEffect } from "react";
-import { createTextItem } from "../../../domain/content";
 import { connector } from "../../../reducers";
 import { editorActions } from "../../../reducers/editor";
-import { Button, Column, Input } from "../../ui";
+import { Button, Chars, Column, Input } from "../../ui";
 import { ContentPlayer } from "../player/ContentPlayer";
 import { ContentItemEditor } from "./ContentItemEditor";
 
@@ -31,19 +30,19 @@ export const ContentEditor = connector(
         <Column padding="small">
           <label>
             <Column>
-              <span>タイトル</span>
+              <Chars size="small">タイトル</Chars>
               <Input value={data.title} onChange={e => updateTitle(e.currentTarget.value)} />
             </Column>
           </label>
         </Column>
         <Column padding="small">
-          <label>アイテム</label>
+          <Chars>アイテム</Chars>
           {data.items.map((item, index) => (
             <ContentItemEditor key={item.id} index={index} item={item} onUpdate={updateItem} onDelete={deleteItem} />
           ))}
         </Column>
         <Column padding="small">
-          <Button onClick={() => addItem(data.items.length, createTextItem())}>追加</Button>
+          <Button onClick={() => addItem(data.items.length, "kanji")}>追加</Button>
         </Column>
         <Column padding="small">
           <Button onClick={toggleContentPreviewer}>プレビュー</Button>

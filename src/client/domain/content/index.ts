@@ -1,5 +1,5 @@
 import * as uuid from "uuid";
-import { ContentData, TextItem } from "../../../shared/content";
+import { CodeItem, ContentData, ContentItem, KanjiItem, MathItem, TextItem } from "../../../shared/content";
 
 export const createContentData = (): ContentData => ({
   version: 1,
@@ -11,14 +11,43 @@ export const createContentData = (): ContentData => ({
   shuffle: false
 });
 
-export const createTextItem = (): TextItem => ({
+const createTextItem = (): TextItem => ({
   type: "text",
   id: uuid(),
-  value: "",
+  text: "",
   comment: "",
-  lang: "ja",
-  display: ""
+  lang: "ja"
 });
+
+const createKanjiItem = (): KanjiItem => ({
+  type: "kanji",
+  id: uuid(),
+  kanji: "",
+  kana: "",
+  comment: ""
+});
+
+const createCodeItem = (): CodeItem => ({
+  type: "code",
+  id: uuid(),
+  lang: "js",
+  code: "",
+  comment: ""
+});
+
+const createMathItem = (): MathItem => ({
+  type: "math",
+  id: uuid(),
+  formula: "",
+  comment: ""
+});
+
+export const contentItemCreators: { [T in ContentItem["type"]]: () => ContentItem } = {
+  text: createTextItem,
+  kanji: createKanjiItem,
+  code: createCodeItem,
+  math: createMathItem
+};
 
 export const createPlan = (data: ContentData) => {
   const plan = [...Array(data.items.length).keys()];
