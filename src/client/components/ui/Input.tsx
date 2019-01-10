@@ -5,7 +5,7 @@ export const Input = styled.input<{
   size?: Size;
 }>`
   height: ${p => heights[p.size || "medium"]};
-  padding-left: 0.5rem;
+  padding-left: 0.5em;
   border-style: solid;
   border-width: 1px;
   border-bottom-style: double;
