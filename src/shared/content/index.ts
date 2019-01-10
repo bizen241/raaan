@@ -1,29 +1,26 @@
-interface Item {
+interface BaseItem {
   id: string;
+  value: string;
   comment: string;
 }
 
-export interface TextItem extends Item {
+export interface TextItem extends BaseItem {
   type: "text";
   lang: string;
-  text: string;
 }
 
-export interface KanjiItem extends Item {
+export interface KanjiItem extends BaseItem {
   type: "kanji";
   kanji: string;
-  kana: string;
 }
 
-export interface CodeItem extends Item {
+export interface CodeItem extends BaseItem {
   type: "code";
   lang: string;
-  code: string;
 }
 
-export interface MathItem extends Item {
+export interface MathItem extends BaseItem {
   type: "math";
-  formula: string;
 }
 
 export type ContentItem = TextItem | KanjiItem | CodeItem | MathItem;

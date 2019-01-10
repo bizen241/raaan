@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FunctionComponent } from "react";
-import { ContentItem, TextItem } from "../../../../shared/content";
+import { CodeItem, ContentItem, KanjiItem, MathItem, TextItem } from "../../../../shared/content";
 import { Button, Column, Row, TextArea } from "../../ui";
 
 export const ContentItemEditor: FunctionComponent<{
@@ -36,40 +36,51 @@ interface ContentItemEditorProps<T> {
 const TextItemEditor: FunctionComponent<ContentItemEditorProps<TextItem>> = ({ item, onChange }) => {
   return (
     <Column>
-      <label>
-        <Column>
-          表語
-          <TextArea value={item.display} onChange={e => onChange({ ...item, display: e.currentTarget.value })} />
-        </Column>
-      </label>
-      <label>
-        <Column>
-          表音
-          <TextArea value={item.value} onChange={e => onChange({ ...item, value: e.currentTarget.value })} />
-        </Column>
-      </label>
+      <TextArea value={item.value} onChange={e => onChange({ ...item, value: e.currentTarget.value })} />
     </Column>
   );
 };
 
-const CodeItemEditor: FunctionComponent<ContentItemEditorProps<TextItem>> = ({ item, onChange }) => {
+const KanjiItemEditor: FunctionComponent<ContentItemEditorProps<KanjiItem>> = ({ item, onChange }) => {
   return (
-    <div>
-      <TextArea value={item.value} onChange={e => onChange({ ...item, value: e.currentTarget.value })} />
-    </div>
+    <Column>
+      <Column>
+        <TextArea
+          placeholder="漢字"
+          value={item.kanji}
+          onChange={e => onChange({ ...item, kanji: e.currentTarget.value })}
+        />
+      </Column>
+      <Column>
+        <TextArea
+          placeholder="かな"
+          value={item.value}
+          onChange={e => onChange({ ...item, value: e.currentTarget.value })}
+        />
+      </Column>
+    </Column>
   );
 };
 
-const MathItemEditor: FunctionComponent<ContentItemEditorProps<TextItem>> = ({ item, onChange }) => {
+const CodeItemEditor: FunctionComponent<ContentItemEditorProps<CodeItem>> = ({ item, onChange }) => {
   return (
-    <div>
+    <Column>
       <TextArea value={item.value} onChange={e => onChange({ ...item, value: e.currentTarget.value })} />
-    </div>
+    </Column>
+  );
+};
+
+const MathItemEditor: FunctionComponent<ContentItemEditorProps<MathItem>> = ({ item, onChange }) => {
+  return (
+    <Column>
+      <TextArea value={item.value} onChange={e => onChange({ ...item, value: e.currentTarget.value })} />
+    </Column>
   );
 };
 
 const editors: { [T in ContentItem["type"]]: FunctionComponent<ContentItemEditorProps<any>> } = {
   text: TextItemEditor,
+  kanji: KanjiItemEditor,
   code: CodeItemEditor,
   math: MathItemEditor
 };

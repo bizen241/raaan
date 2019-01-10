@@ -11,35 +11,30 @@ export const createContentData = (): ContentData => ({
   shuffle: false
 });
 
-const createTextItem = (): TextItem => ({
-  type: "text",
+const base = <T extends string>(type: T) => ({
+  type: type as T,
   id: uuid(),
-  text: "",
-  comment: "",
+  value: "",
+  comment: ""
+});
+
+const createTextItem = (): TextItem => ({
+  ...base("text"),
   lang: "ja"
 });
 
 const createKanjiItem = (): KanjiItem => ({
-  type: "kanji",
-  id: uuid(),
-  kanji: "",
-  kana: "",
-  comment: ""
+  ...base("kanji"),
+  kanji: ""
 });
 
 const createCodeItem = (): CodeItem => ({
-  type: "code",
-  id: uuid(),
-  lang: "js",
-  code: "",
-  comment: ""
+  ...base("code"),
+  lang: "js"
 });
 
 const createMathItem = (): MathItem => ({
-  type: "math",
-  id: uuid(),
-  formula: "",
-  comment: ""
+  ...base("math")
 });
 
 export const contentItemCreators: { [T in ContentItem["type"]]: () => ContentItem } = {
