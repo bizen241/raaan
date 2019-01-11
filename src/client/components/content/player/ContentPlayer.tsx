@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { ContentData } from "../../../../shared/content";
 import { connector } from "../../../reducers";
 import { playerActions } from "../../../reducers/player";
+import { Column } from "../../ui";
 import { ContentItemPlayer } from "./ContentItemPlayer";
 
 export const ContentPlayer = connector(
@@ -33,9 +34,9 @@ export const ContentPlayer = connector(
     const currentCompiledItem = attempt.compiled[currentItemIndex];
 
     return (
-      <div>
+      <Column padding="small">
         <ContentItemPlayer key={attempt.cursor} item={currentItem} compiledItem={currentCompiledItem} onFinish={next} />
-      </div>
+      </Column>
     );
   }
 );

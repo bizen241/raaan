@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FunctionComponent } from "react";
 import { CodeItem, ContentItem, KanjiItem, MathItem, TextItem } from "../../../../shared/content";
-import { Button, Column, Row, TextArea } from "../../ui";
+import { Button, Column, Details, Row, Summary, TextArea } from "../../ui";
 
 export const ContentItemEditor: FunctionComponent<{
   index: number;
@@ -12,19 +12,26 @@ export const ContentItemEditor: FunctionComponent<{
   const ItemEditor = editors[item.type];
 
   return (
-    <Column>
+    <Details open>
+      <Summary>{index}</Summary>
       <Column padding="small">
-        <ItemEditor item={item} onChange={(textItem: TextItem) => onUpdate(index, textItem)} />
+        <Column padding="small">
+          <ItemEditor item={item} onChange={(textItem: TextItem) => onUpdate(index, textItem)} />
+        </Column>
+        <Row padding="small">
+          <Row padding="small">
+            <Button size="small" onClick={() => onDelete(index)}>
+              プレビュー
+            </Button>
+          </Row>
+          <Row padding="small">
+            <Button size="small" onClick={() => onDelete(index)}>
+              削除
+            </Button>
+          </Row>
+        </Row>
       </Column>
-      <Row padding="small">
-        <Button size="small" onClick={() => onDelete(index)}>
-          プレビュー
-        </Button>
-        <Button size="small" onClick={() => onDelete(index)}>
-          削除
-        </Button>
-      </Row>
-    </Column>
+    </Details>
   );
 };
 

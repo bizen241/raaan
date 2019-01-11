@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ContentItem } from "../../../../shared/content";
 import { CompiledChar, CompiledItem, CompiledLine } from "../../../domain/content/compiler";
 import { ContentItemResult } from "../../../reducers/player";
+import { Chars, Column } from "../../ui";
 
 interface ContentItemPlayerState {
   untypedLines: CompiledItem;
@@ -46,19 +47,19 @@ export const ContentItemPlayer: React.FunctionComponent<{
 
   const untypedString = state.untypedChars.map(char => char.compiled[0]).join("");
 
-  if (item.type !== "text") {
+  if (item.type !== "kanji") {
     return null;
   }
 
   return (
-    <div>
-      <p>{item.display}</p>
-      <p>{item.value}</p>
-      <p>
+    <Column>
+      <Chars>{item.kanji}</Chars>
+      <Chars>{item.value}</Chars>
+      <Chars>
         {state.typedString}/{state.untypedCharStrings[0]}
         {untypedString}
-      </p>
-    </div>
+      </Chars>
+    </Column>
   );
 };
 

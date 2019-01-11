@@ -3,9 +3,12 @@ import { connector } from "../../reducers";
 import { createGlobalStyle, Theme, ThemeProvider } from "../../style";
 
 const theme: Theme = {
-  background: "#fafafa",
-  border: "#aaa",
-  text: "#333"
+  background: "#303030",
+  border: "#404040",
+  text: "#f8f8f8",
+  input: "#202020",
+  container: "#282828",
+  accent: "#3e50b4"
 };
 
 export const Style = connector(

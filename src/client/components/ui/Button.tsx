@@ -11,11 +11,11 @@ export const Button = styled.button<{
   align-items: center;
   justify-content: center;
   padding: ${p => paddings[p.size || "medium"]} 1rem;
-  border-style: double;
-  border-width: 3px;
+  border-style: solid;
+  border-width: 1px;
   border-color: ${p => p.theme.border};
   border-radius: 2px;
-  background-color: ${p => p.theme.background};
+  background-color: ${p => p.theme.input};
   color: ${p => p.theme.text};
   font-family: inherit;
   font-size: ${p => fontSizes[p.size || "medium"]};
@@ -26,22 +26,11 @@ export const Button = styled.button<{
     border: none;
   }
 
+  :focus,
   :hover {
-    border-style: double;
-    border-right-style: solid;
-    border-bottom-style: solid;
-  }
-
-  :active {
-    border-style: double;
-    border-top-style: solid;
-    border-left-style: solid;
-  }
-
-  :focus {
     outline-style: dashed;
     outline-width: 1px;
     outline-color: ${p => p.theme.border};
-    outline-offset: -5px;
+    outline-offset: -2px;
   }
 `;

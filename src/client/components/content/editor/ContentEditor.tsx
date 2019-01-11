@@ -35,10 +35,14 @@ export const ContentEditor = connector(
             </Column>
           </label>
         </Column>
-        <Column padding="small">
-          <Chars>アイテム</Chars>
+        <Column>
+          <Column padding="small">
+            <Chars size="small">アイテム</Chars>
+          </Column>
           {data.items.map((item, index) => (
-            <ContentItemEditor key={item.id} index={index} item={item} onUpdate={updateItem} onDelete={deleteItem} />
+            <Column key={item.id} padding="small">
+              <ContentItemEditor index={index} item={item} onUpdate={updateItem} onDelete={deleteItem} />
+            </Column>
           ))}
         </Column>
         <Column padding="small">

@@ -9,11 +9,11 @@ export const TextArea = styled(TextAreaAutosize)<{
   padding-left: 0.5em;
   border-style: solid;
   border-width: 1px;
-  border-bottom-style: double;
+  border-bottom-style: solid;
   border-bottom-width: 3px;
   border-color: ${p => p.theme.border};
   border-radius: 2px;
-  background-color: ${p => p.theme.background};
+  background-color: ${p => p.theme.input};
   color: ${p => p.theme.text};
   font-family: inherit;
   font-size: ${p => fontSizes[p.size || "medium"]};
@@ -22,6 +22,6 @@ export const TextArea = styled(TextAreaAutosize)<{
   resize: none;
 
   :focus {
-    border-bottom-style: solid;
+    border-bottom-color: ${p => p.theme.accent};
   }
 `;

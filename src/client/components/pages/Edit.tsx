@@ -2,6 +2,7 @@ import * as React from "react";
 import { connector } from "../../reducers";
 import { ContentEditor } from "../content/editor/ContentEditor";
 import { PageProps } from "../project/Router";
+import { Column } from "../ui";
 
 export const Edit = connector(
   (_, ownProps: PageProps) => ({
@@ -10,9 +11,9 @@ export const Edit = connector(
   () => ({}),
   ({ id }) => {
     return (
-      <div>
+      <Column padding="small">
         <ContentEditor id={id} />
-      </div>
+      </Column>
     );
   }
 );
