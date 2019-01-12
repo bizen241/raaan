@@ -26,6 +26,22 @@ export const Button = styled.button<{
     border: none;
   }
 
+  ::before {
+    visibility: ${p => (p.accessKey ? "visible" : "collapse")};
+    content: attr(accessKey);
+    height: 1.5em;
+    margin-right: 0.5em;
+    padding: 0 0.25em;
+    border-style: solid;
+    border-width: 1px;
+    border-color: ${p => p.theme.border};
+    border-radius: 2px;
+    font-size: ${fontSizes.small};
+    text-align: center;
+    vertical-align: center;
+    line-height: 1.5em;
+  }
+
   :focus,
   :hover {
     outline-style: dashed;
