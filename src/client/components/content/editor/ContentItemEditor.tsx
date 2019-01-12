@@ -6,13 +6,15 @@ import { Button, Column, Details, Row, Summary, TextArea } from "../../ui";
 export const ContentItemEditor: FunctionComponent<{
   index: number;
   item: ContentItem;
+  isFocused: boolean;
   onUpdate: (index: number, item: ContentItem) => void;
   onDelete: (index: number) => void;
-}> = ({ index, item, onUpdate, onDelete }) => {
+  onFocus: (index: number) => void;
+}> = ({ index, item, isFocused, onUpdate, onDelete, onFocus }) => {
   const ItemEditor = editors[item.type];
 
   return (
-    <Details open>
+    <Details open onFocus={() => onFocus(index)}>
       <Summary>{index}</Summary>
       <Column padding="small">
         <Column padding="small">
@@ -20,12 +22,7 @@ export const ContentItemEditor: FunctionComponent<{
         </Column>
         <Row padding="small">
           <Row padding="small">
-            <Button size="small" onClick={() => onDelete(index)}>
-              プレビュー
-            </Button>
-          </Row>
-          <Row padding="small">
-            <Button size="small" onClick={() => onDelete(index)}>
+            <Button size="small" onClick={() => onDelete(index)} accessKey={isFocused ? "D" : undefined}>
               削除
             </Button>
           </Row>

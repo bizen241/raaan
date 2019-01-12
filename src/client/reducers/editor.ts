@@ -10,6 +10,7 @@ export enum EditorActionType {
   UpdateItem = "editor/update-item",
   MoveItem = "editor/move-item",
   DeleteItem = "editor/delete-item",
+  FocusItem = "editor/focus-item",
   ToggleContentPreviewer = "editor/toggle-content-previewer",
   ToggleContentItemPreviewer = "editor/toggle-content-item-previewer"
 }
@@ -21,6 +22,7 @@ const editorSyncActions = {
   updateItem: (index: number, item: ContentItem) => createAction(EditorActionType.UpdateItem, { index, item }),
   moveItem: (from: number, to: number) => createAction(EditorActionType.MoveItem, { from, to }),
   deleteItem: (index: number) => createAction(EditorActionType.DeleteItem, { index }),
+  focusItem: (index: number) => createAction(EditorActionType.FocusItem, { index }),
   toggleContentPreviewer: () => createAction(EditorActionType.ToggleContentPreviewer),
   toggleContentItemPreviewer: () => createAction(EditorActionType.ToggleContentItemPreviewer)
 };
@@ -45,6 +47,7 @@ export interface EditorState {
   data: ContentData;
   textLang: string;
   codeLang: string;
+  focusedItemIndex: number;
   isOpenedContentPreviewer: boolean;
   isOpenedContentItemPreviewer: boolean;
 }
@@ -54,6 +57,7 @@ export const initialEditorState: EditorState = {
   data: createContentData(),
   textLang: "ja",
   codeLang: "js",
+  focusedItemIndex: 0,
   isOpenedContentPreviewer: false,
   isOpenedContentItemPreviewer: false
 };
@@ -116,6 +120,12 @@ export const editorReducer: Reducer<EditorState, EditorActions> = (state = initi
           ...state.data,
           items: [...parts.slice(0, index), ...parts.slice(index + 1)]
         }
+      };
+    }
+    case EditorActionType.FocusItem: {
+      return {
+        ...state,
+        focusedItemIndex: action.payload.index
       };
     }
     case EditorActionType.ToggleContentPreviewer: {
