@@ -4,5 +4,6 @@ export * from "./Details";
 export * from "./Modal";
 export * from "./Flex";
 export * from "./Input";
+export * from "./Key";
 export * from "./Summary";
 export * from "./TextArea";
