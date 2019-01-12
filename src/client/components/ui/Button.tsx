@@ -5,6 +5,7 @@ export const Button = styled.button<{
   size?: Size;
   to?: string;
   href?: string;
+  displayAccessKey?: boolean;
 }>`
   display: flex;
   flex-direction: row;
@@ -26,11 +27,11 @@ export const Button = styled.button<{
     border: none;
   }
 
-  ::before {
-    visibility: ${p => (p.accessKey ? "visible" : "collapse")};
+  ::after {
+    visibility: ${p => (p.accessKey && p.displayAccessKey ? "visible" : "collapse")};
     content: attr(accessKey);
     height: 1.5em;
-    margin-right: 0.5em;
+    margin-left: 0.5em;
     padding: 0 0.25em;
     border-style: solid;
     border-width: 1px;
@@ -50,3 +51,7 @@ export const Button = styled.button<{
     outline-offset: -2px;
   }
 `;
+
+Button.defaultProps = {
+  displayAccessKey: true
+};
