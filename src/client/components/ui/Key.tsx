@@ -4,6 +4,7 @@ import { fontSizes, Size } from "./values";
 export const Key = styled.kbd<{
   size?: Size;
 }>`
+  height: 1.5em;
   padding: 0 0.25em;
   border-style: solid;
   border-width: 1px;
@@ -12,4 +13,5 @@ export const Key = styled.kbd<{
   color: ${p => p.theme.text};
   font-family: inherit;
   font-size: ${p => fontSizes[p.size || "small"]};
+  line-height: 1.5em;
 `;
