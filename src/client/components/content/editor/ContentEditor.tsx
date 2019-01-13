@@ -1,8 +1,9 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { connector } from "../../../reducers";
 import { editorActions } from "../../../reducers/editor";
 import { Button, Chars, Column, Input, Key, Modal, Row } from "../../ui";
+import { createShortcutHandler, ShortcutMap } from "../../utils/shortcut";
 import { ContentPlayer } from "../player/ContentPlayer";
 import { ContentItemEditor } from "./ContentItemEditor";
 
@@ -14,29 +15,62 @@ export const ContentEditor = connector(
   () => ({
     ...editorActions
   }),
-  ({ id, editor, load, updateTitle, addItem, updateItem, deleteItem, focusItem, toggleContentPreviewer }) => {
+  ({
+    id,
+    editor,
+    load,
+    updateTitle,
+    addItem,
+    updateItem,
+    deleteItem,
+    focusItem,
+    focusPreviousItem,
+    focusNextItem,
+    toggleContentPreviewer
+  }) => {
+    const { data, focusedItemIndex, isFocusedWithHotKey, isOpenedContentPreviewer } = editor;
+
+    const titleInputRef = useRef<HTMLInputElement>(null);
+
     useEffect(() => {
       load(id);
     }, []);
+    useEffect(
+      () => {
+        if (isOpenedContentPreviewer) {
+          return () => null;
+        }
+
+        const shortcutMap: ShortcutMap = {
+          k: focusPreviousItem,
+          j: focusNextItem,
+          p: toggleContentPreviewer,
+          t: () => titleInputRef.current && titleInputRef.current.focus()
+        };
+
+        const shortcutHandler = createShortcutHandler(shortcutMap);
+        document.addEventListener("keydown", shortcutHandler);
+        return () => {
+          document.removeEventListener("keydown", shortcutHandler);
+        };
+      },
+      [isOpenedContentPreviewer]
+    );
 
     if (id !== editor.id) {
       return <div>Loading...</div>;
     }
 
-    const { data, focusedItemIndex } = editor;
-
     return (
-      <Column>
+      <Column flex={1}>
         <Column padding="small">
           <label>
             <Column>
               <Row center="cross">
-                <Row padding="small">
-                  <Chars size="small">タイトル</Chars>
-                </Row>
+                <Chars size="small">タイトル</Chars>
                 <Key>T</Key>
               </Row>
-              <Input value={data.title} accessKey="T" onChange={e => updateTitle(e.currentTarget.value)} />
+              <Input value={data.title} ref={titleInputRef} onChange={e => updateTitle(e.currentTarget.value)} />
             </Column>
           </label>
         </Column>
@@ -50,6 +84,8 @@ export const ContentEditor = connector(
                 index={index}
                 item={item}
                 isFocused={index === focusedItemIndex}
+                isFocusedWithHotKey={isFocusedWithHotKey}
+                hotKey={undefined}
                 onUpdate={updateItem}
                 onDelete={deleteItem}
                 onFocus={focusItem}
@@ -58,13 +94,15 @@ export const ContentEditor = connector(
           ))}
         </Column>
         <Column padding="small">
-          <Button onClick={() => addItem(data.items.length, "kanji")} accessKey="A">
+          <Button onClick={() => addItem(data.items.length, "kanji")}>
             追加
+            <Key>A</Key>
           </Button>
         </Column>
         <Column padding="small">
-          <Button onClick={toggleContentPreviewer} accessKey="P">
+          <Button onClick={toggleContentPreviewer}>
             プレビュー
+            <Key>P</Key>
           </Button>
         </Column>
         <Modal isOpen={editor.isOpenedContentPreviewer} onRequestClose={toggleContentPreviewer} shouldCloseOnEsc={true}>
@@ -72,8 +110,9 @@ export const ContentEditor = connector(
             <Column flex={1}>
               <ContentPlayer data={data} />
             </Column>
-            <Button size="small" onClick={toggleContentPreviewer} accessKey="W">
+            <Button size="small" onClick={toggleContentPreviewer}>
               閉じる
+              <Key>Esc</Key>
             </Button>
           </Column>
         </Modal>
