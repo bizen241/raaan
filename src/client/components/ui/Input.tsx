@@ -18,6 +18,7 @@ export const Input = styled.input<{
   font-size: ${p => fontSizes[p.size || "medium"]};
   text-decoration: none;
 
+  :hover,
   :focus {
     border-bottom-color: ${p => p.theme.accent};
   }

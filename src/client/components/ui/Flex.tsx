@@ -9,7 +9,7 @@ const Flex = styled.div<{
   display: flex;
   align-items: ${p => (p.center === "cross" || p.center === "both" ? "center" : "unset")};
   justify-content: ${p => (p.center === "main" || p.center === "both" ? "center" : "unset")};
-  flex: ${p => p.flex || "unset"};
+  flex: ${p => p.flex || "initial"};
   padding: ${p => p.padding && paddings[p.padding]};
 `;
 

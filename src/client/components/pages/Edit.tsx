@@ -11,7 +11,7 @@ export const Edit = connector(
   () => ({}),
   ({ id }) => {
     return (
-      <Column padding="small">
+      <Column padding="small" flex={1}>
         <ContentEditor id={id} />
       </Column>
     );
