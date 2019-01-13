@@ -1,29 +1,53 @@
 import * as React from "react";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useRef } from "react";
 import { CodeItem, ContentItem, KanjiItem, MathItem, TextItem } from "../../../../shared/content";
-import { Button, Column, Details, Row, Summary, TextArea } from "../../ui";
+import { Button, Column, Details, Key, Row, Summary, TextArea } from "../../ui";
 
 export const ContentItemEditor: FunctionComponent<{
   index: number;
   item: ContentItem;
   isFocused: boolean;
+  isFocusedWithHotKey: boolean;
+  hotKey: string | undefined;
   onUpdate: (index: number, item: ContentItem) => void;
   onDelete: (index: number) => void;
   onFocus: (index: number) => void;
-}> = ({ index, item, isFocused, onUpdate, onDelete, onFocus }) => {
+}> = ({ index, item, isFocused, isFocusedWithHotKey, hotKey, onUpdate, onDelete, onFocus }) => {
+  const summaryRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (isFocused && summaryRef.current != null) {
+      summaryRef.current.focus();
+    }
+  }, []);
+  useEffect(
+    () => {
+      if (isFocused && isFocusedWithHotKey && summaryRef.current != null) {
+        summaryRef.current.focus();
+      }
+    },
+    [isFocused]
+  );
+
   const ItemEditor = editors[item.type];
 
   return (
     <Details open onFocus={() => onFocus(index)}>
-      <Summary>{index}</Summary>
+      <Summary ref={summaryRef}>
+        <Row center="cross" flex={1} padding="small">
+          {index}
+          <Row flex={1} />
+          {hotKey !== undefined ? <Key>{hotKey}</Key> : null}
+        </Row>
+      </Summary>
       <Column padding="small">
         <Column padding="small">
           <ItemEditor item={item} onChange={(textItem: TextItem) => onUpdate(index, textItem)} />
         </Column>
         <Row padding="small">
           <Row padding="small">
-            <Button size="small" onClick={() => onDelete(index)} accessKey={isFocused ? "D" : undefined}>
+            <Button size="small" onClick={() => onDelete(index)}>
               削除
+              {isFocused ? <Key>D</Key> : null}
             </Button>
           </Row>
         </Row>

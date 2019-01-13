@@ -11,6 +11,8 @@ export enum EditorActionType {
   MoveItem = "editor/move-item",
   DeleteItem = "editor/delete-item",
   FocusItem = "editor/focus-item",
+  FocusPreviousItem = "editor/focus-previous-item",
+  FocusNextItem = "editor/focus-next-item",
   ToggleContentPreviewer = "editor/toggle-content-previewer",
   ToggleContentItemPreviewer = "editor/toggle-content-item-previewer"
 }
@@ -23,6 +25,8 @@ const editorSyncActions = {
   moveItem: (from: number, to: number) => createAction(EditorActionType.MoveItem, { from, to }),
   deleteItem: (index: number) => createAction(EditorActionType.DeleteItem, { index }),
   focusItem: (index: number) => createAction(EditorActionType.FocusItem, { index }),
+  focusPreviousItem: () => createAction(EditorActionType.FocusPreviousItem),
+  focusNextItem: () => createAction(EditorActionType.FocusNextItem),
   toggleContentPreviewer: () => createAction(EditorActionType.ToggleContentPreviewer),
   toggleContentItemPreviewer: () => createAction(EditorActionType.ToggleContentItemPreviewer)
 };
@@ -48,6 +52,7 @@ export interface EditorState {
   textLang: string;
   codeLang: string;
   focusedItemIndex: number;
+  isFocusedWithHotKey: boolean;
   isOpenedContentPreviewer: boolean;
   isOpenedContentItemPreviewer: boolean;
 }
@@ -58,6 +63,7 @@ export const initialEditorState: EditorState = {
   textLang: "ja",
   codeLang: "js",
   focusedItemIndex: 0,
+  isFocusedWithHotKey: false,
   isOpenedContentPreviewer: false,
   isOpenedContentItemPreviewer: false
 };
@@ -92,7 +98,8 @@ export const editorReducer: Reducer<EditorState, EditorActions> = (state = initi
         data: {
           ...state.data,
           items: [...parts.slice(0, index), item, ...parts.slice(index)]
-        }
+        },
+        focusedItemIndex: index
       };
     }
     case EditorActionType.UpdateItem: {
@@ -119,13 +126,35 @@ export const editorReducer: Reducer<EditorState, EditorActions> = (state = initi
         data: {
           ...state.data,
           items: [...parts.slice(0, index), ...parts.slice(index + 1)]
-        }
+        },
+        focusedItemIndex: index === 0 ? 0 : index - 1,
+        isFocusedWithHotKey: true
       };
     }
     case EditorActionType.FocusItem: {
       return {
         ...state,
-        focusedItemIndex: action.payload.index
+        focusedItemIndex: action.payload.index,
+        isFocusedWithHotKey: false
+      };
+    }
+    case EditorActionType.FocusPreviousItem: {
+      const { focusedItemIndex } = state;
+
+      return {
+        ...state,
+        focusedItemIndex: focusedItemIndex === 0 ? 0 : focusedItemIndex - 1,
+        isFocusedWithHotKey: true
+      };
+    }
+    case EditorActionType.FocusNextItem: {
+      const { focusedItemIndex } = state;
+      const lastItemIndex = state.data.items.length - 1;
+
+      return {
+        ...state,
+        focusedItemIndex: lastItemIndex === focusedItemIndex ? focusedItemIndex : focusedItemIndex + 1,
+        isFocusedWithHotKey: true
       };
     }
     case EditorActionType.ToggleContentPreviewer: {
