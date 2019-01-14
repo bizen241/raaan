@@ -23,7 +23,7 @@ const editorSyncActions = {
   addItem: (index: number, type: ContentItem["type"]) => createAction(EditorActionType.AddItem, { index, type }),
   updateItem: (index: number, item: ContentItem) => createAction(EditorActionType.UpdateItem, { index, item }),
   moveItem: (from: number, to: number) => createAction(EditorActionType.MoveItem, { from, to }),
-  deleteItem: (index: number) => createAction(EditorActionType.DeleteItem, { index }),
+  deleteItem: (id: string) => createAction(EditorActionType.DeleteItem, { id }),
   focusItem: (index: number) => createAction(EditorActionType.FocusItem, { index }),
   focusPreviousItem: () => createAction(EditorActionType.FocusPreviousItem),
   focusNextItem: () => createAction(EditorActionType.FocusNextItem),
@@ -89,7 +89,7 @@ export const editorReducer: Reducer<EditorState, EditorActions> = (state = initi
     }
     case EditorActionType.AddItem: {
       const { index, type } = action.payload;
-      const parts = state.data.items;
+      const items = [...state.data.items];
 
       const item = contentItemCreators[type]();
 
@@ -97,37 +97,38 @@ export const editorReducer: Reducer<EditorState, EditorActions> = (state = initi
         ...state,
         data: {
           ...state.data,
-          items: [...parts.slice(0, index), item, ...parts.slice(index)]
+          items: [...items.slice(0, index), item, ...items.slice(index)]
         },
         focusedItemIndex: index
       };
     }
     case EditorActionType.UpdateItem: {
       const { index, item } = action.payload;
-      const parts = [...state.data.items];
-      parts[index] = item;
+      const items = [...state.data.items];
+      items[index] = item;
 
       return {
         ...state,
         data: {
           ...state.data,
-          items: parts
+          items
         },
         textLang: item.type === "text" ? item.lang : state.textLang,
         codeLang: item.type === "code" ? item.lang : state.codeLang
       };
     }
     case EditorActionType.DeleteItem: {
-      const index = action.payload.index;
-      const parts = state.data.items;
+      const id = action.payload.id;
+      const items = [...state.data.items];
+      const index = items.findIndex(item => item.id === id);
 
       return {
         ...state,
         data: {
           ...state.data,
-          items: [...parts.slice(0, index), ...parts.slice(index + 1)]
+          items: [...items.slice(0, index), ...items.slice(index + 1)]
         },
-        focusedItemIndex: index === 0 ? 0 : index - 1,
+        focusedItemIndex: index === items.length - 1 ? index - 1 : index,
         isFocusedWithHotKey: true
       };
     }

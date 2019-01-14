@@ -3,14 +3,15 @@ export interface ShortcutMap {
 }
 
 export const createShortcutHandler = (shortcutMap: ShortcutMap) => (e: KeyboardEvent) => {
+  const key = e.key;
   const target = e.target as HTMLElement | null;
   const tagName = target && target.tagName;
 
-  if (tagName === "INPUT" || tagName === "TEXTAREA") {
+  if (key !== "Escape" && (tagName === "INPUT" || tagName === "TEXTAREA")) {
     return;
   }
 
-  const handler = shortcutMap[e.key];
+  const handler = shortcutMap[key];
   if (handler === undefined) {
     return;
   }

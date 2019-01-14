@@ -16,6 +16,7 @@ export const Summary = styled.summary<{
 
   ::before {
     content: "▶";
+    width: 1.5em;
     font-size: 0.8em;
   }
 

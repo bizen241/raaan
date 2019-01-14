@@ -52,7 +52,7 @@ export const ContentItemPlayer: React.FunctionComponent<{
   }
 
   return (
-    <Column>
+    <Column center="main" flex={1}>
       <Chars>{item.kanji}</Chars>
       <Chars>{item.value}</Chars>
       <Chars>

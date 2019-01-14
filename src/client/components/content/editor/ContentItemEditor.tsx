@@ -2,17 +2,19 @@ import * as React from "react";
 import { FunctionComponent, useEffect, useRef } from "react";
 import { CodeItem, ContentItem, KanjiItem, MathItem, TextItem } from "../../../../shared/content";
 import { Button, Column, Details, Key, Row, Summary, TextArea } from "../../ui";
+import { createShortcutHandler, ShortcutMap } from "../../utils/shortcut";
 
 export const ContentItemEditor: FunctionComponent<{
   index: number;
   item: ContentItem;
   isFocused: boolean;
   isFocusedWithHotKey: boolean;
+  isVisible: boolean;
   hotKey: string | undefined;
   onUpdate: (index: number, item: ContentItem) => void;
-  onDelete: (index: number) => void;
+  onDelete: (id: string) => void;
   onFocus: (index: number) => void;
-}> = ({ index, item, isFocused, isFocusedWithHotKey, hotKey, onUpdate, onDelete, onFocus }) => {
+}> = ({ index, item, isFocused, isFocusedWithHotKey, isVisible, hotKey, onUpdate, onDelete, onFocus }) => {
   const summaryRef = useRef<HTMLElement>(null);
   useEffect(() => {
     if (isFocused && summaryRef.current != null) {
@@ -26,6 +28,25 @@ export const ContentItemEditor: FunctionComponent<{
       }
     },
     [isFocused]
+  );
+  useEffect(
+    () => {
+      if (!isFocused || !isVisible) {
+        return;
+      }
+
+      const shortcutMap: ShortcutMap = {
+        Escape: () => summaryRef.current && summaryRef.current.focus(),
+        Delete: () => onDelete(item.id)
+      };
+
+      const shortcutHandler = createShortcutHandler(shortcutMap);
+      document.addEventListener("keydown", shortcutHandler);
+      return () => {
+        document.removeEventListener("keydown", shortcutHandler);
+      };
+    },
+    [isFocused, isVisible]
   );
 
   const ItemEditor = editors[item.type];
@@ -45,7 +66,7 @@ export const ContentItemEditor: FunctionComponent<{
         </Column>
         <Row padding="small">
           <Row padding="small">
-            <Button size="small" onClick={() => onDelete(index)}>
+            <Button size="small" onClick={() => onDelete(item.id)}>
               削除
               {isFocused ? <Key>D</Key> : null}
             </Button>

@@ -28,7 +28,14 @@ export const ContentEditor = connector(
     focusNextItem,
     toggleContentPreviewer
   }) => {
-    const { data, focusedItemIndex, isFocusedWithHotKey, isOpenedContentPreviewer } = editor;
+    const {
+      data,
+      focusedItemIndex,
+      isFocusedWithHotKey,
+      isOpenedContentPreviewer,
+      isOpenedContentItemPreviewer
+    } = editor;
+    const isVisible = !isOpenedContentPreviewer && !isOpenedContentItemPreviewer;
 
     const titleInputRef = useRef<HTMLInputElement>(null);
 
@@ -37,7 +44,7 @@ export const ContentEditor = connector(
     }, []);
     useEffect(
       () => {
-        if (isOpenedContentPreviewer) {
+        if (!isVisible) {
           return () => null;
         }
 
@@ -54,7 +61,7 @@ export const ContentEditor = connector(
           document.removeEventListener("keydown", shortcutHandler);
         };
       },
-      [isOpenedContentPreviewer]
+      [isVisible]
     );
 
     if (id !== editor.id) {
@@ -85,6 +92,7 @@ export const ContentEditor = connector(
                 item={item}
                 isFocused={index === focusedItemIndex}
                 isFocusedWithHotKey={isFocusedWithHotKey}
+                isVisible={isVisible}
                 hotKey={undefined}
                 onUpdate={updateItem}
                 onDelete={deleteItem}
