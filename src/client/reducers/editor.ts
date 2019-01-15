@@ -14,7 +14,8 @@ export enum EditorActionType {
   FocusPreviousItem = "editor/focus-previous-item",
   FocusNextItem = "editor/focus-next-item",
   ToggleContentPreviewer = "editor/toggle-content-previewer",
-  ToggleContentItemPreviewer = "editor/toggle-content-item-previewer"
+  ToggleContentItemPreviewer = "editor/toggle-content-item-previewer",
+  ToggleContentItemMenu = "editor/toggle-content-item-menu"
 }
 
 const editorSyncActions = {
@@ -28,7 +29,8 @@ const editorSyncActions = {
   focusPreviousItem: () => createAction(EditorActionType.FocusPreviousItem),
   focusNextItem: () => createAction(EditorActionType.FocusNextItem),
   toggleContentPreviewer: () => createAction(EditorActionType.ToggleContentPreviewer),
-  toggleContentItemPreviewer: () => createAction(EditorActionType.ToggleContentItemPreviewer)
+  toggleContentItemPreviewer: () => createAction(EditorActionType.ToggleContentItemPreviewer),
+  toggleContentItemMenu: () => createAction(EditorActionType.ToggleContentItemMenu)
 };
 
 export type EditorActions = ActionUnion<typeof editorSyncActions>;
@@ -53,8 +55,9 @@ export interface EditorState {
   codeLang: string;
   focusedItemIndex: number;
   isFocusedWithHotKey: boolean;
-  isOpenedContentPreviewer: boolean;
-  isOpenedContentItemPreviewer: boolean;
+  isContentPreviewerOpened: boolean;
+  isContentItemPreviewerOpened: boolean;
+  isContentItemMenuOpened: boolean;
 }
 
 export const initialEditorState: EditorState = {
@@ -64,8 +67,9 @@ export const initialEditorState: EditorState = {
   codeLang: "js",
   focusedItemIndex: 0,
   isFocusedWithHotKey: false,
-  isOpenedContentPreviewer: false,
-  isOpenedContentItemPreviewer: false
+  isContentPreviewerOpened: false,
+  isContentItemPreviewerOpened: false,
+  isContentItemMenuOpened: false
 };
 
 export const editorReducer: Reducer<EditorState, EditorActions> = (state = initialEditorState, action) => {
@@ -74,8 +78,8 @@ export const editorReducer: Reducer<EditorState, EditorActions> = (state = initi
       return {
         ...state,
         ...action.payload,
-        isOpenedContentPreviewer: false,
-        isOpenedContentItemPreviewer: false
+        isContentPreviewerOpened: false,
+        isContentItemPreviewerOpened: false
       };
     }
     case EditorActionType.UpdateTitle: {
@@ -136,7 +140,8 @@ export const editorReducer: Reducer<EditorState, EditorActions> = (state = initi
       return {
         ...state,
         focusedItemIndex: action.payload.index,
-        isFocusedWithHotKey: false
+        isFocusedWithHotKey: false,
+        isContentItemMenuOpened: false
       };
     }
     case EditorActionType.FocusPreviousItem: {
@@ -145,7 +150,8 @@ export const editorReducer: Reducer<EditorState, EditorActions> = (state = initi
       return {
         ...state,
         focusedItemIndex: focusedItemIndex === 0 ? 0 : focusedItemIndex - 1,
-        isFocusedWithHotKey: true
+        isFocusedWithHotKey: true,
+        isContentItemMenuOpened: false
       };
     }
     case EditorActionType.FocusNextItem: {
@@ -155,19 +161,26 @@ export const editorReducer: Reducer<EditorState, EditorActions> = (state = initi
       return {
         ...state,
         focusedItemIndex: lastItemIndex === focusedItemIndex ? focusedItemIndex : focusedItemIndex + 1,
-        isFocusedWithHotKey: true
+        isFocusedWithHotKey: true,
+        isContentItemMenuOpened: false
       };
     }
     case EditorActionType.ToggleContentPreviewer: {
       return {
         ...state,
-        isOpenedContentPreviewer: !state.isOpenedContentPreviewer
+        isContentPreviewerOpened: !state.isContentPreviewerOpened
       };
     }
     case EditorActionType.ToggleContentItemPreviewer: {
       return {
         ...state,
-        isOpenedContentItemPreviewer: !state.isOpenedContentItemPreviewer
+        isContentItemPreviewerOpened: !state.isContentItemPreviewerOpened
+      };
+    }
+    case EditorActionType.ToggleContentItemMenu: {
+      return {
+        ...state,
+        isContentItemMenuOpened: !state.isContentItemMenuOpened
       };
     }
     default:

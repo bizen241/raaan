@@ -1,21 +1,36 @@
 import * as React from "react";
 import { FunctionComponent, useEffect, useRef } from "react";
 import { CodeItem, ContentItem, KanjiItem, MathItem, TextItem } from "../../../../shared/content";
-import { Button, Column, Details, Key, Row, Summary, TextArea } from "../../ui";
+import { Button, Chars, Column, Details, Key, Menu, Row, Summary, TextArea } from "../../ui";
 import { createShortcutHandler, ShortcutMap } from "../../utils/shortcut";
 
 export const ContentItemEditor: FunctionComponent<{
   index: number;
   item: ContentItem;
+  isVisible: boolean;
   isFocused: boolean;
   isFocusedWithHotKey: boolean;
-  isVisible: boolean;
   hotKey: string | undefined;
+  isMenuOpened: boolean;
   onUpdate: (index: number, item: ContentItem) => void;
   onDelete: (id: string) => void;
   onFocus: (index: number) => void;
-}> = ({ index, item, isFocused, isFocusedWithHotKey, isVisible, hotKey, onUpdate, onDelete, onFocus }) => {
+  toggleMenu: () => void;
+}> = ({
+  index,
+  item,
+  isVisible,
+  isFocused,
+  isFocusedWithHotKey,
+  isMenuOpened,
+  hotKey,
+  onUpdate,
+  onDelete,
+  onFocus,
+  toggleMenu
+}) => {
   const summaryRef = useRef<HTMLElement>(null);
+
   useEffect(() => {
     if (isFocused && summaryRef.current != null) {
       summaryRef.current.focus();
@@ -31,11 +46,12 @@ export const ContentItemEditor: FunctionComponent<{
   );
   useEffect(
     () => {
-      if (!isFocused || !isVisible) {
+      if (!isVisible || !isFocused) {
         return;
       }
 
       const shortcutMap: ShortcutMap = {
+        m: () => toggleMenu(),
         Escape: () => summaryRef.current && summaryRef.current.focus(),
         Delete: () => onDelete(item.id)
       };
@@ -46,7 +62,7 @@ export const ContentItemEditor: FunctionComponent<{
         document.removeEventListener("keydown", shortcutHandler);
       };
     },
-    [isFocused, isVisible]
+    [isVisible, isFocused]
   );
 
   const ItemEditor = editors[item.type];
@@ -54,24 +70,33 @@ export const ContentItemEditor: FunctionComponent<{
   return (
     <Details open onFocus={() => onFocus(index)}>
       <Summary ref={summaryRef}>
-        <Row center="cross" flex={1} padding="small">
+        <Row center="cross" flex={1} padding="small" style={{ position: "relative" }}>
           {index}
           <Row flex={1} />
           {hotKey !== undefined ? <Key>{hotKey}</Key> : null}
+          <Button
+            size="small"
+            onClick={e => {
+              e.preventDefault();
+              toggleMenu();
+            }}
+          >
+            ⋮{isFocused ? <Key>M</Key> : null}
+          </Button>
+          {isFocused && isMenuOpened ? (
+            <Menu padding="small">
+              <Row>
+                <Row flex={1} />
+                <Button size="small" onClick={() => onDelete(item.id)}>
+                  削除<Key>D</Key>
+                </Button>
+              </Row>
+            </Menu>
+          ) : null}
         </Row>
       </Summary>
       <Column padding="small">
-        <Column padding="small">
-          <ItemEditor item={item} onChange={(textItem: TextItem) => onUpdate(index, textItem)} />
-        </Column>
-        <Row padding="small">
-          <Row padding="small">
-            <Button size="small" onClick={() => onDelete(item.id)}>
-              削除
-              {isFocused ? <Key>D</Key> : null}
-            </Button>
-          </Row>
-        </Row>
+        <ItemEditor item={item} onChange={(textItem: TextItem) => onUpdate(index, textItem)} />
       </Column>
     </Details>
   );
@@ -94,6 +119,9 @@ const KanjiItemEditor: FunctionComponent<ContentItemEditorProps<KanjiItem>> = ({
   return (
     <Column>
       <Column>
+        <Row center="cross">
+          <Chars size="small">漢字</Chars>
+        </Row>
         <TextArea
           placeholder="漢字"
           value={item.kanji}
@@ -101,6 +129,9 @@ const KanjiItemEditor: FunctionComponent<ContentItemEditorProps<KanjiItem>> = ({
         />
       </Column>
       <Column>
+        <Row center="cross">
+          <Chars size="small">かな</Chars>
+        </Row>
         <TextArea
           placeholder="かな"
           value={item.value}

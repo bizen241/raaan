@@ -6,7 +6,8 @@ export const Summary = styled.summary<{
 }>`
   display: flex;
   align-items: center;
-  padding: 0 ${p => paddings[p.size || "medium"]};
+  padding-left: ${p => paddings[p.size || "medium"]};
+  background-color: ${p => p.theme.input};
   border-bottom-style: solid;
   border-width: 3px;
   border-color: ${p => p.theme.container};

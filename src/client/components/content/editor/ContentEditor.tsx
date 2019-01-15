@@ -26,16 +26,18 @@ export const ContentEditor = connector(
     focusItem,
     focusPreviousItem,
     focusNextItem,
-    toggleContentPreviewer
+    toggleContentPreviewer,
+    toggleContentItemMenu
   }) => {
     const {
       data,
       focusedItemIndex,
       isFocusedWithHotKey,
-      isOpenedContentPreviewer,
-      isOpenedContentItemPreviewer
+      isContentPreviewerOpened,
+      isContentItemPreviewerOpened,
+      isContentItemMenuOpened
     } = editor;
-    const isVisible = !isOpenedContentPreviewer && !isOpenedContentItemPreviewer;
+    const isVisible = !isContentPreviewerOpened && !isContentItemPreviewerOpened;
 
     const titleInputRef = useRef<HTMLInputElement>(null);
 
@@ -85,18 +87,26 @@ export const ContentEditor = connector(
           <Column padding="small">
             <Chars size="small">アイテム</Chars>
           </Column>
+          <Column padding="small">
+            <Button onClick={toggleContentPreviewer}>
+              プレビュー
+              <Key>P</Key>
+            </Button>
+          </Column>
           {data.items.map((item, index) => (
             <Column key={item.id} padding="small">
               <ContentItemEditor
                 index={index}
                 item={item}
+                isVisible={isVisible}
                 isFocused={index === focusedItemIndex}
                 isFocusedWithHotKey={isFocusedWithHotKey}
-                isVisible={isVisible}
                 hotKey={undefined}
+                isMenuOpened={isContentItemMenuOpened}
                 onUpdate={updateItem}
                 onDelete={deleteItem}
                 onFocus={focusItem}
+                toggleMenu={toggleContentItemMenu}
               />
             </Column>
           ))}
@@ -107,13 +117,7 @@ export const ContentEditor = connector(
             <Key>A</Key>
           </Button>
         </Column>
-        <Column padding="small">
-          <Button onClick={toggleContentPreviewer}>
-            プレビュー
-            <Key>P</Key>
-          </Button>
-        </Column>
-        <Modal isOpen={editor.isOpenedContentPreviewer} onRequestClose={toggleContentPreviewer} shouldCloseOnEsc={true}>
+        <Modal isOpen={editor.isContentPreviewerOpened} onRequestClose={toggleContentPreviewer} shouldCloseOnEsc={true}>
           <Column padding="small" flex={1}>
             <Column flex={1}>
               <ContentPlayer data={data} />
