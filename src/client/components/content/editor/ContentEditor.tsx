@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { connector } from "../../../reducers";
 import { editorActions } from "../../../reducers/editor";
 import { Button, Chars, Column, Input, Key, Modal, Row } from "../../ui";
-import { createShortcutHandler, ShortcutMap } from "../../utils/shortcut";
+import { createHotKeyHandler, HotKeyMap } from "../../utils/hotKey";
 import { ContentPlayer } from "../player/ContentPlayer";
 import { ContentItemEditor } from "./ContentItemEditor";
 
@@ -50,14 +50,14 @@ export const ContentEditor = connector(
           return () => null;
         }
 
-        const shortcutMap: ShortcutMap = {
+        const shortcutMap: HotKeyMap = {
           k: focusPreviousItem,
           j: focusNextItem,
           p: toggleContentPreviewer,
           t: () => titleInputRef.current && titleInputRef.current.focus()
         };
 
-        const shortcutHandler = createShortcutHandler(shortcutMap);
+        const shortcutHandler = createHotKeyHandler(shortcutMap);
         document.addEventListener("keydown", shortcutHandler);
         return () => {
           document.removeEventListener("keydown", shortcutHandler);

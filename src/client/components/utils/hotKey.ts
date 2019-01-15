@@ -1,8 +1,8 @@
-export interface ShortcutMap {
+export interface HotKeyMap {
   [key: string]: () => any | undefined;
 }
 
-export const createShortcutHandler = (shortcutMap: ShortcutMap) => (e: KeyboardEvent) => {
+export const createHotKeyHandler = (hotKeyMap: HotKeyMap) => (e: KeyboardEvent) => {
   const key = e.key;
   const target = e.target as HTMLElement | null;
   const tagName = target && target.tagName;
@@ -11,7 +11,7 @@ export const createShortcutHandler = (shortcutMap: ShortcutMap) => (e: KeyboardE
     return;
   }
 
-  const handler = shortcutMap[key];
+  const handler = hotKeyMap[key];
   if (handler === undefined) {
     return;
   }

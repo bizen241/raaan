@@ -2,7 +2,7 @@ import * as React from "react";
 import { FunctionComponent, useEffect, useRef } from "react";
 import { CodeItem, ContentItem, KanjiItem, MathItem, TextItem } from "../../../../shared/content";
 import { Button, Chars, Column, Details, Key, Menu, Row, Summary, TextArea } from "../../ui";
-import { createShortcutHandler, ShortcutMap } from "../../utils/shortcut";
+import { createHotKeyHandler, HotKeyMap } from "../../utils/hotKey";
 
 export const ContentItemEditor: FunctionComponent<{
   index: number;
@@ -50,13 +50,13 @@ export const ContentItemEditor: FunctionComponent<{
         return;
       }
 
-      const shortcutMap: ShortcutMap = {
+      const shortcutMap: HotKeyMap = {
         m: () => toggleMenu(),
         Escape: () => summaryRef.current && summaryRef.current.focus(),
         Delete: () => onDelete(item.id)
       };
 
-      const shortcutHandler = createShortcutHandler(shortcutMap);
+      const shortcutHandler = createHotKeyHandler(shortcutMap);
       document.addEventListener("keydown", shortcutHandler);
       return () => {
         document.removeEventListener("keydown", shortcutHandler);
