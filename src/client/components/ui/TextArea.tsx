@@ -24,5 +24,6 @@ export const TextArea = styled(TextAreaAutosize)<{
   :hover,
   :focus {
     border-bottom-color: ${p => p.theme.accent};
+    outline: none;
   }
 `;

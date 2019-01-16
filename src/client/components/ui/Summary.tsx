@@ -21,6 +21,10 @@ export const Summary = styled.summary<{
     font-size: 0.8em;
   }
 
+  ::-webkit-details-marker {
+    display: none;
+  }
+
   details[open] &::before {
     content: "▼";
   }

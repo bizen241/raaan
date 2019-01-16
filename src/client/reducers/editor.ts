@@ -6,10 +6,11 @@ import { contentItemCreators, createContentData } from "../domain/content";
 export enum EditorActionType {
   Update = "editor/update",
   UpdateTitle = "editor/update-title",
-  AddItem = "editor/add-item",
+  PushItem = "editor/push-item",
   UpdateItem = "editor/update-item",
   MoveItem = "editor/move-item",
   DeleteItem = "editor/delete-item",
+  SelectItemType = "editor/select-item-type",
   FocusItem = "editor/focus-item",
   FocusPreviousItem = "editor/focus-previous-item",
   FocusNextItem = "editor/focus-next-item",
@@ -21,10 +22,11 @@ export enum EditorActionType {
 const editorSyncActions = {
   update: (id: string, data: ContentData) => createAction(EditorActionType.Update, { id, data }),
   updateTitle: (value: string) => createAction(EditorActionType.UpdateTitle, { value }),
-  addItem: (index: number, type: ContentItem["type"]) => createAction(EditorActionType.AddItem, { index, type }),
+  pushItem: () => createAction(EditorActionType.PushItem),
   updateItem: (index: number, item: ContentItem) => createAction(EditorActionType.UpdateItem, { index, item }),
   moveItem: (from: number, to: number) => createAction(EditorActionType.MoveItem, { from, to }),
   deleteItem: (id: string) => createAction(EditorActionType.DeleteItem, { id }),
+  selectItemType: (type: ContentItem["type"]) => createAction(EditorActionType.SelectItemType, { type }),
   focusItem: (index: number) => createAction(EditorActionType.FocusItem, { index }),
   focusPreviousItem: () => createAction(EditorActionType.FocusPreviousItem),
   focusNextItem: () => createAction(EditorActionType.FocusNextItem),
@@ -54,6 +56,7 @@ export interface EditorState {
   textLang: string;
   codeLang: string;
   focusedItemIndex: number;
+  selectedItemType: ContentItem["type"];
   isFocusedWithHotKey: boolean;
   isContentPreviewerOpened: boolean;
   isContentItemPreviewerOpened: boolean;
@@ -66,6 +69,7 @@ export const initialEditorState: EditorState = {
   textLang: "ja",
   codeLang: "js",
   focusedItemIndex: 0,
+  selectedItemType: "kanji",
   isFocusedWithHotKey: false,
   isContentPreviewerOpened: false,
   isContentItemPreviewerOpened: false,
@@ -91,19 +95,17 @@ export const editorReducer: Reducer<EditorState, EditorActions> = (state = initi
         }
       };
     }
-    case EditorActionType.AddItem: {
-      const { index, type } = action.payload;
+    case EditorActionType.PushItem: {
       const items = [...state.data.items];
-
-      const item = contentItemCreators[type]();
+      const item = contentItemCreators[state.selectedItemType]();
 
       return {
         ...state,
         data: {
           ...state.data,
-          items: [...items.slice(0, index), item, ...items.slice(index)]
+          items: [...items, item]
         },
-        focusedItemIndex: index
+        focusedItemIndex: items.length
       };
     }
     case EditorActionType.UpdateItem: {
@@ -133,7 +135,14 @@ export const editorReducer: Reducer<EditorState, EditorActions> = (state = initi
           items: [...items.slice(0, index), ...items.slice(index + 1)]
         },
         focusedItemIndex: index === items.length - 1 ? index - 1 : index,
-        isFocusedWithHotKey: true
+        isFocusedWithHotKey: true,
+        isContentItemMenuOpened: false
+      };
+    }
+    case EditorActionType.SelectItemType: {
+      return {
+        ...state,
+        selectedItemType: action.payload.type
       };
     }
     case EditorActionType.FocusItem: {
@@ -168,13 +177,17 @@ export const editorReducer: Reducer<EditorState, EditorActions> = (state = initi
     case EditorActionType.ToggleContentPreviewer: {
       return {
         ...state,
-        isContentPreviewerOpened: !state.isContentPreviewerOpened
+        isContentPreviewerOpened: !state.isContentPreviewerOpened,
+        isContentItemPreviewerOpened: false,
+        isContentItemMenuOpened: false
       };
     }
     case EditorActionType.ToggleContentItemPreviewer: {
       return {
         ...state,
-        isContentItemPreviewerOpened: !state.isContentItemPreviewerOpened
+        isContentPreviewerOpened: false,
+        isContentItemPreviewerOpened: !state.isContentItemPreviewerOpened,
+        isContentItemMenuOpened: false
       };
     }
     case EditorActionType.ToggleContentItemMenu: {

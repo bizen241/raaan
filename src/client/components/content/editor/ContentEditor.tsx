@@ -6,6 +6,7 @@ import { Button, Chars, Column, Input, Key, Modal, Row } from "../../ui";
 import { createHotKeyHandler, HotKeyMap } from "../../utils/hotKey";
 import { ContentPlayer } from "../player/ContentPlayer";
 import { ContentItemEditor } from "./ContentItemEditor";
+import { ContentItemTypeSelector } from "./ContentItemTypeSelector";
 
 export const ContentEditor = connector(
   (state, ownProps: { id: string }) => ({
@@ -20,9 +21,10 @@ export const ContentEditor = connector(
     editor,
     load,
     updateTitle,
-    addItem,
+    pushItem,
     updateItem,
     deleteItem,
+    selectItemType,
     focusItem,
     focusPreviousItem,
     focusNextItem,
@@ -32,6 +34,7 @@ export const ContentEditor = connector(
     const {
       data,
       focusedItemIndex,
+      selectedItemType,
       isFocusedWithHotKey,
       isContentPreviewerOpened,
       isContentItemPreviewerOpened,
@@ -40,6 +43,7 @@ export const ContentEditor = connector(
     const isVisible = !isContentPreviewerOpened && !isContentItemPreviewerOpened;
 
     const titleInputRef = useRef<HTMLInputElement>(null);
+    const typeSelectRef = useRef<HTMLSelectElement>(null);
 
     useEffect(() => {
       load(id);
@@ -51,9 +55,11 @@ export const ContentEditor = connector(
         }
 
         const shortcutMap: HotKeyMap = {
+          a: pushItem,
           k: focusPreviousItem,
           j: focusNextItem,
           p: toggleContentPreviewer,
+          s: () => typeSelectRef.current && typeSelectRef.current.focus(),
           t: () => titleInputRef.current && titleInputRef.current.focus()
         };
 
@@ -112,7 +118,20 @@ export const ContentEditor = connector(
           ))}
         </Column>
         <Column padding="small">
-          <Button onClick={() => addItem(data.items.length, "kanji")}>
+          <label>
+            <Column>
+              <Row center="cross">
+                <Chars size="small">アイテムの種類</Chars>
+                <Key>S</Key>
+              </Row>
+              <ContentItemTypeSelector
+                selectRef={typeSelectRef}
+                selected={selectedItemType}
+                onChange={selectItemType}
+              />
+            </Column>
+          </label>
+          <Button onClick={() => pushItem()}>
             追加
             <Key>A</Key>
           </Button>

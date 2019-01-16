@@ -13,6 +13,7 @@ export const Button = styled.button<{
   padding: ${p => paddings[p.size || "medium"]} 1rem;
   border-style: solid;
   border-width: 1px;
+  border-left-width: 3px;
   border-color: ${p => p.theme.border};
   border-radius: 2px;
   background-color: ${p => p.theme.input};
@@ -29,5 +30,6 @@ export const Button = styled.button<{
   :focus,
   :hover {
     border-color: ${p => p.theme.accent};
+    outline: none;
   }
 `;

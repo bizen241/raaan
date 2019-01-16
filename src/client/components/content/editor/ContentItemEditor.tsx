@@ -87,7 +87,7 @@ export const ContentItemEditor: FunctionComponent<{
             <Menu padding="small">
               <Row>
                 <Row flex={1} />
-                <Button size="small" onClick={() => onDelete(item.id)}>
+                <Button size="small" onClick={() => onDelete(item.id)} onFocus={e => e.stopPropagation()}>
                   削除<Key>D</Key>
                 </Button>
               </Row>
@@ -118,26 +118,22 @@ const TextItemEditor: FunctionComponent<ContentItemEditorProps<TextItem>> = ({ i
 const KanjiItemEditor: FunctionComponent<ContentItemEditorProps<KanjiItem>> = ({ item, onChange }) => {
   return (
     <Column>
-      <Column>
-        <Row center="cross">
-          <Chars size="small">漢字</Chars>
-        </Row>
-        <TextArea
-          placeholder="漢字"
-          value={item.kanji}
-          onChange={e => onChange({ ...item, kanji: e.currentTarget.value })}
-        />
-      </Column>
-      <Column>
-        <Row center="cross">
-          <Chars size="small">かな</Chars>
-        </Row>
-        <TextArea
-          placeholder="かな"
-          value={item.value}
-          onChange={e => onChange({ ...item, value: e.currentTarget.value })}
-        />
-      </Column>
+      <label>
+        <Column>
+          <Row center="cross">
+            <Chars size="small">漢字</Chars>
+          </Row>
+          <TextArea value={item.kanji} onChange={e => onChange({ ...item, kanji: e.currentTarget.value })} />
+        </Column>
+      </label>
+      <label>
+        <Column>
+          <Row center="cross">
+            <Chars size="small">かな</Chars>
+          </Row>
+          <TextArea value={item.value} onChange={e => onChange({ ...item, value: e.currentTarget.value })} />
+        </Column>
+      </label>
     </Column>
   );
 };
