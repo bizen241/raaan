@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { ContentData } from "../../../../shared/content";
 import { connector } from "../../../reducers";
 import { playerActions } from "../../../reducers/player";
-import { Column } from "../../ui";
+import { Chars, Column } from "../../ui";
 import { ContentItemPlayer } from "./ContentItemPlayer";
 
 export const ContentPlayer = connector(
@@ -26,7 +26,13 @@ export const ContentPlayer = connector(
       return <div>Empty</div>;
     }
     if (attempt.isFinished) {
-      return <div>Finished</div>;
+      return (
+        <Column>
+          {attempt.results.map((result, index) => (
+            <Chars key={index}>{(result.typeCount / result.time) * 1000}</Chars>
+          ))}
+        </Column>
+      );
     }
 
     const currentItemIndex = attempt.plan[attempt.cursor];

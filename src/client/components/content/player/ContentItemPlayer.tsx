@@ -16,6 +16,9 @@ interface ContentItemPlayerState {
   typedString: string;
   typedSource: string;
   hasTypo: boolean;
+  startedAt: number;
+  isSuspended: boolean;
+  totalTime: number;
   isCurrentItemFinished: boolean;
   isCurrentLineFinished: boolean;
 }
@@ -35,8 +38,13 @@ export const ContentItemPlayer: React.FunctionComponent<{
         onFinish({
           id: item.id,
           accuracy: 100,
-          time: 0
+          time: state.totalTime,
+          typeCount: state.typedLines
+            .map(line => line.length)
+            .reduce((totalLength, lineLength) => totalLength + lineLength, 0)
         });
+
+        return;
       }
 
       const onKeyDown = (e: KeyboardEvent) => {
@@ -48,6 +56,18 @@ export const ContentItemPlayer: React.FunctionComponent<{
     },
     [isCurrentItemFinished]
   );
+  useEffect(() => {
+    const suspend = () => {
+      setState({
+        ...state,
+        isSuspended: true,
+        totalTime: state.totalTime + (Date.now() - state.startedAt)
+      });
+    };
+
+    const timeoutId = setTimeout(suspend, 3000);
+    return clearTimeout(timeoutId);
+  });
 
   const untypedString = state.untypedChars.map(char => char.compiled[0]).join("");
   const untypedSource = state.untypedChars.map(char => char.source).join("");
@@ -83,6 +103,9 @@ const getInitialState = (compiledItem: CompiledItem): ContentItemPlayerState => 
     typedSource: "",
     typedString: "",
     hasTypo: false,
+    startedAt: 0,
+    isSuspended: true,
+    totalTime: 0,
     isCurrentItemFinished: compiledItem.length === 0 || (compiledItem.length === 1 && currentLine.length === 0),
     isCurrentLineFinished: currentLine.length === 0
   };
@@ -91,20 +114,23 @@ const getInitialState = (compiledItem: CompiledItem): ContentItemPlayerState => 
 const getNextState = (previousState: ContentItemPlayerState, e: KeyboardEvent): ContentItemPlayerState => {
   const { key } = e;
 
-  if (previousState.isCurrentItemFinished) {
-    return previousState;
+  const nextState: ContentItemPlayerState = { ...previousState };
+
+  if (previousState.isSuspended) {
+    nextState.isSuspended = false;
+    nextState.startedAt = Date.now();
   }
 
   if (previousState.isCurrentLineFinished) {
     if (key !== "Enter") {
-      return previousState;
+      return nextState;
     }
 
     const nextLine = previousState.untypedLines[0];
     const nextChar = nextLine[0];
 
     return {
-      ...previousState,
+      ...nextState,
       untypedLines: previousState.untypedLines.slice(1),
       untypedChars: nextLine.slice(1),
       untypedCharStrings: [...nextChar.compiled],
@@ -122,17 +148,14 @@ const getNextState = (previousState: ContentItemPlayerState, e: KeyboardEvent): 
     .map(charString => charString.slice(1));
   if (updatedUntypedCharStrings.length === 0) {
     return {
-      ...previousState,
+      ...nextState,
       hasTypo: true
     };
   }
 
-  const nextState: ContentItemPlayerState = {
-    ...previousState,
-    untypedCharStrings: updatedUntypedCharStrings,
-    typedString: previousState.typedString.concat(key),
-    hasTypo: false
-  };
+  nextState.untypedCharStrings = updatedUntypedCharStrings;
+  nextState.typedString = previousState.typedString.concat(key);
+  nextState.hasTypo = false;
 
   const isCurrentCharFinished = updatedUntypedCharStrings.some(charString => charString.length === 0);
   if (!isCurrentCharFinished) {
@@ -160,6 +183,9 @@ const getNextState = (previousState: ContentItemPlayerState, e: KeyboardEvent): 
 
   return {
     ...nextState,
-    isCurrentItemFinished: true
+    isCurrentItemFinished: true,
+    isSuspended: true,
+    typedLines: [...previousState.typedLines, previousState.typedString],
+    totalTime: previousState.totalTime + (Date.now() - previousState.startedAt)
   };
 };

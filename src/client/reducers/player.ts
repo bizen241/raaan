@@ -16,6 +16,7 @@ export interface ContentItemResult {
   id: string;
   time: number;
   accuracy: number;
+  typeCount: number;
 }
 
 export const playerActions = {
