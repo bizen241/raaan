@@ -63,6 +63,7 @@ export const ContentItemPlayer: React.FunctionComponent<{
         typedLines={state.typedLines}
         typedString={state.typedString}
         typedSource={state.typedSource}
+        hasTypo={state.hasTypo}
       />
     </Column>
   );

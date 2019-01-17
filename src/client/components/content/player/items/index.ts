@@ -8,6 +8,7 @@ export interface ContentItemRendererProps<T extends ContentItem> {
   typedLines: string[];
   typedString: string;
   typedSource: string;
+  hasTypo: boolean;
 }
 
 export const contentItemTypeToRenderer: {

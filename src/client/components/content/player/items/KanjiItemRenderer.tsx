@@ -2,7 +2,7 @@ import * as React from "react";
 import { ContentItemRendererProps } from ".";
 import { KanjiItem } from "../../../../../shared/content";
 import { Chars, Column, Row } from "../../../ui";
-import { TypedChars, UntypedCharsWrapper } from "./utils";
+import { TypedChars, TypoKey, UntypedCharsWrapper } from "./utils";
 
 export const KanjiItemRenderer: React.FunctionComponent<ContentItemRendererProps<KanjiItem>> = ({
   item,
@@ -10,7 +10,8 @@ export const KanjiItemRenderer: React.FunctionComponent<ContentItemRendererProps
   untypedString,
   typedLines,
   typedString,
-  typedSource
+  typedSource,
+  hasTypo
 }) => {
   const typedLinesCount = typedLines.length;
   const kanjiLines = item.kanji.split("\n");
@@ -35,8 +36,9 @@ export const KanjiItemRenderer: React.FunctionComponent<ContentItemRendererProps
       </Row>
       <Row padding="small">
         <TypedChars>{typedString}</TypedChars>
+        {!hasTypo ? <Chars>{untypedString[0]}</Chars> : <TypoKey key={performance.now()}>{untypedString[0]}</TypoKey>}
         <UntypedCharsWrapper>
-          <Chars>{untypedString}</Chars>
+          <Chars>{untypedString.slice(1)}</Chars>
         </UntypedCharsWrapper>
       </Row>
     </Column>

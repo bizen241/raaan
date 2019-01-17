@@ -10,6 +10,12 @@ export interface Theme {
   accent: string;
 }
 
-const { default: styled, createGlobalStyle, ThemeProvider } = styledComponents as ThemedStyledComponentsModule<Theme>;
+const {
+  default: styled,
+  css,
+  keyframes,
+  createGlobalStyle,
+  ThemeProvider
+} = styledComponents as ThemedStyledComponentsModule<Theme>;
 
-export { styled, createGlobalStyle, ThemeProvider };
+export { styled, css, keyframes, createGlobalStyle, ThemeProvider };
