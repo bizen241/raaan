@@ -7,6 +7,7 @@ const Flex = styled.div<{
   padding?: Size;
 }>`
   display: flex;
+  min-width: 0;
   align-items: ${p => (p.center === "cross" || p.center === "both" ? "center" : "unset")};
   justify-content: ${p => (p.center === "main" || p.center === "both" ? "center" : "unset")};
   flex: ${p => p.flex || "initial"};

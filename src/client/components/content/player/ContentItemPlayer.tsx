@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { ContentItem } from "../../../../shared/content";
 import { CompiledChar, CompiledItem, CompiledLine } from "../../../domain/content/compiler";
 import { ContentItemResult } from "../../../reducers/player";
-import { Chars, Column } from "../../ui";
+import { Column } from "../../ui";
+import { contentItemTypeToRenderer } from "./items";
 
 interface ContentItemPlayerState {
   untypedLines: CompiledItem;
@@ -13,6 +14,7 @@ interface ContentItemPlayerState {
   currentChar: CompiledChar;
   typedLines: string[];
   typedString: string;
+  typedSource: string;
   hasTypo: boolean;
   isCurrentItemFinished: boolean;
   isCurrentLineFinished: boolean;
@@ -25,9 +27,11 @@ export const ContentItemPlayer: React.FunctionComponent<{
 }> = ({ item, compiledItem, onFinish }) => {
   const [state, setState] = useState<ContentItemPlayerState>(() => getInitialState(compiledItem));
 
+  const { isCurrentItemFinished, isCurrentLineFinished } = state;
+
   useEffect(
     () => {
-      if (state.isCurrentItemFinished) {
+      if (isCurrentItemFinished) {
         onFinish({
           id: item.id,
           accuracy: 100,
@@ -42,23 +46,24 @@ export const ContentItemPlayer: React.FunctionComponent<{
       document.addEventListener("keydown", onKeyDown);
       return () => document.removeEventListener("keydown", onKeyDown);
     },
-    [state.isCurrentItemFinished]
+    [isCurrentItemFinished]
   );
 
   const untypedString = state.untypedChars.map(char => char.compiled[0]).join("");
+  const untypedSource = state.untypedChars.map(char => char.source).join("");
 
-  if (item.type !== "kanji") {
-    return null;
-  }
+  const Renderer = contentItemTypeToRenderer[item.type];
 
   return (
     <Column center="main" flex={1}>
-      <Chars>{item.kanji}</Chars>
-      <Chars>{item.value}</Chars>
-      <Chars>
-        {state.typedString}/{state.untypedCharStrings[0]}
-        {untypedString}
-      </Chars>
+      <Renderer
+        item={item}
+        untypedSource={`${isCurrentLineFinished ? "" : state.currentChar.source}${untypedSource}`}
+        untypedString={`${state.untypedCharStrings[0]}${untypedString}`}
+        typedLines={state.typedLines}
+        typedString={state.typedString}
+        typedSource={state.typedSource}
+      />
     </Column>
   );
 };
@@ -74,6 +79,7 @@ const getInitialState = (compiledItem: CompiledItem): ContentItemPlayerState => 
     currentLine,
     currentChar,
     typedLines: [],
+    typedSource: "",
     typedString: "",
     hasTypo: false,
     isCurrentItemFinished: compiledItem.length === 0 || (compiledItem.length === 1 && currentLine.length === 0),
@@ -104,6 +110,7 @@ const getNextState = (previousState: ContentItemPlayerState, e: KeyboardEvent): 
       currentLine: nextLine,
       currentChar: nextChar,
       typedLines: [...previousState.typedLines, previousState.typedString],
+      typedSource: "",
       typedString: "",
       isCurrentLineFinished: false
     };
@@ -131,22 +138,23 @@ const getNextState = (previousState: ContentItemPlayerState, e: KeyboardEvent): 
     return nextState;
   }
 
+  nextState.typedSource = previousState.typedSource.concat(previousState.currentChar.source);
+  nextState.untypedChars = previousState.untypedChars.slice(1);
+
   if (previousState.untypedChars.length !== 0) {
     const nextChar = previousState.untypedChars[0];
 
     return {
       ...nextState,
-      untypedChars: previousState.untypedChars.slice(1),
       untypedCharStrings: [...nextChar.compiled],
       currentChar: nextChar
     };
   }
 
+  nextState.isCurrentLineFinished = true;
+
   if (previousState.untypedLines.length !== 0) {
-    return {
-      ...nextState,
-      isCurrentLineFinished: true
-    };
+    return nextState;
   }
 
   return {
