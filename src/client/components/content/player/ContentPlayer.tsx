@@ -29,7 +29,10 @@ export const ContentPlayer = connector(
       return (
         <Column>
           {attempt.results.map((result, index) => (
-            <Chars key={index}>{(result.typeCount / result.time) * 1000}</Chars>
+            <Column key={index}>
+              <Chars>{(result.typeCount / result.time) * 1000}</Chars>
+              <pre>{JSON.stringify(result.typoMap, undefined, "  ")}</pre>
+            </Column>
           ))}
         </Column>
       );

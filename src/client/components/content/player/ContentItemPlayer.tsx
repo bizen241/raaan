@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { ContentItem } from "../../../../shared/content";
 import { CompiledChar, CompiledItem, CompiledLine } from "../../../domain/content/compiler";
-import { ContentItemResult } from "../../../reducers/player";
+import { ContentItemResult, TypoMap } from "../../../reducers/player";
 import { Column } from "../../ui";
 import { contentItemTypeToRenderer } from "./items";
 
@@ -16,6 +16,7 @@ interface ContentItemPlayerState {
   typedString: string;
   typedSource: string;
   hasTypo: boolean;
+  typoMap: TypoMap;
   startedAt: number;
   isSuspended: boolean;
   totalTime: number;
@@ -37,11 +38,11 @@ export const ContentItemPlayer: React.FunctionComponent<{
       if (isCurrentItemFinished) {
         onFinish({
           id: item.id,
-          accuracy: 100,
           time: state.totalTime,
           typeCount: state.typedLines
             .map(line => line.length)
-            .reduce((totalLength, lineLength) => totalLength + lineLength, 0)
+            .reduce((totalLength, lineLength) => totalLength + lineLength, 0),
+          typoMap: state.typoMap
         });
 
         return;
@@ -103,6 +104,7 @@ const getInitialState = (compiledItem: CompiledItem): ContentItemPlayerState => 
     typedSource: "",
     typedString: "",
     hasTypo: false,
+    typoMap: {},
     startedAt: 0,
     isSuspended: true,
     totalTime: 0,
@@ -153,8 +155,15 @@ const getNextState = (previousState: ContentItemPlayerState, e: KeyboardEvent): 
     };
   }
 
+  if (previousState.hasTypo) {
+    const previousTypoCount = previousState.typoMap[key] || 0;
+    nextState.typoMap[key] = previousTypoCount + 1;
+  }
+
+  const nextTypedString = previousState.typedString.concat(key);
+
   nextState.untypedCharStrings = updatedUntypedCharStrings;
-  nextState.typedString = previousState.typedString.concat(key);
+  nextState.typedString = nextTypedString;
   nextState.hasTypo = false;
 
   const isCurrentCharFinished = updatedUntypedCharStrings.some(charString => charString.length === 0);
@@ -185,7 +194,7 @@ const getNextState = (previousState: ContentItemPlayerState, e: KeyboardEvent): 
     ...nextState,
     isCurrentItemFinished: true,
     isSuspended: true,
-    typedLines: [...previousState.typedLines, previousState.typedString],
+    typedLines: [...previousState.typedLines, nextTypedString],
     totalTime: previousState.totalTime + (Date.now() - previousState.startedAt)
   };
 };

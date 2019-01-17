@@ -12,11 +12,15 @@ export enum PlayerActionType {
   Finish = "player/finish"
 }
 
+export interface TypoMap {
+  [key: string]: number | undefined;
+}
+
 export interface ContentItemResult {
   id: string;
   time: number;
-  accuracy: number;
   typeCount: number;
+  typoMap: TypoMap;
 }
 
 export const playerActions = {
