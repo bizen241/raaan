@@ -28,8 +28,8 @@ export const ContentPlayer = connector(
     }
     if (attempt.isFinished) {
       return (
-        <Column flex={1} center="both">
-          <AttemptResultRenderer attempt={attempt} />;
+        <Column flex={1} center="main">
+          <AttemptResultRenderer attempt={attempt} />
         </Column>
       );
     }
