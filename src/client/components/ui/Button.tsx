@@ -29,7 +29,7 @@ export const Button = styled.button<{
 
   :focus,
   :hover {
-    border-color: ${p => p.theme.accent};
+    border-color: ${p => p.theme.focus};
     outline: none;
   }
 `;

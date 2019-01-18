@@ -7,6 +7,7 @@ export interface Theme {
   text: string;
   input: string;
   container: string;
+  focus: string;
   accent: string;
 }
 

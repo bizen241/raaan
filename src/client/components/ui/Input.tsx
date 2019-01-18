@@ -20,7 +20,7 @@ export const Input = styled.input<{
 
   :hover,
   :focus {
-    border-bottom-color: ${p => p.theme.accent};
+    border-bottom-color: ${p => p.theme.focus};
     outline: none;
   }
 `;

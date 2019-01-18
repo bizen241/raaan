@@ -22,7 +22,7 @@ export const Select = styled.select`
 
   :hover,
   :focus {
-    border-bottom-color: ${p => p.theme.accent};
+    border-bottom-color: ${p => p.theme.focus};
     outline: none;
   }
 `;

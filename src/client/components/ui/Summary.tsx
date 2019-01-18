@@ -31,7 +31,7 @@ export const Summary = styled.summary<{
 
   :hover,
   :focus {
-    border-color: ${p => p.theme.accent};
+    border-color: ${p => p.theme.focus};
     outline: none;
   }
 `;
