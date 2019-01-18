@@ -7,5 +7,6 @@ export * from "./Key";
 export * from "./Menu";
 export * from "./Modal";
 export * from "./Select";
+export * from "./Separator";
 export * from "./Summary";
 export * from "./TextArea";

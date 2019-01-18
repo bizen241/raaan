@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useRef } from "react";
 import { connector } from "../../../reducers";
 import { editorActions } from "../../../reducers/editor";
-import { Button, Chars, Column, Input, Key, Modal, Row } from "../../ui";
+import { Button, Chars, Column, DottedSeparator, DoubleSeparator, Input, Key, Modal, Row } from "../../ui";
 import { createHotKeyHandler, HotKeyMap } from "../../utils/hotKey";
 import { ContentPlayer } from "../player/ContentPlayer";
 import { ContentItemEditor } from "./ContentItemEditor";
@@ -89,15 +89,12 @@ export const ContentEditor = connector(
             </Column>
           </label>
         </Column>
+        <Column padding="small">
+          <DoubleSeparator />
+        </Column>
         <Column>
           <Column padding="small">
             <Chars size="small">アイテム</Chars>
-          </Column>
-          <Column padding="small">
-            <Button onClick={toggleContentPreviewer}>
-              プレビュー
-              <Key>P</Key>
-            </Button>
           </Column>
           {data.items.map((item, index) => (
             <Column key={item.id} padding="small">
@@ -118,23 +115,39 @@ export const ContentEditor = connector(
           ))}
         </Column>
         <Column padding="small">
-          <label>
-            <Column>
-              <Row center="cross">
-                <Chars size="small">アイテムの種類</Chars>
-                <Key>S</Key>
-              </Row>
-              <ContentItemTypeSelector
-                selectRef={typeSelectRef}
-                selected={selectedItemType}
-                onChange={selectItemType}
-              />
-            </Column>
-          </label>
-          <Button onClick={() => pushItem()}>
-            追加
-            <Key>A</Key>
-          </Button>
+          <DottedSeparator />
+        </Column>
+        <Column>
+          <Column center="both">
+            <Column />
+          </Column>
+          <Column padding="small">
+            <label>
+              <Column>
+                <Row center="cross">
+                  <Chars size="small">追加するアイテムの種類</Chars>
+                  <Key>S</Key>
+                </Row>
+                <ContentItemTypeSelector
+                  selectRef={typeSelectRef}
+                  selected={selectedItemType}
+                  onChange={selectItemType}
+                />
+              </Column>
+            </label>
+          </Column>
+          <Column padding="small">
+            <Button onClick={() => pushItem()}>
+              追加
+              <Key>A</Key>
+            </Button>
+          </Column>
+          <Column padding="small">
+            <Button onClick={toggleContentPreviewer}>
+              プレビュー
+              <Key>P</Key>
+            </Button>
+          </Column>
         </Column>
         <Modal isOpen={editor.isContentPreviewerOpened} onRequestClose={toggleContentPreviewer} shouldCloseOnEsc={true}>
           <Column padding="small" flex={1}>

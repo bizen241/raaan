@@ -9,7 +9,7 @@ const theme: Theme = {
   input: "#202020",
   container: "#282828",
   focus: "#3e50b4",
-  accent: "#eeeeee"
+  accent: "#888888"
 };
 
 export const Style = connector(
