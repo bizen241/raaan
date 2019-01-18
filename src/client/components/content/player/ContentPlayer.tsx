@@ -3,7 +3,8 @@ import { useEffect } from "react";
 import { ContentData } from "../../../../shared/content";
 import { connector } from "../../../reducers";
 import { playerActions } from "../../../reducers/player";
-import { Chars, Column } from "../../ui";
+import { Column } from "../../ui";
+import { AttemptResultRenderer } from "./AttemptResultRenderer";
 import { ContentItemPlayer } from "./ContentItemPlayer";
 
 export const ContentPlayer = connector(
@@ -27,13 +28,8 @@ export const ContentPlayer = connector(
     }
     if (attempt.isFinished) {
       return (
-        <Column>
-          {attempt.results.map((result, index) => (
-            <Column key={index}>
-              <Chars>{(result.typeCount / result.time) * 1000}</Chars>
-              <pre>{JSON.stringify(result.typoMap, undefined, "  ")}</pre>
-            </Column>
-          ))}
+        <Column flex={1} center="both">
+          <AttemptResultRenderer attempt={attempt} />;
         </Column>
       );
     }
