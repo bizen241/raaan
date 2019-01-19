@@ -14,27 +14,37 @@ export const AttemptResultRenderer: React.FunctionComponent<{
     <Column>
       <Column center="cross" padding="medium">
         <Chars size="small">スコア</Chars>
-        <Chars size="large">{score.toFixed(0)}</Chars>
+        <Column padding="small">
+          <Chars size="large">{score.toFixed(0)}</Chars>
+        </Column>
       </Column>
       <DoubleSeparator />
       <Column center="cross" padding="small">
         <Chars size="small">時間</Chars>
-        <Chars>{totalTime.toFixed(2)}&nbsp;秒</Chars>
+        <Column padding="small">
+          <Chars>{totalTime.toFixed(2)}&nbsp;秒</Chars>
+        </Column>
       </Column>
       <DottedSeparator />
       <Column center="cross" padding="small">
         <Chars size="small">スピード</Chars>
-        <Chars>{typeSpeed.toFixed(2)}&nbsp;打/秒</Chars>
+        <Column padding="small">
+          <Chars>{typeSpeed.toFixed(2)}&nbsp;打/秒</Chars>
+        </Column>
       </Column>
       <DoubleSeparator />
       <Column center="cross" padding="small">
         <Chars size="small">正確性</Chars>
-        <Chars>86&nbsp;%</Chars>
+        <Column padding="small">
+          <Chars>86&nbsp;%</Chars>
+        </Column>
       </Column>
       <DottedSeparator />
       <Column center="cross" padding="small">
         <Chars size="small">ミス</Chars>
-        <Chars>K&nbsp;S&nbsp;V</Chars>
+        <Column padding="small">
+          <Chars>K&nbsp;S&nbsp;V</Chars>
+        </Column>
       </Column>
     </Column>
   );
