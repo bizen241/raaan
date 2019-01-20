@@ -77,7 +77,7 @@ export const ContentEditor = connector(
     }
 
     return (
-      <Column flex={1}>
+      <Column flex={1} style={{ overflowY: "auto" }}>
         <Column padding="small">
           <label>
             <Column>

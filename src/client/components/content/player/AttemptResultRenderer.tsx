@@ -8,7 +8,7 @@ export const AttemptResultRenderer: React.FunctionComponent<{
   const totalTime = results.reduce((time, result) => time + result.time, 0) / 1000;
   const totalTypeCount = results.reduce((typeCount, result) => typeCount + result.typeCount, 0);
   const typeSpeed = totalTypeCount / totalTime;
-  const score = typeSpeed * 0.86 * 60;
+  const score = typeSpeed * 1 * 60;
 
   return (
     <Column>
@@ -36,14 +36,14 @@ export const AttemptResultRenderer: React.FunctionComponent<{
       <Column center="cross" padding="small">
         <Chars size="small">正確性</Chars>
         <Column padding="small">
-          <Chars>86&nbsp;%</Chars>
+          <Chars>??&nbsp;%</Chars>
         </Column>
       </Column>
       <DottedSeparator />
       <Column center="cross" padding="small">
         <Chars size="small">ミス</Chars>
         <Column padding="small">
-          <Chars>K&nbsp;S&nbsp;V</Chars>
+          <Chars>?&nbsp;?&nbsp;?</Chars>
         </Column>
       </Column>
     </Column>
