@@ -63,6 +63,7 @@ const webpackDevServerConfiguration = isDevelopment
  */
 const webpackConfiguration = {
   mode,
+  devtool: isDevelopment ? "source-map" : undefined,
   entry: join(__dirname, "src/client/index.ts"),
   output: {
     filename: "[name].js",
@@ -85,6 +86,17 @@ const webpackConfiguration = {
               transpileOnly: true,
               configFile: join(__dirname, "config/tsconfig.client.json")
             }
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: "style-loader/url"
+          },
+          {
+            loader: "file-loader"
           }
         ]
       }
