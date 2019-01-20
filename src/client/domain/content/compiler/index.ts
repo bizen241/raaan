@@ -21,7 +21,7 @@ export const compileContent = (data: ContentData) => {
 const compileItem = (item: ContentItem) => {
   const compiledItem: CompiledItem = [];
 
-  const sanitizedLines = item.value.split("\n");
+  const sanitizedLines = item.value.replace(/ー/g, "-").split("\n");
 
   sanitizedLines.forEach(line => {
     const compiledLine: CompiledLine = [];
