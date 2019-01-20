@@ -53,7 +53,7 @@ const webpackDevServerConfiguration = isDevelopment
           target: "http://localhost:3000"
         }
       ],
-      host: "localhost",
+      host: "0.0.0.0",
       port: 8080
     }
   : undefined;
