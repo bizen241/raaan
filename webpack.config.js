@@ -22,8 +22,12 @@ const plugins = [
   }),
   new CopyPlugin([
     {
-      from: "assets",
+      from: join(__dirname, "assets"),
       ignore: ["*.ejs", "*.svg", "locales/**/*"]
+    },
+    {
+      from: join(__dirname, "node_modules/@blueprintjs/icons/resources/icons"),
+      to: join(__dirname, "dist/resources/icons")
     }
   ])
 ];
@@ -67,7 +71,8 @@ const webpackConfiguration = {
   entry: join(__dirname, "src/client/index.ts"),
   output: {
     filename: "[name].js",
-    path: join(__dirname, "dist")
+    path: join(__dirname, "dist"),
+    publicPath: "/"
   },
   resolve: {
     extensions: [".js", ".ts", ".tsx"]
