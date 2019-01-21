@@ -1,7 +1,9 @@
+import { Button, ButtonGroup, Classes, Collapse, Menu, MenuItem, Popover } from "@blueprintjs/core";
 import * as React from "react";
-import { FunctionComponent, useEffect, useRef } from "react";
+import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
+import TextArea from "react-textarea-autosize";
 import { CodeItem, ContentItem, KanjiItem, MathItem, TextItem } from "../../../../shared/content";
-import { Button, Chars, Column, Details, Key, Menu, Row, Summary, TextArea } from "../../ui";
+import { Column, Row } from "../../ui";
 import { createHotKeyHandler, HotKeyMap } from "../../utils/hotKey";
 
 export const ContentItemEditor: FunctionComponent<{
@@ -11,35 +13,23 @@ export const ContentItemEditor: FunctionComponent<{
   isFocused: boolean;
   isFocusedWithHotKey: boolean;
   hotKey: string | undefined;
-  isMenuOpened: boolean;
   onUpdate: (index: number, item: ContentItem) => void;
   onDelete: (id: string) => void;
   onFocus: (index: number) => void;
-  toggleMenu: () => void;
-}> = ({
-  index,
-  item,
-  isVisible,
-  isFocused,
-  isFocusedWithHotKey,
-  isMenuOpened,
-  hotKey,
-  onUpdate,
-  onDelete,
-  onFocus,
-  toggleMenu
-}) => {
-  const summaryRef = useRef<HTMLElement>(null);
+}> = ({ index, item, isVisible, isFocused, isFocusedWithHotKey, onUpdate, onDelete, onFocus }) => {
+  const ref = useRef<HTMLButtonElement>(null);
+
+  const [isOpen, toggle] = useState(true);
 
   useEffect(() => {
-    if (isFocused && summaryRef.current != null) {
-      summaryRef.current.focus();
+    if (isFocused && ref.current != null) {
+      ref.current.focus();
     }
   }, []);
   useEffect(
     () => {
-      if (isFocused && isFocusedWithHotKey && summaryRef.current != null) {
-        summaryRef.current.focus();
+      if (isFocused && isFocusedWithHotKey && ref.current != null) {
+        ref.current.focus();
       }
     },
     [isFocused]
@@ -51,8 +41,7 @@ export const ContentItemEditor: FunctionComponent<{
       }
 
       const shortcutMap: HotKeyMap = {
-        m: () => toggleMenu(),
-        Escape: () => summaryRef.current && summaryRef.current.focus(),
+        Escape: () => ref.current && ref.current.focus(),
         Delete: () => onDelete(item.id)
       };
 
@@ -68,37 +57,34 @@ export const ContentItemEditor: FunctionComponent<{
   const ItemEditor = editors[item.type];
 
   return (
-    <Details open onFocus={() => onFocus(index)}>
-      <Summary ref={summaryRef}>
-        <Row center="cross" flex={1} padding="small" style={{ position: "relative" }}>
-          {index}
-          <Row flex={1} />
-          {hotKey !== undefined ? <Key>{hotKey}</Key> : null}
-          <Button
-            size="small"
-            onClick={e => {
-              e.preventDefault();
-              toggleMenu();
-            }}
+    <Column className={`${Classes.TREE} ${Classes.ELEVATION_0}`} onFocus={() => onFocus(index)}>
+      <Row>
+        <ButtonGroup fill minimal>
+          <button
+            className={`${Classes.BUTTON} ${Classes.FILL} ${Classes.ALIGN_LEFT}`}
+            ref={ref}
+            onClick={useCallback(() => toggle(s => !s), [])}
           >
-            ⋮{isFocused ? <Key>M</Key> : null}
-          </Button>
-          {isFocused && isMenuOpened ? (
-            <Menu padding="small">
-              <Row>
-                <Row flex={1} />
-                <Button size="small" onClick={() => onDelete(item.id)} onFocus={e => e.stopPropagation()}>
-                  削除<Key>D</Key>
-                </Button>
-              </Row>
-            </Menu>
-          ) : null}
-        </Row>
-      </Summary>
-      <Column padding="small">
-        <ItemEditor item={item} onChange={(textItem: TextItem) => onUpdate(index, textItem)} />
-      </Column>
-    </Details>
+            <span className={`${Classes.ICON_STANDARD} bp3-icon-chevron-${isOpen ? "down" : "right"}`} />
+            <span className={Classes.BUTTON_TEXT}>{index}</span>
+          </button>
+          <Popover
+            content={
+              <Menu>
+                <MenuItem text="削除 (D)" onClick={() => onDelete(item.id)} />
+              </Menu>
+            }
+          >
+            <Button>⋮</Button>
+          </Popover>
+        </ButtonGroup>
+      </Row>
+      <Collapse isOpen={isOpen}>
+        <Column padding="small">
+          <ItemEditor item={item} onChange={(textItem: TextItem) => onUpdate(index, textItem)} />
+        </Column>
+      </Collapse>
+    </Column>
   );
 };
 
@@ -118,20 +104,24 @@ const TextItemEditor: FunctionComponent<ContentItemEditorProps<TextItem>> = ({ i
 const KanjiItemEditor: FunctionComponent<ContentItemEditorProps<KanjiItem>> = ({ item, onChange }) => {
   return (
     <Column>
-      <label>
+      <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
+        漢字
         <Column>
-          <Row center="cross">
-            <Chars size="small">漢字</Chars>
-          </Row>
-          <TextArea value={item.kanji} onChange={e => onChange({ ...item, kanji: e.currentTarget.value })} />
+          <TextArea
+            className={`${Classes.INPUT} ${Classes.MODIFIER_KEY}`}
+            value={item.kanji}
+            onChange={e => onChange({ ...item, kanji: e.currentTarget.value })}
+          />
         </Column>
       </label>
-      <label>
+      <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
+        かな
         <Column>
-          <Row center="cross">
-            <Chars size="small">かな</Chars>
-          </Row>
-          <TextArea value={item.value} onChange={e => onChange({ ...item, value: e.currentTarget.value })} />
+          <TextArea
+            className={`${Classes.INPUT} ${Classes.MODIFIER_KEY}`}
+            value={item.value}
+            onChange={e => onChange({ ...item, value: e.currentTarget.value })}
+          />
         </Column>
       </label>
     </Column>

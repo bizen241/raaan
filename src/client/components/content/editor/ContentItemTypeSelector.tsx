@@ -1,6 +1,7 @@
+import { Classes } from "@blueprintjs/core";
 import * as React from "react";
 import { ContentItem } from "../../../../shared/content";
-import { Select } from "../../ui";
+import { Column } from "../../ui";
 
 const contentItemTypeToLabel: { [T in ContentItem["type"]]: string } = {
   code: "コード",
@@ -15,16 +16,18 @@ export const ContentItemTypeSelector: React.FunctionComponent<{
   onChange: (type: ContentItem["type"]) => void;
 }> = ({ selectRef, selected, onChange }) => {
   return (
-    <Select
-      ref={selectRef}
-      value={selected}
-      onChange={e => e.currentTarget && onChange(e.currentTarget.value as ContentItem["type"])}
-    >
-      {Object.entries(contentItemTypeToLabel).map(([type, label]) => (
-        <option key={type} value={type}>
-          {label}
-        </option>
-      ))}
-    </Select>
+    <Column className={`${Classes.SELECT} ${Classes.MODIFIER_KEY}`}>
+      <select
+        ref={selectRef}
+        value={selected}
+        onChange={e => e.currentTarget && onChange(e.currentTarget.value as ContentItem["type"])}
+      >
+        {Object.entries(contentItemTypeToLabel).map(([type, label]) => (
+          <option key={type} value={type}>
+            {label}
+          </option>
+        ))}
+      </select>
+    </Column>
   );
 };

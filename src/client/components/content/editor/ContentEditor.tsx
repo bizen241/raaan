@@ -1,8 +1,9 @@
+import { Button, Classes, Dialog } from "@blueprintjs/core";
 import * as React from "react";
 import { useEffect, useRef } from "react";
 import { connector } from "../../../reducers";
 import { editorActions } from "../../../reducers/editor";
-import { Button, Chars, Column, DottedSeparator, DoubleSeparator, Input, Key, Modal, Row } from "../../ui";
+import { Column } from "../../ui";
 import { createHotKeyHandler, HotKeyMap } from "../../utils/hotKey";
 import { ContentPlayer } from "../player/ContentPlayer";
 import { ContentItemEditor } from "./ContentItemEditor";
@@ -28,8 +29,7 @@ export const ContentEditor = connector(
     focusItem,
     focusPreviousItem,
     focusNextItem,
-    toggleContentPreviewer,
-    toggleContentItemMenu
+    toggleContentPreviewer
   }) => {
     const {
       data,
@@ -37,8 +37,7 @@ export const ContentEditor = connector(
       selectedItemType,
       isFocusedWithHotKey,
       isContentPreviewerOpened,
-      isContentItemPreviewerOpened,
-      isContentItemMenuOpened
+      isContentItemPreviewerOpened
     } = editor;
     const isVisible = !isContentPreviewerOpened && !isContentItemPreviewerOpened;
 
@@ -76,58 +75,46 @@ export const ContentEditor = connector(
       return <div>Loading...</div>;
     }
 
+    const itemEditors = data.items.map((item, index) => (
+      <Column key={item.id} padding="small">
+        <ContentItemEditor
+          index={index}
+          item={item}
+          isVisible={isVisible}
+          isFocused={index === focusedItemIndex}
+          isFocusedWithHotKey={isFocusedWithHotKey}
+          hotKey={undefined}
+          onUpdate={updateItem}
+          onDelete={deleteItem}
+          onFocus={focusItem}
+        />
+      </Column>
+    ));
+
     return (
       <Column flex={1} style={{ overflowY: "auto" }}>
         <Column padding="small">
-          <label>
+          <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
+            タイトル (T)
             <Column>
-              <Row center="cross">
-                <Chars size="small">タイトル</Chars>
-                <Key>T</Key>
-              </Row>
-              <Input value={data.title} ref={titleInputRef} onChange={e => updateTitle(e.currentTarget.value)} />
+              <input
+                className={Classes.INPUT}
+                value={data.title}
+                ref={titleInputRef}
+                onChange={e => updateTitle(e.currentTarget.value)}
+              />
             </Column>
           </label>
         </Column>
-        <Column padding="small">
-          <DoubleSeparator />
+        <Column>
+          <Column padding="small">アイテム</Column>
+          {itemEditors}
         </Column>
         <Column>
           <Column padding="small">
-            <Chars size="small">アイテム</Chars>
-          </Column>
-          {data.items.map((item, index) => (
-            <Column key={item.id} padding="small">
-              <ContentItemEditor
-                index={index}
-                item={item}
-                isVisible={isVisible}
-                isFocused={index === focusedItemIndex}
-                isFocusedWithHotKey={isFocusedWithHotKey}
-                hotKey={undefined}
-                isMenuOpened={isContentItemMenuOpened}
-                onUpdate={updateItem}
-                onDelete={deleteItem}
-                onFocus={focusItem}
-                toggleMenu={toggleContentItemMenu}
-              />
-            </Column>
-          ))}
-        </Column>
-        <Column padding="small">
-          <DottedSeparator />
-        </Column>
-        <Column>
-          <Column center="both">
-            <Column />
-          </Column>
-          <Column padding="small">
-            <label>
+            <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
+              追加するアイテムの種類 (S)
               <Column>
-                <Row center="cross">
-                  <Chars size="small">追加するアイテムの種類</Chars>
-                  <Key>S</Key>
-                </Row>
                 <ContentItemTypeSelector
                   selectRef={typeSelectRef}
                   selected={selectedItemType}
@@ -137,29 +124,25 @@ export const ContentEditor = connector(
             </label>
           </Column>
           <Column padding="small">
-            <Button onClick={() => pushItem()}>
-              追加
-              <Key>A</Key>
-            </Button>
+            <Button onClick={pushItem}>追加 (A)</Button>
           </Column>
           <Column padding="small">
-            <Button onClick={toggleContentPreviewer}>
-              プレビュー
-              <Key>P</Key>
-            </Button>
+            <Button onClick={toggleContentPreviewer}>プレビュー (P)</Button>
           </Column>
         </Column>
-        <Modal isOpen={editor.isContentPreviewerOpened} onRequestClose={toggleContentPreviewer} shouldCloseOnEsc={true}>
-          <Column padding="small" flex={1}>
+        <Dialog
+          isOpen={editor.isContentPreviewerOpened}
+          onClose={toggleContentPreviewer}
+          style={{ width: "95vw", height: "95vh", margin: 0, padding: 0 }}
+          className="bp3-dark"
+        >
+          <Column className={Classes.DIALOG_BODY} padding="small" flex={1}>
             <Column flex={1}>
               <ContentPlayer data={data} />
             </Column>
-            <Button size="small" onClick={toggleContentPreviewer}>
-              閉じる
-              <Key>Esc</Key>
-            </Button>
+            <Button onClick={toggleContentPreviewer}>閉じる (Esc)</Button>
           </Column>
-        </Modal>
+        </Dialog>
       </Column>
     );
   }

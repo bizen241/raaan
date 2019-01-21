@@ -15,8 +15,7 @@ export enum EditorActionType {
   FocusPreviousItem = "editor/focus-previous-item",
   FocusNextItem = "editor/focus-next-item",
   ToggleContentPreviewer = "editor/toggle-content-previewer",
-  ToggleContentItemPreviewer = "editor/toggle-content-item-previewer",
-  ToggleContentItemMenu = "editor/toggle-content-item-menu"
+  ToggleContentItemPreviewer = "editor/toggle-content-item-previewer"
 }
 
 const editorSyncActions = {
@@ -31,8 +30,7 @@ const editorSyncActions = {
   focusPreviousItem: () => createAction(EditorActionType.FocusPreviousItem),
   focusNextItem: () => createAction(EditorActionType.FocusNextItem),
   toggleContentPreviewer: () => createAction(EditorActionType.ToggleContentPreviewer),
-  toggleContentItemPreviewer: () => createAction(EditorActionType.ToggleContentItemPreviewer),
-  toggleContentItemMenu: () => createAction(EditorActionType.ToggleContentItemMenu)
+  toggleContentItemPreviewer: () => createAction(EditorActionType.ToggleContentItemPreviewer)
 };
 
 export type EditorActions = ActionUnion<typeof editorSyncActions>;
@@ -60,7 +58,6 @@ export interface EditorState {
   isFocusedWithHotKey: boolean;
   isContentPreviewerOpened: boolean;
   isContentItemPreviewerOpened: boolean;
-  isContentItemMenuOpened: boolean;
 }
 
 export const initialEditorState: EditorState = {
@@ -72,8 +69,7 @@ export const initialEditorState: EditorState = {
   selectedItemType: "kanji",
   isFocusedWithHotKey: false,
   isContentPreviewerOpened: false,
-  isContentItemPreviewerOpened: false,
-  isContentItemMenuOpened: false
+  isContentItemPreviewerOpened: false
 };
 
 export const editorReducer: Reducer<EditorState, EditorActions> = (state = initialEditorState, action) => {
@@ -188,12 +184,6 @@ export const editorReducer: Reducer<EditorState, EditorActions> = (state = initi
         isContentPreviewerOpened: false,
         isContentItemPreviewerOpened: !state.isContentItemPreviewerOpened,
         isContentItemMenuOpened: false
-      };
-    }
-    case EditorActionType.ToggleContentItemMenu: {
-      return {
-        ...state,
-        isContentItemMenuOpened: !state.isContentItemMenuOpened
       };
     }
     default:
