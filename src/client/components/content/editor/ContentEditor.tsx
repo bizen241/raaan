@@ -133,7 +133,13 @@ export const ContentEditor = connector(
         <Dialog
           isOpen={editor.isContentPreviewerOpened}
           onClose={toggleContentPreviewer}
-          style={{ width: "95vw", height: "95vh", margin: 0, padding: 0 }}
+          style={{
+            width: "95vw",
+            height: "95vh",
+            maxWidth: "1000px",
+            margin: 0,
+            padding: 0
+          }}
           className="bp3-dark"
         >
           <Column className={Classes.DIALOG_BODY} padding="small" flex={1}>

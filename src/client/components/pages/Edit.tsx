@@ -11,8 +11,10 @@ export const Edit = connector(
   () => ({}),
   ({ id }) => {
     return (
-      <Column padding="small">
-        <ContentEditor id={id} />
+      <Column padding="small" center="cross">
+        <Column style={{ width: "100%", maxWidth: "1000px" }}>
+          <ContentEditor id={id} />
+        </Column>
       </Column>
     );
   }

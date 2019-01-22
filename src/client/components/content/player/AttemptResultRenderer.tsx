@@ -1,6 +1,23 @@
+import { Divider } from "@blueprintjs/core";
 import * as React from "react";
 import { PlayerState } from "../../../reducers/player";
-import { Chars, Column, DottedSeparator, DoubleSeparator } from "../../ui";
+import { styled } from "../../../style";
+import { Column, Row } from "../../ui";
+
+const IndexType = styled(Row)`
+  font-size: 2vmax;
+  line-height: 1.5em;
+`;
+
+const Padding = styled(Row)`
+  flex: 1;
+  min-width: 2em;
+`;
+
+const IndexValue = styled(Row)`
+  font-size: 3vmax;
+  line-height: 1.5em;
+`;
 
 export const AttemptResultRenderer: React.FunctionComponent<{
   attempt: PlayerState;
@@ -11,41 +28,30 @@ export const AttemptResultRenderer: React.FunctionComponent<{
   const score = typeSpeed * 1 * 60;
 
   return (
-    <Column>
-      <Column center="cross" padding="medium">
-        <Chars size="small">スコア</Chars>
-        <Column padding="small">
-          <Chars size="large">{score.toFixed(0)}</Chars>
-        </Column>
-      </Column>
-      <DoubleSeparator />
-      <Column center="cross" padding="small">
-        <Chars size="small">時間</Chars>
-        <Column padding="small">
-          <Chars>{totalTime.toFixed(2)}&nbsp;秒</Chars>
-        </Column>
-      </Column>
-      <DottedSeparator />
-      <Column center="cross" padding="small">
-        <Chars size="small">スピード</Chars>
-        <Column padding="small">
-          <Chars>{typeSpeed.toFixed(2)}&nbsp;打/秒</Chars>
-        </Column>
-      </Column>
-      <DoubleSeparator />
-      <Column center="cross" padding="small">
-        <Chars size="small">正確性</Chars>
-        <Column padding="small">
-          <Chars>??&nbsp;%</Chars>
-        </Column>
-      </Column>
-      <DottedSeparator />
-      <Column center="cross" padding="small">
-        <Chars size="small">ミス</Chars>
-        <Column padding="small">
-          <Chars>?&nbsp;?&nbsp;?</Chars>
-        </Column>
-      </Column>
+    <Column center="main">
+      <Row center="cross" orientation>
+        <IndexType>スコア</IndexType>
+        <Padding />
+        <IndexValue>{score.toFixed(0)}</IndexValue>
+      </Row>
+      <Divider />
+      <Row center="cross" orientation>
+        <IndexType>時間</IndexType>
+        <Padding />
+        <IndexValue>{totalTime.toFixed(2)}&nbsp;秒</IndexValue>
+      </Row>
+      <Divider />
+      <Row center="cross" orientation>
+        <IndexType>スピード</IndexType>
+        <Padding />
+        <IndexValue>{typeSpeed.toFixed(2)}&nbsp;打/秒</IndexValue>
+      </Row>
+      <Divider />
+      <Row center="cross" orientation>
+        <IndexType>正確性</IndexType>
+        <Padding />
+        <IndexValue>??&nbsp;%</IndexValue>
+      </Row>
     </Column>
   );
 };
