@@ -1,7 +1,8 @@
 import { Button, Classes, Dialog } from "@blueprintjs/core";
-import * as React from "react";
 import { useEffect, useRef } from "react";
+import * as React from "react";
 import { connector } from "../../../reducers";
+import { bufferActions } from "../../../reducers/buffer";
 import { editorActions } from "../../../reducers/editor";
 import { Column } from "../../ui";
 import { createHotKeyHandler, HotKeyMap } from "../../utils/hotKey";
@@ -15,6 +16,7 @@ export const ContentEditor = connector(
     editor: state.editor
   }),
   () => ({
+    persist: bufferActions.update,
     ...editorActions
   }),
   ({

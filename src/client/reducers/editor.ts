@@ -36,10 +36,13 @@ const editorSyncActions = {
 export type EditorActions = ActionUnion<typeof editorSyncActions>;
 
 const load = (id: string): AsyncAction => async (dispatch, getState) => {
-  const currentId = getState().editor.id;
+  const state = getState();
+  const currentId = state.editor.id;
 
   if (currentId !== id) {
-    dispatch(editorSyncActions.update(id, createContentData()));
+    const data = state.buffer[id] || createContentData();
+
+    dispatch(editorSyncActions.update(id, data));
   }
 };
 

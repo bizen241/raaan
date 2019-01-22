@@ -2,7 +2,7 @@ import * as React from "react";
 import { connector } from "../../reducers";
 import { ContentEditor } from "../content/editor/ContentEditor";
 import { PageProps } from "../project/Router";
-import { Column } from "../ui";
+import { Page } from "./Page";
 
 export const Edit = connector(
   (_, ownProps: PageProps) => ({
@@ -11,11 +11,9 @@ export const Edit = connector(
   () => ({}),
   ({ id }) => {
     return (
-      <Column padding="small" center="cross">
-        <Column style={{ width: "100%", maxWidth: "1000px" }}>
-          <ContentEditor id={id} />
-        </Column>
-      </Column>
+      <Page>
+        <ContentEditor id={id} />
+      </Page>
     );
   }
 );
