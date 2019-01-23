@@ -1,5 +1,6 @@
 import { connectRouter, RouterAction, RouterState } from "connected-react-router";
 import { History } from "history";
+import * as React from "react";
 import { ComponentType } from "react";
 import { connect } from "react-redux";
 import { combineReducers } from "redux";
@@ -38,4 +39,4 @@ export const connector = <OwnProps extends {}, SelectedState extends {}, Selecte
   connect(
     stateSelector,
     actionSelector()
-  )(component as any);
+  )(React.memo(component) as any);

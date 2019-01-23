@@ -6,12 +6,12 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../reducers";
 import { Column, Row } from "../ui";
-import { createHotKeyHandler, HotKeyMap } from "../utils/hotKey";
+import { manageHotKey } from "../utils/hotKey";
 import { Page } from "./Page";
 
 export const Home = connector(
   state => ({
-    drafts: state.buffer
+    drafts: state.editor.buffer
   }),
   () => ({
     create: () => push("/revisions/new")
@@ -19,18 +19,13 @@ export const Home = connector(
   ({ drafts, create }) => {
     const draftListRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-      const shortcutMap: HotKeyMap = {
+    useEffect(
+      manageHotKey({
         n: create,
         d: () => draftListRef.current && draftListRef.current.focus()
-      };
-
-      const shortcutHandler = createHotKeyHandler(shortcutMap);
-      document.addEventListener("keydown", shortcutHandler);
-      return () => {
-        document.removeEventListener("keydown", shortcutHandler);
-      };
-    }, []);
+      }),
+      []
+    );
 
     return (
       <Page>
@@ -45,7 +40,7 @@ export const Home = connector(
               {Object.entries(drafts).map(
                 ([id, data]) =>
                   data && (
-                    <Column>
+                    <Column key={id}>
                       <Row center="cross">
                         <Row>{data.title}</Row>
                         <Row flex={1} />

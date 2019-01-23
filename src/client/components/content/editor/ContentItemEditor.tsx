@@ -1,56 +1,31 @@
 import { Button, ButtonGroup, Classes, Collapse, Menu, MenuItem, Popover } from "@blueprintjs/core";
 import * as React from "react";
-import { FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
+import { FunctionComponent, RefObject, useCallback, useEffect, useState } from "react";
 import TextArea from "react-textarea-autosize";
 import { CodeItem, ContentItem, KanjiItem, MathItem, TextItem } from "../../../../shared/content";
 import { Column, Row } from "../../ui";
-import { createHotKeyHandler, HotKeyMap } from "../../utils/hotKey";
+import { manageHotKey } from "../../utils/hotKey";
 
-export const ContentItemEditor: FunctionComponent<{
+export const ContentItemEditor = React.memo<{
   index: number;
   item: ContentItem;
   isVisible: boolean;
   isFocused: boolean;
-  isFocusedWithHotKey: boolean;
+  editorRef: RefObject<HTMLButtonElement> | null;
   hotKey: string | undefined;
-  onUpdate: (index: number, item: ContentItem) => void;
+  onUpdate: (id: string, item: ContentItem) => void;
   onDelete: (id: string) => void;
   onFocus: (index: number) => void;
-}> = ({ index, item, isVisible, isFocused, isFocusedWithHotKey, onUpdate, onDelete, onFocus }) => {
-  const ref = useRef<HTMLButtonElement>(null);
+}>(({ index, item, isVisible, isFocused, editorRef, onUpdate, onDelete, onFocus }) => {
+  const [isMenuOpen, toggleMenu] = useState(true);
 
-  const [isOpen, toggle] = useState(true);
-
-  useEffect(() => {
-    if (isFocused && ref.current != null) {
-      ref.current.focus();
-    }
-  }, []);
   useEffect(
-    () => {
-      if (isFocused && isFocusedWithHotKey && ref.current != null) {
-        ref.current.focus();
-      }
-    },
-    [isFocused]
-  );
-  useEffect(
-    () => {
-      if (!isVisible || !isFocused) {
-        return;
-      }
-
-      const shortcutMap: HotKeyMap = {
-        Escape: () => ref.current && ref.current.focus(),
+    manageHotKey(
+      {
         Delete: () => onDelete(item.id)
-      };
-
-      const shortcutHandler = createHotKeyHandler(shortcutMap);
-      document.addEventListener("keydown", shortcutHandler);
-      return () => {
-        document.removeEventListener("keydown", shortcutHandler);
-      };
-    },
+      },
+      isVisible && isFocused
+    ),
     [isVisible, isFocused]
   );
 
@@ -62,10 +37,10 @@ export const ContentItemEditor: FunctionComponent<{
         <ButtonGroup fill minimal>
           <button
             className={`${Classes.BUTTON} ${Classes.FILL} ${Classes.ALIGN_LEFT}`}
-            ref={ref}
-            onClick={useCallback(() => toggle(s => !s), [])}
+            ref={editorRef}
+            onClick={useCallback(() => toggleMenu(s => !s), [])}
           >
-            <span className={`${Classes.ICON_STANDARD} bp3-icon-chevron-${isOpen ? "down" : "right"}`} />
+            <span className={`${Classes.ICON_STANDARD} bp3-icon-chevron-${isMenuOpen ? "down" : "right"}`} />
             <span className={Classes.BUTTON_TEXT}>{index}</span>
           </button>
           <Popover
@@ -79,14 +54,14 @@ export const ContentItemEditor: FunctionComponent<{
           </Popover>
         </ButtonGroup>
       </Row>
-      <Collapse isOpen={isOpen}>
+      <Collapse isOpen={isMenuOpen}>
         <Column padding="small">
-          <ItemEditor item={item} onChange={(textItem: TextItem) => onUpdate(index, textItem)} />
+          <ItemEditor item={item} onChange={(textItem: TextItem) => onUpdate(item.id, textItem)} />
         </Column>
       </Collapse>
     </Column>
   );
-};
+});
 
 interface ContentItemEditorProps<T> {
   item: T;

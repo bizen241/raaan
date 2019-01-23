@@ -1,19 +1,21 @@
-import { Button, Classes, Dialog } from "@blueprintjs/core";
-import { useEffect, useRef } from "react";
+import { Button } from "@blueprintjs/core";
+import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
+import { ContentItem } from "../../../../shared/content";
 import { connector } from "../../../reducers";
 import { bufferActions } from "../../../reducers/buffer";
 import { editorActions } from "../../../reducers/editor";
 import { Column } from "../../ui";
-import { createHotKeyHandler, HotKeyMap } from "../../utils/hotKey";
-import { ContentPlayer } from "../player/ContentPlayer";
-import { ContentItemEditor } from "./ContentItemEditor";
-import { ContentItemTypeSelector } from "./ContentItemTypeSelector";
+import { manageHotKey } from "../../utils/hotKey";
+import { ContentItemsEditor } from "./ContentItemsEditor";
+import { ContentPreviewer } from "./ContentPreviewer";
+import { ContentTitleEditor } from "./ContentTitleEditor";
 
 export const ContentEditor = connector(
-  (state, ownProps: { id: string }) => ({
-    id: ownProps.id,
-    editor: state.editor
+  ({ editor: { buffer, ...settings } }, { id }: { id: string }) => ({
+    id,
+    data: buffer[id],
+    ...settings
   }),
   () => ({
     persist: bufferActions.update,
@@ -21,136 +23,77 @@ export const ContentEditor = connector(
   }),
   ({
     id,
-    editor,
+    itemType,
+    // itemLang,
+    // textLang,
+    // codeLang,
     load,
-    updateTitle,
-    pushItem,
-    updateItem,
-    deleteItem,
+    update,
+    save,
     selectItemType,
-    focusItem,
-    focusPreviousItem,
-    focusNextItem,
-    toggleContentPreviewer
+    // selectItemLang,
+    // selectTextLang,
+    // selectCodeLang
+    ...props
   }) => {
-    const {
-      data,
-      focusedItemIndex,
-      selectedItemType,
-      isFocusedWithHotKey,
-      isContentPreviewerOpened,
-      isContentItemPreviewerOpened
-    } = editor;
-    const isVisible = !isContentPreviewerOpened && !isContentItemPreviewerOpened;
-
-    const titleInputRef = useRef<HTMLInputElement>(null);
-    const typeSelectRef = useRef<HTMLSelectElement>(null);
+    const [isContentPreviewerOpen, toggleContentPreviewer] = useState(false);
+    const [isContentItemPreviewerOpen, toggleContentItemPreviewer] = useState(false);
+    const isVisible = !isContentPreviewerOpen && !isContentItemPreviewerOpen;
 
     useEffect(() => {
       load(id);
+
+      return () => save(id);
     }, []);
-    useEffect(
-      () => {
-        if (!isVisible) {
-          return () => null;
-        }
 
-        const shortcutMap: HotKeyMap = {
-          a: pushItem,
-          k: focusPreviousItem,
-          j: focusNextItem,
-          p: toggleContentPreviewer,
-          s: () => typeSelectRef.current && typeSelectRef.current.focus(),
-          t: () => titleInputRef.current && titleInputRef.current.focus()
-        };
-
-        const shortcutHandler = createHotKeyHandler(shortcutMap);
-        document.addEventListener("keydown", shortcutHandler);
-        return () => {
-          document.removeEventListener("keydown", shortcutHandler);
-        };
-      },
-      [isVisible]
-    );
-
-    if (id !== editor.id) {
+    if (props.data === undefined) {
       return <div>Loading...</div>;
     }
 
-    const itemEditors = data.items.map((item, index) => (
-      <Column key={item.id} padding="small">
-        <ContentItemEditor
-          index={index}
-          item={item}
-          isVisible={isVisible}
-          isFocused={index === focusedItemIndex}
-          isFocusedWithHotKey={isFocusedWithHotKey}
-          hotKey={undefined}
-          onUpdate={updateItem}
-          onDelete={deleteItem}
-          onFocus={focusItem}
-        />
-      </Column>
-    ));
+    const [data, setData] = useState(props.data);
+
+    useEffect(
+      () => {
+        update(id, data);
+      },
+      [data]
+    );
+
+    useEffect(
+      manageHotKey(
+        {
+          P: () => toggleContentPreviewer(true),
+          p: () => toggleContentItemPreviewer(true)
+        },
+        isVisible
+      ),
+      [isVisible]
+    );
+
+    const updateTitle = useCallback((title: string) => setData(s => ({ ...s, title })), []);
+    const updateItems = useCallback((items: ContentItem[]) => setData(s => ({ ...s, items })), []);
+
+    const openContentPreviewer = useCallback(() => toggleContentPreviewer(true), []);
+    const closeContentPreviewer = useCallback(() => toggleContentPreviewer(false), []);
 
     return (
       <Column flex={1} style={{ overflowY: "auto" }}>
         <Column padding="small">
-          <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
-            タイトル (T)
-            <Column>
-              <input
-                className={Classes.INPUT}
-                value={data.title}
-                ref={titleInputRef}
-                onChange={e => updateTitle(e.currentTarget.value)}
-              />
-            </Column>
-          </label>
+          <ContentTitleEditor title={data.title} onChange={updateTitle} />
         </Column>
         <Column>
-          <Column padding="small">アイテム</Column>
-          {itemEditors}
+          <ContentItemsEditor
+            items={data.items}
+            isVisible={isVisible}
+            selectedItemType={itemType}
+            onChange={updateItems}
+            onSelectItemType={selectItemType}
+          />
         </Column>
-        <Column>
-          <Column padding="small">
-            <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
-              追加するアイテムの種類 (S)
-              <Column>
-                <ContentItemTypeSelector
-                  selectRef={typeSelectRef}
-                  selected={selectedItemType}
-                  onChange={selectItemType}
-                />
-              </Column>
-            </label>
-          </Column>
-          <Column padding="small">
-            <Button onClick={pushItem}>追加 (A)</Button>
-          </Column>
-          <Column padding="small">
-            <Button onClick={toggleContentPreviewer}>プレビュー (P)</Button>
-          </Column>
+        <Column padding="small">
+          <Button onClick={openContentPreviewer}>プレビュー (P)</Button>
         </Column>
-        <Dialog
-          isOpen={editor.isContentPreviewerOpened}
-          onClose={toggleContentPreviewer}
-          style={{
-            width: "95vw",
-            height: "95vh",
-            maxWidth: "1000px",
-            margin: 0,
-            padding: 0
-          }}
-          className="bp3-dark"
-        >
-          <Column className={Classes.DIALOG_BODY} padding="small" flex={1}>
-            <Column flex={1}>
-              <ContentPlayer data={data} />
-            </Column>
-            <Button onClick={toggleContentPreviewer}>閉じる (Esc)</Button>
-          </Column>
-        </Dialog>
+        <ContentPreviewer data={data} isOpen={isContentPreviewerOpen} onClose={closeContentPreviewer} />
       </Column>
     );
   }
