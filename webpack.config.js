@@ -22,8 +22,12 @@ const plugins = [
   }),
   new CopyPlugin([
     {
-      from: "assets",
+      from: join(__dirname, "assets"),
       ignore: ["*.ejs", "*.svg", "locales/**/*"]
+    },
+    {
+      from: join(__dirname, "node_modules/@blueprintjs/icons/resources/icons"),
+      to: join(__dirname, "dist/resources/icons")
     }
   ])
 ];
@@ -63,10 +67,12 @@ const webpackDevServerConfiguration = isDevelopment
  */
 const webpackConfiguration = {
   mode,
+  devtool: isDevelopment ? "source-map" : undefined,
   entry: join(__dirname, "src/client/index.ts"),
   output: {
     filename: "[name].js",
-    path: join(__dirname, "dist")
+    path: join(__dirname, "dist"),
+    publicPath: "/"
   },
   resolve: {
     extensions: [".js", ".ts", ".tsx"]
@@ -85,6 +91,17 @@ const webpackConfiguration = {
               transpileOnly: true,
               configFile: join(__dirname, "config/tsconfig.client.json")
             }
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: "style-loader/url"
+          },
+          {
+            loader: "file-loader"
           }
         ]
       }

@@ -1,9 +1,10 @@
 import * as React from "react";
 import { connector } from "../../reducers";
 import { createGlobalStyle, Theme, ThemeProvider } from "../../style";
+import { Column } from "../ui";
 
 const theme: Theme = {
-  background: "#303030",
+  background: "#30404d",
   border: "#404040",
   text: "#f8f8f8",
   input: "#202020",
@@ -18,10 +19,10 @@ export const Style = connector(
   ({ children }) => {
     return (
       <ThemeProvider theme={theme}>
-        <>
+        <Column className="bp3-dark">
           <GlobalStyle />
           {children}
-        </>
+        </Column>
       </ThemeProvider>
     );
   }

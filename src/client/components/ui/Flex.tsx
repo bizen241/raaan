@@ -5,6 +5,7 @@ const Flex = styled.div<{
   center?: "main" | "cross" | "both";
   flex?: number;
   padding?: Size;
+  orientation?: boolean;
 }>`
   display: flex;
   min-width: 0;
@@ -16,8 +17,16 @@ const Flex = styled.div<{
 
 export const Row = styled(Flex)`
   flex-direction: row;
+
+  @media (orientation: portrait) {
+    flex-direction: ${p => (p.orientation ? "column" : "row")};
+  }
 `;
 
 export const Column = styled(Flex)`
   flex-direction: column;
+
+  @media (orientation: portrait) {
+    flex-direction: ${p => (p.orientation ? "row" : "column")};
+  }
 `;

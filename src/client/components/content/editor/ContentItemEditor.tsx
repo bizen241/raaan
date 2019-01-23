@@ -1,106 +1,67 @@
+import { Button, ButtonGroup, Classes, Collapse, Menu, MenuItem, Popover } from "@blueprintjs/core";
 import * as React from "react";
-import { FunctionComponent, useEffect, useRef } from "react";
+import { FunctionComponent, RefObject, useCallback, useEffect, useState } from "react";
+import TextArea from "react-textarea-autosize";
 import { CodeItem, ContentItem, KanjiItem, MathItem, TextItem } from "../../../../shared/content";
-import { Button, Chars, Column, Details, Key, Menu, Row, Summary, TextArea } from "../../ui";
-import { createHotKeyHandler, HotKeyMap } from "../../utils/hotKey";
+import { Column, Row } from "../../ui";
+import { manageHotKey } from "../../utils/hotKey";
 
-export const ContentItemEditor: FunctionComponent<{
+export const ContentItemEditor = React.memo<{
   index: number;
   item: ContentItem;
   isVisible: boolean;
   isFocused: boolean;
-  isFocusedWithHotKey: boolean;
+  editorRef: RefObject<HTMLButtonElement> | null;
   hotKey: string | undefined;
-  isMenuOpened: boolean;
-  onUpdate: (index: number, item: ContentItem) => void;
+  onUpdate: (id: string, item: ContentItem) => void;
   onDelete: (id: string) => void;
   onFocus: (index: number) => void;
-  toggleMenu: () => void;
-}> = ({
-  index,
-  item,
-  isVisible,
-  isFocused,
-  isFocusedWithHotKey,
-  isMenuOpened,
-  hotKey,
-  onUpdate,
-  onDelete,
-  onFocus,
-  toggleMenu
-}) => {
-  const summaryRef = useRef<HTMLElement>(null);
+}>(({ index, item, isVisible, isFocused, editorRef, onUpdate, onDelete, onFocus }) => {
+  const [isMenuOpen, toggleMenu] = useState(true);
 
-  useEffect(() => {
-    if (isFocused && summaryRef.current != null) {
-      summaryRef.current.focus();
-    }
-  }, []);
   useEffect(
-    () => {
-      if (isFocused && isFocusedWithHotKey && summaryRef.current != null) {
-        summaryRef.current.focus();
-      }
-    },
-    [isFocused]
-  );
-  useEffect(
-    () => {
-      if (!isVisible || !isFocused) {
-        return;
-      }
-
-      const shortcutMap: HotKeyMap = {
-        m: () => toggleMenu(),
-        Escape: () => summaryRef.current && summaryRef.current.focus(),
+    manageHotKey(
+      {
         Delete: () => onDelete(item.id)
-      };
-
-      const shortcutHandler = createHotKeyHandler(shortcutMap);
-      document.addEventListener("keydown", shortcutHandler);
-      return () => {
-        document.removeEventListener("keydown", shortcutHandler);
-      };
-    },
+      },
+      isVisible && isFocused
+    ),
     [isVisible, isFocused]
   );
 
   const ItemEditor = editors[item.type];
 
   return (
-    <Details open onFocus={() => onFocus(index)}>
-      <Summary ref={summaryRef}>
-        <Row center="cross" flex={1} padding="small" style={{ position: "relative" }}>
-          {index}
-          <Row flex={1} />
-          {hotKey !== undefined ? <Key>{hotKey}</Key> : null}
-          <Button
-            size="small"
-            onClick={e => {
-              e.preventDefault();
-              toggleMenu();
-            }}
+    <Column className={`${Classes.TREE} ${Classes.ELEVATION_0}`} onFocus={() => onFocus(index)}>
+      <Row>
+        <ButtonGroup fill minimal>
+          <button
+            className={`${Classes.BUTTON} ${Classes.FILL} ${Classes.ALIGN_LEFT}`}
+            ref={editorRef}
+            onClick={useCallback(() => toggleMenu(s => !s), [])}
           >
-            ⋮{isFocused ? <Key>M</Key> : null}
-          </Button>
-          {isFocused && isMenuOpened ? (
-            <Menu padding="small">
-              <Row>
-                <Row flex={1} />
-                <Button size="small" onClick={() => onDelete(item.id)} onFocus={e => e.stopPropagation()}>
-                  削除<Key>D</Key>
-                </Button>
-              </Row>
-            </Menu>
-          ) : null}
-        </Row>
-      </Summary>
-      <Column padding="small">
-        <ItemEditor item={item} onChange={(textItem: TextItem) => onUpdate(index, textItem)} />
-      </Column>
-    </Details>
+            <span className={`${Classes.ICON_STANDARD} bp3-icon-chevron-${isMenuOpen ? "down" : "right"}`} />
+            <span className={Classes.BUTTON_TEXT}>{index}</span>
+          </button>
+          <Popover
+            content={
+              <Menu>
+                <MenuItem text="削除 (D)" onClick={() => onDelete(item.id)} />
+              </Menu>
+            }
+          >
+            <Button>⋮</Button>
+          </Popover>
+        </ButtonGroup>
+      </Row>
+      <Collapse isOpen={isMenuOpen}>
+        <Column padding="small">
+          <ItemEditor item={item} onChange={(textItem: TextItem) => onUpdate(item.id, textItem)} />
+        </Column>
+      </Collapse>
+    </Column>
   );
-};
+});
 
 interface ContentItemEditorProps<T> {
   item: T;
@@ -118,20 +79,24 @@ const TextItemEditor: FunctionComponent<ContentItemEditorProps<TextItem>> = ({ i
 const KanjiItemEditor: FunctionComponent<ContentItemEditorProps<KanjiItem>> = ({ item, onChange }) => {
   return (
     <Column>
-      <label>
+      <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
+        漢字
         <Column>
-          <Row center="cross">
-            <Chars size="small">漢字</Chars>
-          </Row>
-          <TextArea value={item.kanji} onChange={e => onChange({ ...item, kanji: e.currentTarget.value })} />
+          <TextArea
+            className={`${Classes.INPUT} ${Classes.MODIFIER_KEY}`}
+            value={item.kanji}
+            onChange={e => onChange({ ...item, kanji: e.currentTarget.value })}
+          />
         </Column>
       </label>
-      <label>
+      <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
+        かな
         <Column>
-          <Row center="cross">
-            <Chars size="small">かな</Chars>
-          </Row>
-          <TextArea value={item.value} onChange={e => onChange({ ...item, value: e.currentTarget.value })} />
+          <TextArea
+            className={`${Classes.INPUT} ${Classes.MODIFIER_KEY}`}
+            value={item.value}
+            onChange={e => onChange({ ...item, value: e.currentTarget.value })}
+          />
         </Column>
       </label>
     </Column>

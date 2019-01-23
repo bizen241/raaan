@@ -1,27 +1,66 @@
+import { AnchorButton, Card, Classes, Divider } from "@blueprintjs/core";
 import { Trans } from "@lingui/react";
+import { push } from "connected-react-router";
 import * as React from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../reducers";
-import { Button, Column, Row } from "../ui";
+import { Column, Row } from "../ui";
+import { manageHotKey } from "../utils/hotKey";
+import { Page } from "./Page";
 
 export const Home = connector(
-  () => ({}),
-  () => ({}),
-  ({}) => {
+  state => ({
+    drafts: state.editor.buffer
+  }),
+  () => ({
+    create: () => push("/revisions/new")
+  }),
+  ({ drafts, create }) => {
+    const draftListRef = useRef<HTMLDivElement>(null);
+
+    useEffect(
+      manageHotKey({
+        n: create,
+        d: () => draftListRef.current && draftListRef.current.focus()
+      }),
+      []
+    );
+
     return (
-      <Column padding="small">
+      <Page>
         <Row padding="small">
           <Row flex={1} />
-          <Button size="small" as="a" href="/auth/github">
-            <Trans>ログイン</Trans>
-          </Button>
+          <AnchorButton text={<Trans>ログイン</Trans>} href="/auth/github" />
         </Row>
         <Column padding="small">
-          <Button as={Link} to="/revisions/new">
-            新規作成
-          </Button>
+          <Column padding="small">編集中</Column>
+          <Card>
+            <Column>
+              {Object.entries(drafts).map(
+                ([id, data]) =>
+                  data && (
+                    <Column key={id}>
+                      <Row center="cross">
+                        <Row>{data.title}</Row>
+                        <Row flex={1} />
+                        <Link className={Classes.BUTTON} to={`/revisions/${id}/edit`}>
+                          編集
+                        </Link>
+                      </Row>
+                      <Divider />
+                    </Column>
+                  )
+              )}
+            </Column>
+          </Card>
         </Column>
-      </Column>
+        <Column padding="small">
+          <Link className={`${Classes.BUTTON} ${Classes.LARGE}`} to="/revisions/new">
+            新規作成 (N)
+          </Link>
+        </Column>
+      </Page>
     );
   }
 );

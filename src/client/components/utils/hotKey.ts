@@ -2,21 +2,36 @@ export interface HotKeyMap {
   [key: string]: () => any | undefined;
 }
 
-export const createHotKeyHandler = (hotKeyMap: HotKeyMap) => (e: KeyboardEvent) => {
-  const key = e.key;
-  const target = e.target as HTMLElement | null;
-  const tagName = target && target.tagName;
-
-  if (key !== "Escape" && (tagName === "INPUT" || tagName === "TEXTAREA")) {
+export const manageHotKey = (hotKeyMap: HotKeyMap, isEnabled: boolean = true) => () => {
+  if (!isEnabled) {
     return;
   }
 
-  const handler = hotKeyMap[key];
-  if (handler === undefined) {
-    return;
-  }
+  const handler = (e: KeyboardEvent) => {
+    const key = e.key;
+    const target = e.target as HTMLElement | null;
+    const tagName = target && target.tagName;
 
-  e.preventDefault();
+    if (e.ctrlKey || e.altKey) {
+      return;
+    }
+    if (key !== "Escape" && (tagName === "INPUT" || tagName === "TEXTAREA")) {
+      return;
+    }
 
-  handler();
+    const action = hotKeyMap[key];
+    if (action === undefined) {
+      return;
+    }
+
+    e.preventDefault();
+
+    action();
+  };
+
+  document.addEventListener("keydown", handler);
+
+  return () => {
+    document.removeEventListener("keydown", handler);
+  };
 };
