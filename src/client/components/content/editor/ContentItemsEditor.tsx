@@ -25,8 +25,9 @@ export const ContentItemsEditor = React.memo<{
   const [items, setItems] = useState(props.items);
 
   const updateItem = useCallback(
-    (id: string, updatedItem: ContentItem) =>
+    (updatedItem: ContentItem) =>
       setItems(s => {
+        const { id } = updatedItem;
         const index = s.findIndex(item => item.id === id);
         return [...s.slice(0, index), updatedItem, ...s.slice(index + 1)];
       }),
@@ -75,7 +76,7 @@ export const ContentItemsEditor = React.memo<{
             isFocused={index === focusedItemIndex}
             hotKey={undefined}
             editorRef={focusedItemRef}
-            onUpdate={updateItem}
+            onChange={updateItem}
             onDelete={deleteItem}
             onFocus={focusItem}
           />
