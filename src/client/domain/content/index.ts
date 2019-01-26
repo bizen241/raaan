@@ -7,6 +7,7 @@ export const createContentData = (): ContentData => ({
   lang: "ja",
   tags: [],
   items: [],
+  summary: "",
   comment: "",
   shuffle: false
 });
