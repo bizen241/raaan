@@ -32,7 +32,7 @@ export const ContentItemTypeSelector = React.memo<{
           <select
             ref={selectRef}
             value={selected}
-            onChange={e => e.currentTarget && onChange(e.currentTarget.value as ContentItem["type"])}
+            onChange={e => e.currentTarget && onChange(e.currentTarget.selectedOptions[0].value as ContentItem["type"])}
           >
             {Object.entries(contentItemTypeToLabel).map(([type, label]) => (
               <option key={type} value={type}>
