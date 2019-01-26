@@ -1,35 +1,71 @@
 import { Reducer } from "redux";
-import { ContentData, ContentItem } from "../../shared/content";
+import { Actions } from ".";
+import { ContentItem } from "../../shared/content";
 import { ActionUnion, AsyncAction, createAction } from "../actions/helpers";
-import { createContentData } from "../domain/content";
+import { contentItemCreators, createContentData } from "../domain/content";
+import { bufferActions, EditorBuffer } from "./buffer";
 
 export enum EditorActionType {
-  Update = "editor/update",
+  SetBuffer = "editor/set-buffer",
+  ResetBuffer = "editor/reset-buffer",
   SelectItemType = "editor/select-item-type",
   SelectItemLang = "editor/select-item-lang",
   SelectTextLang = "editor/select-text-lang",
-  SelectCodeLang = "editor/select-code-lang"
+  SelectCodeLang = "editor/select-code-lang",
+  UpdateTitle = "editor/update-title",
+  UpdateItem = "editor/update-item",
+  DeleteItem = "editor/delete-item",
+  AppendItem = "editor/append-item"
 }
 
 const editorSyncActions = {
-  update: (id: string, data: ContentData) => createAction(EditorActionType.Update, { id, data }),
+  setBuffer: (id: string, buffer: EditorBuffer) => createAction(EditorActionType.SetBuffer, { id, buffer }),
+  resetBuffer: () => createAction(EditorActionType.ResetBuffer),
   selectItemType: (type: ContentItem["type"]) => createAction(EditorActionType.SelectItemType, { type }),
   selectItemLang: (lang: string) => createAction(EditorActionType.SelectItemLang, { lang }),
   selectTextLang: (lang: string) => createAction(EditorActionType.SelectTextLang, { lang }),
-  selectCodeLang: (lang: string) => createAction(EditorActionType.SelectCodeLang, { lang })
+  selectCodeLang: (lang: string) => createAction(EditorActionType.SelectCodeLang, { lang }),
+  updateTitle: (title: string) => createAction(EditorActionType.UpdateTitle, { title }),
+  updateItem: <P extends keyof ContentItem>(index: number, key: P, value: ContentItem[P]) =>
+    createAction(EditorActionType.UpdateItem, { index, key, value }),
+  deleteItem: (index: number) => createAction(EditorActionType.DeleteItem, { index }),
+  appendItem: () => createAction(EditorActionType.AppendItem)
 };
 
 export type EditorActions = ActionUnion<typeof editorSyncActions>;
 
 const load = (id: string): AsyncAction => async (dispatch, getState) => {
-  const data = getState().editor.buffer[id];
+  const { buffer: buffers } = getState();
+  const buffer = buffers[id];
 
-  if (data === undefined) {
-    dispatch(editorSyncActions.update(id, createContentData()));
+  if (buffer === undefined) {
+    const data = createContentData();
+
+    dispatch(
+      editorSyncActions.setBuffer(id, {
+        parentId: null,
+        sourceComment: "",
+        editedComment: "",
+        sourceData: data,
+        editedData: data
+      })
+    );
   }
 };
 
-const save = (id: string): AsyncAction => async () => {
+const save = (id: string): AsyncAction => async (dispatch, getState) => {
+  const { parentId, sourceComment, editedComment, sourceData, editedData } = getState().editor;
+
+  dispatch(
+    bufferActions.update(id, {
+      parentId,
+      sourceComment,
+      editedComment,
+      sourceData,
+      editedData
+    })
+  );
+
   console.log(id, "saved!");
 };
 
@@ -39,8 +75,8 @@ export const editorActions = {
   save
 };
 
-export interface EditorState {
-  buffer: { [id: string]: ContentData | undefined };
+export interface EditorState extends EditorBuffer {
+  revisionId: string | null;
   itemType: ContentItem["type"];
   itemLang: string;
   textLang: string;
@@ -48,28 +84,95 @@ export interface EditorState {
 }
 
 export const initialEditorState: EditorState = {
-  buffer: {},
+  revisionId: null,
+  parentId: null,
+  sourceComment: "",
+  editedComment: "",
+  sourceData: createContentData(),
+  editedData: createContentData(),
+  itemType: "kanji",
   itemLang: "ja",
   textLang: "ja",
-  codeLang: "js",
-  itemType: "kanji"
+  codeLang: "js"
 };
 
-export const editorReducer: Reducer<EditorState, EditorActions> = (state = initialEditorState, action) => {
+export const editorReducer: Reducer<EditorState, Actions> = (state = initialEditorState, action) => {
   switch (action.type) {
-    case EditorActionType.Update: {
+    case EditorActionType.SetBuffer: {
+      const { id, buffer } = action.payload;
+
       return {
         ...state,
-        buffer: {
-          ...state.buffer,
-          [action.payload.id]: action.payload.data
-        }
+        ...buffer,
+        revisionId: id
+      };
+    }
+    case EditorActionType.ResetBuffer: {
+      return {
+        ...state,
+        editedComment: state.sourceComment,
+        editedData: state.sourceData
       };
     }
     case EditorActionType.SelectItemType: {
       return {
         ...state,
         itemType: action.payload.type
+      };
+    }
+    case EditorActionType.SelectItemLang: {
+      return {
+        ...state,
+        itemLang: action.payload.lang
+      };
+    }
+    case EditorActionType.SelectTextLang: {
+      return {
+        ...state,
+        textLang: action.payload.lang
+      };
+    }
+    case EditorActionType.SelectCodeLang: {
+      return {
+        ...state,
+        codeLang: action.payload.lang
+      };
+    }
+    case EditorActionType.UpdateTitle: {
+      const { title } = action.payload;
+
+      return {
+        ...state,
+        editedData: {
+          ...state.editedData,
+          title
+        }
+      };
+    }
+    case EditorActionType.UpdateItem: {
+      const { index, key, value } = action.payload;
+
+      const items = [...state.editedData.items];
+      items[index] = {
+        ...items[index],
+        [key]: value
+      };
+
+      return {
+        ...state,
+        editedData: {
+          ...state.editedData,
+          items
+        }
+      };
+    }
+    case EditorActionType.AppendItem: {
+      return {
+        ...state,
+        editedData: {
+          ...state.editedData,
+          items: [...state.editedData.items, contentItemCreators[state.itemType]()]
+        }
       };
     }
     default:

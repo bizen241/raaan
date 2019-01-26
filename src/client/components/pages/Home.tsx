@@ -11,12 +11,12 @@ import { Page } from "./Page";
 
 export const Home = connector(
   state => ({
-    drafts: state.editor.buffer
+    buffers: state.buffer
   }),
   () => ({
     create: () => push("/revisions/new")
   }),
-  ({ drafts, create }) => {
+  ({ buffers, create }) => {
     const draftListRef = useRef<HTMLDivElement>(null);
 
     useEffect(
@@ -37,12 +37,12 @@ export const Home = connector(
           <Column padding="small">編集中</Column>
           <Card>
             <Column>
-              {Object.entries(drafts).map(
-                ([id, data]) =>
-                  data && (
+              {Object.entries(buffers).map(
+                ([id, buffer]) =>
+                  buffer && (
                     <Column key={id}>
                       <Row center="cross">
-                        <Row>{data.title}</Row>
+                        <Row>{buffer.editedData.title}</Row>
                         <Row flex={1} />
                         <Link className={Classes.BUTTON} to={`/revisions/${id}/edit`}>
                           編集

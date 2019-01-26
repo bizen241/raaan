@@ -1,7 +1,6 @@
 import { Button } from "@blueprintjs/core";
 import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
-import { ContentItem } from "../../../../shared/content";
 import { connector } from "../../../reducers";
 import { bufferActions } from "../../../reducers/buffer";
 import { editorActions } from "../../../reducers/editor";
@@ -12,10 +11,9 @@ import { ContentPreviewer } from "./ContentPreviewer";
 import { ContentTitleEditor } from "./ContentTitleEditor";
 
 export const ContentEditor = connector(
-  ({ editor: { buffer, ...settings } }, { id }: { id: string }) => ({
+  ({ editor }, { id }: { id: string }) => ({
     id,
-    data: buffer[id],
-    ...settings
+    ...editor
   }),
   () => ({
     persist: bufferActions.update,
@@ -23,41 +21,35 @@ export const ContentEditor = connector(
   }),
   ({
     id,
+    revisionId,
+    editedData,
     itemType,
-    // itemLang,
-    // textLang,
-    // codeLang,
     load,
-    update,
     save,
-    selectItemType,
+    updateTitle,
+    updateItem,
+    deleteItem,
+    appendItem,
+    selectItemType
     // selectItemLang,
     // selectTextLang,
     // selectCodeLang
-    ...props
   }) => {
     const [isContentPreviewerOpen, toggleContentPreviewer] = useState(false);
     const [isContentItemPreviewerOpen, toggleContentItemPreviewer] = useState(false);
     const isVisible = !isContentPreviewerOpen && !isContentItemPreviewerOpen;
 
     useEffect(() => {
-      load(id);
+      if (revisionId !== id) {
+        load(id);
+      }
 
       return () => save(id);
     }, []);
 
-    if (props.data === undefined) {
+    if (revisionId !== id) {
       return <div>Loading...</div>;
     }
-
-    const [data, setData] = useState(props.data);
-
-    useEffect(
-      () => {
-        update(id, data);
-      },
-      [data]
-    );
 
     useEffect(
       manageHotKey(
@@ -70,30 +62,29 @@ export const ContentEditor = connector(
       [isVisible]
     );
 
-    const updateTitle = useCallback((title: string) => setData(s => ({ ...s, title })), []);
-    const updateItems = useCallback((items: ContentItem[]) => setData(s => ({ ...s, items })), []);
-
     const openContentPreviewer = useCallback(() => toggleContentPreviewer(true), []);
     const closeContentPreviewer = useCallback(() => toggleContentPreviewer(false), []);
 
     return (
       <Column flex={1} style={{ overflowY: "auto" }}>
         <Column padding="small">
-          <ContentTitleEditor title={data.title} onChange={updateTitle} />
+          <ContentTitleEditor title={editedData.title} onChange={updateTitle} />
         </Column>
         <Column>
           <ContentItemsEditor
-            items={data.items}
+            items={editedData.items}
             isVisible={isVisible}
             selectedItemType={itemType}
-            onChange={updateItems}
             onSelectItemType={selectItemType}
+            onChange={updateItem}
+            onDelete={deleteItem}
+            onAppend={appendItem}
           />
         </Column>
         <Column padding="small">
           <Button onClick={openContentPreviewer}>プレビュー (P)</Button>
         </Column>
-        <ContentPreviewer data={data} isOpen={isContentPreviewerOpen} onClose={closeContentPreviewer} />
+        <ContentPreviewer data={editedData} isOpen={isContentPreviewerOpen} onClose={closeContentPreviewer} />
       </Column>
     );
   }

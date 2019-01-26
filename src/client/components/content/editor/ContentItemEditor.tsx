@@ -15,21 +15,22 @@ export const ContentItemEditor = React.memo<{
   isFocused: boolean;
   editorRef: RefObject<HTMLButtonElement> | null;
   hotKey: string | undefined;
-  onChange: (item: ContentItem) => void;
-  onDelete: (id: string) => void;
+  onChange: <P extends keyof ContentItem>(index: number, key: P, value: ContentItem[P]) => void;
+  onDelete: (index: number) => void;
   onFocus: (index: number) => void;
-}>(({ index, isVisible, isFocused, editorRef, onChange, onDelete, onFocus, ...props }) => {
+}>(({ index, item, isVisible, isFocused, editorRef, onChange, onDelete, onFocus }) => {
   const [isMenuOpen, toggleMenu] = useState(true);
-  const [item, setItem] = useState(props.item);
 
-  const updateItem = useCallback((key: string, value: string) => setItem(s => ({ ...s, [key]: value })), []);
-  const deleteItem = useCallback(() => onDelete(item.id), []);
+  const updateItem = useCallback(
+    <P extends keyof ContentItem>(key: P, value: ContentItem[P]) => onChange(index, key, value),
+    [index]
+  );
+  const deleteItem = useCallback(() => onDelete(index), [index]);
 
-  useEffect(() => onChange(item), [item]);
   useEffect(
     manageHotKey(
       {
-        Delete: () => onDelete(item.id)
+        Delete: deleteItem
       },
       isVisible && isFocused
     ),
@@ -64,9 +65,9 @@ export const ContentItemEditor = React.memo<{
 
 export type TextAreaChangeEvent = React.ChangeEvent<HTMLTextAreaElement>;
 
-export interface ContentItemEditorProps<T> {
+export interface ContentItemEditorProps<T extends ContentItem> {
   item: T;
-  onChange: (key: string, value: string) => void;
+  onChange: <P extends keyof T>(key: P, value: T[P]) => void;
 }
 
 const editors: { [T in ContentItem["type"]]: FunctionComponent<ContentItemEditorProps<any>> } = {

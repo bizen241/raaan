@@ -3,20 +3,28 @@ import { Actions } from ".";
 import { ContentData } from "../../shared/content";
 import { ActionUnion, createAction } from "../actions/helpers";
 
+export interface EditorBuffer {
+  parentId: string | null;
+  sourceComment: string;
+  editedComment: string;
+  sourceData: ContentData;
+  editedData: ContentData;
+}
+
 export enum BufferActionType {
   Update = "buffer/update",
   Delete = "buffer/delete"
 }
 
 export const bufferActions = {
-  update: (id: string, data: ContentData) => createAction(BufferActionType.Update, { id, data }),
+  update: (id: string, buffer: EditorBuffer) => createAction(BufferActionType.Update, { id, buffer }),
   delete: (id: string) => createAction(BufferActionType.Delete, { id })
 };
 
 export type BufferActions = ActionUnion<typeof bufferActions>;
 
 export interface BufferState {
-  [id: string]: ContentData | undefined;
+  [id: string]: EditorBuffer | undefined;
 }
 
 export const initialBufferState: BufferState = {};
@@ -26,14 +34,13 @@ export const bufferReducer: Reducer<BufferState, Actions> = (state = initialBuff
     case BufferActionType.Update: {
       return {
         ...state,
-        [action.payload.id]: action.payload.data
+        [action.payload.id]: action.payload.buffer
       };
     }
     case BufferActionType.Delete: {
-      const buffer = { ...state };
-      delete buffer[action.payload.id];
+      const { [action.payload.id]: deleted, ...buffers } = state;
 
-      return buffer;
+      return buffers;
     }
     default:
       return state;

@@ -2,7 +2,6 @@ import { Button } from "@blueprintjs/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as React from "react";
 import { ContentItem } from "../../../../shared/content";
-import { contentItemCreators } from "../../../domain/content";
 import { Column } from "../../ui";
 import { manageHotKey } from "../../utils/hotKey";
 import { ContentItemEditor } from "./ContentItemEditor";
@@ -13,47 +12,20 @@ export const ContentItemsEditor = React.memo<{
   isVisible: boolean;
   selectedItemType: ContentItem["type"];
   onSelectItemType: (type: ContentItem["type"]) => void;
-  onChange: (items: ContentItem[]) => void;
-}>(({ isVisible, selectedItemType, onChange, onSelectItemType, ...props }) => {
-  const focusedItemRef = useRef<HTMLButtonElement>(null);
+  onChange: <P extends keyof ContentItem>(index: number, key: P, value: ContentItem[P]) => void;
+  onDelete: (index: number) => void;
+  onAppend: () => void;
+}>(({ items, isVisible, selectedItemType, onSelectItemType, onChange, onDelete, onAppend }) => {
   const itemTypeSelectRef = useRef<HTMLSelectElement>(null);
 
+  const focusedItemRef = useRef<HTMLButtonElement>(null);
   const [focusedItemIndex, setFocusedItemIndex] = useState(0);
-
   const focusItem = useCallback((index: number) => setFocusedItemIndex(index), []);
 
-  const [items, setItems] = useState(props.items);
-
-  const updateItem = useCallback(
-    (updatedItem: ContentItem) =>
-      setItems(s => {
-        const { id } = updatedItem;
-        const index = s.findIndex(item => item.id === id);
-        return [...s.slice(0, index), updatedItem, ...s.slice(index + 1)];
-      }),
-    []
-  );
-  const deleteItem = useCallback((id: string) => {
-    setItems(s => {
-      const index = s.findIndex(item => item.id === id);
-      return [...s.slice(0, index), ...s.slice(index + 1)];
-    });
-  }, []);
-  const appendItem = useCallback(
-    () => {
-      setItems(s => {
-        focusItem(s.length);
-        return [...s, contentItemCreators[selectedItemType]()];
-      });
-    },
-    [selectedItemType]
-  );
-
-  useEffect(() => onChange(items), [items]);
   useEffect(
     manageHotKey(
       {
-        a: appendItem,
+        a: onAppend,
         Escape: () =>
           focusedItemRef.current != null
             ? focusedItemRef.current.focus()
@@ -74,10 +46,10 @@ export const ContentItemsEditor = React.memo<{
             item={item}
             isVisible={isVisible}
             isFocused={index === focusedItemIndex}
+            editorRef={index === focusedItemIndex ? focusedItemRef : null}
             hotKey={undefined}
-            editorRef={focusedItemRef}
-            onChange={updateItem}
-            onDelete={deleteItem}
+            onChange={onChange}
+            onDelete={onDelete}
             onFocus={focusItem}
           />
         </Column>
@@ -90,7 +62,7 @@ export const ContentItemsEditor = React.memo<{
         />
       </Column>
       <Column padding="small">
-        <Button autoFocus onClick={appendItem}>
+        <Button autoFocus onClick={onAppend}>
           追加 (A)
         </Button>
       </Column>

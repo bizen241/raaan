@@ -31,6 +31,7 @@ export interface ContentData {
   lang: string;
   tags: string[];
   items: ContentItem[];
+  summary: string;
   comment: string;
   shuffle: boolean;
 }
