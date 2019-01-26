@@ -26,6 +26,7 @@ export const Home = connector(
       }),
       []
     );
+    throw new Error();
 
     return (
       <Page>
