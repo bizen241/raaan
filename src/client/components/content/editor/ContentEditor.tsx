@@ -44,7 +44,7 @@ export const ContentEditor = connector(
         load(id);
       }
 
-      return () => save(id);
+      return () => save();
     }, []);
 
     if (revisionId !== id) {

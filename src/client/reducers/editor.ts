@@ -38,7 +38,9 @@ const load = (id: string): AsyncAction => async (dispatch, getState) => {
   const { buffer: buffers } = getState();
   const buffer = buffers[id];
 
-  if (buffer === undefined) {
+  if (buffer !== undefined) {
+    dispatch(editorSyncActions.setBuffer(id, buffer));
+  } else {
     const data = createContentData();
 
     dispatch(
@@ -53,11 +55,14 @@ const load = (id: string): AsyncAction => async (dispatch, getState) => {
   }
 };
 
-const save = (id: string): AsyncAction => async (dispatch, getState) => {
-  const { parentId, sourceComment, editedComment, sourceData, editedData } = getState().editor;
+const save = (): AsyncAction => async (dispatch, getState) => {
+  const { revisionId, parentId, sourceComment, editedComment, sourceData, editedData } = getState().editor;
+  if (revisionId == null) {
+    return;
+  }
 
   dispatch(
-    bufferActions.update(id, {
+    bufferActions.update(revisionId, {
       parentId,
       sourceComment,
       editedComment,
@@ -65,8 +70,6 @@ const save = (id: string): AsyncAction => async (dispatch, getState) => {
       editedData
     })
   );
-
-  console.log(id, "saved!");
 };
 
 export const editorActions = {
