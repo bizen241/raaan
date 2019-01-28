@@ -1,10 +1,10 @@
-import { AnchorButton, Card, Classes, Divider } from "@blueprintjs/core";
-import { Trans } from "@lingui/react";
+import { Card, Classes, Divider } from "@blueprintjs/core";
 import { push } from "connected-react-router";
 import * as React from "react";
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../reducers";
+import { Header } from "../project/Header";
 import { Column, Row } from "../ui";
 import { manageHotKey } from "../utils/hotKey";
 import { Page } from "./Page";
@@ -29,10 +29,7 @@ export const Home = connector(
 
     return (
       <Page>
-        <Row padding="small">
-          <Row flex={1} />
-          <AnchorButton text={<Trans>ログイン</Trans>} href="/auth/github" />
-        </Row>
+        <Header heading="ホーム" />
         <Column padding="small">
           <Column padding="small">編集中</Column>
           <Card>
