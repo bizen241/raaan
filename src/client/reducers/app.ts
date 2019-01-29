@@ -1,4 +1,5 @@
 import { Reducer } from "redux";
+import { Actions } from ".";
 import { User } from "../../shared/api/entities";
 import { ActionUnion, AsyncAction, createAction } from "../actions/helpers";
 import { getCurrentUser } from "../api/client";
@@ -55,15 +56,15 @@ export const initialAppState: AppState = {
     id: "00000000-0000-0000-0000-000000000000",
     name: "Guest",
     permission: "Guest",
-    createdAt: new Date().valueOf(),
-    updatedAt: new Date().valueOf(),
-    fetchedAt: new Date().valueOf()
+    createdAt: 0,
+    updatedAt: 0,
+    fetchedAt: 0
   },
   isReady: false,
   hasUpdate: false
 };
 
-export const appReducer: Reducer<AppState, AppActions> = (state = initialAppState, action) => {
+export const appReducer: Reducer<AppState, Actions> = (state = initialAppState, action) => {
   switch (action.type) {
     case AppActionType.Ready: {
       return {
