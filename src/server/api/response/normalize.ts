@@ -11,6 +11,7 @@ import {
   UserSessionEntity
 } from "../../database/entities";
 import { BaseEntity } from "../../database/entities/BaseEntity";
+import { ContentObjectEntity } from "../../database/entities/ContentObjectEntity";
 
 export const normalizeEntities = (entities: Entity[], isSearching: boolean): EntityStore => {
   const store = createEntityStore();
@@ -52,9 +53,9 @@ const normalizeContent: Normalizer<ContentEntity> = (store, entity, isSearching)
     ownerId: owner.id,
     latestId: latest.id,
     tagIds: tags.map(tag => tag.id),
-    lang: latest.data.lang,
-    title: latest.data.title,
-    comment: latest.data.comment,
+    lang: latest.object.lang,
+    title: latest.object.title,
+    summary: latest.object.summary,
     isPrivate,
     isArchived,
     isLocked
@@ -63,18 +64,35 @@ const normalizeContent: Normalizer<ContentEntity> = (store, entity, isSearching)
   tags.forEach(tag => normalizeEntity(store, tag, isSearching));
 };
 
-const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (store, entity, isSearching) => {
-  const { id, content, author, version, comment, data, isProposed } = entity;
+const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (store, entity) => {
+  const { id, content, parent, author, object, version, title, comment, isProposed, isMerged } = entity;
 
   store.ContentRevision[id] = {
     ...base(entity),
     contentId: content.id,
+    parentId: parent.id,
     authorId: author.id,
+    objectId: object.id,
     version,
+    title,
     comment,
-    data: isSearching ? undefined : data,
-    title: data.title,
-    isProposed
+    isProposed,
+    isMerged
+  };
+};
+
+const normalizeContentObject: Normalizer<ContentObjectEntity> = (store, entity) => {
+  const { id, lang, title, tags, summary, comment, items, isLinear } = entity;
+
+  store.ContentObject[id] = {
+    ...base(entity),
+    lang,
+    title,
+    tags,
+    summary,
+    comment,
+    items,
+    isLinear
   };
 };
 
@@ -125,6 +143,7 @@ const normalizeUserSession: Normalizer<UserSessionEntity> = (store, entity, isSe
 const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Content: normalizeContent,
   ContentRevision: normalizeContentRevision,
+  ContentObject: normalizeContentObject,
   ContentTag: normalizeContentTag,
   User: normalizeUser,
   UserAccount: normalizeUserAccount,

@@ -1,5 +1,6 @@
 import {
   Content,
+  ContentObject,
   ContentRevision,
   ContentTag,
   EntityObject,
@@ -39,15 +40,33 @@ const parseContent: Parser<Content> = query => {
 };
 
 const parseContentRevision: Parser<ContentRevision> = query => {
-  const { contentId, authorId, version, comment, data: object, isProposed: isDraft } = query;
+  const { contentId, parentId, authorId, objectId, version, title, comment, isProposed, isMerged } = query;
 
   return {
     contentId,
+    parentId,
     authorId,
+    objectId,
     version: Number(version),
+    title,
     comment,
-    data: object && JSON.parse(object),
-    isProposed: bool(isDraft),
+    isProposed: bool(isProposed),
+    isMerged: bool(isMerged),
+    ...page(query)
+  };
+};
+
+const parseContentObject: Parser<ContentObject> = query => {
+  const { lang, title, tags, summary, comment, items, isLinear } = query;
+
+  return {
+    lang,
+    title,
+    tags: tags && JSON.parse(tags),
+    summary,
+    comment,
+    items: items && JSON.parse(items),
+    isLinear: bool(isLinear),
     ...page(query)
   };
 };
@@ -95,6 +114,7 @@ const parseUserSession: Parser<UserSession> = query => {
 const parsers: { [T in EntityType]: Parser<any> } = {
   Content: parseContent,
   ContentRevision: parseContentRevision,
+  ContentObject: parseContentObject,
   ContentTag: parseContentTag,
   User: parseUser,
   UserAccount: parseUserAccount,

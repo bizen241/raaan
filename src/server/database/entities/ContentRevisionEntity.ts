@@ -1,29 +1,36 @@
-import { Column, Entity, ManyToOne } from "typeorm";
-import { ContentData } from "../../../shared/content";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 import { BaseEntity } from "./BaseEntity";
 import { ContentEntity } from "./ContentEntity";
+import { ContentObjectEntity } from "./ContentObjectEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity()
 export class ContentRevisionEntity extends BaseEntity<"ContentRevision"> {
   type: "ContentRevision" = "ContentRevision";
 
-  @ManyToOne(() => UserEntity)
-  author!: UserEntity;
-
   @ManyToOne(() => ContentEntity, {
     onDelete: "CASCADE"
   })
   content!: ContentEntity;
 
+  @ManyToOne(() => ContentRevisionEntity)
+  parent!: ContentRevisionEntity;
+
+  @ManyToOne(() => UserEntity)
+  author!: UserEntity;
+
+  @OneToOne(() => ContentObjectEntity)
+  @JoinColumn()
+  object!: ContentObjectEntity;
+
   @Column()
   version!: number;
 
   @Column()
-  comment!: string;
+  title!: string;
 
-  @Column({ type: "json" })
-  data!: ContentData;
+  @Column()
+  comment!: string;
 
   @Column()
   isProposed!: boolean;
@@ -34,25 +41,40 @@ export class ContentRevisionEntity extends BaseEntity<"ContentRevision"> {
 
 interface ContentRevisionConstructor {
   id?: string;
-  content: ContentEntity;
   author: UserEntity;
+  content: ContentEntity;
+  parent?: ContentRevisionEntity;
+  object: ContentObjectEntity;
   version: number;
+  title: string;
   comment: string;
-  data: ContentData;
 }
 
-export const createContentRevision = ({ id, content, author, version, comment, data }: ContentRevisionConstructor) => {
+export const createContentRevision = ({
+  id,
+  author,
+  content,
+  parent,
+  object,
+  version,
+  title,
+  comment
+}: ContentRevisionConstructor) => {
   const contentRevision = new ContentRevisionEntity();
 
   if (id !== undefined) {
     contentRevision.id = id;
   }
+  if (parent !== undefined) {
+    contentRevision.parent = parent;
+  }
 
-  contentRevision.content = content;
   contentRevision.author = author;
+  contentRevision.content = content;
+  contentRevision.object = object;
   contentRevision.version = version;
+  contentRevision.title = title;
   contentRevision.comment = comment;
-  contentRevision.data = data;
   contentRevision.isProposed = false;
   contentRevision.isMerged = false;
 

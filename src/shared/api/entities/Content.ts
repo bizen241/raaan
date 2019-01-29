@@ -4,9 +4,9 @@ export interface Content extends BaseObject {
   ownerId: string;
   latestId: string;
   tagIds: string[];
-  title: string;
   lang: string;
-  comment: string;
+  title: string;
+  summary: string;
   isPrivate: boolean;
   isArchived: boolean;
   isLocked: boolean;

@@ -20,6 +20,7 @@ export type SearchResultStore = { [P in EntityType]: SearchResultMap };
 export const createSearchResultStore = (): SearchResultStore => ({
   Content: {},
   ContentRevision: {},
+  ContentObject: {},
   ContentTag: {},
   User: {},
   UserAccount: {},
