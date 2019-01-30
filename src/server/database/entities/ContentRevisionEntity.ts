@@ -1,11 +1,11 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
-import { BaseEntity } from "./BaseEntity";
+import { BaseEntityClass } from "./BaseEntityClass";
 import { ContentEntity } from "./ContentEntity";
 import { ContentObjectEntity } from "./ContentObjectEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity()
-export class ContentRevisionEntity extends BaseEntity<"ContentRevision"> {
+export class ContentRevisionEntity extends BaseEntityClass<"ContentRevision"> {
   type: "ContentRevision" = "ContentRevision";
 
   @ManyToOne(() => ContentEntity, {

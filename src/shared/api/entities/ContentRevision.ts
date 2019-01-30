@@ -1,6 +1,6 @@
-import { BaseObject } from "./BaseObject";
+import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface ContentRevision extends BaseObject {
+export interface ContentRevision extends BaseEntityObject {
   contentId: string;
   parentId: string;
   authorId: string;

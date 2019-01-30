@@ -1,5 +1,5 @@
 import { EntityType } from "../../../shared/api/entities";
-import { BaseObject } from "../../../shared/api/entities/BaseObject";
+import { BaseEntityObject } from "../../../shared/api/entities/BaseEntityObject";
 import { createEntityStore, EntityStore } from "../../../shared/api/response/entity";
 import {
   ContentEntity,
@@ -10,7 +10,7 @@ import {
   UserEntity,
   UserSessionEntity
 } from "../../database/entities";
-import { BaseEntity } from "../../database/entities/BaseEntity";
+import { BaseEntityClass } from "../../database/entities/BaseEntityClass";
 import { ContentObjectEntity } from "../../database/entities/ContentObjectEntity";
 
 export const normalizeEntities = (entities: Entity[], isSearching: boolean): EntityStore => {
@@ -36,7 +36,7 @@ const normalizeEntity = (store: EntityStore, entity: Entity, isSearching: boolea
   normalizers[type](store, entity, isSearching);
 };
 
-const base = <T extends EntityType>({ id, createdAt, updatedAt }: BaseEntity<T>): BaseObject => ({
+const base = <T extends EntityType>({ id, createdAt, updatedAt }: BaseEntityClass<T>): BaseEntityObject => ({
   id,
   createdAt: createdAt.valueOf(),
   updatedAt: updatedAt.valueOf(),

@@ -1,7 +1,7 @@
 import { ContentItem } from "../../content";
-import { BaseObject } from "./BaseObject";
+import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface ContentObject extends BaseObject {
+export interface ContentObject extends BaseEntityObject {
   lang: string;
   title: string;
   tags: string[];

@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToOne } from "typeorm";
-import { BaseEntity } from "./BaseEntity";
+import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
 @Entity()
-export class UserSessionEntity extends BaseEntity<"UserSession"> {
+export class UserSessionEntity extends BaseEntityClass<"UserSession"> {
   type: "UserSession" = "UserSession";
 
   @ManyToOne(() => UserEntity)

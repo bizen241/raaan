@@ -1,9 +1,9 @@
 import { Column, Entity } from "typeorm";
 import { ContentItem } from "../../../shared/content";
-import { BaseEntity } from "./BaseEntity";
+import { BaseEntityClass } from "./BaseEntityClass";
 
 @Entity()
-export class ContentObjectEntity extends BaseEntity<"ContentObject"> {
+export class ContentObjectEntity extends BaseEntityClass<"ContentObject"> {
   type: "ContentObject" = "ContentObject";
 
   @Column()

@@ -1,7 +1,7 @@
 import { AuthProviderName } from "../../auth";
-import { BaseObject } from "./BaseObject";
+import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface UserAccount extends BaseObject {
+export interface UserAccount extends BaseEntityObject {
   userId: string;
   provider: AuthProviderName;
   accountId: string;

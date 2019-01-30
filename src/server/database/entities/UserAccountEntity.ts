@@ -1,10 +1,10 @@
 import { Column, Entity, ManyToOne } from "typeorm";
 import { AuthProviderName } from "../../../shared/auth";
-import { BaseEntity } from "./BaseEntity";
+import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
 @Entity()
-export class UserAccountEntity extends BaseEntity<"UserAccount"> {
+export class UserAccountEntity extends BaseEntityClass<"UserAccount"> {
   type: "UserAccount" = "UserAccount";
 
   @ManyToOne(() => UserEntity)

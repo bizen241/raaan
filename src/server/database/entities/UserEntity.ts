@@ -1,9 +1,9 @@
 import { Column, Entity } from "typeorm";
 import { Permission } from "../../../shared/api/entities";
-import { BaseEntity } from "./BaseEntity";
+import { BaseEntityClass } from "./BaseEntityClass";
 
 @Entity()
-export class UserEntity extends BaseEntity<"User"> {
+export class UserEntity extends BaseEntityClass<"User"> {
   type: "User" = "User";
 
   @Column()
