@@ -1,13 +1,13 @@
+import { ContentItem } from "../../content";
 import { BaseEntityObject } from "./BaseEntityObject";
 
 export interface ContentRevision extends BaseEntityObject {
   contentId: string;
-  parentId: string;
-  authorId: string;
-  objectId: string;
-  version: number;
+  lang: string;
+  tags: string[];
   title: string;
+  summary: string;
   comment: string;
-  isProposed: boolean;
-  isMerged: boolean;
+  items: ContentItem[];
+  isLinear: boolean;
 }

@@ -1,4 +1,5 @@
-import { ContentData, ContentItem } from "../../../../shared/content";
+import { ContentRevisionParams } from "..";
+import { ContentItem } from "../../../../shared/content";
 import { isHatuon, isHiragana, isSokuon, isYoon, pairHiragana, singleHiragana } from "./hiragana";
 
 export type CompiledChar = {
@@ -8,10 +9,10 @@ export type CompiledChar = {
 export type CompiledLine = CompiledChar[];
 export type CompiledItem = CompiledLine[];
 
-export const compileContent = (data: ContentData) => {
+export const compileContent = (content: ContentRevisionParams) => {
   const compiledItems: CompiledItem[] = [];
 
-  data.items.forEach(item => {
+  content.items.forEach(item => {
     compiledItems.push(compileItem(item));
   });
 

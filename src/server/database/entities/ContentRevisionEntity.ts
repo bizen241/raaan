@@ -1,8 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
+import { Column, Entity, ManyToOne } from "typeorm";
+import { ContentItem } from "../../../shared/content";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ContentEntity } from "./ContentEntity";
-import { ContentObjectEntity } from "./ContentObjectEntity";
-import { UserEntity } from "./UserEntity";
 
 @Entity()
 export class ContentRevisionEntity extends BaseEntityClass<"ContentRevision"> {
@@ -13,70 +12,65 @@ export class ContentRevisionEntity extends BaseEntityClass<"ContentRevision"> {
   })
   content!: ContentEntity;
 
-  @ManyToOne(() => ContentRevisionEntity)
-  parent!: ContentRevisionEntity;
-
-  @ManyToOne(() => UserEntity)
-  author!: UserEntity;
-
-  @OneToOne(() => ContentObjectEntity)
-  @JoinColumn()
-  object!: ContentObjectEntity;
-
   @Column()
-  version!: number;
+  lang!: string;
 
   @Column()
   title!: string;
 
+  @Column("json")
+  tags!: string[];
+
+  @Column()
+  summary!: string;
+
   @Column()
   comment!: string;
 
-  @Column()
-  isProposed!: boolean;
+  @Column("json")
+  items!: ContentItem[];
 
   @Column()
-  isMerged!: boolean;
+  isLinear!: boolean;
 }
 
 interface ContentRevisionConstructor {
   id?: string;
-  author: UserEntity;
   content: ContentEntity;
-  parent?: ContentRevisionEntity;
-  object: ContentObjectEntity;
-  version: number;
+  lang: string;
   title: string;
+  tags: string[];
+  summary: string;
   comment: string;
+  items: ContentItem[];
+  isLinear: boolean;
 }
 
-export const createContentRevision = ({
+export const createContentRevisionEntity = ({
   id,
-  author,
   content,
-  parent,
-  object,
-  version,
+  lang,
   title,
-  comment
+  tags,
+  summary,
+  comment,
+  items,
+  isLinear
 }: ContentRevisionConstructor) => {
   const contentRevision = new ContentRevisionEntity();
 
   if (id !== undefined) {
     contentRevision.id = id;
   }
-  if (parent !== undefined) {
-    contentRevision.parent = parent;
-  }
 
-  contentRevision.author = author;
   contentRevision.content = content;
-  contentRevision.object = object;
-  contentRevision.version = version;
+  contentRevision.lang = lang;
   contentRevision.title = title;
+  contentRevision.tags = tags;
+  contentRevision.summary = summary;
   contentRevision.comment = comment;
-  contentRevision.isProposed = false;
-  contentRevision.isMerged = false;
+  contentRevision.items = items;
+  contentRevision.isLinear = isLinear;
 
   return contentRevision;
 };

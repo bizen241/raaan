@@ -1,6 +1,5 @@
 import {
   Content,
-  ContentObject,
   ContentRevision,
   ContentTag,
   EntityObject,
@@ -8,6 +7,7 @@ import {
   Permission,
   User,
   UserAccount,
+  UserConfig,
   UserSession
 } from "../../../shared/api/entities";
 import { SearchParams } from "../../../shared/api/request/search";
@@ -40,29 +40,13 @@ const parseContent: Parser<Content> = query => {
 };
 
 const parseContentRevision: Parser<ContentRevision> = query => {
-  const { contentId, parentId, authorId, objectId, version, title, comment, isProposed, isMerged } = query;
+  const { contentId, lang, tags, title, summary, comment, items, isLinear } = query;
 
   return {
     contentId,
-    parentId,
-    authorId,
-    objectId,
-    version: Number(version),
-    title,
-    comment,
-    isProposed: bool(isProposed),
-    isMerged: bool(isMerged),
-    ...page(query)
-  };
-};
-
-const parseContentObject: Parser<ContentObject> = query => {
-  const { lang, title, tags, summary, comment, items, isLinear } = query;
-
-  return {
     lang,
-    title,
     tags: tags && JSON.parse(tags),
+    title,
     summary,
     comment,
     items: items && JSON.parse(items),
@@ -101,6 +85,17 @@ const parseUserAccount: Parser<UserAccount> = query => {
   };
 };
 
+const parseUserConfig: Parser<UserConfig> = query => {
+  const { userId, name, settings } = query;
+
+  return {
+    userId,
+    name,
+    settings: settings && JSON.parse(settings),
+    ...page(query)
+  };
+};
+
 const parseUserSession: Parser<UserSession> = query => {
   const { userAgent, userId } = query;
 
@@ -114,9 +109,9 @@ const parseUserSession: Parser<UserSession> = query => {
 const parsers: { [T in EntityType]: Parser<any> } = {
   Content: parseContent,
   ContentRevision: parseContentRevision,
-  ContentObject: parseContentObject,
   ContentTag: parseContentTag,
   User: parseUser,
   UserAccount: parseUserAccount,
+  UserConfig: parseUserConfig,
   UserSession: parseUserSession
 };

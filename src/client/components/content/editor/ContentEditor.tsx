@@ -21,8 +21,7 @@ export const ContentEditor = connector(
   }),
   ({
     id,
-    revisionId,
-    editedData,
+    editedRevision,
     itemType,
     load,
     save,
@@ -40,14 +39,14 @@ export const ContentEditor = connector(
     const isVisible = !isContentPreviewerOpen && !isContentItemPreviewerOpen;
 
     useEffect(() => {
-      if (revisionId !== id) {
+      if (editedRevision.contentId !== id) {
         load(id);
       }
 
       return () => save();
     }, []);
 
-    if (revisionId !== id) {
+    if (editedRevision.contentId !== id) {
       return <div>Loading...</div>;
     }
 
@@ -68,11 +67,11 @@ export const ContentEditor = connector(
     return (
       <Column flex={1} style={{ overflowY: "auto" }}>
         <Column padding="small">
-          <ContentTitleEditor title={editedData.title} onChange={updateTitle} />
+          <ContentTitleEditor title={editedRevision.title || ""} onChange={updateTitle} />
         </Column>
         <Column>
           <ContentItemsEditor
-            items={editedData.items}
+            items={editedRevision.items || []}
             isVisible={isVisible}
             selectedItemType={itemType}
             onSelectItemType={selectItemType}
@@ -84,7 +83,7 @@ export const ContentEditor = connector(
         <Column padding="small">
           <Button onClick={openContentPreviewer}>プレビュー (P)</Button>
         </Column>
-        <ContentPreviewer data={editedData} isOpen={isContentPreviewerOpen} onClose={closeContentPreviewer} />
+        <ContentPreviewer content={editedRevision} isOpen={isContentPreviewerOpen} onClose={closeContentPreviewer} />
       </Column>
     );
   }

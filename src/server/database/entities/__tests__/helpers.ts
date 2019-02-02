@@ -2,8 +2,7 @@ import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { users } from "../../../session/__tests__/helpers";
 import { createContent } from "../ContentEntity";
-import { createContentObject } from "../ContentObjectEntity";
-import { createContentRevision } from "../ContentRevisionEntity";
+import { createContentRevisionEntity } from "../ContentRevisionEntity";
 
 export const insertContent = async (contentId?: string) => {
   const manager = getManager();
@@ -14,23 +13,16 @@ export const insertContent = async (contentId?: string) => {
     id: contentId || uuid(),
     owner: users.Write
   });
-  const revision = createContentRevision({
+  const revision = createContentRevisionEntity({
     id: uuid(),
-    author: users.Write,
     content,
-    object: createContentObject({
-      id: uuid(),
-      lang: "",
-      title: "",
-      tags: [],
-      summary: "",
-      comment: "",
-      items: [],
-      isLinear: false
-    }),
-    version: 1,
+    lang: "",
     title: "",
-    comment: ""
+    tags: [],
+    summary: "",
+    comment: "",
+    items: [],
+    isLinear: false
   });
 
   await manager.save(content);

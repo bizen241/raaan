@@ -1,8 +1,7 @@
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { ContentData } from "../../shared/content";
 import { ActionUnion, createAction } from "../actions/helpers";
-import { createContentData, createPlan } from "../domain/content";
+import { ContentRevisionParams, createContentRevision, createPlan } from "../domain/content";
 import { compileContent, CompiledItem } from "../domain/content/compiler";
 
 export enum PlayerActionType {
@@ -24,7 +23,7 @@ export interface ContentItemResult {
 }
 
 export const playerActions = {
-  load: (data: ContentData) => createAction(PlayerActionType.Load, { data }),
+  load: (content: ContentRevisionParams) => createAction(PlayerActionType.Load, { content }),
   start: () => createAction(PlayerActionType.Start),
   next: (result: ContentItemResult) => createAction(PlayerActionType.Next, { result }),
   finish: () => createAction(PlayerActionType.Finish)
@@ -33,7 +32,7 @@ export const playerActions = {
 export type PlayerActions = ActionUnion<typeof playerActions>;
 
 export interface PlayerState {
-  data: ContentData;
+  content: ContentRevisionParams;
   compiled: CompiledItem[];
   plan: number[];
   cursor: number;
@@ -43,7 +42,7 @@ export interface PlayerState {
 }
 
 export const initialPlayerState: PlayerState = {
-  data: createContentData(),
+  content: createContentRevision(""),
   compiled: [],
   plan: [],
   cursor: 0,
@@ -55,12 +54,12 @@ export const initialPlayerState: PlayerState = {
 export const playerReducer: Reducer<PlayerState, Actions> = (state = initialPlayerState, action) => {
   switch (action.type) {
     case PlayerActionType.Load: {
-      const { data } = action.payload;
+      const { content } = action.payload;
 
       return {
-        data,
-        compiled: compileContent(data),
-        plan: createPlan(data),
+        content,
+        compiled: compileContent(content),
+        plan: createPlan(content),
         cursor: 0,
         results: [],
         isStarted: false,
@@ -78,7 +77,7 @@ export const playerReducer: Reducer<PlayerState, Actions> = (state = initialPlay
         ...state,
         cursor: state.cursor + 1,
         results: [...state.results, action.payload.result],
-        isFinished: state.data.items.length - 1 === state.cursor
+        isFinished: state.content.items.length - 1 === state.cursor
       };
     }
     case PlayerActionType.Finish: {

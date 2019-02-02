@@ -1,15 +1,19 @@
 import * as uuid from "uuid";
-import { CodeItem, ContentData, ContentItem, KanjiItem, MathItem, TextItem } from "../../../shared/content";
+import { ContentRevision } from "../../../shared/api/entities";
+import { SaveParams } from "../../../shared/api/request/save";
+import { CodeItem, ContentItem, KanjiItem, MathItem, TextItem } from "../../../shared/content";
 
-export const createContentData = (): ContentData => ({
-  version: 1,
-  title: "無題",
+export type ContentRevisionParams = Required<SaveParams<ContentRevision>>;
+
+export const createContentRevision = (contentId: string): ContentRevisionParams => ({
+  contentId,
+  title: "",
   lang: "ja",
   tags: [],
   items: [],
   summary: "",
   comment: "",
-  shuffle: false
+  isLinear: false
 });
 
 const base = <T extends string>(type: T) => ({
@@ -45,8 +49,8 @@ export const contentItemCreators: { [T in ContentItem["type"]]: () => ContentIte
   math: createMathItem
 };
 
-export const createPlan = (data: ContentData) => {
-  const plan = [...Array(data.items.length).keys()];
+export const createPlan = (content: ContentRevisionParams) => {
+  const plan = [...Array(content.items.length).keys()];
 
   for (let i = plan.length - 1; i >= 0; i--) {
     const random = Math.floor(Math.random() * (i + 1));

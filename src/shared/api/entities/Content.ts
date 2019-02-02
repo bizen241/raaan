@@ -8,6 +8,4 @@ export interface Content extends BaseEntityObject {
   title: string;
   summary: string;
   isPrivate: boolean;
-  isArchived: boolean;
-  isLocked: boolean;
 }

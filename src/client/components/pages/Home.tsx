@@ -39,7 +39,7 @@ export const Home = connector(
                   buffer && (
                     <Column key={id}>
                       <Row center="cross">
-                        <Row>{buffer.editedData.title}</Row>
+                        <Row>{buffer.editedRevision.title}</Row>
                         <Row flex={1} />
                         <Link className={Classes.BUTTON} to={`/revisions/${id}/edit`}>
                           編集

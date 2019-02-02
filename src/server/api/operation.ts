@@ -72,7 +72,8 @@ export const createOperationDoc = <E extends EntityObject>(
 type AsyncRequestHandler = (req: Request, res: Response, next: NextFunction) => Promise<any>;
 
 export const errorBoundary = (fn: AsyncRequestHandler): RequestHandler => async (req, res, next) => {
-  await fn(req, res, next).catch(() => {
+  await fn(req, res, next).catch(e => {
+    console.log(e);
     next(createError(500));
   });
 };

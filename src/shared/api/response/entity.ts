@@ -1,11 +1,11 @@
 import {
   Content,
-  ContentObject,
   ContentRevision,
   ContentTag,
   EntityObject,
   User,
   UserAccount,
+  UserConfig,
   UserSession
 } from "../entities";
 
@@ -16,19 +16,19 @@ export interface EntityMap<E extends EntityObject> {
 export interface EntityStore {
   Content: EntityMap<Content>;
   ContentRevision: EntityMap<ContentRevision>;
-  ContentObject: EntityMap<ContentObject>;
   ContentTag: EntityMap<ContentTag>;
   User: EntityMap<User>;
   UserAccount: EntityMap<UserAccount>;
+  UserConfig: EntityMap<UserConfig>;
   UserSession: EntityMap<UserSession>;
 }
 
 export const createEntityStore = (): EntityStore => ({
   Content: {},
   ContentRevision: {},
-  ContentObject: {},
   ContentTag: {},
   User: {},
   UserAccount: {},
+  UserConfig: {},
   UserSession: {}
 });

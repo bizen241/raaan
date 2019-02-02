@@ -11,7 +11,7 @@ import {
   UserSessionEntity
 } from "../../database/entities";
 import { BaseEntityClass } from "../../database/entities/BaseEntityClass";
-import { ContentObjectEntity } from "../../database/entities/ContentObjectEntity";
+import { UserConfigEntity } from "../../database/entities/UserConfigEntity";
 
 export const normalizeEntities = (entities: Entity[], isSearching: boolean): EntityStore => {
   const store = createEntityStore();
@@ -46,49 +46,31 @@ const base = <T extends EntityType>({ id, createdAt, updatedAt }: BaseEntityClas
 type Normalizer<E> = (store: EntityStore, entity: E, isSearching: boolean) => void;
 
 const normalizeContent: Normalizer<ContentEntity> = (store, entity, isSearching) => {
-  const { id, owner, latest, tags, isPrivate, isArchived, isLocked } = entity;
+  const { id, owner, latest, tags, isPrivate } = entity;
 
   store.Content[id] = {
     ...base(entity),
     ownerId: owner.id,
     latestId: latest.id,
     tagIds: tags.map(tag => tag.id),
-    lang: latest.object.lang,
-    title: latest.object.title,
-    summary: latest.object.summary,
-    isPrivate,
-    isArchived,
-    isLocked
+    lang: latest.lang,
+    title: latest.title,
+    summary: latest.summary,
+    isPrivate
   };
 
   tags.forEach(tag => normalizeEntity(store, tag, isSearching));
 };
 
 const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (store, entity) => {
-  const { id, content, parent, author, object, version, title, comment, isProposed, isMerged } = entity;
+  const { id, content, lang, tags, title, summary, comment, items, isLinear } = entity;
 
   store.ContentRevision[id] = {
     ...base(entity),
     contentId: content.id,
-    parentId: parent.id,
-    authorId: author.id,
-    objectId: object.id,
-    version,
-    title,
-    comment,
-    isProposed,
-    isMerged
-  };
-};
-
-const normalizeContentObject: Normalizer<ContentObjectEntity> = (store, entity) => {
-  const { id, lang, title, tags, summary, comment, items, isLinear } = entity;
-
-  store.ContentObject[id] = {
-    ...base(entity),
     lang,
-    title,
     tags,
+    title,
     summary,
     comment,
     items,
@@ -128,6 +110,19 @@ const normalizeUserAccount: Normalizer<UserAccountEntity> = (store, entity, isSe
   normalizeEntity(store, user, isSearching);
 };
 
+const normalizeUserConfig: Normalizer<UserConfigEntity> = (store, entity, isSearching) => {
+  const { id, user, name, settings } = entity;
+
+  store.UserConfig[id] = {
+    ...base(entity),
+    userId: user.id,
+    name,
+    settings
+  };
+
+  normalizeEntity(store, user, isSearching);
+};
+
 const normalizeUserSession: Normalizer<UserSessionEntity> = (store, entity, isSearching) => {
   const { id, userAgent, user } = entity;
 
@@ -143,9 +138,9 @@ const normalizeUserSession: Normalizer<UserSessionEntity> = (store, entity, isSe
 const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Content: normalizeContent,
   ContentRevision: normalizeContentRevision,
-  ContentObject: normalizeContentObject,
   ContentTag: normalizeContentTag,
   User: normalizeUser,
   UserAccount: normalizeUserAccount,
+  UserConfig: normalizeUserConfig,
   UserSession: normalizeUserSession
 };

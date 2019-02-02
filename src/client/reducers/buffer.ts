@@ -1,14 +1,12 @@
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { ContentData } from "../../shared/content";
+import { ContentRevision } from "../../shared/api/entities";
 import { ActionUnion, createAction } from "../actions/helpers";
+import { ContentRevisionParams } from "../domain/content";
 
 export interface EditorBuffer {
-  parentId: string | null;
-  sourceComment: string;
-  editedComment: string;
-  sourceData: ContentData;
-  editedData: ContentData;
+  sourceRevision: ContentRevision | null;
+  editedRevision: ContentRevisionParams;
 }
 
 export enum BufferActionType {

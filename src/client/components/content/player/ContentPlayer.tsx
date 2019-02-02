@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect } from "react";
-import { ContentData } from "../../../../shared/content";
+import { ContentRevisionParams } from "../../../domain/content";
 import { connector } from "../../../reducers";
 import { playerActions } from "../../../reducers/player";
 import { Column } from "../../ui";
@@ -8,22 +8,22 @@ import { AttemptResultRenderer } from "./AttemptResultRenderer";
 import { ContentItemPlayer } from "./ContentItemPlayer";
 
 export const ContentPlayer = connector(
-  (state, ownProps: { data: ContentData }) => ({
-    data: ownProps.data,
+  (state, ownProps: { content: ContentRevisionParams }) => ({
+    content: ownProps.content,
     attempt: state.player
   }),
   () => ({
     ...playerActions
   }),
-  ({ data, attempt, load, next }) => {
+  ({ content, attempt, load, next }) => {
     useEffect(() => {
-      load(data);
+      load(content);
     }, []);
 
-    if (attempt.data !== data) {
+    if (attempt.content !== content) {
       return <div>Loading...</div>;
     }
-    if (attempt.data.items.length === 0) {
+    if (attempt.content.items.length === 0) {
       return <div>Empty</div>;
     }
     if (attempt.isFinished) {
@@ -35,7 +35,7 @@ export const ContentPlayer = connector(
     }
 
     const currentItemIndex = attempt.plan[attempt.cursor];
-    const currentItem = attempt.data.items[currentItemIndex];
+    const currentItem = attempt.content.items[currentItemIndex];
     const currentCompiledItem = attempt.compiled[currentItemIndex];
 
     return (

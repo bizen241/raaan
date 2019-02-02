@@ -1,14 +1,14 @@
 import { Button, Classes, Dialog } from "@blueprintjs/core";
 import * as React from "react";
-import { ContentData } from "../../../../shared/content";
+import { ContentRevisionParams } from "../../../domain/content";
 import { Column } from "../../ui";
 import { ContentPlayer } from "../player/ContentPlayer";
 
 export const ContentPreviewer = React.memo<{
-  data: ContentData;
+  content: ContentRevisionParams;
   isOpen: boolean;
   onClose: () => void;
-}>(({ data, isOpen, onClose }) => {
+}>(({ content, isOpen, onClose }) => {
   return (
     <Dialog
       isOpen={isOpen}
@@ -24,7 +24,7 @@ export const ContentPreviewer = React.memo<{
     >
       <Column className={Classes.DIALOG_BODY} padding="small" flex={1}>
         <Column flex={1}>
-          <ContentPlayer data={data} />
+          <ContentPlayer content={content} />
         </Column>
         <Button onClick={onClose}>閉じる (Esc)</Button>
       </Column>
