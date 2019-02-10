@@ -11,7 +11,7 @@ import { Page } from "./Page";
 
 export const Home = connector(
   state => ({
-    buffers: state.buffer
+    buffers: state.editor.buffers
   }),
   () => ({
     create: () => push("/revisions/new")
