@@ -4,11 +4,13 @@ import { catalogs } from "../../intl";
 import { connector } from "../../reducers";
 
 export const Translator = connector(
+  state => ({
+    language: state.config.current.settings.lang
+  }),
   () => ({}),
-  () => ({}),
-  ({ children }) => {
+  ({ language = "ja", children }) => {
     return (
-      <I18nProvider language="ja" catalogs={catalogs}>
+      <I18nProvider language={language} catalogs={catalogs}>
         {children}
       </I18nProvider>
     );

@@ -3,12 +3,6 @@ import { ThemedStyledComponentsModule } from "styled-components";
 
 export interface Theme {
   background: string;
-  border: string;
-  text: string;
-  input: string;
-  container: string;
-  focus: string;
-  accent: string;
 }
 
 const {

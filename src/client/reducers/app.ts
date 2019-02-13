@@ -51,14 +51,16 @@ export interface AppState {
   hasUpdate: boolean;
 }
 
+const now = Date.now();
+
 export const initialAppState: AppState = {
   user: {
-    id: "00000000-0000-0000-0000-000000000000",
-    name: "Guest",
+    id: now.toString(),
+    name: "",
     permission: "Guest",
-    createdAt: 0,
-    updatedAt: 0,
-    fetchedAt: 0
+    createdAt: now,
+    updatedAt: now,
+    fetchedAt: now
   },
   isReady: false,
   hasUpdate: false

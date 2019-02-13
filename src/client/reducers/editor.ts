@@ -6,7 +6,7 @@ import { ActionUnion, AsyncAction, createAction } from "../actions/helpers";
 import { contentItemCreators, ContentRevisionParams, createContentRevision } from "../domain/content";
 
 export enum EditorActionType {
-  OpenBuffer = "editor/open-buffer",
+  AddBuffer = "editor/add-buffer",
   ResetBuffer = "editor/reset-buffer",
   DeleteBuffer = "editor/delete-buffer",
   SelectItemType = "editor/select-item-type",
@@ -25,7 +25,7 @@ export interface EditorBuffer {
 }
 
 const editorSyncActions = {
-  addBuffer: (id: string, buffer: EditorBuffer) => createAction(EditorActionType.OpenBuffer, { id, buffer }),
+  addBuffer: (id: string, buffer: EditorBuffer) => createAction(EditorActionType.AddBuffer, { id, buffer }),
   resetBuffer: (id: string) => createAction(EditorActionType.ResetBuffer, { id }),
   deleteBuffer: (id: string) => createAction(EditorActionType.DeleteBuffer, { id }),
   selectItemType: (type: ContentItem["type"]) => createAction(EditorActionType.SelectItemType, { type }),
@@ -114,7 +114,7 @@ const editContent = (
 
 export const editorReducer: Reducer<EditorState, Actions> = (state = initialEditorState, action) => {
   switch (action.type) {
-    case EditorActionType.OpenBuffer: {
+    case EditorActionType.AddBuffer: {
       const { id, buffer } = action.payload;
 
       return {

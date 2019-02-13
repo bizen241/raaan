@@ -3,23 +3,24 @@ import { connector } from "../../reducers";
 import { createGlobalStyle, Theme, ThemeProvider } from "../../style";
 import { Column } from "../ui";
 
-const theme: Theme = {
-  background: "#30404d",
-  border: "#404040",
-  text: "#f8f8f8",
-  input: "#202020",
-  container: "#282828",
-  focus: "#3e50b4",
-  accent: "#888888"
+const themes: { [key: string]: Theme } = {
+  dark: {
+    background: "#30404d"
+  },
+  light: {
+    background: "#eeeeee"
+  }
 };
 
 export const Style = connector(
+  state => ({
+    themeName: state.config.current.settings.theme
+  }),
   () => ({}),
-  () => ({}),
-  ({ children }) => {
+  ({ themeName = "dark", children }) => {
     return (
-      <ThemeProvider theme={theme}>
-        <Column className="bp3-dark">
+      <ThemeProvider theme={themes[themeName]}>
+        <Column className={themeName === "dark" ? "bp3-dark" : "bp3-light"}>
           <GlobalStyle />
           {children}
         </Column>

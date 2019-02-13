@@ -1,8 +1,11 @@
 import { BaseEntityObject } from "./BaseEntityObject";
 
+export type ThemeName = "dark" | "light";
+export type LangName = "en" | "ja";
+
 export interface UserSettings {
-  theme?: "dark" | "light";
-  lang?: "en" | "ja";
+  theme?: ThemeName;
+  lang?: LangName;
 }
 
 export interface UserConfig extends BaseEntityObject {
