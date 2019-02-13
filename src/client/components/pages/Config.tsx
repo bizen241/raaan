@@ -1,6 +1,7 @@
-import { Button, Callout } from "@blueprintjs/core";
-import * as React from "react";
+import { Button, Callout, Classes } from "@blueprintjs/core";
+import { Trans } from "@lingui/react";
 import { useCallback } from "react";
+import * as React from "react";
 import { connector } from "../../reducers";
 import { configActions } from "../../reducers/config";
 import { LangSettingEditor } from "../config/LangSettingEditor";
@@ -12,12 +13,13 @@ import { Page } from "./Page";
 export const Config = connector(
   state => ({
     hasUpdate: state.app.hasUpdate,
-    config: state.config.current
+    config: state.config.current,
+    isLoggedIn: state.app.user.permission !== "Guest"
   }),
   () => ({
     updateSettings: configActions.updateSettings
   }),
-  ({ hasUpdate, config, updateSettings }) => {
+  ({ hasUpdate, config, isLoggedIn, updateSettings }) => {
     return (
       <Page>
         <Header heading="設定" />
@@ -41,6 +43,13 @@ export const Config = connector(
               onChange={useCallback(value => updateSettings("lang", value), [])}
             />
           </Column>
+          {!isLoggedIn ? (
+            <Column padding="small">
+              <a href="/logout" className={Classes.BUTTON}>
+                <Trans>ログアウト</Trans>
+              </a>
+            </Column>
+          ) : null}
         </Column>
       </Page>
     );
