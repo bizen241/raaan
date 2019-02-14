@@ -1,4 +1,5 @@
 import { Classes } from "@blueprintjs/core";
+import { Trans } from "@lingui/react";
 import * as React from "react";
 import { SettingEditor } from ".";
 import { ThemeName, UserSettings } from "../../../shared/api/entities";
@@ -12,7 +13,7 @@ const themeNameToLabel: { [T in ThemeName]: string } = {
 export const ThemeSettingEditor: SettingEditor<"theme"> = ({ value, onChange }) => {
   return (
     <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
-      テーマ
+      <Trans>テーマ</Trans>
       <Column className={`${Classes.SELECT} ${Classes.MODIFIER_KEY}`}>
         <select defaultValue={value || "dark"} onChange={e => onChange(e.target.value as UserSettings["theme"])}>
           {Object.entries(themeNameToLabel).map(([name, label]) => (
