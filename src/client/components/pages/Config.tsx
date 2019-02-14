@@ -2,6 +2,7 @@ import { Button, Callout, Classes } from "@blueprintjs/core";
 import { Trans } from "@lingui/react";
 import { useCallback } from "react";
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { connector } from "../../reducers";
 import { configActions } from "../../reducers/config";
 import { LangSettingEditor } from "../config/LangSettingEditor";
@@ -31,6 +32,13 @@ export const Config = connector(
               <Callout intent="success" title="最新のバージョンです" />
             )}
           </Column>
+          {!isLoggedIn ? (
+            <Column padding="small">
+              <Link className={`${Classes.BUTTON} ${Classes.INTENT_PRIMARY} ${Classes.iconClass("key")}`} to="/login">
+                <Trans>ログイン</Trans>
+              </Link>
+            </Column>
+          ) : null}
           <Column padding="small">
             <ThemeSettingEditor
               value={config.settings.theme}
@@ -43,9 +51,9 @@ export const Config = connector(
               onChange={useCallback(value => updateSettings("lang", value), [])}
             />
           </Column>
-          {!isLoggedIn ? (
+          {isLoggedIn ? (
             <Column padding="small">
-              <a href="/logout" className={Classes.BUTTON}>
+              <a href="/logout" className={`${Classes.BUTTON} ${Classes.INTENT_DANGER} ${Classes.iconClass("key")}`}>
                 <Trans>ログアウト</Trans>
               </a>
             </Column>

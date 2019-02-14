@@ -138,7 +138,7 @@ export const editorReducer: Reducer<EditorState, Actions> = (state = initialEdit
           ...state.buffers,
           [id]: {
             ...buffer,
-            editedRevision: buffer.sourceRevision || createContentRevision(buffer.editedRevision.contentId)
+            editedRevision: buffer.sourceRevision || createContentRevision(id)
           }
         }
       };
