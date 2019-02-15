@@ -102,7 +102,7 @@ export const ContentEditor = connector(
             <button
               autoFocus
               onClick={onAppendItem}
-              className={`${Classes.BUTTON} ${Classes.INTENT_PRIMARY}`}
+              className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_PRIMARY}`}
               ref={appendItemButtonRef}
             >
               追加 (a)
@@ -110,7 +110,9 @@ export const ContentEditor = connector(
           </Column>
         </Column>
         <Column padding="small">
-          <Button onClick={onOpenContentPreviewer}>プレビュー (P)</Button>
+          <Button large onClick={onOpenContentPreviewer}>
+            プレビュー (P)
+          </Button>
         </Column>
         <ContentPreviewer content={editedRevision} isOpen={isContentPreviewerOpen} onClose={onCloseContentPreviewer} />
         <ContentItemPreviewer

@@ -76,6 +76,7 @@ export const editorActions = {
 
 export interface EditorState {
   buffers: { [id: string]: EditorBuffer | undefined };
+  trash: { [id: string]: EditorBuffer | undefined };
   itemType: ContentItem["type"];
   itemLang: string;
   textLang: string;
@@ -84,6 +85,7 @@ export interface EditorState {
 
 export const initialEditorState: EditorState = {
   buffers: {},
+  trash: {},
   itemType: "kanji",
   itemLang: "ja",
   textLang: "ja",
@@ -145,13 +147,14 @@ export const editorReducer: Reducer<EditorState, Actions> = (state = initialEdit
     }
     case EditorActionType.DeleteBuffer: {
       const { id } = action.payload;
-      const buffers = { ...state.buffers };
-
-      delete buffers[id];
+      const { [id]: deleted, ...buffers } = state.buffers;
 
       return {
         ...state,
-        buffers
+        buffers,
+        trash: {
+          [id]: deleted
+        }
       };
     }
     case EditorActionType.SelectItemType: {

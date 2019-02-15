@@ -68,8 +68,8 @@ const EditorBufferListItem: React.FunctionComponent<{
       <Popover
         content={
           <Menu>
-            <MenuItem text="プレビュー (P)" />
-            <MenuItem text="削除 (D)" onClick={deleteBuffer} />
+            <MenuItem text="プレビュー (p)" />
+            <MenuItem text="削除 (d)" onClick={deleteBuffer} intent="danger" />
           </Menu>
         }
         position="bottom-right"
