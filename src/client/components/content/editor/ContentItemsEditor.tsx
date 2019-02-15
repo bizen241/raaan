@@ -1,4 +1,4 @@
-import { Button } from "@blueprintjs/core";
+import { Button, Classes } from "@blueprintjs/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as React from "react";
 import { ContentItem } from "../../../../shared/content";
@@ -62,7 +62,7 @@ export const ContentItemsEditor = React.memo<{
         />
       </Column>
       <Column padding="small">
-        <Button autoFocus onClick={onAppend}>
+        <Button autoFocus onClick={onAppend} className={Classes.INTENT_PRIMARY}>
           追加 (A)
         </Button>
       </Column>

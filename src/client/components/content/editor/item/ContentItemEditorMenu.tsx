@@ -1,4 +1,4 @@
-import { Button, Menu, MenuItem, Popover } from "@blueprintjs/core";
+import { Button, Classes, Menu, MenuItem, Popover } from "@blueprintjs/core";
 import * as React from "react";
 
 export const ContentItemEditorMenu = React.memo<{
@@ -11,8 +11,9 @@ export const ContentItemEditorMenu = React.memo<{
           <MenuItem text="削除 (D)" onClick={onDelete} />
         </Menu>
       }
+      position="bottom-right"
     >
-      <Button>⋮</Button>
+      <Button className={`${Classes.iconClass("more")}`} />
     </Popover>
   );
 });
