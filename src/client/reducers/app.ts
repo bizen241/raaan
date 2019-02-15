@@ -69,8 +69,11 @@ export const initialAppState: AppState = {
 export const appReducer: Reducer<AppState, Actions> = (state = initialAppState, action) => {
   switch (action.type) {
     case AppActionType.Ready: {
+      const { currentUser } = action.payload;
+
       return {
         ...state,
+        user: currentUser,
         isReady: true,
         hasUpdate: false
       };
