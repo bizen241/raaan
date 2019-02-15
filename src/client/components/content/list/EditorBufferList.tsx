@@ -37,7 +37,7 @@ export const EditorBufferList = connector(
                       contentId={contentId}
                       buffer={buffer}
                       ref={index === 0 ? firstItemMenuRef : null}
-                      deleteBuffer={deleteBuffer}
+                      onDelete={deleteBuffer}
                     />
                     <Divider />
                   </Column>
@@ -54,9 +54,9 @@ const EditorBufferListItem: React.FunctionComponent<{
   contentId: string;
   buffer: EditorBuffer;
   ref: React.RefObject<HTMLButtonElement> | null;
-  deleteBuffer: (id: string) => void;
-}> = ({ contentId, buffer, ref, deleteBuffer }) => {
-  const onDelete = useCallback(() => deleteBuffer(contentId), []);
+  onDelete: (id: string) => void;
+}> = ({ contentId, buffer, ref, onDelete }) => {
+  const deleteBuffer = useCallback(() => onDelete(contentId), []);
 
   return (
     <Row center="cross">
@@ -69,7 +69,7 @@ const EditorBufferListItem: React.FunctionComponent<{
         content={
           <Menu>
             <MenuItem text="プレビュー (P)" />
-            <MenuItem text="削除 (D)" onClick={onDelete} />
+            <MenuItem text="削除 (D)" onClick={deleteBuffer} />
           </Menu>
         }
         position="bottom-right"

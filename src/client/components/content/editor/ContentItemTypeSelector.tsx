@@ -1,6 +1,6 @@
 import { Classes } from "@blueprintjs/core";
 import * as React from "react";
-import { RefObject, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { ContentItem } from "../../../../shared/content";
 import { Column } from "../../ui";
 import { manageHotKey } from "../../utils/hotKey";
@@ -14,9 +14,10 @@ const contentItemTypeToLabel: { [T in ContentItem["type"]]: string } = {
 
 export const ContentItemTypeSelector = React.memo<{
   selected: ContentItem["type"];
-  selectRef: RefObject<HTMLSelectElement>;
   onChange: (type: ContentItem["type"]) => void;
-}>(({ selected, selectRef, onChange }) => {
+}>(({ selected, onChange }) => {
+  const selectRef = useRef<HTMLSelectElement>(null);
+
   useEffect(
     manageHotKey({
       s: () => selectRef.current && selectRef.current.focus()
@@ -27,7 +28,7 @@ export const ContentItemTypeSelector = React.memo<{
   return (
     <Column>
       <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
-        追加するアイテムの種類 (S)
+        追加するアイテムの種類 (s)
         <Column className={`${Classes.SELECT} ${Classes.MODIFIER_KEY}`}>
           <select
             ref={selectRef}

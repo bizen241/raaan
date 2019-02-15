@@ -3,12 +3,14 @@ import * as React from "react";
 
 export const ContentItemEditorMenu = React.memo<{
   onDelete: () => void;
-}>(({ onDelete }) => {
+  onPreview: () => void;
+}>(({ onDelete, onPreview }) => {
   return (
     <Popover
       content={
         <Menu>
-          <MenuItem text="削除 (D)" onClick={onDelete} />
+          <MenuItem text="プレビュー (p)" onClick={onPreview} />
+          <MenuItem text="削除 (d)" onClick={onDelete} />
         </Menu>
       }
       position="bottom-right"

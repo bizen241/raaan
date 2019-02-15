@@ -18,7 +18,8 @@ export const ContentItemEditor = React.memo<{
   onChange: <P extends keyof ContentItem>(index: number, key: P, value: ContentItem[P]) => void;
   onDelete: (index: number) => void;
   onFocus: (index: number) => void;
-}>(({ index, item, isVisible, isFocused, editorRef, onChange, onDelete, onFocus }) => {
+  onPreview: (index: number) => void;
+}>(({ index, item, isVisible, isFocused, editorRef, onChange, onDelete, onFocus, onPreview }) => {
   const [isMenuOpen, toggleMenu] = useState(true);
 
   const updateItem = useCallback(
@@ -26,6 +27,7 @@ export const ContentItemEditor = React.memo<{
     [index]
   );
   const deleteItem = useCallback(() => onDelete(index), [index]);
+  const preview = useCallback(() => onPreview(index), [index]);
 
   useEffect(
     manageHotKey(
@@ -51,7 +53,7 @@ export const ContentItemEditor = React.memo<{
             <span className={`${Classes.ICON_STANDARD} bp3-icon-chevron-${isMenuOpen ? "down" : "right"}`} />
             <span className={Classes.BUTTON_TEXT}>{index}</span>
           </button>
-          <ContentItemEditorMenu onDelete={deleteItem} />
+          <ContentItemEditorMenu onDelete={deleteItem} onPreview={preview} />
         </ButtonGroup>
       </Row>
       <Collapse isOpen={isMenuOpen}>
