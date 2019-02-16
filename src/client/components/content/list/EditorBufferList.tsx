@@ -36,7 +36,7 @@ export const EditorBufferList = connector(
                     <EditorBufferListItem
                       contentId={contentId}
                       buffer={buffer}
-                      ref={index === 0 ? firstItemMenuRef : null}
+                      menuRef={index === 0 ? firstItemMenuRef : null}
                       onDelete={deleteBuffer}
                     />
                     <Divider />
@@ -53,9 +53,9 @@ export const EditorBufferList = connector(
 const EditorBufferListItem: React.FunctionComponent<{
   contentId: string;
   buffer: EditorBuffer;
-  ref: React.RefObject<HTMLButtonElement> | null;
+  menuRef: React.RefObject<HTMLButtonElement> | null;
   onDelete: (id: string) => void;
-}> = ({ contentId, buffer, ref, onDelete }) => {
+}> = ({ contentId, buffer, menuRef, onDelete }) => {
   const deleteBuffer = useCallback(() => onDelete(contentId), []);
 
   return (
@@ -74,7 +74,7 @@ const EditorBufferListItem: React.FunctionComponent<{
         }
         position="bottom-right"
       >
-        <button className={`${Classes.BUTTON} ${Classes.MINIMAL} ${Classes.iconClass("more")}`} ref={ref} />
+        <button className={`${Classes.BUTTON} ${Classes.MINIMAL} ${Classes.iconClass("more")}`} ref={menuRef} />
       </Popover>
     </Row>
   );
