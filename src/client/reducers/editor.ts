@@ -9,6 +9,8 @@ export enum EditorActionType {
   AddBuffer = "editor/add-buffer",
   ResetBuffer = "editor/reset-buffer",
   DeleteBuffer = "editor/delete-buffer",
+  StartSave = "editor/start-save",
+  FinishSave = "editor/finish-save",
   SelectItemType = "editor/select-item-type",
   SelectItemLang = "editor/select-item-lang",
   SelectTextLang = "editor/select-text-lang",
@@ -22,12 +24,15 @@ export enum EditorActionType {
 export interface EditorBuffer {
   sourceRevision: ContentRevision | null;
   editedRevision: ContentRevisionParams;
+  isSaving: boolean;
 }
 
 const editorSyncActions = {
   addBuffer: (id: string, buffer: EditorBuffer) => createAction(EditorActionType.AddBuffer, { id, buffer }),
   resetBuffer: (id: string) => createAction(EditorActionType.ResetBuffer, { id }),
   deleteBuffer: (id: string) => createAction(EditorActionType.DeleteBuffer, { id }),
+  startSave: (id: string) => createAction(EditorActionType.StartSave, { id }),
+  finishSave: (id: string) => createAction(EditorActionType.FinishSave, { id }),
   selectItemType: (type: ContentItem["type"]) => createAction(EditorActionType.SelectItemType, { type }),
   selectItemLang: (lang: string) => createAction(EditorActionType.SelectItemLang, { lang }),
   selectTextLang: (lang: string) => createAction(EditorActionType.SelectTextLang, { lang }),
@@ -48,24 +53,25 @@ const load = (id: string): AsyncAction => async (dispatch, getState) => {
     dispatch(
       editorSyncActions.addBuffer(id, {
         sourceRevision: null,
-        editedRevision: createContentRevision(id)
+        editedRevision: createContentRevision(id),
+        isSaving: false
       })
     );
   }
 };
 
-const save = (_: string): AsyncAction => async __ => {
-  /*
-  dispatch(editorSyncActions.startSave());
+const save = (id: string): AsyncAction => async dispatch => {
+  dispatch(editorSyncActions.startSave(id));
 
+  /*
   const newId = await createEntity(revision)
 
   openBuffer(newId, buffer);
   replaceState(newId);
   deleteBuffer(id);
-
-  disdpatch(editorSyncActions.finishSave());
   */
+
+  setTimeout(() => dispatch(editorSyncActions.finishSave(id)), 1000);
 };
 
 export const editorActions = {
@@ -154,6 +160,42 @@ export const editorReducer: Reducer<EditorState, Actions> = (state = initialEdit
         buffers,
         trash: {
           [id]: deleted
+        }
+      };
+    }
+    case EditorActionType.StartSave: {
+      const { id } = action.payload;
+      const buffer = state.buffers[id];
+      if (buffer === undefined) {
+        return state;
+      }
+
+      return {
+        ...state,
+        buffers: {
+          ...state.buffers,
+          [id]: {
+            ...buffer,
+            isSaving: true
+          }
+        }
+      };
+    }
+    case EditorActionType.FinishSave: {
+      const { id } = action.payload;
+      const buffer = state.buffers[id];
+      if (buffer === undefined) {
+        return state;
+      }
+
+      return {
+        ...state,
+        buffers: {
+          ...state.buffers,
+          [id]: {
+            ...buffer,
+            isSaving: false
+          }
         }
       };
     }

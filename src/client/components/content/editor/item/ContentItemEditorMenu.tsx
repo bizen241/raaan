@@ -10,7 +10,7 @@ export const ContentItemEditorMenu = React.memo<{
       content={
         <Menu>
           <MenuItem text="プレビュー (p)" onClick={onPreview} />
-          <MenuItem text="削除 (d)" onClick={onDelete} intent="danger" />
+          <MenuItem text="削除 (Delete)" onClick={onDelete} intent="danger" />
         </Menu>
       }
       position="bottom-right"

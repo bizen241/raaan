@@ -18,8 +18,8 @@ export const ContentTitleEditor = React.memo<{
   );
 
   return (
-    <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
-      タイトル (T)
+    <label>
+      タイトル (t)
       <Column>
         <input
           className={Classes.INPUT}

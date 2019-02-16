@@ -1,4 +1,4 @@
-import { Button, Classes } from "@blueprintjs/core";
+import { Button, Divider } from "@blueprintjs/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as React from "react";
 import { ContentItem } from "../../../../shared/content";
@@ -6,9 +6,9 @@ import { connector } from "../../../reducers";
 import { editorActions } from "../../../reducers/editor";
 import { Column } from "../../ui";
 import { manageHotKey } from "../../utils/hotKey";
+import { ContentItemAppendButton } from "./ContentItemAppendButton";
 import { ContentItemEditor } from "./ContentItemEditor";
 import { ContentItemPreviewer } from "./ContentItemPreviewer";
-import { ContentItemTypeSelector } from "./ContentItemTypeSelector";
 import { ContentPreviewer } from "./ContentPreviewer";
 import { ContentTitleEditor } from "./ContentTitleEditor";
 
@@ -21,7 +21,7 @@ export const ContentEditor = connector(
   () => ({
     ...editorActions
   }),
-  ({ id, buffer, itemType, load, updateTitle, updateItem, deleteItem, appendItem, selectItemType }) => {
+  ({ id, buffer, itemType, load, save, updateTitle, updateItem, deleteItem, appendItem, selectItemType }) => {
     useEffect(() => {
       if (buffer === undefined) {
         load(id);
@@ -37,14 +37,15 @@ export const ContentEditor = connector(
     const [isContentPreviewerOpen, toggleContentPreviewer] = useState(false);
     const [isContentItemPreviewerOpen, toggleContentItemPreviewer] = useState(false);
     const isVisible = !isContentPreviewerOpen && !isContentItemPreviewerOpen;
-    const { editedRevision } = buffer;
+
+    const { editedRevision, isSaving } = buffer;
 
     useEffect(
       manageHotKey(
         {
-          a: () => appendItem(id),
           P: () => toggleContentPreviewer(true),
           p: () => toggleContentItemPreviewer(true),
+          S: () => save(id),
           Escape: () =>
             focusedItemRef.current != null
               ? focusedItemRef.current.focus()
@@ -58,6 +59,8 @@ export const ContentEditor = connector(
     const focusedItemRef = useRef<HTMLButtonElement>(null);
     const [focusedItemIndex, setFocusedItemIndex] = useState(0);
     const focusItem = useCallback((index: number) => setFocusedItemIndex(index), []);
+
+    const onSave = useCallback(() => save(id), []);
 
     const onChangeTitle = useCallback((title: string) => updateTitle(id, title), []);
     const onChangeItem = useCallback(
@@ -77,6 +80,7 @@ export const ContentEditor = connector(
         <Column padding="small">
           <ContentTitleEditor title={editedRevision.title || ""} onChange={onChangeTitle} />
         </Column>
+        <Divider />
         <Column>
           <Column padding="small">アイテム</Column>
           {editedRevision.items.map((item, index) => (
@@ -96,22 +100,23 @@ export const ContentEditor = connector(
             </Column>
           ))}
           <Column padding="small">
-            <ContentItemTypeSelector selected={itemType} onChange={selectItemType} />
-          </Column>
-          <Column padding="small">
-            <button
-              autoFocus
-              onClick={onAppendItem}
-              className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_PRIMARY}`}
-              ref={appendItemButtonRef}
-            >
-              追加 (a)
-            </button>
+            <ContentItemAppendButton
+              selected={itemType}
+              appendButtonRef={appendItemButtonRef}
+              onAppend={onAppendItem}
+              onSelectType={selectItemType}
+            />
           </Column>
         </Column>
+        <Divider />
         <Column padding="small">
           <Button large onClick={onOpenContentPreviewer}>
             プレビュー (P)
+          </Button>
+        </Column>
+        <Column padding="small">
+          <Button large loading={isSaving} intent="success" onClick={onSave}>
+            アップロード (S)
           </Button>
         </Column>
         <ContentPreviewer content={editedRevision} isOpen={isContentPreviewerOpen} onClose={onCloseContentPreviewer} />
