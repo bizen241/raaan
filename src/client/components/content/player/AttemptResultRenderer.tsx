@@ -29,25 +29,25 @@ export const AttemptResultRenderer: React.FunctionComponent<{
 
   return (
     <Column center="main">
-      <Row center="cross" orientation>
+      <Row center="cross" isResponsive={true}>
         <IndexType>スコア</IndexType>
         <Padding />
         <IndexValue>{score.toFixed(0)}</IndexValue>
       </Row>
       <Divider />
-      <Row center="cross" orientation>
+      <Row center="cross" isResponsive={true}>
         <IndexType>時間</IndexType>
         <Padding />
         <IndexValue>{totalTime.toFixed(2)}&nbsp;秒</IndexValue>
       </Row>
       <Divider />
-      <Row center="cross" orientation>
+      <Row center="cross" isResponsive={true}>
         <IndexType>スピード</IndexType>
         <Padding />
         <IndexValue>{typeSpeed.toFixed(2)}&nbsp;打/秒</IndexValue>
       </Row>
       <Divider />
-      <Row center="cross" orientation>
+      <Row center="cross" isResponsive={true}>
         <IndexType>正確性</IndexType>
         <Padding />
         <IndexValue>??&nbsp;%</IndexValue>

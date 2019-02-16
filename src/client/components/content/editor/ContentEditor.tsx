@@ -103,6 +103,7 @@ export const ContentEditor = connector(
             <ContentItemAppendButton
               selected={itemType}
               appendButtonRef={appendItemButtonRef}
+              isVisible={isVisible}
               onAppend={onAppendItem}
               onSelectType={selectItemType}
             />

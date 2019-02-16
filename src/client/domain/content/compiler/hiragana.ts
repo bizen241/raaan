@@ -1,9 +1,19 @@
 export const isHiragana = (char: string) => /[\u3041-\u3096]/.test(char);
-export const isYoon = (source: string) => "きにひみりぎぢびぴ".includes(source[0]) && "ゃゅょ".includes(source[1]);
-export const isSokuon = (source: string) => source[0] === "っ";
-export const isHatuon = (source: string) => source[0] === "ん";
+export const isKatakana = (char: string) => /[\u30a1-\u30f6]/.test(char);
+export const isKana = (char: string) => isHiragana(char) || isKatakana(char);
 
-export const singleHiragana: { [key: string]: string[] } = {
+export const katakanaToHiragana = (target: string) =>
+  target
+    .split("")
+    .map(char => (isKatakana(char) ? String.fromCharCode(char.charCodeAt(0) - 0x60) : char))
+    .join("");
+
+export const isYoon = (source: string) =>
+  "きにひみりぎぢびぴ".includes(katakanaToHiragana(source[0])) && "ゃゅょ".includes(katakanaToHiragana(source[1]));
+export const isSokuon = (source: string) => katakanaToHiragana(source[0]) === "っ";
+export const isHatuon = (source: string) => katakanaToHiragana(source[0]) === "ん";
+
+const singleHiraganaToRomans: { [key: string]: string[] } = {
   あ: ["a"],
   い: ["i"],
   う: ["u"],
@@ -90,7 +100,9 @@ export const singleHiragana: { [key: string]: string[] } = {
   ゎ: ["xwa", "lwa"]
 };
 
-export const pairHiragana: { [key: string]: string[] | undefined } = {
+export const singleKanaToRomans = (kana: string) => singleHiraganaToRomans[katakanaToHiragana(kana)];
+
+const pairHiraganaToRomans: { [key: string]: string[] | undefined } = {
   いぇ: ["ye"],
   うぃ: ["whi", "wi"],
   うぇ: ["whe", "we"],
@@ -139,3 +151,5 @@ export const pairHiragana: { [key: string]: string[] | undefined } = {
   どぅ: ["dwu"],
   どぉ: ["dwo"]
 };
+
+export const pairKanaToRomans = (kana: string) => pairHiraganaToRomans[katakanaToHiragana(kana)];

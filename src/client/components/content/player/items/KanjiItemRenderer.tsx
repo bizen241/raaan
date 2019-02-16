@@ -34,7 +34,7 @@ export const KanjiItemRenderer: React.FunctionComponent<ContentItemRendererProps
             {line}
           </TypingChars>
         ))}
-        <TypingChars style={{ fontSize: "4vmax", lineHeight: "1.5em" }}>{kanjiLines[typedLinesCount]}</TypingChars>
+        <TypingChars>{kanjiLines[typedLinesCount]}</TypingChars>
         {kanjiLines.slice(typedLinesCount + 1).map((line, index) => (
           <TypingChars key={index + typedLinesCount}>{line}</TypingChars>
         ))}

@@ -1,7 +1,7 @@
 import * as uuid from "uuid";
 import { ContentRevision } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
-import { CodeItem, ContentItem, KanjiItem, MathItem, TextItem } from "../../../shared/content";
+import { CodeItem, ContentItem, KanaItem, KanjiItem, MathItem, TextItem } from "../../../shared/content";
 
 export type ContentRevisionParams = Required<SaveParams<ContentRevision>>;
 
@@ -28,6 +28,10 @@ const createTextItem = (): TextItem => ({
   lang: "ja"
 });
 
+const createKanaItem = (): KanaItem => ({
+  ...base("kana")
+});
+
 const createKanjiItem = (): KanjiItem => ({
   ...base("kanji"),
   kanji: ""
@@ -44,6 +48,7 @@ const createMathItem = (): MathItem => ({
 
 export const contentItemCreators: { [T in ContentItem["type"]]: () => ContentItem } = {
   text: createTextItem,
+  kana: createKanaItem,
   kanji: createKanjiItem,
   code: createCodeItem,
   math: createMathItem

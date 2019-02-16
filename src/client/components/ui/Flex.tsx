@@ -5,7 +5,7 @@ const Flex = styled.div<{
   center?: "main" | "cross" | "both";
   flex?: number;
   padding?: Size;
-  orientation?: boolean;
+  isResponsive?: boolean;
 }>`
   display: flex;
   min-width: 0;
@@ -19,7 +19,7 @@ export const Row = styled(Flex)`
   flex-direction: row;
 
   @media (orientation: portrait) {
-    flex-direction: ${p => (p.orientation ? "column" : "row")};
+    flex-direction: ${p => (p.isResponsive ? "column" : "row")};
   }
 `;
 
@@ -27,6 +27,6 @@ export const Column = styled(Flex)`
   flex-direction: column;
 
   @media (orientation: portrait) {
-    flex-direction: ${p => (p.orientation ? "row" : "column")};
+    flex-direction: ${p => (p.isResponsive ? "row" : "column")};
   }
 `;

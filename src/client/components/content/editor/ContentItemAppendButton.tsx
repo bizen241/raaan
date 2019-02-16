@@ -4,28 +4,26 @@ import { useEffect, useRef } from "react";
 import { ContentItem } from "../../../../shared/content";
 import { Column } from "../../ui";
 import { manageHotKey } from "../../utils/hotKey";
-
-const contentItemTypeToLabel: { [T in ContentItem["type"]]: string } = {
-  code: "コード",
-  kanji: "漢字",
-  math: "数式",
-  text: "テキスト"
-};
+import { contentItemTypeToLabel } from "./item";
 
 export const ContentItemAppendButton = React.memo<{
   selected: ContentItem["type"];
   appendButtonRef: React.RefObject<HTMLButtonElement>;
+  isVisible: boolean;
   onAppend: () => void;
   onSelectType: (type: ContentItem["type"]) => void;
-}>(({ selected, appendButtonRef, onAppend, onSelectType }) => {
+}>(({ selected, appendButtonRef, isVisible, onAppend, onSelectType }) => {
   const selectRef = useRef<HTMLSelectElement>(null);
 
   useEffect(
-    manageHotKey({
-      a: () => onAppend(),
-      s: () => selectRef.current && selectRef.current.focus()
-    }),
-    []
+    manageHotKey(
+      {
+        a: () => onAppend(),
+        s: () => selectRef.current && selectRef.current.focus()
+      },
+      isVisible
+    ),
+    [isVisible]
   );
 
   return (

@@ -9,6 +9,10 @@ export interface TextItem extends BaseItem {
   lang: string;
 }
 
+export interface KanaItem extends BaseItem {
+  type: "kana";
+}
+
 export interface KanjiItem extends BaseItem {
   type: "kanji";
   kanji: string;
@@ -23,7 +27,7 @@ export interface MathItem extends BaseItem {
   type: "math";
 }
 
-export type ContentItem = TextItem | KanjiItem | CodeItem | MathItem;
+export type ContentItem = TextItem | KanaItem | KanjiItem | CodeItem | MathItem;
 
 export interface ContentData {
   version: 1;

@@ -1,10 +1,12 @@
-import { ButtonGroup, Classes, Collapse } from "@blueprintjs/core";
-import * as React from "react";
+import { ButtonGroup, Classes, Collapse, Tag } from "@blueprintjs/core";
 import { FunctionComponent, RefObject, useCallback, useEffect, useState } from "react";
+import * as React from "react";
 import { ContentItem } from "../../../../shared/content";
 import { Column, Row } from "../../ui";
 import { manageHotKey } from "../../utils/hotKey";
+import { contentItemTypeToLabel } from "./item";
 import { ContentItemEditorMenu } from "./item/ContentItemEditorMenu";
+import { KanaItemEditor } from "./item/KanaItemEditor";
 import { KanjiItemEditor } from "./item/KanjiItemEditor";
 import { TextItemEditor } from "./item/TextItemEditor";
 
@@ -52,6 +54,7 @@ export const ContentItemEditor = React.memo<{
           >
             <span className={`${Classes.ICON_STANDARD} bp3-icon-chevron-${isMenuOpen ? "down" : "right"}`} />
             <span className={Classes.BUTTON_TEXT}>{index}</span>
+            <Tag minimal>{contentItemTypeToLabel[item.type]}</Tag>
           </button>
           <ContentItemEditorMenu onDelete={deleteItem} onPreview={preview} />
         </ButtonGroup>
@@ -74,6 +77,7 @@ export interface ContentItemEditorProps<T extends ContentItem> {
 
 const editors: { [T in ContentItem["type"]]: FunctionComponent<ContentItemEditorProps<any>> } = {
   text: TextItemEditor,
+  kana: KanaItemEditor,
   kanji: KanjiItemEditor,
   code: TextItemEditor,
   math: TextItemEditor
