@@ -1,4 +1,4 @@
-import { Classes } from "@blueprintjs/core";
+import { Classes, Divider } from "@blueprintjs/core";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../reducers";
@@ -22,6 +22,12 @@ export const Home = connector(
           <Column padding="small">
             <Link className={`${Classes.BUTTON} ${Classes.LARGE}`} to="/creator">
               作成する (C)
+            </Link>
+          </Column>
+          <Divider />
+          <Column padding="small">
+            <Link className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.iconClass("cog")}`} to="/config">
+              設定 (S)
             </Link>
           </Column>
         </Column>

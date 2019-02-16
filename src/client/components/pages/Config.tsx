@@ -1,4 +1,4 @@
-import { Button, Callout, Classes } from "@blueprintjs/core";
+import { Button, Callout, Classes, Divider } from "@blueprintjs/core";
 import { Trans } from "@lingui/react";
 import { useCallback } from "react";
 import * as React from "react";
@@ -37,6 +37,7 @@ export const Config = connector(
               <Link className={`${Classes.BUTTON} ${Classes.INTENT_PRIMARY} ${Classes.iconClass("key")}`} to="/login">
                 <Trans>ログイン</Trans>
               </Link>
+              <Divider />
             </Column>
           ) : null}
           <Column padding="small">
@@ -53,7 +54,11 @@ export const Config = connector(
           </Column>
           {isLoggedIn ? (
             <Column padding="small">
-              <a href="/logout" className={`${Classes.BUTTON} ${Classes.INTENT_DANGER} ${Classes.iconClass("key")}`}>
+              <Divider />
+              <a
+                href="/logout"
+                className={`${Classes.BUTTON} ${Classes.SMALL} ${Classes.INTENT_WARNING} ${Classes.iconClass("key")}`}
+              >
                 <Trans>ログアウト</Trans>
               </a>
             </Column>
