@@ -1,38 +1,38 @@
-import { Classes } from "@blueprintjs/core";
+import { Divider } from "@blueprintjs/core";
 import * as React from "react";
 import { ContentItemRendererProps } from ".";
 import { KanaItem } from "../../../../../shared/content";
 import { Column, Row } from "../../../ui";
-import { NextKey, TypedChars, TypedCharsWrapper, TypoKey, UntypedChars, UntypedCharsWrapper } from "./utils";
+import { TypedChars } from "./chars/TypedChars";
+import { UntypedChars } from "./chars/UntypedChars";
+import { TypedLines } from "./lines/TypedLines";
+import { TypingLine } from "./lines/TypingLine";
+import { UntypedLines } from "./lines/UntypedLines";
 
 export const KanaItemRenderer: React.FunctionComponent<ContentItemRendererProps<KanaItem>> = ({
+  item,
   untypedSource,
   untypedString,
+  typedLines,
   typedString,
   typedSource,
   hasTypo
 }) => {
-  const nextKey = untypedString[0];
+  const typedLinesCount = typedLines.length;
+  const kanaLines = item.value.split("\n");
 
   return (
-    <Column>
-      <Row>
-        <TypedCharsWrapper>
-          <TypedChars className={Classes.TEXT_DISABLED}>{typedSource}</TypedChars>
-        </TypedCharsWrapper>
-        <UntypedCharsWrapper>
-          <UntypedChars>{untypedSource}</UntypedChars>
-        </UntypedCharsWrapper>
-      </Row>
-      <Row>
-        <TypedCharsWrapper>
-          <TypedChars className={Classes.TEXT_DISABLED}>{typedString}</TypedChars>
-        </TypedCharsWrapper>
-        {hasTypo ? <TypoKey key={performance.now()}>{nextKey}</TypoKey> : <NextKey>{nextKey}</NextKey>}
-        <UntypedCharsWrapper>
-          <UntypedChars>{untypedString.slice(1)}</UntypedChars>
-        </UntypedCharsWrapper>
-      </Row>
+    <Column flex={1}>
+      <Column flex={1}>
+        <TypedLines value={kanaLines.slice(0, typedLinesCount).join("\n")} />
+        <Row flex="none">
+          <TypedChars value={typedSource} />
+          <UntypedChars value={untypedSource} />
+        </Row>
+        <UntypedLines value={kanaLines.slice(typedLinesCount + 1).join("\n")} />
+      </Column>
+      <Divider />
+      <TypingLine untypedString={untypedString} typedString={typedString} hasTypo={hasTypo} />
     </Column>
   );
 };

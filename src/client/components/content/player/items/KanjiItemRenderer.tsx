@@ -1,17 +1,14 @@
-import { Classes } from "@blueprintjs/core";
+import { Divider } from "@blueprintjs/core";
 import * as React from "react";
 import { ContentItemRendererProps } from ".";
 import { KanjiItem } from "../../../../../shared/content";
 import { Column, Row } from "../../../ui";
-import {
-  NextKey,
-  TypedChars,
-  TypedCharsWrapper,
-  TypingChars,
-  TypoKey,
-  UntypedChars,
-  UntypedCharsWrapper
-} from "./utils";
+import { Chars } from "./chars/Chars";
+import { TypedChars } from "./chars/TypedChars";
+import { UntypedChars } from "./chars/UntypedChars";
+import { TypedLines } from "./lines/TypedLines";
+import { TypingLine } from "./lines/TypingLine";
+import { UntypedLines } from "./lines/UntypedLines";
 
 export const KanjiItemRenderer: React.FunctionComponent<ContentItemRendererProps<KanjiItem>> = ({
   item,
@@ -24,40 +21,20 @@ export const KanjiItemRenderer: React.FunctionComponent<ContentItemRendererProps
 }) => {
   const typedLinesCount = typedLines.length;
   const kanjiLines = item.kanji.split("\n");
-  const nextKey = untypedString[0];
 
   return (
-    <Column>
-      <Column padding="small">
-        {kanjiLines.slice(0, typedLinesCount).map((line, index) => (
-          <TypingChars key={index} className={Classes.TEXT_DISABLED}>
-            {line}
-          </TypingChars>
-        ))}
-        <TypingChars>{kanjiLines[typedLinesCount]}</TypingChars>
-        {kanjiLines.slice(typedLinesCount + 1).map((line, index) => (
-          <TypingChars key={index + typedLinesCount}>{line}</TypingChars>
-        ))}
+    <Column flex={1}>
+      <Column flex={1}>
+        <TypedLines value={kanjiLines.slice(0, typedLinesCount).join("\n")} />
+        <Chars>{kanjiLines[typedLinesCount]}</Chars>
+        <UntypedLines value={kanjiLines.slice(typedLinesCount + 1).join("\n")} />
       </Column>
-      <Row>
-        <TypedCharsWrapper>
-          <TypedChars small className={Classes.TEXT_DISABLED}>
-            {typedSource}
-          </TypedChars>
-        </TypedCharsWrapper>
-        <UntypedCharsWrapper>
-          <UntypedChars small>{untypedSource}</UntypedChars>
-        </UntypedCharsWrapper>
+      <Divider />
+      <Row flex="none">
+        <TypedChars value={typedSource} />
+        <UntypedChars value={untypedSource} />
       </Row>
-      <Row>
-        <TypedCharsWrapper>
-          <TypedChars className={Classes.TEXT_DISABLED}>{typedString}</TypedChars>
-        </TypedCharsWrapper>
-        {hasTypo ? <TypoKey key={performance.now()}>{nextKey}</TypoKey> : <NextKey>{nextKey}</NextKey>}
-        <UntypedCharsWrapper>
-          <UntypedChars>{untypedString.slice(1)}</UntypedChars>
-        </UntypedCharsWrapper>
-      </Row>
+      <TypingLine untypedString={untypedString} typedString={typedString} hasTypo={hasTypo} />
     </Column>
   );
 };

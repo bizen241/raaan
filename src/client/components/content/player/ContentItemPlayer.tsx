@@ -76,7 +76,7 @@ export const ContentItemPlayer: React.FunctionComponent<{
   const Renderer = contentItemTypeToRenderer[item.type];
 
   return (
-    <Column center="main" flex={1}>
+    <Column flex={1}>
       <Renderer
         item={item}
         untypedSource={`${isCurrentLineFinished ? "" : state.currentChar.source}${untypedSource}`}

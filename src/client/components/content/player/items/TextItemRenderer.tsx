@@ -1,28 +1,26 @@
-import { Classes } from "@blueprintjs/core";
 import * as React from "react";
 import { ContentItemRendererProps } from ".";
 import { TextItem } from "../../../../../shared/content";
-import { Column, Row } from "../../../ui";
-import { NextKey, TypedChars, TypedCharsWrapper, TypoKey, UntypedChars, UntypedCharsWrapper } from "./utils";
+import { Column } from "../../../ui";
+import { TypedLines } from "./lines/TypedLines";
+import { TypingLine } from "./lines/TypingLine";
+import { UntypedLines } from "./lines/UntypedLines";
 
 export const TextItemRenderer: React.FunctionComponent<ContentItemRendererProps<TextItem>> = ({
+  item,
   untypedString,
+  typedLines,
   typedString,
   hasTypo
 }) => {
-  const nextKey = untypedString[0];
+  const typedLinesCount = typedLines.length;
+  const textLines = item.value.split("\n");
 
   return (
-    <Column>
-      <Row>
-        <TypedCharsWrapper>
-          <TypedChars className={Classes.TEXT_DISABLED}>{typedString}</TypedChars>
-        </TypedCharsWrapper>
-        {hasTypo ? <TypoKey key={performance.now()}>{nextKey}</TypoKey> : <NextKey>{nextKey}</NextKey>}
-        <UntypedCharsWrapper>
-          <UntypedChars>{untypedString.slice(1)}</UntypedChars>
-        </UntypedCharsWrapper>
-      </Row>
+    <Column flex={1}>
+      <TypedLines value={textLines.slice(0, typedLinesCount).join("\n")} />
+      <TypingLine untypedString={untypedString} typedString={typedString} hasTypo={hasTypo} />
+      <UntypedLines value={textLines.slice(typedLinesCount + 1).join("\n")} />
     </Column>
   );
 };

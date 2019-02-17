@@ -7,7 +7,9 @@ interface ErrorBoundaryState {
 }
 
 export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
-  static getDerivedStateFromError(): ErrorBoundaryState {
+  static getDerivedStateFromError(e: Error): ErrorBoundaryState {
+    console.log(e);
+
     return {
       hasError: true
     };
