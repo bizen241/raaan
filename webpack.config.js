@@ -98,8 +98,16 @@ const webpackConfiguration = {
         test: /\.css$/,
         use: [
           {
-            loader: "style-loader/url"
+            loader: "style-loader"
           },
+          {
+            loader: "css-loader"
+          }
+        ]
+      },
+      {
+        test: /\.(ttf|woff|eot)$/,
+        use: [
           {
             loader: "file-loader"
           }
