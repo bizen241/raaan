@@ -11,8 +11,8 @@ export const TextItemEditor = React.memo<ContentItemEditorProps<TextItem>>(({ it
 
   return (
     <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
+      テキスト
       <Column>
-        テキスト
         <TextArea
           className={`${Classes.INPUT} ${Classes.MODIFIER_KEY}`}
           defaultValue={item.value}

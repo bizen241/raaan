@@ -18,7 +18,7 @@ export const ContentTitleEditor = React.memo<{
   );
 
   return (
-    <label>
+    <label className={Classes.LABEL}>
       タイトル (t)
       <Column>
         <input

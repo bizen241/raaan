@@ -11,8 +11,8 @@ export const KanaItemEditor = React.memo<ContentItemEditorProps<KanaItem>>(({ it
 
   return (
     <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
+      かな
       <Column>
-        かな
         <TextArea
           className={`${Classes.INPUT} ${Classes.MODIFIER_KEY}`}
           defaultValue={item.value}
