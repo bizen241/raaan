@@ -16,10 +16,8 @@ const Inner = styled(Chars)`
 
 export const TypedChars: React.FunctionComponent<{
   value: string;
-}> = ({ value }) => {
-  return (
-    <Outer>
-      <Inner className={Classes.TEXT_DISABLED}>{value}</Inner>
-    </Outer>
-  );
-};
+}> = ({ value }) => (
+  <Outer>
+    <Inner className={Classes.TEXT_DISABLED}>{value}</Inner>
+  </Outer>
+);

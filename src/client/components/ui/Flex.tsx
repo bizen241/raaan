@@ -10,7 +10,6 @@ const Flex = styled.div<{
   display: flex;
   min-width: 0;
   min-height: 0;
-  overflow: hidden;
   align-items: ${p => (p.center === "cross" || p.center === "both" ? "center" : "unset")};
   justify-content: ${p => (p.center === "main" || p.center === "both" ? "center" : "unset")};
   flex: ${p => p.flex || "initial"};

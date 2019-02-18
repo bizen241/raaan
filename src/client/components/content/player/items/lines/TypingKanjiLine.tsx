@@ -1,13 +1,14 @@
 import * as React from "react";
 import { styled } from "../../../../../style";
-import { Row } from "../../../../ui";
-import { Chars } from "./Chars";
+import { Column } from "../../../../ui";
+import { Chars } from "../chars/Chars";
 
-const Outer = styled(Row)`
+const Outer = styled(Column)`
   overflow: hidden;
+  flex: none;
 `;
 
-export const UntypedChars: React.FunctionComponent<{
+export const TypingKanjiLine: React.FunctionComponent<{
   value: string;
 }> = ({ value }) => (
   <Outer>

@@ -2,10 +2,9 @@ import { Divider } from "@blueprintjs/core";
 import * as React from "react";
 import { ContentItemRendererProps } from ".";
 import { KanaItem } from "../../../../../shared/content";
-import { Column, Row } from "../../../ui";
-import { TypedChars } from "./chars/TypedChars";
-import { UntypedChars } from "./chars/UntypedChars";
+import { Column } from "../../../ui";
 import { TypedLines } from "./lines/TypedLines";
+import { TypingKanaLine } from "./lines/TypingKanaLine";
 import { TypingLine } from "./lines/TypingLine";
 import { UntypedLines } from "./lines/UntypedLines";
 
@@ -25,10 +24,7 @@ export const KanaItemRenderer: React.FunctionComponent<ContentItemRendererProps<
     <Column flex={1}>
       <Column flex={1}>
         <TypedLines value={kanaLines.slice(0, typedLinesCount).join("\n")} />
-        <Row flex="none">
-          <TypedChars value={typedSource} />
-          <UntypedChars value={untypedSource} />
-        </Row>
+        <TypingKanaLine untypedKana={untypedSource} typedKana={typedSource} />
         <UntypedLines value={kanaLines.slice(typedLinesCount + 1).join("\n")} />
       </Column>
       <Divider />

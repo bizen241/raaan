@@ -5,6 +5,11 @@ import { Chars } from "../chars/Chars";
 import { TypedChars } from "../chars/TypedChars";
 import { UntypedChars } from "../chars/UntypedChars";
 
+const Outer = styled(Row)`
+  overflow: hidden;
+  flex: none;
+`;
+
 const scale = keyframes`
   0% {
     transform: scale(1);
@@ -29,10 +34,10 @@ export const TypingLine: React.FunctionComponent<{
   const nextKey = untypedString[0];
 
   return (
-    <Row flex="none">
+    <Outer>
       <TypedChars value={typedString} />
       {hasTypo ? <TypoKey key={performance.now()}>{nextKey}</TypoKey> : <Chars>{nextKey}</Chars>}
       <UntypedChars value={untypedString.slice(1)} />
-    </Row>
+    </Outer>
   );
 };
