@@ -10,7 +10,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
   const { page } = parseSearchParams<Content>("Content", req.query);
 
   const result = await getManager().findAndCount(ContentEntity, {
-    relations: ["owner", "latest", "tags"],
+    relations: ["author", "latest", "tags"],
     skip: skip(page),
     take
   });

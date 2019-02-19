@@ -9,7 +9,7 @@ export class ContentEntity extends BaseEntityClass<"Content"> {
   type: "Content" = "Content";
 
   @ManyToOne(() => UserEntity)
-  owner!: UserEntity;
+  author!: UserEntity;
 
   @OneToOne(() => ContentRevisionEntity)
   @JoinColumn()
@@ -31,17 +31,17 @@ export class ContentEntity extends BaseEntityClass<"Content"> {
 
 interface ContentConstructor {
   id?: string;
-  owner: UserEntity;
+  author: UserEntity;
 }
 
-export const createContent = ({ id, owner }: ContentConstructor) => {
+export const createContentEntity = ({ id, author }: ContentConstructor) => {
   const content = new ContentEntity();
 
   if (id !== undefined) {
     content.id = id;
   }
 
-  content.owner = owner;
+  content.author = author;
   content.isPrivate = true;
   content.isArchived = false;
   content.isLocked = false;

@@ -46,11 +46,11 @@ const base = <T extends EntityType>({ id, createdAt, updatedAt }: BaseEntityClas
 type Normalizer<E> = (store: EntityStore, entity: E, isSearching: boolean) => void;
 
 const normalizeContent: Normalizer<ContentEntity> = (store, entity, isSearching) => {
-  const { id, owner, latest, tags, isPrivate } = entity;
+  const { id, author, latest, tags, isPrivate } = entity;
 
   store.Content[id] = {
     ...base(entity),
-    ownerId: owner.id,
+    authorId: author.id,
     latestId: latest.id,
     tagIds: tags.map(tag => tag.id),
     lang: latest.lang,

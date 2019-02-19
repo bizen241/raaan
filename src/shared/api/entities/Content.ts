@@ -1,7 +1,7 @@
 import { BaseEntityObject } from "./BaseEntityObject";
 
 export interface Content extends BaseEntityObject {
-  ownerId: string;
+  authorId: string;
   latestId: string;
   tagIds: string[];
   lang: string;
