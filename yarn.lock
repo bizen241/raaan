@@ -7034,11 +7034,6 @@ openapi-security-handler@2.0.4:
   dependencies:
     openapi-types "1.3.4"
 
-openapi-types@1.3.2:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/openapi-types/-/openapi-types-1.3.2.tgz#08026d8cfac10088c16386378e541644a8239a96"
-  integrity sha512-qhFAj+fhC9+ULRdXKKS4hqtmz3W+I3BlxFgx3xt+60nswk3plYp7FSXQL5JOIYgTbP77dSXsMOWwkrLjixS42w==
-
 openapi-types@1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/openapi-types/-/openapi-types-1.3.4.tgz#e8c65be38d3b7d48fa84aa3d488d17505d3e30cd"
