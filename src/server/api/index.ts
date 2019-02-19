@@ -11,6 +11,9 @@ export const prepareApi = (processEnv: ProcessEnv, app: Express) => {
     apiDoc: createApiDoc(processEnv),
     app,
     docsPath: "/docs",
+    errorMiddleware: (err, _, res, __) => {
+      res.status(err.status).json(err);
+    },
     paths: resolve(process.cwd(), "out/server/routes/api"),
     pathsIgnore: /__tests__/,
     securityHandlers
