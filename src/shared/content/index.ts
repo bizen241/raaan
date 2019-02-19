@@ -28,14 +28,3 @@ export interface MathItem extends BaseItem {
 }
 
 export type ContentItem = TextItem | KanaItem | KanjiItem | CodeItem | MathItem;
-
-export interface ContentData {
-  version: 1;
-  title: string;
-  lang: string;
-  tags: string[];
-  items: ContentItem[];
-  summary: string;
-  comment: string;
-  shuffle: boolean;
-}
