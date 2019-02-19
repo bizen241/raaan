@@ -9,7 +9,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   const { id: contentId }: PathParams = req.params;
 
   const loadedContent = await getManager().findOne(ContentEntity, contentId, {
-    relations: ["owner", "latest", "tags"]
+    relations: ["author", "latest", "tags"]
   });
   if (loadedContent === undefined) {
     return next(createError(404));
@@ -22,7 +22,17 @@ GET.apiDoc = createOperationDoc({
   summary: "Get a content",
   tag: "contents",
   permission: "Guest",
-  path: ["id"]
+  parameters: [
+    {
+      in: "path",
+      name: "id",
+      required: true,
+      schema: {
+        type: "string",
+        pattern: "[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}"
+      }
+    }
+  ]
 });
 
 export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
@@ -31,7 +41,7 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next) =>
   const manager = getManager();
 
   const loadedContent = await manager.findOne(ContentEntity, contentId, {
-    relations: ["owner", "latest", "tags"]
+    relations: ["author", "latest", "tags"]
   });
   if (loadedContent === undefined) {
     return next(createError(404));

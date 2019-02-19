@@ -1,7 +1,7 @@
 import { NextFunction } from "connect";
 import { Request, RequestHandler, Response } from "express";
 import * as createError from "http-errors";
-import { OpenAPIV2 } from "openapi-types";
+import { OpenAPIV3 } from "openapi-types";
 import { EntityObject, Permission } from "../../shared/api/entities";
 
 export interface PathParams {
@@ -16,51 +16,44 @@ interface OperationDocument<E extends EntityObject> {
   permission: Permission;
   path?: Array<keyof PathParams>;
   query?: { [P in keyof E]?: null };
-  body?: { [P in keyof E]?: null };
+  body?: OpenAPIV3.RequestBodyObject;
+  parameters?: OpenAPIV3.ParameterObject[];
 }
 
-const responses: OpenAPIV2.ResponsesObject = {
+const responses: OpenAPIV3.ResponsesObject = {
   200: {
     description: "OK",
-    schema: {
-      $ref: "#/definitions/Response"
+    content: {
+      "application/json": {
+        schema: {
+          $ref: "#/components/schemas/Response"
+        }
+      }
     }
   },
   default: {
     description: "Error",
-    schema: {
-      $ref: "#/definitions/Error"
+    content: {
+      "application/json": {
+        schema: {
+          $ref: "#/components/schemas/Error"
+        }
+      }
     }
   }
 };
 
-const createOperationParameters = (location: "path" | "query" | "body", names: string[]): OpenAPIV2.Parameters => {
-  const required = location === "path" ? true : undefined;
-
-  return names.map(name => ({
-    in: location,
-    type: "string",
-    name,
-    required
-  }));
-};
-
 export const createOperationDoc = <E extends EntityObject>(
   document: OperationDocument<E>
-): OpenAPIV2.OperationObject => {
-  const { summary, tag, permission, path = [], query = {}, body = {} } = document;
-
-  const parameters = [
-    ...createOperationParameters("path", path),
-    ...createOperationParameters("query", Object.keys(query)),
-    ...createOperationParameters("body", Object.keys(body))
-  ];
+): OpenAPIV3.OperationObject => {
+  const { summary, tag, permission, body, parameters } = document;
 
   return {
     summary,
     tags: [tag],
     responses,
     parameters,
+    requestBody: body,
     security: [
       {
         [permission]: []
@@ -74,6 +67,7 @@ type AsyncRequestHandler = (req: Request, res: Response, next: NextFunction) => 
 export const errorBoundary = (fn: AsyncRequestHandler): RequestHandler => async (req, res, next) => {
   await fn(req, res, next).catch(e => {
     console.log(e);
+
     next(createError(500));
   });
 };

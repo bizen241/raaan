@@ -1,15 +1,15 @@
 import * as createError from "http-errors";
 import { SecurityHandler } from "openapi-security-handler";
-import { OpenAPIV2 } from "openapi-types";
+import { OpenAPIV3 } from "openapi-types";
 import { Permission } from "../../shared/api/entities";
 
-const securityScheme: OpenAPIV2.SecuritySchemeApiKey = {
+const securityScheme: OpenAPIV3.ApiKeySecurityScheme = {
   type: "apiKey",
-  name: "cookie",
-  in: "header"
+  name: "sid",
+  in: "cookie"
 };
 
-export const securityDefinitions: { [P in Permission]: OpenAPIV2.SecuritySchemeApiKey } = {
+export const securitySchemes: { [P in Permission]: OpenAPIV3.SecuritySchemeObject } = {
   Owner: securityScheme,
   Admin: securityScheme,
   Write: securityScheme,

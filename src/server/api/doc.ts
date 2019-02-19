@@ -1,22 +1,28 @@
-import { OpenAPIV2 } from "openapi-types";
+import { OpenAPIV3 } from "openapi-types";
 import { ProcessEnv } from "../env";
-import { securityDefinitions } from "./security";
+import { securitySchemes } from "./security";
 
-export const createApiDoc = (_: ProcessEnv): OpenAPIV2.Document => ({
-  swagger: "2.0",
+export const createApiDoc = (_: ProcessEnv): OpenAPIV3.Document => ({
+  openapi: "3.0.2",
   info: {
     title: "Raan",
     version: "0.0.0"
   },
-  basePath: "/api",
-  paths: {},
-  definitions: {
-    Response: {
-      type: "object"
-    },
-    Error: {
-      type: "object"
+  servers: [
+    {
+      url: "/api"
     }
-  },
-  securityDefinitions
+  ],
+  paths: {},
+  components: {
+    schemas: {
+      Response: {
+        type: "object"
+      },
+      Error: {
+        type: "object"
+      }
+    },
+    securitySchemes
+  }
 });
