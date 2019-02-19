@@ -33,7 +33,7 @@ export const Creator = connector(
             </Link>
           </Column>
           <Column padding="small">
-            <Link className={`${Classes.BUTTON} ${Classes.LARGE}`} to="/creator/public">
+            <Link className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.DISABLED}`} to="/creator/public">
               パブリック
             </Link>
           </Column>
