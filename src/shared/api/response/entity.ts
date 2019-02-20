@@ -14,13 +14,13 @@ export interface EntityMap<E extends EntityObject> {
 }
 
 export interface EntityStore {
-  Content: EntityMap<Content>;
-  ContentRevision: EntityMap<ContentRevision>;
-  ContentTag: EntityMap<ContentTag>;
-  User: EntityMap<User>;
-  UserAccount: EntityMap<UserAccount>;
-  UserConfig: EntityMap<UserConfig>;
-  UserSession: EntityMap<UserSession>;
+  Content: { [id: string]: Content | undefined };
+  ContentRevision: { [id: string]: ContentRevision | undefined };
+  ContentTag: { [id: string]: ContentTag | undefined };
+  User: { [id: string]: User | undefined };
+  UserAccount: { [id: string]: UserAccount | undefined };
+  UserConfig: { [id: string]: UserConfig | undefined };
+  UserSession: { [id: string]: UserSession | undefined };
 }
 
 export const createEntityStore = (): EntityStore => ({

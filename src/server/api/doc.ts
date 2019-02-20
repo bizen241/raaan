@@ -1,5 +1,6 @@
 import { OpenAPIV3 } from "openapi-types";
 import { ProcessEnv } from "../env";
+import { getSchema } from "./schema";
 import { securitySchemes } from "./security";
 
 export const createApiDoc = (_: ProcessEnv): OpenAPIV3.Document => ({
@@ -16,9 +17,7 @@ export const createApiDoc = (_: ProcessEnv): OpenAPIV3.Document => ({
   paths: {},
   components: {
     schemas: {
-      Response: {
-        type: "object"
-      },
+      Response: getSchema("/src/shared/api/response/entity.ts", "EntityStore"),
       Error: {
         type: "object"
       }
