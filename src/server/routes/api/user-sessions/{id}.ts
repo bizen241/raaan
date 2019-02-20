@@ -23,10 +23,10 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
 });
 
 GET.apiDoc = createOperationDoc({
+  entityType: "UserSession",
   summary: "Get a user session",
-  tag: "user-sessions",
   permission: "Write",
-  path: ["id"]
+  hasId: true
 });
 
 export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
@@ -51,8 +51,8 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next) =>
 });
 
 DELETE.apiDoc = createOperationDoc({
+  entityType: "UserSession",
   summary: "Delete a user session",
-  tag: "user-sessions",
   permission: "Write",
-  path: ["id"]
+  hasId: true
 });

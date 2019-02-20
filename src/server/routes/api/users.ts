@@ -27,12 +27,9 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
   responseSearchResult(res, ...result);
 });
 
-GET.apiDoc = createOperationDoc<User>({
+GET.apiDoc = createOperationDoc({
+  entityType: "User",
   summary: "Search users",
-  tag: "users",
   permission: "Guest",
-  query: {
-    name: null,
-    permission: null
-  }
+  hasQuery: true
 });

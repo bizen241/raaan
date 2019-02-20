@@ -2,58 +2,63 @@ import { NextFunction } from "connect";
 import { Request, RequestHandler, Response } from "express";
 import * as createError from "http-errors";
 import { OpenAPIV3 } from "openapi-types";
-import { EntityObject, Permission } from "../../shared/api/entities";
+import { EntityType, Permission } from "../../shared/api/entities";
 
 export interface PathParams {
   id?: string;
 }
 
-type Tag = "contents" | "content-branches" | "content-revisions" | "user" | "users" | "user-accounts" | "user-sessions";
-
-interface OperationDocument<E extends EntityObject> {
-  summary: string;
-  tag: Tag;
-  permission: Permission;
-  path?: Array<keyof PathParams>;
-  query?: { [P in keyof E]?: null };
-  body?: OpenAPIV3.RequestBodyObject;
-  parameters?: OpenAPIV3.ParameterObject[];
-}
-
-const responses: OpenAPIV3.ResponsesObject = {
-  200: {
-    description: "OK",
-    content: {
-      "application/json": {
-        schema: {
-          $ref: "#/components/schemas/Response"
-        }
-      }
-    }
-  },
-  default: {
-    description: "Error",
-    content: {
-      "application/json": {
-        schema: {
-          $ref: "#/components/schemas/Error"
-        }
-      }
-    }
-  }
+const tags: { [P in EntityType]: string } = {
+  Content: "contents",
+  ContentRevision: "content-revisions",
+  ContentTag: "content-tags",
+  User: "users",
+  UserAccount: "user-accounts",
+  UserConfig: "user-configs",
+  UserSession: "user-sessions"
 };
 
-export const createOperationDoc = <E extends EntityObject>(
-  document: OperationDocument<E>
-): OpenAPIV3.OperationObject => {
-  const { summary, tag, permission, body, parameters } = document;
+interface OperationDocument {
+  entityType: EntityType;
+  summary: string;
+  permission: Permission;
+  hasId?: boolean;
+  hasQuery?: boolean;
+  hasBody?: boolean;
+}
+
+export const createOperationDoc = (document: OperationDocument): OpenAPIV3.OperationObject => {
+  const { entityType, summary, permission, hasId, hasBody } = document;
+
+  const parameters: OpenAPIV3.ReferenceObject[] = [];
+
+  if (hasId) {
+    parameters.push({
+      $ref: "#/components/parameters/EntityId"
+    });
+  }
+
+  const requestBody: OpenAPIV3.ReferenceObject | undefined = hasBody
+    ? {
+        $ref: `#/components/requestBodies/${entityType}`
+      }
+    : undefined;
+
+  const responses: OpenAPIV3.ResponsesObject = {
+    200: {
+      $ref: "#/components/responses/EntityStore"
+    },
+    default: {
+      $ref: "#/components/responses/Error"
+    }
+  };
 
   return {
     summary,
-    tags: [tag],
-    responses,
+    tags: [tags[entityType]],
     parameters,
-    requestBody: body,
+    requestBody,
+    responses,
     security: [
       {
         [permission]: []

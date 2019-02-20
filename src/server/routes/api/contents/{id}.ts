@@ -19,20 +19,10 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
 });
 
 GET.apiDoc = createOperationDoc({
+  entityType: "Content",
   summary: "Get a content",
-  tag: "contents",
   permission: "Guest",
-  parameters: [
-    {
-      in: "path",
-      name: "id",
-      required: true,
-      schema: {
-        type: "string",
-        pattern: "[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}"
-      }
-    }
-  ]
+  hasId: true
 });
 
 export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
@@ -53,8 +43,8 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next) =>
 });
 
 DELETE.apiDoc = createOperationDoc({
+  entityType: "Content",
   summary: "Delete a content",
-  tag: "contents",
   permission: "Admin",
-  path: ["id"]
+  hasId: true
 });

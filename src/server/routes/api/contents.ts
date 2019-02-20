@@ -18,8 +18,8 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
   responseSearchResult(res, ...result);
 });
 
-GET.apiDoc = createOperationDoc<Content>({
+GET.apiDoc = createOperationDoc({
+  entityType: "Content",
   summary: "Search contents",
-  tag: "contents",
   permission: "Guest"
 });

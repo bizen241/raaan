@@ -3,7 +3,6 @@ import { getManager } from "typeorm";
 import { ContentRevision } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { saveParamsSchemaMap } from "../../api/request/save/schema";
 import { responseFindResult } from "../../api/response";
 import { ContentEntity, createContentEntity, createContentRevisionEntity, UserEntity } from "../../database/entities";
 
@@ -50,15 +49,8 @@ export const POST: OperationFunction = errorBoundary(async (req, res) => {
 });
 
 POST.apiDoc = createOperationDoc({
+  entityType: "ContentRevision",
   summary: "Create a revision of content",
-  tag: "content-revisions",
   permission: "Write",
-  body: {
-    required: true,
-    content: {
-      "application/json": {
-        schema: saveParamsSchemaMap.ContentRevision
-      }
-    }
-  }
+  hasBody: true
 });
