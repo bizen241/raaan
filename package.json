@@ -28,7 +28,7 @@
     "postinstall": "yarn build"
   },
   "dependencies": {
-    "@blueprintjs/core": "3.11.0",
+    "@blueprintjs/core": "3.13.0",
     "@lingui/react": "2.7.4",
     "compression": "1.7.3",
     "connected-react-router": "6.3.1",
