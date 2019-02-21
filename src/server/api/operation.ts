@@ -22,19 +22,26 @@ interface OperationDocument {
   entityType: EntityType;
   summary: string;
   permission: Permission;
+  tag?: string;
   hasId?: boolean;
   hasQuery?: boolean;
   hasBody?: boolean;
 }
 
 export const createOperationDoc = (document: OperationDocument): OpenAPIV3.OperationObject => {
-  const { entityType, summary, permission, hasId, hasBody } = document;
+  const { entityType, summary, permission, tag, hasId, hasQuery, hasBody } = document;
 
   const parameters: OpenAPIV3.ReferenceObject[] = [];
 
   if (hasId) {
     parameters.push({
       $ref: "#/components/parameters/EntityId"
+    });
+  }
+
+  if (hasQuery) {
+    parameters.push({
+      $ref: `#/components/parameters/${entityType}`
     });
   }
 
@@ -46,7 +53,7 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
 
   const responses: OpenAPIV3.ResponsesObject = {
     200: {
-      $ref: "#/components/responses/EntityStore"
+      $ref: `#/components/responses/${hasQuery ? "SearchResponse" : "EntityStore"}`
     },
     default: {
       $ref: "#/components/responses/Error"
@@ -55,7 +62,7 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
 
   return {
     summary,
-    tags: [tags[entityType]],
+    tags: [tag || tags[entityType]],
     parameters,
     requestBody,
     responses,

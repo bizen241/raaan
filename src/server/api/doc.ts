@@ -1,8 +1,22 @@
 import { OpenAPIV3 } from "openapi-types";
 import { ProcessEnv } from "../env";
-import { requestBodies } from "./request/save/schema";
-import { responses } from "./response/schema";
+import { generateRequestBodiesSchema } from "./request/save/schema";
+import { generateQueryParameterSchema } from "./request/search/schema";
+import { responsesSchema } from "./response/schema";
 import { securitySchemes } from "./security";
+
+const pathParametersSchema: { [key: string]: OpenAPIV3.ParameterObject } = {
+  EntityId: {
+    in: "path",
+    name: "id",
+    schema: {
+      type: "string",
+      format: "uuid"
+    }
+  }
+};
+const queryParametersSchema = generateQueryParameterSchema();
+const requestBodiesSchema = generateRequestBodiesSchema();
 
 export const createApiDoc = (_: ProcessEnv): OpenAPIV3.Document => ({
   openapi: "3.0.2",
@@ -18,17 +32,11 @@ export const createApiDoc = (_: ProcessEnv): OpenAPIV3.Document => ({
   paths: {},
   components: {
     parameters: {
-      EntityId: {
-        in: "path",
-        name: "id",
-        schema: {
-          type: "string",
-          format: "uuid"
-        }
-      }
+      ...pathParametersSchema,
+      ...queryParametersSchema
     },
-    requestBodies,
-    responses,
+    requestBodies: requestBodiesSchema,
+    responses: responsesSchema,
     securitySchemes
   }
 });

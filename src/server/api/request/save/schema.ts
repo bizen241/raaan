@@ -1,21 +1,22 @@
 import { OpenAPIV3 } from "openapi-types";
-import { EntityType } from "../../../../shared/api/entities";
 import { getSchema } from "../../schema";
 
-const saveParamsMapSchema = getSchema("/src/server/api/request/save/params.ts", "SaveParamsMap");
+export const generateRequestBodiesSchema = () => {
+  const saveParamsMapSchema = getSchema("/src/server/api/request/save/params.ts", "SaveParamsMap");
+  const saveParamsSchemaMap = saveParamsMapSchema.properties as { [key: string]: OpenAPIV3.SchemaObject };
+  const requestBodies: { [key: string]: OpenAPIV3.RequestBodyObject } = {};
 
-export const saveParamsSchemaMap = saveParamsMapSchema.properties as { [K in EntityType]: OpenAPIV3.SchemaObject };
+  Object.entries(saveParamsSchemaMap).forEach(
+    ([entityType, schema]) =>
+      (requestBodies[entityType] = {
+        content: {
+          "application/json": {
+            schema
+          }
+        },
+        required: true
+      })
+  );
 
-export const requestBodies: OpenAPIV3.ComponentsObject["requestBodies"] = {};
-
-Object.entries(saveParamsMapSchema.properties || {}).forEach(
-  ([entityType, schema]) =>
-    (requestBodies[entityType] = {
-      content: {
-        "application/json": {
-          schema
-        }
-      },
-      required: true
-    })
-);
+  return requestBodies;
+};
