@@ -28,17 +28,11 @@ export const ContentEditor = connector(
       }
     }, []);
 
-    if (buffer === undefined) {
-      return <div>Loading...</div>;
-    }
-
     const appendItemButtonRef = useRef<HTMLButtonElement>(null);
 
     const [isContentPreviewerOpen, toggleContentPreviewer] = useState(false);
     const [isContentItemPreviewerOpen, toggleContentItemPreviewer] = useState(false);
     const isVisible = !isContentPreviewerOpen && !isContentItemPreviewerOpen;
-
-    const { editedRevision, isSaving } = buffer;
 
     useEffect(
       manageHotKey(
@@ -74,6 +68,12 @@ export const ContentEditor = connector(
     const onCloseContentPreviewer = useCallback(() => toggleContentPreviewer(false), []);
     const onOpenContentItemPreviewer = useCallback(() => toggleContentItemPreviewer(true), []);
     const onCloseContentItemPreviewer = useCallback(() => toggleContentItemPreviewer(false), []);
+
+    if (buffer === undefined) {
+      return <div>Loading...</div>;
+    }
+
+    const { editedRevision, isSaving } = buffer;
 
     return (
       <Column flex={1} style={{ overflowY: "auto" }}>
