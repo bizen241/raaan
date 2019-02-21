@@ -1117,10 +1117,10 @@
     "@types/prop-types" "*"
     "@types/react" "*"
 
-"@types/react-redux@^6.0.11":
-  version "6.0.11"
-  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-6.0.11.tgz#d872254bbcba42465195a5475f40b22502b0407d"
-  integrity sha512-I3POoeGGwNqZjbK7TfnPJS2C51TFvT0atQPz4M+xpVTrLMjsX37AAfcTF3XUOTnmxHsryEjwJN9r/ScGwSXdtg==
+"@types/react-redux@7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.0.1.tgz#9dd2503be7a9861c5a092bf1c5050b7ade4dc62e"
+  integrity sha512-+DIH7TI2MT4Ke4lOrRMgNy//DzTDIzv5QwkJSD6AVrlsIgzf7yMM0JoWL5wJUXYwKQ2f1FgvwlvIVGD2QWQnew==
   dependencies:
     "@types/react" "*"
     redux "^4.0.0"
