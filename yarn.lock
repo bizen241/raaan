@@ -1058,15 +1058,10 @@
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.3.10.tgz#4897974cc317bf99d4fe6af1efa15957fa9c94de"
   integrity sha512-DC8xTuW/6TYgvEg3HEXS7cu9OijFqprVDXXiOcdOKZCU/5PJNLZU37VVvmZHdtMiGOa8wAA/We+JzbdxFzQTRQ==
 
-"@types/lingui__core@*":
+"@types/lingui__core@*", "@types/lingui__core@2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@types/lingui__core/-/lingui__core-2.2.1.tgz#fd0fff6e6f45ec5e4135bfde48cd8112a13e90e2"
   integrity sha512-BBghjsfK9v/wyKD/Po0PNCYoBtcyC36jwjdd4blPc1Rqslf60ceHTsSZLwc/lAEvu5e3rQv38NhEN76ORGWz3w==
-
-"@types/lingui__core@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@types/lingui__core/-/lingui__core-2.2.0.tgz#5e9f92e197ed68bad4ac5b63ab45e1fd98dca891"
-  integrity sha512-nscaRKgkEr8qX5GUADqdktjBivc38iEW8Jtjo6yq9qUevLxvlPS6zPdsexC6sFcNzeHPPZmhV5CegVv2Kpwg7w==
 
 "@types/lingui__react@2.5.2":
   version "2.5.2"
