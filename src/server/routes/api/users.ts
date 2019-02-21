@@ -2,7 +2,7 @@ import { OperationFunction } from "express-openapi";
 import { FindConditions, getManager } from "typeorm";
 import { User } from "../../../shared/api/entities";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseSearchParams } from "../../api/request/search";
+import { parseSearchParams } from "../../api/request/search/parse";
 import { responseSearchResult, skip, take } from "../../api/response";
 import { UserEntity } from "../../database/entities";
 

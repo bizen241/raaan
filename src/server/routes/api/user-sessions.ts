@@ -3,7 +3,7 @@ import * as createError from "http-errors";
 import { FindConditions, getManager } from "typeorm";
 import { UserSession } from "../../../shared/api/entities";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseSearchParams } from "../../api/request/search";
+import { parseSearchParams } from "../../api/request/search/parse";
 import { responseSearchResult, skip, take } from "../../api/response";
 import { UserSessionEntity } from "../../database/entities";
 

@@ -9,9 +9,9 @@ import {
   UserAccount,
   UserConfig,
   UserSession
-} from "../../../shared/api/entities";
-import { SearchParams } from "../../../shared/api/request/search";
-import { AuthProviderName } from "../../../shared/auth";
+} from "../../../../shared/api/entities";
+import { SearchParams } from "../../../../shared/api/request/search";
+import { AuthProviderName } from "../../../../shared/auth";
 
 export type SearchQuery<E extends EntityObject> = { [P in keyof SearchParams<E>]?: string };
 
