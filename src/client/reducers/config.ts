@@ -1,7 +1,7 @@
 import { Reducer } from "redux";
 import { Actions } from ".";
 import { UserConfig, UserSettings } from "../../shared/api/entities";
-import { EntityMap } from "../../shared/api/response/entity";
+import { EntityMap } from "../../shared/api/response/get";
 import { ActionUnion, createAction } from "../actions/helpers";
 
 export enum ConfigActionType {

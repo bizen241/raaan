@@ -1,6 +1,6 @@
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
-import { EntityStore } from "../../../../../shared/api/response/entity";
+import { EntityStore } from "../../../../../shared/api/response/get";
 import { PathParams } from "../../../../api/operation";
 import { TestDatabase } from "../../../../database/__tests__/helpers";
 import { createUserAccount } from "../../../../database/entities";

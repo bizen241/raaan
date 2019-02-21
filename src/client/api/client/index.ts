@@ -3,7 +3,7 @@ import { endpoints } from "../../../shared/api/endpoint";
 import { EntityObject, EntityType } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { SearchParams } from "../../../shared/api/request/search";
-import { EntityStore } from "../../../shared/api/response/entity";
+import { EntityStore } from "../../../shared/api/response/get";
 import { SearchResponse } from "../../../shared/api/response/search";
 import { stringifySearchParams } from "../request/search";
 import { request } from "./request";

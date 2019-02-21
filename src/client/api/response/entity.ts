@@ -1,4 +1,4 @@
-import { EntityStore } from "../../../shared/api/response/entity";
+import { EntityStore } from "../../../shared/api/response/get";
 
 export const mergeEntityStore = (target: EntityStore, source: EntityStore): EntityStore => ({
   Content: { ...target.Content, ...source.Content },

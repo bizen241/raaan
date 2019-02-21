@@ -1,4 +1,4 @@
-import { EntityStore } from "./entity";
+import { EntityStore } from "./get";
 
 export const entityCountPerPage = 10;
 

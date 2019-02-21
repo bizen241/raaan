@@ -1,5 +1,5 @@
 import { EntityType } from "../../../../shared/api/entities";
-import { createEntityStore } from "../../../../shared/api/response/entity";
+import { createEntityStore } from "../../../../shared/api/response/get";
 import { createSearchResultStore, mergeSearchResultStore } from "../search";
 
 test("merge SearchResultStore", () => {

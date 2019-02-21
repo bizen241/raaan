@@ -1,7 +1,7 @@
 import { Reducer } from "redux";
 import { EntityType } from "../../shared/api/entities";
 import { SearchParams } from "../../shared/api/request/search";
-import { createEntityStore, EntityStore } from "../../shared/api/response/entity";
+import { createEntityStore, EntityStore } from "../../shared/api/response/get";
 import { SearchResponse } from "../../shared/api/response/search";
 import { ActionUnion, createAction } from "../actions/helpers";
 import { mergeEntityStore } from "../api/response/entity";
