@@ -74,7 +74,7 @@
     "@types/lingui__core": "2.2.0",
     "@types/lingui__react": "2.5.0",
     "@types/node-fetch": "2.1.4",
-    "@types/react": "16.7.18",
+    "@types/react": "16.8.4",
     "@types/react-dom": "16.8.2",
     "@types/react-redux": "7.0.1",
     "@types/react-router-dom": "4.3.1",
