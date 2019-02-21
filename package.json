@@ -64,7 +64,7 @@
     "@lingui/cli": "2.7.4",
     "@types/compression": "0.0.36",
     "@types/cookie": "0.3.2",
-    "@types/cookie-signature": "1.0.1",
+    "@types/cookie-signature": "1.0.2",
     "@types/copy-webpack-plugin": "4.4.3",
     "@types/dotenv": "6.1.0",
     "@types/express": "4.16.1",
