@@ -13,7 +13,7 @@ test("multiple cookies", () => {
   req.headers.cookie = [
     serialize("sid", sign(sessionId, testProcessEnv.sessionSecret)),
     serialize("another cookie", "value")
-  ];
+  ].join(";");
   req.secret = testProcessEnv.sessionSecret;
 
   expect(getSessionId(req)).toEqual(sessionId);
