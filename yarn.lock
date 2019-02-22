@@ -1126,14 +1126,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-native@*":
-  version "0.57.37"
-  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.57.37.tgz#8cc9d142d5c6a2b7580fec9673984edfbd125194"
-  integrity sha512-huAmdfInEHK34hsJmEpU+Gj1L/WwIGVpSMdFl4oGClIgUB+y71tWx0fCiFWGSb4JYL/OkSEIa49fGFO1BgmUlw==
-  dependencies:
-    "@types/prop-types" "*"
-    "@types/react" "*"
-
 "@types/react-redux@7.0.1":
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.0.1.tgz#9dd2503be7a9861c5a092bf1c5050b7ade4dc62e"
@@ -1187,13 +1179,13 @@
     "@types/express-serve-static-core" "*"
     "@types/mime" "*"
 
-"@types/styled-components@4.1.10":
-  version "4.1.10"
-  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-4.1.10.tgz#7d23d0f1f5b32a78a9207d0300480d47251a3e98"
-  integrity sha512-BrXaqsBG2iiT/U1SLLMa32rt3nYdKVBnMSgsbC7bmoGHp9sefmp6wF3FrEUCUFPTRuKf0AgYIP4HRaTo/pj0Ng==
+"@types/styled-components@4.1.8":
+  version "4.1.8"
+  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-4.1.8.tgz#15c8a53bb4b9066e528fafb7558963dee5690ae0"
+  integrity sha512-NrG0wmB9Rafy5i00GFxUM/uEge148bX2QPr+Q/MI2fXrew6WOp1hN2A3YEG0AeT45z47CMdJ3BEffPsdQCWayA==
   dependencies:
+    "@types/node" "*"
     "@types/react" "*"
-    "@types/react-native" "*"
     csstype "^2.2.0"
 
 "@types/swagger-ui-express@3.0.0":
