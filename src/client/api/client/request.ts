@@ -1,10 +1,9 @@
-import * as join from "url-join";
 import { SaveParams } from "../../../shared/api/request/save";
 
 type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export const request = async <T>(method: Method, path: string, body?: SaveParams<any>) => {
-  const url = join(location.origin, "api", path);
+  const url = `${location.origin}/api/${path}`;
 
   const response = await fetch(url, {
     method,

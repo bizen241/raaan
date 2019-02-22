@@ -1,4 +1,3 @@
-import * as join from "url-join";
 import { endpoints } from "../../../shared/api/endpoint";
 import { EntityObject, EntityType } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
@@ -13,7 +12,7 @@ export const getCurrentUser = () => {
 };
 
 export const getEntity = (entityType: EntityType, entityId: string) => {
-  return request<EntityStore>("GET", join(endpoints[entityType], entityId));
+  return request<EntityStore>("GET", `${endpoints[entityType]}/${entityId}`);
 };
 
 export const createEntity = <E extends EntityObject>(entityType: EntityType, params: SaveParams<E>) => {
@@ -21,15 +20,15 @@ export const createEntity = <E extends EntityObject>(entityType: EntityType, par
 };
 
 export const updateEntity = <E extends EntityObject>(entityType: EntityType, id: string, params: SaveParams<E>) => {
-  return request<EntityStore>("PATCH", join(endpoints[entityType], id), params);
+  return request<EntityStore>("PATCH", `${endpoints[entityType]}/${id}`, params);
 };
 
 export const deleteEntity = (entityType: EntityType, entityId: string) => {
-  return request<EntityStore>("DELETE", join(endpoints[entityType], entityId));
+  return request<EntityStore>("DELETE", `${endpoints[entityType]}/${entityId}`);
 };
 
 export const searchEntity = <E extends EntityObject>(entityType: EntityType, params: SearchParams<E>) => {
   const query = stringifySearchParams(params);
 
-  return request<SearchResponse>("GET", join(endpoints[entityType], `?${query}`));
+  return request<SearchResponse>("GET", `${endpoints[entityType]}?${query}`);
 };
