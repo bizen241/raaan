@@ -55,7 +55,7 @@ test("authorize with github", async () => {
 });
 
 jest.mock("node-fetch");
-(fetch as jest.Mock)
+((fetch as unknown) as jest.Mock)
   .mockImplementationOnce((url: string) => {
     tokenUrl = url;
 

@@ -18,7 +18,7 @@ const session = createUserSession({
 });
 
 jest.mock("node-fetch");
-(fetch as jest.Mock)
+((fetch as unknown) as jest.Mock)
   // for third test
   .mockReturnValueOnce({
     ok: false
