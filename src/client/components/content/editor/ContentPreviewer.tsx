@@ -1,11 +1,12 @@
 import { Button, Classes, Dialog } from "@blueprintjs/core";
 import * as React from "react";
-import { ContentRevisionParams } from "../../../domain/content";
+import { ContentRevision } from "../../../../shared/api/entities";
+import { SaveParams } from "../../../../shared/api/request/save";
 import { Column } from "../../ui";
 import { ContentPlayer } from "../player/ContentPlayer";
 
 export const ContentPreviewer = React.memo<{
-  content: ContentRevisionParams;
+  content: SaveParams<ContentRevision>;
   isOpen: boolean;
   onClose: () => void;
 }>(({ content, isOpen, onClose }) => {

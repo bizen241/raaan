@@ -1,7 +1,9 @@
 import * as React from "react";
 import { useMemo } from "react";
+import { ContentRevision } from "../../../../shared/api/entities";
+import { SaveParams } from "../../../../shared/api/request/save";
 import { ContentItem } from "../../../../shared/content";
-import { ContentRevisionParams, createContentRevision } from "../../../domain/content";
+import { createContentRevision } from "../../../domain/content";
 import { ContentPreviewer } from "./ContentPreviewer";
 
 export const ContentItemPreviewer = React.memo<{
@@ -9,7 +11,7 @@ export const ContentItemPreviewer = React.memo<{
   isOpen: boolean;
   onClose: () => void;
 }>(({ item, isOpen, onClose }) => {
-  const content = useMemo<ContentRevisionParams>(
+  const content = useMemo<SaveParams<ContentRevision>>(
     () => ({
       ...createContentRevision(""),
       items: [item]
