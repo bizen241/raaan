@@ -1,5 +1,12 @@
 import { styled } from "../../style";
-import { paddings, Size } from "./values";
+
+type Size = "large" | "medium" | "small";
+
+const paddings: { [P in Size]: string } = {
+  large: "0.75rem",
+  medium: "0.5rem",
+  small: "0.25rem"
+};
 
 const Flex = styled.div<{
   center?: "main" | "cross" | "both";
