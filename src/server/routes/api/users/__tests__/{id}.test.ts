@@ -77,11 +77,11 @@ test("DELETE /api/users/{user} -> 200", async () => {
 
   expect(res._getStatusCode()).toEqual(200);
 
-  const ghostUser = await manager.findOne(UserEntity, users.Write.id);
+  const deletedUser = await manager.findOne(UserEntity, users.Write.id);
   const deletedSession = await manager.findOne(UserSessionEntity, sessions.Write.id);
   const deletedAccount = await manager.findOne(UserAccountEntity, accountId);
 
-  expect(ghostUser && ghostUser.permission).toBe("Ghost");
+  expect(deletedUser).toBeUndefined();
   expect(deletedSession).toBeUndefined();
   expect(deletedAccount).toBeUndefined();
 });

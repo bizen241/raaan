@@ -151,7 +151,6 @@ export const EntityStoreSchema: Definition = {
           permission: {
             enum: [
               "Admin",
-              "Ghost",
               "Guest",
               "Owner",
               "Write"

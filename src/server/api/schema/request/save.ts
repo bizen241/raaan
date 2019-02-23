@@ -126,7 +126,6 @@ export const SaveParamsMapSchema: Definition = {
         permission: {
           enum: [
             "Admin",
-            "Ghost",
             "Guest",
             "Owner",
             "Write"

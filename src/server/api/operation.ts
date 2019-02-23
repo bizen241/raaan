@@ -6,7 +6,7 @@ import { EntityType, Permission } from "../../shared/api/entities";
 import { SaveParamsMapSchema } from "./schema/request/save";
 
 export interface PathParams {
-  id?: string;
+  id: string;
 }
 
 const tags: { [P in EntityType]: string } = {

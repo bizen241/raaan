@@ -3,7 +3,7 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
-import { UserAccountEntity, UserEntity, UserSessionEntity } from "../../../database/entities";
+import { UserEntity } from "../../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   const { id: userId }: PathParams = req.params;
@@ -23,26 +23,6 @@ GET.apiDoc = createOperationDoc({
   hasId: true
 });
 
-export const deleteUser = async (user: UserEntity) => {
-  const manager = getManager();
-
-  await manager.delete(UserAccountEntity, {
-    user: {
-      id: user.id
-    }
-  });
-  await manager.delete(UserSessionEntity, {
-    user: {
-      id: user.id
-    }
-  });
-
-  user.name = "Ghost";
-  user.permission = "Ghost";
-
-  await manager.save(user);
-};
-
 export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
   const currentUser = req.session.user;
   if (currentUser.permission !== "Admin") {
@@ -59,7 +39,7 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next) =>
     return next(createError(403));
   }
 
-  await deleteUser(loadedUser);
+  await getManager().remove(loadedUser);
 
   responseFindResult(res, loadedUser);
 });

@@ -152,7 +152,6 @@ export const SearchParamsMapSchema: Definition = {
             permission: {
               enum: [
                 "Admin",
-                "Ghost",
                 "Guest",
                 "Owner",
                 "Write"

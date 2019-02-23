@@ -7,7 +7,9 @@ import { UserEntity } from "./UserEntity";
 export class UserConfigEntity extends BaseEntityClass<"UserConfig"> {
   type: "UserConfig" = "UserConfig";
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, {
+    onDelete: "CASCADE"
+  })
   user!: UserEntity;
 
   @Column()

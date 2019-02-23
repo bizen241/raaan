@@ -13,22 +13,19 @@ export const securitySchemes: { [P in Permission]: OpenAPIV3.SecuritySchemeObjec
   Owner: securityScheme,
   Admin: securityScheme,
   Write: securityScheme,
-  Guest: securityScheme,
-  Ghost: securityScheme
+  Guest: securityScheme
 };
 
 const Owner: Permission[] = ["Owner"];
 const Admin: Permission[] = ["Admin", ...Owner];
 const Write: Permission[] = ["Write", ...Admin];
 const Guest: Permission[] = ["Guest", ...Write];
-const Ghost: Permission[] = ["Ghost", ...Guest];
 
 const permissionMap: { [P in Permission]: Permission[] } = {
   Owner,
   Admin,
   Write,
-  Guest,
-  Ghost
+  Guest
 };
 
 const createSecurityHandler = (permission: Permission): SecurityHandler => req => {
@@ -45,6 +42,5 @@ export const securityHandlers: { [P in Permission]: SecurityHandler } = {
   Owner: createSecurityHandler("Owner"),
   Admin: createSecurityHandler("Admin"),
   Write: createSecurityHandler("Write"),
-  Guest: createSecurityHandler("Guest"),
-  Ghost: createSecurityHandler("Ghost")
+  Guest: createSecurityHandler("Guest")
 };

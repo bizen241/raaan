@@ -177,7 +177,6 @@ export const SearchResponseSchema: Definition = {
               permission: {
                 enum: [
                   "Admin",
-                  "Ghost",
                   "Guest",
                   "Owner",
                   "Write"

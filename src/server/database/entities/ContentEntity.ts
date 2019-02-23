@@ -8,10 +8,14 @@ import { UserEntity } from "./UserEntity";
 export class ContentEntity extends BaseEntityClass<"Content"> {
   type: "Content" = "Content";
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, {
+    onDelete: "CASCADE"
+  })
   author!: UserEntity;
 
-  @OneToOne(() => ContentRevisionEntity)
+  @OneToOne(() => ContentRevisionEntity, {
+    onDelete: "CASCADE"
+  })
   @JoinColumn()
   latest!: ContentRevisionEntity;
 

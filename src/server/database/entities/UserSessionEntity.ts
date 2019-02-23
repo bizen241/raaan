@@ -6,7 +6,9 @@ import { UserEntity } from "./UserEntity";
 export class UserSessionEntity extends BaseEntityClass<"UserSession"> {
   type: "UserSession" = "UserSession";
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, {
+    onDelete: "CASCADE"
+  })
   user!: UserEntity;
 
   @Column({ type: "uuid", unique: true })
