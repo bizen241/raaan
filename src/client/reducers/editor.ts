@@ -1,4 +1,4 @@
-import { replace } from "connected-react-router";
+import { push, replace } from "connected-react-router";
 import { Reducer } from "redux";
 import { Actions } from ".";
 import { ContentRevision } from "../../shared/api/entities";
@@ -71,29 +71,25 @@ const save = (id: string): AsyncAction => async (dispatch, getState) => {
     return;
   }
 
-  if (isNaN(Number(id))) {
-    await updateEntity<ContentRevision>("ContentRevision", id, revision.editedRevision);
-  } else {
-    const response = await createEntity<ContentRevision>("ContentRevision", revision.editedRevision);
-    const createdRevision = Object.values(response.ContentRevision)[0];
-    if (createdRevision === undefined) {
-      throw new Error();
+  try {
+    if (isNaN(Number(id))) {
+      await updateEntity<ContentRevision>("ContentRevision", id, revision.editedRevision);
+    } else {
+      const response = await createEntity<ContentRevision>("ContentRevision", revision.editedRevision);
+      const createdRevision = Object.values(response.ContentRevision)[0];
+      if (createdRevision === undefined) {
+        throw new Error();
+      }
+
+      const newContentId = createdRevision.contentId;
+      dispatch(replace(`/contents/${newContentId}/edit`));
     }
-
-    const newContentId = createdRevision.contentId;
-
-    dispatch(
-      editorSyncActions.addBuffer(newContentId, {
-        editedRevision: createdRevision,
-        sourceRevision: createdRevision,
-        isSaving: false
-      })
-    );
-    dispatch(replace(`/contents/${newContentId}/edit`));
-    dispatch(editorSyncActions.deleteBuffer(id));
+  } catch (e) {
+    dispatch(editorSyncActions.finishSave(id));
   }
 
-  setTimeout(() => dispatch(editorSyncActions.finishSave(id)), 1000);
+  dispatch(push("/creator"));
+  dispatch(editorSyncActions.deleteBuffer(id));
 };
 
 export const editorActions = {
