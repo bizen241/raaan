@@ -36,14 +36,14 @@ export class ContentRevisionEntity extends BaseEntityClass<"ContentRevision"> {
 
 interface ContentRevisionConstructor {
   id?: string;
-  content: ContentEntity;
-  lang: string;
-  title: string;
-  tags: string[];
-  summary: string;
-  comment: string;
-  items: ContentItem[];
-  isLinear: boolean;
+  content?: ContentEntity;
+  lang: string | undefined;
+  title: string | undefined;
+  tags: string[] | undefined;
+  summary: string | undefined;
+  comment: string | undefined;
+  items: ContentItem[] | undefined;
+  isLinear: boolean | undefined;
 }
 
 export const createContentRevisionEntity = ({
@@ -62,15 +62,17 @@ export const createContentRevisionEntity = ({
   if (id !== undefined) {
     contentRevision.id = id;
   }
+  if (content !== undefined) {
+    contentRevision.content = content;
+  }
 
-  contentRevision.content = content;
-  contentRevision.lang = lang;
-  contentRevision.title = title;
-  contentRevision.tags = tags;
-  contentRevision.summary = summary;
-  contentRevision.comment = comment;
-  contentRevision.items = items;
-  contentRevision.isLinear = isLinear;
+  contentRevision.lang = lang || "en";
+  contentRevision.title = title || "";
+  contentRevision.tags = tags || [];
+  contentRevision.summary = summary || "";
+  contentRevision.comment = comment || "";
+  contentRevision.items = items || [];
+  contentRevision.isLinear = isLinear || false;
 
   return contentRevision;
 };
