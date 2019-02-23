@@ -1,8 +1,8 @@
 import { ContentItem } from "../../content";
-import { BaseEntityObject } from "./BaseEntityObject";
+import { BaseEntityObject, UUID } from "./BaseEntityObject";
 
 export interface ContentRevision extends BaseEntityObject {
-  contentId: string;
+  contentId: UUID;
   lang: string;
   tags: string[];
   title: string;

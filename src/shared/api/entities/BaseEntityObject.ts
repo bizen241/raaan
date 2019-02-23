@@ -1,8 +1,10 @@
+/**
+ * @format uuid
+ */
+export type UUID = string;
+
 export interface BaseEntityObject {
-  /**
-   * @format: uuid
-   */
-  id: string;
+  id: UUID;
   createdAt: number;
   updatedAt: number;
   fetchedAt: number;

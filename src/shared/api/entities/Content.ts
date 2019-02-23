@@ -1,9 +1,9 @@
-import { BaseEntityObject } from "./BaseEntityObject";
+import { BaseEntityObject, UUID } from "./BaseEntityObject";
 
 export interface Content extends BaseEntityObject {
-  authorId: string;
-  latestId: string;
-  tagIds: string[];
+  authorId: UUID;
+  latestId: UUID;
+  tagIds: UUID[];
   lang: string;
   title: string;
   summary: string;

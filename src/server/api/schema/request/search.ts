@@ -13,8 +13,14 @@ export const SearchParamsMapSchema: Definition = {
           properties: {
             summary: { type: "string" },
             title: { type: "string" },
-            authorId: { type: "string" },
-            latestId: { type: "string" },
+            authorId: {
+              format: "uuid",
+              type: "string"
+            },
+            latestId: {
+              format: "uuid",
+              type: "string"
+            },
             tagIds: {
               type: "array",
               items: { type: "string" }
@@ -37,7 +43,10 @@ export const SearchParamsMapSchema: Definition = {
             summary: { type: "string" },
             title: { type: "string" },
             lang: { type: "string" },
-            contentId: { type: "string" },
+            contentId: {
+              format: "uuid",
+              type: "string"
+            },
             tags: {
               type: "array",
               items: { type: "string" }
@@ -163,7 +172,10 @@ export const SearchParamsMapSchema: Definition = {
         {
           type: "object",
           properties: {
-            userId: { type: "string" },
+            userId: {
+              format: "uuid",
+              type: "string"
+            },
             provider: {
               type: "string",
               enum: ["github"]
@@ -183,7 +195,10 @@ export const SearchParamsMapSchema: Definition = {
           type: "object",
           properties: {
             name: { type: "string" },
-            userId: { type: "string" },
+            userId: {
+              format: "uuid",
+              type: "string"
+            },
             settings: {
               type: "object",
               properties: {
@@ -210,7 +225,10 @@ export const SearchParamsMapSchema: Definition = {
         {
           type: "object",
           properties: {
-            userId: { type: "string" },
+            userId: {
+              format: "uuid",
+              type: "string"
+            },
             userAgent: { type: "string" }
           }
         },

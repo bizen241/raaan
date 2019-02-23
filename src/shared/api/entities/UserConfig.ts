@@ -1,4 +1,4 @@
-import { BaseEntityObject } from "./BaseEntityObject";
+import { BaseEntityObject, UUID } from "./BaseEntityObject";
 
 export type ThemeName = "dark" | "light";
 export type LangName = "en" | "ja";
@@ -9,7 +9,7 @@ export interface UserSettings {
 }
 
 export interface UserConfig extends BaseEntityObject {
-  userId: string;
+  userId: UUID;
   name: string;
   settings: UserSettings;
 }

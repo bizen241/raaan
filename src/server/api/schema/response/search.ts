@@ -18,8 +18,14 @@ export const SearchResponseSchema: Definition = {
           additionalProperties: {
             type: "object",
             properties: {
-              authorId: { type: "string" },
-              latestId: { type: "string" },
+              authorId: {
+                format: "uuid",
+                type: "string"
+              },
+              latestId: {
+                format: "uuid",
+                type: "string"
+              },
               tagIds: {
                 type: "array",
                 items: { type: "string" }
@@ -29,7 +35,7 @@ export const SearchResponseSchema: Definition = {
               summary: { type: "string" },
               isPrivate: { type: "boolean" },
               id: {
-                format: ": uuid",
+                format: "uuid",
                 type: "string"
               },
               createdAt: { type: "number" },
@@ -43,7 +49,10 @@ export const SearchResponseSchema: Definition = {
           additionalProperties: {
             type: "object",
             properties: {
-              contentId: { type: "string" },
+              contentId: {
+                format: "uuid",
+                type: "string"
+              },
               lang: { type: "string" },
               tags: {
                 type: "array",
@@ -134,7 +143,7 @@ export const SearchResponseSchema: Definition = {
               },
               isLinear: { type: "boolean" },
               id: {
-                format: ": uuid",
+                format: "uuid",
                 type: "string"
               },
               createdAt: { type: "number" },
@@ -150,7 +159,7 @@ export const SearchResponseSchema: Definition = {
             properties: {
               name: { type: "string" },
               id: {
-                format: ": uuid",
+                format: "uuid",
                 type: "string"
               },
               createdAt: { type: "number" },
@@ -176,7 +185,7 @@ export const SearchResponseSchema: Definition = {
                 type: "string"
               },
               id: {
-                format: ": uuid",
+                format: "uuid",
                 type: "string"
               },
               createdAt: { type: "number" },
@@ -190,14 +199,17 @@ export const SearchResponseSchema: Definition = {
           additionalProperties: {
             type: "object",
             properties: {
-              userId: { type: "string" },
+              userId: {
+                format: "uuid",
+                type: "string"
+              },
               provider: {
                 type: "string",
                 enum: ["github"]
               },
               accountId: { type: "string" },
               id: {
-                format: ": uuid",
+                format: "uuid",
                 type: "string"
               },
               createdAt: { type: "number" },
@@ -211,7 +223,10 @@ export const SearchResponseSchema: Definition = {
           additionalProperties: {
             type: "object",
             properties: {
-              userId: { type: "string" },
+              userId: {
+                format: "uuid",
+                type: "string"
+              },
               name: { type: "string" },
               settings: {
                 type: "object",
@@ -227,7 +242,7 @@ export const SearchResponseSchema: Definition = {
                 }
               },
               id: {
-                format: ": uuid",
+                format: "uuid",
                 type: "string"
               },
               createdAt: { type: "number" },
@@ -241,10 +256,13 @@ export const SearchResponseSchema: Definition = {
           additionalProperties: {
             type: "object",
             properties: {
-              userId: { type: "string" },
+              userId: {
+                format: "uuid",
+                type: "string"
+              },
               userAgent: { type: "string" },
               id: {
-                format: ": uuid",
+                format: "uuid",
                 type: "string"
               },
               createdAt: { type: "number" },

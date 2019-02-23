@@ -1,6 +1,6 @@
-import { BaseEntityObject } from "./BaseEntityObject";
+import { BaseEntityObject, UUID } from "./BaseEntityObject";
 
 export interface UserSession extends BaseEntityObject {
-  userId: string;
+  userId: UUID;
   userAgent: string;
 }
