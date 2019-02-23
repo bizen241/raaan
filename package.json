@@ -62,6 +62,7 @@
     "@babel/preset-react": "7.0.0",
     "@lingui/babel-preset-react": "2.7.4",
     "@lingui/cli": "2.7.4",
+    "@types/body-parser": "1.17.0",
     "@types/compression": "0.0.36",
     "@types/cookie": "0.3.2",
     "@types/cookie-signature": "1.0.2",
