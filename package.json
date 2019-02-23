@@ -42,7 +42,7 @@
     "node-fetch": "2.3.0",
     "pg": "7.8.1",
     "react": "16.8.3",
-    "react-dom": "16.8.2",
+    "react-dom": "16.8.3",
     "react-redux": "6.0.1",
     "react-router-dom": "4.3.1",
     "react-textarea-autosize": "7.1.0",
