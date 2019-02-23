@@ -3,9 +3,7 @@ import { ContentRevision } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { CodeItem, ContentItem, KanaItem, KanjiItem, MathItem, TextItem } from "../../../shared/content";
 
-export type ContentRevisionParams = Required<SaveParams<ContentRevision>>;
-
-export const createContentRevision = (contentId: string): ContentRevisionParams => ({
+export const createContentRevision = (contentId?: string): SaveParams<ContentRevision> => ({
   contentId,
   title: "",
   lang: "ja",
@@ -54,8 +52,8 @@ export const contentItemCreators: { [T in ContentItem["type"]]: () => ContentIte
   math: createMathItem
 };
 
-export const createPlan = (content: ContentRevisionParams) => {
-  const plan = [...Array(content.items.length).keys()];
+export const createPlan = (items: ContentItem[]) => {
+  const plan = [...Array(items.length).keys()];
 
   for (let i = plan.length - 1; i >= 0; i--) {
     const random = Math.floor(Math.random() * (i + 1));

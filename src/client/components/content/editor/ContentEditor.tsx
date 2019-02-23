@@ -56,7 +56,7 @@ export const ContentEditor = connector(
 
     const onSave = useCallback(() => save(id), []);
 
-    const onChangeTitle = useCallback((title: string) => updateTitle(id, title), []);
+    const onChangeTitle = useCallback((value: string) => updateTitle(id, value), []);
     const onChangeItem = useCallback(
       <P extends keyof ContentItem>(index: number, key: P, value: ContentItem[P]) => updateItem(id, index, key, value),
       []
@@ -74,16 +74,17 @@ export const ContentEditor = connector(
     }
 
     const { editedRevision, isSaving } = buffer;
+    const { title = "", items = [] } = editedRevision;
 
     return (
       <Column flex={1} style={{ overflowY: "auto" }}>
         <Column padding="small">
-          <ContentTitleEditor title={editedRevision.title || ""} onChange={onChangeTitle} />
+          <ContentTitleEditor title={title || ""} onChange={onChangeTitle} />
         </Column>
         <Divider />
         <Column>
           <Column padding="small">アイテム</Column>
-          {editedRevision.items.map((item, index) => (
+          {items.map((item, index) => (
             <Column key={item.id} padding="small">
               <ContentItemEditor
                 index={index}
@@ -122,7 +123,7 @@ export const ContentEditor = connector(
         </Column>
         <ContentPreviewer content={editedRevision} isOpen={isContentPreviewerOpen} onClose={onCloseContentPreviewer} />
         <ContentItemPreviewer
-          item={editedRevision.items[focusedItemIndex]}
+          item={items[focusedItemIndex]}
           isOpen={isContentItemPreviewerOpen}
           onClose={onCloseContentItemPreviewer}
         />

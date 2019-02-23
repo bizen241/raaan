@@ -1,9 +1,12 @@
+import { replace } from "connected-react-router";
 import { Reducer } from "redux";
 import { Actions } from ".";
 import { ContentRevision } from "../../shared/api/entities";
+import { SaveParams } from "../../shared/api/request/save";
 import { ContentItem } from "../../shared/content";
 import { ActionUnion, AsyncAction, createAction } from "../actions/helpers";
-import { contentItemCreators, ContentRevisionParams, createContentRevision } from "../domain/content";
+import { createEntity, updateEntity } from "../api/client";
+import { contentItemCreators, createContentRevision } from "../domain/content";
 
 export enum EditorActionType {
   AddBuffer = "editor/add-buffer",
@@ -23,7 +26,7 @@ export enum EditorActionType {
 
 export interface EditorBuffer {
   sourceRevision: ContentRevision | null;
-  editedRevision: ContentRevisionParams;
+  editedRevision: SaveParams<ContentRevision>;
   isSaving: boolean;
 }
 
@@ -53,23 +56,42 @@ const load = (id: string): AsyncAction => async (dispatch, getState) => {
     dispatch(
       editorSyncActions.addBuffer(id, {
         sourceRevision: null,
-        editedRevision: createContentRevision(id),
+        editedRevision: createContentRevision(),
         isSaving: false
       })
     );
   }
 };
 
-const save = (id: string): AsyncAction => async dispatch => {
+const save = (id: string): AsyncAction => async (dispatch, getState) => {
   dispatch(editorSyncActions.startSave(id));
 
-  /*
-  const newId = await createEntity(revision)
+  const revision = getState().editor.buffers[id];
+  if (revision === undefined) {
+    return;
+  }
 
-  openBuffer(newId, buffer);
-  replaceState(newId);
-  deleteBuffer(id);
-  */
+  if (isNaN(Number(id))) {
+    await updateEntity<ContentRevision>("ContentRevision", id, revision.editedRevision);
+  } else {
+    const response = await createEntity<ContentRevision>("ContentRevision", revision.editedRevision);
+    const createdRevision = Object.values(response.ContentRevision)[0];
+    if (createdRevision === undefined) {
+      throw new Error();
+    }
+
+    const newContentId = createdRevision.contentId;
+
+    dispatch(
+      editorSyncActions.addBuffer(newContentId, {
+        editedRevision: createdRevision,
+        sourceRevision: createdRevision,
+        isSaving: false
+      })
+    );
+    dispatch(replace(`/contents/${newContentId}/edit`));
+    dispatch(editorSyncActions.deleteBuffer(id));
+  }
 
   setTimeout(() => dispatch(editorSyncActions.finishSave(id)), 1000);
 };
@@ -101,7 +123,7 @@ export const initialEditorState: EditorState = {
 const editContent = (
   state: EditorState,
   id: string,
-  callback: (revision: ContentRevisionParams) => ContentRevisionParams
+  callback: (revision: SaveParams<ContentRevision>) => SaveParams<ContentRevision>
 ): EditorState => {
   const buffer = state.buffers[id];
   if (buffer === undefined) {
@@ -114,7 +136,10 @@ const editContent = (
       ...state.buffers,
       [id]: {
         ...buffer,
-        editedRevision: callback(buffer.editedRevision)
+        editedRevision: {
+          ...buffer.editedRevision,
+          ...callback(buffer.editedRevision)
+        }
       }
     }
   };
@@ -234,33 +259,30 @@ export const editorReducer: Reducer<EditorState, Actions> = (state = initialEdit
     case EditorActionType.UpdateItem: {
       const { id, index, key, value } = action.payload;
 
-      return editContent(state, id, revision => {
-        const items = [...revision.items];
-        items[index] = {
+      return editContent(state, id, ({ items = [] }) => {
+        const updatedItems = [...items];
+        updatedItems[index] = {
           ...items[index],
           [key]: value
         };
 
         return {
-          ...revision,
-          items
+          items: updatedItems
         };
       });
     }
     case EditorActionType.DeleteItem: {
       const { id, index } = action.payload;
 
-      return editContent(state, id, revision => ({
-        ...revision,
-        items: [...revision.items.slice(0, index), ...revision.items.slice(index + 1)]
+      return editContent(state, id, ({ items = [] }) => ({
+        items: [...items.slice(0, index), ...items.slice(index + 1)]
       }));
     }
     case EditorActionType.AppendItem: {
       const { id } = action.payload;
 
-      return editContent(state, id, revision => ({
-        ...revision,
-        items: [...revision.items, contentItemCreators[state.itemType]()]
+      return editContent(state, id, ({ items = [] }) => ({
+        items: [...items, contentItemCreators[state.itemType]()]
       }));
     }
     default:
