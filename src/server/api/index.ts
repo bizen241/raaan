@@ -1,3 +1,4 @@
+import * as bodyParser from "body-parser";
 import { Express } from "express";
 import { initialize } from "express-openapi";
 import { resolve } from "path";
@@ -11,6 +12,9 @@ export const prepareApi = (processEnv: ProcessEnv, app: Express) => {
     apiDoc: createApiDoc(processEnv),
     app,
     docsPath: "/docs",
+    consumesMiddleware: {
+      "application/json": bodyParser.json()
+    },
     errorMiddleware: (err, _, res, __) => {
       res.status(err.status).json(err);
     },
