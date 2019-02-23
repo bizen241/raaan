@@ -2,27 +2,47 @@ import { ButtonGroup, Classes, Collapse, Divider, Menu, MenuItem, Popover } from
 import * as React from "react";
 import { useCallback, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { Content } from "../../../../shared/api/entities";
+import { entityActions } from "../../../actions/entity";
 import { connector } from "../../../reducers";
-import { editorActions, EditorBuffer } from "../../../reducers/editor";
+import { editorActions } from "../../../reducers/editor";
 import { Column, Row } from "../../ui";
 import { manageHotKey } from "../../utils/hotKey";
 
-export const EditorBufferList = connector(
+export const ContentList = connector(
   state => ({
-    buffers: state.editor.buffers
+    buffers: state.editor.buffers,
+    searchResult: state.cache.search.Content[""],
+    contentCache: state.cache.get.Content
   }),
   () => ({
-    deleteBuffer: editorActions.deleteBuffer
+    deleteBuffer: editorActions.deleteBuffer,
+    search: entityActions.search
   }),
-  ({ buffers, deleteBuffer }) => {
+  ({ searchResult, contentCache, deleteBuffer, search }) => {
     const ref = useRef<HTMLButtonElement>(null);
+
+    useEffect(() => {
+      if (searchResult === undefined) {
+        search<Content>("Content", {
+          page: 0
+        });
+      }
+    }, []);
 
     useEffect(
       manageHotKey({
-        e: () => ref.current && ref.current.focus()
+        s: () => ref.current && ref.current.focus()
       }),
       []
     );
+
+    if (searchResult === undefined) {
+      return <div>Loading...</div>;
+    }
+
+    const contentIds = searchResult.pages[0] || [];
+    const contents = contentIds.map(contentId => contentCache[contentId]);
 
     return (
       <Column className={`${Classes.TREE} ${Classes.ELEVATION_0}`}>
@@ -30,17 +50,17 @@ export const EditorBufferList = connector(
           <ButtonGroup fill minimal>
             <button className={`${Classes.BUTTON} ${Classes.FILL} ${Classes.ALIGN_LEFT}`} ref={ref}>
               <span className={`${Classes.ICON_STANDARD} bp3-icon-chevron-down`} />
-              <span className={Classes.BUTTON_TEXT}>編集中 (e)</span>
+              <span className={Classes.BUTTON_TEXT}>保存済み (s)</span>
             </button>
           </ButtonGroup>
         </Row>
         <Collapse isOpen>
           <Column padding="small">
-            {Object.entries(buffers).map(
-              ([contentId, buffer]) =>
-                buffer && (
-                  <Column padding="small" key={contentId}>
-                    <EditorBufferListItem contentId={contentId} buffer={buffer} onDelete={deleteBuffer} />
+            {contents.map(
+              content =>
+                content && (
+                  <Column padding="small" key={content.id}>
+                    <ContentListItem contentId={content.id} content={content} onDelete={deleteBuffer} />
                     <Divider />
                   </Column>
                 )
@@ -52,18 +72,18 @@ export const EditorBufferList = connector(
   }
 );
 
-const EditorBufferListItem: React.FunctionComponent<{
+const ContentListItem: React.FunctionComponent<{
   contentId: string;
-  buffer: EditorBuffer;
+  content: Content;
   onDelete: (id: string) => void;
-}> = ({ contentId, buffer, onDelete }) => {
+}> = ({ contentId, content, onDelete }) => {
   const deleteBuffer = useCallback(() => onDelete(contentId), []);
 
   return (
     <Row center="cross">
       <Row flex={1}>
         <Link style={{ flex: 1 }} to={`/contents/${contentId}/edit`}>
-          {buffer.editedRevision.title || "無題"}
+          {content.title || "無題"}
         </Link>
       </Row>
       <Popover

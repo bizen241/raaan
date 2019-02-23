@@ -4,6 +4,7 @@ import * as React from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../reducers";
+import { ContentList } from "../content/list/ContentList";
 import { EditorBufferList } from "../content/list/EditorBufferList";
 import { Header } from "../project/Header";
 import { Column } from "../ui";
@@ -26,25 +27,16 @@ export const Creator = connector(
     return (
       <Page>
         <Header heading="作成" />
-        <Column>
-          <Column padding="small">
-            <Link className={`${Classes.BUTTON} ${Classes.LARGE}`} to="/creator/private">
-              プライベート
-            </Link>
-          </Column>
-          <Column padding="small">
-            <Link className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.DISABLED}`} to="/creator/public">
-              パブリック
-            </Link>
-          </Column>
-          <Column padding="small">
-            <Link className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_PRIMARY}`} to="/contents/new">
-              新規作成 (n)
-            </Link>
-          </Column>
+        <Column padding="small">
+          <Link className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_PRIMARY}`} to="/contents/new">
+            新規作成 (n)
+          </Link>
         </Column>
         <Column padding="small">
           <EditorBufferList />
+        </Column>
+        <Column padding="small">
+          <ContentList />
         </Column>
       </Page>
     );

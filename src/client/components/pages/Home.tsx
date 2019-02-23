@@ -13,7 +13,7 @@ export const Home = connector(
     return (
       <Page>
         <Header heading="ホーム" />
-        <Column padding="small">
+        <Column>
           <Column padding="small">
             <Link className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.DISABLED}`} to="/player">
               練習する (P)
