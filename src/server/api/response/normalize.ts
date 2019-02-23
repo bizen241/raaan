@@ -62,7 +62,7 @@ const normalizeContent: Normalizer<ContentEntity> = (store, entity, isSearching)
   tags.forEach(tag => normalizeEntity(store, tag, isSearching));
 };
 
-const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (store, entity) => {
+const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (store, entity, isSearching) => {
   const { id, content, lang, tags, title, summary, comment, items, isLinear } = entity;
 
   store.ContentRevision[id] = {
@@ -76,6 +76,8 @@ const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (store, enti
     items,
     isLinear
   };
+
+  normalizeEntity(store, content, isSearching);
 };
 
 const normalizeContentTag: Normalizer<ContentTagEntity> = (store, entity) => {

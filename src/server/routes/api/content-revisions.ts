@@ -4,7 +4,13 @@ import { ContentRevision } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
-import { ContentEntity, createContentEntity, createContentRevisionEntity, UserEntity } from "../../database/entities";
+import {
+  ContentEntity,
+  ContentRevisionEntity,
+  createContentEntity,
+  createContentRevisionEntity,
+  UserEntity
+} from "../../database/entities";
 
 const getContent = async (currentUser: UserEntity, contentId: string | undefined) => {
   if (contentId !== undefined) {
@@ -22,30 +28,35 @@ const getContent = async (currentUser: UserEntity, contentId: string | undefined
   });
 };
 
-export const POST: OperationFunction = errorBoundary(async (req, res) => {
-  const params: SaveParams<ContentRevision> = req.body;
-
-  const content = await getContent(req.session.user, params.contentId);
-
-  const newRevision = createContentRevisionEntity({
-    content,
-    lang: params.lang || "",
-    tags: params.tags || [],
-    title: params.title || "",
-    summary: params.summary || "",
-    comment: params.comment || "",
-    items: params.items || [],
-    isLinear: params.isLinear || false
-  });
-
-  await getManager().transaction(async manager => {
-    const savedRevision = await manager.save(newRevision);
+const saveContentRevision = async (content: ContentEntity, revision: ContentRevisionEntity) =>
+  getManager().transaction(async manager => {
+    const savedRevision = await manager.save(revision);
 
     content.latest = savedRevision;
     const savedContent = await manager.save(content);
 
-    responseFindResult(res, savedContent);
+    savedRevision.content = savedContent;
+    await manager.save(savedRevision);
+
+    return savedRevision.id;
   });
+
+export const POST: OperationFunction = errorBoundary(async (req, res) => {
+  const { contentId, lang, title, tags, summary, comment, items, isLinear }: SaveParams<ContentRevision> = req.body;
+
+  const content = await getContent(req.session.user, contentId);
+
+  const newRevision = createContentRevisionEntity({ lang, tags, title, summary, comment, items, isLinear });
+  const newRevisionId = await saveContentRevision(content, newRevision);
+
+  const loadedRevision = await getManager().findOne(ContentRevisionEntity, newRevisionId, {
+    relations: ["content", "content.author", "content.latest", "content.tags"]
+  });
+  if (loadedRevision === undefined) {
+    throw new Error();
+  }
+
+  responseFindResult(res, loadedRevision);
 });
 
 POST.apiDoc = createOperationDoc({
