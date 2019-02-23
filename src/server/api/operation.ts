@@ -3,6 +3,7 @@ import { Request, RequestHandler, Response } from "express";
 import * as createError from "http-errors";
 import { OpenAPIV3 } from "openapi-types";
 import { EntityType, Permission } from "../../shared/api/entities";
+import { SaveParamsMapSchema } from "./schema/request/save";
 
 export interface PathParams {
   id?: string;
@@ -45,9 +46,22 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
     });
   }
 
+  /*
   const requestBody: OpenAPIV3.ReferenceObject | undefined = hasBody
     ? {
         $ref: `#/components/requestBodies/${entityType}`
+      }
+    : undefined;
+  */
+  const saveParamsSchemaMap = SaveParamsMapSchema.properties as { [key: string]: OpenAPIV3.SchemaObject };
+
+  const requestBody: OpenAPIV3.RequestBodyObject | undefined = hasBody
+    ? {
+        content: {
+          "application/json": {
+            schema: saveParamsSchemaMap[entityType]
+          }
+        }
       }
     : undefined;
 
@@ -74,9 +88,9 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
   };
 };
 
-type AsyncRequestHandler = (req: Request, res: Response, next: NextFunction) => Promise<any>;
-
-export const errorBoundary = (fn: AsyncRequestHandler): RequestHandler => async (req, res, next) => {
+export const errorBoundary = (
+  fn: (req: Request, res: Response, next: NextFunction) => Promise<any>
+): RequestHandler => async (req, res, next) => {
   await fn(req, res, next).catch(e => {
     console.log(e);
 
