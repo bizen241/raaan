@@ -1,9 +1,9 @@
 import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
+import { getManager } from "typeorm";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
 import { setClearSiteData } from "../logout";
-import { deleteUser } from "./users/{id}";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
   responseFindResult(res, req.session.user);
@@ -22,7 +22,7 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next) =>
     return next(createError(403));
   }
 
-  await deleteUser(currentUser);
+  await getManager().remove(currentUser);
 
   setClearSiteData(res);
 
