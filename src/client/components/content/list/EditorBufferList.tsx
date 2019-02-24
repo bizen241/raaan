@@ -1,11 +1,10 @@
-import { ButtonGroup, Classes, Collapse, Divider, Menu, MenuItem, Popover } from "@blueprintjs/core";
+import { Divider, MenuItem } from "@blueprintjs/core";
 import * as React from "react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../../reducers";
 import { editorActions, EditorBuffer } from "../../../reducers/editor";
-import { Column, Row } from "../../ui";
-import { manageHotKey } from "../../utils/hotKey";
+import { Column, List, PopMenu, Row } from "../../ui";
 
 export const EditorBufferList = connector(
   state => ({
@@ -15,39 +14,27 @@ export const EditorBufferList = connector(
     deleteBuffer: editorActions.deleteBuffer
   }),
   ({ buffers, deleteBuffer }) => {
-    const ref = useRef<HTMLButtonElement>(null);
-
-    useEffect(
-      manageHotKey({
-        e: () => ref.current && ref.current.focus()
-      }),
-      []
-    );
-
     return (
-      <Column className={`${Classes.TREE} ${Classes.ELEVATION_0}`}>
-        <Row>
-          <ButtonGroup fill minimal>
-            <button className={`${Classes.BUTTON} ${Classes.FILL} ${Classes.ALIGN_LEFT}`} ref={ref}>
-              <span className={`${Classes.ICON_STANDARD} bp3-icon-chevron-down`} />
-              <span className={Classes.BUTTON_TEXT}>編集中 (e)</span>
-            </button>
-          </ButtonGroup>
-        </Row>
-        <Collapse isOpen>
-          <Column padding="small">
-            {Object.entries(buffers).map(
-              ([contentId, buffer]) =>
-                buffer && (
-                  <Column padding="small" key={contentId}>
-                    <EditorBufferListItem contentId={contentId} buffer={buffer} onDelete={deleteBuffer} />
-                    <Divider />
-                  </Column>
-                )
-            )}
-          </Column>
-        </Collapse>
-      </Column>
+      <List
+        title="編集中 (e)"
+        currentPageNumber={1}
+        totalItemCount={Object.keys(buffers).length}
+        itemCountPerPage={10}
+        focusKey="e"
+        isOpen={true}
+      >
+        <Column padding="small">
+          {Object.entries(buffers).map(
+            ([contentId, buffer]) =>
+              buffer && (
+                <Column padding="small" key={contentId}>
+                  <EditorBufferListItem contentId={contentId} buffer={buffer} onDelete={deleteBuffer} />
+                  <Divider />
+                </Column>
+              )
+          )}
+        </Column>
+      </List>
     );
   }
 );
@@ -66,17 +53,13 @@ const EditorBufferListItem: React.FunctionComponent<{
           {buffer.editedRevision.title || "無題"}
         </Link>
       </Row>
-      <Popover
-        content={
-          <Menu>
-            <MenuItem text="プレビュー (p)" />
-            <MenuItem text="削除 (d)" onClick={deleteBuffer} intent="danger" />
-          </Menu>
-        }
-        position="bottom-right"
-      >
-        <button className={`${Classes.BUTTON} ${Classes.MINIMAL} ${Classes.iconClass("more")}`} />
-      </Popover>
+      <PopMenu
+        items={[
+          <MenuItem text="プレビュー (p)" />,
+          <MenuItem text="削除 (d)" onClick={deleteBuffer} intent="danger" />
+        ]}
+        hotKeys={{}}
+      />
     </Row>
   );
 };

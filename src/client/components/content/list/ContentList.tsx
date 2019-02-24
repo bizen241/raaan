@@ -1,13 +1,12 @@
-import { ButtonGroup, Classes, Collapse, Divider, Menu, MenuItem, Popover } from "@blueprintjs/core";
+import { Divider, MenuItem } from "@blueprintjs/core";
 import * as React from "react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Content } from "../../../../shared/api/entities";
 import { entityActions } from "../../../actions/entity";
 import { connector } from "../../../reducers";
 import { editorActions } from "../../../reducers/editor";
-import { Column, Row } from "../../ui";
-import { manageHotKey } from "../../utils/hotKey";
+import { Column, List, PopMenu, Row } from "../../ui";
 
 export const ContentList = connector(
   state => ({
@@ -20,8 +19,6 @@ export const ContentList = connector(
     search: entityActions.search
   }),
   ({ searchResult, contentCache, deleteBuffer, search }) => {
-    const ref = useRef<HTMLButtonElement>(null);
-
     useEffect(() => {
       if (searchResult === undefined) {
         search<Content>("Content", {
@@ -30,44 +27,37 @@ export const ContentList = connector(
       }
     }, []);
 
-    useEffect(
-      manageHotKey({
-        s: () => ref.current && ref.current.focus()
-      }),
-      []
-    );
-
     if (searchResult === undefined) {
       return <div>Loading...</div>;
     }
 
     const contentIds = searchResult.pages[0] || [];
+    const contentCount = searchResult.count;
     const contents = contentIds.map(contentId => contentCache[contentId]);
 
     return (
-      <Column className={`${Classes.TREE} ${Classes.ELEVATION_0}`}>
-        <Row>
-          <ButtonGroup fill minimal>
-            <button className={`${Classes.BUTTON} ${Classes.FILL} ${Classes.ALIGN_LEFT}`} ref={ref}>
-              <span className={`${Classes.ICON_STANDARD} bp3-icon-chevron-down`} />
-              <span className={Classes.BUTTON_TEXT}>保存済み (s)</span>
-            </button>
-          </ButtonGroup>
-        </Row>
-        <Collapse isOpen>
-          <Column padding="small">
-            {contents.map(
-              content =>
-                content && (
-                  <Column padding="small" key={content.id}>
+      <List
+        title="保存済み (s)"
+        currentPageNumber={1}
+        totalItemCount={contentCount}
+        itemCountPerPage={10}
+        focusKey="s"
+        isOpen={true}
+      >
+        <Column padding="small">
+          {contents.map(
+            content =>
+              content && (
+                <Column key={content.id}>
+                  <Column padding="small">
                     <ContentListItem contentId={content.id} content={content} onDelete={deleteBuffer} />
-                    <Divider />
                   </Column>
-                )
-            )}
-          </Column>
-        </Collapse>
-      </Column>
+                  <Divider />
+                </Column>
+              )
+          )}
+        </Column>
+      </List>
     );
   }
 );
@@ -86,17 +76,13 @@ const ContentListItem: React.FunctionComponent<{
           {content.title || "無題"}
         </Link>
       </Row>
-      <Popover
-        content={
-          <Menu>
-            <MenuItem text="プレビュー (p)" />
-            <MenuItem text="削除 (d)" onClick={deleteBuffer} intent="danger" />
-          </Menu>
-        }
-        position="bottom-right"
-      >
-        <button className={`${Classes.BUTTON} ${Classes.MINIMAL} ${Classes.iconClass("more")}`} />
-      </Popover>
+      <PopMenu
+        items={[
+          <MenuItem text="プレビュー (p)" />,
+          <MenuItem text="削除 (d)" onClick={deleteBuffer} intent="danger" />
+        ]}
+        hotKeys={{}}
+      />
     </Row>
   );
 };
