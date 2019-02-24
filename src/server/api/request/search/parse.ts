@@ -26,7 +26,10 @@ const bool = (value: string | undefined) => {
   return value === "true" ? true : false;
 };
 
-const page = (query: { page?: string }) => ({ page: (query.page && Number(query.page)) || 1 });
+const page = (query: { limit?: string; offset?: string }) => ({
+  limit: (query.limit && Number(query.limit)) || 10,
+  offset: (query.offset && Number(query.offset)) || 0
+});
 
 type Parser<E extends EntityObject> = (query: SearchQuery<E>) => SearchParams<E>;
 

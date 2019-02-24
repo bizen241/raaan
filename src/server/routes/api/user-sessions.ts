@@ -4,13 +4,13 @@ import { FindConditions, getManager } from "typeorm";
 import { UserSession } from "../../../shared/api/entities";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { parseSearchParams } from "../../api/request/search/parse";
-import { responseSearchResult, skip, take } from "../../api/response";
+import { responseSearchResult } from "../../api/response";
 import { UserSessionEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   const currentUser = req.session.user;
 
-  const { page, userId, userAgent } = parseSearchParams<UserSession>("UserSession", req.query);
+  const { userId, userAgent, limit, offset } = parseSearchParams<UserSession>("UserSession", req.query);
 
   if (userId !== currentUser.id && currentUser.permission !== "Admin") {
     return next(createError(403));
@@ -30,8 +30,8 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   const result = await getManager().findAndCount(UserSessionEntity, {
     where,
     relations: ["user"],
-    skip: skip(page),
-    take
+    take: limit,
+    skip: offset
   });
 
   responseSearchResult(res, ...result);

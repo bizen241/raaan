@@ -3,11 +3,11 @@ import { FindConditions, getManager } from "typeorm";
 import { User } from "../../../shared/api/entities";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { parseSearchParams } from "../../api/request/search/parse";
-import { responseSearchResult, skip, take } from "../../api/response";
+import { responseSearchResult } from "../../api/response";
 import { UserEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { page, name, permission } = parseSearchParams<User>("User", req.query);
+  const { name, permission, limit, offset } = parseSearchParams<User>("User", req.query);
 
   const where: FindConditions<UserEntity> = {};
 
@@ -20,8 +20,8 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
 
   const result = await getManager().findAndCount(UserEntity, {
     where,
-    skip: skip(page),
-    take
+    take: limit,
+    skip: offset
   });
 
   responseSearchResult(res, ...result);

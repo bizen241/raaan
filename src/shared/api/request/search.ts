@@ -11,7 +11,8 @@ import {
 } from "../entities";
 
 export type SearchParams<E extends EntityObject> = Partial<Omit<E, "id" | "createdAt" | "updatedAt" | "fetchedAt">> & {
-  page: number;
+  limit: number;
+  offset: number;
 };
 
 export type SearchParamsMap = {

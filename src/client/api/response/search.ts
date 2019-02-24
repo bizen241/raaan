@@ -3,12 +3,9 @@ import { SearchParams } from "../../../shared/api/request/search";
 import { SearchResponse } from "../../../shared/api/response/search";
 
 export interface SearchResult {
-  pages: {
-    [page: number]: string[] | undefined;
-  };
+  ids: Array<string | undefined | null>;
   count: number;
   fetchedAt: number;
-  isDownloaded?: boolean;
 }
 
 export interface SearchResultMap {
@@ -30,43 +27,22 @@ export const createSearchResultStore = (): SearchResultStore => ({
 const getQueryString = <E extends EntityObject>(params: SearchParams<E>) => {
   const urlSearchParams = new URLSearchParams(params as any);
 
-  const page: keyof Pick<SearchParams<E>, "page"> = "page";
+  const limit: keyof SearchParams<E> = "limit";
+  const offset: keyof SearchParams<E> = "offset";
 
-  urlSearchParams.delete(page);
+  urlSearchParams.delete(limit);
+  urlSearchParams.delete(offset);
   urlSearchParams.sort();
 
   return urlSearchParams.toString();
 };
 
-const isSearchResultConflicted = <E extends EntityObject>(
-  entry: SearchResult,
-  params: SearchParams<E>,
-  result: SearchResponse
-) => {
-  if (result.count !== entry.count) {
-    return true;
+const isMergeable = (target: SearchResult, source: SearchResponse) => {
+  if (target.count !== source.count) {
+    return false;
   }
 
-  const pages = { ...entry.pages };
-  pages[params.page] = undefined;
-
-  const resultIds = result.ids;
-
-  for (const page of Object.values(pages)) {
-    if (page === undefined) {
-      return;
-    }
-
-    for (const entityId of page) {
-      const isConflicted = resultIds.includes(entityId);
-
-      if (isConflicted) {
-        return true;
-      }
-    }
-  }
-
-  return false;
+  return !source.ids.some(id => target.ids.includes(id));
 };
 
 export const mergeSearchResultStore = <E extends EntityObject>(
@@ -75,24 +51,23 @@ export const mergeSearchResultStore = <E extends EntityObject>(
   params: SearchParams<E>,
   response: SearchResponse
 ): SearchResultStore => {
-  const query = getQueryString(params);
-  const map = store[entityType];
-  const target = map[query];
-  const { ids, count } = response;
+  const searchQueryString = getQueryString(params);
+  const searchResultMap = store[entityType];
 
-  const pages = target && isSearchResultConflicted(target, params, response) ? undefined : target && target.pages;
+  const target = searchResultMap[searchQueryString];
+
+  const targetIds = target && isMergeable(target, response) ? [...target.ids] : [];
+  const { limit, offset } = params;
+  const ids = targetIds.splice(offset, limit, ...response.ids);
 
   return {
     ...store,
     [entityType]: {
-      ...map,
-      [query]: {
-        pages: {
-          ...pages,
-          [params.page]: ids
-        },
-        count,
-        fetchedAt: new Date().valueOf()
+      ...searchResultMap,
+      [searchQueryString]: {
+        ids,
+        count: response.count,
+        fetchedAt: Date.now()
       }
     }
   };

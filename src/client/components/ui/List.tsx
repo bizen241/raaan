@@ -21,7 +21,7 @@ export const List: React.FunctionComponent<{
           <button className={`${Classes.BUTTON} ${Classes.iconClass("double-chevron-left")}`} />
           <button className={`${Classes.BUTTON} ${Classes.iconClass("chevron-left")}`} />
           <button className={`${Classes.BUTTON} ${Classes.DISABLED}`}>
-            {currentPageNumber}/{Math.ceil(totalItemCount / itemCountPerPage)}
+            {currentPageNumber}/{pageCount}}
           </button>
           <button className={`${Classes.BUTTON} ${Classes.iconClass("chevron-right")}`} />
           <button className={`${Classes.BUTTON} ${Classes.iconClass("double-chevron-right")}`} />
