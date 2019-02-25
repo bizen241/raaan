@@ -1,6 +1,6 @@
 import { Divider, MenuItem } from "@blueprintjs/core";
 import * as React from "react";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Content } from "../../../../shared/api/entities";
 import { entityActions } from "../../../actions/entity";
@@ -19,44 +19,54 @@ export const ContentList = connector(
     search: entityActions.search
   }),
   ({ searchResult, contentCache, deleteBuffer, search }) => {
-    useEffect(() => {
-      if (searchResult === undefined) {
-        search<Content>("Content", {
-          page: 0
-        });
-      }
-    }, []);
+    const [limit, setLimit] = useState(10);
+    const [offset, setOffset] = useState(0);
+
+    useEffect(
+      () => {
+        if (
+          searchResult === undefined ||
+          searchResult.ids.length < offset + limit ||
+          searchResult.ids.slice(offset, offset + limit).some(id => id === undefined)
+        ) {
+          search<Content>("Content", {
+            limit,
+            offset
+          });
+        }
+      },
+      [limit, offset]
+    );
 
     if (searchResult === undefined) {
       return <div>Loading...</div>;
     }
 
-    const contentIds = searchResult.pages[0] || [];
-    const contentCount = searchResult.count;
-    const contents = contentIds.map(contentId => contentCache[contentId]);
+    const contents = searchResult.ids
+      .slice(offset, offset + limit)
+      .map(contentId => contentId && contentCache[contentId]);
 
     return (
       <List
         title="保存済み (s)"
-        currentPageNumber={1}
-        totalItemCount={contentCount}
-        itemCountPerPage={10}
+        limit={limit}
+        offset={offset}
+        onChangeLimit={setLimit}
+        onChangeOffset={setOffset}
+        hasNextPage={searchResult.count > offset + limit}
         focusKey="s"
-        isOpen={true}
       >
-        <Column padding="small">
-          {contents.map(
-            content =>
-              content && (
-                <Column key={content.id}>
-                  <Column padding="small">
-                    <ContentListItem contentId={content.id} content={content} onDelete={deleteBuffer} />
-                  </Column>
-                  <Divider />
+        {contents.map(
+          content =>
+            content && (
+              <Column key={content.id}>
+                <Column padding="small">
+                  <ContentListItem contentId={content.id} content={content} onDelete={deleteBuffer} />
                 </Column>
-              )
-          )}
-        </Column>
+                <Divider />
+              </Column>
+            )
+        )}
       </List>
     );
   }
@@ -78,8 +88,8 @@ const ContentListItem: React.FunctionComponent<{
       </Row>
       <PopMenu
         items={[
-          <MenuItem text="プレビュー (p)" />,
-          <MenuItem text="削除 (d)" onClick={deleteBuffer} intent="danger" />
+          <MenuItem key="p" text="プレビュー (p)" />,
+          <MenuItem key="d" text="削除 (d)" onClick={deleteBuffer} intent="danger" />
         ]}
         hotKeys={{}}
       />

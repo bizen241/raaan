@@ -56,16 +56,18 @@ export const mergeSearchResultStore = <E extends EntityObject>(
 
   const target = searchResultMap[searchQueryString];
 
-  const targetIds = target && isMergeable(target, response) ? [...target.ids] : [];
   const { limit, offset } = params;
-  const ids = targetIds.splice(offset, limit, ...response.ids);
+
+  const targetIds = target && isMergeable(target, response) ? target.ids : [];
+  const sourceIds = [...response.ids, ...Array<null>(limit).fill(null)].slice(0, limit);
+  const mergedIds = [...targetIds.slice(0, offset), ...sourceIds, ...targetIds.slice(offset + limit)];
 
   return {
     ...store,
     [entityType]: {
       ...searchResultMap,
       [searchQueryString]: {
-        ids,
+        ids: mergedIds,
         count: response.count,
         fetchedAt: Date.now()
       }

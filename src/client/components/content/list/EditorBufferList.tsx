@@ -1,6 +1,6 @@
 import { Divider, MenuItem } from "@blueprintjs/core";
 import * as React from "react";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../../reducers";
 import { editorActions, EditorBuffer } from "../../../reducers/editor";
@@ -8,32 +8,36 @@ import { Column, List, PopMenu, Row } from "../../ui";
 
 export const EditorBufferList = connector(
   state => ({
-    buffers: state.editor.buffers
+    bufferMap: state.editor.buffers
   }),
   () => ({
     deleteBuffer: editorActions.deleteBuffer
   }),
-  ({ buffers, deleteBuffer }) => {
+  ({ bufferMap, deleteBuffer }) => {
+    const [limit, setLimit] = useState(10);
+    const [offset, setOffset] = useState(0);
+
+    const bufferEntries = Object.entries(bufferMap);
+
     return (
       <List
         title="編集中 (e)"
-        currentPageNumber={1}
-        totalItemCount={Object.keys(buffers).length}
-        itemCountPerPage={10}
+        limit={limit}
+        offset={offset}
+        onChangeLimit={setLimit}
+        onChangeOffset={setOffset}
+        hasNextPage={bufferEntries.length > offset + limit}
         focusKey="e"
-        isOpen={true}
       >
-        <Column padding="small">
-          {Object.entries(buffers).map(
-            ([contentId, buffer]) =>
-              buffer && (
-                <Column padding="small" key={contentId}>
-                  <EditorBufferListItem contentId={contentId} buffer={buffer} onDelete={deleteBuffer} />
-                  <Divider />
-                </Column>
-              )
-          )}
-        </Column>
+        {bufferEntries.slice(offset, offset + limit).map(
+          ([contentId, buffer]) =>
+            buffer && (
+              <Column padding="small" key={contentId}>
+                <EditorBufferListItem contentId={contentId} buffer={buffer} onDelete={deleteBuffer} />
+                <Divider />
+              </Column>
+            )
+        )}
       </List>
     );
   }
@@ -55,8 +59,8 @@ const EditorBufferListItem: React.FunctionComponent<{
       </Row>
       <PopMenu
         items={[
-          <MenuItem text="プレビュー (p)" />,
-          <MenuItem text="削除 (d)" onClick={deleteBuffer} intent="danger" />
+          <MenuItem key="p" text="プレビュー (p)" />,
+          <MenuItem key="d" text="削除 (d)" onClick={deleteBuffer} intent="danger" />
         ]}
         hotKeys={{}}
       />

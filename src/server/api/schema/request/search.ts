@@ -31,7 +31,10 @@ export const SearchParamsMapSchema: Definition = {
         },
         {
           type: "object",
-          properties: { page: { type: "number" } }
+          properties: {
+            limit: { type: "number" },
+            offset: { type: "number" }
+          }
         }
       ]
     },
@@ -127,7 +130,10 @@ export const SearchParamsMapSchema: Definition = {
         },
         {
           type: "object",
-          properties: { page: { type: "number" } }
+          properties: {
+            limit: { type: "number" },
+            offset: { type: "number" }
+          }
         }
       ]
     },
@@ -139,7 +145,10 @@ export const SearchParamsMapSchema: Definition = {
         },
         {
           type: "object",
-          properties: { page: { type: "number" } }
+          properties: {
+            limit: { type: "number" },
+            offset: { type: "number" }
+          }
         }
       ]
     },
@@ -162,7 +171,10 @@ export const SearchParamsMapSchema: Definition = {
         },
         {
           type: "object",
-          properties: { page: { type: "number" } }
+          properties: {
+            limit: { type: "number" },
+            offset: { type: "number" }
+          }
         }
       ]
     },
@@ -184,7 +196,10 @@ export const SearchParamsMapSchema: Definition = {
         },
         {
           type: "object",
-          properties: { page: { type: "number" } }
+          properties: {
+            limit: { type: "number" },
+            offset: { type: "number" }
+          }
         }
       ]
     },
@@ -215,7 +230,10 @@ export const SearchParamsMapSchema: Definition = {
         },
         {
           type: "object",
-          properties: { page: { type: "number" } }
+          properties: {
+            limit: { type: "number" },
+            offset: { type: "number" }
+          }
         }
       ]
     },
@@ -233,7 +251,10 @@ export const SearchParamsMapSchema: Definition = {
         },
         {
           type: "object",
-          properties: { page: { type: "number" } }
+          properties: {
+            limit: { type: "number" },
+            offset: { type: "number" }
+          }
         }
       ]
     }
