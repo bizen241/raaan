@@ -16,7 +16,7 @@ export const Header = connector(
     return (
       <Navbar>
         <NavbarGroup align="center">
-          <Row>{canBack ? <Button icon="arrow-left" onClick={back} /> : null}</Row>
+          <Button icon="arrow-left" disabled={!canBack} onClick={back} />
           <Row padding="medium" flex={1}>
             <div className={Classes.TEXT_OVERFLOW_ELLIPSIS}>{heading}</div>
           </Row>
