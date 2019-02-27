@@ -14,7 +14,7 @@ import { Page } from "./Page";
 export const Creator = connector(
   () => ({}),
   () => ({
-    create: () => push("/contents/new")
+    create: () => push(`/contents/${Date.now()}/edit`)
   }),
   ({ create }) => {
     useEffect(
@@ -28,7 +28,10 @@ export const Creator = connector(
       <Page>
         <Header heading="作成" />
         <Column padding>
-          <Link className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_PRIMARY}`} to="/contents/new">
+          <Link
+            className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_PRIMARY}`}
+            to={`/contents/${Date.now()}/edit`}
+          >
             新規作成 (n)
           </Link>
         </Column>
