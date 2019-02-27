@@ -9,24 +9,29 @@ export const List: React.FunctionComponent<{
   title: string;
   limit: number;
   offset: number;
+  count: number;
   onChangeLimit: (limit: number) => void;
   onChangeOffset: (offset: number) => void;
-  hasNextPage: boolean;
   focusKey: string;
-}> = ({ title, limit, offset, onChangeOffset, hasNextPage, focusKey, children }) => {
+}> = ({ title, limit, offset, count, onChangeOffset, focusKey, children }) => {
   const [isOpen, toggleList] = useState(true);
 
   const goPreviousPage = useCallback(() => onChangeOffset(offset - limit), [limit, offset]);
   const goNextPage = useCallback(() => onChangeOffset(offset + limit), [limit, offset]);
 
   const hasPreviousPage = offset !== 0;
+  const hasNextPage = count > offset + limit;
+
+  const itemCount = Array.isArray(children) && children.length;
 
   return (
     <Details>
       <Summary title={title} focusKey={focusKey} isOpen={isOpen} onClick={useCallback(() => toggleList(s => !s), [])} />
       <Collapse isOpen={isOpen}>
-        {Array.isArray(children) && children.length > 0 ? (
-          <Column padding="small">{children}</Column>
+        {itemCount > 0 ? (
+          <Column padding="small" style={count > limit ? { height: `${limit * 50}px` } : {}}>
+            {children}
+          </Column>
         ) : (
           <Column center="both" padding="large">
             アイテムがありません

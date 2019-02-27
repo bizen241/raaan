@@ -51,9 +51,9 @@ export const ContentList = connector(
         title="保存済み (s)"
         limit={limit}
         offset={offset}
+        count={searchResult.count}
         onChangeLimit={setLimit}
         onChangeOffset={setOffset}
-        hasNextPage={searchResult.count > offset + limit}
         focusKey="s"
       >
         {contents.map(

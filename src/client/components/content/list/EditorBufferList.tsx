@@ -24,9 +24,9 @@ export const EditorBufferList = connector(
         title="編集中 (e)"
         limit={limit}
         offset={offset}
+        count={bufferEntries.length}
         onChangeLimit={setLimit}
         onChangeOffset={setOffset}
-        hasNextPage={bufferEntries.length > offset + limit}
         focusKey="e"
       >
         {bufferEntries.slice(offset, offset + limit).map(
