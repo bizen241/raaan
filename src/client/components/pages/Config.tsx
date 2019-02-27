@@ -24,8 +24,8 @@ export const Config = connector(
     return (
       <Page>
         <Header heading="設定" />
-        <Column padding="small">
-          <Column padding="small">
+        <Column padding>
+          <Column padding>
             {hasUpdate ? (
               <Button text="アップデート" onClick={() => location.reload()} />
             ) : (
@@ -33,27 +33,27 @@ export const Config = connector(
             )}
           </Column>
           {!isLoggedIn ? (
-            <Column padding="small">
+            <Column padding>
               <Link className={`${Classes.BUTTON} ${Classes.INTENT_PRIMARY} ${Classes.iconClass("key")}`} to="/login">
                 <Trans>ログイン</Trans>
               </Link>
               <Divider />
             </Column>
           ) : null}
-          <Column padding="small">
+          <Column padding>
             <ThemeSettingEditor
               value={config.settings.theme}
               onChange={useCallback(value => updateSettings("theme", value), [])}
             />
           </Column>
-          <Column padding="small">
+          <Column padding>
             <LangSettingEditor
               value={config.settings.lang}
               onChange={useCallback(value => updateSettings("lang", value), [])}
             />
           </Column>
           {isLoggedIn ? (
-            <Column padding="small">
+            <Column padding>
               <Divider />
               <a
                 href="/logout"

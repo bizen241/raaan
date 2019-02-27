@@ -23,7 +23,7 @@ export const ContentPreviewer = React.memo<{
       }}
       className="bp3-dark"
     >
-      <Column className={Classes.DIALOG_BODY} padding="small" flex={1}>
+      <Column className={Classes.DIALOG_BODY} padding flex={1}>
         <Column flex={1}>
           <ContentPlayer content={content} />
         </Column>

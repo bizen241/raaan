@@ -60,7 +60,7 @@ export const ContentItemEditor = React.memo<{
         </ButtonGroup>
       </Row>
       <Collapse isOpen={isMenuOpen}>
-        <Column padding="small">
+        <Column padding>
           <ItemEditor item={item} onChange={updateItem} />
         </Column>
       </Collapse>

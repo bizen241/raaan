@@ -1,17 +1,9 @@
 import { styled } from "../../style";
 
-type Size = "large" | "medium" | "small";
-
-const paddings: { [P in Size]: string } = {
-  large: "0.75rem",
-  medium: "0.5rem",
-  small: "0.25rem"
-};
-
 const Flex = styled.div<{
   center?: "main" | "cross" | "both";
   flex?: number | string;
-  padding?: Size;
+  padding?: boolean;
   isResponsive?: boolean;
 }>`
   display: flex;
@@ -20,7 +12,7 @@ const Flex = styled.div<{
   align-items: ${p => (p.center === "cross" || p.center === "both" ? "center" : "unset")};
   justify-content: ${p => (p.center === "main" || p.center === "both" ? "center" : "unset")};
   flex: ${p => p.flex || "initial"};
-  padding: ${p => p.padding && paddings[p.padding]};
+  padding: ${p => (p.padding ? "0.5rem" : "0")};
 `;
 
 export const Row = styled(Flex)`

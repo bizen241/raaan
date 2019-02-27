@@ -38,8 +38,6 @@ const GlobalStyle = createGlobalStyle`
     height: 100vh;
     margin: 0;
     background-color: ${p => p.theme.background};
-    font-family: system-ui, sans-serif;
-    font-size: 18px;
     overflow-x: hidden;
     overflow-y: scroll;
   }

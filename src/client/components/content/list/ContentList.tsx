@@ -60,7 +60,7 @@ export const ContentList = connector(
           content =>
             content && (
               <Column key={content.id}>
-                <Column padding="small">
+                <Column padding>
                   <ContentListItem contentId={content.id} content={content} onDelete={deleteBuffer} />
                 </Column>
                 <Divider />

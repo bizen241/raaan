@@ -27,15 +27,15 @@ export const Creator = connector(
     return (
       <Page>
         <Header heading="作成" />
-        <Column padding="small">
+        <Column padding>
           <Link className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_PRIMARY}`} to="/contents/new">
             新規作成 (n)
           </Link>
         </Column>
-        <Column padding="small">
+        <Column padding>
           <EditorBufferList />
         </Column>
-        <Column padding="small">
+        <Column padding>
           <ContentList />
         </Column>
       </Page>

@@ -78,14 +78,14 @@ export const ContentEditor = connector(
 
     return (
       <Column flex={1} style={{ overflowY: "auto" }}>
-        <Column padding="small">
+        <Column padding>
           <ContentTitleEditor title={title || ""} onChange={onChangeTitle} />
         </Column>
         <Divider />
         <Column>
-          <Column padding="small">アイテム</Column>
+          <Column padding>アイテム</Column>
           {items.map((item, index) => (
-            <Column key={item.id} padding="small">
+            <Column key={item.id} padding>
               <ContentItemEditor
                 index={index}
                 item={item}
@@ -100,7 +100,7 @@ export const ContentEditor = connector(
               />
             </Column>
           ))}
-          <Column padding="small">
+          <Column padding>
             <ContentItemAppendButton
               selected={itemType}
               appendButtonRef={appendItemButtonRef}
@@ -111,12 +111,12 @@ export const ContentEditor = connector(
           </Column>
         </Column>
         <Divider />
-        <Column padding="small">
+        <Column padding>
           <Button large onClick={onOpenContentPreviewer}>
             プレビュー (P)
           </Button>
         </Column>
-        <Column padding="small">
+        <Column padding>
           <Button large loading={isSaving} intent="success" onClick={onSave}>
             アップロード (S)
           </Button>

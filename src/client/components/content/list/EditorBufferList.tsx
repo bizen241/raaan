@@ -32,7 +32,7 @@ export const EditorBufferList = connector(
         {bufferEntries.slice(offset, offset + limit).map(
           ([contentId, buffer]) =>
             buffer && (
-              <Column padding="small" key={contentId}>
+              <Column padding key={contentId}>
                 <EditorBufferListItem contentId={contentId} buffer={buffer} onDelete={deleteBuffer} />
                 <Divider />
               </Column>

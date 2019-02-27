@@ -29,15 +29,15 @@ export const List: React.FunctionComponent<{
       <Summary title={title} focusKey={focusKey} isOpen={isOpen} onClick={useCallback(() => toggleList(s => !s), [])} />
       <Collapse isOpen={isOpen}>
         {itemCount > 0 ? (
-          <Column padding="small" style={count > limit ? { height: `${limit * 50}px` } : {}}>
+          <Column padding style={count > limit ? { height: `${limit * 50}px` } : {}}>
             {children}
           </Column>
         ) : (
-          <Column center="both" padding="large">
+          <Column center="both" padding>
             アイテムがありません
           </Column>
         )}
-        <Column padding="small">
+        <Column padding>
           <ButtonGroup fill>
             <button
               onClick={hasPreviousPage ? goPreviousPage : undefined}

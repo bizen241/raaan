@@ -43,7 +43,7 @@ export const ContentPlayer = connector(
     const currentCompiledItem = attempt.compiled[currentItemIndex];
 
     return (
-      <Column padding="small" flex={1}>
+      <Column padding flex={1}>
         <ContentItemPlayer key={attempt.cursor} item={currentItem} compiledItem={currentCompiledItem} onFinish={next} />
       </Column>
     );
