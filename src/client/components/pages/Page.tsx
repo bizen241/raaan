@@ -14,12 +14,12 @@ const Outer = styled(Column)`
   }
 
   &.page-enter-active {
-    transition: opacity 200ms ease-in;
+    transition: opacity 100ms ease-out;
     opacity: 1;
   }
 
   &.page-exit {
-    transition: opacity 200ms ease-in;
+    transition: opacity 100ms ease-out;
     opacity: 1;
   }
 
