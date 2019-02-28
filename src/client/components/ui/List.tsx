@@ -1,4 +1,4 @@
-import { ButtonGroup, Classes, Collapse } from "@blueprintjs/core";
+import { ButtonGroup, Classes, Collapse, Divider } from "@blueprintjs/core";
 import * as React from "react";
 import { useCallback, useState } from "react";
 import { Details } from "./Details";
@@ -22,15 +22,26 @@ export const List: React.FunctionComponent<{
   const hasPreviousPage = offset !== 0;
   const hasNextPage = count > offset + limit;
 
-  const itemCount = Array.isArray(children) && children.length;
+  if (!Array.isArray(children)) {
+    throw new Error();
+  }
+
+  const items = children.filter(child => child != null && child !== undefined);
 
   return (
     <Details>
       <Summary title={title} focusKey={focusKey} isOpen={isOpen} onClick={useCallback(() => toggleList(s => !s), [])} />
       <Collapse isOpen={isOpen}>
-        {itemCount > 0 ? (
-          <Column padding style={count > limit ? { height: `${limit * 50}px` } : {}}>
-            {children}
+        {items.length > 0 ? (
+          <Column padding>
+            <Column>
+              {items.map((child, index) => (
+                <Column key={offset + index}>
+                  <Column padding>{child}</Column>
+                  <Divider />
+                </Column>
+              ))}
+            </Column>
           </Column>
         ) : (
           <Column center="both" padding>

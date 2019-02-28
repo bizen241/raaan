@@ -1,10 +1,10 @@
-import { Divider, MenuItem } from "@blueprintjs/core";
+import { MenuItem } from "@blueprintjs/core";
 import * as React from "react";
 import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../../reducers";
 import { editorActions, EditorBuffer } from "../../../reducers/editor";
-import { Column, List, PopMenu, Row } from "../../ui";
+import { List, PopMenu, Row } from "../../ui";
 
 export const EditorBufferList = connector(
   state => ({
@@ -29,15 +29,14 @@ export const EditorBufferList = connector(
         onChangeOffset={setOffset}
         focusKey="e"
       >
-        {bufferEntries.slice(offset, offset + limit).map(
-          ([contentId, buffer]) =>
-            buffer && (
-              <Column padding key={contentId}>
-                <EditorBufferListItem contentId={contentId} buffer={buffer} onDelete={deleteBuffer} />
-                <Divider />
-              </Column>
-            )
-        )}
+        {bufferEntries
+          .slice(offset, offset + limit)
+          .map(
+            ([contentId, buffer]) =>
+              buffer && (
+                <EditorBufferListItem key={contentId} contentId={contentId} buffer={buffer} onDelete={deleteBuffer} />
+              )
+          )}
       </List>
     );
   }

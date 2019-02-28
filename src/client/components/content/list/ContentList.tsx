@@ -1,4 +1,4 @@
-import { Divider, MenuItem } from "@blueprintjs/core";
+import { MenuItem } from "@blueprintjs/core";
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -6,7 +6,7 @@ import { Content } from "../../../../shared/api/entities";
 import { entityActions } from "../../../actions/entity";
 import { connector } from "../../../reducers";
 import { editorActions } from "../../../reducers/editor";
-import { Column, List, PopMenu, Row } from "../../ui";
+import { List, PopMenu, Row } from "../../ui";
 
 export const ContentList = connector(
   state => ({
@@ -22,21 +22,18 @@ export const ContentList = connector(
     const [limit, setLimit] = useState(10);
     const [offset, setOffset] = useState(0);
 
-    useEffect(
-      () => {
-        if (
-          searchResult === undefined ||
-          searchResult.ids.length < offset + limit ||
-          searchResult.ids.slice(offset, offset + limit).some(id => id === undefined)
-        ) {
-          search<Content>("Content", {
-            limit,
-            offset
-          });
-        }
-      },
-      [limit, offset]
-    );
+    useEffect(() => {
+      if (
+        searchResult === undefined ||
+        searchResult.ids.length < offset + limit ||
+        searchResult.ids.slice(offset, offset + limit).some(id => id === undefined)
+      ) {
+        search<Content>("Content", {
+          limit,
+          offset
+        });
+      }
+    }, [limit, offset]);
 
     if (searchResult === undefined) {
       return <div>Loading...</div>;
@@ -59,12 +56,7 @@ export const ContentList = connector(
         {contents.map(
           content =>
             content && (
-              <Column key={content.id}>
-                <Column padding>
-                  <ContentListItem contentId={content.id} content={content} onDelete={deleteBuffer} />
-                </Column>
-                <Divider />
-              </Column>
+              <ContentListItem key={content.id} contentId={content.id} content={content} onDelete={deleteBuffer} />
             )
         )}
       </List>
