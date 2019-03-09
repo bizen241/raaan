@@ -1,18 +1,20 @@
 import { Reducer } from "redux";
 import { Actions } from ".";
 import { User } from "../../shared/api/entities";
-import { ActionUnion, AsyncAction, createAction } from "../actions/helpers";
+import { ActionUnion, AsyncAction, createAction } from "../actions";
 import { getCurrentUser } from "../api/client";
 import { install } from "../install";
 import { cacheActions } from "./cache";
 
 export enum AppActionType {
   Ready = "app/ready",
+  Error = "app/error",
   UpdateFound = "app/update-found"
 }
 
 const appSyncActions = {
-  ready: (currentUser: User) => createAction(AppActionType.Ready, { currentUser }),
+  ready: (currentUser: User | null) => createAction(AppActionType.Ready, { currentUser }),
+  error: () => createAction(AppActionType.Error),
   updateFound: () => createAction(AppActionType.UpdateFound)
 };
 
@@ -26,8 +28,8 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
       const result = await getCurrentUser();
       const currentUser = Object.values(result.User)[0];
 
-      dispatch(cacheActions.mergeGetResult(result));
-      dispatch(appSyncActions.ready(currentUser || appUser));
+      dispatch(cacheActions.get(result));
+      dispatch(appSyncActions.ready(currentUser || null));
     } else {
       dispatch(appSyncActions.ready(appUser));
     }
@@ -36,7 +38,7 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
       install(() => dispatch(appSyncActions.updateFound()));
     }
   } catch (e) {
-    console.log(e);
+    dispatch(appSyncActions.error());
   }
 };
 
@@ -45,24 +47,17 @@ export const appActions = {
   initialize
 };
 
-export interface AppState {
-  user: User;
+export type AppState = {
+  user: User | null;
   isReady: boolean;
+  hasError: boolean;
   hasUpdate: boolean;
-}
-
-const now = Date.now();
+};
 
 export const initialAppState: AppState = {
-  user: {
-    id: now.toString(),
-    name: "",
-    permission: "Guest",
-    createdAt: now,
-    updatedAt: now,
-    fetchedAt: now
-  },
+  user: null,
   isReady: false,
+  hasError: false,
   hasUpdate: false
 };
 
@@ -76,6 +71,12 @@ export const appReducer: Reducer<AppState, Actions> = (state = initialAppState, 
         user: currentUser,
         isReady: true,
         hasUpdate: false
+      };
+    }
+    case AppActionType.Error: {
+      return {
+        ...state,
+        hasError: true
       };
     }
     case AppActionType.UpdateFound: {

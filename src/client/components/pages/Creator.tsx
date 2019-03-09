@@ -1,9 +1,8 @@
-import { Classes } from "@blueprintjs/core";
-import { push } from "connected-react-router";
+import { Button } from "@blueprintjs/core";
 import * as React from "react";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { connector } from "../../reducers";
+import { buffersActions } from "../../reducers/buffers";
 import { ContentList } from "../content/list/ContentList";
 import { EditorBufferList } from "../content/list/EditorBufferList";
 import { Header } from "../project/Header";
@@ -14,7 +13,7 @@ import { Page } from "./Page";
 export const Creator = connector(
   () => ({}),
   () => ({
-    create: () => push(`/contents/${Date.now()}/edit`)
+    create: buffersActions.create
   }),
   ({ create }) => {
     useEffect(
@@ -28,12 +27,9 @@ export const Creator = connector(
       <Page>
         <Header heading="作成" />
         <Column padding>
-          <Link
-            className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_PRIMARY}`}
-            to={`/contents/${Date.now()}/edit`}
-          >
+          <Button large intent="primary" onClick={create}>
             新規作成 (n)
-          </Link>
+          </Button>
         </Column>
         <Column padding>
           <EditorBufferList />

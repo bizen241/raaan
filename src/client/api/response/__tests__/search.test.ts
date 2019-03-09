@@ -10,9 +10,7 @@ test("merge SearchResultStore", () => {
 
   searchResultStore[entityType] = {
     [query]: {
-      pages: {
-        2: []
-      },
+      ids: [],
       count: 100,
       fetchedAt: new Date().valueOf()
     }
@@ -22,7 +20,8 @@ test("merge SearchResultStore", () => {
     searchResultStore,
     entityType,
     {
-      page: 1
+      limit: 10,
+      offset: 0
     },
     {
       ids: [],
@@ -33,6 +32,5 @@ test("merge SearchResultStore", () => {
 
   const mergedSearchResult = mergedSearchResultMap[entityType][query];
 
-  expect(mergedSearchResult && mergedSearchResult.pages[1]).toBeDefined();
-  expect(mergedSearchResult && mergedSearchResult.pages[2]).toBeUndefined();
+  expect(mergedSearchResult && mergedSearchResult.ids).toBeDefined();
 });

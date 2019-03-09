@@ -4,32 +4,42 @@ import * as React from "react";
 import { ComponentType } from "react";
 import { connect } from "react-redux";
 import { combineReducers } from "redux";
+import { ApiActions, apiReducer, ApiState } from "./api";
 import { AppActions, appReducer, AppState } from "./app";
+import { BuffersActions, buffersReducer, BuffersState } from "./buffers";
 import { CacheActions, cacheReducer, CacheState } from "./cache";
 import { ConfigActions, configReducer, ConfigState } from "./config";
-import { EditorActions, editorReducer, EditorState } from "./editor";
 import { PlayerActions, playerReducer, PlayerState } from "./player";
 
 export interface RootState {
+  api: ApiState;
   app: AppState;
+  buffers: BuffersState;
   cache: CacheState;
   config: ConfigState;
-  editor: EditorState;
   player: PlayerState;
   router: RouterState;
 }
 
 export const createReducer = (history: History) =>
   combineReducers({
+    api: apiReducer,
     app: appReducer,
+    buffers: buffersReducer,
     cache: cacheReducer,
     config: configReducer,
-    editor: editorReducer,
     player: playerReducer,
     router: connectRouter(history)
   });
 
-export type Actions = AppActions | CacheActions | ConfigActions | EditorActions | PlayerActions | RouterAction;
+export type Actions =
+  | ApiActions
+  | AppActions
+  | BuffersActions
+  | CacheActions
+  | ConfigActions
+  | PlayerActions
+  | RouterAction;
 
 export const connector = <OwnProps extends {}, SelectedState extends {}, SelectedActions extends {}>(
   stateSelector: (state: RootState, ownProps: OwnProps) => SelectedState,

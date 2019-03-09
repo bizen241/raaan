@@ -24,3 +24,34 @@ export type EntityType =
   | "UserSession";
 
 export type EntityObject = Content | ContentRevision | ContentTag | User | UserAccount | UserConfig | UserSession;
+
+export type EntityTypeToObject = {
+  Content: Content;
+  ContentRevision: ContentRevision;
+  ContentTag: ContentTag;
+  User: User;
+  UserConfig: UserConfig;
+  UserAccount: UserAccount;
+  UserSession: UserSession;
+};
+
+type EntityTypeToEmptyObject = {
+  Content: {};
+  ContentRevision: {};
+  ContentTag: {};
+  User: {};
+  UserConfig: {};
+  UserAccount: {};
+  UserSession: {};
+};
+
+export const createEntityTypeToEmptyObject = <T extends EntityTypeToEmptyObject>() =>
+  ({
+    Content: {},
+    ContentRevision: {},
+    ContentTag: {},
+    User: {},
+    UserAccount: {},
+    UserConfig: {},
+    UserSession: {}
+  } as T);

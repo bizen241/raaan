@@ -57,7 +57,8 @@ test("delete user", async () => {
 
 test("search user", async () => {
   await searchEntity("User", {
-    page: 1
+    limit: 10,
+    offset: 0
   });
 
   expect(passedUrl).toBe(`${origin}/api/users?page=1`);

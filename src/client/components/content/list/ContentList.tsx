@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Content } from "../../../../shared/api/entities";
 import { entityActions } from "../../../actions/entity";
 import { connector } from "../../../reducers";
-import { editorActions } from "../../../reducers/editor";
+import { editorActions } from "../../../reducers/buffers";
 import { List, PopMenu, Row } from "../../ui";
 
 export const ContentList = connector(

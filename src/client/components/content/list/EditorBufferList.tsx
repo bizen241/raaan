@@ -3,15 +3,15 @@ import * as React from "react";
 import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../../reducers";
-import { editorActions, EditorBuffer } from "../../../reducers/editor";
+import { Buffer, buffersActions } from "../../../reducers/buffers";
 import { List, PopMenu, Row } from "../../ui";
 
 export const EditorBufferList = connector(
   state => ({
-    bufferMap: state.editor.buffers
+    bufferMap: state.buffers
   }),
   () => ({
-    deleteBuffer: editorActions.deleteBuffer
+    deleteBuffer: buffersActions.delete
   }),
   ({ bufferMap, deleteBuffer }) => {
     const [limit, setLimit] = useState(10);
@@ -44,7 +44,7 @@ export const EditorBufferList = connector(
 
 const EditorBufferListItem: React.FunctionComponent<{
   contentId: string;
-  buffer: EditorBuffer;
+  buffer: Buffer;
   onDelete: (id: string) => void;
 }> = ({ contentId, buffer, onDelete }) => {
   const deleteBuffer = useCallback(() => onDelete(contentId), []);

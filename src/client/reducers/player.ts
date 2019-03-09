@@ -2,7 +2,7 @@ import { Reducer } from "redux";
 import { Actions } from ".";
 import { ContentRevision } from "../../shared/api/entities";
 import { SaveParams } from "../../shared/api/request/save";
-import { ActionUnion, createAction } from "../actions/helpers";
+import { ActionUnion, createAction } from "../actions";
 import { createContentRevision, createPlan } from "../domain/content";
 import { compileContent, CompiledItem } from "../domain/content/compiler";
 

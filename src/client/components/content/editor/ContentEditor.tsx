@@ -1,11 +1,8 @@
-import { Button, Divider } from "@blueprintjs/core";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Button, Callout, Divider } from "@blueprintjs/core";
 import * as React from "react";
-import { ContentItem } from "../../../../shared/content";
 import { connector } from "../../../reducers";
-import { editorActions } from "../../../reducers/editor";
+import { contentActions } from "../../../reducers/content";
 import { Column } from "../../ui";
-import { manageHotKey } from "../../utils/hotKey";
 import { ContentItemAppendButton } from "./ContentItemAppendButton";
 import { ContentItemEditor } from "./ContentItemEditor";
 import { ContentItemPreviewer } from "./ContentItemPreviewer";
@@ -13,73 +10,29 @@ import { ContentPreviewer } from "./ContentPreviewer";
 import { ContentTitleEditor } from "./ContentTitleEditor";
 
 export const ContentEditor = connector(
-  ({ editor: { buffers, itemType } }, { id }: { id: string }) => ({
+  (state, { id }: { id: string }) => ({
     id,
-    buffer: buffers[id],
-    itemType
+    buffer: state.buffers.ContentRevision[id]
   }),
   () => ({
-    ...editorActions
+    ...contentActions
   }),
-  ({ id, buffer, itemType, load, save, updateTitle, updateItem, deleteItem, appendItem, selectItemType }) => {
-    useEffect(() => {
-      if (buffer === undefined) {
-        load(id);
-      }
-    }, []);
-
-    const appendItemButtonRef = useRef<HTMLButtonElement>(null);
-
-    const [isContentPreviewerOpen, toggleContentPreviewer] = useState(false);
-    const [isContentItemPreviewerOpen, toggleContentItemPreviewer] = useState(false);
-    const isVisible = !isContentPreviewerOpen && !isContentItemPreviewerOpen;
-
-    useEffect(
-      manageHotKey(
-        {
-          P: () => toggleContentPreviewer(true),
-          p: () => toggleContentItemPreviewer(true),
-          S: () => save(id),
-          Escape: () =>
-            focusedItemRef.current != null
-              ? focusedItemRef.current.focus()
-              : appendItemButtonRef.current && appendItemButtonRef.current.focus()
-        },
-        isVisible
-      ),
-      [isVisible]
-    );
-
-    const focusedItemRef = useRef<HTMLButtonElement>(null);
-    const [focusedItemIndex, setFocusedItemIndex] = useState(0);
-    const focusItem = useCallback((index: number) => setFocusedItemIndex(index), []);
-
-    const onSave = useCallback(() => save(id), []);
-
-    const onChangeTitle = useCallback((value: string) => updateTitle(id, value), []);
-    const onChangeItem = useCallback(
-      <P extends keyof ContentItem>(index: number, key: P, value: ContentItem[P]) => updateItem(id, index, key, value),
-      []
-    );
-    const onDeleteItem = useCallback((index: number) => deleteItem(id, index), []);
-    const onAppendItem = useCallback(() => appendItem(id), []);
-
-    const onOpenContentPreviewer = useCallback(() => toggleContentPreviewer(true), []);
-    const onCloseContentPreviewer = useCallback(() => toggleContentPreviewer(false), []);
-    const onOpenContentItemPreviewer = useCallback(() => toggleContentItemPreviewer(true), []);
-    const onCloseContentItemPreviewer = useCallback(() => toggleContentItemPreviewer(false), []);
-
+  ({ buffer }) => {
     if (buffer === undefined) {
-      return <div>Loading...</div>;
+      return (
+        <Column padding>
+          <Callout intent="warning" title="バッファが見つかりませんでした" />
+        </Column>
+      );
     }
 
-    const { editedRevision, isSaving } = buffer;
-    const { title = "", items = [] } = editedRevision;
+    const revision = buffer.edited;
+    const { title = "", items = [] } = revision;
 
     return (
-      <Column flex={1} style={{ overflowY: "auto" }}>
+      <Column flex={1}>
         <Column padding>
-          <ContentTitleEditor title={title || ""} onChange={onChangeTitle} />
+          <ContentTitleEditor title={title} onChange={updateTitle} />
         </Column>
         <Divider />
         <Column>
@@ -93,7 +46,7 @@ export const ContentEditor = connector(
                 isFocused={index === focusedItemIndex}
                 editorRef={index === focusedItemIndex ? focusedItemRef : null}
                 hotKey={undefined}
-                onChange={onChangeItem}
+                onChange={updateItem}
                 onDelete={onDeleteItem}
                 onFocus={focusItem}
                 onPreview={onOpenContentItemPreviewer}
@@ -116,12 +69,7 @@ export const ContentEditor = connector(
             プレビュー (P)
           </Button>
         </Column>
-        <Column padding>
-          <Button large loading={isSaving} intent="success" onClick={onSave}>
-            アップロード (S)
-          </Button>
-        </Column>
-        <ContentPreviewer content={editedRevision} isOpen={isContentPreviewerOpen} onClose={onCloseContentPreviewer} />
+        <ContentPreviewer content={revision} isOpen={isContentPreviewerOpen} onClose={onCloseContentPreviewer} />
         <ContentItemPreviewer
           item={items[focusedItemIndex]}
           isOpen={isContentItemPreviewerOpen}
