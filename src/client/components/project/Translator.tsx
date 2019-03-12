@@ -5,7 +5,7 @@ import { connector } from "../../reducers";
 
 export const Translator = connector(
   state => ({
-    language: state.config.current.settings.lang
+    language: state.config.settings.lang
   }),
   () => ({}),
   ({ language = "ja", children }) => {

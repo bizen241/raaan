@@ -3,24 +3,25 @@ import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Content } from "../../../../shared/api/entities";
-import { entityActions } from "../../../actions/entity";
 import { connector } from "../../../reducers";
-import { editorActions } from "../../../reducers/buffers";
+import { apiActions } from "../../../reducers/api";
+import { buffersActions } from "../../../reducers/buffers";
 import { List, PopMenu, Row } from "../../ui";
 
 export const ContentList = connector(
   state => ({
-    buffers: state.editor.buffers,
     searchResult: state.cache.search.Content[""],
     contentCache: state.cache.get.Content
   }),
   () => ({
-    deleteBuffer: editorActions.deleteBuffer,
-    search: entityActions.search
+    deleteBuffer: buffersActions.delete,
+    search: apiActions.search
   }),
   ({ searchResult, contentCache, deleteBuffer, search }) => {
     const [limit, setLimit] = useState(10);
     const [offset, setOffset] = useState(0);
+
+    const onDelete = useCallback((id: string) => deleteBuffer("ContentRevision", id), []);
 
     useEffect(() => {
       if (
@@ -55,9 +56,7 @@ export const ContentList = connector(
       >
         {contents.map(
           content =>
-            content && (
-              <ContentListItem key={content.id} contentId={content.id} content={content} onDelete={deleteBuffer} />
-            )
+            content && <ContentListItem key={content.id} contentId={content.id} content={content} onDelete={onDelete} />
         )}
       </List>
     );
@@ -69,8 +68,6 @@ const ContentListItem: React.FunctionComponent<{
   content: Content;
   onDelete: (id: string) => void;
 }> = ({ contentId, content, onDelete }) => {
-  const deleteBuffer = useCallback(() => onDelete(contentId), []);
-
   return (
     <Row center="cross">
       <Row flex={1}>
@@ -81,7 +78,7 @@ const ContentListItem: React.FunctionComponent<{
       <PopMenu
         items={[
           <MenuItem key="p" text="プレビュー (p)" />,
-          <MenuItem key="d" text="削除 (d)" onClick={deleteBuffer} intent="danger" />
+          <MenuItem key="d" text="削除 (d)" onClick={useCallback(() => onDelete(contentId), [])} intent="danger" />
         ]}
         hotKeys={{}}
       />

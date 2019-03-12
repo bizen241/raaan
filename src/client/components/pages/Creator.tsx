@@ -1,8 +1,8 @@
 import { Button } from "@blueprintjs/core";
+import { useCallback, useEffect } from "react";
 import * as React from "react";
-import { useEffect } from "react";
+import { contentActions } from "../../actions/content";
 import { connector } from "../../reducers";
-import { buffersActions } from "../../reducers/buffers";
 import { ContentList } from "../content/list/ContentList";
 import { EditorBufferList } from "../content/list/EditorBufferList";
 import { Header } from "../project/Header";
@@ -13,7 +13,7 @@ import { Page } from "./Page";
 export const Creator = connector(
   () => ({}),
   () => ({
-    create: buffersActions.create
+    create: contentActions.create
   }),
   ({ create }) => {
     useEffect(
@@ -27,7 +27,7 @@ export const Creator = connector(
       <Page>
         <Header heading="作成" />
         <Column padding>
-          <Button large intent="primary" onClick={create}>
+          <Button large intent="primary" onClick={useCallback(() => create(), [])}>
             新規作成 (n)
           </Button>
         </Column>

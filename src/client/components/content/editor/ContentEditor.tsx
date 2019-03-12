@@ -1,23 +1,28 @@
-import { Button, Callout, Divider } from "@blueprintjs/core";
+import { Button, Callout, Classes, ControlGroup, Divider } from "@blueprintjs/core";
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as React from "react";
+import { ContentItem } from "../../../../shared/content";
+import { contentActions } from "../../../actions/content";
 import { connector } from "../../../reducers";
-import { contentActions } from "../../../reducers/content";
+import { dialogActions } from "../../../reducers/dialog";
 import { Column } from "../../ui";
-import { ContentItemAppendButton } from "./ContentItemAppendButton";
-import { ContentItemEditor } from "./ContentItemEditor";
-import { ContentItemPreviewer } from "./ContentItemPreviewer";
-import { ContentPreviewer } from "./ContentPreviewer";
-import { ContentTitleEditor } from "./ContentTitleEditor";
+import { manageHotKey } from "../../utils/hotKey";
+import { ContentItemPreviewer } from "../previewer/ContentItemPreviewer";
+import { ContentPreviewer } from "../previewer/ContentPreviewer";
+import { contentItemTypeToLabel } from "./item";
+import { ContentItemEditor } from "./item/ContentItemEditor";
 
 export const ContentEditor = connector(
-  (state, { id }: { id: string }) => ({
-    id,
-    buffer: state.buffers.ContentRevision[id]
+  (state, { bufferId }: { bufferId: string }) => ({
+    bufferId,
+    buffer: state.buffers.ContentRevision[bufferId],
+    status: state.api.upload.ContentRevision[bufferId]
   }),
   () => ({
-    ...contentActions
+    ...contentActions,
+    openDialog: dialogActions.open
   }),
-  ({ buffer }) => {
+  ({ bufferId, buffer, status, updateTitle, appendItem, openDialog }) => {
     if (buffer === undefined) {
       return (
         <Column padding>
@@ -26,55 +31,102 @@ export const ContentEditor = connector(
       );
     }
 
-    const revision = buffer.edited;
-    const { title = "", items = [] } = revision;
+    const { title, items = [] } = buffer.edited;
+
+    const titleInputRef = useRef<HTMLInputElement>(null);
+    const itemTypeSelectorRef = useRef<HTMLSelectElement>(null);
+    const appendButtonRef = useRef<HTMLButtonElement>(null);
+
+    const [focusedItemIndex, focus] = useState(0);
+    const [selectedItemType, selectItemType] = useState(items.length !== 0 ? items[items.length - 1].type : "text");
+
+    useEffect(
+      manageHotKey({
+        t: () => titleInputRef.current && titleInputRef.current.focus(),
+        s: () => itemTypeSelectorRef.current && itemTypeSelectorRef.current.focus(),
+        a: () => appendButtonRef.current && appendButtonRef.current.click()
+      }),
+      []
+    );
+
+    if (status === 200) {
+      return (
+        <Column padding>
+          <Callout intent="success" title="アップロードが完了しました" />
+        </Column>
+      );
+    }
+    if (status === 202) {
+      return (
+        <Column padding>
+          <Callout intent="primary" title="アップロード中です" />
+        </Column>
+      );
+    }
 
     return (
       <Column flex={1}>
         <Column padding>
-          <ContentTitleEditor title={title} onChange={updateTitle} />
+          <label className={Classes.LABEL}>
+            タイトル (t)
+            <Column>
+              <input
+                className={Classes.INPUT}
+                defaultValue={title}
+                ref={titleInputRef}
+                onChange={useCallback(
+                  (e: React.ChangeEvent<HTMLInputElement>) => updateTitle(bufferId, e.target.value),
+                  []
+                )}
+              />
+            </Column>
+          </label>
         </Column>
         <Divider />
         <Column>
           <Column padding>アイテム</Column>
           {items.map((item, index) => (
             <Column key={item.id} padding>
-              <ContentItemEditor
-                index={index}
-                item={item}
-                isVisible={isVisible}
-                isFocused={index === focusedItemIndex}
-                editorRef={index === focusedItemIndex ? focusedItemRef : null}
-                hotKey={undefined}
-                onChange={updateItem}
-                onDelete={onDeleteItem}
-                onFocus={focusItem}
-                onPreview={onOpenContentItemPreviewer}
-              />
+              <ContentItemEditor bufferId={bufferId} itemIndex={index} item={item} onFocus={focus} />
             </Column>
           ))}
           <Column padding>
-            <ContentItemAppendButton
-              selected={itemType}
-              appendButtonRef={appendItemButtonRef}
-              isVisible={isVisible}
-              onAppend={onAppendItem}
-              onSelectType={selectItemType}
-            />
+            <ControlGroup fill>
+              <div className={`${Classes.SELECT} ${Classes.FIXED} ${Classes.LARGE}`}>
+                <select
+                  value={selectedItemType}
+                  ref={itemTypeSelectorRef}
+                  onChange={useCallback(
+                    (e: React.ChangeEvent<HTMLSelectElement>) => selectItemType(e.target.value as ContentItem["type"]),
+                    []
+                  )}
+                >
+                  {Object.entries(contentItemTypeToLabel).map(([itemType, label]) => (
+                    <option key={itemType} value={itemType}>
+                      {label} {itemType === selectedItemType ? "(s)" : null}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <button
+                className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_PRIMARY}`}
+                autoFocus
+                onClick={useCallback(() => appendItem(bufferId, selectedItemType), [selectedItemType])}
+                ref={appendButtonRef}
+              >
+                追加 (a)
+              </button>
+            </ControlGroup>
           </Column>
         </Column>
         <Divider />
         <Column padding>
-          <Button large onClick={onOpenContentPreviewer}>
+          <Button large onClick={useCallback(() => openDialog("ContentPreviewer"), [])}>
             プレビュー (P)
           </Button>
         </Column>
-        <ContentPreviewer content={revision} isOpen={isContentPreviewerOpen} onClose={onCloseContentPreviewer} />
-        <ContentItemPreviewer
-          item={items[focusedItemIndex]}
-          isOpen={isContentItemPreviewerOpen}
-          onClose={onCloseContentItemPreviewer}
-        />
+        <ContentPreviewer params={buffer.edited} />
+        <ContentItemPreviewer item={items[focusedItemIndex]} />
       </Column>
     );
   }

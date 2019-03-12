@@ -14,13 +14,13 @@ import { Page } from "./Page";
 export const Config = connector(
   state => ({
     hasUpdate: state.app.hasUpdate,
-    config: state.config.current,
-    isLoggedIn: state.app.user.permission !== "Guest"
+    settings: state.config.settings,
+    isLoggedIn: state.app.user != null
   }),
   () => ({
-    updateSettings: configActions.updateSettings
+    updateSettings: configActions.update
   }),
-  ({ hasUpdate, config, isLoggedIn, updateSettings }) => {
+  ({ hasUpdate, settings, isLoggedIn, updateSettings }) => {
     return (
       <Page>
         <Header heading="設定" />
@@ -42,13 +42,13 @@ export const Config = connector(
           ) : null}
           <Column padding>
             <ThemeSettingEditor
-              value={config.settings.theme}
+              value={settings.theme}
               onChange={useCallback(value => updateSettings("theme", value), [])}
             />
           </Column>
           <Column padding>
             <LangSettingEditor
-              value={config.settings.lang}
+              value={settings.lang}
               onChange={useCallback(value => updateSettings("lang", value), [])}
             />
           </Column>

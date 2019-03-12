@@ -9,6 +9,7 @@ import { AppActions, appReducer, AppState } from "./app";
 import { BuffersActions, buffersReducer, BuffersState } from "./buffers";
 import { CacheActions, cacheReducer, CacheState } from "./cache";
 import { ConfigActions, configReducer, ConfigState } from "./config";
+import { DialogActions, dialogReducer, DialogState } from "./dialog";
 import { PlayerActions, playerReducer, PlayerState } from "./player";
 
 export interface RootState {
@@ -17,6 +18,7 @@ export interface RootState {
   buffers: BuffersState;
   cache: CacheState;
   config: ConfigState;
+  dialog: DialogState;
   player: PlayerState;
   router: RouterState;
 }
@@ -28,6 +30,7 @@ export const createReducer = (history: History) =>
     buffers: buffersReducer,
     cache: cacheReducer,
     config: configReducer,
+    dialog: dialogReducer,
     player: playerReducer,
     router: connectRouter(history)
   });
@@ -38,6 +41,7 @@ export type Actions =
   | BuffersActions
   | CacheActions
   | ConfigActions
+  | DialogActions
   | PlayerActions
   | RouterAction;
 

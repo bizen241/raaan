@@ -2,9 +2,9 @@ import { Classes } from "@blueprintjs/core";
 import * as React from "react";
 import { useCallback } from "react";
 import TextArea from "react-textarea-autosize";
+import { ContentItemEditorProps, TextAreaChangeEvent } from ".";
 import { TextItem } from "../../../../../shared/content";
 import { Column } from "../../../ui";
-import { ContentItemEditorProps, TextAreaChangeEvent } from "../ContentItemEditor";
 
 export const TextItemEditor = React.memo<ContentItemEditorProps<TextItem>>(({ item, onChange }) => {
   const onChangeValue = useCallback((e: TextAreaChangeEvent) => onChange("value", e.currentTarget.value), []);

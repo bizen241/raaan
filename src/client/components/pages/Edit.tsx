@@ -14,7 +14,7 @@ export const Edit = connector(
     return (
       <Page>
         <Header heading="編集" />
-        <ContentEditor id={id} />
+        <ContentEditor bufferId={id} />
       </Page>
     );
   }

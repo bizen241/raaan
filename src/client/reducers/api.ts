@@ -122,6 +122,38 @@ export const initialApiState: ApiState = {
 
 export const apiReducer: Reducer<ApiState, ApiActions> = (state = initialApiState, action) => {
   switch (action.type) {
+    case ApiActionType.Request: {
+      const { method, type, key } = action.payload;
+
+      const keyString = typeof key === "string" ? key : stringifySearchParams(key);
+
+      return {
+        ...state,
+        [method]: {
+          ...state[method],
+          [type]: {
+            ...state[method][type],
+            [keyString]: 202
+          }
+        }
+      };
+    }
+    case ApiActionType.Success: {
+      const { method, type, key } = action.payload;
+
+      const keyString = typeof key === "string" ? key : stringifySearchParams(key);
+
+      return {
+        ...state,
+        [method]: {
+          ...state[method],
+          [type]: {
+            ...state[method][type],
+            [keyString]: 200
+          }
+        }
+      };
+    }
     case ApiActionType.Failure: {
       const { method, type, key } = action.payload;
 

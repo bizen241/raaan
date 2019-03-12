@@ -13,7 +13,7 @@ const themes: { [key: string]: Theme } = {
 
 export const Style = connector(
   state => ({
-    themeName: state.config.current.settings.theme
+    themeName: state.config.settings.theme
   }),
   () => ({}),
   ({ themeName = "dark", children }) => {

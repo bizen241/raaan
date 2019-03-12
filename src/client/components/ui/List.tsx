@@ -5,7 +5,7 @@ import { Details } from "./Details";
 import { Column } from "./Flex";
 import { Summary } from "./Summary";
 
-export const List: React.FunctionComponent<{
+export const List = React.memo<{
   title: string;
   limit: number;
   offset: number;
@@ -13,7 +13,8 @@ export const List: React.FunctionComponent<{
   onChangeLimit: (limit: number) => void;
   onChangeOffset: (offset: number) => void;
   focusKey: string;
-}> = ({ title, limit, offset, count, onChangeOffset, focusKey, children }) => {
+  children: React.ReactNode;
+}>(({ title, limit, offset, count, onChangeOffset, focusKey, children }) => {
   const [isOpen, toggleList] = useState(true);
 
   const goPreviousPage = useCallback(() => onChangeOffset(offset - limit), [limit, offset]);
@@ -68,4 +69,4 @@ export const List: React.FunctionComponent<{
       </Collapse>
     </Details>
   );
-};
+});

@@ -5,11 +5,11 @@ import { SaveParams } from "../../../../shared/api/request/save";
 import { Column } from "../../ui";
 import { ContentPlayer } from "../player/ContentPlayer";
 
-export const ContentPreviewer = React.memo<{
-  content: SaveParams<ContentRevision>;
+export const ContentPreviewDialog = React.memo<{
+  params: SaveParams<ContentRevision>;
   isOpen: boolean;
   onClose: () => void;
-}>(({ content, isOpen, onClose }) => {
+}>(({ params, isOpen, onClose }) => {
   return (
     <Dialog
       isOpen={isOpen}
@@ -24,9 +24,7 @@ export const ContentPreviewer = React.memo<{
       className="bp3-dark"
     >
       <Column className={Classes.DIALOG_BODY} padding flex={1}>
-        <Column flex={1}>
-          <ContentPlayer content={content} />
-        </Column>
+        <Column flex={1}>{isOpen ? <ContentPlayer content={params} /> : null}</Column>
         <Button onClick={onClose}>閉じる (Esc)</Button>
       </Column>
     </Dialog>

@@ -32,7 +32,7 @@ export interface ConfigState {
   settings: UserSettings;
 }
 
-export const initialConfigState: ConfigState = {
+const initialConfigState: ConfigState = {
   id: "",
   settings: {}
 };

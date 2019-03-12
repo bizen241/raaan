@@ -1,5 +1,5 @@
 import { Reducer } from "redux";
-import { Actions } from ".";
+import { Actions, RootState } from ".";
 import { createEntityTypeToEmptyObject, EntityObject, EntityType, EntityTypeToObject } from "../../shared/api/entities";
 import { SaveParams } from "../../shared/api/request/save";
 import { ActionUnion, AsyncAction, createAction } from "../actions";
@@ -69,7 +69,22 @@ export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBu
       };
     }
     case BuffersActionType.Edit: {
-      return state;
+      const { type, id, params } = action.payload;
+      const buffer = state[type][id];
+      if (buffer === undefined) {
+        return state;
+      }
+
+      return {
+        ...state,
+        [type]: {
+          ...state[type],
+          [id]: {
+            ...buffer,
+            edited: params
+          }
+        }
+      };
     }
     case BuffersActionType.Reset: {
       const { type, id } = action.payload;
@@ -109,7 +124,7 @@ export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBu
 export const editBuffer = <E extends EntityObject>(
   type: EntityType,
   id: string,
-  callback: (revision: SaveParams<E>) => SaveParams<E>
+  callback: (revision: SaveParams<E>, getState: () => RootState) => SaveParams<E>
 ): AsyncAction => (dispatch, getState) => {
   const state = getState().buffers;
   const buffer = state[type][id];
@@ -117,5 +132,5 @@ export const editBuffer = <E extends EntityObject>(
     return;
   }
 
-  dispatch(buffersActions.edit(type, id, callback(buffer.edited as SaveParams<E>)));
+  dispatch(buffersActions.edit(type, id, callback(buffer.edited as SaveParams<E>, getState)));
 };
