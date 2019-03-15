@@ -35,8 +35,13 @@ export const ContentItemEditor = connector(
           <Tag minimal>{contentItemTypeToLabel[item.type]}</Tag>
           <PopMenu
             items={[
-              <MenuItem text="プレビュー (p)" onClick={useCallback(() => openDialog("ContentItemPreviewer"), [])} />,
               <MenuItem
+                key="p"
+                text="プレビュー (p)"
+                onClick={useCallback(() => openDialog("ContentItemPreviewer"), [])}
+              />,
+              <MenuItem
+                key="d"
                 text="削除 (Delete)"
                 onClick={useCallback(() => deleteItem(bufferId, itemIndex), [itemIndex])}
                 intent="danger"

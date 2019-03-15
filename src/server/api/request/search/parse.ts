@@ -7,7 +7,6 @@ import {
   Permission,
   User,
   UserAccount,
-  UserConfig,
   UserSession
 } from "../../../../shared/api/entities";
 import { SearchParams } from "../../../../shared/api/request/search";
@@ -88,17 +87,6 @@ const parseUserAccount: Parser<UserAccount> = query => {
   };
 };
 
-const parseUserConfig: Parser<UserConfig> = query => {
-  const { userId, name, settings } = query;
-
-  return {
-    userId,
-    name,
-    settings: settings && JSON.parse(settings),
-    ...page(query)
-  };
-};
-
 const parseUserSession: Parser<UserSession> = query => {
   const { userAgent, userId } = query;
 
@@ -115,6 +103,5 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   ContentTag: parseContentTag,
   User: parseUser,
   UserAccount: parseUserAccount,
-  UserConfig: parseUserConfig,
   UserSession: parseUserSession
 };

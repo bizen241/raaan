@@ -1,5 +1,5 @@
 import { Column, Entity } from "typeorm";
-import { Permission } from "../../../shared/api/entities";
+import { Permission, UserSettings } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 
 @Entity()
@@ -11,6 +11,11 @@ export class UserEntity extends BaseEntityClass<"User"> {
 
   @Column()
   permission!: Permission;
+
+  @Column("json", {
+    select: false
+  })
+  settings!: UserSettings;
 }
 
 interface UserConstructor {
@@ -28,6 +33,7 @@ export const createUser = ({ id, name, permission }: UserConstructor) => {
 
   user.name = name;
   user.permission = permission;
+  user.settings = {};
 
   return user;
 };

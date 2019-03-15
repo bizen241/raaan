@@ -6,6 +6,5 @@ export const endpoints: { [P in EntityType]: string } = {
   ContentTag: "content-tags",
   User: "users",
   UserAccount: "user-accounts",
-  UserConfig: "user-config",
   UserSession: "user-sessions"
 };

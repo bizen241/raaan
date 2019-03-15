@@ -11,7 +11,6 @@ import {
   UserSessionEntity
 } from "../../database/entities";
 import { BaseEntityClass } from "../../database/entities/BaseEntityClass";
-import { UserConfigEntity } from "../../database/entities/UserConfigEntity";
 
 export const normalizeEntities = (entities: Entity[], isSearching: boolean): EntityStore => {
   const store = createEntityStore();
@@ -90,12 +89,13 @@ const normalizeContentTag: Normalizer<ContentTagEntity> = (store, entity) => {
 };
 
 const normalizeUser: Normalizer<UserEntity> = (store, entity) => {
-  const { id, name, permission } = entity;
+  const { id, name, permission, settings } = entity;
 
   store.User[id] = {
     ...base(entity),
     name,
-    permission
+    permission,
+    settings
   };
 };
 
@@ -107,19 +107,6 @@ const normalizeUserAccount: Normalizer<UserAccountEntity> = (store, entity, isSe
     accountId,
     provider,
     userId: user.id
-  };
-
-  normalizeEntity(store, user, isSearching);
-};
-
-const normalizeUserConfig: Normalizer<UserConfigEntity> = (store, entity, isSearching) => {
-  const { id, user, name, settings } = entity;
-
-  store.UserConfig[id] = {
-    ...base(entity),
-    userId: user.id,
-    name,
-    settings
   };
 
   normalizeEntity(store, user, isSearching);
@@ -143,6 +130,5 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   ContentTag: normalizeContentTag,
   User: normalizeUser,
   UserAccount: normalizeUserAccount,
-  UserConfig: normalizeUserConfig,
   UserSession: normalizeUserSession
 };

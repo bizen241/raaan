@@ -6,6 +6,5 @@ export const mergeEntityStore = (target: EntityStore, source: EntityStore): Enti
   ContentTag: { ...target.ContentTag, ...source.ContentTag },
   User: { ...target.User, ...source.User },
   UserAccount: { ...target.UserAccount, ...source.UserAccount },
-  UserConfig: { ...target.UserConfig, ...source.UserConfig },
   UserSession: { ...target.UserSession, ...source.UserSession }
 });

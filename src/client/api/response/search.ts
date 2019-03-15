@@ -20,7 +20,6 @@ export const createSearchResultStore = (): SearchResultStore => ({
   ContentTag: {},
   User: {},
   UserAccount: {},
-  UserConfig: {},
   UserSession: {}
 });
 

@@ -16,13 +16,14 @@ export const ContentEditor = connector(
   (state, { bufferId }: { bufferId: string }) => ({
     bufferId,
     buffer: state.buffers.ContentRevision[bufferId],
-    status: state.api.upload.ContentRevision[bufferId]
+    status: state.api.upload.ContentRevision[bufferId],
+    isVisible: state.dialog.name == null
   }),
   () => ({
     ...contentActions,
     openDialog: dialogActions.open
   }),
-  ({ bufferId, buffer, status, updateTitle, appendItem, openDialog }) => {
+  ({ bufferId, buffer, status, isVisible, updateTitle, appendItem, openDialog }) => {
     if (buffer === undefined) {
       return (
         <Column padding>
@@ -41,12 +42,15 @@ export const ContentEditor = connector(
     const [selectedItemType, selectItemType] = useState(items.length !== 0 ? items[items.length - 1].type : "text");
 
     useEffect(
-      manageHotKey({
-        t: () => titleInputRef.current && titleInputRef.current.focus(),
-        s: () => itemTypeSelectorRef.current && itemTypeSelectorRef.current.focus(),
-        a: () => appendButtonRef.current && appendButtonRef.current.click()
-      }),
-      []
+      manageHotKey(
+        {
+          t: () => titleInputRef.current && titleInputRef.current.focus(),
+          s: () => itemTypeSelectorRef.current && itemTypeSelectorRef.current.focus(),
+          a: () => appendButtonRef.current && appendButtonRef.current.click()
+        },
+        isVisible
+      ),
+      [isVisible]
     );
 
     if (status === 200) {

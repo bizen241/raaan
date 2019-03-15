@@ -15,7 +15,6 @@ const tags: { [P in EntityType]: string } = {
   ContentTag: "content-tags",
   User: "users",
   UserAccount: "user-accounts",
-  UserConfig: "user-configs",
   UserSession: "user-sessions"
 };
 

@@ -1,6 +1,5 @@
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { User } from "../../shared/api/entities";
 import { ActionUnion, AsyncAction, createAction } from "../actions";
 import { getCurrentUser } from "../api/client";
 import { install } from "../install";
@@ -13,7 +12,7 @@ export enum AppActionType {
 }
 
 const appSyncActions = {
-  ready: (currentUser: User | null) => createAction(AppActionType.Ready, { currentUser }),
+  ready: (userId: string | null) => createAction(AppActionType.Ready, { userId }),
   error: () => createAction(AppActionType.Error),
   updateFound: () => createAction(AppActionType.UpdateFound)
 };
@@ -21,7 +20,7 @@ const appSyncActions = {
 export type AppActions = ActionUnion<typeof appSyncActions>;
 
 const initialize = (): AsyncAction => async (dispatch, getState) => {
-  const appUser = getState().app.user;
+  const currentUserId = getState().app.userId;
 
   try {
     if (navigator.onLine) {
@@ -29,9 +28,9 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
       const currentUser = Object.values(result.User)[0];
 
       dispatch(cacheActions.get(result));
-      dispatch(appSyncActions.ready(currentUser || null));
+      dispatch(appSyncActions.ready((currentUser && currentUser.id) || null));
     } else {
-      dispatch(appSyncActions.ready(appUser));
+      dispatch(appSyncActions.ready(currentUserId));
     }
 
     if (process.env.NODE_ENV === "production") {
@@ -48,14 +47,14 @@ export const appActions = {
 };
 
 export type AppState = {
-  user: User | null;
+  userId: string | null;
   isReady: boolean;
   hasError: boolean;
   hasUpdate: boolean;
 };
 
 export const initialAppState: AppState = {
-  user: null,
+  userId: null,
   isReady: false,
   hasError: false,
   hasUpdate: false
@@ -64,11 +63,11 @@ export const initialAppState: AppState = {
 export const appReducer: Reducer<AppState, Actions> = (state = initialAppState, action) => {
   switch (action.type) {
     case AppActionType.Ready: {
-      const { currentUser } = action.payload;
+      const { userId } = action.payload;
 
       return {
         ...state,
-        user: currentUser,
+        userId,
         isReady: true,
         hasUpdate: false
       };
