@@ -110,10 +110,7 @@ export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBu
 
       return {
         ...state,
-        [type]: {
-          ...state[type],
-          buffers
-        }
+        [type]: buffers
       };
     }
     default:
