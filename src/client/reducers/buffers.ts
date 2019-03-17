@@ -15,6 +15,8 @@ export enum BuffersActionType {
 export type Buffer<E extends EntityObject> = {
   source: SaveParams<E>;
   edited: SaveParams<E>;
+  createdAt: number;
+  updatedAt: number;
 };
 
 export const buffersActions = {

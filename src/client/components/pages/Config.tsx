@@ -1,26 +1,39 @@
 import { Button, Callout, Classes, Divider } from "@blueprintjs/core";
 import { Trans } from "@lingui/react";
-import { useCallback } from "react";
 import * as React from "react";
+import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { userActions } from "../../actions/user";
+import { User } from "../../../shared/api/entities";
 import { connector } from "../../reducers";
-import { LangSettingEditor } from "../config/LangSettingEditor";
-import { ThemeSettingEditor } from "../config/ThemeSettingEditor";
+import { buffersActions } from "../../reducers/buffers";
 import { Header } from "../project/Header";
+import { UserContext } from "../project/Initializer";
 import { Column } from "../ui";
+import { UserEditor } from "../user/UserEditor";
 import { Page } from "./Page";
 
 export const Config = connector(
   state => ({
     hasUpdate: state.app.hasUpdate,
-    settings: state.config.settings,
-    isLoggedIn: state.app.user != null
+    userBuffer: state.buffers.User[state.app.userId]
   }),
   () => ({
-    updateSettings: userActions.updateSettings
+    addBuffer: buffersActions.add
   }),
-  ({ hasUpdate, settings, isLoggedIn, updateSettings }) => {
+  ({ hasUpdate, userBuffer, addBuffer }) => {
+    const { currentUserId, currentUserParams } = useContext(UserContext);
+    const isGuest = currentUserParams.permission === "Guest";
+
+    useEffect(() => {
+      if (userBuffer === undefined) {
+        addBuffer<User>("User", currentUserId, currentUserParams);
+      }
+    }, []);
+
+    if (userBuffer === undefined) {
+      return <div>ロード中...</div>;
+    }
+
     return (
       <Page>
         <Header heading="設定" />
@@ -32,7 +45,7 @@ export const Config = connector(
               <Callout intent="success" title="最新のバージョンです" />
             )}
           </Column>
-          {!isLoggedIn ? (
+          {isGuest ? (
             <Column padding>
               <Link className={`${Classes.BUTTON} ${Classes.INTENT_PRIMARY} ${Classes.iconClass("key")}`} to="/login">
                 <Trans>ログイン</Trans>
@@ -41,23 +54,9 @@ export const Config = connector(
             </Column>
           ) : null}
           <Column padding>
-            <a href="/logout" className={`${Classes.BUTTON} ${Classes.LARGE}`}>
-              <Trans>詳細設定</Trans>
-            </a>
+            <UserEditor bufferId={currentUserId} />
           </Column>
-          <Column padding>
-            <ThemeSettingEditor
-              value={settings.theme}
-              onChange={useCallback(value => updateSettings("", "theme", value), [])}
-            />
-          </Column>
-          <Column padding>
-            <LangSettingEditor
-              value={settings.lang}
-              onChange={useCallback(value => updateSettings("", "lang", value), [])}
-            />
-          </Column>
-          {isLoggedIn ? (
+          {!isGuest ? (
             <Column padding>
               <Divider />
               <a href="/logout" className={`${Classes.BUTTON} ${Classes.iconClass("key")}`}>

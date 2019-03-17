@@ -13,5 +13,5 @@ export interface UserSettings {
 export interface User extends BaseEntityObject {
   name: string;
   permission: Permission;
-  settings: UserSettings | undefined;
+  settings?: UserSettings;
 }

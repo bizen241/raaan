@@ -133,7 +133,7 @@ export const apiReducer: Reducer<ApiState, ApiActions> = (state = initialApiStat
           ...state[method],
           [type]: {
             ...state[method][type],
-            [keyString]: 202
+            [keyString]: 102
           }
         }
       };

@@ -1,6 +1,7 @@
 import * as React from "react";
-import { connector } from "../../reducers";
+import { useContext } from "react";
 import { createGlobalStyle, Theme, ThemeProvider } from "../../style";
+import { UserContext } from "./Initializer";
 
 const themes: { [key: string]: Theme } = {
   dark: {
@@ -11,22 +12,19 @@ const themes: { [key: string]: Theme } = {
   }
 };
 
-export const Style = connector(
-  state => ({
-    themeName: state.config.settings.theme
-  }),
-  () => ({}),
-  ({ themeName = "dark", children }) => {
-    return (
-      <ThemeProvider theme={themes[themeName]}>
-        <div className={themeName === "dark" ? "bp3-dark" : "bp3-light"}>
-          <GlobalStyle />
-          {children}
-        </div>
-      </ThemeProvider>
-    );
-  }
-);
+export const Style = React.memo<{ children: React.ReactNode }>(({ children }) => {
+  const { currentUserParams } = useContext(UserContext);
+  const themeName = currentUserParams.settings.theme || "dark";
+
+  return (
+    <ThemeProvider theme={themes[themeName]}>
+      <div className={themeName === "dark" ? "bp3-dark" : "bp3-light"}>
+        <GlobalStyle />
+        {children}
+      </div>
+    </ThemeProvider>
+  );
+});
 
 const GlobalStyle = createGlobalStyle`
   * {

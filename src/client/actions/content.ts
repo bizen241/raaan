@@ -6,32 +6,34 @@ import { contentItemCreators, createContentRevision } from "../domain/content";
 import { apiActions } from "../reducers/api";
 import { buffersActions, editBuffer } from "../reducers/buffers";
 
-const create = (sourceId?: string): AsyncAction => async (dispatch, getState) => {
+const create = (): AsyncAction => async dispatch => {
   const bufferId = Date.now().toString();
 
-  if (sourceId === undefined) {
-    const params = createContentRevision();
+  const params = createContentRevision();
 
-    dispatch(buffersActions.add("ContentRevision", bufferId, params));
-  } else {
-    const isCached = getState().cache.get.ContentRevision[sourceId] !== undefined;
+  dispatch(buffersActions.add("ContentRevision", bufferId, params));
+  dispatch(push(`/contents/${bufferId}/edit`));
+};
 
-    if (!isCached) {
-      await apiActions.get("ContentRevision", sourceId)(dispatch, getState, undefined);
-    }
+const load = (sourceId: string): AsyncAction => async (dispatch, getState) => {
+  const bufferId = Date.now().toString();
 
-    const revision = getState().cache.get.ContentRevision[sourceId];
-    if (revision === undefined) {
-      apiActions.clear("get", "ContentRevision", sourceId);
+  const isCached = getState().cache.get.ContentRevision[sourceId] !== undefined;
 
-      return;
-    }
-
-    const { id, createdAt, updatedAt, fetchedAt, ...params } = revision;
-
-    dispatch(buffersActions.add("ContentRevision", bufferId, params));
+  if (!isCached) {
+    await apiActions.get("ContentRevision", sourceId)(dispatch, getState, undefined);
   }
 
+  const revision = getState().cache.get.ContentRevision[sourceId];
+  if (revision === undefined) {
+    apiActions.clear("get", "ContentRevision", sourceId);
+
+    return;
+  }
+
+  const { id, createdAt, updatedAt, fetchedAt, ...params } = revision;
+
+  dispatch(buffersActions.add("ContentRevision", bufferId, params));
   dispatch(push(`/contents/${bufferId}/edit`));
 };
 
@@ -65,6 +67,7 @@ const deleteItem = (bufferId: string, index: number) =>
 
 export const contentActions = {
   create,
+  load,
   updateTitle,
   appendItem,
   updateItem,
