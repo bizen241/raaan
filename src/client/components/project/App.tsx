@@ -17,13 +17,13 @@ export const App: React.FunctionComponent = () => {
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <ConnectedRouter history={history}>
-            <Translator>
-              <Initializer>
+            <Initializer>
+              <Translator>
                 <Style>
                   <Router />
                 </Style>
-              </Initializer>
-            </Translator>
+              </Translator>
+            </Initializer>
           </ConnectedRouter>
         </PersistGate>
       </Provider>
