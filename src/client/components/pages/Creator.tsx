@@ -1,8 +1,10 @@
 import { Button } from "@blueprintjs/core";
-import { useCallback, useEffect } from "react";
+import { push } from "connected-react-router";
 import * as React from "react";
-import { contentActions } from "../../actions/content";
+import { useCallback, useEffect } from "react";
+import { createContentRevision } from "../../domain/content";
 import { connector } from "../../reducers";
+import { buffersActions, generateBufferId } from "../../reducers/buffers";
 import { ContentList } from "../content/list/ContentList";
 import { EditorBufferList } from "../content/list/EditorBufferList";
 import { Header } from "../project/Header";
@@ -13,12 +15,20 @@ import { Page } from "./Page";
 export const Creator = connector(
   () => ({}),
   () => ({
-    create: contentActions.create
+    addBuffer: buffersActions.add,
+    editBuffer: (bufferId: string) => push(`/content-revisions/${bufferId}/edit`)
   }),
-  ({ create }) => {
+  ({ addBuffer, editBuffer }) => {
+    const onCreate = useCallback(() => {
+      const bufferId = generateBufferId();
+
+      addBuffer("ContentRevision", bufferId, createContentRevision());
+      editBuffer(bufferId);
+    }, []);
+
     useEffect(
       manageHotKey({
-        n: create
+        n: onCreate
       }),
       []
     );
@@ -27,7 +37,7 @@ export const Creator = connector(
       <Page>
         <Header heading="作成" />
         <Column padding>
-          <Button large intent="primary" onClick={useCallback(() => create(), [])}>
+          <Button large intent="primary" onClick={onCreate}>
             新規作成 (n)
           </Button>
         </Column>

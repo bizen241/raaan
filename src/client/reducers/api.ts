@@ -1,4 +1,6 @@
+import { LOCATION_CHANGE } from "connected-react-router";
 import { Reducer } from "redux";
+import { Actions } from ".";
 import { createEntityTypeToEmptyObject, EntityObject, EntityType, EntityTypeToObject } from "../../shared/api/entities";
 import { SearchParams } from "../../shared/api/request/search";
 import { ActionUnion, AsyncAction, createAction } from "../actions";
@@ -10,8 +12,7 @@ import { cacheActions } from "./cache";
 export enum ApiActionType {
   Request = "api/request",
   Success = "api/success",
-  Failure = "api/failure",
-  Clear = "api/clear"
+  Failure = "api/failure"
 }
 
 export const apiSyncActions = {
@@ -20,9 +21,7 @@ export const apiSyncActions = {
   success: <E extends EntityObject>(method: keyof ApiState, type: EntityType, key: string | SearchParams<E>) =>
     createAction(ApiActionType.Success, { method, type, key }),
   failure: <E extends EntityObject>(method: keyof ApiState, type: EntityType, key: string | SearchParams<E>) =>
-    createAction(ApiActionType.Failure, { method, type, key }),
-  clear: <E extends EntityObject>(method: keyof ApiState, type: EntityType, key: string | SearchParams<E>) =>
-    createAction(ApiActionType.Clear, { method, type, key })
+    createAction(ApiActionType.Failure, { method, type, key })
 };
 
 export type ApiActions = ActionUnion<typeof apiSyncActions>;
@@ -120,7 +119,7 @@ export const initialApiState: ApiState = {
   delete: createEntityTypeToEmptyObject<ResponseCodeMap>()
 };
 
-export const apiReducer: Reducer<ApiState, ApiActions> = (state = initialApiState, action) => {
+export const apiReducer: Reducer<ApiState, Actions> = (state = initialApiState, action) => {
   switch (action.type) {
     case ApiActionType.Request: {
       const { method, type, key } = action.payload;
@@ -170,21 +169,8 @@ export const apiReducer: Reducer<ApiState, ApiActions> = (state = initialApiStat
         }
       };
     }
-    case ApiActionType.Clear: {
-      const { method, type, key } = action.payload;
-
-      const keyString = typeof key === "string" ? key : stringifySearchParams(key);
-
-      return {
-        ...state,
-        [method]: {
-          ...state[method],
-          [type]: {
-            ...state[method][type],
-            [keyString]: undefined
-          }
-        }
-      };
+    case LOCATION_CHANGE: {
+      return initialApiState;
     }
     default:
       return state;

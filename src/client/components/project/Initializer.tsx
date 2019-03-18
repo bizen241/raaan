@@ -33,16 +33,6 @@ export const Initializer = connector(
       initialize();
     }, []);
 
-    if (!isReady) {
-      return <div>ロード中...</div>;
-    }
-    if (hasError) {
-      return <div>エラーが発生しています</div>;
-    }
-    if (userCache === undefined && userBuffer === undefined) {
-      return <div>ユーザーが見つかりませんでした</div>;
-    }
-
     const currentUser = useMemo<UserContextValue>(
       () => ({
         currentUserId: userId,
@@ -54,6 +44,16 @@ export const Initializer = connector(
       }),
       [userId, userCache, userBuffer]
     );
+
+    if (!isReady) {
+      return <div>ロード中...</div>;
+    }
+    if (hasError) {
+      return <div>エラーが発生しています</div>;
+    }
+    if (userCache === undefined && userBuffer === undefined) {
+      return <div>ユーザーが見つかりませんでした</div>;
+    }
 
     return <UserContext.Provider value={currentUser}>{children}</UserContext.Provider>;
   }

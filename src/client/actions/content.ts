@@ -1,41 +1,7 @@
-import { push } from "connected-react-router";
-import { AsyncAction } from ".";
 import { ContentRevision } from "../../shared/api/entities";
 import { ContentItem } from "../../shared/content";
-import { contentItemCreators, createContentRevision } from "../domain/content";
-import { apiActions } from "../reducers/api";
-import { buffersActions, editBuffer } from "../reducers/buffers";
-
-const create = (): AsyncAction => async dispatch => {
-  const bufferId = Date.now().toString();
-
-  const params = createContentRevision();
-
-  dispatch(buffersActions.add("ContentRevision", bufferId, params));
-  dispatch(push(`/contents/${bufferId}/edit`));
-};
-
-const load = (sourceId: string): AsyncAction => async (dispatch, getState) => {
-  const bufferId = Date.now().toString();
-
-  const isCached = getState().cache.get.ContentRevision[sourceId] !== undefined;
-
-  if (!isCached) {
-    await apiActions.get("ContentRevision", sourceId)(dispatch, getState, undefined);
-  }
-
-  const revision = getState().cache.get.ContentRevision[sourceId];
-  if (revision === undefined) {
-    apiActions.clear("get", "ContentRevision", sourceId);
-
-    return;
-  }
-
-  const { id, createdAt, updatedAt, fetchedAt, ...params } = revision;
-
-  dispatch(buffersActions.add("ContentRevision", bufferId, params));
-  dispatch(push(`/contents/${bufferId}/edit`));
-};
+import { contentItemCreators } from "../domain/content";
+import { editBuffer } from "../reducers/buffers";
 
 const updateTitle = (bufferId: string, title: string) =>
   editBuffer<ContentRevision>("ContentRevision", bufferId, () => ({
@@ -66,8 +32,6 @@ const deleteItem = (bufferId: string, index: number) =>
   }));
 
 export const contentActions = {
-  create,
-  load,
   updateTitle,
   appendItem,
   updateItem,

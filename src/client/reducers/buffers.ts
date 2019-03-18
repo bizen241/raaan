@@ -4,6 +4,7 @@ import { createEntityTypeToEmptyObject, EntityObject, EntityType, EntityTypeToOb
 import { SaveParams } from "../../shared/api/request/save";
 import { ActionUnion, AsyncAction, createAction } from "../actions";
 import { createContentRevision } from "../domain/content";
+import { apiActions } from "./api";
 
 export enum BuffersActionType {
   Add = "buffers/add",
@@ -19,7 +20,7 @@ export type Buffer<E extends EntityObject> = {
   updatedAt: number;
 };
 
-export const buffersActions = {
+const buffersSyncActions = {
   add: <E extends EntityObject>(type: EntityType, id: string, params: SaveParams<E>) =>
     createAction(BuffersActionType.Add, {
       type,
@@ -44,7 +45,33 @@ export const buffersActions = {
     })
 };
 
-export type BuffersActions = ActionUnion<typeof buffersActions>;
+export type BuffersActions = ActionUnion<typeof buffersSyncActions>;
+
+export const generateBufferId = () => Date.now().toString();
+
+const load = (entityType: EntityType, entityId: string): AsyncAction => async (dispatch, getState) => {
+  const isCached = getState().cache.get[entityType][entityId] !== undefined;
+
+  if (!isCached) {
+    await apiActions.get(entityType, entityId)(dispatch, getState, undefined);
+  }
+
+  const entity = getState().cache.get.ContentRevision[entityId];
+  if (entity === undefined) {
+    return;
+  }
+
+  const { id, createdAt, updatedAt, fetchedAt, ...params } = entity;
+
+  const bufferId = entityType === "ContentRevision" ? generateBufferId() : entityId;
+
+  dispatch(buffersActions.add(entityType, bufferId, params));
+};
+
+export const buffersActions = {
+  ...buffersSyncActions,
+  load
+};
 
 export type BuffersState = {
   [P in keyof EntityTypeToObject]: {

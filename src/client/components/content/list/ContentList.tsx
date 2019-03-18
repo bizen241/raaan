@@ -71,7 +71,7 @@ const ContentListItem: React.FunctionComponent<{
   return (
     <Row center="cross">
       <Row flex={1}>
-        <Link style={{ flex: 1 }} to={`/contents/${contentId}/edit`}>
+        <Link style={{ flex: 1 }} to={`/content-revisions/${contentId}/edit`}>
           {content.title || "無題"}
         </Link>
       </Row>
