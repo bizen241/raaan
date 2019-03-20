@@ -21,12 +21,14 @@ export const Config = connector(
     addBuffer: buffersActions.add
   }),
   ({ hasUpdate, userBuffer, addBuffer }) => {
-    const { currentUserId, currentUserParams } = useContext(UserContext);
-    const isGuest = currentUserParams.permission === "Guest";
+    const currentUser = useContext(UserContext);
+    const isGuest = currentUser.permission === "Guest";
 
     useEffect(() => {
       if (userBuffer === undefined) {
-        addBuffer<User>("User", currentUserId, currentUserParams);
+        const { id, ...currentUserParams } = currentUser;
+
+        addBuffer<User>("User", currentUser.id, currentUserParams);
       }
     }, []);
 
@@ -54,7 +56,7 @@ export const Config = connector(
             </Column>
           ) : null}
           <Column padding>
-            <UserEditor bufferId={currentUserId} />
+            <UserEditor bufferId={currentUser.id} />
           </Column>
           {!isGuest ? (
             <Column padding>

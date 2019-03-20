@@ -5,8 +5,8 @@ import { catalogs } from "../../intl";
 import { UserContext } from "./Initializer";
 
 export const Translator = React.memo<{ children: React.ReactNode }>(({ children }) => {
-  const { currentUserParams } = useContext(UserContext);
-  const language = currentUserParams.settings.lang || "en";
+  const currentUser = useContext(UserContext);
+  const language = currentUser.settings.lang || "en";
 
   return (
     <I18nProvider language={language} catalogs={catalogs}>

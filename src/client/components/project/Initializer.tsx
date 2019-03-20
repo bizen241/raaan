@@ -6,17 +6,14 @@ import { connector } from "../../reducers";
 import { appActions } from "../../reducers/app";
 
 type UserContextValue = {
-  currentUserId: string;
-  currentUserParams: Required<SaveParams<User>>;
-};
+  id: string;
+} & Required<SaveParams<User>>;
 
 export const UserContext = createContext<UserContextValue>({
-  currentUserId: Date.now().toString(),
-  currentUserParams: {
-    name: "ゲスト",
-    permission: "Guest",
-    settings: {}
-  }
+  id: Date.now().toString(),
+  name: "ゲスト",
+  permission: "Guest",
+  settings: {}
 });
 
 export const Initializer = connector(
@@ -33,17 +30,25 @@ export const Initializer = connector(
       initialize();
     }, []);
 
-    const currentUser = useMemo<UserContextValue>(
-      () => ({
-        currentUserId: userId,
-        currentUserParams: {
-          name: (userBuffer && userBuffer.edited.name) || (userCache && userCache.name) || "ゲスト",
-          permission: (userBuffer && userBuffer.edited.permission) || (userCache && userCache.permission) || "Guest",
-          settings: (userBuffer && userBuffer.edited.settings) || (userCache && userCache.settings) || {}
-        }
-      }),
-      [userId, userCache, userBuffer]
-    );
+    const currentUser = useMemo<UserContextValue | null>(() => {
+      if (userBuffer !== undefined) {
+        return {
+          id: userId,
+          name: userBuffer.edited.name || "ゲスト",
+          permission: userBuffer.edited.permission || "Guest",
+          settings: userBuffer.edited.settings || {}
+        };
+      } else if (userCache !== undefined) {
+        return {
+          id: userId,
+          name: userCache.name,
+          permission: userCache.permission,
+          settings: userCache.settings || {}
+        };
+      } else {
+        return null;
+      }
+    }, [userId, userCache, userBuffer]);
 
     if (!isReady) {
       return <div>ロード中...</div>;
@@ -51,7 +56,7 @@ export const Initializer = connector(
     if (hasError) {
       return <div>エラーが発生しています</div>;
     }
-    if (userCache === undefined && userBuffer === undefined) {
+    if (currentUser == null) {
       return <div>ユーザーが見つかりませんでした</div>;
     }
 

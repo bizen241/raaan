@@ -13,8 +13,8 @@ const themes: { [key: string]: Theme } = {
 };
 
 export const Style = React.memo<{ children: React.ReactNode }>(({ children }) => {
-  const { currentUserParams } = useContext(UserContext);
-  const themeName = currentUserParams.settings.theme || "dark";
+  const currentUser = useContext(UserContext);
+  const themeName = currentUser.settings.theme || "dark";
 
   return (
     <ThemeProvider theme={themes[themeName]}>
