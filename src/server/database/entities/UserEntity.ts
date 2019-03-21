@@ -12,9 +12,7 @@ export class UserEntity extends BaseEntityClass<"User"> {
   @Column()
   permission!: Permission;
 
-  @Column("json", {
-    select: false
-  })
+  @Column("json")
   settings!: UserSettings;
 }
 

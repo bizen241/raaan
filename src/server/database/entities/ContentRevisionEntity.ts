@@ -18,7 +18,7 @@ export class ContentRevisionEntity extends BaseEntityClass<"ContentRevision"> {
   @Column()
   title!: string;
 
-  @Column("json")
+  @Column("simple-array")
   tags!: string[];
 
   @Column()

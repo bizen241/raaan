@@ -7,13 +7,21 @@ import { responseSearchResult } from "../../api/response";
 import { ContentEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { limit, offset } = parseSearchParams<Content>("Content", req.query);
+  const { tagIds, limit, offset } = parseSearchParams<Content>("Content", req.query);
 
-  const result = await getManager().findAndCount(ContentEntity, {
-    relations: ["author", "latest", "tags"],
-    take: limit,
-    skip: offset
-  });
+  const query = await getManager()
+    .createQueryBuilder(ContentEntity, "content")
+    .loadAllRelationIds({
+      relations: ["author", "latest"]
+    })
+    .take(limit)
+    .skip(offset);
+
+  if (tagIds !== undefined) {
+    query.innerJoin("content.tags", "tags", "tags.id IN (:...tagIds)", { tagIds: [] });
+  }
+
+  const result = await query.getManyAndCount();
 
   responseSearchResult(res, ...result);
 });

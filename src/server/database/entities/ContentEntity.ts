@@ -24,10 +24,16 @@ export class ContentEntity extends BaseEntityClass<"Content"> {
   tags!: ContentTagEntity[];
 
   @Column()
-  isPrivate!: boolean;
+  lang!: string;
 
   @Column()
-  isArchived!: boolean;
+  title!: string;
+
+  @Column()
+  description!: string;
+
+  @Column()
+  isPrivate!: boolean;
 
   @Column()
   isLocked!: boolean;
@@ -47,7 +53,6 @@ export const createContentEntity = ({ id, author }: ContentConstructor) => {
 
   content.author = author;
   content.isPrivate = true;
-  content.isArchived = false;
   content.isLocked = false;
 
   return content;

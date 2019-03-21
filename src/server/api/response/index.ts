@@ -4,7 +4,7 @@ import { Entity } from "../../database/entities";
 import { normalizeEntities } from "./normalize";
 
 export const responseFindResult = (res: Response, ...entities: Entity[]) => {
-  const store = normalizeEntities(entities, false);
+  const store = normalizeEntities(entities);
 
   res.status(200).json(store);
 };
@@ -12,7 +12,7 @@ export const responseFindResult = (res: Response, ...entities: Entity[]) => {
 export const responseSearchResult = (res: Response, entities: Entity[], count: number) => {
   const searchResult: SearchResponse = {
     ids: entities.map(entity => entity.id),
-    entities: normalizeEntities(entities, true),
+    entities: normalizeEntities(entities),
     count
   };
 

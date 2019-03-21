@@ -25,8 +25,8 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   }
 
   const result = await getManager().findAndCount(UserAccountEntity, {
+    loadRelationIds: true,
     where,
-    relations: ["user"],
     take: limit,
     skip: offset
   });

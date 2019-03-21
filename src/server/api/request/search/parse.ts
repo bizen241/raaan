@@ -33,10 +33,11 @@ const page = (query: { limit?: string; offset?: string }) => ({
 type Parser<E extends EntityObject> = (query: SearchQuery<E>) => SearchParams<E>;
 
 const parseContent: Parser<Content> = query => {
-  const { latestId } = query;
+  const { latestId, tagIds } = query;
 
   return {
     latestId,
+    tagIds: tagIds && JSON.parse(tagIds),
     ...page(query)
   };
 };

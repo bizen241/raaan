@@ -12,27 +12,31 @@ import {
 } from "../../database/entities";
 import { BaseEntityClass } from "../../database/entities/BaseEntityClass";
 
-export const normalizeEntities = (entities: Entity[], isSearching: boolean): EntityStore => {
+export const normalizeEntities = (entities: Entity[]): EntityStore => {
   const store = createEntityStore();
 
   entities.forEach(entity => {
-    normalizeEntity(store, entity, isSearching);
+    normalizeEntity(store, entity);
   });
 
   return store;
 };
 
-const normalizeEntity = (store: EntityStore, entity: Entity, isSearching: boolean) => {
+const isId = (target: any): target is string => typeof target === "string";
+const getId = (target: Entity | string) => (isId(target) ? target : target.id);
+
+const normalizeEntity = (store: EntityStore, entity: Entity | string) => {
+  if (isId(entity)) {
+    return;
+  }
+
   const { type, id } = entity;
 
   if (store[type][id] !== undefined) {
     return;
   }
-  if (Object.keys(entity).length <= 2) {
-    return;
-  }
 
-  normalizers[type](store, entity, isSearching);
+  normalizers[type](entity, store);
 };
 
 const base = <T extends EntityType>({ id, createdAt, updatedAt }: BaseEntityClass<T>): BaseEntityObject => ({
@@ -42,31 +46,33 @@ const base = <T extends EntityType>({ id, createdAt, updatedAt }: BaseEntityClas
   fetchedAt: new Date().valueOf()
 });
 
-type Normalizer<E> = (store: EntityStore, entity: E, isSearching: boolean) => void;
+type Normalizer<E> = (entity: E, store: EntityStore) => void;
 
-const normalizeContent: Normalizer<ContentEntity> = (store, entity, isSearching) => {
-  const { id, author, latest, tags, isPrivate } = entity;
+const normalizeContent: Normalizer<ContentEntity> = (entity, store) => {
+  const { id, author, latest, isLocked, isPrivate } = entity;
 
   store.Content[id] = {
     ...base(entity),
-    authorId: author.id,
-    latestId: latest.id,
-    tagIds: tags.map(tag => tag.id),
-    lang: latest.lang,
-    title: latest.title,
-    summary: latest.summary,
+    authorId: getId(author),
+    latestId: getId(latest),
+    tagIds: [],
+    lang: "",
+    title: "",
+    description: "",
+    isLocked,
     isPrivate
   };
 
-  tags.forEach(tag => normalizeEntity(store, tag, isSearching));
+  normalizeEntity(store, author);
+  normalizeEntity(store, latest);
 };
 
-const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (store, entity, isSearching) => {
+const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (entity, store) => {
   const { id, content, lang, tags, title, summary, comment, items, isLinear } = entity;
 
   store.ContentRevision[id] = {
     ...base(entity),
-    contentId: content.id,
+    contentId: getId(content),
     lang,
     tags,
     title,
@@ -76,10 +82,10 @@ const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (store, enti
     isLinear
   };
 
-  normalizeEntity(store, content, isSearching);
+  normalizeEntity(store, content);
 };
 
-const normalizeContentTag: Normalizer<ContentTagEntity> = (store, entity) => {
+const normalizeContentTag: Normalizer<ContentTagEntity> = (entity, store) => {
   const { id, name } = entity;
 
   store.ContentTag[id] = {
@@ -88,31 +94,33 @@ const normalizeContentTag: Normalizer<ContentTagEntity> = (store, entity) => {
   };
 };
 
-const normalizeUser: Normalizer<UserEntity> = (store, entity) => {
-  const { id, name, permission, settings } = entity;
+const normalizeUser: Normalizer<UserEntity> = (entity, store) => {
+  const { id, name, permission /* detail */ } = entity;
 
   store.User[id] = {
     ...base(entity),
     name,
-    permission,
-    settings
+    permission
+    // detailId: getId(id);
   };
+
+  // normalizeEntity(store, detail);
 };
 
-const normalizeUserAccount: Normalizer<UserAccountEntity> = (store, entity, isSearching) => {
+const normalizeUserAccount: Normalizer<UserAccountEntity> = (entity, store) => {
   const { id, provider, accountId, user } = entity;
 
   store.UserAccount[id] = {
     ...base(entity),
     accountId,
     provider,
-    userId: user.id
+    userId: getId(user)
   };
 
-  normalizeEntity(store, user, isSearching);
+  normalizeEntity(store, user);
 };
 
-const normalizeUserSession: Normalizer<UserSessionEntity> = (store, entity, isSearching) => {
+const normalizeUserSession: Normalizer<UserSessionEntity> = (entity, store) => {
   const { id, userAgent, user } = entity;
 
   store.UserSession[id] = {
@@ -121,7 +129,7 @@ const normalizeUserSession: Normalizer<UserSessionEntity> = (store, entity, isSe
     userAgent
   };
 
-  normalizeEntity(store, user, isSearching);
+  normalizeEntity(store, user);
 };
 
 const normalizers: { [T in EntityType]: Normalizer<any> } = {
