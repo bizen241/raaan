@@ -1,6 +1,6 @@
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { User } from "../../shared/api/entities";
+import { User, UserConfig } from "../../shared/api/entities";
 import { SaveParams } from "../../shared/api/request/save";
 import { ActionUnion, AsyncAction, createAction } from "../actions";
 import { getCurrentUser } from "../api/client";
@@ -18,7 +18,7 @@ export enum AppActionType {
 const appSyncActions = {
   ready: () => createAction(AppActionType.Ready),
   error: () => createAction(AppActionType.Error),
-  setUser: (userId?: string) => createAction(AppActionType.SetUser, { userId }),
+  setUser: (user: User) => createAction(AppActionType.SetUser, { user }),
   updateFound: () => createAction(AppActionType.UpdateFound)
 };
 
@@ -32,25 +32,35 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
 
       if (nextUser !== undefined) {
         dispatch(cacheActions.get(result));
-        dispatch(appSyncActions.setUser(nextUser.id));
+        dispatch(appSyncActions.setUser(nextUser));
       }
     }
 
     const state = getState();
     const currentUserId = state.app.userId;
     const currentUserCache = state.cache.get.User[currentUserId];
+    const currentUserBuffer = state.buffers.User[currentUserId];
 
-    if (currentUserCache === undefined) {
-      const currentUserBuffer = state.buffers.User[currentUserId];
+    if (currentUserCache === undefined && currentUserBuffer === undefined) {
+      const currentConfigBufferId = state.app.configId;
 
-      if (currentUserBuffer === undefined) {
-        const buffer: Required<SaveParams<User>> = {
-          name: "ゲスト",
-          permission: "Guest",
-          settings: {}
-        };
+      const newUserBuffer: Required<SaveParams<User>> = {
+        name: "ゲスト",
+        permission: "Guest",
+        configId: currentConfigBufferId
+      };
+      const newConfigBuffer: SaveParams<UserConfig> = {};
 
-        dispatch(buffersActions.add<User>("User", currentUserId, buffer));
+      dispatch(buffersActions.add<User>("User", currentUserId, newUserBuffer));
+      dispatch(buffersActions.add<UserConfig>("UserConfig", currentConfigBufferId, newConfigBuffer));
+    }
+
+    if (currentUserCache !== undefined && currentUserBuffer !== undefined) {
+      const { permission, configId } = currentUserBuffer.edited;
+
+      if (permission === "Guest" && configId !== undefined) {
+        dispatch(buffersActions.delete("User", currentUserId));
+        dispatch(buffersActions.delete("UserConfig", configId));
       }
     }
 
@@ -71,6 +81,7 @@ export const appActions = {
 
 export type AppState = {
   userId: string;
+  configId: string;
   isReady: boolean;
   hasError: boolean;
   hasUpdate: boolean;
@@ -78,6 +89,7 @@ export type AppState = {
 
 export const initialAppState: AppState = {
   userId: Date.now().toString(),
+  configId: Date.now().toString(),
   isReady: false,
   hasError: false,
   hasUpdate: false
@@ -99,11 +111,12 @@ export const appReducer: Reducer<AppState, Actions> = (state = initialAppState, 
       };
     }
     case AppActionType.SetUser: {
-      const { userId } = action.payload;
+      const { user } = action.payload;
 
       return {
         ...state,
-        userId: userId || state.userId
+        userId: user.id,
+        configId: user.configId
       };
     }
     case AppActionType.UpdateFound: {

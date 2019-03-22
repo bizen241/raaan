@@ -1,4 +1,4 @@
-import { User, UserSettings } from "../../shared/api/entities";
+import { Permission, User } from "../../shared/api/entities";
 import { editBuffer } from "../reducers/buffers";
 
 const updateName = (id: string, name: string) =>
@@ -6,15 +6,12 @@ const updateName = (id: string, name: string) =>
     name
   }));
 
-const updateSettings = <P extends keyof UserSettings>(id: string, key: P, value: UserSettings[P]) =>
-  editBuffer<User>("User", id, ({ settings }) => ({
-    settings: {
-      ...settings,
-      [key]: value
-    }
+const updatePermission = (id: string, permission: Permission) =>
+  editBuffer<User>("User", id, () => ({
+    permission
   }));
 
 export const userActions = {
   updateName,
-  updateSettings
+  updatePermission
 };

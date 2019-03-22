@@ -1,6 +1,7 @@
-import { Column, Entity } from "typeorm";
-import { Permission, UserSettings } from "../../../shared/api/entities";
+import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
+import { Permission } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
+import { UserConfigEntity } from "./UserConfigEntity";
 
 @Entity()
 export class UserEntity extends BaseEntityClass<"User"> {
@@ -12,8 +13,11 @@ export class UserEntity extends BaseEntityClass<"User"> {
   @Column()
   permission!: Permission;
 
-  @Column("json")
-  settings!: UserSettings;
+  @OneToOne(() => UserConfigEntity, {
+    onDelete: "CASCADE"
+  })
+  @JoinColumn()
+  config!: UserConfigEntity;
 }
 
 interface UserConstructor {
@@ -31,7 +35,6 @@ export const createUser = ({ id, name, permission }: UserConstructor) => {
 
   user.name = name;
   user.permission = permission;
-  user.settings = {};
 
   return user;
 };

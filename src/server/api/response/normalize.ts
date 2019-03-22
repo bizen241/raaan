@@ -7,6 +7,7 @@ import {
   ContentTagEntity,
   Entity,
   UserAccountEntity,
+  UserConfigEntity,
   UserEntity,
   UserSessionEntity
 } from "../../database/entities";
@@ -95,16 +96,16 @@ const normalizeContentTag: Normalizer<ContentTagEntity> = (entity, store) => {
 };
 
 const normalizeUser: Normalizer<UserEntity> = (entity, store) => {
-  const { id, name, permission /* detail */ } = entity;
+  const { id, name, permission, config } = entity;
 
   store.User[id] = {
     ...base(entity),
     name,
-    permission
-    // detailId: getId(id);
+    permission,
+    configId: getId(config)
   };
 
-  // normalizeEntity(store, detail);
+  normalizeEntity(store, config);
 };
 
 const normalizeUserAccount: Normalizer<UserAccountEntity> = (entity, store) => {
@@ -118,6 +119,16 @@ const normalizeUserAccount: Normalizer<UserAccountEntity> = (entity, store) => {
   };
 
   normalizeEntity(store, user);
+};
+
+const normalizeUserConfig: Normalizer<UserConfigEntity> = (entity, store) => {
+  const { id, lang, theme } = entity;
+
+  store.UserConfig[id] = {
+    ...base(entity),
+    lang,
+    theme
+  };
 };
 
 const normalizeUserSession: Normalizer<UserSessionEntity> = (entity, store) => {
@@ -138,5 +149,6 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   ContentTag: normalizeContentTag,
   User: normalizeUser,
   UserAccount: normalizeUserAccount,
+  UserConfig: normalizeUserConfig,
   UserSession: normalizeUserSession
 };

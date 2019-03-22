@@ -1,24 +1,24 @@
 import * as React from "react";
-import { useContext } from "react";
-import { createGlobalStyle, Theme, ThemeProvider } from "../../style";
-import { UserContext } from "./Initializer";
-
-const themes: { [key: string]: Theme } = {
-  dark: {
-    background: "#30404d"
-  },
-  light: {
-    background: "#eeeeee"
-  }
-};
+import { useContext, useMemo } from "react";
+import { createGlobalStyle, ThemeProvider } from "../../style";
+import { ConfigContext } from "./Initializer";
 
 export const Style = React.memo<{ children: React.ReactNode }>(({ children }) => {
-  const currentUser = useContext(UserContext);
-  const themeName = currentUser.settings.theme || "dark";
+  const config = useContext(ConfigContext);
+  const theme = config.theme || "dark";
+  const accent = "#eeeeee";
 
   return (
-    <ThemeProvider theme={themes[themeName]}>
-      <div className={themeName === "dark" ? "bp3-dark" : "bp3-light"}>
+    <ThemeProvider
+      theme={useMemo(
+        () => ({
+          background: theme === "light" ? "#eeeeee" : "#30404d",
+          accent
+        }),
+        [theme, accent]
+      )}
+    >
+      <div className={theme === "light" ? "bp3-light" : "bp3-dark"}>
         <GlobalStyle />
         {children}
       </div>

@@ -4,9 +4,12 @@ import {
   ContentTag,
   EntityObject,
   EntityType,
+  Lang,
   Permission,
+  Theme,
   User,
   UserAccount,
+  UserConfig,
   UserSession
 } from "../../../../shared/api/entities";
 import { SearchParams } from "../../../../shared/api/request/search";
@@ -88,6 +91,16 @@ const parseUserAccount: Parser<UserAccount> = query => {
   };
 };
 
+const parseUserConfig: Parser<UserConfig> = query => {
+  const { lang, theme } = query;
+
+  return {
+    lang: lang as Lang | undefined,
+    theme: theme as Theme | undefined,
+    ...page(query)
+  };
+};
+
 const parseUserSession: Parser<UserSession> = query => {
   const { userAgent, userId } = query;
 
@@ -104,5 +117,6 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   ContentTag: parseContentTag,
   User: parseUser,
   UserAccount: parseUserAccount,
+  UserConfig: parseUserConfig,
   UserSession: parseUserSession
 };

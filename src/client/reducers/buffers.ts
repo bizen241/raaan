@@ -158,5 +158,10 @@ export const editBuffer = <E extends EntityObject>(
     return;
   }
 
-  dispatch(buffersActions.edit(type, id, callback(buffer.edited as SaveParams<E>, getState)));
+  const params = {
+    ...buffer.edited,
+    ...callback(buffer.edited as SaveParams<E>, getState)
+  };
+
+  dispatch(buffersActions.edit(type, id, params));
 };

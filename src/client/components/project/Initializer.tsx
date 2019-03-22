@@ -1,54 +1,69 @@
 import * as React from "react";
 import { createContext, useEffect, useMemo } from "react";
-import { User } from "../../../shared/api/entities";
+import { Permission, UserConfig } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { connector } from "../../reducers";
 import { appActions } from "../../reducers/app";
 
 type UserContextValue = {
   id: string;
-} & Required<SaveParams<User>>;
+  name: string;
+  permission: Permission;
+};
 
 export const UserContext = createContext<UserContextValue>({
   id: Date.now().toString(),
   name: "ゲスト",
-  permission: "Guest",
-  settings: {}
+  permission: "Guest"
 });
 
+type ConfigContextValue = SaveParams<UserConfig>;
+
+export const ConfigContext = createContext<ConfigContextValue>({});
+
 export const Initializer = connector(
-  state => ({
-    ...state.app,
-    userCache: state.cache.get.User[state.app.userId],
-    userBuffer: state.buffers.User[state.app.userId]
+  ({ app, cache, buffers }) => ({
+    ...app,
+    userCache: cache.get.User[app.userId],
+    userBuffer: buffers.User[app.userId],
+    configCache: cache.get.UserConfig[app.configId],
+    configBuffer: buffers.UserConfig[app.configId]
   }),
   () => ({
     initialize: appActions.initialize
   }),
-  ({ isReady, hasError, userId, userCache, userBuffer, initialize, children }) => {
+  ({ isReady, hasError, userId, userCache, userBuffer, configCache, configBuffer, initialize, children }) => {
     useEffect(() => {
       initialize();
     }, []);
 
-    const currentUser = useMemo<UserContextValue | null>(() => {
+    const user = useMemo<UserContextValue | null>(() => {
       if (userBuffer !== undefined) {
         return {
           id: userId,
           name: userBuffer.edited.name || "ゲスト",
-          permission: userBuffer.edited.permission || "Guest",
-          settings: userBuffer.edited.settings || {}
+          permission: userBuffer.edited.permission || "Guest"
         };
       } else if (userCache !== undefined) {
         return {
           id: userId,
           name: userCache.name,
-          permission: userCache.permission,
-          settings: userCache.settings || {}
+          permission: userCache.permission
         };
       } else {
         return null;
       }
-    }, [userId, userCache, userBuffer]);
+    }, [userCache, userBuffer]);
+
+    const config = useMemo<ConfigContextValue | null>(() => {
+      if (configBuffer !== undefined) {
+        return configBuffer.edited;
+      } else if (configCache !== undefined) {
+        return configCache;
+      } else {
+        return null;
+      }
+    }, [configCache, configBuffer]);
 
     if (!isReady) {
       return <div>ロード中...</div>;
@@ -56,10 +71,10 @@ export const Initializer = connector(
     if (hasError) {
       return <div>エラーが発生しています</div>;
     }
-    if (currentUser == null) {
+    if (user == null || config == null) {
       return <div>ユーザーが見つかりませんでした</div>;
     }
 
-    return <UserContext.Provider value={currentUser}>{children}</UserContext.Provider>;
+    return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
   }
 );
