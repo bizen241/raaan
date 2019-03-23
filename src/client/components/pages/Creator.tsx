@@ -5,8 +5,8 @@ import { useCallback, useEffect } from "react";
 import { createContentRevision } from "../../domain/content";
 import { connector } from "../../reducers";
 import { buffersActions, generateBufferId } from "../../reducers/buffers";
-import { ContentList } from "../content/list/ContentList";
-import { EditorBufferList } from "../content/list/EditorBufferList";
+import { ContentRevisionBufferList } from "../list/buffers/ContentRevisionBufferList";
+import { ContentList } from "../list/search/ContentList";
 import { Header } from "../project/Header";
 import { Column } from "../ui";
 import { manageHotKey } from "../utils/hotKey";
@@ -42,7 +42,7 @@ export const Creator = connector(
           </Button>
         </Column>
         <Column padding>
-          <EditorBufferList />
+          <ContentRevisionBufferList />
         </Column>
         <Column padding>
           <ContentList />

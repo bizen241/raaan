@@ -1,9 +1,9 @@
 import { ButtonGroup, Classes, Collapse, Divider } from "@blueprintjs/core";
 import * as React from "react";
 import { useCallback, useState } from "react";
-import { Details } from "./Details";
-import { Column } from "./Flex";
-import { Summary } from "./Summary";
+import { Details } from "../ui/Details";
+import { Column } from "../ui/Flex";
+import { Summary } from "../ui/Summary";
 
 export const List = React.memo<{
   title: string;

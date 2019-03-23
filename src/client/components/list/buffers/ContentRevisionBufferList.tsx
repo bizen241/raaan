@@ -5,9 +5,10 @@ import { Link } from "react-router-dom";
 import { ContentRevision } from "../../../../shared/api/entities";
 import { connector } from "../../../reducers";
 import { Buffer, buffersActions } from "../../../reducers/buffers";
-import { List, PopMenu, Row } from "../../ui";
+import { PopMenu, Row } from "../../ui";
+import { List } from "../List";
 
-export const EditorBufferList = connector(
+export const ContentRevisionBufferList = connector(
   state => ({
     bufferMap: state.buffers.ContentRevision
   }),

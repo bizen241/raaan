@@ -6,7 +6,8 @@ import { Content } from "../../../../shared/api/entities";
 import { connector } from "../../../reducers";
 import { apiActions } from "../../../reducers/api";
 import { buffersActions } from "../../../reducers/buffers";
-import { List, PopMenu, Row } from "../../ui";
+import { PopMenu, Row } from "../../ui";
+import { List } from "../List";
 
 export const ContentList = connector(
   state => ({
