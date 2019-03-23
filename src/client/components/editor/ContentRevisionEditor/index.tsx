@@ -1,18 +1,17 @@
 import { Button, Classes, ControlGroup, Divider } from "@blueprintjs/core";
-import * as React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import * as React from "react";
+import { EntityEditorProps } from "..";
 import { ContentRevision } from "../../../../shared/api/entities";
 import { ContentItem } from "../../../../shared/content";
 import { contentActions } from "../../../actions/content";
 import { connector } from "../../../reducers";
 import { dialogActions } from "../../../reducers/dialog";
-import { EntityEditorProps } from "../../editor";
+import { ContentItemPreviewer } from "../../content/previewer/ContentItemPreviewer";
+import { ContentPreviewer } from "../../content/previewer/ContentPreviewer";
 import { Column } from "../../ui";
 import { manageHotKey } from "../../utils/hotKey";
-import { ContentItemPreviewer } from "../previewer/ContentItemPreviewer";
-import { ContentPreviewer } from "../previewer/ContentPreviewer";
-import { contentItemTypeToLabel } from "./item";
-import { ContentItemEditor } from "./item/ContentItemEditor";
+import { ContentItemEditor, contentItemTypeToLabel } from "./ContentItemEditor";
 
 export const ContentEditor = connector(
   (state, ownProps: EntityEditorProps<ContentRevision>) => ({

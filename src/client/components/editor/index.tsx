@@ -1,14 +1,14 @@
 import { Callout } from "@blueprintjs/core";
-import { useEffect } from "react";
 import * as React from "react";
+import { useEffect } from "react";
 import { EntityObject, EntityType } from "../../../shared/api/entities";
 import { connector } from "../../reducers";
 import { isLocalOnly } from "../../reducers/api";
 import { Buffer, buffersActions } from "../../reducers/buffers";
-import { ContentEditor } from "../content/editor/ContentEditor";
 import { Column } from "../ui";
-import { UserEditor } from "../user/UserEditor";
+import { ContentEditor } from "./ContentRevisionEditor";
 import { UserConfigEditor } from "./UserConfigEditor";
+import { UserEditor } from "./UserEditor";
 
 export const EntityEditor = connector(
   (state, { entityType, entityId }: { entityType: EntityType; entityId: string }) => ({

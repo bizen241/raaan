@@ -4,10 +4,10 @@ import * as React from "react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../reducers";
+import { EntityEditor } from "../editor";
 import { Header } from "../project/Header";
 import { UserContext } from "../project/Initializer";
 import { Column } from "../ui";
-import { UserEditor } from "../user/UserEditor";
 import { Page } from "./Page";
 
 export const Config = connector(
@@ -39,7 +39,7 @@ export const Config = connector(
             </Column>
           ) : null}
           <Column padding>
-            <UserEditor bufferId={currentUser.id} />
+            <EntityEditor entityType="User" entityId={currentUser.id} />
           </Column>
           {!isGuest ? (
             <Column padding>

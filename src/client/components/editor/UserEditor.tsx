@@ -2,10 +2,10 @@ import { Classes } from "@blueprintjs/core";
 import { Trans } from "@lingui/react";
 import * as React from "react";
 import { useCallback } from "react";
+import { EntityEditorProps } from ".";
 import { Permission, User } from "../../../shared/api/entities";
 import { userActions } from "../../actions/user";
 import { connector } from "../../reducers";
-import { EntityEditorProps } from "../editor";
 import { Column } from "../ui";
 
 const permissionNameToLabel: { [T in Permission]: string } = {
