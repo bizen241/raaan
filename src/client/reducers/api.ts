@@ -12,16 +12,21 @@ import { cacheActions } from "./cache";
 export enum ApiActionType {
   Request = "api/request",
   Success = "api/success",
-  Failure = "api/failure"
+  Failure = "api/failure",
+  Reset = "api/reset"
 }
 
+type Key<E extends EntityObject> = string | SearchParams<E>;
+
 export const apiSyncActions = {
-  request: <E extends EntityObject>(method: keyof ApiState, type: EntityType, key: string | SearchParams<E>) =>
+  request: <E extends EntityObject>(method: keyof ApiState, type: EntityType, key: Key<E>) =>
     createAction(ApiActionType.Request, { method, type, key }),
-  success: <E extends EntityObject>(method: keyof ApiState, type: EntityType, key: string | SearchParams<E>) =>
+  success: <E extends EntityObject>(method: keyof ApiState, type: EntityType, key: Key<E>) =>
     createAction(ApiActionType.Success, { method, type, key }),
-  failure: <E extends EntityObject>(method: keyof ApiState, type: EntityType, key: string | SearchParams<E>) =>
-    createAction(ApiActionType.Failure, { method, type, key })
+  failure: <E extends EntityObject>(method: keyof ApiState, type: EntityType, key: Key<E>, code: number) =>
+    createAction(ApiActionType.Failure, { method, type, key, code }),
+  reset: <E extends EntityObject>(method: keyof ApiState, type: EntityType, key: Key<E>) =>
+    createAction(ApiActionType.Reset, { method, type, key })
 };
 
 export type ApiActions = ActionUnion<typeof apiSyncActions>;
@@ -35,7 +40,7 @@ const getEntity = (type: EntityType, id: string): AsyncAction => async dispatch 
     dispatch(cacheActions.get(result));
     dispatch(apiSyncActions.success("get", type, id));
   } catch (e) {
-    dispatch(apiSyncActions.failure("get", type, id));
+    dispatch(apiSyncActions.failure("get", type, id, 404));
   }
 };
 
@@ -51,7 +56,7 @@ const searchEntity = <E extends EntityObject>(
     dispatch(cacheActions.search(type, params, result));
     dispatch(apiSyncActions.success("search", type, params));
   } catch (e) {
-    dispatch(apiSyncActions.failure("search", type, params));
+    dispatch(apiSyncActions.failure("search", type, params, 404));
   }
 };
 
@@ -74,7 +79,7 @@ const uploadEntity = (type: EntityType, id: string): AsyncAction => async (dispa
     dispatch(apiSyncActions.success("upload", type, id));
     dispatch(buffersActions.delete(type, id));
   } catch (e) {
-    dispatch(apiSyncActions.failure("upload", type, id));
+    dispatch(apiSyncActions.failure("upload", type, id, 404));
   }
 };
 
@@ -87,7 +92,7 @@ const deleteEntity = (type: EntityType, id: string): AsyncAction => async dispat
     dispatch(cacheActions.purge(type, id));
     dispatch(apiSyncActions.success("delete", type, id));
   } catch (e) {
-    dispatch(apiSyncActions.failure("delete", type, id));
+    dispatch(apiSyncActions.failure("delete", type, id, 404));
   }
 };
 
@@ -154,6 +159,22 @@ export const apiReducer: Reducer<ApiState, Actions> = (state = initialApiState, 
       };
     }
     case ApiActionType.Failure: {
+      const { method, type, key, code } = action.payload;
+
+      const keyString = typeof key === "string" ? key : stringifySearchParams(key);
+
+      return {
+        ...state,
+        [method]: {
+          ...state[method],
+          [type]: {
+            ...state[method][type],
+            [keyString]: code
+          }
+        }
+      };
+    }
+    case ApiActionType.Reset: {
       const { method, type, key } = action.payload;
 
       const keyString = typeof key === "string" ? key : stringifySearchParams(key);
@@ -164,7 +185,7 @@ export const apiReducer: Reducer<ApiState, Actions> = (state = initialApiState, 
           ...state[method],
           [type]: {
             ...state[method][type],
-            [keyString]: 404
+            [keyString]: undefined
           }
         }
       };

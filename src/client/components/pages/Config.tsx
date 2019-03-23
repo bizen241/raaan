@@ -1,11 +1,9 @@
 import { Button, Callout, Classes, Divider } from "@blueprintjs/core";
 import { Trans } from "@lingui/react";
 import * as React from "react";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { User } from "../../../shared/api/entities";
 import { connector } from "../../reducers";
-import { buffersActions } from "../../reducers/buffers";
 import { Header } from "../project/Header";
 import { UserContext } from "../project/Initializer";
 import { Column } from "../ui";
@@ -14,27 +12,12 @@ import { Page } from "./Page";
 
 export const Config = connector(
   state => ({
-    hasUpdate: state.app.hasUpdate,
-    userBuffer: state.buffers.User[state.app.userId]
+    hasUpdate: state.app.hasUpdate
   }),
-  () => ({
-    addBuffer: buffersActions.add
-  }),
-  ({ hasUpdate, userBuffer, addBuffer }) => {
+  () => ({}),
+  ({ hasUpdate }) => {
     const currentUser = useContext(UserContext);
     const isGuest = currentUser.permission === "Guest";
-
-    useEffect(() => {
-      if (userBuffer === undefined) {
-        const { id, ...currentUserParams } = currentUser;
-
-        addBuffer<User>("User", currentUser.id, currentUserParams);
-      }
-    }, []);
-
-    if (userBuffer === undefined) {
-      return <div>ロード中...</div>;
-    }
 
     return (
       <Page>

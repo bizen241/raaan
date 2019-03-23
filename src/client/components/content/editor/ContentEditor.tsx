@@ -1,10 +1,12 @@
-import { Button, Callout, Classes, ControlGroup, Divider } from "@blueprintjs/core";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Button, Classes, ControlGroup, Divider } from "@blueprintjs/core";
 import * as React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ContentRevision } from "../../../../shared/api/entities";
 import { ContentItem } from "../../../../shared/content";
 import { contentActions } from "../../../actions/content";
 import { connector } from "../../../reducers";
 import { dialogActions } from "../../../reducers/dialog";
+import { EntityEditorProps } from "../../editor";
 import { Column } from "../../ui";
 import { manageHotKey } from "../../utils/hotKey";
 import { ContentItemPreviewer } from "../previewer/ContentItemPreviewer";
@@ -13,25 +15,15 @@ import { contentItemTypeToLabel } from "./item";
 import { ContentItemEditor } from "./item/ContentItemEditor";
 
 export const ContentEditor = connector(
-  (state, { bufferId }: { bufferId: string }) => ({
-    bufferId,
-    buffer: state.buffers.ContentRevision[bufferId],
-    status: state.api.upload.ContentRevision[bufferId],
+  (state, ownProps: EntityEditorProps<ContentRevision>) => ({
+    ...ownProps,
     isVisible: state.dialog.name == null
   }),
   () => ({
     ...contentActions,
     openDialog: dialogActions.open
   }),
-  ({ bufferId, buffer, status, isVisible, updateTitle, appendItem, openDialog }) => {
-    if (buffer === undefined) {
-      return (
-        <Column padding>
-          <Callout intent="warning" title="バッファが見つかりませんでした" />
-        </Column>
-      );
-    }
-
+  ({ bufferId, buffer, isVisible, updateTitle, appendItem, openDialog }) => {
     const { title, items = [] } = buffer.edited;
 
     const titleInputRef = useRef<HTMLInputElement>(null);
@@ -52,21 +44,6 @@ export const ContentEditor = connector(
       ),
       [isVisible]
     );
-
-    if (status === 200) {
-      return (
-        <Column padding>
-          <Callout intent="success" title="アップロードが完了しました" />
-        </Column>
-      );
-    }
-    if (status === 202) {
-      return (
-        <Column padding>
-          <Callout intent="primary" title="アップロード中です" />
-        </Column>
-      );
-    }
 
     return (
       <Column flex={1}>

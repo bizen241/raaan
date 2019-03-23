@@ -2,9 +2,10 @@ import { Classes } from "@blueprintjs/core";
 import { Trans } from "@lingui/react";
 import * as React from "react";
 import { useCallback } from "react";
-import { Permission } from "../../../shared/api/entities";
+import { Permission, User } from "../../../shared/api/entities";
 import { userActions } from "../../actions/user";
 import { connector } from "../../reducers";
+import { EntityEditorProps } from "../editor";
 import { Column } from "../ui";
 
 const permissionNameToLabel: { [T in Permission]: string } = {
@@ -15,13 +16,14 @@ const permissionNameToLabel: { [T in Permission]: string } = {
 };
 
 export const UserEditor = connector(
-  (_, { bufferId }: { bufferId: string }) => ({
-    bufferId
+  (_, ownProps: EntityEditorProps<User>) => ({
+    ...ownProps
   }),
   () => ({
     ...userActions
   }),
-  ({ bufferId, updateName, updatePermission }) => {
+  ({ bufferId, buffer, updateName, updatePermission }) => {
+    const { name, permission } = buffer.edited;
     return (
       <Column>
         <Column padding>
@@ -30,7 +32,7 @@ export const UserEditor = connector(
             <Column>
               <input
                 className={Classes.INPUT}
-                defaultValue={"ゲスト"}
+                defaultValue={name || "ゲスト"}
                 onChange={useCallback(
                   (e: React.ChangeEvent<HTMLInputElement>) => updateName(bufferId, e.target.value),
                   []
@@ -44,14 +46,14 @@ export const UserEditor = connector(
             <Trans>権限</Trans>
             <Column className={`${Classes.SELECT} ${Classes.MODIFIER_KEY}`}>
               <select
-                defaultValue={"Guest"}
+                defaultValue={permission || "Guest"}
                 onChange={useCallback(
                   (e: React.ChangeEvent<HTMLSelectElement>) => updatePermission(bufferId, e.target.value as Permission),
                   []
                 )}
               >
-                {Object.entries(permissionNameToLabel).map(([name, label]) => (
-                  <option key={name} value={name}>
+                {Object.entries(permissionNameToLabel).map(([permissionName, label]) => (
+                  <option key={permissionName} value={permissionName}>
                     {label}
                   </option>
                 ))}
