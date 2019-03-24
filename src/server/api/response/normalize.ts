@@ -2,6 +2,7 @@ import { EntityType } from "../../../shared/api/entities";
 import { BaseEntityObject } from "../../../shared/api/entities/BaseEntityObject";
 import { createEntityStore, EntityStore } from "../../../shared/api/response/get";
 import {
+  ContentDetailEntity,
   ContentEntity,
   ContentRevisionEntity,
   ContentTagEntity,
@@ -50,40 +51,51 @@ const base = <T extends EntityType>({ id, createdAt, updatedAt }: BaseEntityClas
 type Normalizer<E> = (entity: E, store: EntityStore) => void;
 
 const normalizeContent: Normalizer<ContentEntity> = (entity, store) => {
-  const { id, author, latest, isLocked, isPrivate } = entity;
+  const { id, author, detail, tags, lang, title, description, isLocked, isPrivate } = entity;
 
   store.Content[id] = {
     ...base(entity),
     authorId: getId(author),
-    latestId: getId(latest),
-    tagIds: [],
-    lang: "",
-    title: "",
-    description: "",
+    detailId: getId(detail),
+    tagIds: tags.map(tag => getId(tag)),
+    lang,
+    title,
+    description,
     isLocked,
     isPrivate
   };
 
   normalizeEntity(store, author);
-  normalizeEntity(store, latest);
+  normalizeEntity(store, detail);
+};
+
+const normalizeContentDetail: Normalizer<ContentDetailEntity> = (entity, store) => {
+  const { id, lang, tags, title, description, rubric, items, comment, navigationMode } = entity;
+
+  store.ContentDetail[id] = {
+    ...base(entity),
+    lang,
+    tags,
+    title,
+    description,
+    rubric,
+    items,
+    comment,
+    navigationMode
+  };
 };
 
 const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (entity, store) => {
-  const { id, content, lang, tags, title, summary, comment, items, isLinear } = entity;
+  const { id, content, detail } = entity;
 
   store.ContentRevision[id] = {
     ...base(entity),
     contentId: getId(content),
-    lang,
-    tags,
-    title,
-    summary,
-    comment,
-    items,
-    isLinear
+    detailId: getId(detail)
   };
 
   normalizeEntity(store, content);
+  normalizeEntity(store, detail);
 };
 
 const normalizeContentTag: Normalizer<ContentTagEntity> = (entity, store) => {
@@ -145,6 +157,7 @@ const normalizeUserSession: Normalizer<UserSessionEntity> = (entity, store) => {
 
 const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Content: normalizeContent,
+  ContentDetail: normalizeContentDetail,
   ContentRevision: normalizeContentRevision,
   ContentTag: normalizeContentTag,
   User: normalizeUser,

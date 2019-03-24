@@ -1,6 +1,6 @@
 import { OperationFunction } from "express-openapi";
 import { getManager } from "typeorm";
-import { ContentRevision } from "../../../shared/api/entities";
+import { ContentRevision, ContentDetail } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
@@ -9,7 +9,8 @@ import {
   ContentRevisionEntity,
   createContentEntity,
   createContentRevisionEntity,
-  UserEntity
+  UserEntity,
+  createContentDetailEntity
 } from "../../database/entities";
 
 const getContent = async (currentUser: UserEntity, contentId: string | undefined) => {
@@ -42,14 +43,16 @@ const saveContentRevision = async (content: ContentEntity, revision: ContentRevi
   });
 
 export const POST: OperationFunction = errorBoundary(async (req, res) => {
-  const { contentId, lang, title, tags, summary, comment, items, isLinear }: SaveParams<ContentRevision> = req.body;
+  const params: SaveParams<ContentDetail> = req.body;
+
+  const manager = getManager();
 
   const content = await getContent(req.session.user, contentId);
 
-  const newRevision = createContentRevisionEntity({ lang, tags, title, summary, comment, items, isLinear });
+  const newDetail = createContentDetailEntity(manager, params);
   const newRevisionId = await saveContentRevision(content, newRevision);
 
-  const loadedRevision = await getManager().findOne(ContentRevisionEntity, newRevisionId, {
+  const loadedContent = await getManager().findOne(ContentEntity, newRevisionId, {
     relations: ["content", "content.author", "content.latest", "content.tags"]
   });
   if (loadedRevision === undefined) {

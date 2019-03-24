@@ -1,10 +1,12 @@
 import {
   Content,
+  ContentDetail,
   ContentRevision,
   ContentTag,
   EntityObject,
   EntityType,
   Lang,
+  NavigationMode,
   Permission,
   Theme,
   User,
@@ -20,6 +22,7 @@ export type SearchQuery<E extends EntityObject> = { [P in keyof SearchParams<E>]
 export const parseSearchParams = <E extends EntityObject>(type: EntityType, query: SearchQuery<E>) =>
   parsers[type](query) as SearchParams<E>;
 
+/*
 const bool = (value: string | undefined) => {
   if (value === undefined) {
     return undefined;
@@ -27,6 +30,7 @@ const bool = (value: string | undefined) => {
 
   return value === "true" ? true : false;
 };
+*/
 
 const page = (query: { limit?: string; offset?: string }) => ({
   limit: (query.limit && Number(query.limit)) || 10,
@@ -36,27 +40,37 @@ const page = (query: { limit?: string; offset?: string }) => ({
 type Parser<E extends EntityObject> = (query: SearchQuery<E>) => SearchParams<E>;
 
 const parseContent: Parser<Content> = query => {
-  const { latestId, tagIds } = query;
+  const { detailId, tagIds } = query;
 
   return {
-    latestId,
+    detailId,
     tagIds: tagIds && JSON.parse(tagIds),
     ...page(query)
   };
 };
 
-const parseContentRevision: Parser<ContentRevision> = query => {
-  const { contentId, lang, tags, title, summary, comment, items, isLinear } = query;
+const parseContentDetail: Parser<ContentDetail> = query => {
+  const { lang, tags, title, description, rubric, items, comment, navigationMode } = query;
 
   return {
-    contentId,
     lang,
     tags: tags && JSON.parse(tags),
     title,
-    summary,
-    comment,
+    description,
+    rubric,
     items: items && JSON.parse(items),
-    isLinear: bool(isLinear),
+    comment,
+    navigationMode: navigationMode as NavigationMode,
+    ...page(query)
+  };
+};
+
+const parseContentRevision: Parser<ContentRevision> = query => {
+  const { contentId, detailId } = query;
+
+  return {
+    contentId,
+    detailId,
     ...page(query)
   };
 };
@@ -113,6 +127,7 @@ const parseUserSession: Parser<UserSession> = query => {
 
 const parsers: { [T in EntityType]: Parser<any> } = {
   Content: parseContent,
+  ContentDetail: parseContentDetail,
   ContentRevision: parseContentRevision,
   ContentTag: parseContentTag,
   User: parseUser,

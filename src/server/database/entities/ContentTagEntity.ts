@@ -2,26 +2,15 @@ import { Column, Entity } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 
 @Entity()
-export class ContentTagEntity extends BaseEntityClass<"ContentTag"> {
+export class ContentTagEntity extends BaseEntityClass {
   type: "ContentTag" = "ContentTag";
 
   @Column()
-  name!: string;
-}
-
-interface ContentTagConstructor {
-  id?: string;
   name: string;
-}
 
-export const createContentTag = ({ id, name }: ContentTagConstructor) => {
-  const contentTag = new ContentTagEntity();
+  constructor(name: string) {
+    super();
 
-  if (id !== undefined) {
-    contentTag.id = id;
+    this.name = name;
   }
-
-  contentTag.name = name;
-
-  return contentTag;
-};
+}

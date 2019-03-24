@@ -1,14 +1,18 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, OneToOne } from "typeorm";
 import { Lang, Theme } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
+import { UserEntity } from "./UserEntity";
 
 @Entity()
-export class UserConfigEntity extends BaseEntityClass<"UserConfig"> {
+export class UserConfigEntity extends BaseEntityClass {
   type: "UserConfig" = "UserConfig";
 
-  @Column()
-  lang!: Lang;
+  @OneToOne(() => UserEntity, user => user.configId)
+  user?: UserEntity;
 
   @Column()
-  theme!: Theme;
+  lang: Lang = "default";
+
+  @Column()
+  theme: Theme = "default";
 }

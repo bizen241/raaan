@@ -1,3 +1,5 @@
+import { EntityManager } from "typeorm";
+import { ContentDetailEntity } from "./ContentDetailEntity";
 import { ContentEntity } from "./ContentEntity";
 import { ContentRevisionEntity } from "./ContentRevisionEntity";
 import { ContentTagEntity } from "./ContentTagEntity";
@@ -6,6 +8,7 @@ import { UserConfigEntity } from "./UserConfigEntity";
 import { UserEntity } from "./UserEntity";
 import { UserSessionEntity } from "./UserSessionEntity";
 
+export * from "./ContentDetailEntity";
 export * from "./ContentEntity";
 export * from "./ContentRevisionEntity";
 export * from "./ContentTagEntity";
@@ -15,6 +18,7 @@ export * from "./UserEntity";
 export * from "./UserSessionEntity";
 
 export type Entity =
+  | ContentDetailEntity
   | ContentEntity
   | ContentRevisionEntity
   | ContentTagEntity
@@ -24,6 +28,7 @@ export type Entity =
   | UserSessionEntity;
 
 export const entities = [
+  ContentDetailEntity,
   ContentEntity,
   ContentRevisionEntity,
   ContentTagEntity,
@@ -32,3 +37,5 @@ export const entities = [
   UserEntity,
   UserSessionEntity
 ];
+
+export type EntityCreator<E extends Entity> = (manager: EntityManager, params: Partial<E>) => Promise<E>;

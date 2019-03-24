@@ -1,78 +1,38 @@
-import { Column, Entity, ManyToOne } from "typeorm";
-import { ContentItem } from "../../../shared/content";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ContentEntity } from "./ContentEntity";
+import { ContentRevisionDetailEntity } from "./ContentRevisionDetailEntity";
 
 @Entity()
-export class ContentRevisionEntity extends BaseEntityClass<"ContentRevision"> {
+export class ContentRevisionEntity extends BaseEntityClass {
   type: "ContentRevision" = "ContentRevision";
+
+  @Column()
+  contentId: string;
 
   @ManyToOne(() => ContentEntity, {
     onDelete: "CASCADE"
   })
+  @JoinColumn({
+    name: "contentId"
+  })
   content!: ContentEntity;
 
   @Column()
-  lang!: string;
+  detailId: string;
 
-  @Column()
-  title!: string;
+  @OneToOne(() => ContentRevisionDetailEntity, contentRevisionDetail => contentRevisionDetail.revision, {
+    onDelete: "CASCADE"
+  })
+  @JoinColumn({
+    name: "detailId"
+  })
+  detail!: ContentRevisionDetailEntity;
 
-  @Column("simple-array")
-  tags!: string[];
+  constructor(content: ContentEntity, detail: ContentRevisionDetailEntity) {
+    super();
 
-  @Column()
-  summary!: string;
-
-  @Column()
-  comment!: string;
-
-  @Column("json")
-  items!: ContentItem[];
-
-  @Column()
-  isLinear!: boolean;
-}
-
-interface ContentRevisionConstructor {
-  id?: string;
-  content?: ContentEntity;
-  lang: string | undefined;
-  title: string | undefined;
-  tags: string[] | undefined;
-  summary: string | undefined;
-  comment: string | undefined;
-  items: ContentItem[] | undefined;
-  isLinear: boolean | undefined;
-}
-
-export const createContentRevisionEntity = ({
-  id,
-  content,
-  lang,
-  title,
-  tags,
-  summary,
-  comment,
-  items,
-  isLinear
-}: ContentRevisionConstructor) => {
-  const contentRevision = new ContentRevisionEntity();
-
-  if (id !== undefined) {
-    contentRevision.id = id;
+    this.contentId = content.id;
+    this.detailId = detail.id;
   }
-  if (content !== undefined) {
-    contentRevision.content = content;
-  }
-
-  contentRevision.lang = lang || "en";
-  contentRevision.title = title || "";
-  contentRevision.tags = tags || [];
-  contentRevision.summary = summary || "";
-  contentRevision.comment = comment || "";
-  contentRevision.items = items || [];
-  contentRevision.isLinear = isLinear || false;
-
-  return contentRevision;
-};
+}

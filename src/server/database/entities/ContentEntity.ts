@@ -1,59 +1,49 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
-import { ContentRevisionEntity } from "./ContentRevisionEntity";
+import { ContentDetailEntity } from "./ContentDetailEntity";
 import { ContentTagEntity } from "./ContentTagEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity()
-export class ContentEntity extends BaseEntityClass<"Content"> {
+export class ContentEntity extends BaseEntityClass {
   type: "Content" = "Content";
+
+  @Column("uuid")
+  authorId: string;
 
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
-  author!: UserEntity;
+  @JoinColumn({
+    name: "authorId"
+  })
+  author?: UserEntity;
 
-  @OneToOne(() => ContentRevisionEntity, {
+  @Column("uuid")
+  detailId: string;
+
+  @OneToOne(() => ContentDetailEntity, contentDetail => contentDetail.content, {
     onDelete: "CASCADE"
   })
-  @JoinColumn()
-  latest!: ContentRevisionEntity;
+  @JoinColumn({
+    name: "detailId"
+  })
+  detail?: ContentDetailEntity;
 
   @ManyToMany(() => ContentTagEntity)
   @JoinTable()
-  tags!: ContentTagEntity[];
+  tags?: ContentTagEntity[];
 
   @Column()
-  lang!: string;
+  isPrivate: boolean = true;
 
   @Column()
-  title!: string;
+  isLocked: boolean = false;
 
-  @Column()
-  description!: string;
+  constructor(author: UserEntity, detail: ContentDetailEntity) {
+    super();
 
-  @Column()
-  isPrivate!: boolean;
-
-  @Column()
-  isLocked!: boolean;
-}
-
-interface ContentConstructor {
-  id?: string;
-  author: UserEntity;
-}
-
-export const createContentEntity = ({ id, author }: ContentConstructor) => {
-  const content = new ContentEntity();
-
-  if (id !== undefined) {
-    content.id = id;
+    this.authorId = author.id;
+    this.detailId = detail.id;
   }
-
-  content.author = author;
-  content.isPrivate = true;
-  content.isLocked = false;
-
-  return content;
-};
+}

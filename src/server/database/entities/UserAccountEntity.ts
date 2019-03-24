@@ -1,41 +1,34 @@
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { AuthProviderName } from "../../../shared/auth";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
 @Entity()
-export class UserAccountEntity extends BaseEntityClass<"UserAccount"> {
+export class UserAccountEntity extends BaseEntityClass {
   type: "UserAccount" = "UserAccount";
+
+  @Column()
+  userId: string;
 
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
-  user!: UserEntity;
+  @JoinColumn({
+    name: "userId"
+  })
+  user?: UserEntity;
 
   @Column()
-  provider!: AuthProviderName;
-
-  @Column()
-  accountId!: string;
-}
-
-interface UserAccountConstructor {
-  id?: string;
-  user: UserEntity;
   provider: AuthProviderName;
+
+  @Column()
   accountId: string;
-}
 
-export const createUserAccount = ({ id, user, provider, accountId }: UserAccountConstructor) => {
-  const userAccount = new UserAccountEntity();
+  constructor(user: UserEntity, provider: AuthProviderName, accountId: string) {
+    super();
 
-  if (id !== undefined) {
-    userAccount.id = id;
+    this.userId = user.id;
+    this.provider = provider;
+    this.accountId = accountId;
   }
-
-  userAccount.user = user;
-  userAccount.provider = provider;
-  userAccount.accountId = accountId;
-
-  return userAccount;
-};
+}

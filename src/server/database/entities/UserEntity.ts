@@ -4,37 +4,31 @@ import { BaseEntityClass } from "./BaseEntityClass";
 import { UserConfigEntity } from "./UserConfigEntity";
 
 @Entity()
-export class UserEntity extends BaseEntityClass<"User"> {
+export class UserEntity extends BaseEntityClass {
   type: "User" = "User";
 
   @Column()
-  name!: string;
+  name: string;
 
   @Column()
-  permission!: Permission;
+  permission: Permission;
 
-  @OneToOne(() => UserConfigEntity, {
+  @Column("uuid")
+  configId: string;
+
+  @OneToOne(() => UserConfigEntity, userConfig => userConfig.user, {
     onDelete: "CASCADE"
   })
-  @JoinColumn()
-  config!: UserConfigEntity;
-}
+  @JoinColumn({
+    name: "configId"
+  })
+  config?: UserConfigEntity;
 
-interface UserConstructor {
-  id?: string;
-  name: string;
-  permission: Permission;
-}
+  constructor(name: string, permission: Permission, config: UserConfigEntity) {
+    super();
 
-export const createUser = ({ id, name, permission }: UserConstructor) => {
-  const user = new UserEntity();
-
-  if (id !== undefined) {
-    user.id = id;
+    this.name = name;
+    this.permission = permission;
+    this.configId = config.id;
   }
-
-  user.name = name;
-  user.permission = permission;
-
-  return user;
-};
+}
