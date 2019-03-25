@@ -1,5 +1,5 @@
 import { Column } from "typeorm";
-import { NavigationMode } from "../../../shared/api/entities";
+import { ExerciseDetailObject, NavigationMode } from "../../../shared/api/entities";
 import { Question } from "../../../shared/content";
 import { BaseEntityClass } from "./BaseEntityClass";
 
@@ -27,4 +27,19 @@ export abstract class ExerciseDetailClass extends BaseEntityClass {
 
   @Column()
   navigationMode: NavigationMode = "random";
+
+  constructor(params?: ExerciseDetailObject) {
+    super();
+
+    if (params !== undefined) {
+      this.lang = params.lang;
+      this.title = params.title;
+      this.tags = params.tags;
+      this.description = params.description;
+      this.rubric = params.rubric;
+      this.questions = params.questions;
+      this.comment = params.comment;
+      this.navigationMode = params.navigationMode;
+    }
+  }
 }
