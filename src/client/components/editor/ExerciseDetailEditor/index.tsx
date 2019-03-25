@@ -108,7 +108,7 @@ export const ExerciseDetailEditor = connector(
           </Button>
         </Column>
         <ExercisePreviewer params={buffer.edited} />
-        <QuestionPreviewer item={questions[focusedItemIndex]} />
+        <QuestionPreviewer question={questions[focusedItemIndex]} />
       </Column>
     );
   }
