@@ -10,7 +10,7 @@ export interface PathParams {
 }
 
 const tags: { [P in EntityType]: string } = {
-  Content: "contents",
+  Exercise: "contents",
   ExerciseDetail: "content-details",
   ExerciseRevision: "content-revisions",
   ExerciseTag: "content-tags",

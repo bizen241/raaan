@@ -4,7 +4,7 @@ import { ExerciseRevision } from "../../shared/api/entities";
 import { SaveParams } from "../../shared/api/request/save";
 import { ActionUnion, createAction } from "../actions";
 import { createExerciseRevision, createPlan } from "../domain/content";
-import { compileContent, CompiledItem } from "../domain/content/compiler";
+import { compileExercise, CompiledItem } from "../domain/content/compiler";
 
 export enum PlayerActionType {
   Load = "player/load",
@@ -17,7 +17,7 @@ export interface TypoMap {
   [key: string]: number | undefined;
 }
 
-export interface ContentItemResult {
+export interface ExerciseItemResult {
   id: string;
   time: number;
   typeCount: number;
@@ -27,7 +27,7 @@ export interface ContentItemResult {
 export const playerActions = {
   load: (content: SaveParams<ExerciseRevision>) => createAction(PlayerActionType.Load, { content }),
   start: () => createAction(PlayerActionType.Start),
-  next: (result: ContentItemResult) => createAction(PlayerActionType.Next, { result }),
+  next: (result: ExerciseItemResult) => createAction(PlayerActionType.Next, { result }),
   finish: () => createAction(PlayerActionType.Finish)
 };
 
@@ -38,7 +38,7 @@ export interface PlayerState {
   compiled: CompiledItem[];
   plan: number[];
   cursor: number;
-  results: ContentItemResult[];
+  results: ExerciseItemResult[];
   isStarted: boolean;
   isFinished: boolean;
 }
@@ -60,7 +60,7 @@ export const playerReducer: Reducer<PlayerState, Actions> = (state = initialPlay
 
       return {
         content,
-        compiled: compileContent(content),
+        compiled: compileExercise(content),
         plan: createPlan(content.items || []),
         cursor: 0,
         results: [],

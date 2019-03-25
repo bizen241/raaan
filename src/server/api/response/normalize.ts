@@ -50,10 +50,10 @@ const base = <T extends EntityType>({ id, createdAt, updatedAt }: BaseEntityClas
 
 type Normalizer<E> = (entity: E, store: EntityStore) => void;
 
-const normalizeContent: Normalizer<ExerciseEntity> = (entity, store) => {
+const normalizeExercise: Normalizer<ExerciseEntity> = (entity, store) => {
   const { id, author, detail, tags, lang, title, description, isLocked, isPrivate } = entity;
 
-  store.Content[id] = {
+  store.Exercise[id] = {
     ...base(entity),
     authorId: getId(author),
     detailId: getId(detail),
@@ -156,7 +156,7 @@ const normalizeUserSession: Normalizer<UserSessionEntity> = (entity, store) => {
 };
 
 const normalizers: { [T in EntityType]: Normalizer<any> } = {
-  Content: normalizeContent,
+  Exercise: normalizeExercise,
   ExerciseDetail: normalizeExerciseDetail,
   ExerciseRevision: normalizeExerciseRevision,
   ExerciseTag: normalizeExerciseTag,

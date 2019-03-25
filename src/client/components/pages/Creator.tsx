@@ -6,7 +6,7 @@ import { createExerciseRevision } from "../../domain/content";
 import { connector } from "../../reducers";
 import { buffersActions, generateBufferId } from "../../reducers/buffers";
 import { ExerciseRevisionBufferList } from "../list/buffers/ExerciseRevisionBufferList";
-import { ContentList } from "../list/search/ContentList";
+import { ExerciseList } from "../list/search/ExerciseList";
 import { Header } from "../project/Header";
 import { Column } from "../ui";
 import { manageHotKey } from "../utils/hotKey";
@@ -45,7 +45,7 @@ export const Creator = connector(
           <ExerciseRevisionBufferList />
         </Column>
         <Column padding>
-          <ContentList />
+          <ExerciseList />
         </Column>
       </Page>
     );

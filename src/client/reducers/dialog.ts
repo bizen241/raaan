@@ -6,7 +6,7 @@ export enum DialogActionType {
   Close = "dialog/close"
 }
 
-type DialogName = "ContentPreviewer" | "ContentItemPreviewer";
+type DialogName = "ExercisePreviewer" | "ExerciseItemPreviewer";
 
 export const dialogActions = {
   open: (name: DialogName) => createAction(DialogActionType.Open, { name }),

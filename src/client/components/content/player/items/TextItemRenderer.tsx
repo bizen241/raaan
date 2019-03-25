@@ -1,12 +1,12 @@
 import * as React from "react";
-import { ContentItemRendererProps } from ".";
+import { ExerciseItemRendererProps } from ".";
 import { TextItem } from "../../../../../shared/content";
 import { Column } from "../../../ui";
 import { TypedLines } from "./lines/TypedLines";
 import { TypingLine } from "./lines/TypingLine";
 import { UntypedLines } from "./lines/UntypedLines";
 
-export const TextItemRenderer: React.FunctionComponent<ContentItemRendererProps<TextItem>> = ({
+export const TextItemRenderer: React.FunctionComponent<ExerciseItemRendererProps<TextItem>> = ({
   item,
   untypedString,
   typedLines,

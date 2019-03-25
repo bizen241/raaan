@@ -6,7 +6,7 @@ import { Definition } from "typescript-json-schema";
 export const SearchParamsMapSchema: Definition = {
   type: "object",
   properties: {
-    Content: {
+    Exercise: {
       allOf: [
         {
           type: "object",

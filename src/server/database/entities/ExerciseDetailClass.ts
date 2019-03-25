@@ -1,6 +1,6 @@
 import { Column } from "typeorm";
 import { NavigationMode } from "../../../shared/api/entities";
-import { ContentItem } from "../../../shared/content";
+import { ExerciseItem } from "../../../shared/content";
 import { BaseEntityClass } from "./BaseEntityClass";
 
 export abstract class ExerciseDetailClass extends BaseEntityClass {
@@ -20,7 +20,7 @@ export abstract class ExerciseDetailClass extends BaseEntityClass {
   rubric: string = "";
 
   @Column("json")
-  items: ContentItem[] = [];
+  items: ExerciseItem[] = [];
 
   @Column()
   comment: string = "";

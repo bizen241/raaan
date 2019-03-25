@@ -1,5 +1,5 @@
 import {
-  Content,
+  Exercise,
   ExerciseDetail,
   ExerciseRevision,
   ExerciseTag,
@@ -39,7 +39,7 @@ const page = (query: { limit?: string; offset?: string }) => ({
 
 type Parser<E extends EntityObject> = (query: SearchQuery<E>) => SearchParams<E>;
 
-const parseContent: Parser<Content> = query => {
+const parseExercise: Parser<Exercise> = query => {
   const { detailId, tagIds } = query;
 
   return {
@@ -126,7 +126,7 @@ const parseUserSession: Parser<UserSession> = query => {
 };
 
 const parsers: { [T in EntityType]: Parser<any> } = {
-  Content: parseContent,
+  Exercise: parseExercise,
   ExerciseDetail: parseExerciseDetail,
   ExerciseRevision: parseExerciseRevision,
   ExerciseTag: parseExerciseTag,

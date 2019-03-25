@@ -6,7 +6,7 @@ import { Definition } from "typescript-json-schema";
 export const SaveParamsMapSchema: Definition = {
   type: "object",
   properties: {
-    Content: {
+    Exercise: {
       type: "object",
       properties: {
         summary: { type: "string" },

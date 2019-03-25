@@ -3,17 +3,17 @@ import { ExerciseRevision } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
 import { connector } from "../../../reducers";
 import { dialogActions } from "../../../reducers/dialog";
-import { ContentPreviewDialog } from "./ContentPreviewDialog";
+import { ExercisePreviewDialog } from "./ExercisePreviewDialog";
 
-export const ContentPreviewer = connector(
+export const ExercisePreviewer = connector(
   (state, ownProps: { params: SaveParams<ExerciseRevision> }) => ({
     ...ownProps,
-    isOpen: state.dialog.name === "ContentPreviewer"
+    isOpen: state.dialog.name === "ExercisePreviewer"
   }),
   () => ({
     onClose: dialogActions.close
   }),
   ({ params, isOpen, onClose }) => {
-    return <ContentPreviewDialog params={params} isOpen={isOpen} onClose={onClose} />;
+    return <ExercisePreviewDialog params={params} isOpen={isOpen} onClose={onClose} />;
   }
 );

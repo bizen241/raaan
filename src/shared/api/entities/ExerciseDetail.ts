@@ -1,4 +1,4 @@
-import { ContentItem } from "../../content";
+import { ExerciseItem } from "../../content";
 import { BaseEntityObject } from "./BaseEntityObject";
 
 export type NavigationMode = "sequential" | "random";
@@ -9,7 +9,7 @@ export interface ExerciseDetail extends BaseEntityObject {
   tags: string[];
   description: string;
   rubric: string;
-  items: ContentItem[];
+  items: ExerciseItem[];
   comment: string;
   navigationMode: NavigationMode;
 }

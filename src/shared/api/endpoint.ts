@@ -1,7 +1,7 @@
 import { EntityType } from "./entities";
 
 export const endpoints: { [P in EntityType]: string } = {
-  Content: "contents",
+  Exercise: "contents",
   ExerciseDetail: "content-details",
   ExerciseRevision: "content-revisions",
   ExerciseTag: "content-tags",

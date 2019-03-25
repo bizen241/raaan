@@ -1,6 +1,6 @@
 import { BaseEntityObject, UUID } from "./BaseEntityObject";
 
-export interface Content extends BaseEntityObject {
+export interface Exercise extends BaseEntityObject {
   authorId: UUID;
   detailId: UUID;
   tagIds: string[];

@@ -3,9 +3,9 @@ import * as React from "react";
 import { ExerciseRevision } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
 import { Column } from "../../ui";
-import { ContentPlayer } from "../player/ContentPlayer";
+import { ExercisePlayer } from "../player/ExercisePlayer";
 
-export const ContentPreviewDialog = React.memo<{
+export const ExercisePreviewDialog = React.memo<{
   params: SaveParams<ExerciseRevision>;
   isOpen: boolean;
   onClose: () => void;
@@ -24,7 +24,7 @@ export const ContentPreviewDialog = React.memo<{
       className="bp3-dark"
     >
       <Column className={Classes.DIALOG_BODY} padding flex={1}>
-        <Column flex={1}>{isOpen ? <ContentPlayer content={params} /> : null}</Column>
+        <Column flex={1}>{isOpen ? <ExercisePlayer content={params} /> : null}</Column>
         <Button onClick={onClose}>閉じる (Esc)</Button>
       </Column>
     </Dialog>

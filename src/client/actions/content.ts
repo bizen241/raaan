@@ -1,5 +1,5 @@
 import { ExerciseRevision } from "../../shared/api/entities";
-import { ContentItem } from "../../shared/content";
+import { ExerciseItem } from "../../shared/content";
 import { contentItemCreators } from "../domain/content";
 import { editBuffer } from "../reducers/buffers";
 
@@ -8,12 +8,12 @@ const updateTitle = (bufferId: string, title: string) =>
     title
   }));
 
-const appendItem = (bufferId: string, itemType: ContentItem["type"]) =>
+const appendItem = (bufferId: string, itemType: ExerciseItem["type"]) =>
   editBuffer<ExerciseRevision>("ExerciseRevision", bufferId, ({ items = [] }) => ({
     items: [...items, contentItemCreators[itemType]()]
   }));
 
-const updateItem = <P extends keyof ContentItem>(bufferId: string, index: number, key: P, value: ContentItem[P]) =>
+const updateItem = <P extends keyof ExerciseItem>(bufferId: string, index: number, key: P, value: ExerciseItem[P]) =>
   editBuffer<ExerciseRevision>("ExerciseRevision", bufferId, ({ items = [] }) => {
     const updatedItems = [...items];
     updatedItems[index] = {

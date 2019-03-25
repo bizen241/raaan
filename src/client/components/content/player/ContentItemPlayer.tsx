@@ -1,12 +1,12 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { ContentItem } from "../../../../shared/content";
+import { ExerciseItem } from "../../../../shared/content";
 import { CompiledChar, CompiledItem, CompiledLine } from "../../../domain/content/compiler";
-import { ContentItemResult, TypoMap } from "../../../reducers/player";
+import { ExerciseItemResult, TypoMap } from "../../../reducers/player";
 import { Column } from "../../ui";
 import { contentItemTypeToRenderer } from "./items";
 
-interface ContentItemPlayerState {
+interface ExerciseItemPlayerState {
   untypedLines: CompiledItem;
   untypedChars: CompiledLine;
   untypedCharStrings: string[];
@@ -24,12 +24,12 @@ interface ContentItemPlayerState {
   isCurrentLineFinished: boolean;
 }
 
-export const ContentItemPlayer: React.FunctionComponent<{
-  item: ContentItem;
+export const ExerciseItemPlayer: React.FunctionComponent<{
+  item: ExerciseItem;
   compiledItem: CompiledItem;
-  onFinish: (result: ContentItemResult) => void;
+  onFinish: (result: ExerciseItemResult) => void;
 }> = ({ item, compiledItem, onFinish }) => {
-  const [state, setState] = useState<ContentItemPlayerState>(() => getInitialState(compiledItem));
+  const [state, setState] = useState<ExerciseItemPlayerState>(() => getInitialState(compiledItem));
 
   const { isCurrentItemFinished, isCurrentLineFinished } = state;
 
@@ -90,7 +90,7 @@ export const ContentItemPlayer: React.FunctionComponent<{
   );
 };
 
-const getInitialState = (compiledItem: CompiledItem): ContentItemPlayerState => {
+const getInitialState = (compiledItem: CompiledItem): ExerciseItemPlayerState => {
   const currentLine = compiledItem[0] || [];
   const currentChar = currentLine[0];
 
@@ -113,10 +113,10 @@ const getInitialState = (compiledItem: CompiledItem): ContentItemPlayerState => 
   };
 };
 
-const getNextState = (previousState: ContentItemPlayerState, e: KeyboardEvent): ContentItemPlayerState => {
+const getNextState = (previousState: ExerciseItemPlayerState, e: KeyboardEvent): ExerciseItemPlayerState => {
   const { key } = e;
 
-  const nextState: ContentItemPlayerState = { ...previousState };
+  const nextState: ExerciseItemPlayerState = { ...previousState };
 
   if (previousState.isSuspended) {
     nextState.isSuspended = false;

@@ -1,7 +1,7 @@
 import { Collapse, MenuItem, Tag } from "@blueprintjs/core";
 import { useCallback, useState } from "react";
 import * as React from "react";
-import { ContentItem } from "../../../../../shared/content";
+import { ExerciseItem } from "../../../../../shared/content";
 import { contentActions } from "../../../../actions/content";
 import { connector } from "../../../../reducers";
 import { dialogActions } from "../../../../reducers/dialog";
@@ -10,13 +10,13 @@ import { KanaItemEditor } from "./KanaItemEditor";
 import { KanjiItemEditor } from "./KanjiItemEditor";
 import { TextItemEditor } from "./TextItemEditor";
 
-export const ContentItemEditor = connector(
+export const ExerciseItemEditor = connector(
   (
     _,
     ownProps: {
       bufferId: string;
       itemIndex: number;
-      item: ContentItem;
+      item: ExerciseItem;
       onFocus: (itemIndex: number) => void;
     }
   ) => ({
@@ -40,7 +40,7 @@ export const ContentItemEditor = connector(
               <MenuItem
                 key="p"
                 text="プレビュー (p)"
-                onClick={useCallback(() => openDialog("ContentItemPreviewer"), [])}
+                onClick={useCallback(() => openDialog("ExerciseItemPreviewer"), [])}
               />,
               <MenuItem
                 key="d"
@@ -57,7 +57,7 @@ export const ContentItemEditor = connector(
             <ItemEditor
               item={item}
               onChange={useCallback(
-                <P extends keyof ContentItem>(key: P, value: ContentItem[P]) =>
+                <P extends keyof ExerciseItem>(key: P, value: ExerciseItem[P]) =>
                   updateItem(bufferId, itemIndex, key, value),
                 [itemIndex]
               )}
@@ -69,7 +69,7 @@ export const ContentItemEditor = connector(
   }
 );
 
-export const contentItemTypeToLabel: { [T in ContentItem["type"]]: string } = {
+export const contentItemTypeToLabel: { [T in ExerciseItem["type"]]: string } = {
   code: "コード",
   kana: "かな",
   kanji: "漢字",
@@ -79,13 +79,13 @@ export const contentItemTypeToLabel: { [T in ContentItem["type"]]: string } = {
 
 export type TextAreaChangeEvent = React.ChangeEvent<HTMLTextAreaElement>;
 
-export interface ContentItemEditorProps<T extends ContentItem> {
+export interface ExerciseItemEditorProps<T extends ExerciseItem> {
   item: T;
   onChange: <P extends keyof T>(key: P, value: T[P]) => void;
 }
 
 export const contentItemEditors: {
-  [T in ContentItem["type"]]: React.FunctionComponent<ContentItemEditorProps<any>>
+  [T in ExerciseItem["type"]]: React.FunctionComponent<ExerciseItemEditorProps<any>>
 } = {
   text: TextItemEditor,
   kana: KanaItemEditor,

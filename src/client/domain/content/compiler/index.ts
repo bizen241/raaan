@@ -1,6 +1,6 @@
 import { ExerciseRevision } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
-import { ContentItem } from "../../../../shared/content";
+import { ExerciseItem } from "../../../../shared/content";
 import { isHatuon, isKana, isSokuon, isYoon, pairKanaToRomans, singleKanaToRomans } from "./hiragana";
 
 export type CompiledChar = {
@@ -10,7 +10,7 @@ export type CompiledChar = {
 export type CompiledLine = CompiledChar[];
 export type CompiledItem = CompiledLine[];
 
-export const compileContent = ({ items = [] }: SaveParams<ExerciseRevision>) => {
+export const compileExercise = ({ items = [] }: SaveParams<ExerciseRevision>) => {
   const compiledItems: CompiledItem[] = [];
 
   items.forEach(item => {
@@ -26,7 +26,7 @@ const sanitize = (value: string) => {
   return value;
 };
 
-const compileItem = (item: ContentItem) => {
+const compileItem = (item: ExerciseItem) => {
   const compiledItem: CompiledItem = [];
 
   const sanitizedLines = sanitize(item.value).split("\n");

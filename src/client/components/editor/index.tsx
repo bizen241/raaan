@@ -6,7 +6,7 @@ import { connector } from "../../reducers";
 import { isLocalOnly } from "../../reducers/api";
 import { Buffer, buffersActions } from "../../reducers/buffers";
 import { Column } from "../ui";
-import { ContentEditor } from "./ContentRevisionEditor";
+import { ExerciseEditor } from "./ExerciseRevisionEditor";
 import { UserConfigEditor } from "./UserConfigEditor";
 import { UserEditor } from "./UserEditor";
 
@@ -74,7 +74,7 @@ export type EntityEditorProps<E extends EntityObject = EntityObject> = {
 };
 
 const editors: { [T in EntityType]?: React.ComponentType<EntityEditorProps> } = {
-  ExerciseRevision: ContentEditor,
+  ExerciseRevision: ExerciseEditor,
   User: UserEditor,
   UserConfig: UserConfigEditor
 };

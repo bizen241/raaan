@@ -4,7 +4,7 @@ import { users } from "../../../session/__tests__/helpers";
 import { createExerciseDetailEntity } from "../ExerciseDetailEntity";
 import { createExerciseEntity } from "../ExerciseEntity";
 
-export const insertContent = async (contentId?: string) => {
+export const insertExercise = async (contentId?: string) => {
   const manager = getManager();
 
   await manager.save(users.Write);

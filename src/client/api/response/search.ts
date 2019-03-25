@@ -15,7 +15,7 @@ export interface SearchResultMap {
 export type SearchResultStore = { [P in EntityType]: SearchResultMap };
 
 export const createSearchResultStore = (): SearchResultStore => ({
-  Content: {},
+  Exercise: {},
   ExerciseDetail: {},
   ExerciseRevision: {},
   ExerciseTag: {},

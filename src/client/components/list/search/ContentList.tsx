@@ -2,17 +2,17 @@ import { MenuItem } from "@blueprintjs/core";
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Content } from "../../../../shared/api/entities";
+import { Exercise } from "../../../../shared/api/entities";
 import { connector } from "../../../reducers";
 import { apiActions } from "../../../reducers/api";
 import { buffersActions } from "../../../reducers/buffers";
 import { PopMenu, Row } from "../../ui";
 import { List } from "../List";
 
-export const ContentList = connector(
+export const ExerciseList = connector(
   state => ({
-    searchResult: state.cache.search.Content[""],
-    contentCache: state.cache.get.Content
+    searchResult: state.cache.search.Exercise[""],
+    contentCache: state.cache.get.Exercise
   }),
   () => ({
     deleteBuffer: buffersActions.delete,
@@ -30,7 +30,7 @@ export const ContentList = connector(
         searchResult.ids.length < offset + limit ||
         searchResult.ids.slice(offset, offset + limit).some(id => id === undefined)
       ) {
-        search<Content>("Exercise", {
+        search<Exercise>("Exercise", {
           limit,
           offset
         });
@@ -57,16 +57,16 @@ export const ContentList = connector(
       >
         {contents.map(
           content =>
-            content && <ContentListItem key={content.id} contentId={content.id} content={content} onDelete={onDelete} />
+            content && <ExerciseListItem key={content.id} contentId={content.id} content={content} onDelete={onDelete} />
         )}
       </List>
     );
   }
 );
 
-const ContentListItem: React.FunctionComponent<{
+const ExerciseListItem: React.FunctionComponent<{
   contentId: string;
-  content: Content;
+  content: Exercise;
   onDelete: (id: string) => void;
 }> = ({ contentId, content, onDelete }) => {
   return (

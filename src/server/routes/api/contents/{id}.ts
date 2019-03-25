@@ -8,14 +8,14 @@ import { ExerciseEntity } from "../../../database/entities";
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   const { id: contentId }: PathParams = req.params;
 
-  const loadedContent = await getManager().findOne(ExerciseEntity, contentId, {
+  const loadedExercise = await getManager().findOne(ExerciseEntity, contentId, {
     relations: ["author", "latest", "tags"]
   });
-  if (loadedContent === undefined) {
+  if (loadedExercise === undefined) {
     return next(createError(404));
   }
 
-  responseFindResult(res, loadedContent);
+  responseFindResult(res, loadedExercise);
 });
 
 GET.apiDoc = createOperationDoc({
@@ -30,14 +30,14 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next) =>
 
   const manager = getManager();
 
-  const loadedContent = await manager.findOne(ExerciseEntity, contentId, {
+  const loadedExercise = await manager.findOne(ExerciseEntity, contentId, {
     relations: ["author", "latest", "tags"]
   });
-  if (loadedContent === undefined) {
+  if (loadedExercise === undefined) {
     return next(createError(404));
   }
 
-  await manager.remove(loadedContent);
+  await manager.remove(loadedExercise);
 
   responseFindResult(res);
 });

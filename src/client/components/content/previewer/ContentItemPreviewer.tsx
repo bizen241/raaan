@@ -2,16 +2,16 @@ import * as React from "react";
 import { useMemo } from "react";
 import { ExerciseRevision } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
-import { ContentItem } from "../../../../shared/content";
+import { ExerciseItem } from "../../../../shared/content";
 import { createExerciseRevision } from "../../../domain/content";
 import { connector } from "../../../reducers";
 import { dialogActions } from "../../../reducers/dialog";
-import { ContentPreviewDialog } from "./ContentPreviewDialog";
+import { ExercisePreviewDialog } from "./ExercisePreviewDialog";
 
-export const ContentItemPreviewer = connector(
-  (state, ownProps: { item: ContentItem }) => ({
+export const ExerciseItemPreviewer = connector(
+  (state, ownProps: { item: ExerciseItem }) => ({
     ...ownProps,
-    isOpen: state.dialog.name === "ContentItemPreviewer"
+    isOpen: state.dialog.name === "ExerciseItemPreviewer"
   }),
   () => ({
     onClose: dialogActions.close
@@ -25,6 +25,6 @@ export const ContentItemPreviewer = connector(
       [item]
     );
 
-    return <ContentPreviewDialog params={params} isOpen={isOpen} onClose={onClose} />;
+    return <ExercisePreviewDialog params={params} isOpen={isOpen} onClose={onClose} />;
   }
 );

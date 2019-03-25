@@ -3,17 +3,17 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import * as React from "react";
 import { EntityEditorProps } from "..";
 import { ExerciseRevision } from "../../../../shared/api/entities";
-import { ContentItem } from "../../../../shared/content";
+import { ExerciseItem } from "../../../../shared/content";
 import { contentActions } from "../../../actions/content";
 import { connector } from "../../../reducers";
 import { dialogActions } from "../../../reducers/dialog";
-import { ContentItemPreviewer } from "../../content/previewer/ContentItemPreviewer";
-import { ContentPreviewer } from "../../content/previewer/ContentPreviewer";
+import { ExerciseItemPreviewer } from "../../content/previewer/ExerciseItemPreviewer";
+import { ExercisePreviewer } from "../../content/previewer/ExercisePreviewer";
 import { Column } from "../../ui";
 import { manageHotKey } from "../../utils/hotKey";
-import { ContentItemEditor, contentItemTypeToLabel } from "./ContentItemEditor";
+import { ExerciseItemEditor, contentItemTypeToLabel } from "./ExerciseItemEditor";
 
-export const ContentEditor = connector(
+export const ExerciseEditor = connector(
   (state, ownProps: EntityEditorProps<ExerciseRevision>) => ({
     ...ownProps,
     isVisible: state.dialog.name == null
@@ -67,7 +67,7 @@ export const ContentEditor = connector(
           <Column padding>アイテム</Column>
           {items.map((item, index) => (
             <Column key={item.id} padding>
-              <ContentItemEditor bufferId={bufferId} itemIndex={index} item={item} onFocus={focus} />
+              <ExerciseItemEditor bufferId={bufferId} itemIndex={index} item={item} onFocus={focus} />
             </Column>
           ))}
           <Column padding>
@@ -77,7 +77,7 @@ export const ContentEditor = connector(
                   value={selectedItemType}
                   ref={itemTypeSelectorRef}
                   onChange={useCallback(
-                    (e: React.ChangeEvent<HTMLSelectElement>) => selectItemType(e.target.value as ContentItem["type"]),
+                    (e: React.ChangeEvent<HTMLSelectElement>) => selectItemType(e.target.value as ExerciseItem["type"]),
                     []
                   )}
                 >
@@ -101,12 +101,12 @@ export const ContentEditor = connector(
         </Column>
         <Divider />
         <Column padding>
-          <Button large onClick={useCallback(() => openDialog("ContentPreviewer"), [])}>
+          <Button large onClick={useCallback(() => openDialog("ExercisePreviewer"), [])}>
             プレビュー (P)
           </Button>
         </Column>
-        <ContentPreviewer params={buffer.edited} />
-        <ContentItemPreviewer item={items[focusedItemIndex]} />
+        <ExercisePreviewer params={buffer.edited} />
+        <ExerciseItemPreviewer item={items[focusedItemIndex]} />
       </Column>
     );
   }

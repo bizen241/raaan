@@ -1,6 +1,6 @@
 import { Divider } from "@blueprintjs/core";
 import * as React from "react";
-import { ContentItemRendererProps } from ".";
+import { ExerciseItemRendererProps } from ".";
 import { KanaItem } from "../../../../../shared/content";
 import { Column } from "../../../ui";
 import { TypedLines } from "./lines/TypedLines";
@@ -8,7 +8,7 @@ import { TypingKanaLine } from "./lines/TypingKanaLine";
 import { TypingLine } from "./lines/TypingLine";
 import { UntypedLines } from "./lines/UntypedLines";
 
-export const KanaItemRenderer: React.FunctionComponent<ContentItemRendererProps<KanaItem>> = ({
+export const KanaItemRenderer: React.FunctionComponent<ExerciseItemRendererProps<KanaItem>> = ({
   item,
   untypedSource,
   untypedString,

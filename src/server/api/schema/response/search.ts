@@ -13,7 +13,7 @@ export const SearchResponseSchema: Definition = {
     entities: {
       type: "object",
       properties: {
-        Content: {
+        Exercise: {
           type: "object",
           additionalProperties: {
             type: "object",

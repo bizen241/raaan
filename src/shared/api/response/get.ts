@@ -1,5 +1,5 @@
 import {
-  Content,
+  Exercise,
   ExerciseDetail,
   ExerciseRevision,
   ExerciseTag,
@@ -15,7 +15,7 @@ export interface EntityMap<E extends EntityObject> {
 }
 
 export interface EntityStore {
-  Content: { [id: string]: Content | undefined };
+  Exercise: { [id: string]: Exercise | undefined };
   ExerciseDetail: { [id: string]: ExerciseDetail | undefined };
   ExerciseRevision: { [id: string]: ExerciseRevision | undefined };
   ExerciseTag: { [id: string]: ExerciseTag | undefined };
@@ -26,7 +26,7 @@ export interface EntityStore {
 }
 
 export const createEntityStore = (): EntityStore => ({
-  Content: {},
+  Exercise: {},
   ExerciseDetail: {},
   ExerciseRevision: {},
   ExerciseTag: {},

@@ -2,11 +2,11 @@ import { Classes } from "@blueprintjs/core";
 import * as React from "react";
 import { useCallback } from "react";
 import TextArea from "react-textarea-autosize";
-import { ContentItemEditorProps, TextAreaChangeEvent } from ".";
+import { ExerciseItemEditorProps, TextAreaChangeEvent } from ".";
 import { KanjiItem } from "../../../../../shared/content";
 import { Column } from "../../../ui";
 
-export const KanjiItemEditor = React.memo<ContentItemEditorProps<KanjiItem>>(({ item, onChange }) => {
+export const KanjiItemEditor = React.memo<ExerciseItemEditorProps<KanjiItem>>(({ item, onChange }) => {
   const onChangeKanji = useCallback((e: TextAreaChangeEvent) => onChange("kanji", e.currentTarget.value), []);
   const onChangeKana = useCallback((e: TextAreaChangeEvent) => onChange("value", e.currentTarget.value), []);
 

@@ -6,9 +6,9 @@ import { connector } from "../../../reducers";
 import { playerActions } from "../../../reducers/player";
 import { Column } from "../../ui";
 import { AttemptResultRenderer } from "./AttemptResultRenderer";
-import { ContentItemPlayer } from "./ContentItemPlayer";
+import { ExerciseItemPlayer } from "./ExerciseItemPlayer";
 
-export const ContentPlayer = connector(
+export const ExercisePlayer = connector(
   (state, ownProps: { content: SaveParams<ExerciseRevision> }) => ({
     content: ownProps.content,
     attempt: state.player
@@ -44,7 +44,7 @@ export const ContentPlayer = connector(
 
     return (
       <Column padding flex={1}>
-        <ContentItemPlayer key={attempt.cursor} item={currentItem} compiledItem={currentCompiledItem} onFinish={next} />
+        <ExerciseItemPlayer key={attempt.cursor} item={currentItem} compiledItem={currentCompiledItem} onFinish={next} />
       </Column>
     );
   }

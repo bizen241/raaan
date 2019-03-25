@@ -6,7 +6,7 @@ import { Definition } from "typescript-json-schema";
 export const EntityStoreSchema: Definition = {
   type: "object",
   properties: {
-    Content: {
+    Exercise: {
       type: "object",
       additionalProperties: {
         type: "object",

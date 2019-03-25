@@ -24,7 +24,7 @@ test("GET /logout success", async () => {
   });
 
   expect(response.status).toEqual(200);
-  expect(response.headers.get("Content-Type")).toContain("text/plain");
+  expect(response.headers.get("Exercise-Type")).toContain("text/plain");
   expect(response.headers.get("Clear-Site-Data")).toBe(`"cache", "cookies", "storage", "executionContexts"`);
 });
 
@@ -32,5 +32,5 @@ test("GET /logout failure", async () => {
   const response = await testServer.fetch("/logout");
 
   expect(response.status).toEqual(403);
-  expect(response.headers.get("Content-Type")).toContain("text/html");
+  expect(response.headers.get("Exercise-Type")).toContain("text/html");
 });

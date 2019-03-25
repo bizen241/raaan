@@ -27,4 +27,4 @@ export interface MathItem extends BaseItem {
   type: "math";
 }
 
-export type ContentItem = TextItem | KanaItem | KanjiItem | CodeItem | MathItem;
+export type ExerciseItem = TextItem | KanaItem | KanjiItem | CodeItem | MathItem;

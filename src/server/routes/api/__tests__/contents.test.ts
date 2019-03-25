@@ -1,6 +1,6 @@
 import { SearchResponse } from "../../../../shared/api/response/search";
 import { TestDatabase } from "../../../database/__tests__/helpers";
-import { insertContent } from "../../../database/entities/__tests__/helpers";
+import { insertExercise } from "../../../database/entities/__tests__/helpers";
 import { GET } from "../contents";
 import { createHttpMocks } from "./helpers";
 
@@ -18,7 +18,7 @@ beforeEach(async () => {
 });
 
 test("GET /api/contents", async () => {
-  await insertContent();
+  await insertExercise();
 
   const { req, res } = createHttpMocks("Guest");
 

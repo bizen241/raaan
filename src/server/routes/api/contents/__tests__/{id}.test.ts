@@ -4,7 +4,7 @@ import { EntityStore } from "../../../../../shared/api/response/get";
 import { PathParams } from "../../../../api/operation";
 import { TestDatabase } from "../../../../database/__tests__/helpers";
 import { ExerciseEntity } from "../../../../database/entities";
-import { insertContent } from "../../../../database/entities/__tests__/helpers";
+import { insertExercise } from "../../../../database/entities/__tests__/helpers";
 import { insertSessions, insertUsers } from "../../../../session/__tests__/helpers";
 import { createHttpMocks } from "../../__tests__/helpers";
 import { DELETE, GET } from "../{id}";
@@ -41,7 +41,7 @@ test("GET /api/contents/{id} -> 200", async () => {
   const { req, res, next } = createHttpMocks("Guest");
 
   const contentId = uuid();
-  await insertContent(contentId);
+  await insertExercise(contentId);
 
   (req.params as PathParams) = {
     id: contentId
@@ -52,7 +52,7 @@ test("GET /api/contents/{id} -> 200", async () => {
   expect(res._getStatusCode()).toEqual(200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.Content[contentId]).toBeDefined();
+  expect(data.Exercise[contentId]).toBeDefined();
 });
 
 test("DELETE /api/contents/{id} -> 404", async () => {
@@ -71,7 +71,7 @@ test("DELETE /api/contents/{id} -> 200", async () => {
   const { req, res, next } = createHttpMocks("Admin");
 
   const contentId = uuid();
-  await insertContent(contentId);
+  await insertExercise(contentId);
 
   (req.params as PathParams) = {
     id: contentId
@@ -82,8 +82,8 @@ test("DELETE /api/contents/{id} -> 200", async () => {
   expect(res._getStatusCode()).toEqual(200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.Content[contentId]).toBeUndefined();
+  expect(data.Exercise[contentId]).toBeUndefined();
 
-  const removedContent = await getManager().findOne(ExerciseEntity, contentId);
-  expect(removedContent).toBeUndefined();
+  const removedExercise = await getManager().findOne(ExerciseEntity, contentId);
+  expect(removedExercise).toBeUndefined();
 });
