@@ -6,20 +6,18 @@ import { responseFindResult } from "../../../api/response";
 import { UserAccountEntity } from "../../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
-  const currentUser = req.session.user;
+  const currentUser = req.user;
   const { id: userAccountId }: PathParams = req.params;
 
-  const loadedUserAccount = await getManager().findOne(UserAccountEntity, userAccountId, {
-    relations: ["user"]
-  });
-  if (loadedUserAccount === undefined) {
+  const userAccount = await getManager().findOne(UserAccountEntity, userAccountId);
+  if (userAccount === undefined) {
     return next(createError(404));
   }
-  if (loadedUserAccount.user.id !== currentUser.id && currentUser.permission !== "Admin") {
+  if (userAccount.userId !== currentUser.id) {
     return next(createError(403));
   }
 
-  responseFindResult(res, loadedUserAccount);
+  responseFindResult(res, userAccount);
 });
 
 GET.apiDoc = createOperationDoc({
@@ -30,35 +28,35 @@ GET.apiDoc = createOperationDoc({
 });
 
 export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
-  const currentUser = req.session.user;
+  const currentUser = req.user;
   const { id: userAccountId }: PathParams = req.params;
 
   const manager = getManager();
 
-  const targetUserAccount = await manager.findOne(UserAccountEntity, userAccountId, {
+  const userAccount = await manager.findOne(UserAccountEntity, userAccountId, {
     relations: ["user"]
   });
-  if (targetUserAccount === undefined) {
+  if (userAccount === undefined) {
     return next(createError(404));
   }
-  if (targetUserAccount.user.id !== currentUser.id && currentUser.permission !== "Admin") {
+  if (userAccount.userId !== currentUser.id) {
     return next(createError(403));
   }
 
-  const loadedUserAccounts = await manager.find(UserAccountEntity, {
+  const userAccounts = await manager.find(UserAccountEntity, {
     where: {
       user: {
-        id: targetUserAccount.user.id
+        id: userAccount.userId
       }
     }
   });
-  if (loadedUserAccounts.length < 2) {
+  if (userAccounts.length < 2) {
     return next(createError(405));
   }
 
-  await manager.remove(targetUserAccount);
+  await manager.remove(userAccount);
 
-  responseFindResult(res, targetUserAccount);
+  responseFindResult(res);
 });
 
 DELETE.apiDoc = createOperationDoc({

@@ -24,7 +24,7 @@ GET.apiDoc = createOperationDoc({
 });
 
 export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
-  const currentUser = req.session.user;
+  const currentUser = req.user;
   if (currentUser.permission !== "Admin") {
     return next(createError(403));
   }

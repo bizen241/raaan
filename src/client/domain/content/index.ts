@@ -1,17 +1,18 @@
 import * as uuid from "uuid";
-import { ExerciseRevision } from "../../../shared/api/entities";
+import { ExerciseDetail } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
-import { CodeItem, Question, KanaItem, KanjiItem, MathItem, TextItem } from "../../../shared/content";
+import { CodeItem, KanaItem, KanjiItem, MathItem, Question, TextItem } from "../../../shared/content";
 
-export const createExerciseRevision = (contentId?: string): SaveParams<ExerciseRevision> => ({
+export const createExerciseDetail = (contentId?: string): SaveParams<ExerciseDetail> => ({
   contentId,
   title: "",
   lang: "ja",
   tags: [],
-  items: [],
-  summary: "",
+  description: "",
+  rubric: "",
+  questions: [],
   comment: "",
-  isLinear: false
+  navigationMode: "random"
 });
 
 const base = <T extends string>(type: T) => ({

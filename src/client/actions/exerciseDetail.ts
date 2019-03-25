@@ -1,34 +1,34 @@
-import { ExerciseRevision } from "../../shared/api/entities";
+import { ExerciseDetail } from "../../shared/api/entities";
 import { Question } from "../../shared/content";
 import { contentItemCreators } from "../domain/content";
 import { editBuffer } from "../reducers/buffers";
 
 const updateTitle = (bufferId: string, title: string) =>
-  editBuffer<ExerciseRevision>("ExerciseRevision", bufferId, () => ({
+  editBuffer<ExerciseDetail>("ExerciseDetail", bufferId, () => ({
     title
   }));
 
 const appendItem = (bufferId: string, itemType: Question["type"]) =>
-  editBuffer<ExerciseRevision>("ExerciseRevision", bufferId, ({ items = [] }) => ({
-    items: [...items, contentItemCreators[itemType]()]
+  editBuffer<ExerciseDetail>("ExerciseDetail", bufferId, ({ questions = [] }) => ({
+    questions: [...questions, contentItemCreators[itemType]()]
   }));
 
 const updateItem = <P extends keyof Question>(bufferId: string, index: number, key: P, value: Question[P]) =>
-  editBuffer<ExerciseRevision>("ExerciseRevision", bufferId, ({ items = [] }) => {
-    const updatedItems = [...items];
+  editBuffer<ExerciseDetail>("ExerciseDetail", bufferId, ({ questions = [] }) => {
+    const updatedItems = [...questions];
     updatedItems[index] = {
-      ...items[index],
+      ...questions[index],
       [key]: value
     };
 
     return {
-      items: updatedItems
+      questions: updatedItems
     };
   });
 
 const deleteItem = (bufferId: string, index: number) =>
-  editBuffer<ExerciseRevision>("ExerciseRevision", bufferId, ({ items = [] }) => ({
-    items: [...items.slice(0, index), ...items.slice(index + 1)]
+  editBuffer<ExerciseDetail>("ExerciseDetail", bufferId, ({ questions = [] }) => ({
+    questions: [...questions.slice(0, index), ...questions.slice(index + 1)]
   }));
 
 export const contentActions = {

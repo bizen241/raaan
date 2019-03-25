@@ -1,7 +1,6 @@
 import * as createError from "http-errors";
 import { getManager } from "typeorm";
-import * as uuid from "uuid";
-import { createUser, UserEntity } from "../entities";
+import { UserConfigEntity, UserEntity } from "../entities";
 
 export const setGuestUser = async () => {
   const manager = getManager();
@@ -9,12 +8,10 @@ export const setGuestUser = async () => {
   const result = await manager.findOne(UserEntity, { permission: "Guest" });
 
   if (result === undefined) {
-    const guestUser = createUser({
-      id: uuid(),
-      name: "Guest",
-      permission: "Guest"
-    });
+    const guestUserConfig = new UserConfigEntity();
+    const guestUser = new UserEntity("Guest", "Guest", guestUserConfig);
 
+    await manager.save(guestUserConfig);
     await manager.save(guestUser);
   }
 };

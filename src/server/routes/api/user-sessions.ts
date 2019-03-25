@@ -8,7 +8,7 @@ import { responseSearchResult } from "../../api/response";
 import { UserSessionEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
-  const currentUser = req.session.user;
+  const currentUser = req.user;
 
   const { userId, userAgent, limit, offset } = parseSearchParams<UserSession>("UserSession", req.query);
 

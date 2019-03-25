@@ -1,4 +1,4 @@
-import { ExerciseRevision } from "../../../../shared/api/entities";
+import { ExerciseDetail } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
 import { Question } from "../../../../shared/content";
 import { isHatuon, isKana, isSokuon, isYoon, pairKanaToRomans, singleKanaToRomans } from "./hiragana";
@@ -10,10 +10,10 @@ export type CompiledChar = {
 export type CompiledLine = CompiledChar[];
 export type CompiledItem = CompiledLine[];
 
-export const compileExercise = ({ items = [] }: SaveParams<ExerciseRevision>) => {
+export const compileExercise = ({ questions = [] }: SaveParams<ExerciseDetail>) => {
   const compiledItems: CompiledItem[] = [];
 
-  items.forEach(item => {
+  questions.forEach(item => {
     compiledItems.push(compileItem(item));
   });
 

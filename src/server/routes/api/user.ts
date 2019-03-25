@@ -6,7 +6,7 @@ import { responseFindResult } from "../../api/response";
 import { setClearSiteData } from "../logout";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  responseFindResult(res, req.session.user);
+  responseFindResult(res, req.user);
 });
 
 GET.apiDoc = createOperationDoc({
@@ -17,7 +17,7 @@ GET.apiDoc = createOperationDoc({
 });
 
 export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
-  const currentUser = req.session.user;
+  const currentUser = req.user;
   if (currentUser.permission === "Admin") {
     return next(createError(403));
   }

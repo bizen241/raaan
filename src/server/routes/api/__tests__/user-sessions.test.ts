@@ -27,7 +27,7 @@ test("GET /api/user-sessions", async () => {
   const { req, res } = createHttpMocks("Write");
 
   const query: SearchQuery<UserSession> = {
-    userId: req.session.user.id
+    userId: req.user.id
   };
 
   req.query = query;

@@ -1,10 +1,10 @@
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { ExerciseRevision } from "../../shared/api/entities";
+import { ExerciseDetail } from "../../shared/api/entities";
 import { SaveParams } from "../../shared/api/request/save";
 import { ActionUnion, createAction } from "../actions";
-import { createExerciseRevision, createPlan } from "../domain/content";
-import { compileExercise, CompiledItem } from "../domain/content/compiler";
+import { createExerciseDetail, createPlan } from "../domain/content";
+import { CompiledItem, compileExercise } from "../domain/content/compiler";
 
 export enum PlayerActionType {
   Load = "player/load",
@@ -25,7 +25,7 @@ export interface QuestionResult {
 }
 
 export const playerActions = {
-  load: (content: SaveParams<ExerciseRevision>) => createAction(PlayerActionType.Load, { content }),
+  load: (content: SaveParams<ExerciseDetail>) => createAction(PlayerActionType.Load, { content }),
   start: () => createAction(PlayerActionType.Start),
   next: (result: QuestionResult) => createAction(PlayerActionType.Next, { result }),
   finish: () => createAction(PlayerActionType.Finish)
@@ -34,7 +34,7 @@ export const playerActions = {
 export type PlayerActions = ActionUnion<typeof playerActions>;
 
 export interface PlayerState {
-  content: SaveParams<ExerciseRevision>;
+  content: SaveParams<ExerciseDetail>;
   compiled: CompiledItem[];
   plan: number[];
   cursor: number;
@@ -44,7 +44,7 @@ export interface PlayerState {
 }
 
 export const initialPlayerState: PlayerState = {
-  content: createExerciseRevision(),
+  content: createExerciseDetail(),
   compiled: [],
   plan: [],
   cursor: 0,
@@ -61,7 +61,7 @@ export const playerReducer: Reducer<PlayerState, Actions> = (state = initialPlay
       return {
         content,
         compiled: compileExercise(content),
-        plan: createPlan(content.items || []),
+        plan: createPlan(content.questions || []),
         cursor: 0,
         results: [],
         isStarted: false,
@@ -75,13 +75,13 @@ export const playerReducer: Reducer<PlayerState, Actions> = (state = initialPlay
       };
     }
     case PlayerActionType.Next: {
-      const items = state.content.items || [];
+      const questions = state.content.questions || [];
 
       return {
         ...state,
         cursor: state.cursor + 1,
         results: [...state.results, action.payload.result],
-        isFinished: items.length - 1 === state.cursor
+        isFinished: questions.length - 1 === state.cursor
       };
     }
     case PlayerActionType.Finish: {

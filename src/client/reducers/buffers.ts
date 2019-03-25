@@ -3,7 +3,6 @@ import { Actions, RootState } from ".";
 import { createEntityTypeToEmptyObject, EntityObject, EntityType, EntityTypeToObject } from "../../shared/api/entities";
 import { SaveParams } from "../../shared/api/request/save";
 import { ActionUnion, AsyncAction, createAction } from "../actions";
-import { createExerciseRevision } from "../domain/content";
 import { apiActions } from "./api";
 
 export enum BuffersActionType {
@@ -128,7 +127,7 @@ export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBu
           ...state[type],
           [id]: {
             ...buffer,
-            edited: buffer.source || createExerciseRevision(id)
+            edited: buffer.source
           }
         }
       };

@@ -51,7 +51,7 @@ const parseExercise: Parser<Exercise> = query => {
 };
 
 const parseExerciseDetail: Parser<ExerciseDetail> = query => {
-  const { lang, tags, title, description, rubric, items, comment, navigationMode } = query;
+  const { lang, tags, title, description, rubric, questions: items, comment, navigationMode } = query;
 
   return {
     lang,
@@ -59,7 +59,7 @@ const parseExerciseDetail: Parser<ExerciseDetail> = query => {
     title,
     description,
     rubric,
-    items: items && JSON.parse(items),
+    questions: items && JSON.parse(items),
     comment,
     navigationMode: navigationMode as NavigationMode,
     ...page(query)
@@ -77,7 +77,7 @@ const parseExerciseRevision: Parser<ExerciseRevision> = query => {
 };
 
 const parseExerciseRevisionDetail: Parser<ExerciseRevisionDetail> = query => {
-  const { lang, tags, title, description, rubric, items, comment, navigationMode } = query;
+  const { lang, tags, title, description, rubric, questions, comment, navigationMode } = query;
 
   return {
     lang,
@@ -85,7 +85,7 @@ const parseExerciseRevisionDetail: Parser<ExerciseRevisionDetail> = query => {
     title,
     description,
     rubric,
-    items: items && JSON.parse(items),
+    questions: questions && JSON.parse(questions),
     comment,
     navigationMode: navigationMode as NavigationMode,
     ...page(query)

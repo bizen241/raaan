@@ -20,7 +20,7 @@ export abstract class ExerciseDetailClass extends BaseEntityClass {
   rubric: string = "";
 
   @Column("json")
-  items: Question[] = [];
+  questions: Question[] = [];
 
   @Column()
   comment: string = "";

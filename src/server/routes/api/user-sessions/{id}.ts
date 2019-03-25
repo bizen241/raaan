@@ -6,20 +6,18 @@ import { responseFindResult } from "../../../api/response";
 import { UserSessionEntity } from "../../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
-  const currentUser = req.session.user;
+  const currentUser = req.user;
   const { id: userSessionId }: PathParams = req.params;
 
-  const loadedUserSession = await getManager().findOne(UserSessionEntity, userSessionId, {
-    relations: ["user"]
-  });
-  if (loadedUserSession === undefined) {
+  const userSession = await getManager().findOne(UserSessionEntity, userSessionId);
+  if (userSession === undefined) {
     return next(createError(404));
   }
-  if (loadedUserSession.user.id !== currentUser.id && currentUser.permission !== "Admin") {
+  if (userSession.userId !== currentUser.id) {
     return next(createError(403));
   }
 
-  responseFindResult(res, loadedUserSession);
+  responseFindResult(res, userSession);
 });
 
 GET.apiDoc = createOperationDoc({
@@ -30,24 +28,24 @@ GET.apiDoc = createOperationDoc({
 });
 
 export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
-  const currentUser = req.session.user;
+  const currentUser = req.user;
   const { id: userSessionId }: PathParams = req.params;
 
   const manager = getManager();
 
-  const targetUserSession = await manager.findOne(UserSessionEntity, userSessionId, {
+  const userSession = await manager.findOne(UserSessionEntity, userSessionId, {
     relations: ["user"]
   });
-  if (targetUserSession === undefined) {
+  if (userSession === undefined) {
     return next(createError(404));
   }
-  if (targetUserSession.user.id !== currentUser.id && currentUser.permission !== "Admin") {
+  if (userSession.userId !== currentUser.id) {
     return next(createError(403));
   }
 
-  await manager.remove(targetUserSession);
+  await manager.remove(userSession);
 
-  responseFindResult(res, targetUserSession);
+  responseFindResult(res, userSession);
 });
 
 DELETE.apiDoc = createOperationDoc({

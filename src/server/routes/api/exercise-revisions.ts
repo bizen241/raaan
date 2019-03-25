@@ -1,17 +1,10 @@
 import { OperationFunction } from "express-openapi";
 import { getManager } from "typeorm";
-import { ExerciseRevision, ExerciseDetail } from "../../../shared/api/entities";
+import { ExerciseDetail } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
-import {
-  ExerciseEntity,
-  ExerciseRevisionEntity,
-  createExerciseEntity,
-  createExerciseRevisionEntity,
-  UserEntity,
-  createExerciseDetailEntity
-} from "../../database/entities";
+import { ExerciseEntity, ExerciseRevisionEntity, UserEntity } from "../../database/entities";
 
 const getExercise = async (currentUser: UserEntity, contentId: string | undefined) => {
   if (contentId !== undefined) {
@@ -47,14 +40,10 @@ export const POST: OperationFunction = errorBoundary(async (req, res) => {
 
   const manager = getManager();
 
-  const content = await getExercise(req.session.user, contentId);
+  const content = await getExercise(req.user, contentId);
 
-  const newDetail = createExerciseDetailEntity(manager, params);
   const newRevisionId = await saveExerciseRevision(content, newRevision);
 
-  const loadedExercise = await getManager().findOne(ExerciseEntity, newRevisionId, {
-    relations: ["content", "content.author", "content.latest", "content.tags"]
-  });
   if (loadedRevision === undefined) {
     throw new Error();
   }

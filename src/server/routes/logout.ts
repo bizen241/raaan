@@ -9,7 +9,7 @@ export const setClearSiteData = (res: Response) => {
 };
 
 logoutRouter.get("/", async (req, res, next) => {
-  const currentUser = req.session.user;
+  const currentUser = req.user;
   if (currentUser.permission === "Guest") {
     return next(createError(403));
   }

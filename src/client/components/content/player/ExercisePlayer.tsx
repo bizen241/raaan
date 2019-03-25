@@ -25,9 +25,9 @@ export const ExercisePlayer = connector(
       return <div>Loading...</div>;
     }
 
-    const { items = [] } = attempt.content;
+    const { questions = [] } = attempt.content;
 
-    if (items.length === 0) {
+    if (questions.length === 0) {
       return <div>Empty</div>;
     }
     if (attempt.isFinished) {
@@ -39,7 +39,7 @@ export const ExercisePlayer = connector(
     }
 
     const currentItemIndex = attempt.plan[attempt.cursor];
-    const currentItem = items[currentItemIndex];
+    const currentItem = questions[currentItemIndex];
     const currentCompiledItem = attempt.compiled[currentItemIndex];
 
     return (

@@ -34,7 +34,7 @@ test("guest user", async done => {
 
   const sessionMiddleware = createSessionMiddleware(testProcessEnv);
   sessionMiddleware(req, res, () => {
-    expect(req.session.user.permission).toEqual("Guest");
+    expect(req.user.permission).toEqual("Guest");
 
     done();
   });
@@ -67,7 +67,7 @@ test("valid session", async done => {
 
   const sessionMiddleware = createSessionMiddleware(testProcessEnv);
   sessionMiddleware(req, res, () => {
-    expect(req.session.user.id).toEqual(userId);
+    expect(req.user.id).toEqual(userId);
 
     done();
   });

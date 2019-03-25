@@ -68,7 +68,7 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (entity, store) => {
 };
 
 const normalizeExerciseDetail: Normalizer<ExerciseDetailEntity> = (entity, store) => {
-  const { id, content, lang, tags, title, description, rubric, items, comment, navigationMode } = entity;
+  const { id, content, lang, tags, title, description, rubric, questions, comment, navigationMode } = entity;
   if (content === undefined) {
     throw new Error();
   }
@@ -81,7 +81,7 @@ const normalizeExerciseDetail: Normalizer<ExerciseDetailEntity> = (entity, store
     title,
     description,
     rubric,
-    items,
+    questions,
     comment,
     navigationMode
   };
@@ -101,7 +101,7 @@ const normalizeExerciseRevision: Normalizer<ExerciseRevisionEntity> = (entity, s
 };
 
 const normalizeExerciseRevisionDetail: Normalizer<ExerciseRevisionDetailEntity> = (entity, store) => {
-  const { id, revision, lang, tags, title, description, rubric, items, comment, navigationMode } = entity;
+  const { id, revision, lang, tags, title, description, rubric, questions, comment, navigationMode } = entity;
   if (revision === undefined) {
     throw new Error();
   }
@@ -114,7 +114,7 @@ const normalizeExerciseRevisionDetail: Normalizer<ExerciseRevisionDetailEntity> 
     title,
     description,
     rubric,
-    items,
+    questions,
     comment,
     navigationMode
   };

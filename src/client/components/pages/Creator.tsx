@@ -2,10 +2,10 @@ import { Button } from "@blueprintjs/core";
 import { push } from "connected-react-router";
 import * as React from "react";
 import { useCallback, useEffect } from "react";
-import { createExerciseRevision } from "../../domain/content";
+import { createExerciseDetail } from "../../domain/content";
 import { connector } from "../../reducers";
 import { buffersActions, generateBufferId } from "../../reducers/buffers";
-import { ExerciseRevisionBufferList } from "../list/buffers/ExerciseRevisionBufferList";
+import { ExerciseDetailBufferList } from "../list/buffers/ExerciseDetailBufferList";
 import { ExerciseList } from "../list/search/ExerciseList";
 import { Header } from "../project/Header";
 import { Column } from "../ui";
@@ -22,7 +22,7 @@ export const Creator = connector(
     const onCreate = useCallback(() => {
       const bufferId = generateBufferId();
 
-      addBuffer("ExerciseRevision", bufferId, createExerciseRevision());
+      addBuffer("ExerciseDetail", bufferId, createExerciseDetail());
       editBuffer(bufferId);
     }, []);
 
@@ -42,7 +42,7 @@ export const Creator = connector(
           </Button>
         </Column>
         <Column padding>
-          <ExerciseRevisionBufferList />
+          <ExerciseDetailBufferList />
         </Column>
         <Column padding>
           <ExerciseList />

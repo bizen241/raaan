@@ -3,7 +3,7 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { AuthProviderName } from "../../shared/auth";
-import { createUser, createUserAccount, UserAccountEntity, UserEntity } from "../database/entities";
+import { UserAccountEntity, UserConfigEntity, UserEntity } from "../database/entities";
 import { ProcessEnv } from "../env";
 import { saveSession } from "../session/save";
 import { createAuthClients, UserProfile } from "./clients";
@@ -27,11 +27,11 @@ export const createAuthMiddleware = (processEnv: ProcessEnv): RequestHandler => 
     req.authenticate = async provider => {
       try {
         const userProfile = await clients[provider].authenticate(req);
-        const user = await saveUserAndAccount(provider, userProfile, req.session.user).catch(() => {
+        const user = await saveUserAndAccount(provider, userProfile, req.user).catch(() => {
           throw createError(500);
         });
 
-        req.session.user = user;
+        req.user = user;
         req.session.sessionId = uuid();
 
         await saveSession(req, res).catch(() => {
@@ -59,28 +59,29 @@ const saveUserAndAccount = async (provider: AuthProviderName, userProfile: UserP
     }
   );
 
-  return account !== undefined ? account.user : await createUserAndAccount(provider, userProfile, sessionUser);
+  if (account !== undefined) {
+    if (account.user === undefined) {
+      throw createError(500);
+    }
+
+    return account.user;
+  }
+
+  return await createUserAndAccount(provider, userProfile, sessionUser);
 };
 
 const createUserAndAccount = async (provider: AuthProviderName, userProfile: UserProfile, sessionUser: UserEntity) => {
-  const user =
-    sessionUser.permission !== "Guest"
-      ? sessionUser
-      : createUser({
-          name: userProfile.name,
-          permission: "Write"
-        });
-
-  const account = createUserAccount({
-    accountId: userProfile.id,
-    provider,
-    user
-  });
+  const userConfig = new UserConfigEntity();
+  const user = sessionUser.permission !== "Guest" ? sessionUser : new UserEntity(name, "Write", userConfig);
+  const userAccount = new UserAccountEntity(user, provider, userProfile.id);
 
   const manager = getManager();
 
+  await manager.save(userConfig);
+
   const savedUser = await manager.save(user);
-  await manager.save(account);
+
+  await manager.save(userAccount);
 
   return savedUser;
 };

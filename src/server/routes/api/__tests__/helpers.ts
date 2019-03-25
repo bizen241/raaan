@@ -9,8 +9,8 @@ export const createHttpMocks = (permission: Permission) => {
 
   req.session = sessions[permission];
 
-  req.session.user.createdAt = new Date();
-  req.session.user.updatedAt = new Date();
+  req.user.createdAt = new Date();
+  req.user.updatedAt = new Date();
 
   const next = (error: HttpError) => {
     res.status(error.statusCode);

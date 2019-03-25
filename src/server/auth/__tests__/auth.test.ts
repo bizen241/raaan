@@ -112,5 +112,5 @@ test("authenticate with github", async () => {
   expect(spyRedirect).toBeCalled();
   expect(spyRedirect.mock.results[0].value).toEqual("/");
 
-  expect(req.session.user.permission === "Write");
+  expect(req.user.permission === "Write");
 });

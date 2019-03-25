@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
-import { createUserSession, UserSessionEntity } from "../database/entities";
+import { UserSessionEntity } from "../database/entities";
 import { getGuestUser } from "../database/setup/guest";
 import { ProcessEnv } from "../env";
 import { getSessionId } from "./cookie";
@@ -44,7 +44,12 @@ export const createSessionMiddleware = (env: ProcessEnv): RequestHandler => {
         const session = await loadSession(sessionId);
 
         if (session != null) {
+          if (session.user === undefined) {
+            throw createError(500);
+          }
+
           req.session = session;
+          req.user = session.user;
 
           next();
 
@@ -56,12 +61,13 @@ export const createSessionMiddleware = (env: ProcessEnv): RequestHandler => {
         throw createError(500);
       });
 
-      req.session = createUserSession({
-        user: guestUser,
-        sessionId: uuid(),
-        expireAt: new Date(),
-        userAgent: req.headers["user-agent"] || ""
-      });
+      const newSession = new UserSessionEntity(guestUser);
+      newSession.sessionId = uuid();
+      newSession.expireAt = new Date();
+      newSession.userAgent = req.headers["user-agent"] || "";
+
+      req.session = newSession;
+      req.user = guestUser;
 
       next();
     } catch (e) {

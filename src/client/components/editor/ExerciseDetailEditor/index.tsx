@@ -1,20 +1,20 @@
 import { Button, Classes, ControlGroup, Divider } from "@blueprintjs/core";
-import { useCallback, useEffect, useRef, useState } from "react";
 import * as React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { EntityEditorProps } from "..";
-import { ExerciseRevision } from "../../../../shared/api/entities";
+import { ExerciseDetail } from "../../../../shared/api/entities";
 import { Question } from "../../../../shared/content";
 import { contentActions } from "../../../actions/exerciseDetail";
 import { connector } from "../../../reducers";
 import { dialogActions } from "../../../reducers/dialog";
-import { QuestionPreviewer } from "../../content/previewer/QuestionPreviewer";
 import { ExercisePreviewer } from "../../content/previewer/ExercisePreviewer";
+import { QuestionPreviewer } from "../../content/previewer/QuestionPreviewer";
 import { Column } from "../../ui";
 import { manageHotKey } from "../../utils/hotKey";
-import { QuestionEditor, contentItemTypeToLabel } from "./QuestionEditor";
+import { contentItemTypeToLabel, QuestionEditor } from "./QuestionEditor";
 
-export const ExerciseEditor = connector(
-  (state, ownProps: EntityEditorProps<ExerciseRevision>) => ({
+export const ExerciseDetailEditor = connector(
+  (state, ownProps: EntityEditorProps<ExerciseDetail>) => ({
     ...ownProps,
     isVisible: state.dialog.name == null
   }),
@@ -23,14 +23,16 @@ export const ExerciseEditor = connector(
     openDialog: dialogActions.open
   }),
   ({ bufferId, buffer, isVisible, updateTitle, appendItem, openDialog }) => {
-    const { title, items = [] } = buffer.edited;
+    const { title, questions = [] } = buffer.edited;
 
     const titleInputRef = useRef<HTMLInputElement>(null);
     const itemTypeSelectorRef = useRef<HTMLSelectElement>(null);
     const appendButtonRef = useRef<HTMLButtonElement>(null);
 
     const [focusedItemIndex, focus] = useState(0);
-    const [selectedItemType, selectItemType] = useState(items.length !== 0 ? items[items.length - 1].type : "text");
+    const [selectedItemType, selectItemType] = useState(
+      questions.length !== 0 ? questions[questions.length - 1].type : "text"
+    );
 
     useEffect(
       manageHotKey(
@@ -65,7 +67,7 @@ export const ExerciseEditor = connector(
         <Divider />
         <Column>
           <Column padding>アイテム</Column>
-          {items.map((item, index) => (
+          {questions.map((item, index) => (
             <Column key={item.id} padding>
               <QuestionEditor bufferId={bufferId} itemIndex={index} item={item} onFocus={focus} />
             </Column>
@@ -106,7 +108,7 @@ export const ExerciseEditor = connector(
           </Button>
         </Column>
         <ExercisePreviewer params={buffer.edited} />
-        <QuestionPreviewer item={items[focusedItemIndex]} />
+        <QuestionPreviewer item={questions[focusedItemIndex]} />
       </Column>
     );
   }

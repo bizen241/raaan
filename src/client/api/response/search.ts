@@ -18,6 +18,7 @@ export const createSearchResultStore = (): SearchResultStore => ({
   Exercise: {},
   ExerciseDetail: {},
   ExerciseRevision: {},
+  ExerciseRevisionDetail: {},
   ExerciseTag: {},
   User: {},
   UserAccount: {},

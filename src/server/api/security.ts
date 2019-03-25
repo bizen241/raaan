@@ -29,7 +29,7 @@ const permissionMap: { [P in Permission]: Permission[] } = {
 };
 
 const createSecurityHandler = (permission: Permission): SecurityHandler => req => {
-  const hasPermission = permissionMap[permission].includes(req.session.user.permission);
+  const hasPermission = permissionMap[permission].includes(req.user.permission);
 
   if (hasPermission) {
     return true;

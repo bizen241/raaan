@@ -9,7 +9,7 @@ export interface ExerciseDetailObject extends BaseEntityObject {
   tags: string[];
   description: string;
   rubric: string;
-  items: Question[];
+  questions: Question[];
   comment: string;
   navigationMode: NavigationMode;
 }
