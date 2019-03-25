@@ -11,9 +11,9 @@ export interface PathParams {
 
 const tags: { [P in EntityType]: string } = {
   Content: "contents",
-  ContentDetail: "content-details",
-  ContentRevision: "content-revisions",
-  ContentTag: "content-tags",
+  ExerciseDetail: "content-details",
+  ExerciseRevision: "content-revisions",
+  ExerciseTag: "content-tags",
   User: "users",
   UserAccount: "user-accounts",
   UserConfig: "user-config",

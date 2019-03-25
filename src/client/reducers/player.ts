@@ -1,9 +1,9 @@
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { ContentRevision } from "../../shared/api/entities";
+import { ExerciseRevision } from "../../shared/api/entities";
 import { SaveParams } from "../../shared/api/request/save";
 import { ActionUnion, createAction } from "../actions";
-import { createContentRevision, createPlan } from "../domain/content";
+import { createExerciseRevision, createPlan } from "../domain/content";
 import { compileContent, CompiledItem } from "../domain/content/compiler";
 
 export enum PlayerActionType {
@@ -25,7 +25,7 @@ export interface ContentItemResult {
 }
 
 export const playerActions = {
-  load: (content: SaveParams<ContentRevision>) => createAction(PlayerActionType.Load, { content }),
+  load: (content: SaveParams<ExerciseRevision>) => createAction(PlayerActionType.Load, { content }),
   start: () => createAction(PlayerActionType.Start),
   next: (result: ContentItemResult) => createAction(PlayerActionType.Next, { result }),
   finish: () => createAction(PlayerActionType.Finish)
@@ -34,7 +34,7 @@ export const playerActions = {
 export type PlayerActions = ActionUnion<typeof playerActions>;
 
 export interface PlayerState {
-  content: SaveParams<ContentRevision>;
+  content: SaveParams<ExerciseRevision>;
   compiled: CompiledItem[];
   plan: number[];
   cursor: number;
@@ -44,7 +44,7 @@ export interface PlayerState {
 }
 
 export const initialPlayerState: PlayerState = {
-  content: createContentRevision(),
+  content: createExerciseRevision(),
   compiled: [],
   plan: [],
   cursor: 0,

@@ -1,8 +1,8 @@
 import {
   Content,
-  ContentDetail,
-  ContentRevision,
-  ContentTag,
+  ExerciseDetail,
+  ExerciseRevision,
+  ExerciseTag,
   EntityObject,
   EntityType,
   Lang,
@@ -49,7 +49,7 @@ const parseContent: Parser<Content> = query => {
   };
 };
 
-const parseContentDetail: Parser<ContentDetail> = query => {
+const parseExerciseDetail: Parser<ExerciseDetail> = query => {
   const { lang, tags, title, description, rubric, items, comment, navigationMode } = query;
 
   return {
@@ -65,7 +65,7 @@ const parseContentDetail: Parser<ContentDetail> = query => {
   };
 };
 
-const parseContentRevision: Parser<ContentRevision> = query => {
+const parseExerciseRevision: Parser<ExerciseRevision> = query => {
   const { contentId, detailId } = query;
 
   return {
@@ -75,7 +75,7 @@ const parseContentRevision: Parser<ContentRevision> = query => {
   };
 };
 
-const parseContentTag: Parser<ContentTag> = query => {
+const parseExerciseTag: Parser<ExerciseTag> = query => {
   const { name } = query;
 
   return {
@@ -127,9 +127,9 @@ const parseUserSession: Parser<UserSession> = query => {
 
 const parsers: { [T in EntityType]: Parser<any> } = {
   Content: parseContent,
-  ContentDetail: parseContentDetail,
-  ContentRevision: parseContentRevision,
-  ContentTag: parseContentTag,
+  ExerciseDetail: parseExerciseDetail,
+  ExerciseRevision: parseExerciseRevision,
+  ExerciseTag: parseExerciseTag,
   User: parseUser,
   UserAccount: parseUserAccount,
   UserConfig: parseUserConfig,

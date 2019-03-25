@@ -3,7 +3,7 @@ import { BaseEntityObject } from "./BaseEntityObject";
 
 export type NavigationMode = "sequential" | "random";
 
-export interface ContentDetail extends BaseEntityObject {
+export interface ExerciseDetail extends BaseEntityObject {
   lang: string;
   title: string;
   tags: string[];

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect } from "react";
-import { ContentRevision } from "../../../../shared/api/entities";
+import { ExerciseRevision } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
 import { connector } from "../../../reducers";
 import { playerActions } from "../../../reducers/player";
@@ -9,7 +9,7 @@ import { AttemptResultRenderer } from "./AttemptResultRenderer";
 import { ContentItemPlayer } from "./ContentItemPlayer";
 
 export const ContentPlayer = connector(
-  (state, ownProps: { content: SaveParams<ContentRevision> }) => ({
+  (state, ownProps: { content: SaveParams<ExerciseRevision> }) => ({
     content: ownProps.content,
     attempt: state.player
   }),

@@ -1,8 +1,8 @@
 import {
   Content,
-  ContentDetail,
-  ContentRevision,
-  ContentTag,
+  ExerciseDetail,
+  ExerciseRevision,
+  ExerciseTag,
   EntityObject,
   User,
   UserAccount,
@@ -16,9 +16,9 @@ export interface EntityMap<E extends EntityObject> {
 
 export interface EntityStore {
   Content: { [id: string]: Content | undefined };
-  ContentDetail: { [id: string]: ContentDetail | undefined };
-  ContentRevision: { [id: string]: ContentRevision | undefined };
-  ContentTag: { [id: string]: ContentTag | undefined };
+  ExerciseDetail: { [id: string]: ExerciseDetail | undefined };
+  ExerciseRevision: { [id: string]: ExerciseRevision | undefined };
+  ExerciseTag: { [id: string]: ExerciseTag | undefined };
   User: { [id: string]: User | undefined };
   UserAccount: { [id: string]: UserAccount | undefined };
   UserConfig: { [id: string]: UserConfig | undefined };
@@ -27,9 +27,9 @@ export interface EntityStore {
 
 export const createEntityStore = (): EntityStore => ({
   Content: {},
-  ContentDetail: {},
-  ContentRevision: {},
-  ContentTag: {},
+  ExerciseDetail: {},
+  ExerciseRevision: {},
+  ExerciseTag: {},
   User: {},
   UserAccount: {},
   UserConfig: {},

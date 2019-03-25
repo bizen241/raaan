@@ -1,12 +1,12 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
-import { ContentDetailEntity } from "./ContentDetailEntity";
-import { ContentTagEntity } from "./ContentTagEntity";
+import { ExerciseDetailEntity } from "./ContentDetailEntity";
+import { ExerciseTagEntity } from "./ContentTagEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity()
-export class ContentEntity extends BaseEntityClass {
-  type: "Content" = "Content";
+export class ExerciseEntity extends BaseEntityClass {
+  type: "Exercise" = "Exercise";
 
   @Column("uuid")
   authorId: string;
@@ -22,17 +22,17 @@ export class ContentEntity extends BaseEntityClass {
   @Column("uuid")
   detailId: string;
 
-  @OneToOne(() => ContentDetailEntity, contentDetail => contentDetail.content, {
+  @OneToOne(() => ExerciseDetailEntity, contentDetail => contentDetail.content, {
     onDelete: "CASCADE"
   })
   @JoinColumn({
     name: "detailId"
   })
-  detail?: ContentDetailEntity;
+  detail?: ExerciseDetailEntity;
 
-  @ManyToMany(() => ContentTagEntity)
+  @ManyToMany(() => ExerciseTagEntity)
   @JoinTable()
-  tags?: ContentTagEntity[];
+  tags?: ExerciseTagEntity[];
 
   @Column()
   isPrivate: boolean = true;
@@ -40,7 +40,7 @@ export class ContentEntity extends BaseEntityClass {
   @Column()
   isLocked: boolean = false;
 
-  constructor(author: UserEntity, detail: ContentDetailEntity) {
+  constructor(author: UserEntity, detail: ExerciseDetailEntity) {
     super();
 
     this.authorId = author.id;

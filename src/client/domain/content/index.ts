@@ -1,9 +1,9 @@
 import * as uuid from "uuid";
-import { ContentRevision } from "../../../shared/api/entities";
+import { ExerciseRevision } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { CodeItem, ContentItem, KanaItem, KanjiItem, MathItem, TextItem } from "../../../shared/content";
 
-export const createContentRevision = (contentId?: string): SaveParams<ContentRevision> => ({
+export const createExerciseRevision = (contentId?: string): SaveParams<ExerciseRevision> => ({
   contentId,
   title: "",
   lang: "ja",

@@ -1,8 +1,8 @@
 import { EntityManager } from "typeorm";
-import { ContentDetailEntity } from "./ContentDetailEntity";
-import { ContentEntity } from "./ContentEntity";
-import { ContentRevisionEntity } from "./ContentRevisionEntity";
-import { ContentTagEntity } from "./ContentTagEntity";
+import { ExerciseDetailEntity } from "./ContentDetailEntity";
+import { ExerciseEntity } from "./ContentEntity";
+import { ExerciseRevisionEntity } from "./ContentRevisionEntity";
+import { ExerciseTagEntity } from "./ContentTagEntity";
 import { UserAccountEntity } from "./UserAccountEntity";
 import { UserConfigEntity } from "./UserConfigEntity";
 import { UserEntity } from "./UserEntity";
@@ -18,20 +18,20 @@ export * from "./UserEntity";
 export * from "./UserSessionEntity";
 
 export type Entity =
-  | ContentDetailEntity
-  | ContentEntity
-  | ContentRevisionEntity
-  | ContentTagEntity
+  | ExerciseDetailEntity
+  | ExerciseEntity
+  | ExerciseRevisionEntity
+  | ExerciseTagEntity
   | UserAccountEntity
   | UserConfigEntity
   | UserEntity
   | UserSessionEntity;
 
 export const entities = [
-  ContentDetailEntity,
-  ContentEntity,
-  ContentRevisionEntity,
-  ContentTagEntity,
+  ExerciseDetailEntity,
+  ExerciseEntity,
+  ExerciseRevisionEntity,
+  ExerciseTagEntity,
   UserAccountEntity,
   UserConfigEntity,
   UserEntity,

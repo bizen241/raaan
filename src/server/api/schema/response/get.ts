@@ -34,7 +34,7 @@ export const EntityStoreSchema: Definition = {
         }
       }
     },
-    ContentRevision: {
+    ExerciseRevision: {
       type: "object",
       additionalProperties: {
         type: "object",
@@ -129,7 +129,7 @@ export const EntityStoreSchema: Definition = {
         }
       }
     },
-    ContentTag: {
+    ExerciseTag: {
       type: "object",
       additionalProperties: {
         type: "object",
@@ -149,12 +149,7 @@ export const EntityStoreSchema: Definition = {
         properties: {
           name: { type: "string" },
           permission: {
-            enum: [
-              "Admin",
-              "Guest",
-              "Owner",
-              "Write"
-            ],
+            enum: ["Admin", "Guest", "Owner", "Write"],
             type: "string"
           },
           id: { format: "uuid", type: "string" },

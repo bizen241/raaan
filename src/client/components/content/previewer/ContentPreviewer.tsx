@@ -1,12 +1,12 @@
 import * as React from "react";
-import { ContentRevision } from "../../../../shared/api/entities";
+import { ExerciseRevision } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
 import { connector } from "../../../reducers";
 import { dialogActions } from "../../../reducers/dialog";
 import { ContentPreviewDialog } from "./ContentPreviewDialog";
 
 export const ContentPreviewer = connector(
-  (state, ownProps: { params: SaveParams<ContentRevision> }) => ({
+  (state, ownProps: { params: SaveParams<ExerciseRevision> }) => ({
     ...ownProps,
     isOpen: state.dialog.name === "ContentPreviewer"
   }),

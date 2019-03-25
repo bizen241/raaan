@@ -1,35 +1,35 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
-import { ContentEntity } from "./ContentEntity";
-import { ContentRevisionDetailEntity } from "./ContentRevisionDetailEntity";
+import { ExerciseEntity } from "./ContentEntity";
+import { ExerciseRevisionDetailEntity } from "./ContentRevisionDetailEntity";
 
 @Entity()
-export class ContentRevisionEntity extends BaseEntityClass {
-  type: "ContentRevision" = "ContentRevision";
+export class ExerciseRevisionEntity extends BaseEntityClass {
+  type: "ExerciseRevision" = "ExerciseRevision";
 
   @Column()
   contentId: string;
 
-  @ManyToOne(() => ContentEntity, {
+  @ManyToOne(() => ExerciseEntity, {
     onDelete: "CASCADE"
   })
   @JoinColumn({
     name: "contentId"
   })
-  content!: ContentEntity;
+  content!: ExerciseEntity;
 
   @Column()
   detailId: string;
 
-  @OneToOne(() => ContentRevisionDetailEntity, contentRevisionDetail => contentRevisionDetail.revision, {
+  @OneToOne(() => ExerciseRevisionDetailEntity, contentRevisionDetail => contentRevisionDetail.revision, {
     onDelete: "CASCADE"
   })
   @JoinColumn({
     name: "detailId"
   })
-  detail!: ContentRevisionDetailEntity;
+  detail!: ExerciseRevisionDetailEntity;
 
-  constructor(content: ContentEntity, detail: ContentRevisionDetailEntity) {
+  constructor(content: ExerciseEntity, detail: ExerciseRevisionDetailEntity) {
     super();
 
     this.contentId = content.id;

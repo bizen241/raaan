@@ -2,7 +2,7 @@ import { Button, Classes, ControlGroup, Divider } from "@blueprintjs/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as React from "react";
 import { EntityEditorProps } from "..";
-import { ContentRevision } from "../../../../shared/api/entities";
+import { ExerciseRevision } from "../../../../shared/api/entities";
 import { ContentItem } from "../../../../shared/content";
 import { contentActions } from "../../../actions/content";
 import { connector } from "../../../reducers";
@@ -14,7 +14,7 @@ import { manageHotKey } from "../../utils/hotKey";
 import { ContentItemEditor, contentItemTypeToLabel } from "./ContentItemEditor";
 
 export const ContentEditor = connector(
-  (state, ownProps: EntityEditorProps<ContentRevision>) => ({
+  (state, ownProps: EntityEditorProps<ExerciseRevision>) => ({
     ...ownProps,
     isVisible: state.dialog.name == null
   }),

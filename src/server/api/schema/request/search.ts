@@ -38,7 +38,7 @@ export const SearchParamsMapSchema: Definition = {
         }
       ]
     },
-    ContentRevision: {
+    ExerciseRevision: {
       allOf: [
         {
           type: "object",
@@ -137,7 +137,7 @@ export const SearchParamsMapSchema: Definition = {
         }
       ]
     },
-    ContentTag: {
+    ExerciseTag: {
       allOf: [
         {
           type: "object",
@@ -159,12 +159,7 @@ export const SearchParamsMapSchema: Definition = {
           properties: {
             name: { type: "string" },
             permission: {
-              enum: [
-                "Admin",
-                "Guest",
-                "Owner",
-                "Write"
-              ],
+              enum: ["Admin", "Guest", "Owner", "Write"],
               type: "string"
             }
           }

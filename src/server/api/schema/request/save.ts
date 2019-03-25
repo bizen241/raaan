@@ -27,7 +27,7 @@ export const SaveParamsMapSchema: Definition = {
         isPrivate: { type: "boolean" }
       }
     },
-    ContentRevision: {
+    ExerciseRevision: {
       type: "object",
       properties: {
         summary: { type: "string" },
@@ -115,7 +115,7 @@ export const SaveParamsMapSchema: Definition = {
         isLinear: { type: "boolean" }
       }
     },
-    ContentTag: {
+    ExerciseTag: {
       type: "object",
       properties: { name: { type: "string" } }
     },
@@ -124,12 +124,7 @@ export const SaveParamsMapSchema: Definition = {
       properties: {
         name: { type: "string" },
         permission: {
-          enum: [
-            "Admin",
-            "Guest",
-            "Owner",
-            "Write"
-          ],
+          enum: ["Admin", "Guest", "Owner", "Write"],
           type: "string"
         }
       }

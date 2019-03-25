@@ -1,5 +1,5 @@
 import { Omit } from "react-redux";
-import { Content, ContentRevision, ContentTag, EntityObject, User, UserAccount, UserSession } from "../entities";
+import { Content, ExerciseRevision, ExerciseTag, EntityObject, User, UserAccount, UserSession } from "../entities";
 
 export type SearchParams<E extends EntityObject> = Partial<Omit<E, "id" | "createdAt" | "updatedAt" | "fetchedAt">> & {
   limit: number;
@@ -8,8 +8,8 @@ export type SearchParams<E extends EntityObject> = Partial<Omit<E, "id" | "creat
 
 export type SearchParamsMap = {
   Content: SearchParams<Content>;
-  ContentRevision: SearchParams<ContentRevision>;
-  ContentTag: SearchParams<ContentTag>;
+  ExerciseRevision: SearchParams<ExerciseRevision>;
+  ExerciseTag: SearchParams<ExerciseTag>;
   User: SearchParams<User>;
   UserAccount: SearchParams<UserAccount>;
   UserSession: SearchParams<UserSession>;

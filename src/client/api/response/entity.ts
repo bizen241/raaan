@@ -2,9 +2,9 @@ import { EntityStore } from "../../../shared/api/response/get";
 
 export const mergeEntityStore = (target: EntityStore, source: EntityStore): EntityStore => ({
   Content: { ...target.Content, ...source.Content },
-  ContentDetail: { ...target.ContentDetail, ...source.ContentDetail },
-  ContentRevision: { ...target.ContentRevision, ...source.ContentRevision },
-  ContentTag: { ...target.ContentTag, ...source.ContentTag },
+  ExerciseDetail: { ...target.ExerciseDetail, ...source.ExerciseDetail },
+  ExerciseRevision: { ...target.ExerciseRevision, ...source.ExerciseRevision },
+  ExerciseTag: { ...target.ExerciseTag, ...source.ExerciseTag },
   User: { ...target.User, ...source.User },
   UserAccount: { ...target.UserAccount, ...source.UserAccount },
   UserConfig: { ...target.UserConfig, ...source.UserConfig },

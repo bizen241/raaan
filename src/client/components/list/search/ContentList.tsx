@@ -22,7 +22,7 @@ export const ContentList = connector(
     const [limit, setLimit] = useState(10);
     const [offset, setOffset] = useState(0);
 
-    const onDelete = useCallback((id: string) => deleteBuffer("ContentRevision", id), []);
+    const onDelete = useCallback((id: string) => deleteBuffer("ExerciseRevision", id), []);
 
     useEffect(() => {
       if (
@@ -30,7 +30,7 @@ export const ContentList = connector(
         searchResult.ids.length < offset + limit ||
         searchResult.ids.slice(offset, offset + limit).some(id => id === undefined)
       ) {
-        search<Content>("Content", {
+        search<Content>("Exercise", {
           limit,
           offset
         });

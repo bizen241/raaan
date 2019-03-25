@@ -74,7 +74,7 @@ export type EntityEditorProps<E extends EntityObject = EntityObject> = {
 };
 
 const editors: { [T in EntityType]?: React.ComponentType<EntityEditorProps> } = {
-  ContentRevision: ContentEditor,
+  ExerciseRevision: ContentEditor,
   User: UserEditor,
   UserConfig: UserConfigEditor
 };

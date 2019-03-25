@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useMemo } from "react";
-import { ContentRevision } from "../../../../shared/api/entities";
+import { ExerciseRevision } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
 import { ContentItem } from "../../../../shared/content";
-import { createContentRevision } from "../../../domain/content";
+import { createExerciseRevision } from "../../../domain/content";
 import { connector } from "../../../reducers";
 import { dialogActions } from "../../../reducers/dialog";
 import { ContentPreviewDialog } from "./ContentPreviewDialog";
@@ -17,9 +17,9 @@ export const ContentItemPreviewer = connector(
     onClose: dialogActions.close
   }),
   ({ item, isOpen, onClose }) => {
-    const params = useMemo<SaveParams<ContentRevision>>(
+    const params = useMemo<SaveParams<ExerciseRevision>>(
       () => ({
-        ...createContentRevision(""),
+        ...createExerciseRevision(""),
         items: [item]
       }),
       [item]

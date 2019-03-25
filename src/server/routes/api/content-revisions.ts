@@ -1,21 +1,21 @@
 import { OperationFunction } from "express-openapi";
 import { getManager } from "typeorm";
-import { ContentRevision, ContentDetail } from "../../../shared/api/entities";
+import { ExerciseRevision, ExerciseDetail } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
 import {
-  ContentEntity,
-  ContentRevisionEntity,
-  createContentEntity,
-  createContentRevisionEntity,
+  ExerciseEntity,
+  ExerciseRevisionEntity,
+  createExerciseEntity,
+  createExerciseRevisionEntity,
   UserEntity,
-  createContentDetailEntity
+  createExerciseDetailEntity
 } from "../../database/entities";
 
 const getContent = async (currentUser: UserEntity, contentId: string | undefined) => {
   if (contentId !== undefined) {
-    const loadedContent = await getManager().findOne(ContentEntity, contentId, {
+    const loadedContent = await getManager().findOne(ExerciseEntity, contentId, {
       relations: ["author", "latest", "tags"]
     });
 
@@ -24,12 +24,12 @@ const getContent = async (currentUser: UserEntity, contentId: string | undefined
     }
   }
 
-  return createContentEntity({
+  return createExerciseEntity({
     author: currentUser
   });
 };
 
-const saveContentRevision = async (content: ContentEntity, revision: ContentRevisionEntity) =>
+const saveExerciseRevision = async (content: ExerciseEntity, revision: ExerciseRevisionEntity) =>
   getManager().transaction(async manager => {
     const savedRevision = await manager.save(revision);
 
@@ -43,16 +43,16 @@ const saveContentRevision = async (content: ContentEntity, revision: ContentRevi
   });
 
 export const POST: OperationFunction = errorBoundary(async (req, res) => {
-  const params: SaveParams<ContentDetail> = req.body;
+  const params: SaveParams<ExerciseDetail> = req.body;
 
   const manager = getManager();
 
   const content = await getContent(req.session.user, contentId);
 
-  const newDetail = createContentDetailEntity(manager, params);
-  const newRevisionId = await saveContentRevision(content, newRevision);
+  const newDetail = createExerciseDetailEntity(manager, params);
+  const newRevisionId = await saveExerciseRevision(content, newRevision);
 
-  const loadedContent = await getManager().findOne(ContentEntity, newRevisionId, {
+  const loadedContent = await getManager().findOne(ExerciseEntity, newRevisionId, {
     relations: ["content", "content.author", "content.latest", "content.tags"]
   });
   if (loadedRevision === undefined) {
@@ -63,7 +63,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res) => {
 });
 
 POST.apiDoc = createOperationDoc({
-  entityType: "ContentRevision",
+  entityType: "ExerciseRevision",
   summary: "Create a revision of content",
   permission: "Write",
   hasBody: true

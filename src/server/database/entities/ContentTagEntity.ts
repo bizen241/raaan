@@ -2,8 +2,8 @@ import { Column, Entity } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 
 @Entity()
-export class ContentTagEntity extends BaseEntityClass {
-  type: "ContentTag" = "ContentTag";
+export class ExerciseTagEntity extends BaseEntityClass {
+  type: "ExerciseTag" = "ExerciseTag";
 
   @Column()
   name: string;

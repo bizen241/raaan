@@ -4,13 +4,13 @@ import { Content } from "../../../shared/api/entities";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { parseSearchParams } from "../../api/request/search/parse";
 import { responseSearchResult } from "../../api/response";
-import { ContentEntity } from "../../database/entities";
+import { ExerciseEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { tagIds, limit, offset } = parseSearchParams<Content>("Content", req.query);
+  const { tagIds, limit, offset } = parseSearchParams<Content>("Exercise", req.query);
 
   const query = await getManager()
-    .createQueryBuilder(ContentEntity, "content")
+    .createQueryBuilder(ExerciseEntity, "content")
     .loadAllRelationIds({
       relations: ["author", "latest"]
     })
@@ -27,7 +27,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
 });
 
 GET.apiDoc = createOperationDoc({
-  entityType: "Content",
+  entityType: "Exercise",
   summary: "Search contents",
   permission: "Guest",
   hasQuery: true

@@ -1,13 +1,13 @@
 import { Entity, OneToOne } from "typeorm";
-import { ContentDetailClass } from "./ContentDetailClass";
-import { ContentEntity } from "./ContentEntity";
+import { ExerciseDetailClass } from "./ContentDetailClass";
+import { ExerciseEntity } from "./ContentEntity";
 
 @Entity()
-export class ContentDetailEntity extends ContentDetailClass {
-  type: "ContentDetail" = "ContentDetail";
+export class ExerciseDetailEntity extends ExerciseDetailClass {
+  type: "ExerciseDetail" = "ExerciseDetail";
 
-  @OneToOne(() => ContentEntity, content => content.detailId, {
+  @OneToOne(() => ExerciseEntity, content => content.detailId, {
     onDelete: "CASCADE"
   })
-  content?: ContentEntity;
+  content?: ExerciseEntity;
 }

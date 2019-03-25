@@ -2,10 +2,10 @@ import { EntityType } from "../../../shared/api/entities";
 import { BaseEntityObject } from "../../../shared/api/entities/BaseEntityObject";
 import { createEntityStore, EntityStore } from "../../../shared/api/response/get";
 import {
-  ContentDetailEntity,
-  ContentEntity,
-  ContentRevisionEntity,
-  ContentTagEntity,
+  ExerciseDetailEntity,
+  ExerciseEntity,
+  ExerciseRevisionEntity,
+  ExerciseTagEntity,
   Entity,
   UserAccountEntity,
   UserConfigEntity,
@@ -50,7 +50,7 @@ const base = <T extends EntityType>({ id, createdAt, updatedAt }: BaseEntityClas
 
 type Normalizer<E> = (entity: E, store: EntityStore) => void;
 
-const normalizeContent: Normalizer<ContentEntity> = (entity, store) => {
+const normalizeContent: Normalizer<ExerciseEntity> = (entity, store) => {
   const { id, author, detail, tags, lang, title, description, isLocked, isPrivate } = entity;
 
   store.Content[id] = {
@@ -69,10 +69,10 @@ const normalizeContent: Normalizer<ContentEntity> = (entity, store) => {
   normalizeEntity(store, detail);
 };
 
-const normalizeContentDetail: Normalizer<ContentDetailEntity> = (entity, store) => {
+const normalizeExerciseDetail: Normalizer<ExerciseDetailEntity> = (entity, store) => {
   const { id, lang, tags, title, description, rubric, items, comment, navigationMode } = entity;
 
-  store.ContentDetail[id] = {
+  store.ExerciseDetail[id] = {
     ...base(entity),
     lang,
     tags,
@@ -85,10 +85,10 @@ const normalizeContentDetail: Normalizer<ContentDetailEntity> = (entity, store) 
   };
 };
 
-const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (entity, store) => {
+const normalizeExerciseRevision: Normalizer<ExerciseRevisionEntity> = (entity, store) => {
   const { id, content, detail } = entity;
 
-  store.ContentRevision[id] = {
+  store.ExerciseRevision[id] = {
     ...base(entity),
     contentId: getId(content),
     detailId: getId(detail)
@@ -98,10 +98,10 @@ const normalizeContentRevision: Normalizer<ContentRevisionEntity> = (entity, sto
   normalizeEntity(store, detail);
 };
 
-const normalizeContentTag: Normalizer<ContentTagEntity> = (entity, store) => {
+const normalizeExerciseTag: Normalizer<ExerciseTagEntity> = (entity, store) => {
   const { id, name } = entity;
 
-  store.ContentTag[id] = {
+  store.ExerciseTag[id] = {
     ...base(entity),
     name
   };
@@ -157,9 +157,9 @@ const normalizeUserSession: Normalizer<UserSessionEntity> = (entity, store) => {
 
 const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Content: normalizeContent,
-  ContentDetail: normalizeContentDetail,
-  ContentRevision: normalizeContentRevision,
-  ContentTag: normalizeContentTag,
+  ExerciseDetail: normalizeExerciseDetail,
+  ExerciseRevision: normalizeExerciseRevision,
+  ExerciseTag: normalizeExerciseTag,
   User: normalizeUser,
   UserAccount: normalizeUserAccount,
   UserConfig: normalizeUserConfig,

@@ -44,7 +44,7 @@ export const SearchResponseSchema: Definition = {
             }
           }
         },
-        ContentRevision: {
+        ExerciseRevision: {
           type: "object",
           additionalProperties: {
             type: "object",
@@ -152,7 +152,7 @@ export const SearchResponseSchema: Definition = {
             }
           }
         },
-        ContentTag: {
+        ExerciseTag: {
           type: "object",
           additionalProperties: {
             type: "object",
@@ -175,12 +175,7 @@ export const SearchResponseSchema: Definition = {
             properties: {
               name: { type: "string" },
               permission: {
-                enum: [
-                  "Admin",
-                  "Guest",
-                  "Owner",
-                  "Write"
-                ],
+                enum: ["Admin", "Guest", "Owner", "Write"],
                 type: "string"
               },
               id: {

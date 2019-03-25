@@ -1,7 +1,7 @@
 import { Content } from "./Content";
-import { ContentDetail } from "./ContentDetail";
-import { ContentRevision } from "./ContentRevision";
-import { ContentTag } from "./ContentTag";
+import { ExerciseDetail } from "./ContentDetail";
+import { ExerciseRevision } from "./ContentRevision";
+import { ExerciseTag } from "./ContentTag";
 import { User } from "./User";
 import { UserAccount } from "./UserAccount";
 import { UserConfig } from "./UserConfig";
@@ -17,11 +17,11 @@ export * from "./UserConfig";
 export * from "./UserSession";
 
 export type EntityType =
-  | "Content"
-  | "ContentDetail"
-  | "ContentRevision"
-  | "ContentRevisionDetail"
-  | "ContentTag"
+  | "Exercise"
+  | "ExerciseDetail"
+  | "ExerciseRevision"
+  | "ExerciseRevisionDetail"
+  | "ExerciseTag"
   | "User"
   | "UserAccount"
   | "UserConfig"
@@ -29,9 +29,9 @@ export type EntityType =
 
 export type EntityObject =
   | Content
-  | ContentDetail
-  | ContentRevision
-  | ContentTag
+  | ExerciseDetail
+  | ExerciseRevision
+  | ExerciseTag
   | User
   | UserAccount
   | UserConfig
@@ -39,9 +39,9 @@ export type EntityObject =
 
 export type EntityTypeToObject = {
   Content: Content;
-  ContentDetail: ContentDetail;
-  ContentRevision: ContentRevision;
-  ContentTag: ContentTag;
+  ExerciseDetail: ExerciseDetail;
+  ExerciseRevision: ExerciseRevision;
+  ExerciseTag: ExerciseTag;
   User: User;
   UserAccount: UserAccount;
   UserConfig: UserConfig;
@@ -50,9 +50,9 @@ export type EntityTypeToObject = {
 
 type EntityTypeToEmptyObject = {
   Content: {};
-  ContentDetail: {};
-  ContentRevision: {};
-  ContentTag: {};
+  ExerciseDetail: {};
+  ExerciseRevision: {};
+  ExerciseTag: {};
   User: {};
   UserAccount: {};
   UserConfig: {};
@@ -62,9 +62,9 @@ type EntityTypeToEmptyObject = {
 export const createEntityTypeToEmptyObject = <T extends EntityTypeToEmptyObject>() =>
   ({
     Content: {},
-    ContentDetail: {},
-    ContentRevision: {},
-    ContentTag: {},
+    ExerciseDetail: {},
+    ExerciseRevision: {},
+    ExerciseTag: {},
     User: {},
     UserAccount: {},
     UserConfig: {},

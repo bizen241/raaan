@@ -3,7 +3,7 @@ import { NavigationMode } from "../../../shared/api/entities";
 import { ContentItem } from "../../../shared/content";
 import { BaseEntityClass } from "./BaseEntityClass";
 
-export abstract class ContentDetailClass extends BaseEntityClass {
+export abstract class ExerciseDetailClass extends BaseEntityClass {
   @Column()
   lang: string = "en";
 

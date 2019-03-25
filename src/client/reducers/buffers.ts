@@ -3,7 +3,7 @@ import { Actions, RootState } from ".";
 import { createEntityTypeToEmptyObject, EntityObject, EntityType, EntityTypeToObject } from "../../shared/api/entities";
 import { SaveParams } from "../../shared/api/request/save";
 import { ActionUnion, AsyncAction, createAction } from "../actions";
-import { createContentRevision } from "../domain/content";
+import { createExerciseRevision } from "../domain/content";
 import { apiActions } from "./api";
 
 export enum BuffersActionType {
@@ -56,14 +56,14 @@ const load = (entityType: EntityType, entityId: string): AsyncAction => async (d
     await apiActions.get(entityType, entityId)(dispatch, getState, undefined);
   }
 
-  const entity = getState().cache.get.ContentRevision[entityId];
+  const entity = getState().cache.get.ExerciseRevision[entityId];
   if (entity === undefined) {
     return;
   }
 
   const { id, createdAt, updatedAt, fetchedAt, ...params } = entity;
 
-  const bufferId = entityType === "ContentRevision" ? generateBufferId() : entityId;
+  const bufferId = entityType === "ExerciseRevision" ? generateBufferId() : entityId;
 
   dispatch(buffersActions.add(entityType, bufferId, params));
 };
@@ -128,7 +128,7 @@ export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBu
           ...state[type],
           [id]: {
             ...buffer,
-            edited: buffer.source || createContentRevision(id)
+            edited: buffer.source || createExerciseRevision(id)
           }
         }
       };

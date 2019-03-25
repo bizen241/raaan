@@ -3,7 +3,7 @@ import * as uuid from "uuid";
 import { EntityStore } from "../../../../../shared/api/response/get";
 import { PathParams } from "../../../../api/operation";
 import { TestDatabase } from "../../../../database/__tests__/helpers";
-import { ContentEntity } from "../../../../database/entities";
+import { ExerciseEntity } from "../../../../database/entities";
 import { insertContent } from "../../../../database/entities/__tests__/helpers";
 import { insertSessions, insertUsers } from "../../../../session/__tests__/helpers";
 import { createHttpMocks } from "../../__tests__/helpers";
@@ -84,6 +84,6 @@ test("DELETE /api/contents/{id} -> 200", async () => {
   const data = JSON.parse(res._getData()) as EntityStore;
   expect(data.Content[contentId]).toBeUndefined();
 
-  const removedContent = await getManager().findOne(ContentEntity, contentId);
+  const removedContent = await getManager().findOne(ExerciseEntity, contentId);
   expect(removedContent).toBeUndefined();
 });
