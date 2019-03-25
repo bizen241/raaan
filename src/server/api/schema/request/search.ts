@@ -11,13 +11,12 @@ export const SearchParamsMapSchema: Definition = {
         {
           type: "object",
           properties: {
-            summary: { type: "string" },
             title: { type: "string" },
             authorId: {
               format: "uuid",
               type: "string"
             },
-            latestId: {
+            detailId: {
               format: "uuid",
               type: "string"
             },
@@ -26,7 +25,9 @@ export const SearchParamsMapSchema: Definition = {
               items: { type: "string" }
             },
             lang: { type: "string" },
-            isPrivate: { type: "boolean" }
+            description: { type: "string" },
+            isPrivate: { type: "boolean" },
+            isLocked: { type: "boolean" }
           }
         },
         {
@@ -38,14 +39,14 @@ export const SearchParamsMapSchema: Definition = {
         }
       ]
     },
-    ExerciseRevision: {
+    ExerciseDetail: {
       allOf: [
         {
           type: "object",
           properties: {
-            summary: { type: "string" },
             title: { type: "string" },
             lang: { type: "string" },
+            description: { type: "string" },
             contentId: {
               format: "uuid",
               type: "string"
@@ -54,8 +55,8 @@ export const SearchParamsMapSchema: Definition = {
               type: "array",
               items: { type: "string" }
             },
-            comment: { type: "string" },
-            items: {
+            rubric: { type: "string" },
+            questions: {
               type: "array",
               items: {
                 anyOf: [
@@ -125,7 +126,138 @@ export const SearchParamsMapSchema: Definition = {
                 ]
               }
             },
-            isLinear: { type: "boolean" }
+            comment: { type: "string" },
+            navigationMode: {
+              enum: ["random", "sequential"],
+              type: "string"
+            }
+          }
+        },
+        {
+          type: "object",
+          properties: {
+            limit: { type: "number" },
+            offset: { type: "number" }
+          }
+        }
+      ]
+    },
+    ExerciseRevision: {
+      allOf: [
+        {
+          type: "object",
+          properties: {
+            detailId: {
+              format: "uuid",
+              type: "string"
+            },
+            contentId: {
+              format: "uuid",
+              type: "string"
+            }
+          }
+        },
+        {
+          type: "object",
+          properties: {
+            limit: { type: "number" },
+            offset: { type: "number" }
+          }
+        }
+      ]
+    },
+    ExerciseRevisionDetail: {
+      allOf: [
+        {
+          type: "object",
+          properties: {
+            title: { type: "string" },
+            lang: { type: "string" },
+            description: { type: "string" },
+            tags: {
+              type: "array",
+              items: { type: "string" }
+            },
+            rubric: { type: "string" },
+            questions: {
+              type: "array",
+              items: {
+                anyOf: [
+                  {
+                    type: "object",
+                    properties: {
+                      type: {
+                        type: "string",
+                        enum: ["text"]
+                      },
+                      lang: { type: "string" },
+                      id: { type: "string" },
+                      value: { type: "string" },
+                      comment: { type: "string" }
+                    }
+                  },
+                  {
+                    type: "object",
+                    properties: {
+                      type: {
+                        type: "string",
+                        enum: ["kana"]
+                      },
+                      id: { type: "string" },
+                      value: { type: "string" },
+                      comment: { type: "string" }
+                    }
+                  },
+                  {
+                    type: "object",
+                    properties: {
+                      type: {
+                        type: "string",
+                        enum: ["kanji"]
+                      },
+                      kanji: { type: "string" },
+                      id: { type: "string" },
+                      value: { type: "string" },
+                      comment: { type: "string" }
+                    }
+                  },
+                  {
+                    type: "object",
+                    properties: {
+                      type: {
+                        type: "string",
+                        enum: ["code"]
+                      },
+                      lang: { type: "string" },
+                      id: { type: "string" },
+                      value: { type: "string" },
+                      comment: { type: "string" }
+                    }
+                  },
+                  {
+                    type: "object",
+                    properties: {
+                      type: {
+                        type: "string",
+                        enum: ["math"]
+                      },
+                      id: { type: "string" },
+                      value: { type: "string" },
+                      comment: { type: "string" }
+                    }
+                  }
+                ]
+              }
+            },
+            comment: { type: "string" },
+            navigationMode: {
+              enum: ["random", "sequential"],
+              type: "string"
+            },
+            revisionId: {
+              format: "uuid",
+              type: "string"
+            }
           }
         },
         {
@@ -159,7 +291,16 @@ export const SearchParamsMapSchema: Definition = {
           properties: {
             name: { type: "string" },
             permission: {
-              enum: ["Admin", "Guest", "Owner", "Write"],
+              enum: [
+                "Admin",
+                "Guest",
+                "Owner",
+                "Write"
+              ],
+              type: "string"
+            },
+            configId: {
+              format: "uuid",
               type: "string"
             }
           }
@@ -203,23 +344,23 @@ export const SearchParamsMapSchema: Definition = {
         {
           type: "object",
           properties: {
-            name: { type: "string" },
-            userId: {
-              format: "uuid",
+            theme: {
+              enum: [
+                "dark",
+                "default",
+                "light",
+                "system"
+              ],
               type: "string"
             },
-            settings: {
-              type: "object",
-              properties: {
-                theme: {
-                  enum: ["dark", "light"],
-                  type: "string"
-                },
-                lang: {
-                  enum: ["en", "ja"],
-                  type: "string"
-                }
-              }
+            lang: {
+              enum: [
+                "default",
+                "en",
+                "ja",
+                "system"
+              ],
+              type: "string"
             }
           }
         },

@@ -15,7 +15,7 @@ export const EntityStoreSchema: Definition = {
             format: "uuid",
             type: "string"
           },
-          latestId: {
+          detailId: {
             format: "uuid",
             type: "string"
           },
@@ -25,8 +25,9 @@ export const EntityStoreSchema: Definition = {
           },
           lang: { type: "string" },
           title: { type: "string" },
-          summary: { type: "string" },
+          description: { type: "string" },
           isPrivate: { type: "boolean" },
+          isLocked: { type: "boolean" },
           id: { format: "uuid", type: "string" },
           createdAt: { type: "number" },
           updatedAt: { type: "number" },
@@ -34,7 +35,7 @@ export const EntityStoreSchema: Definition = {
         }
       }
     },
-    ExerciseRevision: {
+    ExerciseDetail: {
       type: "object",
       additionalProperties: {
         type: "object",
@@ -43,15 +44,19 @@ export const EntityStoreSchema: Definition = {
             format: "uuid",
             type: "string"
           },
+          id: { format: "uuid", type: "string" },
+          createdAt: { type: "number" },
+          updatedAt: { type: "number" },
+          fetchedAt: { type: "number" },
           lang: { type: "string" },
+          title: { type: "string" },
           tags: {
             type: "array",
             items: { type: "string" }
           },
-          title: { type: "string" },
-          summary: { type: "string" },
-          comment: { type: "string" },
-          items: {
+          description: { type: "string" },
+          rubric: { type: "string" },
+          questions: {
             type: "array",
             items: {
               anyOf: [
@@ -121,11 +126,130 @@ export const EntityStoreSchema: Definition = {
               ]
             }
           },
-          isLinear: { type: "boolean" },
+          comment: { type: "string" },
+          navigationMode: {
+            enum: ["random", "sequential"],
+            type: "string"
+          }
+        }
+      }
+    },
+    ExerciseRevision: {
+      type: "object",
+      additionalProperties: {
+        type: "object",
+        properties: {
+          contentId: {
+            format: "uuid",
+            type: "string"
+          },
+          detailId: {
+            format: "uuid",
+            type: "string"
+          },
           id: { format: "uuid", type: "string" },
           createdAt: { type: "number" },
           updatedAt: { type: "number" },
           fetchedAt: { type: "number" }
+        }
+      }
+    },
+    ExerciseRevisionDetail: {
+      type: "object",
+      additionalProperties: {
+        type: "object",
+        properties: {
+          revisionId: {
+            format: "uuid",
+            type: "string"
+          },
+          id: { format: "uuid", type: "string" },
+          createdAt: { type: "number" },
+          updatedAt: { type: "number" },
+          fetchedAt: { type: "number" },
+          lang: { type: "string" },
+          title: { type: "string" },
+          tags: {
+            type: "array",
+            items: { type: "string" }
+          },
+          description: { type: "string" },
+          rubric: { type: "string" },
+          questions: {
+            type: "array",
+            items: {
+              anyOf: [
+                {
+                  type: "object",
+                  properties: {
+                    type: {
+                      type: "string",
+                      enum: ["text"]
+                    },
+                    lang: { type: "string" },
+                    id: { type: "string" },
+                    value: { type: "string" },
+                    comment: { type: "string" }
+                  }
+                },
+                {
+                  type: "object",
+                  properties: {
+                    type: {
+                      type: "string",
+                      enum: ["kana"]
+                    },
+                    id: { type: "string" },
+                    value: { type: "string" },
+                    comment: { type: "string" }
+                  }
+                },
+                {
+                  type: "object",
+                  properties: {
+                    type: {
+                      type: "string",
+                      enum: ["kanji"]
+                    },
+                    kanji: { type: "string" },
+                    id: { type: "string" },
+                    value: { type: "string" },
+                    comment: { type: "string" }
+                  }
+                },
+                {
+                  type: "object",
+                  properties: {
+                    type: {
+                      type: "string",
+                      enum: ["code"]
+                    },
+                    lang: { type: "string" },
+                    id: { type: "string" },
+                    value: { type: "string" },
+                    comment: { type: "string" }
+                  }
+                },
+                {
+                  type: "object",
+                  properties: {
+                    type: {
+                      type: "string",
+                      enum: ["math"]
+                    },
+                    id: { type: "string" },
+                    value: { type: "string" },
+                    comment: { type: "string" }
+                  }
+                }
+              ]
+            }
+          },
+          comment: { type: "string" },
+          navigationMode: {
+            enum: ["random", "sequential"],
+            type: "string"
+          }
         }
       }
     },
@@ -149,7 +273,16 @@ export const EntityStoreSchema: Definition = {
         properties: {
           name: { type: "string" },
           permission: {
-            enum: ["Admin", "Guest", "Owner", "Write"],
+            enum: [
+              "Admin",
+              "Guest",
+              "Owner",
+              "Write"
+            ],
+            type: "string"
+          },
+          configId: {
+            format: "uuid",
             type: "string"
           },
           id: { format: "uuid", type: "string" },
@@ -185,23 +318,23 @@ export const EntityStoreSchema: Definition = {
       additionalProperties: {
         type: "object",
         properties: {
-          userId: {
-            format: "uuid",
+          lang: {
+            enum: [
+              "default",
+              "en",
+              "ja",
+              "system"
+            ],
             type: "string"
           },
-          name: { type: "string" },
-          settings: {
-            type: "object",
-            properties: {
-              theme: {
-                enum: ["dark", "light"],
-                type: "string"
-              },
-              lang: {
-                enum: ["en", "ja"],
-                type: "string"
-              }
-            }
+          theme: {
+            enum: [
+              "dark",
+              "default",
+              "light",
+              "system"
+            ],
+            type: "string"
           },
           id: { format: "uuid", type: "string" },
           createdAt: { type: "number" },
