@@ -1,8 +1,8 @@
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { users } from "../../../session/__tests__/helpers";
-import { createExerciseDetailEntity } from "../ContentDetailEntity";
-import { createExerciseEntity } from "../ContentEntity";
+import { createExerciseDetailEntity } from "../ExerciseDetailEntity";
+import { createExerciseEntity } from "../ExerciseEntity";
 
 export const insertContent = async (contentId?: string) => {
   const manager = getManager();

@@ -1,6 +1,6 @@
 import { getManager } from "typeorm";
 import { TestDatabase } from "../../__tests__/helpers";
-import { ExerciseEntity } from "../ContentEntity";
+import { ExerciseEntity } from "../ExerciseEntity";
 import { insertContent } from "./helpers";
 
 const testDatabase = new TestDatabase();

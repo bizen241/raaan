@@ -1,6 +1,6 @@
 import { Entity, OneToOne } from "typeorm";
-import { ExerciseDetailClass } from "./ContentDetailClass";
-import { ExerciseRevisionEntity } from "./ContentRevisionEntity";
+import { ExerciseDetailClass } from "./ExerciseDetailClass";
+import { ExerciseRevisionEntity } from "./ExerciseRevisionEntity";
 
 @Entity()
 export class ExerciseRevisionDetailEntity extends ExerciseDetailClass {

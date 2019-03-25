@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
-import { ExerciseEntity } from "./ContentEntity";
-import { ExerciseRevisionDetailEntity } from "./ContentRevisionDetailEntity";
+import { ExerciseEntity } from "./ExerciseEntity";
+import { ExerciseRevisionDetailEntity } from "./ExerciseRevisionDetailEntity";
 
 @Entity()
 export class ExerciseRevisionEntity extends BaseEntityClass {

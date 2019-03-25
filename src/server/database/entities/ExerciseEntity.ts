@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
-import { ExerciseDetailEntity } from "./ContentDetailEntity";
-import { ExerciseTagEntity } from "./ContentTagEntity";
+import { ExerciseDetailEntity } from "./ExerciseDetailEntity";
+import { ExerciseTagEntity } from "./ExerciseTagEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity()
