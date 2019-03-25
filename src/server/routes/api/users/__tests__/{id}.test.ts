@@ -1,9 +1,8 @@
 import { getManager } from "typeorm";
-import * as uuid from "uuid";
 import { EntityStore } from "../../../../../shared/api/response/get";
 import { PathParams } from "../../../../api/operation";
 import { TestDatabase } from "../../../../database/__tests__/helpers";
-import { createUserAccount, UserAccountEntity, UserEntity, UserSessionEntity } from "../../../../database/entities";
+import { UserAccountEntity, UserEntity, UserSessionEntity } from "../../../../database/entities";
 import { insertSessions, insertUsers, sessions, users } from "../../../../session/__tests__/helpers";
 import { createHttpMocks } from "../../__tests__/helpers";
 import { DELETE, GET } from "../{id}";
@@ -63,15 +62,8 @@ test("DELETE /api/users/{user} -> 200", async () => {
 
   const manager = getManager();
 
-  const accountId = uuid();
-  await manager.save(
-    createUserAccount({
-      id: accountId,
-      accountId: "12345678",
-      provider: "github",
-      user: users.Write
-    })
-  );
+  const savedAccount = await manager.save(new UserAccountEntity(users.Write, "github", "12345678"));
+  const accountId = savedAccount.id;
 
   await DELETE(req, res, next);
 

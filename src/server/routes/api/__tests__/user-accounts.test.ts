@@ -3,7 +3,7 @@ import { UserAccount } from "../../../../shared/api/entities";
 import { SearchResponse } from "../../../../shared/api/response/search";
 import { SearchQuery } from "../../../api/request/search/parse";
 import { TestDatabase } from "../../../database/__tests__/helpers";
-import { createUserAccount } from "../../../database/entities";
+import { UserAccountEntity } from "../../../database/entities";
 import { users } from "../../../session/__tests__/helpers";
 import { GET } from "../user-accounts";
 import { createHttpMocks } from "./helpers";
@@ -22,14 +22,10 @@ beforeEach(async () => {
 });
 
 test("GET /api/user-accounts", async () => {
+  const userAccount = new UserAccountEntity(users.Write, "github", "");
+
   await getManager().save(users.Write);
-  await getManager().save(
-    createUserAccount({
-      user: users.Write,
-      accountId: "",
-      provider: "github"
-    })
-  );
+  await getManager().save(userAccount);
 
   const { req, res } = createHttpMocks("Write");
 

@@ -1,7 +1,7 @@
 import { HttpError } from "http-errors";
 import { createRequest, createResponse } from "node-mocks-http";
 import { Permission } from "../../../../shared/api/entities";
-import { sessions } from "../../../session/__tests__/helpers";
+import { sessions, users } from "../../../session/__tests__/helpers";
 
 export const createHttpMocks = (permission: Permission) => {
   const req = createRequest();
@@ -9,6 +9,7 @@ export const createHttpMocks = (permission: Permission) => {
 
   req.session = sessions[permission];
 
+  req.user = users[permission];
   req.user.createdAt = new Date();
   req.user.updatedAt = new Date();
 

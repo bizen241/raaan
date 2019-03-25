@@ -1,29 +1,16 @@
 import { getManager } from "typeorm";
-import * as uuid from "uuid";
 import { users } from "../../../session/__tests__/helpers";
-import { createExerciseDetailEntity } from "../ExerciseDetailEntity";
-import { createExerciseEntity } from "../ExerciseEntity";
+import { ExerciseDetailEntity } from "../ExerciseDetailEntity";
+import { ExerciseEntity } from "../ExerciseEntity";
 
-export const insertExercise = async (contentId?: string) => {
+export const insertExercise = async (_?: string) => {
   const manager = getManager();
 
   await manager.save(users.Write);
 
-  const detail = await createExerciseDetailEntity(manager, {
-    id: uuid(),
-    lang: "",
-    title: "",
-    tags: [],
-    description: "",
-    rubric: "",
-    items: [],
-    comment: "",
-    navigationMode: "random"
-  });
+  const detail = new ExerciseDetailEntity();
+  const exercise = new ExerciseEntity(users.Write, detail);
 
-  await createExerciseEntity(manager, {
-    id: contentId || uuid(),
-    author: users.Write,
-    detail
-  });
+  await manager.save(detail);
+  await manager.save(exercise);
 };

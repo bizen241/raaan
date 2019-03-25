@@ -3,7 +3,7 @@ import { createRequest, createResponse } from "node-mocks-http";
 import { createAuthMiddleware } from "..";
 import { testProcessEnv } from "../../__tests__/helpers";
 import { TestDatabase } from "../../database/__tests__/helpers";
-import { createUserSession } from "../../database/entities";
+import { UserSessionEntity } from "../../database/entities";
 import { insertSessions, insertUsers, users } from "../../session/__tests__/helpers";
 import { authTestHelpers } from "./helpers";
 
@@ -32,12 +32,13 @@ test("authorize with github", async () => {
   const req = createRequest();
   const res = createResponse();
 
-  req.session = createUserSession({
-    user: users.Guest,
-    sessionId,
-    expireAt: new Date(),
-    userAgent: "user-agent"
-  });
+  const session = new UserSessionEntity(users.Guest);
+  session.sessionId = sessionId;
+  session.expireAt = new Date();
+  session.userAgent = "";
+
+  req.session = session;
+  req.user = users.Guest;
   req.secret = secret;
 
   const spyRedirect = jest.spyOn(res, "redirect");
@@ -82,12 +83,13 @@ test("authenticate with github", async () => {
   const req = createRequest();
   const res = createResponse();
 
-  req.session = createUserSession({
-    user: users.Guest,
-    sessionId,
-    expireAt: new Date(),
-    userAgent: "user-agent"
-  });
+  const session = new UserSessionEntity(users.Guest);
+  session.sessionId = sessionId;
+  session.expireAt = new Date();
+  session.userAgent = "";
+
+  req.session = session;
+  req.user = users.Guest;
   req.secret = secret;
   req.query = {
     state,

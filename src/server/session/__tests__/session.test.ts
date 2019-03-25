@@ -6,7 +6,7 @@ import * as uuid from "uuid";
 import { createSessionMiddleware } from "..";
 import { testProcessEnv } from "../../__tests__/helpers";
 import { TestDatabase } from "../../database/__tests__/helpers";
-import { createUser, createUserSession } from "../../database/entities";
+import { UserConfigEntity, UserEntity, UserSessionEntity } from "../../database/entities";
 import { insertSessions, insertUsers } from "./helpers";
 
 const testDatabase = new TestDatabase();
@@ -41,21 +41,16 @@ test("guest user", async done => {
 });
 
 test("valid session", async done => {
-  const userId = uuid();
-  const user = createUser({
-    id: userId,
-    name: "name",
-    permission: "Write"
-  });
-  await getManager().save(user);
+  const user = new UserEntity("name", "Write", new UserConfigEntity());
+  const savedUser = await getManager().save(user);
+  const userId = savedUser.id;
 
   const sessionId = uuid();
-  const session = createUserSession({
-    user,
-    sessionId,
-    userAgent: "",
-    expireAt: new Date()
-  });
+  const session = new UserSessionEntity(user);
+  session.sessionId = sessionId;
+  session.expireAt = new Date();
+  session.userAgent = "";
+
   await getManager().save(session);
 
   const req = httpMocks.createRequest({

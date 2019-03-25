@@ -3,8 +3,9 @@ import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { testProcessEnv } from "../../__tests__/helpers";
 import { TestDatabase } from "../../database/__tests__/helpers";
-import { createUser, createUserSession, UserSessionEntity } from "../../database/entities";
+import { UserSessionEntity } from "../../database/entities";
 import { saveSession } from "../save";
+import { users } from "./helpers";
 
 const testDatabase = new TestDatabase();
 
@@ -25,20 +26,18 @@ test("save session", async () => {
 
   const sessionId = uuid();
 
-  req.session = createUserSession({
-    user: createUser({
-      name: "name",
-      permission: "Write"
-    }),
-    sessionId,
-    userAgent: "",
-    expireAt: new Date()
-  });
+  const session = new UserSessionEntity(users.Guest);
+  session.sessionId = sessionId;
+  session.userAgent = "";
+  session.expireAt = new Date();
+
+  req.session = session;
+  req.user = users.Guest;
   req.secret = testProcessEnv.sessionSecret;
 
   await saveSession(req, res);
 
-  const session = await getManager().findOne(UserSessionEntity, { sessionId }, {});
+  const foundSession = await getManager().findOne(UserSessionEntity, { sessionId }, {});
 
-  expect(session).toBeDefined();
+  expect(foundSession).toBeDefined();
 });

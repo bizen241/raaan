@@ -3,7 +3,7 @@ import * as uuid from "uuid";
 import { EntityStore } from "../../../../../shared/api/response/get";
 import { PathParams } from "../../../../api/operation";
 import { TestDatabase } from "../../../../database/__tests__/helpers";
-import { createUserAccount } from "../../../../database/entities";
+import { UserAccountEntity } from "../../../../database/entities";
 import { insertUsers, users } from "../../../../session/__tests__/helpers";
 import { createHttpMocks } from "../../__tests__/helpers";
 import { DELETE, GET } from "../{id}";
@@ -18,28 +18,11 @@ afterAll(async () => {
 });
 
 const writeUserAccounts = [
-  createUserAccount({
-    id: uuid(),
-    user: users.Write,
-    accountId: "11111111",
-    provider: "github"
-  }),
-  createUserAccount({
-    id: uuid(),
-    user: users.Write,
-    accountId: "22222222",
-    provider: "github"
-  })
+  new UserAccountEntity(users.Write, "github", "11111111"),
+  new UserAccountEntity(users.Write, "github", "22222222")
 ];
 
-const adminUserAccounts = [
-  createUserAccount({
-    id: uuid(),
-    user: users.Admin,
-    accountId: "11111111",
-    provider: "github"
-  })
-];
+const adminUserAccounts = [new UserAccountEntity(users.Admin, "github", "11111111")];
 
 const insertUserAccounts = () => getManager().save([...writeUserAccounts, ...adminUserAccounts]);
 

@@ -1,8 +1,7 @@
 import { getManager } from "typeorm";
-import * as uuid from "uuid";
+import { users } from "../../../session/__tests__/helpers";
 import { TestDatabase } from "../../__tests__/helpers";
-import { createUserAccount, UserAccountEntity } from "../UserAccountEntity";
-import { createUser } from "../UserEntity";
+import { UserAccountEntity } from "../UserAccountEntity";
 
 const testDatabase = new TestDatabase();
 
@@ -16,15 +15,7 @@ afterAll(async () => {
 test("UserAccountEntity", async () => {
   const manager = getManager();
 
-  const account = createUserAccount({
-    id: uuid(),
-    user: createUser({
-      name: "name",
-      permission: "Write"
-    }),
-    accountId: "12345678",
-    provider: "github"
-  });
+  const account = new UserAccountEntity(users.Write, "github", "");
 
   await manager.save(account);
 

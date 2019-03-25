@@ -1,7 +1,7 @@
 import { getManager } from "typeorm";
-import * as uuid from "uuid";
 import { TestDatabase } from "../../__tests__/helpers";
-import { createUser, UserEntity } from "../UserEntity";
+import { UserConfigEntity } from "../UserConfigEntity";
+import { UserEntity } from "../UserEntity";
 
 const testDatabase = new TestDatabase();
 
@@ -15,7 +15,8 @@ afterAll(async () => {
 test("UserEntity", async () => {
   const manager = getManager();
 
-  const user = createUser({ id: uuid(), name: "name", permission: "Admin" });
+  const userConfig = new UserConfigEntity();
+  const user = new UserEntity("name", "Admin", userConfig);
 
   await manager.save(user);
 

@@ -2,20 +2,16 @@ import fetch from "node-fetch";
 import { createRequest } from "node-mocks-http";
 import { createAuthClients } from "..";
 import { testProcessEnv } from "../../../__tests__/helpers";
-import { createUser, createUserSession } from "../../../database/entities";
+import { UserSessionEntity } from "../../../database/entities";
+import { users } from "../../../session/__tests__/helpers";
 import { authTestHelpers } from "../../__tests__/helpers";
 
 const { accessToken, code, secret, sessionId, state } = authTestHelpers;
 const clients = createAuthClients(testProcessEnv);
-const session = createUserSession({
-  user: createUser({
-    name: "Guest",
-    permission: "Guest"
-  }),
-  sessionId,
-  expireAt: new Date(),
-  userAgent: "user-agent"
-});
+const session = new UserSessionEntity(users.Guest);
+session.sessionId = sessionId;
+session.expireAt = new Date();
+session.userAgent = "";
 
 jest.mock("node-fetch");
 ((fetch as unknown) as jest.Mock)
@@ -75,6 +71,7 @@ test("1. authorization request error", async () => {
 test("2. failed to unsign session id", async () => {
   const req = createRequest();
   req.session = session;
+  req.user = users.Guest;
   req.secret = secret;
   req.query = {
     state: "invalid state"
@@ -86,6 +83,7 @@ test("2. failed to unsign session id", async () => {
 test("3. response is not ok", async () => {
   const req = createRequest();
   req.session = session;
+  req.user = users.Guest;
   req.secret = secret;
   req.query = {
     state,
@@ -98,6 +96,7 @@ test("3. response is not ok", async () => {
 test("4. access_token is not string", async () => {
   const req = createRequest();
   req.session = session;
+  req.user = users.Guest;
   req.secret = secret;
   req.query = {
     state,
@@ -110,6 +109,7 @@ test("4. access_token is not string", async () => {
 test("5. response is not ok", async () => {
   const req = createRequest();
   req.session = session;
+  req.user = users.Guest;
   req.secret = secret;
   req.query = {
     state,
@@ -122,6 +122,7 @@ test("5. response is not ok", async () => {
 test("6. id is not number", async () => {
   const req = createRequest();
   req.session = session;
+  req.user = users.Guest;
   req.secret = secret;
   req.query = {
     state,
@@ -134,6 +135,7 @@ test("6. id is not number", async () => {
 test("7. login is not string", async () => {
   const req = createRequest();
   req.session = session;
+  req.user = users.Guest;
   req.secret = secret;
   req.query = {
     state,
