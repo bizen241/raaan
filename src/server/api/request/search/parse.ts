@@ -1,10 +1,11 @@
 import {
+  EntityObject,
+  EntityType,
   Exercise,
   ExerciseDetail,
   ExerciseRevision,
+  ExerciseRevisionDetail,
   ExerciseTag,
-  EntityObject,
-  EntityType,
   Lang,
   NavigationMode,
   Permission,
@@ -75,6 +76,22 @@ const parseExerciseRevision: Parser<ExerciseRevision> = query => {
   };
 };
 
+const parseExerciseRevisionDetail: Parser<ExerciseRevisionDetail> = query => {
+  const { lang, tags, title, description, rubric, items, comment, navigationMode } = query;
+
+  return {
+    lang,
+    tags: tags && JSON.parse(tags),
+    title,
+    description,
+    rubric,
+    items: items && JSON.parse(items),
+    comment,
+    navigationMode: navigationMode as NavigationMode,
+    ...page(query)
+  };
+};
+
 const parseExerciseTag: Parser<ExerciseTag> = query => {
   const { name } = query;
 
@@ -129,6 +146,7 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   Exercise: parseExercise,
   ExerciseDetail: parseExerciseDetail,
   ExerciseRevision: parseExerciseRevision,
+  ExerciseRevisionDetail: parseExerciseRevisionDetail,
   ExerciseTag: parseExerciseTag,
   User: parseUser,
   UserAccount: parseUserAccount,

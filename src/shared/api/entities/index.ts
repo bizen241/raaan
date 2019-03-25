@@ -1,6 +1,7 @@
 import { Exercise } from "./Exercise";
 import { ExerciseDetail } from "./ExerciseDetail";
 import { ExerciseRevision } from "./ExerciseRevision";
+import { ExerciseRevisionDetail } from "./ExerciseRevisionDetail";
 import { ExerciseTag } from "./ExerciseTag";
 import { User } from "./User";
 import { UserAccount } from "./UserAccount";
@@ -9,7 +10,9 @@ import { UserSession } from "./UserSession";
 
 export * from "./Exercise";
 export * from "./ExerciseDetail";
+export * from "./ExerciseDetailObject";
 export * from "./ExerciseRevision";
+export * from "./ExerciseRevisionDetail";
 export * from "./ExerciseTag";
 export * from "./User";
 export * from "./UserAccount";
@@ -31,6 +34,7 @@ export type EntityObject =
   | Exercise
   | ExerciseDetail
   | ExerciseRevision
+  | ExerciseRevisionDetail
   | ExerciseTag
   | User
   | UserAccount
@@ -41,6 +45,7 @@ export type EntityTypeToObject = {
   Exercise: Exercise;
   ExerciseDetail: ExerciseDetail;
   ExerciseRevision: ExerciseRevision;
+  ExerciseRevisionDetail: ExerciseRevisionDetail;
   ExerciseTag: ExerciseTag;
   User: User;
   UserAccount: UserAccount;
@@ -52,6 +57,7 @@ type EntityTypeToEmptyObject = {
   Exercise: {};
   ExerciseDetail: {};
   ExerciseRevision: {};
+  ExerciseRevisionDetail: {};
   ExerciseTag: {};
   User: {};
   UserAccount: {};
@@ -64,6 +70,7 @@ export const createEntityTypeToEmptyObject = <T extends EntityTypeToEmptyObject>
     Exercise: {},
     ExerciseDetail: {},
     ExerciseRevision: {},
+    ExerciseRevisionDetail: {},
     ExerciseTag: {},
     User: {},
     UserAccount: {},

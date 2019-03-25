@@ -4,7 +4,7 @@ import * as React from "react";
 import { EntityEditorProps } from "..";
 import { ExerciseRevision } from "../../../../shared/api/entities";
 import { Question } from "../../../../shared/content";
-import { contentActions } from "../../../actions/content";
+import { contentActions } from "../../../actions/exerciseDetail";
 import { connector } from "../../../reducers";
 import { dialogActions } from "../../../reducers/dialog";
 import { QuestionPreviewer } from "../../content/previewer/QuestionPreviewer";

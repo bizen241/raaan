@@ -2,7 +2,7 @@ import { Collapse, MenuItem, Tag } from "@blueprintjs/core";
 import { useCallback, useState } from "react";
 import * as React from "react";
 import { Question } from "../../../../../shared/content";
-import { contentActions } from "../../../../actions/content";
+import { contentActions } from "../../../../actions/exerciseDetail";
 import { connector } from "../../../../reducers";
 import { dialogActions } from "../../../../reducers/dialog";
 import { Column, Details, PopMenu, Summary } from "../../../ui";

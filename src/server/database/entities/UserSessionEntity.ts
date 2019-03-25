@@ -3,46 +3,32 @@ import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
 @Entity()
-export class UserSessionEntity extends BaseEntityClass<"UserSession"> {
+export class UserSessionEntity extends BaseEntityClass {
   type: "UserSession" = "UserSession";
+
+  @Column("uuid")
+  userId: string;
 
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
-  user!: UserEntity;
+  user?: UserEntity;
 
   @Column({ type: "uuid", unique: true })
   sessionId!: string;
 
   @Column()
-  userAgent!: string;
+  userAgent: string = "";
 
-  @Column({ default: 0 })
-  accessCount!: number;
+  @Column()
+  accessCount: number = 0;
 
   @Column("timestamp without time zone")
   expireAt!: Date;
-}
 
-interface UserSessionConstructor {
-  id?: string;
-  user: UserEntity;
-  sessionId: string;
-  userAgent: string;
-  expireAt: Date;
-}
+  constructor(user: UserEntity) {
+    super();
 
-export const createUserSession = ({ id, user, sessionId, userAgent, expireAt }: UserSessionConstructor) => {
-  const userSession = new UserSessionEntity();
-
-  if (id !== undefined) {
-    userSession.id = id;
+    this.userId = user.id;
   }
-
-  userSession.user = user;
-  userSession.sessionId = sessionId;
-  userSession.userAgent = userAgent;
-  userSession.expireAt = expireAt;
-
-  return userSession;
-};
+}
