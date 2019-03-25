@@ -1,7 +1,7 @@
 import { Collapse, MenuItem, Tag } from "@blueprintjs/core";
 import { useCallback, useState } from "react";
 import * as React from "react";
-import { ExerciseItem } from "../../../../../shared/content";
+import { Question } from "../../../../../shared/content";
 import { contentActions } from "../../../../actions/content";
 import { connector } from "../../../../reducers";
 import { dialogActions } from "../../../../reducers/dialog";
@@ -10,13 +10,13 @@ import { KanaItemEditor } from "./KanaItemEditor";
 import { KanjiItemEditor } from "./KanjiItemEditor";
 import { TextItemEditor } from "./TextItemEditor";
 
-export const ExerciseItemEditor = connector(
+export const QuestionEditor = connector(
   (
     _,
     ownProps: {
       bufferId: string;
       itemIndex: number;
-      item: ExerciseItem;
+      item: Question;
       onFocus: (itemIndex: number) => void;
     }
   ) => ({
@@ -40,7 +40,7 @@ export const ExerciseItemEditor = connector(
               <MenuItem
                 key="p"
                 text="プレビュー (p)"
-                onClick={useCallback(() => openDialog("ExerciseItemPreviewer"), [])}
+                onClick={useCallback(() => openDialog("QuestionPreviewer"), [])}
               />,
               <MenuItem
                 key="d"
@@ -57,8 +57,7 @@ export const ExerciseItemEditor = connector(
             <ItemEditor
               item={item}
               onChange={useCallback(
-                <P extends keyof ExerciseItem>(key: P, value: ExerciseItem[P]) =>
-                  updateItem(bufferId, itemIndex, key, value),
+                <P extends keyof Question>(key: P, value: Question[P]) => updateItem(bufferId, itemIndex, key, value),
                 [itemIndex]
               )}
             />
@@ -69,7 +68,7 @@ export const ExerciseItemEditor = connector(
   }
 );
 
-export const contentItemTypeToLabel: { [T in ExerciseItem["type"]]: string } = {
+export const contentItemTypeToLabel: { [T in Question["type"]]: string } = {
   code: "コード",
   kana: "かな",
   kanji: "漢字",
@@ -79,14 +78,12 @@ export const contentItemTypeToLabel: { [T in ExerciseItem["type"]]: string } = {
 
 export type TextAreaChangeEvent = React.ChangeEvent<HTMLTextAreaElement>;
 
-export interface ExerciseItemEditorProps<T extends ExerciseItem> {
+export interface QuestionEditorProps<T extends Question> {
   item: T;
   onChange: <P extends keyof T>(key: P, value: T[P]) => void;
 }
 
-export const contentItemEditors: {
-  [T in ExerciseItem["type"]]: React.FunctionComponent<ExerciseItemEditorProps<any>>
-} = {
+export const contentItemEditors: { [T in Question["type"]]: React.FunctionComponent<QuestionEditorProps<any>> } = {
   text: TextItemEditor,
   kana: KanaItemEditor,
   kanji: KanjiItemEditor,

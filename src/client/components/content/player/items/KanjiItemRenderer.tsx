@@ -1,6 +1,6 @@
 import { Divider } from "@blueprintjs/core";
 import * as React from "react";
-import { ExerciseItemRendererProps } from ".";
+import { QuestionRendererProps } from ".";
 import { KanjiItem } from "../../../../../shared/content";
 import { Column } from "../../../ui";
 import { TypedLines } from "./lines/TypedLines";
@@ -9,7 +9,7 @@ import { TypingKanjiLine } from "./lines/TypingKanjiLine";
 import { TypingLine } from "./lines/TypingLine";
 import { UntypedLines } from "./lines/UntypedLines";
 
-export const KanjiItemRenderer: React.FunctionComponent<ExerciseItemRendererProps<KanjiItem>> = ({
+export const KanjiItemRenderer: React.FunctionComponent<QuestionRendererProps<KanjiItem>> = ({
   item,
   untypedSource,
   untypedString,

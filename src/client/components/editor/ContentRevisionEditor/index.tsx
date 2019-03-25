@@ -3,15 +3,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import * as React from "react";
 import { EntityEditorProps } from "..";
 import { ExerciseRevision } from "../../../../shared/api/entities";
-import { ExerciseItem } from "../../../../shared/content";
+import { Question } from "../../../../shared/content";
 import { contentActions } from "../../../actions/content";
 import { connector } from "../../../reducers";
 import { dialogActions } from "../../../reducers/dialog";
-import { ExerciseItemPreviewer } from "../../content/previewer/ExerciseItemPreviewer";
+import { QuestionPreviewer } from "../../content/previewer/QuestionPreviewer";
 import { ExercisePreviewer } from "../../content/previewer/ExercisePreviewer";
 import { Column } from "../../ui";
 import { manageHotKey } from "../../utils/hotKey";
-import { ExerciseItemEditor, contentItemTypeToLabel } from "./ExerciseItemEditor";
+import { QuestionEditor, contentItemTypeToLabel } from "./QuestionEditor";
 
 export const ExerciseEditor = connector(
   (state, ownProps: EntityEditorProps<ExerciseRevision>) => ({
@@ -67,7 +67,7 @@ export const ExerciseEditor = connector(
           <Column padding>アイテム</Column>
           {items.map((item, index) => (
             <Column key={item.id} padding>
-              <ExerciseItemEditor bufferId={bufferId} itemIndex={index} item={item} onFocus={focus} />
+              <QuestionEditor bufferId={bufferId} itemIndex={index} item={item} onFocus={focus} />
             </Column>
           ))}
           <Column padding>
@@ -77,7 +77,7 @@ export const ExerciseEditor = connector(
                   value={selectedItemType}
                   ref={itemTypeSelectorRef}
                   onChange={useCallback(
-                    (e: React.ChangeEvent<HTMLSelectElement>) => selectItemType(e.target.value as ExerciseItem["type"]),
+                    (e: React.ChangeEvent<HTMLSelectElement>) => selectItemType(e.target.value as Question["type"]),
                     []
                   )}
                 >
@@ -106,7 +106,7 @@ export const ExerciseEditor = connector(
           </Button>
         </Column>
         <ExercisePreviewer params={buffer.edited} />
-        <ExerciseItemPreviewer item={items[focusedItemIndex]} />
+        <QuestionPreviewer item={items[focusedItemIndex]} />
       </Column>
     );
   }

@@ -1,9 +1,9 @@
-import { ExerciseItem } from "../../../../../shared/content";
+import { Question } from "../../../../../shared/content";
 import { KanaItemRenderer } from "./KanaItemRenderer";
 import { KanjiItemRenderer } from "./KanjiItemRenderer";
 import { TextItemRenderer } from "./TextItemRenderer";
 
-export interface ExerciseItemRendererProps<T extends ExerciseItem> {
+export interface QuestionRendererProps<T extends Question> {
   item: T;
   untypedSource: string;
   untypedString: string;
@@ -14,7 +14,7 @@ export interface ExerciseItemRendererProps<T extends ExerciseItem> {
 }
 
 export const contentItemTypeToRenderer: {
-  [T in ExerciseItem["type"]]: React.FunctionComponent<ExerciseItemRendererProps<any>>
+  [T in Question["type"]]: React.FunctionComponent<QuestionRendererProps<any>>
 } = {
   text: TextItemRenderer,
   kana: KanaItemRenderer,

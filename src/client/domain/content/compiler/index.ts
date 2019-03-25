@@ -1,6 +1,6 @@
 import { ExerciseRevision } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
-import { ExerciseItem } from "../../../../shared/content";
+import { Question } from "../../../../shared/content";
 import { isHatuon, isKana, isSokuon, isYoon, pairKanaToRomans, singleKanaToRomans } from "./hiragana";
 
 export type CompiledChar = {
@@ -26,7 +26,7 @@ const sanitize = (value: string) => {
   return value;
 };
 
-const compileItem = (item: ExerciseItem) => {
+const compileItem = (item: Question) => {
   const compiledItem: CompiledItem = [];
 
   const sanitizedLines = sanitize(item.value).split("\n");

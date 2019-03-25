@@ -1,7 +1,7 @@
 import * as uuid from "uuid";
 import { ExerciseRevision } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
-import { CodeItem, ExerciseItem, KanaItem, KanjiItem, MathItem, TextItem } from "../../../shared/content";
+import { CodeItem, Question, KanaItem, KanjiItem, MathItem, TextItem } from "../../../shared/content";
 
 export const createExerciseRevision = (contentId?: string): SaveParams<ExerciseRevision> => ({
   contentId,
@@ -44,7 +44,7 @@ const createMathItem = (): MathItem => ({
   ...base("math")
 });
 
-export const contentItemCreators: { [T in ExerciseItem["type"]]: () => ExerciseItem } = {
+export const contentItemCreators: { [T in Question["type"]]: () => Question } = {
   text: createTextItem,
   kana: createKanaItem,
   kanji: createKanjiItem,
@@ -52,7 +52,7 @@ export const contentItemCreators: { [T in ExerciseItem["type"]]: () => ExerciseI
   math: createMathItem
 };
 
-export const createPlan = (items: ExerciseItem[]) => {
+export const createPlan = (items: Question[]) => {
   const plan = [...Array(items.length).keys()];
 
   for (let i = plan.length - 1; i >= 0; i--) {

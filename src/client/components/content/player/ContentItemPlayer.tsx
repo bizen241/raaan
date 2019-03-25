@@ -1,12 +1,12 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { ExerciseItem } from "../../../../shared/content";
+import { Question } from "../../../../shared/content";
 import { CompiledChar, CompiledItem, CompiledLine } from "../../../domain/content/compiler";
-import { ExerciseItemResult, TypoMap } from "../../../reducers/player";
+import { QuestionResult, TypoMap } from "../../../reducers/player";
 import { Column } from "../../ui";
 import { contentItemTypeToRenderer } from "./items";
 
-interface ExerciseItemPlayerState {
+interface QuestionPlayerState {
   untypedLines: CompiledItem;
   untypedChars: CompiledLine;
   untypedCharStrings: string[];
@@ -24,39 +24,36 @@ interface ExerciseItemPlayerState {
   isCurrentLineFinished: boolean;
 }
 
-export const ExerciseItemPlayer: React.FunctionComponent<{
-  item: ExerciseItem;
+export const QuestionPlayer: React.FunctionComponent<{
+  item: Question;
   compiledItem: CompiledItem;
-  onFinish: (result: ExerciseItemResult) => void;
+  onFinish: (result: QuestionResult) => void;
 }> = ({ item, compiledItem, onFinish }) => {
-  const [state, setState] = useState<ExerciseItemPlayerState>(() => getInitialState(compiledItem));
+  const [state, setState] = useState<QuestionPlayerState>(() => getInitialState(compiledItem));
 
   const { isCurrentItemFinished, isCurrentLineFinished } = state;
 
-  useEffect(
-    () => {
-      if (isCurrentItemFinished) {
-        onFinish({
-          id: item.id,
-          time: state.totalTime,
-          typeCount: state.typedLines
-            .map(line => line.length)
-            .reduce((totalLength, lineLength) => totalLength + lineLength, 0),
-          typoMap: state.typoMap
-        });
+  useEffect(() => {
+    if (isCurrentItemFinished) {
+      onFinish({
+        id: item.id,
+        time: state.totalTime,
+        typeCount: state.typedLines
+          .map(line => line.length)
+          .reduce((totalLength, lineLength) => totalLength + lineLength, 0),
+        typoMap: state.typoMap
+      });
 
-        return;
-      }
+      return;
+    }
 
-      const onKeyDown = (e: KeyboardEvent) => {
-        setState(previousState => getNextState(previousState, e));
-      };
+    const onKeyDown = (e: KeyboardEvent) => {
+      setState(previousState => getNextState(previousState, e));
+    };
 
-      document.addEventListener("keydown", onKeyDown);
-      return () => document.removeEventListener("keydown", onKeyDown);
-    },
-    [isCurrentItemFinished]
-  );
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [isCurrentItemFinished]);
   useEffect(() => {
     const suspend = () => {
       setState({
@@ -90,7 +87,7 @@ export const ExerciseItemPlayer: React.FunctionComponent<{
   );
 };
 
-const getInitialState = (compiledItem: CompiledItem): ExerciseItemPlayerState => {
+const getInitialState = (compiledItem: CompiledItem): QuestionPlayerState => {
   const currentLine = compiledItem[0] || [];
   const currentChar = currentLine[0];
 
@@ -113,10 +110,10 @@ const getInitialState = (compiledItem: CompiledItem): ExerciseItemPlayerState =>
   };
 };
 
-const getNextState = (previousState: ExerciseItemPlayerState, e: KeyboardEvent): ExerciseItemPlayerState => {
+const getNextState = (previousState: QuestionPlayerState, e: KeyboardEvent): QuestionPlayerState => {
   const { key } = e;
 
-  const nextState: ExerciseItemPlayerState = { ...previousState };
+  const nextState: QuestionPlayerState = { ...previousState };
 
   if (previousState.isSuspended) {
     nextState.isSuspended = false;

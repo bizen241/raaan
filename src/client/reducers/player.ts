@@ -17,7 +17,7 @@ export interface TypoMap {
   [key: string]: number | undefined;
 }
 
-export interface ExerciseItemResult {
+export interface QuestionResult {
   id: string;
   time: number;
   typeCount: number;
@@ -27,7 +27,7 @@ export interface ExerciseItemResult {
 export const playerActions = {
   load: (content: SaveParams<ExerciseRevision>) => createAction(PlayerActionType.Load, { content }),
   start: () => createAction(PlayerActionType.Start),
-  next: (result: ExerciseItemResult) => createAction(PlayerActionType.Next, { result }),
+  next: (result: QuestionResult) => createAction(PlayerActionType.Next, { result }),
   finish: () => createAction(PlayerActionType.Finish)
 };
 
@@ -38,7 +38,7 @@ export interface PlayerState {
   compiled: CompiledItem[];
   plan: number[];
   cursor: number;
-  results: ExerciseItemResult[];
+  results: QuestionResult[];
   isStarted: boolean;
   isFinished: boolean;
 }
