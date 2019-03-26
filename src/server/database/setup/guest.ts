@@ -11,7 +11,7 @@ export const setGuestUser = async () => {
     const guestUserConfig = new UserConfigEntity();
     await manager.save(guestUserConfig);
 
-    const guestUser = new UserEntity("Guest", "Guest", guestUserConfig);
+    const guestUser = new UserEntity("", "Guest", guestUserConfig);
     await manager.save(guestUser);
   }
 };

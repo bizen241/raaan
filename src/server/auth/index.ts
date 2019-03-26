@@ -32,6 +32,7 @@ export const createAuthMiddleware = (processEnv: ProcessEnv): RequestHandler => 
         });
 
         req.user = user;
+        req.session.user = user;
         req.session.sessionId = uuid();
 
         await saveSession(req, res).catch(() => {

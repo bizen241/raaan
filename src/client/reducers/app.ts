@@ -26,41 +26,49 @@ export type AppActions = ActionUnion<typeof appSyncActions>;
 
 const initialize = (): AsyncAction => async (dispatch, getState) => {
   try {
+    const beforeState = getState();
+    const beforeUserId = beforeState.app.userId;
+    const beforeConfigId = beforeState.app.configId;
+    const beforeUserBuffer = beforeState.buffers.User[beforeUserId];
+    const beforeConfigBuffer = beforeState.buffers.UserConfig[beforeConfigId];
+
     if (navigator.onLine) {
       const result = await getCurrentUser();
       const nextUser = Object.values(result.User)[0];
 
-      if (nextUser !== undefined) {
+      if (nextUser !== undefined && nextUser.permission !== "Guest") {
         dispatch(cacheActions.get(result));
         dispatch(appSyncActions.setUser(nextUser));
       }
     }
 
-    const state = getState();
-    const currentUserId = state.app.userId;
-    const currentUserCache = state.cache.get.User[currentUserId];
-    const currentUserBuffer = state.buffers.User[currentUserId];
+    const nextState = getState();
+    const nextUserId = nextState.app.userId;
+    const nextConfigId = nextState.app.configId;
+    const nextUserCache = nextState.cache.get.User[nextUserId];
+    const nextConfigCache = nextState.cache.get.UserConfig[nextConfigId];
 
-    if (currentUserCache === undefined && currentUserBuffer === undefined) {
-      const currentConfigBufferId = state.app.configId;
-
-      const newUserBuffer: Required<SaveParams<User>> = {
-        name: "ゲスト",
+    if (nextUserCache === undefined && beforeUserBuffer === undefined) {
+      const nextUserBuffer: Required<SaveParams<User>> = {
+        name: "",
         permission: "Guest",
-        configId: currentConfigBufferId
+        configId: nextConfigId
       };
-      const newConfigBuffer: SaveParams<UserConfig> = {};
 
-      dispatch(buffersActions.add<User>("User", currentUserId, newUserBuffer));
-      dispatch(buffersActions.add<UserConfig>("UserConfig", currentConfigBufferId, newConfigBuffer));
+      dispatch(buffersActions.add<User>("User", nextUserId, nextUserBuffer));
+    }
+    if (nextConfigCache === undefined && beforeConfigBuffer === undefined) {
+      const nextConfigBuffer: SaveParams<UserConfig> = {};
+
+      dispatch(buffersActions.add<UserConfig>("UserConfig", nextConfigId, nextConfigBuffer));
     }
 
-    if (currentUserCache !== undefined && currentUserBuffer !== undefined) {
-      const { permission, configId } = currentUserBuffer.edited;
+    if (nextUserCache !== undefined && beforeUserBuffer !== undefined) {
+      const { permission } = beforeUserBuffer.edited;
 
-      if (permission === "Guest" && configId !== undefined) {
-        dispatch(buffersActions.delete("User", currentUserId));
-        dispatch(buffersActions.delete("UserConfig", configId));
+      if (permission === "Guest") {
+        dispatch(buffersActions.delete("User", beforeUserId));
+        dispatch(buffersActions.delete("UserConfig", beforeConfigId));
       }
     }
 

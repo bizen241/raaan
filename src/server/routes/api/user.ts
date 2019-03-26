@@ -3,10 +3,18 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
+import { UserEntity } from "../../database/entities";
 import { setClearSiteData } from "../logout";
 
-export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  responseFindResult(res, req.user);
+export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
+  const user = await getManager().findOne(UserEntity, req.user.id, {
+    relations: ["config"]
+  });
+  if (user === undefined) {
+    return next(createError(404));
+  }
+
+  responseFindResult(res, user);
 });
 
 GET.apiDoc = createOperationDoc({
