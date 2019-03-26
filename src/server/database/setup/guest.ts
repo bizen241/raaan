@@ -9,9 +9,9 @@ export const setGuestUser = async () => {
 
   if (result === undefined) {
     const guestUserConfig = new UserConfigEntity();
-    const guestUser = new UserEntity("Guest", "Guest", guestUserConfig);
-
     await manager.save(guestUserConfig);
+
+    const guestUser = new UserEntity("Guest", "Guest", guestUserConfig);
     await manager.save(guestUser);
   }
 };

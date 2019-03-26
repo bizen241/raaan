@@ -29,6 +29,6 @@ export class UserEntity extends BaseEntityClass {
 
     this.name = name;
     this.permission = permission;
-    this.configId = config.id;
+    this.configId = config && config.id;
   }
 }

@@ -27,7 +27,7 @@ export class UserAccountEntity extends BaseEntityClass {
   constructor(user: UserEntity, provider: AuthProviderName, accountId: string) {
     super();
 
-    this.userId = user.id;
+    this.userId = user && user.id;
     this.provider = provider;
     this.accountId = accountId;
   }

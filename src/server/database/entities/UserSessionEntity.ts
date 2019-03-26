@@ -29,6 +29,6 @@ export class UserSessionEntity extends BaseEntityClass {
   constructor(user: UserEntity) {
     super();
 
-    this.userId = user.id;
+    this.userId = user && user.id;
   }
 }

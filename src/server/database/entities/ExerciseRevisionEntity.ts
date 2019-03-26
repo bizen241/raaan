@@ -32,7 +32,7 @@ export class ExerciseRevisionEntity extends BaseEntityClass {
   constructor(content: ExerciseEntity, detail: ExerciseRevisionDetailEntity) {
     super();
 
-    this.contentId = content.id;
-    this.detailId = detail.id;
+    this.contentId = content && content.id;
+    this.detailId = detail && detail.id;
   }
 }

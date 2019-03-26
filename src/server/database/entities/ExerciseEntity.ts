@@ -43,7 +43,7 @@ export class ExerciseEntity extends BaseEntityClass {
   constructor(author: UserEntity, detail: ExerciseDetailEntity) {
     super();
 
-    this.authorId = author.id;
-    this.detailId = detail.id;
+    this.authorId = author && author.id;
+    this.detailId = detail && detail.id;
   }
 }

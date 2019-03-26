@@ -71,16 +71,15 @@ const saveUserAndAccount = async (provider: AuthProviderName, userProfile: UserP
 };
 
 const createUserAndAccount = async (provider: AuthProviderName, userProfile: UserProfile, sessionUser: UserEntity) => {
-  const userConfig = new UserConfigEntity();
-  const user = sessionUser.permission !== "Guest" ? sessionUser : new UserEntity(name, "Write", userConfig);
-  const userAccount = new UserAccountEntity(user, provider, userProfile.id);
-
   const manager = getManager();
 
+  const userConfig = new UserConfigEntity();
   await manager.save(userConfig);
 
+  const user = sessionUser.permission !== "Guest" ? sessionUser : new UserEntity(name, "Write", userConfig);
   const savedUser = await manager.save(user);
 
+  const userAccount = new UserAccountEntity(user, provider, userProfile.id);
   await manager.save(userAccount);
 
   return savedUser;
