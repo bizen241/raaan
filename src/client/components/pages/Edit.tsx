@@ -14,7 +14,7 @@ export const Edit = connector(
     return (
       <Page>
         <Header heading="編集" />
-        <EntityEditor entityType="ExerciseRevision" entityId={id} />
+        <EntityEditor entityType="ExerciseDetail" entityId={id} />
       </Page>
     );
   }
