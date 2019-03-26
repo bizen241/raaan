@@ -4,7 +4,7 @@ import { ExerciseDetailEntity } from "./ExerciseDetailEntity";
 import { ExerciseTagEntity } from "./ExerciseTagEntity";
 import { UserEntity } from "./UserEntity";
 
-@Entity()
+@Entity("exercises")
 export class ExerciseEntity extends BaseEntityClass {
   type: "Exercise" = "Exercise";
 
@@ -31,7 +31,9 @@ export class ExerciseEntity extends BaseEntityClass {
   detail?: ExerciseDetailEntity;
 
   @ManyToMany(() => ExerciseTagEntity)
-  @JoinTable()
+  @JoinTable({
+    name: "exercises_exercise_tags"
+  })
   tags?: ExerciseTagEntity[];
 
   @Column()

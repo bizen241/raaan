@@ -3,7 +3,7 @@ import { Lang, Theme } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
-@Entity()
+@Entity("user_configs")
 export class UserConfigEntity extends BaseEntityClass {
   type: "UserConfig" = "UserConfig";
 

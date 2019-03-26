@@ -1,7 +1,7 @@
 import { Column, Entity } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 
-@Entity()
+@Entity("exercise_tags")
 export class ExerciseTagEntity extends BaseEntityClass {
   type: "ExerciseTag" = "ExerciseTag";
 

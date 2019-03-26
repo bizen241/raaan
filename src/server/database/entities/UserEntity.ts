@@ -3,7 +3,7 @@ import { Permission } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserConfigEntity } from "./UserConfigEntity";
 
-@Entity()
+@Entity("users")
 export class UserEntity extends BaseEntityClass {
   type: "User" = "User";
 

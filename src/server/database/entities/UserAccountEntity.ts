@@ -3,7 +3,7 @@ import { AuthProviderName } from "../../../shared/auth";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
-@Entity()
+@Entity("user_accounts")
 export class UserAccountEntity extends BaseEntityClass {
   type: "UserAccount" = "UserAccount";
 
