@@ -10,21 +10,20 @@ import { ExerciseDetailEntity, ExerciseEntity } from "../../database/entities";
 export const POST: OperationFunction = errorBoundary(async (req, res, next) => {
   const { contentId, ...params }: SaveParams<ExerciseDetail> = req.body;
 
-  const newExerciseDetail = new ExerciseDetailEntity({
-    lang: params.lang || "en",
-    title: params.title || "",
-    tags: params.tags || [],
-    description: params.description || "",
-    rubric: params.rubric || "",
-    questions: params.questions || [],
-    comment: params.comment || "",
-    navigationMode: params.navigationMode || "random"
-  });
-
-  const newExercise = new ExerciseEntity(req.user, newExerciseDetail);
-
   await getManager().transaction(async manager => {
+    const newExerciseDetail = new ExerciseDetailEntity({
+      lang: params.lang || "en",
+      title: params.title || "",
+      tags: params.tags || [],
+      description: params.description || "",
+      rubric: params.rubric || "",
+      questions: params.questions || [],
+      comment: params.comment || "",
+      navigationMode: params.navigationMode || "random"
+    });
     await manager.save(newExerciseDetail);
+
+    const newExercise = new ExerciseEntity(req.user, newExerciseDetail);
     await manager.save(newExercise);
   });
 
