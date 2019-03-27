@@ -55,16 +55,14 @@ const load = (entityType: EntityType, entityId: string): AsyncAction => async (d
     await apiActions.get(entityType, entityId)(dispatch, getState, undefined);
   }
 
-  const entity = getState().cache.get.ExerciseRevision[entityId];
+  const entity = getState().cache.get[entityType][entityId];
   if (entity === undefined) {
     return;
   }
 
   const { id, createdAt, updatedAt, fetchedAt, ...params } = entity;
 
-  const bufferId = entityType === "ExerciseRevision" ? generateBufferId() : entityId;
-
-  dispatch(buffersActions.add(entityType, bufferId, params));
+  dispatch(buffersActions.add(entityType, entityId, params));
 };
 
 export const buffersActions = {
