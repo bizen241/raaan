@@ -20,6 +20,7 @@ export const createApiDoc = (_: ProcessEnv): OpenAPIV3.Document => ({
   paths: {},
   components: {
     parameters: {
+      ...headerParametersSchema,
       ...pathParametersSchema,
       ...generateQueryParameterSchema()
     },
@@ -28,6 +29,18 @@ export const createApiDoc = (_: ProcessEnv): OpenAPIV3.Document => ({
     securitySchemes
   }
 });
+
+const headerParametersSchema: { [key: string]: OpenAPIV3.ParameterObject } = {
+  CustomHeader: {
+    in: "header",
+    name: "X-Requested-With",
+    schema: {
+      type: "string",
+      default: "Fetch"
+    },
+    required: true
+  }
+};
 
 const pathParametersSchema: { [key: string]: OpenAPIV3.ParameterObject } = {
   EntityId: {

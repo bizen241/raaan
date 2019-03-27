@@ -1,4 +1,5 @@
 import * as compression from "compression";
+import * as cors from "cors";
 import * as express from "express";
 import { join } from "path";
 import * as serveStatic from "serve-static";
@@ -11,6 +12,15 @@ import { logoutRouter } from "./routes/logout";
 import { createSessionMiddleware } from "./session";
 
 export const createApp = (processEnv: ProcessEnv, app: express.Express = express()) => {
+  app.use(
+    cors({
+      origin: "https://terakoya.app",
+      methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+      allowedHeaders: "X-Requested-With",
+      credentials: true
+    })
+  );
+
   app.use(createSessionMiddleware(processEnv));
   app.use(createAuthMiddleware(processEnv));
 

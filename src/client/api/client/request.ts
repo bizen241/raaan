@@ -10,7 +10,8 @@ export const request = async <T>(method: Method, path: string, body?: SaveParams
     body: body && JSON.stringify(body),
     credentials: "include",
     headers: {
-      "Exercise-Type": "application/json"
+      "Exercise-Type": "application/json",
+      "X-Requested-With": "Fetch"
     }
   }).catch(() => {
     throw new Error();

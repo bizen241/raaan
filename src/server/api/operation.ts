@@ -34,7 +34,11 @@ interface OperationDocument {
 export const createOperationDoc = (document: OperationDocument): OpenAPIV3.OperationObject => {
   const { entityType, summary, permission, tag, hasId, hasQuery, hasBody } = document;
 
-  const parameters: OpenAPIV3.ReferenceObject[] = [];
+  const parameters: OpenAPIV3.ReferenceObject[] = [
+    {
+      $ref: "#/components/parameters/CustomHeader"
+    }
+  ];
 
   if (hasId) {
     parameters.push({
