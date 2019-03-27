@@ -1,24 +1,41 @@
 import * as React from "react";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { createGlobalStyle, ThemeProvider } from "../../style";
 import { ConfigContext } from "./Initializer";
 
 export const Style = React.memo<{ children: React.ReactNode }>(({ children }) => {
-  const config = useContext(ConfigContext);
-  const theme = config.theme || "dark";
-  const accent = "#eeeeee";
+  const { theme = "default" } = useContext(ConfigContext);
+
+  const [themeName, setThemeName] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    if (theme !== "default" && theme !== "system" && theme !== undefined) {
+      return setThemeName(theme);
+    }
+
+    const handler = ({ matches }: MediaQueryListEvent) => {
+      setThemeName(matches ? "dark" : "light");
+    };
+
+    const mediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
+    mediaQueryList.addListener(handler);
+
+    setThemeName(mediaQueryList.matches ? "dark" : "light");
+
+    return () => mediaQueryList.removeListener(handler);
+  }, [theme]);
 
   return (
     <ThemeProvider
       theme={useMemo(
         () => ({
-          background: theme === "light" ? "#eeeeee" : "#30404d",
-          accent
+          background: themeName === "light" ? "#eeeeee" : "#30404d",
+          accent: "#eeeeee"
         }),
-        [theme, accent]
+        [themeName]
       )}
     >
-      <div className={theme === "light" ? "bp3-light" : "bp3-dark"}>
+      <div className={themeName === "light" ? "bp3-light" : "bp3-dark"}>
         <GlobalStyle />
         {children}
       </div>

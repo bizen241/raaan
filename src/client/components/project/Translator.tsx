@@ -7,6 +7,7 @@ import { ConfigContext } from "./Initializer";
 
 export const Translator = React.memo<{ children: React.ReactNode }>(({ children }) => {
   const { lang } = useContext(ConfigContext);
+
   const language = useMemo<Lang>(() => {
     if (lang === "default" || lang === "system" || lang === undefined) {
       return navigator.language.slice(0, 2) as Lang;
