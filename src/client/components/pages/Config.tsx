@@ -12,10 +12,11 @@ import { Page } from "./Page";
 
 export const Config = connector(
   state => ({
-    hasUpdate: state.app.hasUpdate
+    hasUpdate: state.app.hasUpdate,
+    configId: state.app.configId
   }),
   () => ({}),
-  ({ hasUpdate }) => {
+  ({ hasUpdate, configId }) => {
     const currentUser = useContext(UserContext);
     const isGuest = currentUser.permission === "Guest";
 
@@ -39,7 +40,7 @@ export const Config = connector(
             </Column>
           ) : null}
           <Column padding>
-            <EntityEditor entityType="User" entityId={currentUser.id} />
+            <EntityEditor entityType="UserConfig" entityId={configId} />
           </Column>
           {!isGuest ? (
             <Column padding>
