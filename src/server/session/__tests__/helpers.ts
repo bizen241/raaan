@@ -1,10 +1,10 @@
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { Permission } from "../../../shared/api/entities";
-import { UserConfigEntity, UserEntity, UserSessionEntity } from "../../database/entities";
+import { UserAccountEntity, UserConfigEntity, UserEntity, UserSessionEntity } from "../../database/entities";
 
 const createUserFromPermission = (permission: Permission) =>
-  new UserEntity(permission, permission, new UserConfigEntity());
+  new UserEntity(permission, permission, new UserAccountEntity("github", permission, ""), new UserConfigEntity());
 
 export const users: { [P in Permission]: UserEntity } = {
   Owner: createUserFromPermission("Owner"),

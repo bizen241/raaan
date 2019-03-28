@@ -112,12 +112,11 @@ const parseUser: Parser<User> = query => {
 };
 
 const parseUserAccount: Parser<UserAccount> = query => {
-  const { provider, accountId, userId } = query;
+  const { provider, accountId } = query;
 
   return {
     provider: provider as AuthProviderName,
     accountId,
-    userId,
     ...page(query)
   };
 };

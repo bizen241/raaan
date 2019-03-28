@@ -1,5 +1,6 @@
 import { getManager } from "typeorm";
 import { TestDatabase } from "../../__tests__/helpers";
+import { UserAccountEntity } from "../UserAccountEntity";
 import { UserConfigEntity } from "../UserConfigEntity";
 import { UserEntity } from "../UserEntity";
 
@@ -15,8 +16,9 @@ afterAll(async () => {
 test("UserEntity", async () => {
   const manager = getManager();
 
+  const userAccount = new UserAccountEntity("github", "", "");
   const userConfig = new UserConfigEntity();
-  const user = new UserEntity("name", "Admin", userConfig);
+  const user = new UserEntity("name", "Admin", userAccount, userConfig);
 
   await manager.save(user);
 

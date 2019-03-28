@@ -62,7 +62,7 @@ test("DELETE /api/users/{user} -> 200", async () => {
 
   const manager = getManager();
 
-  const savedAccount = await manager.save(new UserAccountEntity(users.Write, "github", "12345678"));
+  const savedAccount = await manager.save(new UserAccountEntity("github", "0", ""));
   const accountId = savedAccount.id;
 
   await DELETE(req, res, next);

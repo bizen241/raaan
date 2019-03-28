@@ -49,10 +49,9 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
     const nextConfigCache = nextState.cache.get.UserConfig[nextConfigId];
 
     if (nextUserCache === undefined && beforeUserBuffer === undefined) {
-      const nextUserBuffer: Required<SaveParams<User>> = {
+      const nextUserBuffer: SaveParams<User> = {
         name: "",
         permission: "Guest",
-        configId: nextConfigId
       };
 
       dispatch(buffersActions.add<User>("User", nextUserId, nextUserBuffer));
