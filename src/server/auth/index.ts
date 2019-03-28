@@ -27,21 +27,19 @@ export const createAuthMiddleware = (processEnv: ProcessEnv): RequestHandler => 
     req.authenticate = async provider => {
       try {
         const userProfile = await clients[provider].authenticate(req);
-        const user = await saveUserAndAccount(provider, userProfile, req.user).catch(() => {
-          throw createError(500);
-        });
+
+        const user = await saveUser(provider, userProfile, req.user);
 
         req.user = user;
+
         req.session.user = user;
         req.session.sessionId = uuid();
 
-        await saveSession(req, res).catch(() => {
-          throw createError(500);
-        });
+        await saveSession(req, res);
 
         res.redirect("/");
       } catch (e) {
-        next(e);
+        throw createError(500);
       }
     };
 
@@ -49,12 +47,15 @@ export const createAuthMiddleware = (processEnv: ProcessEnv): RequestHandler => 
   };
 };
 
-const saveUserAndAccount = async (provider: AuthProviderName, userProfile: UserProfile, sessionUser: UserEntity) => {
+const saveUser = async (provider: AuthProviderName, userProfile: UserProfile, sessionUser: UserEntity) => {
   const manager = getManager();
 
   const account = await manager.findOne(
     UserAccountEntity,
-    { provider, accountId: userProfile.id },
+    {
+      provider,
+      accountId: userProfile.id
+    },
     {
       relations: ["user"]
     }
@@ -62,26 +63,55 @@ const saveUserAndAccount = async (provider: AuthProviderName, userProfile: UserP
 
   if (account !== undefined) {
     if (account.user === undefined) {
-      throw createError(500);
+      throw new Error();
+    }
+
+    if (account.email !== userProfile.email) {
+      account.email = userProfile.email;
+
+      await manager.save(account);
     }
 
     return account.user;
   }
 
-  return await createUserAndAccount(provider, userProfile, sessionUser);
+  if (sessionUser.permission === "Guest") {
+    return createUser(provider, userProfile);
+  } else {
+    return updateUser(sessionUser, provider, userProfile);
+  }
 };
 
-const createUserAndAccount = async (provider: AuthProviderName, userProfile: UserProfile, sessionUser: UserEntity) => {
+const updateUser = async (user: UserEntity, provider: AuthProviderName, userProfile: UserProfile) => {
   const manager = getManager();
 
-  const userConfig = new UserConfigEntity();
-  await manager.save(userConfig);
+  const account = await manager.findOne(UserAccountEntity, {
+    user
+  });
+  if (account === undefined) {
+    throw new Error();
+  }
 
-  const user = sessionUser.permission !== "Guest" ? sessionUser : new UserEntity(name, "Write", userConfig);
+  account.provider = provider;
+  account.accountId = userProfile.id;
+  account.email = userProfile.email;
+
+  await manager.save(account);
+
+  return user;
+};
+
+const createUser = async (provider: AuthProviderName, userProfile: UserProfile) => {
+  const manager = getManager();
+
+  const config = new UserConfigEntity();
+  await manager.save(config);
+
+  const account = new UserAccountEntity(provider, userProfile.id, userProfile.email);
+  await manager.save(account);
+
+  const user = new UserEntity(name, "Write", account, config);
   const savedUser = await manager.save(user);
-
-  const userAccount = new UserAccountEntity(user, provider, userProfile.id);
-  await manager.save(userAccount);
 
   return savedUser;
 };

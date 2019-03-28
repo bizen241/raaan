@@ -6,6 +6,7 @@ import { GitHubClient } from "./GitHubClient";
 export interface UserProfile {
   id: string;
   name: string;
+  email: string;
 }
 
 export interface AuthClient {

@@ -1,6 +1,6 @@
 import * as createError from "http-errors";
 import { getManager } from "typeorm";
-import { UserConfigEntity, UserEntity } from "../entities";
+import { UserAccountEntity, UserConfigEntity, UserEntity } from "../entities";
 
 export const setGuestUser = async () => {
   const manager = getManager();
@@ -11,7 +11,10 @@ export const setGuestUser = async () => {
     const guestUserConfig = new UserConfigEntity();
     await manager.save(guestUserConfig);
 
-    const guestUser = new UserEntity("", "Guest", guestUserConfig);
+    const guestUserAccount = new UserAccountEntity("github", "", "");
+    await manager.save(guestUserAccount);
+
+    const guestUser = new UserEntity("", "Guest", guestUserAccount, guestUserConfig);
     await manager.save(guestUser);
   }
 };

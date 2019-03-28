@@ -14,7 +14,10 @@ export class UserSessionEntity extends BaseEntityClass {
   })
   user?: UserEntity;
 
-  @Column({ type: "uuid", unique: true })
+  @Column({
+    type: "uuid",
+    unique: true
+  })
   sessionId!: string;
 
   @Column()
