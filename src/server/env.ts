@@ -1,4 +1,5 @@
 import * as dotenv from "dotenv";
+import { AuthProviderName, isAuthProviderName } from "../shared/auth";
 dotenv.config();
 
 export interface ProcessEnv {
@@ -6,7 +7,7 @@ export interface ProcessEnv {
   serverPort: number;
   databaseUrl: string;
   sessionSecret: string;
-  adminAccountProvider: string;
+  adminAccountProvider: AuthProviderName;
   adminAccountId: string;
   adminAccountName: string;
   githubClientId: string;
@@ -26,6 +27,12 @@ export const getProcessEnv = (): ProcessEnv => {
     GITHUB_CLIENT_SECRET
   } = process.env;
 
+  if (HOST === undefined) {
+    throw new Error("HOST is not defined");
+  }
+  if (PORT === undefined) {
+    throw new Error("PORT is not defined");
+  }
   if (DATABASE_URL === undefined) {
     throw new Error("DATABASE_URL is not defined");
   }
@@ -48,9 +55,13 @@ export const getProcessEnv = (): ProcessEnv => {
     throw new Error("GITHUB_CLIENT_SECRET is not defined");
   }
 
+  if (!isAuthProviderName(ADMIN_ACCOUNT_PROVIDER)) {
+    throw new Error("ADMIN_ACCOUNT_PROVIDER is invalid");
+  }
+
   return {
-    serverHost: HOST || "localhost",
-    serverPort: PORT !== undefined && !isNaN(Number(PORT)) ? Number(PORT) : 3000,
+    serverHost: HOST,
+    serverPort: Number(PORT),
     databaseUrl: DATABASE_URL,
     sessionSecret: SESSION_SECRET,
     adminAccountProvider: ADMIN_ACCOUNT_PROVIDER,
