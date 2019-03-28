@@ -14,7 +14,8 @@ export class GitHubClient extends OAuth2Client {
       ...params,
       authorizationUrl: "https://github.com/login/oauth/authorize",
       tokenUrl: "https://github.com/login/oauth/access_token",
-      userProfileUrl: "https://api.github.com/user"
+      userProfileUrl: "https://api.github.com/user",
+      scopeName: "user:email"
     });
   }
 
@@ -28,14 +29,15 @@ export class GitHubClient extends OAuth2Client {
     }
 
     const githubUser = await response.json();
-    const { id, login } = githubUser;
-    if (typeof id !== "number" || typeof login !== "string") {
+    const { id, login, email } = githubUser;
+    if (typeof id !== "number" || typeof login !== "string" || typeof email !== "string") {
       throw createError(403);
     }
 
     return {
       id: id.toString(),
-      name: login
+      name: login,
+      email
     };
   }
 }

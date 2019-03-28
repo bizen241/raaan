@@ -10,6 +10,7 @@ interface OAuth2ClientConstructor {
   authorizationUrl: string;
   tokenUrl: string;
   userProfileUrl: string;
+  scopeName: string;
 }
 
 export abstract class OAuth2Client implements AuthClient {
@@ -23,6 +24,7 @@ export abstract class OAuth2Client implements AuthClient {
     const url = new URL(this.params.authorizationUrl);
     const { searchParams } = url;
     searchParams.set("client_id", this.params.clientId);
+    searchParams.set("scope", this.params.scopeName);
     searchParams.set("state", signedSessionId);
 
     return url;
