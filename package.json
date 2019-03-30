@@ -45,6 +45,7 @@
     "http-errors": "1.7.2",
     "node-fetch": "2.3.0",
     "passport": "0.4.0",
+    "passport-github": "1.1.0",
     "pg": "7.8.1",
     "react": "16.8.3",
     "react-dom": "16.8.3",
