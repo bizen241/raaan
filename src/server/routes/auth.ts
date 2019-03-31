@@ -1,28 +1,51 @@
 import { Router } from "express";
-import { isAuthProviderName } from "../../shared/auth";
+import * as createError from "http-errors";
+import * as passport from "passport";
+import { AuthParams } from "../auth";
+import { saveUser } from "../auth/user";
+import { getGuestUser } from "../database/setup/guest";
 
 export const authRouter = Router();
 
-authRouter.get("/:provider", (req, _, next) => {
+authRouter.get("/:provider", async (req, res, next) => {
   const { provider } = req.params;
 
-  if (!isAuthProviderName(provider)) {
-    next();
-
-    return;
+  if (req.session === undefined) {
+    return next(createError(500));
   }
 
-  req.authorize(provider);
+  req.session.user = await getGuestUser();
+
+  passport.authenticate(provider)(req, res, next);
 });
 
-authRouter.get("/:provider/callback", (req, _, next) => {
+authRouter.get("/:provider/callback", (req, res, next) => {
   const { provider } = req.params;
 
-  if (!isAuthProviderName(provider)) {
-    next();
+  passport.authenticate(
+    provider,
+    {
+      failureRedirect: "/"
+    },
+    (err: Error, params: AuthParams) => {
+      if (err) {
+        return next(err);
+      }
+      if (req.session === undefined) {
+        return next(createError(500));
+      }
 
-    return;
-  }
+      req.session.regenerate(async () => {
+        if (req.session === undefined) {
+          return next(createError(500));
+        }
 
-  req.authenticate(provider);
+        const user = await saveUser(req.session.user, params);
+
+        req.session.user = user;
+
+        res.redirect("/");
+      });
+    }
+  )(req, res, next);
 });

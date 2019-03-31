@@ -20,6 +20,9 @@ export class UserSessionEntity extends BaseEntityClass {
   })
   sessionId!: string;
 
+  @Column({ type: "json" })
+  data: any;
+
   @Column()
   userAgent: string = "";
 
