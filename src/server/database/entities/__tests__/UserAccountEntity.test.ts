@@ -1,5 +1,5 @@
 import { getManager } from "typeorm";
-import { TestDatabase } from "../../__tests__/helpers";
+import { TestDatabase } from "../../../__tests__/helpers";
 import { UserAccountEntity } from "../UserAccountEntity";
 
 const testDatabase = new TestDatabase();

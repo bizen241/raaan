@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import { ProcessEnv } from "../env";
+import { ProcessEnv } from "../../env";
 
 const { TEST_DATABASE_URL } = process.env;
 

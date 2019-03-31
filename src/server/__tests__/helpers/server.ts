@@ -1,19 +1,19 @@
 import { createServer, Server } from "http";
 import fetch, { RequestInit } from "node-fetch";
-import { Connection } from "typeorm";
-import { testProcessEnv } from "../../__tests__/helpers";
 import { createApp } from "../../app";
-import { connectDatabase } from "../../database";
+import { TestDatabase } from "./database";
+import { testProcessEnv } from "./env";
 
 const { serverPort, serverHost } = testProcessEnv;
 const base = `http://${serverHost}:${serverPort}`;
 
 export class TestServer {
   server: Server;
-  connection?: Connection;
+  db: TestDatabase;
 
   constructor(app = createApp(testProcessEnv)) {
     this.server = createServer(app);
+    this.db = new TestDatabase();
   }
 
   fetch(path: string, init?: RequestInit) {
@@ -24,12 +24,16 @@ export class TestServer {
 
   async start() {
     await this.startServer();
-    await this.startDatabase();
+    await this.db.connect();
+  }
+
+  async reset() {
+    await this.db.reset();
   }
 
   async stop() {
     await this.stopServer();
-    await this.stopDatabase();
+    await this.db.close();
   }
 
   startServer() {
@@ -42,17 +46,5 @@ export class TestServer {
     return new Promise(resolve => {
       this.server.close(() => resolve());
     });
-  }
-
-  async startDatabase() {
-    this.connection = await connectDatabase(testProcessEnv);
-
-    await this.connection.synchronize(true);
-  }
-
-  async stopDatabase() {
-    if (this.connection !== undefined) {
-      await this.connection.close();
-    }
   }
 }

@@ -1,10 +1,15 @@
 import { getManager } from "typeorm";
 import { EntityStore } from "../../../../../shared/api/response/get";
+import {
+  createHttpMocks,
+  insertSessions,
+  insertUsers,
+  sessions,
+  TestDatabase,
+  users
+} from "../../../../__tests__/helpers";
 import { PathParams } from "../../../../api/operation";
-import { TestDatabase } from "../../../../database/__tests__/helpers";
 import { UserAccountEntity, UserEntity, UserSessionEntity } from "../../../../database/entities";
-import { insertSessions, insertUsers, sessions, users } from "../../../../session/__tests__/helpers";
-import { createHttpMocks } from "../../__tests__/helpers";
 import { DELETE, GET } from "../{id}";
 
 const testDatabase = new TestDatabase();

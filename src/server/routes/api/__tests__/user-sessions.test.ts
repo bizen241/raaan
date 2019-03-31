@@ -1,11 +1,9 @@
 import { getManager } from "typeorm";
 import { UserSession } from "../../../../shared/api/entities";
 import { SearchResponse } from "../../../../shared/api/response/search";
+import { createHttpMocks, sessions, TestDatabase, users } from "../../../__tests__/helpers";
 import { SearchQuery } from "../../../api/request/search/parse";
-import { TestDatabase } from "../../../database/__tests__/helpers";
-import { sessions, users } from "../../../session/__tests__/helpers";
 import { GET } from "../user-sessions";
-import { createHttpMocks } from "./helpers";
 
 const testDatabase = new TestDatabase();
 

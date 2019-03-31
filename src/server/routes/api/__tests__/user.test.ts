@@ -1,8 +1,6 @@
 import { EntityStore } from "../../../../shared/api/response/get";
-import { TestDatabase } from "../../../database/__tests__/helpers";
-import { users } from "../../../session/__tests__/helpers";
+import { createHttpMocks, TestDatabase, users } from "../../../__tests__/helpers";
 import { DELETE, GET } from "../user";
-import { createHttpMocks } from "./helpers";
 
 const testDatabase = new TestDatabase();
 

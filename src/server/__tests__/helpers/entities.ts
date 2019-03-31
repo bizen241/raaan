@@ -1,7 +1,14 @@
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { Permission } from "../../../shared/api/entities";
-import { UserAccountEntity, UserConfigEntity, UserEntity, UserSessionEntity } from "../../database/entities";
+import {
+  ExerciseDetailEntity,
+  ExerciseEntity,
+  UserAccountEntity,
+  UserConfigEntity,
+  UserEntity,
+  UserSessionEntity
+} from "../../database/entities";
 
 const createUserFromPermission = (permission: Permission) =>
   new UserEntity(permission, permission, new UserAccountEntity("github", permission, ""), new UserConfigEntity());
@@ -30,3 +37,15 @@ export const sessions: { [P in Permission]: UserSessionEntity } = {
 
 export const insertUsers = () => getManager().save(Object.values(users));
 export const insertSessions = () => getManager().save(Object.values(sessions));
+
+export const insertExercise = async (_?: string) => {
+  const manager = getManager();
+
+  await manager.save(users.Write);
+
+  const detail = new ExerciseDetailEntity();
+  const exercise = new ExerciseEntity(users.Write, detail);
+
+  await manager.save(detail);
+  await manager.save(exercise);
+};

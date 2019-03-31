@@ -1,8 +1,6 @@
 import { SearchResponse } from "../../../../shared/api/response/search";
-import { TestDatabase } from "../../../database/__tests__/helpers";
-import { insertExercise } from "../../../database/entities/__tests__/helpers";
+import { createHttpMocks, insertExercise, TestDatabase } from "../../../__tests__/helpers";
 import { GET } from "../exercises";
-import { createHttpMocks } from "./helpers";
 
 const testDatabase = new TestDatabase();
 

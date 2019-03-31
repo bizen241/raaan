@@ -1,5 +1,4 @@
-import { insertSessions, insertUsers } from "../../session/__tests__/helpers";
-import { TestServer } from "./helpers";
+import { insertSessions, insertUsers, TestServer } from "../../__tests__/helpers";
 
 const testServer = new TestServer();
 

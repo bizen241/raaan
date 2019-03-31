@@ -1,6 +1,6 @@
 import { Connection } from "typeorm";
-import { connectDatabase } from "..";
-import { testProcessEnv } from "../../__tests__/helpers";
+import { connectDatabase } from "../../database";
+import { testProcessEnv } from "./env";
 
 export class TestDatabase {
   connection?: Connection;

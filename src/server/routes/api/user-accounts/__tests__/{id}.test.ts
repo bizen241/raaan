@@ -1,11 +1,9 @@
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { EntityStore } from "../../../../../shared/api/response/get";
+import { createHttpMocks, insertUsers, TestDatabase, users } from "../../../../__tests__/helpers";
 import { PathParams } from "../../../../api/operation";
-import { TestDatabase } from "../../../../database/__tests__/helpers";
 import { UserAccountEntity } from "../../../../database/entities";
-import { insertUsers, users } from "../../../../session/__tests__/helpers";
-import { createHttpMocks } from "../../__tests__/helpers";
 import { GET } from "../{id}";
 
 const testDatabase = new TestDatabase();
