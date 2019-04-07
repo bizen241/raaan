@@ -11,21 +11,12 @@ export default class SessionStore extends Store {
     const manager = getManager();
 
     try {
-      const session = await manager.findOne(
-        UserSessionEntity,
-        {
-          sessionId
-        },
-        {
-          relations: ["user"]
-        }
-      );
+      const session = await manager.findOne(UserSessionEntity, {
+        sessionId
+      });
 
-      if (session !== undefined && session.user !== undefined) {
-        callback(undefined, {
-          user: session.user,
-          ...session.data
-        });
+      if (session !== undefined) {
+        callback(undefined, session.data);
       } else {
         callback();
       }
@@ -34,28 +25,19 @@ export default class SessionStore extends Store {
     }
   };
 
-  set = async (sessionId: string, { user, ...data }: Express.SessionData, callback?: (error?: any) => void) => {
+  set = async (sessionId: string, data: Express.SessionData, callback?: (error?: any) => void) => {
     const manager = getManager();
 
     try {
-      if (user.permission === "Guest") {
-        const session = new UserSessionEntity(user);
-        session.sessionId = sessionId;
-        session.data = data;
-
-        await manager.save(session);
-      } else {
-        await manager.update(
-          UserSessionEntity,
-          {
-            sessionId
-          },
-          {
-            userId: user.id,
-            data
-          }
-        );
-      }
+      await manager.update(
+        UserSessionEntity,
+        {
+          sessionId
+        },
+        {
+          data
+        }
+      );
 
       if (callback !== undefined) {
         callback();

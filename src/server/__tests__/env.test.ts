@@ -29,6 +29,8 @@ test("filled", () => {
 
 test("only required", () => {
   process.env = {
+    HOST: "localhost",
+    PORT: "3000",
     DATABASE_URL: "postgres://postgres:postgres@localhost/db_name",
     SESSION_SECRET: "secret",
     ADMIN_ACCOUNT_PROVIDER: "github",
@@ -42,6 +44,24 @@ test("only required", () => {
 
   expect(processEnv.serverPort).toEqual(3000);
   expect(processEnv.serverHost).toEqual("localhost");
+});
+
+test("missing HOST", () => {
+  process.env = {
+    ...env,
+    HOST: undefined
+  };
+
+  expect(getProcessEnv).toThrowError(/HOST/);
+});
+
+test("missing PORT", () => {
+  process.env = {
+    ...env,
+    PORT: undefined
+  };
+
+  expect(getProcessEnv).toThrowError(/PORT/);
 });
 
 test("missing DATABASE_URL", () => {

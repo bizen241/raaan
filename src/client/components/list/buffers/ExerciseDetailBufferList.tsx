@@ -36,9 +36,9 @@ export const ExerciseDetailBufferList = connector(
         {bufferEntries
           .slice(offset, offset + limit)
           .map(
-            ([contentId, buffer]) =>
+            ([exerciseId, buffer]) =>
               buffer && (
-                <EditorBufferListItem key={contentId} contentId={contentId} buffer={buffer} onDelete={onDelete} />
+                <EditorBufferListItem key={exerciseId} exerciseId={exerciseId} buffer={buffer} onDelete={onDelete} />
               )
           )}
       </List>
@@ -47,21 +47,21 @@ export const ExerciseDetailBufferList = connector(
 );
 
 const EditorBufferListItem: React.FunctionComponent<{
-  contentId: string;
+  exerciseId: string;
   buffer: Buffer<ExerciseDetail>;
   onDelete: (id: string) => void;
-}> = ({ contentId, buffer, onDelete }) => {
+}> = ({ exerciseId, buffer, onDelete }) => {
   return (
     <Row center="cross">
       <Row flex={1}>
-        <Link style={{ flex: 1 }} to={`/content-revisions/${contentId}/edit`}>
+        <Link style={{ flex: 1 }} to={`/content-revisions/${exerciseId}/edit`}>
           {buffer.edited.title || "無題"}
         </Link>
       </Row>
       <PopMenu
         items={[
           <MenuItem key="p" text="プレビュー (p)" />,
-          <MenuItem key="d" text="削除 (d)" onClick={useCallback(() => onDelete(contentId), [])} intent="danger" />
+          <MenuItem key="d" text="削除 (d)" onClick={useCallback(() => onDelete(exerciseId), [])} intent="danger" />
         ]}
         hotKeys={{}}
       />

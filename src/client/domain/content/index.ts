@@ -3,8 +3,7 @@ import { ExerciseDetail } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { CodeItem, KanaItem, KanjiItem, MathItem, Question, TextItem } from "../../../shared/content";
 
-export const createExerciseDetail = (contentId?: string): SaveParams<ExerciseDetail> => ({
-  contentId,
+export const createExerciseDetail = (): SaveParams<ExerciseDetail> => ({
   title: "",
   lang: "ja",
   tags: [],

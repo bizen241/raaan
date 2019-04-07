@@ -8,7 +8,9 @@ import { UserEntity } from "./UserEntity";
 export class UserAccountEntity extends BaseEntityClass {
   type: "UserAccount" = "UserAccount";
 
-  @OneToOne(() => UserEntity, user => user.accountId)
+  @OneToOne(() => UserEntity, user => user.account, {
+    onDelete: "CASCADE"
+  })
   user?: UserEntity;
 
   @Column()

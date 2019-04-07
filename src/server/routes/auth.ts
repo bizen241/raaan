@@ -1,8 +1,9 @@
 import { Router } from "express";
 import * as createError from "http-errors";
 import * as passport from "passport";
-import { AuthParams } from "../auth";
-import { saveUser } from "../auth/user";
+import { getManager } from "typeorm";
+import * as uuid from "uuid/v4";
+import { UserEntity, UserSessionEntity } from "../database/entities";
 import { getGuestUser } from "../database/setup/guest";
 
 export const authRouter = Router();
@@ -14,7 +15,14 @@ authRouter.get("/:provider", async (req, res, next) => {
     return next(createError(500));
   }
 
-  req.session.user = await getGuestUser();
+  if (req.user === undefined) {
+    const guestUser = await getGuestUser();
+    const expireAt = Date.now() + 10 * 60 * 1000;
+
+    const session = new UserSessionEntity(guestUser, req.session.id, new Date(expireAt));
+
+    await getManager().save(session);
+  }
 
   passport.authenticate(provider)(req, res, next);
 });
@@ -27,7 +35,7 @@ authRouter.get("/:provider/callback", (req, res, next) => {
     {
       failureRedirect: "/"
     },
-    (err: Error, params: AuthParams) => {
+    async (err: Error, user: UserEntity) => {
       if (err) {
         return next(err);
       }
@@ -35,17 +43,25 @@ authRouter.get("/:provider/callback", (req, res, next) => {
         return next(createError(500));
       }
 
-      req.session.regenerate(async () => {
-        if (req.session === undefined) {
-          return next(createError(500));
+      const nextSessionId = uuid();
+      const expireAt = Date.now() + 1000 * 24 * 60 * 60 * 1000;
+
+      await getManager().update(
+        UserSessionEntity,
+        {
+          sessionId: req.session.id
+        },
+        {
+          sessionId: nextSessionId,
+          user,
+          accessCount: 0,
+          expireAt: new Date(expireAt)
         }
+      );
 
-        const user = await saveUser(req.session.user, params);
+      req.session.id = nextSessionId;
 
-        req.session.user = user;
-
-        res.redirect("/");
-      });
+      res.redirect("/");
     }
   )(req, res, next);
 });

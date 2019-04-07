@@ -34,7 +34,7 @@ export const SaveParamsMapSchema: Definition = {
         title: { type: "string" },
         lang: { type: "string" },
         description: { type: "string" },
-        contentId: {
+        exerciseId: {
           format: "uuid",
           type: "string"
         },
@@ -127,7 +127,7 @@ export const SaveParamsMapSchema: Definition = {
           format: "uuid",
           type: "string"
         },
-        contentId: {
+        exerciseId: {
           format: "uuid",
           type: "string"
         }

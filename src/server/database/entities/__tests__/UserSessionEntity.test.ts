@@ -1,6 +1,5 @@
 import { getManager } from "typeorm";
-import * as uuid from "uuid/v4";
-import { TestDatabase, users } from "../../../__tests__/helpers";
+import { insertSession, insertUser, TestDatabase } from "../../../__tests__/helpers";
 import { UserSessionEntity } from "../UserSessionEntity";
 
 const testDatabase = new TestDatabase();
@@ -15,12 +14,9 @@ afterAll(async () => {
 test("UserSessionEntity", async () => {
   const manager = getManager();
 
-  const session = new UserSessionEntity(users.Guest);
-  session.sessionId = uuid();
-  session.userAgent = "";
-  session.expireAt = new Date();
+  const { user } = await insertUser("Write");
 
-  await manager.save(session);
+  await insertSession(user);
 
   const userSessions = await manager.find(UserSessionEntity);
 

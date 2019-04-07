@@ -16,7 +16,7 @@ beforeEach(async () => {
 });
 
 test("GET /api/users", async () => {
-  const { req, res } = createHttpMocks("Guest");
+  const { req, res } = await createHttpMocks("Guest");
 
   await GET(req, res, () => null);
 

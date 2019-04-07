@@ -1,3 +1,3 @@
-import { AuthParams } from "..";
+import { UserEntity } from "../../database/entities";
 
-export type AuthStrategyCallback = (err: any, params?: AuthParams) => void;
+export type AuthStrategyCallback = (err: any, user?: UserEntity) => void;

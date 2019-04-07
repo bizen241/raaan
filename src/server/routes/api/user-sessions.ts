@@ -7,9 +7,7 @@ import { parseSearchParams } from "../../api/request/search/parse";
 import { responseSearchResult } from "../../api/response";
 import { UserSessionEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
-  const currentUser = req.user;
-
+export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { userId, userAgent, limit, offset } = parseSearchParams<UserSession>("UserSession", req.query);
 
   if (userId !== currentUser.id && currentUser.permission !== "Admin") {

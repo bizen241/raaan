@@ -15,15 +15,15 @@ beforeEach(async () => {
   await testDatabase.reset();
 });
 
-test("GET /api/contents", async () => {
-  await insertExercise();
+test("GET /api/exercises", async () => {
+  const { req, res, next, user } = await createHttpMocks("Guest");
 
-  const { req, res } = createHttpMocks("Guest");
+  const { exercise } = await insertExercise(user);
 
-  await GET(req, res, () => null);
-
-  expect(res.statusCode).toEqual(200);
+  await GET(req, res, next);
 
   const data = JSON.parse(res._getData()) as SearchResponse;
-  expect(data.ids).toBeDefined();
+
+  expect(res.statusCode).toEqual(200);
+  expect(data.ids[0]).toEqual(exercise.id);
 });

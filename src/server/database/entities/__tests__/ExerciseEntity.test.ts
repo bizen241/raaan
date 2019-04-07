@@ -1,5 +1,5 @@
 import { getManager } from "typeorm";
-import { insertExercise, TestDatabase } from "../../../__tests__/helpers";
+import { insertExercise, insertUser, TestDatabase } from "../../../__tests__/helpers";
 import { ExerciseEntity } from "../ExerciseEntity";
 
 const testDatabase = new TestDatabase();
@@ -12,7 +12,8 @@ afterAll(async () => {
 });
 
 test("ExerciseEntity", async () => {
-  await insertExercise();
+  const { user } = await insertUser("Write");
+  await insertExercise(user);
 
   const contents = await getManager().find(ExerciseEntity);
 

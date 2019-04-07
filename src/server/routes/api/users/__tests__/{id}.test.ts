@@ -1,15 +1,8 @@
 import { getManager } from "typeorm";
 import { EntityStore } from "../../../../../shared/api/response/get";
-import {
-  createHttpMocks,
-  insertSessions,
-  insertUsers,
-  sessions,
-  TestDatabase,
-  users
-} from "../../../../__tests__/helpers";
+import { createHttpMocks, insertUser, TestDatabase } from "../../../../__tests__/helpers";
 import { PathParams } from "../../../../api/operation";
-import { UserAccountEntity, UserEntity, UserSessionEntity } from "../../../../database/entities";
+import { UserAccountEntity, UserEntity } from "../../../../database/entities";
 import { DELETE, GET } from "../{id}";
 
 const testDatabase = new TestDatabase();
@@ -23,16 +16,13 @@ afterAll(async () => {
 
 beforeEach(async () => {
   await testDatabase.reset();
-
-  await insertUsers();
-  await insertSessions();
 });
 
 test("GET /api/users/{user} -> 200", async () => {
-  const { req, res, next } = createHttpMocks("Write");
+  const { req, res, next, user } = await createHttpMocks("Write");
 
   (req.params as PathParams) = {
-    id: users.Write.id
+    id: user.id
   };
 
   await GET(req, res, next);
@@ -40,18 +30,17 @@ test("GET /api/users/{user} -> 200", async () => {
   expect(res._getStatusCode()).toEqual(200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.User[users.Write.id]).toBeDefined();
+  expect(data.User[user.id]).toBeDefined();
 });
 
 test("GET /api/users/{user} -> 404", async () => {
-  const { req, res, next } = createHttpMocks("Write");
+  const { req, res, next, user } = await createHttpMocks("Write");
 
   (req.params as PathParams) = {
-    id: users.Write.id
+    id: user.id
   };
 
-  await getManager().remove(sessions.Write);
-  await getManager().remove(users.Write);
+  await getManager().remove(user);
 
   await GET(req, res, next);
 
@@ -59,32 +48,29 @@ test("GET /api/users/{user} -> 404", async () => {
 });
 
 test("DELETE /api/users/{user} -> 200", async () => {
-  const { req, res, next } = createHttpMocks("Admin");
+  const { req, res, next } = await createHttpMocks("Admin");
+
+  const { user, account } = await insertUser("Write");
 
   (req.params as PathParams) = {
-    id: users.Write.id
+    id: user.id
   };
 
   const manager = getManager();
-
-  const savedAccount = await manager.save(new UserAccountEntity("github", "0", ""));
-  const accountId = savedAccount.id;
 
   await DELETE(req, res, next);
 
   expect(res._getStatusCode()).toEqual(200);
 
-  const deletedUser = await manager.findOne(UserEntity, users.Write.id);
-  const deletedSession = await manager.findOne(UserSessionEntity, sessions.Write.id);
-  const deletedAccount = await manager.findOne(UserAccountEntity, accountId);
+  const deletedUser = await manager.findOne(UserEntity, user.id);
+  const deletedAccount = await manager.findOne(UserAccountEntity, account.id);
 
   expect(deletedUser).toBeUndefined();
-  expect(deletedSession).toBeUndefined();
   expect(deletedAccount).toBeUndefined();
 });
 
 test("DELETE /api/users/{user} -> 403", async () => {
-  const { req, res, next } = createHttpMocks("Write");
+  const { req, res, next } = await createHttpMocks("Write");
 
   await DELETE(req, res, next);
 
@@ -92,14 +78,13 @@ test("DELETE /api/users/{user} -> 403", async () => {
 });
 
 test("DELETE /api/users/{user} -> 404", async () => {
-  const { req, res, next } = createHttpMocks("Admin");
+  const { req, res, next, user } = await createHttpMocks("Admin");
 
   (req.params as PathParams) = {
-    id: users.Write.id
+    id: user.id
   };
 
-  await getManager().remove(sessions.Write);
-  await getManager().remove(users.Write);
+  await getManager().remove(user);
 
   await DELETE(req, res, next);
 
@@ -107,10 +92,10 @@ test("DELETE /api/users/{user} -> 404", async () => {
 });
 
 test("DELETE /api/users/{user} -> 403", async () => {
-  const { req, res, next } = createHttpMocks("Admin");
+  const { req, res, next, user } = await createHttpMocks("Admin");
 
   (req.params as PathParams) = {
-    id: users.Admin.id
+    id: user.id
   };
 
   await DELETE(req, res, next);

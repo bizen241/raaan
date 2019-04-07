@@ -6,8 +6,8 @@ import { responseFindResult } from "../../api/response";
 import { UserEntity } from "../../database/entities";
 import { setClearSiteData } from "../logout";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
-  const user = await getManager().findOne(UserEntity, req.user.id, {
+export const GET: OperationFunction = errorBoundary(async (_, res, next, currentUser) => {
+  const user = await getManager().findOne(UserEntity, currentUser.id, {
     relations: ["config"]
   });
   if (user === undefined) {
@@ -24,8 +24,7 @@ GET.apiDoc = createOperationDoc({
   tag: "user"
 });
 
-export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
-  const currentUser = req.user;
+export const DELETE: OperationFunction = errorBoundary(async (_, res, next, currentUser) => {
   if (currentUser.permission === "Admin") {
     return next(createError(403));
   }

@@ -1,5 +1,5 @@
 import { getManager } from "typeorm";
-import * as uuid from "uuid";
+import * as uuid from "uuid/v4";
 import { Permission } from "../../../shared/api/entities";
 import {
   ExerciseDetailEntity,
@@ -10,42 +10,44 @@ import {
   UserSessionEntity
 } from "../../database/entities";
 
-const createUserFromPermission = (permission: Permission) =>
-  new UserEntity(permission, permission, new UserAccountEntity("github", permission, ""), new UserConfigEntity());
+export const insertUser = async (permission: Permission) => {
+  const manager = getManager();
 
-export const users: { [P in Permission]: UserEntity } = {
-  Owner: createUserFromPermission("Owner"),
-  Admin: createUserFromPermission("Admin"),
-  Write: createUserFromPermission("Write"),
-  Guest: createUserFromPermission("Guest")
+  const account = await manager.save(new UserAccountEntity("github", uuid(), uuid()));
+  const config = await manager.save(new UserConfigEntity());
+  const user = await manager.save(new UserEntity(permission, permission, account, config));
+
+  return { account, config, user };
 };
 
-const createSessionFromPermission = (permission: Permission) => {
-  const session = new UserSessionEntity(users[permission]);
-  session.sessionId = uuid();
-  session.expireAt = new Date();
+export const insertSession = async (user: UserEntity) => {
+  const manager = getManager();
+
+  const session = new UserSessionEntity(user, uuid(), new Date());
+  session.data = {
+    cookie: {
+      path: "/",
+      _expires: null,
+      originalMaxAge: null,
+      httpOnly: true,
+      sameSite: "strict",
+      secure: false
+    },
+    passport: {
+      user: user.id
+    }
+  };
+
+  await manager.save(session);
 
   return session;
 };
 
-export const sessions: { [P in Permission]: UserSessionEntity } = {
-  Owner: createSessionFromPermission("Owner"),
-  Admin: createSessionFromPermission("Admin"),
-  Write: createSessionFromPermission("Write"),
-  Guest: createSessionFromPermission("Guest")
-};
-
-export const insertUsers = () => getManager().save(Object.values(users));
-export const insertSessions = () => getManager().save(Object.values(sessions));
-
-export const insertExercise = async (_?: string) => {
+export const insertExercise = async (user: UserEntity) => {
   const manager = getManager();
 
-  await manager.save(users.Write);
+  const detail = await manager.save(new ExerciseDetailEntity());
+  const exercise = await manager.save(new ExerciseEntity(user, detail));
 
-  const detail = new ExerciseDetailEntity();
-  const exercise = new ExerciseEntity(users.Write, detail);
-
-  await manager.save(detail);
-  await manager.save(exercise);
+  return { detail, exercise };
 };

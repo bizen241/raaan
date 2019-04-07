@@ -1,8 +1,15 @@
 import { getManager } from "typeorm";
-import { AuthParams } from ".";
+import { AuthProviderName } from "../../shared/auth";
 import { UserAccountEntity, UserConfigEntity, UserEntity } from "../database/entities";
 
-export const saveUser = async (sessionUser: UserEntity, params: AuthParams) => {
+interface AuthParams {
+  provider: AuthProviderName;
+  accountId: string;
+  name: string;
+  email: string;
+}
+
+export const saveUser = async (sessionUser: UserEntity | undefined, params: AuthParams) => {
   const { provider, accountId, email } = params;
 
   const manager = getManager();
@@ -32,7 +39,7 @@ export const saveUser = async (sessionUser: UserEntity, params: AuthParams) => {
     return account.user;
   }
 
-  if (sessionUser.permission === "Guest") {
+  if (sessionUser === undefined) {
     return createUser(params);
   } else {
     return updateUser(sessionUser, params);
