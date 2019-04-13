@@ -1,11 +1,7 @@
-import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { EntityStore } from "../../../../../shared/api/response/get";
+import { createHttpMocks, insertUser, TestDatabase } from "../../../../__tests__/helpers";
 import { PathParams } from "../../../../api/operation";
-import { TestDatabase } from "../../../../database/__tests__/helpers";
-import { UserAccountEntity } from "../../../../database/entities";
-import { insertUsers, users } from "../../../../session/__tests__/helpers";
-import { createHttpMocks } from "../../__tests__/helpers";
 import { GET } from "../{id}";
 
 const testDatabase = new TestDatabase();
@@ -17,20 +13,12 @@ afterAll(async () => {
   await testDatabase.close();
 });
 
-const writeUserAccounts = [new UserAccountEntity("github", "1", ""), new UserAccountEntity("github", "2", "")];
-const adminUserAccounts = [new UserAccountEntity("github", "0", "")];
-
-const insertUserAccounts = () => getManager().save([...writeUserAccounts, ...adminUserAccounts]);
-
 beforeEach(async () => {
   await testDatabase.reset();
-
-  await insertUsers();
-  await insertUserAccounts();
 });
 
 test("GET /api/user-accounts/{id} -> 404", async () => {
-  const { req, res, next } = createHttpMocks("Write");
+  const { req, res, next } = await createHttpMocks("Write");
 
   (req.params as PathParams) = {
     id: uuid()
@@ -42,10 +30,12 @@ test("GET /api/user-accounts/{id} -> 404", async () => {
 });
 
 test("GET /api/user-accounts/{id} -> 403", async () => {
-  const { req, res, next } = createHttpMocks("Write");
+  const { req, res, next } = await createHttpMocks("Guest");
+
+  const { account } = await insertUser("Write");
 
   (req.params as PathParams) = {
-    id: adminUserAccounts[0].id
+    id: account.id
   };
 
   await GET(req, res, next);
@@ -54,10 +44,10 @@ test("GET /api/user-accounts/{id} -> 403", async () => {
 });
 
 test("GET /api/user-accounts/{id} -> 200", async () => {
-  const { req, res, next } = createHttpMocks("Write");
+  const { req, res, next, user, account } = await createHttpMocks("Write");
 
   (req.params as PathParams) = {
-    id: writeUserAccounts[0].id
+    id: account.id
   };
 
   await GET(req, res, next);
@@ -65,6 +55,6 @@ test("GET /api/user-accounts/{id} -> 200", async () => {
   expect(res.statusCode).toEqual(200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.UserAccount[writeUserAccounts[0].id]).toBeDefined();
-  expect(data.User[users.Write.id]).toBeDefined();
+  expect(data.UserAccount[account.id]).toBeDefined();
+  expect(data.User[user.id]).toBeDefined();
 });

@@ -1,12 +1,12 @@
 import { Button, Classes, Dialog } from "@blueprintjs/core";
 import * as React from "react";
-import { ExerciseRevision } from "../../../../shared/api/entities";
+import { ExerciseDetail } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
 import { Column } from "../../ui";
 import { ExercisePlayer } from "../player/ExercisePlayer";
 
 export const ExercisePreviewDialog = React.memo<{
-  params: SaveParams<ExerciseRevision>;
+  params: SaveParams<ExerciseDetail>;
   isOpen: boolean;
   onClose: () => void;
 }>(({ params, isOpen, onClose }) => {

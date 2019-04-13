@@ -7,8 +7,8 @@ import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
 import { ExerciseDetailEntity, ExerciseEntity } from "../../database/entities";
 
-export const POST: OperationFunction = errorBoundary(async (req, res, next) => {
-  const { contentId, ...params }: SaveParams<ExerciseDetail> = req.body;
+export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
+  const params: SaveParams<ExerciseDetail> = req.body;
 
   await getManager().transaction(async manager => {
     const newExerciseDetail = new ExerciseDetailEntity({
@@ -23,7 +23,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next) => {
     });
     await manager.save(newExerciseDetail);
 
-    const newExercise = new ExerciseEntity(req.user, newExerciseDetail);
+    const newExercise = new ExerciseEntity(currentUser, newExerciseDetail);
     await manager.save(newExercise);
   });
 

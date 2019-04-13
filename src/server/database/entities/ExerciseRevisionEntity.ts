@@ -8,15 +8,15 @@ export class ExerciseRevisionEntity extends BaseEntityClass {
   type: "ExerciseRevision" = "ExerciseRevision";
 
   @Column()
-  contentId: string;
+  exerciseId: string;
 
   @ManyToOne(() => ExerciseEntity, {
     onDelete: "CASCADE"
   })
   @JoinColumn({
-    name: "contentId"
+    name: "exerciseId"
   })
-  content!: ExerciseEntity;
+  exercise!: ExerciseEntity;
 
   @Column()
   detailId: string;
@@ -32,7 +32,7 @@ export class ExerciseRevisionEntity extends BaseEntityClass {
   constructor(content: ExerciseEntity, detail: ExerciseRevisionDetailEntity) {
     super();
 
-    this.contentId = content && content.id;
+    this.exerciseId = content && content.id;
     this.detailId = detail && detail.id;
   }
 }

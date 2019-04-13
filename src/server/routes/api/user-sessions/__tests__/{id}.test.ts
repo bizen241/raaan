@@ -1,10 +1,7 @@
-import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { EntityStore } from "../../../../../shared/api/response/get";
+import { createHttpMocks, insertSession, insertUser, TestDatabase } from "../../../../__tests__/helpers";
 import { PathParams } from "../../../../api/operation";
-import { TestDatabase } from "../../../../database/__tests__/helpers";
-import { insertSessions, insertUsers, sessions, users } from "../../../../session/__tests__/helpers";
-import { createHttpMocks } from "../../__tests__/helpers";
 import { DELETE, GET } from "../{id}";
 
 const testDatabase = new TestDatabase();
@@ -18,13 +15,10 @@ afterAll(async () => {
 
 beforeEach(async () => {
   await testDatabase.reset();
-
-  await insertUsers();
-  await insertSessions();
 });
 
 test("GET /api/user-sessions/{id} -> 404", async () => {
-  const { req, res, next } = createHttpMocks("Write");
+  const { req, res, next } = await createHttpMocks("Write");
 
   (req.params as PathParams) = {
     id: uuid()
@@ -36,10 +30,13 @@ test("GET /api/user-sessions/{id} -> 404", async () => {
 });
 
 test("GET /api/user-sessions/{id} -> 403", async () => {
-  const { req, res, next } = createHttpMocks("Write");
+  const { req, res, next } = await createHttpMocks("Write");
+
+  const { user } = await insertUser("Write");
+  const session = await insertSession(user);
 
   (req.params as PathParams) = {
-    id: sessions.Admin.id
+    id: session.id
   };
 
   await GET(req, res, next);
@@ -48,25 +45,24 @@ test("GET /api/user-sessions/{id} -> 403", async () => {
 });
 
 test("GET /api/user-sessions/{id} -> 200", async () => {
-  await getManager().save(users.Write);
-  await getManager().save(sessions.Write);
+  const { req, res, next, user } = await createHttpMocks("Write");
 
-  const { req, res } = createHttpMocks("Write");
+  const session = await insertSession(user);
 
   (req.params as PathParams) = {
-    id: sessions.Write.id
+    id: session.id
   };
 
-  await GET(req, res, () => null);
+  await GET(req, res, next);
 
   expect(res.statusCode).toEqual(200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.User[users.Write.id]).toBeDefined();
+  expect(data.User[user.id]).toBeDefined();
 });
 
 test("DELETE /api/user-sessions/{id} -> 404", async () => {
-  const { req, res, next } = createHttpMocks("Write");
+  const { req, res, next } = await createHttpMocks("Write");
 
   (req.params as PathParams) = {
     id: uuid()
@@ -78,10 +74,13 @@ test("DELETE /api/user-sessions/{id} -> 404", async () => {
 });
 
 test("DELETE /api/user-sessions/{id} -> 403", async () => {
-  const { req, res, next } = createHttpMocks("Write");
+  const { req, res, next } = await createHttpMocks("Write");
+
+  const { user } = await insertUser("Write");
+  const session = await insertSession(user);
 
   (req.params as PathParams) = {
-    id: sessions.Admin.id
+    id: session.id
   };
 
   await DELETE(req, res, next);
@@ -90,10 +89,12 @@ test("DELETE /api/user-sessions/{id} -> 403", async () => {
 });
 
 test("DELETE /api/user-sessions/{id} -> 200", async () => {
-  const { req, res, next } = createHttpMocks("Write");
+  const { req, res, next, user } = await createHttpMocks("Write");
+
+  const session = await insertSession(user);
 
   (req.params as PathParams) = {
-    id: sessions.Write.id
+    id: session.id
   };
 
   await DELETE(req, res, next);

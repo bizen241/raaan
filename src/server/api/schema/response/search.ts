@@ -50,7 +50,7 @@ export const SearchResponseSchema: Definition = {
           additionalProperties: {
             type: "object",
             properties: {
-              contentId: {
+              exerciseId: {
                 format: "uuid",
                 type: "string"
               },
@@ -162,7 +162,7 @@ export const SearchResponseSchema: Definition = {
           additionalProperties: {
             type: "object",
             properties: {
-              contentId: {
+              exerciseId: {
                 format: "uuid",
                 type: "string"
               },

@@ -1,15 +1,17 @@
 import * as compression from "compression";
 import * as cors from "cors";
 import * as express from "express";
+import * as session from "express-session";
 import { join } from "path";
 import * as serveStatic from "serve-static";
+import * as uuid from "uuid/v4";
 import { prepareApi } from "./api";
-import { createAuthMiddleware } from "./auth";
+import { prepareAuth } from "./auth";
 import { ProcessEnv } from "./env";
 import { authRouter } from "./routes/auth";
 import { fallbackRouter } from "./routes/fallback";
 import { logoutRouter } from "./routes/logout";
-import { createSessionMiddleware } from "./session";
+import SessionStore from "./session/store";
 
 export const createApp = (processEnv: ProcessEnv, app: express.Express = express()) => {
   app.use(
@@ -21,8 +23,21 @@ export const createApp = (processEnv: ProcessEnv, app: express.Express = express
     })
   );
 
-  app.use(createSessionMiddleware(processEnv));
-  app.use(createAuthMiddleware(processEnv));
+  app.use(
+    session({
+      store: new SessionStore(),
+      secret: processEnv.sessionSecret,
+      cookie: {
+        sameSite: "strict",
+        secure: processEnv.serverHost === "localhost" ? false : true
+      },
+      genid: () => uuid(),
+      resave: false,
+      saveUninitialized: false
+    })
+  );
+
+  prepareAuth(processEnv, app);
 
   app.use(compression());
   app.use(serveStatic(join(process.cwd(), "dist")));

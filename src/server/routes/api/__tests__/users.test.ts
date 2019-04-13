@@ -1,7 +1,6 @@
 import { SearchResponse } from "../../../../shared/api/response/search";
-import { TestDatabase } from "../../../database/__tests__/helpers";
+import { createHttpMocks, TestDatabase } from "../../../__tests__/helpers";
 import { GET } from "../users";
-import { createHttpMocks } from "./helpers";
 
 const testDatabase = new TestDatabase();
 
@@ -17,7 +16,7 @@ beforeEach(async () => {
 });
 
 test("GET /api/users", async () => {
-  const { req, res } = createHttpMocks("Guest");
+  const { req, res } = await createHttpMocks("Guest");
 
   await GET(req, res, () => null);
 

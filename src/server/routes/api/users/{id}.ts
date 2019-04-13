@@ -23,9 +23,8 @@ GET.apiDoc = createOperationDoc({
   hasId: true
 });
 
-export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
-  const currentUser = req.user;
-  if (currentUser.permission !== "Admin") {
+export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
+  if (currentUser.permission !== "Owner" && currentUser.permission !== "Admin") {
     return next(createError(403));
   }
 
@@ -35,7 +34,7 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next) =>
   if (loadedUser === undefined) {
     return next(createError(404));
   }
-  if (loadedUser.id === currentUser.id) {
+  if (loadedUser.permission === "Owner" || loadedUser.permission === "Admin") {
     return next(createError(403));
   }
 

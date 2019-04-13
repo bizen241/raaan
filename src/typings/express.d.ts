@@ -4,12 +4,8 @@ import { RequestHandler } from "express";
 
 declare global {
   namespace Express {
-    interface Request {
-      session: UserSessionEntity;
+    interface SessionData {
       user: UserEntity;
-      secret: string;
-      authorize: (provider: AuthProviderName) => void;
-      authenticate: (provider: AuthProviderName) => void;
     }
   }
 }

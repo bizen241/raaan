@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
+import { Column, Entity, OneToOne, RelationId } from "typeorm";
 import { Permission } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserAccountEntity } from "./UserAccountEntity";
@@ -14,34 +14,20 @@ export class UserEntity extends BaseEntityClass {
   @Column()
   permission: Permission;
 
-  @Column("uuid")
-  accountId: string;
-
-  @OneToOne(() => UserAccountEntity, userAccount => userAccount.user, {
-    onDelete: "CASCADE"
-  })
-  @JoinColumn({
-    name: "accountId"
-  })
+  @OneToOne(() => UserAccountEntity, userAccount => userAccount.user)
   account?: UserAccountEntity;
+  @RelationId((user: UserEntity) => user.account)
+  accountId!: string;
 
-  @Column("uuid")
-  configId: string;
-
-  @OneToOne(() => UserConfigEntity, userConfig => userConfig.user, {
-    onDelete: "CASCADE"
-  })
-  @JoinColumn({
-    name: "configId"
-  })
+  @OneToOne(() => UserConfigEntity, userConfig => userConfig.user)
   config?: UserConfigEntity;
+  @RelationId((user: UserEntity) => user.config)
+  configId!: string;
 
-  constructor(name: string, permission: Permission, account: UserAccountEntity, config: UserConfigEntity) {
+  constructor(name: string, permission: Permission) {
     super();
 
     this.name = name;
     this.permission = permission;
-    this.accountId = account && account.id;
-    this.configId = config && config.id;
   }
 }

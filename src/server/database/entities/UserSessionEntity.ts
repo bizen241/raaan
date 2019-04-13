@@ -18,7 +18,10 @@ export class UserSessionEntity extends BaseEntityClass {
     type: "uuid",
     unique: true
   })
-  sessionId!: string;
+  sessionId: string;
+
+  @Column({ type: "json" })
+  data: any = {};
 
   @Column()
   userAgent: string = "";
@@ -27,11 +30,13 @@ export class UserSessionEntity extends BaseEntityClass {
   accessCount: number = 0;
 
   @Column("timestamp without time zone")
-  expireAt!: Date;
+  expireAt: Date;
 
-  constructor(user: UserEntity) {
+  constructor(user: UserEntity, sessionId: string, expiredAt: Date) {
     super();
 
     this.userId = user && user.id;
+    this.sessionId = sessionId;
+    this.expireAt = expiredAt;
   }
 }

@@ -61,6 +61,6 @@ test("search user", async () => {
     offset: 0
   });
 
-  expect(passedUrl).toBe(`${origin}/api/users?page=1`);
+  expect(passedUrl).toBe(`${origin}/api/users?limit=10&offset=0`);
   expect(passedMethod).toBe("GET");
 });

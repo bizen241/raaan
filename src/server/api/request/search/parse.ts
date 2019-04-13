@@ -67,10 +67,10 @@ const parseExerciseDetail: Parser<ExerciseDetail> = query => {
 };
 
 const parseExerciseRevision: Parser<ExerciseRevision> = query => {
-  const { contentId, detailId } = query;
+  const { exerciseId, detailId } = query;
 
   return {
-    contentId,
+    exerciseId,
     detailId,
     ...page(query)
   };

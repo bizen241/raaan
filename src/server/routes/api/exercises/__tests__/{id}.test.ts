@@ -1,12 +1,9 @@
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { EntityStore } from "../../../../../shared/api/response/get";
+import { createHttpMocks, insertExercise, TestDatabase } from "../../../../__tests__/helpers";
 import { PathParams } from "../../../../api/operation";
-import { TestDatabase } from "../../../../database/__tests__/helpers";
 import { ExerciseEntity } from "../../../../database/entities";
-import { insertExercise } from "../../../../database/entities/__tests__/helpers";
-import { insertSessions, insertUsers } from "../../../../session/__tests__/helpers";
-import { createHttpMocks } from "../../__tests__/helpers";
 import { DELETE, GET } from "../{id}";
 
 const testDatabase = new TestDatabase();
@@ -20,13 +17,10 @@ afterAll(async () => {
 
 beforeEach(async () => {
   await testDatabase.reset();
-
-  await insertUsers();
-  await insertSessions();
 });
 
 test("GET /api/contents/{id} -> 404", async () => {
-  const { req, res, next } = createHttpMocks("Guest");
+  const { req, res, next } = await createHttpMocks("Guest");
 
   (req.params as PathParams) = {
     id: uuid()
@@ -38,13 +32,12 @@ test("GET /api/contents/{id} -> 404", async () => {
 });
 
 test("GET /api/contents/{id} -> 200", async () => {
-  const { req, res, next } = createHttpMocks("Guest");
+  const { req, res, next, user } = await createHttpMocks("Guest");
 
-  const contentId = uuid();
-  await insertExercise(contentId);
+  const { exercise } = await insertExercise(user);
 
   (req.params as PathParams) = {
-    id: contentId
+    id: exercise.id
   };
 
   await GET(req, res, next);
@@ -52,11 +45,11 @@ test("GET /api/contents/{id} -> 200", async () => {
   expect(res._getStatusCode()).toEqual(200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.Exercise[contentId]).toBeDefined();
+  expect(data.Exercise[exercise.id]).toBeDefined();
 });
 
 test("DELETE /api/contents/{id} -> 404", async () => {
-  const { req, res, next } = createHttpMocks("Admin");
+  const { req, res, next } = await createHttpMocks("Admin");
 
   (req.params as PathParams) = {
     id: uuid()
@@ -68,13 +61,12 @@ test("DELETE /api/contents/{id} -> 404", async () => {
 });
 
 test("DELETE /api/contents/{id} -> 200", async () => {
-  const { req, res, next } = createHttpMocks("Admin");
+  const { req, res, next, user } = await createHttpMocks("Write");
 
-  const contentId = uuid();
-  await insertExercise(contentId);
+  const { exercise } = await insertExercise(user);
 
   (req.params as PathParams) = {
-    id: contentId
+    id: exercise.id
   };
 
   await DELETE(req, res, next);
@@ -82,8 +74,8 @@ test("DELETE /api/contents/{id} -> 200", async () => {
   expect(res._getStatusCode()).toEqual(200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.Exercise[contentId]).toBeUndefined();
+  expect(data.Exercise[exercise.id]).toBeUndefined();
 
-  const removedExercise = await getManager().findOne(ExerciseEntity, contentId);
+  const removedExercise = await getManager().findOne(ExerciseEntity, exercise.id);
   expect(removedExercise).toBeUndefined();
 });

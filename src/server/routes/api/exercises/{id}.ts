@@ -6,10 +6,10 @@ import { responseFindResult } from "../../../api/response";
 import { ExerciseEntity } from "../../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
-  const { id: contentId }: PathParams = req.params;
+  const { id: exerciseId }: PathParams = req.params;
 
-  const loadedExercise = await getManager().findOne(ExerciseEntity, contentId, {
-    relations: ["author", "latest", "tags"]
+  const loadedExercise = await getManager().findOne(ExerciseEntity, exerciseId, {
+    relations: ["author", "detail", "tags"]
   });
   if (loadedExercise === undefined) {
     return next(createError(404));
@@ -26,12 +26,12 @@ GET.apiDoc = createOperationDoc({
 });
 
 export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
-  const { id: contentId }: PathParams = req.params;
+  const { id: exerciseId }: PathParams = req.params;
 
   const manager = getManager();
 
-  const loadedExercise = await manager.findOne(ExerciseEntity, contentId, {
-    relations: ["author", "latest", "tags"]
+  const loadedExercise = await manager.findOne(ExerciseEntity, exerciseId, {
+    relations: ["author", "detail", "tags"]
   });
   if (loadedExercise === undefined) {
     return next(createError(404));

@@ -1,6 +1,4 @@
-import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { BaseEntityObject } from "./BaseEntityObject";
 import { ExerciseDetailObject } from "./ExerciseDetailObject";
 
-export interface ExerciseDetail extends BaseEntityObject, ExerciseDetailObject {
-  contentId: UUID;
-}
+export interface ExerciseDetail extends BaseEntityObject, ExerciseDetailObject {}

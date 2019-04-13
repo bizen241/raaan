@@ -3,6 +3,8 @@ import { Request, RequestHandler, Response } from "express";
 import * as createError from "http-errors";
 import { OpenAPIV3 } from "openapi-types";
 import { EntityType, Permission } from "../../shared/api/entities";
+import { UserEntity } from "../database/entities";
+import { getGuestUser } from "../database/setup/guest";
 import { SaveParamsMapSchema } from "./schema/request/save";
 
 export interface PathParams {
@@ -95,9 +97,11 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
 };
 
 export const errorBoundary = (
-  fn: (req: Request, res: Response, next: NextFunction) => Promise<any>
+  fn: (req: Request, res: Response, next: NextFunction, currentUser: UserEntity) => Promise<any>
 ): RequestHandler => async (req, res, next) => {
-  await fn(req, res, next).catch(e => {
+  const currentUser = req.user || (await getGuestUser());
+
+  await fn(req, res, next, currentUser).catch(e => {
     console.log(e);
 
     next(createError(500));

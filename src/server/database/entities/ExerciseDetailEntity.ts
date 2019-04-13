@@ -6,8 +6,8 @@ import { ExerciseEntity } from "./ExerciseEntity";
 export class ExerciseDetailEntity extends ExerciseDetailClass {
   type: "ExerciseDetail" = "ExerciseDetail";
 
-  @OneToOne(() => ExerciseEntity, content => content.detailId, {
+  @OneToOne(() => ExerciseEntity, exercise => exercise.detail, {
     onDelete: "CASCADE"
   })
-  content?: ExerciseEntity;
+  exercise?: ExerciseEntity;
 }

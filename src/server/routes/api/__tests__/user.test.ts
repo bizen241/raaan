@@ -1,8 +1,6 @@
 import { EntityStore } from "../../../../shared/api/response/get";
-import { TestDatabase } from "../../../database/__tests__/helpers";
-import { users } from "../../../session/__tests__/helpers";
+import { createHttpMocks, TestDatabase } from "../../../__tests__/helpers";
 import { DELETE, GET } from "../user";
-import { createHttpMocks } from "./helpers";
 
 const testDatabase = new TestDatabase();
 
@@ -14,18 +12,18 @@ afterAll(async () => {
 });
 
 test("GET /api/user", async () => {
-  const { req, res, next } = createHttpMocks("Write");
+  const { req, res, next, user } = await createHttpMocks("Write");
 
   await GET(req, res, next);
 
   expect(res.statusCode).toBe(200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.User[users.Write.id]).toBeDefined();
+  expect(data.User[user.id]).toBeDefined();
 });
 
 test("DELETE /api/user success", async () => {
-  const { req, res, next } = createHttpMocks("Write");
+  const { req, res, next } = await createHttpMocks("Write");
 
   await DELETE(req, res, next);
 
@@ -33,7 +31,7 @@ test("DELETE /api/user success", async () => {
 });
 
 test("DELETE /api/user failure", async () => {
-  const { req, res, next } = createHttpMocks("Admin");
+  const { req, res, next } = await createHttpMocks("Admin");
 
   await DELETE(req, res, next);
 

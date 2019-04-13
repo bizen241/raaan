@@ -1,6 +1,7 @@
 import { Response, Router } from "express";
 import * as createError from "http-errors";
 import { getManager } from "typeorm";
+import { UserSessionEntity } from "../database/entities";
 
 export const logoutRouter = Router();
 
@@ -9,12 +10,22 @@ export const setClearSiteData = (res: Response) => {
 };
 
 logoutRouter.get("/", async (req, res, next) => {
-  const currentUser = req.user;
-  if (currentUser.permission === "Guest") {
+  const session = req.session;
+
+  if (session === undefined) {
+    return next(createError(500));
+  }
+  if (req.user === undefined) {
     return next(createError(403));
   }
 
-  await getManager().remove(req.session);
+  await getManager()
+    .delete(UserSessionEntity, {
+      sessionId: session.id
+    })
+    .catch(() => {
+      return next(createError(500));
+    });
 
   setClearSiteData(res);
 

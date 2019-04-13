@@ -6,7 +6,7 @@ import { ExerciseRevisionEntity } from "./ExerciseRevisionEntity";
 export class ExerciseRevisionDetailEntity extends ExerciseDetailClass {
   type: "ExerciseRevisionDetail" = "ExerciseRevisionDetail";
 
-  @OneToOne(() => ExerciseRevisionEntity, contentRevision => contentRevision.detailId, {
+  @OneToOne(() => ExerciseRevisionEntity, contentRevision => contentRevision.detail, {
     onDelete: "CASCADE"
   })
   revision?: ExerciseRevisionEntity;

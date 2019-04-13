@@ -56,6 +56,7 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (entity, store) => {
     authorId,
     detailId,
     tagIds: tags.map(tag => tag.id),
+    // from ExerciseSummaryEntity
     lang: "en",
     title: "",
     description: "",
@@ -68,14 +69,10 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (entity, store) => {
 };
 
 const normalizeExerciseDetail: Normalizer<ExerciseDetailEntity> = (entity, store) => {
-  const { id, content, lang, tags, title, description, rubric, questions, comment, navigationMode } = entity;
-  if (content === undefined) {
-    throw new Error();
-  }
+  const { id, lang, tags, title, description, rubric, questions, comment, navigationMode } = entity;
 
   store.ExerciseDetail[id] = {
     ...base(entity),
-    contentId: content.id,
     lang,
     tags,
     title,
@@ -88,11 +85,11 @@ const normalizeExerciseDetail: Normalizer<ExerciseDetailEntity> = (entity, store
 };
 
 const normalizeExerciseRevision: Normalizer<ExerciseRevisionEntity> = (entity, store) => {
-  const { id, contentId, content, detailId, detail } = entity;
+  const { id, exerciseId, exercise: content, detailId, detail } = entity;
 
   store.ExerciseRevision[id] = {
     ...base(entity),
-    contentId,
+    exerciseId,
     detailId
   };
 
@@ -101,14 +98,10 @@ const normalizeExerciseRevision: Normalizer<ExerciseRevisionEntity> = (entity, s
 };
 
 const normalizeExerciseRevisionDetail: Normalizer<ExerciseRevisionDetailEntity> = (entity, store) => {
-  const { id, revision, lang, tags, title, description, rubric, questions, comment, navigationMode } = entity;
-  if (revision === undefined) {
-    throw new Error();
-  }
+  const { id, lang, tags, title, description, rubric, questions, comment, navigationMode } = entity;
 
   store.ExerciseDetail[id] = {
     ...base(entity),
-    contentId: revision.id,
     lang,
     tags,
     title,
@@ -130,7 +123,7 @@ const normalizeExerciseTag: Normalizer<ExerciseTagEntity> = (entity, store) => {
 };
 
 const normalizeUser: Normalizer<UserEntity> = (entity, store) => {
-  const { id, name, permission, accountId, configId, config } = entity;
+  const { id, name, permission, accountId, account, configId, config } = entity;
 
   store.User[id] = {
     ...base(entity),
@@ -140,6 +133,7 @@ const normalizeUser: Normalizer<UserEntity> = (entity, store) => {
     configId
   };
 
+  normalizeEntity(store, account);
   normalizeEntity(store, config);
 };
 

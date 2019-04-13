@@ -1,28 +1,67 @@
 import { Router } from "express";
-import { isAuthProviderName } from "../../shared/auth";
+import * as createError from "http-errors";
+import * as passport from "passport";
+import { getManager } from "typeorm";
+import * as uuid from "uuid/v4";
+import { UserEntity, UserSessionEntity } from "../database/entities";
+import { getGuestUser } from "../database/setup/guest";
 
 export const authRouter = Router();
 
-authRouter.get("/:provider", (req, _, next) => {
+authRouter.get("/:provider", async (req, res, next) => {
   const { provider } = req.params;
 
-  if (!isAuthProviderName(provider)) {
-    next();
-
-    return;
+  if (req.session === undefined) {
+    return next(createError(500));
   }
 
-  req.authorize(provider);
+  if (req.user === undefined) {
+    const guestUser = await getGuestUser();
+    const expireAt = Date.now() + 10 * 60 * 1000;
+
+    const session = new UserSessionEntity(guestUser, req.session.id, new Date(expireAt));
+
+    await getManager().save(session);
+  }
+
+  passport.authenticate(provider)(req, res, next);
 });
 
-authRouter.get("/:provider/callback", (req, _, next) => {
+authRouter.get("/:provider/callback", (req, res, next) => {
   const { provider } = req.params;
 
-  if (!isAuthProviderName(provider)) {
-    next();
+  passport.authenticate(
+    provider,
+    {
+      failureRedirect: "/"
+    },
+    async (err: Error, user: UserEntity) => {
+      if (err) {
+        return next(err);
+      }
+      if (req.session === undefined) {
+        return next(createError(500));
+      }
 
-    return;
-  }
+      const nextSessionId = uuid();
+      const expireAt = Date.now() + 1000 * 24 * 60 * 60 * 1000;
 
-  req.authenticate(provider);
+      await getManager().update(
+        UserSessionEntity,
+        {
+          sessionId: req.session.id
+        },
+        {
+          sessionId: nextSessionId,
+          user,
+          accessCount: 0,
+          expireAt: new Date(expireAt)
+        }
+      );
+
+      req.session.id = nextSessionId;
+
+      res.redirect("/");
+    }
+  )(req, res, next);
 });

@@ -40,7 +40,7 @@ export const EntityStoreSchema: Definition = {
       additionalProperties: {
         type: "object",
         properties: {
-          contentId: {
+          exerciseId: {
             format: "uuid",
             type: "string"
           },
@@ -139,7 +139,7 @@ export const EntityStoreSchema: Definition = {
       additionalProperties: {
         type: "object",
         properties: {
-          contentId: {
+          exerciseId: {
             format: "uuid",
             type: "string"
           },

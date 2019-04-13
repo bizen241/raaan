@@ -1,13 +1,9 @@
-import { insertSessions, insertUsers } from "../../session/__tests__/helpers";
-import { TestServer } from "./helpers";
+import { TestServer } from "../../__tests__/helpers";
 
 const testServer = new TestServer();
 
 beforeAll(async () => {
   await testServer.start();
-
-  await insertUsers();
-  await insertSessions();
 });
 afterAll(async () => {
   await testServer.stop();

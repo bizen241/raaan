@@ -10,15 +10,15 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
   const { tagIds, limit, offset } = parseSearchParams<Exercise>("Exercise", req.query);
 
   const query = await getManager()
-    .createQueryBuilder(ExerciseEntity, "content")
-    .loadAllRelationIds({
-      relations: ["author", "latest"]
-    })
+    .createQueryBuilder(ExerciseEntity, "exercise")
+    .leftJoinAndSelect("exercise.author", "author")
+    .leftJoinAndSelect("exercise.detail", "detail")
+    .leftJoinAndSelect("exercise.tags", "tags")
     .take(limit)
     .skip(offset);
 
   if (tagIds !== undefined) {
-    query.innerJoin("content.tags", "tags", "tags.id IN (:...tagIds)", { tagIds: [] });
+    query.innerJoin("exercise.tags", "tags", "tags.id IN (:...tagIds)", { tagIds: [] });
   }
 
   const result = await query.getManyAndCount();
