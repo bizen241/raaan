@@ -123,7 +123,7 @@ const normalizeExerciseTag: Normalizer<ExerciseTagEntity> = (entity, store) => {
 };
 
 const normalizeUser: Normalizer<UserEntity> = (entity, store) => {
-  const { id, name, permission, accountId, configId, config } = entity;
+  const { id, name, permission, accountId, account, configId, config } = entity;
 
   store.User[id] = {
     ...base(entity),
@@ -133,6 +133,7 @@ const normalizeUser: Normalizer<UserEntity> = (entity, store) => {
     configId
   };
 
+  normalizeEntity(store, account);
   normalizeEntity(store, config);
 };
 

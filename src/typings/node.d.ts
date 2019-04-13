@@ -8,6 +8,7 @@ declare namespace NodeJS {
     ADMIN_ACCOUNT_PROVIDER?: string;
     ADMIN_ACCOUNT_ID?: string;
     ADMIN_ACCOUNT_NAME?: string;
+    ADMIN_ACCOUNT_EMAIL?: string;
     GITHUB_CLIENT_ID?: string;
     GITHUB_CLIENT_SECRET?: string;
   }

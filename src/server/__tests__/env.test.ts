@@ -14,6 +14,7 @@ const env: NodeJS.ProcessEnv = {
   ADMIN_ACCOUNT_PROVIDER: "github",
   ADMIN_ACCOUNT_ID: "12345678",
   ADMIN_ACCOUNT_NAME: "name",
+  ADMIN_ACCOUNT_EMAIL: "example@example.com",
   GITHUB_CLIENT_ID: "12345678901234567890",
   GITHUB_CLIENT_SECRET: "1234567890123456789012345678901234567890"
 };
@@ -36,6 +37,7 @@ test("only required", () => {
     ADMIN_ACCOUNT_PROVIDER: "github",
     ADMIN_ACCOUNT_ID: "12345678",
     ADMIN_ACCOUNT_NAME: "name",
+    ADMIN_ACCOUNT_EMAIL: "example@example.com",
     GITHUB_CLIENT_ID: "12345678901234567890",
     GITHUB_CLIENT_SECRET: "1234567890123456789012345678901234567890"
   };
@@ -107,6 +109,15 @@ test("missing ADMIN_ACCOUNT_NAME", () => {
   };
 
   expect(getProcessEnv).toThrowError(/ADMIN_ACCOUNT_NAME/);
+});
+
+test("missing ADMIN_ACCOUNT_EMAIL", () => {
+  process.env = {
+    ...env,
+    ADMIN_ACCOUNT_EMAIL: undefined
+  };
+
+  expect(getProcessEnv).toThrowError(/ADMIN_ACCOUNT_EMAIL/);
 });
 
 test("missing GITHUB_CLIENT_ID", () => {

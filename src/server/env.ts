@@ -10,6 +10,7 @@ export interface ProcessEnv {
   adminAccountProvider: AuthProviderName;
   adminAccountId: string;
   adminAccountName: string;
+  adminAccountEmail: string;
   githubClientId: string;
   githubClientSecret: string;
 }
@@ -23,6 +24,7 @@ export const getProcessEnv = (): ProcessEnv => {
     ADMIN_ACCOUNT_PROVIDER,
     ADMIN_ACCOUNT_ID,
     ADMIN_ACCOUNT_NAME,
+    ADMIN_ACCOUNT_EMAIL,
     GITHUB_CLIENT_ID,
     GITHUB_CLIENT_SECRET
   } = process.env;
@@ -48,6 +50,9 @@ export const getProcessEnv = (): ProcessEnv => {
   if (ADMIN_ACCOUNT_NAME === undefined) {
     throw new Error("ADMIN_ACCOUNT_NAME is not defined");
   }
+  if (ADMIN_ACCOUNT_EMAIL === undefined) {
+    throw new Error("ADMIN_ACCOUNT_EMAIL is not defined");
+  }
   if (GITHUB_CLIENT_ID === undefined) {
     throw new Error("GITHUB_CLIENT_ID is not defined");
   }
@@ -67,6 +72,7 @@ export const getProcessEnv = (): ProcessEnv => {
     adminAccountProvider: ADMIN_ACCOUNT_PROVIDER,
     adminAccountId: ADMIN_ACCOUNT_ID,
     adminAccountName: ADMIN_ACCOUNT_NAME,
+    adminAccountEmail: ADMIN_ACCOUNT_EMAIL,
     githubClientId: GITHUB_CLIENT_ID,
     githubClientSecret: GITHUB_CLIENT_SECRET
   };

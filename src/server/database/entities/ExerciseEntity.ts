@@ -22,7 +22,7 @@ export class ExerciseEntity extends BaseEntityClass {
   @Column("uuid")
   detailId: string;
 
-  @OneToOne(() => ExerciseDetailEntity, contentDetail => contentDetail.content, {
+  @OneToOne(() => ExerciseDetailEntity, contentDetail => contentDetail.exercise, {
     onDelete: "CASCADE"
   })
   @JoinColumn({

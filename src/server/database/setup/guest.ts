@@ -8,14 +8,14 @@ export const setGuestUser = async () => {
   const result = await manager.findOne(UserEntity, { permission: "Guest" });
 
   if (result === undefined) {
-    const guestUserAccount = new UserAccountEntity("github", "", "");
+    const guestUser = new UserEntity("", "Guest");
+    await manager.save(guestUser);
+
+    const guestUserAccount = new UserAccountEntity(guestUser, "github", "", "");
     await manager.save(guestUserAccount);
 
-    const guestUserConfig = new UserConfigEntity();
+    const guestUserConfig = new UserConfigEntity(guestUser);
     await manager.save(guestUserConfig);
-
-    const guestUser = new UserEntity("", "Guest", guestUserAccount, guestUserConfig);
-    await manager.save(guestUser);
   }
 };
 

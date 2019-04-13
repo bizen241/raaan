@@ -7,9 +7,7 @@ import { UserEntity } from "../../database/entities";
 import { setClearSiteData } from "../logout";
 
 export const GET: OperationFunction = errorBoundary(async (_, res, next, currentUser) => {
-  const user = await getManager().findOne(UserEntity, currentUser.id, {
-    relations: ["config"]
-  });
+  const user = await getManager().findOne(UserEntity, currentUser.id);
   if (user === undefined) {
     return next(createError(404));
   }

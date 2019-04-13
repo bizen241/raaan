@@ -17,6 +17,7 @@ export const testProcessEnv: ProcessEnv = {
   adminAccountProvider: "github",
   adminAccountId: "12345678",
   adminAccountName: "name",
+  adminAccountEmail: "example@example.com",
   githubClientId: "12345678901234567890",
   githubClientSecret: "1234567890123456789012345678901234567890"
 };
