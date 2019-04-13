@@ -7,7 +7,7 @@ module.exports = {
   },
   testMatch: ["**/__tests__/**.test.{ts, tsx}"],
   collectCoverageFrom: [
-    "src/**.{ts,tsx}",
+    "src/**/*.{ts,tsx}",
     "!src/client/index.ts",
     "!src/server/index.ts",
     "!src/typings/**",
