@@ -108,7 +108,7 @@
     "html-webpack-plugin": "3.2.0",
     "jest": "24.7.1",
     "node-mocks-http": "1.7.3",
-    "nodemon": "1.18.10",
+    "nodemon": "1.18.11",
     "npm-run-all": "4.1.5",
     "openapi-types": "1.3.4",
     "prettier": "1.16.4",
