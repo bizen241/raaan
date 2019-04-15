@@ -60,7 +60,7 @@
     "styled-components": "4.2.0",
     "swagger-ui-express": "4.0.2",
     "typeorm": "0.2.16",
-    "typescript-json-schema": "0.36.0",
+    "typescript-json-schema": "0.37.0",
     "uuid": "3.3.2"
   },
   "devDependencies": {
