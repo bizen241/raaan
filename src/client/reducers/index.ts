@@ -1,6 +1,5 @@
 import { connectRouter, RouterAction, RouterState } from "connected-react-router";
 import { History } from "history";
-import * as React from "react";
 import { ComponentType } from "react";
 import { connect } from "react-redux";
 import { combineReducers } from "redux";
@@ -41,6 +40,8 @@ export type Actions =
   | PlayerActions
   | RouterAction;
 
+// export const connect;
+
 export const connector = <OwnProps extends {}, SelectedState extends {}, SelectedActions extends {}>(
   stateSelector: (state: RootState, ownProps: OwnProps) => SelectedState,
   actionSelector: () => SelectedActions,
@@ -49,4 +50,4 @@ export const connector = <OwnProps extends {}, SelectedState extends {}, Selecte
   connect(
     stateSelector,
     actionSelector()
-  )(React.memo(component) as any);
+  )(component as any);

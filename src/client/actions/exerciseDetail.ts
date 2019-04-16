@@ -1,6 +1,6 @@
 import { ExerciseDetail } from "../../shared/api/entities";
 import { Question } from "../../shared/content";
-import { contentItemCreators } from "../domain/content";
+import { createQuestion } from "../domain/content";
 import { editBuffer } from "../reducers/buffers";
 
 const updateTitle = (bufferId: string, title: string) =>
@@ -8,10 +8,12 @@ const updateTitle = (bufferId: string, title: string) =>
     title
   }));
 
-const appendItem = (bufferId: string, itemType: Question["type"]) =>
-  editBuffer<ExerciseDetail>("ExerciseDetail", bufferId, ({ questions = [] }) => ({
-    questions: [...questions, contentItemCreators[itemType]()]
-  }));
+const appendItem = (bufferId: string) =>
+  editBuffer<ExerciseDetail>("ExerciseDetail", bufferId, ({ questions = [] }) => {
+    return {
+      questions: [...questions, createQuestion()]
+    };
+  });
 
 const updateItem = <P extends keyof Question>(bufferId: string, index: number, key: P, value: Question[P]) =>
   editBuffer<ExerciseDetail>("ExerciseDetail", bufferId, ({ questions = [] }) => {

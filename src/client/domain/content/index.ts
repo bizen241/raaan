@@ -1,7 +1,7 @@
 import * as uuid from "uuid";
 import { ExerciseDetail } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
-import { CodeItem, KanaItem, KanjiItem, MathItem, Question, TextItem } from "../../../shared/content";
+import { Question } from "../../../shared/content";
 
 export const createExerciseDetail = (): SaveParams<ExerciseDetail> => ({
   title: "",
@@ -14,43 +14,13 @@ export const createExerciseDetail = (): SaveParams<ExerciseDetail> => ({
   navigationMode: "random"
 });
 
-const base = <T extends string>(type: T) => ({
-  type: type as T,
+export const createQuestion = (): Question => ({
   id: uuid(),
+  format: "plain",
+  lang: "",
   value: "",
   comment: ""
 });
-
-const createTextItem = (): TextItem => ({
-  ...base("text"),
-  lang: "ja"
-});
-
-const createKanaItem = (): KanaItem => ({
-  ...base("kana")
-});
-
-const createKanjiItem = (): KanjiItem => ({
-  ...base("kanji"),
-  kanji: ""
-});
-
-const createCodeItem = (): CodeItem => ({
-  ...base("code"),
-  lang: "js"
-});
-
-const createMathItem = (): MathItem => ({
-  ...base("math")
-});
-
-export const contentItemCreators: { [T in Question["type"]]: () => Question } = {
-  text: createTextItem,
-  kana: createKanaItem,
-  kanji: createKanjiItem,
-  code: createCodeItem,
-  math: createMathItem
-};
 
 export const createPlan = (items: Question[]) => {
   const plan = [...Array(items.length).keys()];
