@@ -1,7 +1,6 @@
 import * as uuid from "uuid";
-import { ExerciseDetail } from "../../../shared/api/entities";
+import { ExerciseDetail, Question } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
-import { Question } from "../../../shared/content";
 
 export const createExerciseDetail = (): SaveParams<ExerciseDetail> => ({
   title: "",

@@ -1,6 +1,6 @@
 import { Divider } from "@blueprintjs/core";
 import * as React from "react";
-import { PlayerState } from "../../../reducers/player";
+import { AttemptState } from "../../../reducers/attempts";
 import { styled } from "../../../style";
 import { Column, Row } from "../../ui";
 
@@ -19,11 +19,15 @@ const IndexValue = styled(Row)`
   line-height: 1.5em;
 `;
 
-export const AttemptResultRenderer: React.FunctionComponent<{
-  attempt: PlayerState;
+export const AttemptResult: React.FunctionComponent<{
+  attempt: AttemptState;
 }> = ({ attempt: { results } }) => {
-  const totalTime = results.reduce((time, result) => time + result.time, 0) / 1000;
-  const totalTypeCount = results.reduce((typeCount, result) => typeCount + result.typeCount, 0);
+  const totalTime = results.reduce((time, result) => time + result.totalTime, 0) / 1000;
+  const totalTypeCount = results.reduce(
+    (totalLength, result) =>
+      totalLength + result.typedLines.reduce((resultLength, typedLine) => resultLength + typedLine.length, 0),
+    0
+  );
   const typeSpeed = totalTypeCount / totalTime;
   const score = typeSpeed * 1 * 60;
 

@@ -1,5 +1,4 @@
-import { ExerciseDetail } from "../../shared/api/entities";
-import { Question } from "../../shared/content";
+import { ExerciseDetail, Question } from "../../shared/api/entities";
 import { createQuestion } from "../domain/content";
 import { editBuffer } from "../reducers/buffers";
 

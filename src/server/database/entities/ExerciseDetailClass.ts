@@ -1,6 +1,5 @@
 import { Column } from "typeorm";
-import { ExerciseDetailObject, NavigationMode } from "../../../shared/api/entities";
-import { Question } from "../../../shared/content";
+import { ExerciseDetailObject, NavigationMode, Question } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 
 export abstract class ExerciseDetailClass extends BaseEntityClass {

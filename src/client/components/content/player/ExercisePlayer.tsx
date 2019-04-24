@@ -1,50 +1,64 @@
+import { Callout } from "@blueprintjs/core";
 import * as React from "react";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ExerciseDetail } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
+import { CompiledQuestion, compileQuestions } from "../../../domain/content/compiler";
 import { connector } from "../../../reducers";
-import { playerActions } from "../../../reducers/player";
+import { attemptsActions, QuestionResult } from "../../../reducers/attempts";
 import { Column } from "../../ui";
-import { AttemptResultRenderer } from "./AttemptResultRenderer";
+import { AttemptResult } from "./AttemptResult";
 import { QuestionPlayer } from "./QuestionPlayer";
 
 export const ExercisePlayer = connector(
-  (state, ownProps: { content: SaveParams<ExerciseDetail> }) => ({
-    content: ownProps.content,
-    attempt: state.player
+  (state, ownProps: { id: string; params: SaveParams<ExerciseDetail> }) => ({
+    ...ownProps,
+    attempt: state.attempts
   }),
   () => ({
-    ...playerActions
+    ...attemptsActions
   }),
-  ({ content, attempt, load, next }) => {
+  ({ id, params, attempt, load, next }) => {
+    const [questions, setQuestions] = useState<CompiledQuestion[] | undefined>();
+
     useEffect(() => {
-      load(content);
+      load(id, params);
     }, []);
+    useEffect(() => {
+      setQuestions(compileQuestions(params));
+    });
 
-    if (attempt.content !== content) {
-      return <div>Loading...</div>;
-    }
-
-    const { questions = [] } = attempt.content;
-
-    if (questions.length === 0) {
-      return <div>Empty</div>;
-    }
-    if (attempt.isFinished) {
+    if (attempt.id !== id || attempt.params === undefined || questions === undefined) {
       return (
-        <Column flex={1} center="both">
-          <AttemptResultRenderer attempt={attempt} />
+        <Column>
+          <Callout>Loading...</Callout>
         </Column>
       );
     }
 
-    const currentItemIndex = attempt.plan[attempt.cursor];
-    const currentItem = questions[currentItemIndex];
-    const currentCompiledItem = attempt.compiled[currentItemIndex];
+    const { results, plan } = attempt;
+    const cursor = results.length;
+
+    if (questions.length === 0) {
+      return <div>Empty</div>;
+    }
+    if (cursor === plan.length) {
+      return (
+        <Column flex={1} center="both">
+          <AttemptResult attempt={attempt} />
+        </Column>
+      );
+    }
+
+    const currentQuestion = questions[plan[cursor]];
 
     return (
       <Column padding flex={1}>
-        <QuestionPlayer key={attempt.cursor} item={currentItem} compiledItem={currentCompiledItem} onFinish={next} />
+        <QuestionPlayer
+          key={cursor}
+          question={currentQuestion}
+          onFinish={useCallback((result: QuestionResult) => next(result), [])}
+        />
       </Column>
     );
   }

@@ -24,7 +24,7 @@ export const ExercisePreviewDialog = React.memo<{
       className="bp3-dark"
     >
       <Column className={Classes.DIALOG_BODY} padding flex={1}>
-        <Column flex={1}>{isOpen ? <ExercisePlayer content={params} /> : null}</Column>
+        <Column flex={1}>{isOpen ? <ExercisePlayer id={Date.now().toString()} params={params} /> : null}</Column>
         <Button onClick={onClose}>閉じる (Esc)</Button>
       </Column>
     </Dialog>

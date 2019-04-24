@@ -1,8 +1,7 @@
 import * as React from "react";
 import { useMemo } from "react";
-import { ExerciseDetail } from "../../../../shared/api/entities";
+import { ExerciseDetail, Question } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
-import { Question } from "../../../../shared/content";
 import { createExerciseDetail } from "../../../domain/content";
 import { connector } from "../../../reducers";
 import { dialogActions } from "../../../reducers/dialog";

@@ -1,197 +1,123 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Question } from "../../../../shared/content";
-import { CompiledChar, CompiledItem, CompiledLine } from "../../../domain/content/compiler";
-import { QuestionResult, TypoMap } from "../../../reducers/player";
+import { CompiledQuestion } from "../../../domain/content/compiler";
+import { QuestionResult, TypoMap } from "../../../reducers/attempts";
 import { Column } from "../../ui";
-import { contentItemTypeToRenderer } from "./items";
+import { QuestionRenderer } from "../renderers/QuestionRenderer";
 
-interface QuestionPlayerState {
-  untypedLines: CompiledItem;
-  untypedChars: CompiledLine;
-  untypedCharStrings: string[];
-  currentLine: CompiledLine;
-  currentChar: CompiledChar;
+export interface QuestionPlayerState {
+  currentChunkIndex: number;
+  currentCharIndex: number;
   typedLines: string[];
   typedString: string;
-  typedSource: string;
-  hasTypo: boolean;
   typoMap: TypoMap;
-  startedAt: number;
-  isSuspended: boolean;
+  hasTypo: boolean;
   totalTime: number;
-  isCurrentItemFinished: boolean;
-  isCurrentLineFinished: boolean;
+  isSuspended: boolean;
+  startedAt: number;
 }
 
 export const QuestionPlayer: React.FunctionComponent<{
-  item: Question;
-  compiledItem: CompiledItem;
+  question: CompiledQuestion;
   onFinish: (result: QuestionResult) => void;
-}> = ({ item, compiledItem, onFinish }) => {
-  const [state, setState] = useState<QuestionPlayerState>(() => getInitialState(compiledItem));
+}> = ({ question, onFinish }) => {
+  const [state, setState] = useState<QuestionPlayerState>({
+    currentChunkIndex: 0,
+    currentCharIndex: 0,
+    typedLines: [],
+    typedString: "",
+    typoMap: {},
+    hasTypo: false,
+    totalTime: 0,
+    isSuspended: true,
+    startedAt: 0
+  });
 
-  const { isCurrentItemFinished, isCurrentLineFinished } = state;
+  const { totalTime, typoMap, typedLines, startedAt } = state;
+  const isFinished = typedLines.length === question.roman.length;
 
   useEffect(() => {
-    if (isCurrentItemFinished) {
-      onFinish({
-        id: item.id,
-        time: state.totalTime,
-        typeCount: state.typedLines
-          .map(line => line.length)
-          .reduce((totalLength, lineLength) => totalLength + lineLength, 0),
-        typoMap: state.typoMap
-      });
-
-      return;
-    }
-
     const onKeyDown = (e: KeyboardEvent) => {
-      setState(previousState => getNextState(previousState, e));
+      setState(previousState => getNextState(previousState, question, e));
     };
 
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [isCurrentItemFinished]);
+  });
   useEffect(() => {
     const suspend = () => {
       setState({
         ...state,
         isSuspended: true,
-        totalTime: state.totalTime + (Date.now() - state.startedAt)
+        totalTime: totalTime + (Date.now() - startedAt)
       });
     };
 
     const timeoutId = setTimeout(suspend, 3000);
     return clearTimeout(timeoutId);
-  });
-
-  const untypedString = state.untypedChars.map(char => char.compiled[0]).join("");
-  const untypedSource = state.untypedChars.map(char => char.source).join("");
-
-  const Renderer = contentItemTypeToRenderer[item.type];
+  }, [state]);
+  useEffect(() => {
+    if (isFinished) {
+      onFinish({
+        totalTime,
+        typoMap,
+        typedLines
+      });
+    }
+  }, [isFinished]);
 
   return (
     <Column flex={1}>
-      <Renderer
-        item={item}
-        untypedSource={`${isCurrentLineFinished ? "" : state.currentChar.source}${untypedSource}`}
-        untypedString={`${state.untypedCharStrings[0]}${untypedString}`}
-        typedLines={state.typedLines}
-        typedString={state.typedString}
-        typedSource={state.typedSource}
-        hasTypo={state.hasTypo}
-      />
+      <QuestionRenderer question={question} state={state} />
     </Column>
   );
 };
 
-const getInitialState = (compiledItem: CompiledItem): QuestionPlayerState => {
-  const currentLine = compiledItem[0] || [];
-  const currentChar = currentLine[0];
-
-  return {
-    untypedLines: compiledItem.slice(1),
-    untypedChars: currentLine.slice(1),
-    untypedCharStrings: [...(currentLine.length !== 0 ? currentChar.compiled : [])],
-    currentLine,
-    currentChar,
-    typedLines: [],
-    typedSource: "",
-    typedString: "",
-    hasTypo: false,
-    typoMap: {},
-    startedAt: 0,
-    isSuspended: true,
-    totalTime: 0,
-    isCurrentItemFinished: compiledItem.length === 0 || (compiledItem.length === 1 && currentLine.length === 0),
-    isCurrentLineFinished: currentLine.length === 0
-  };
-};
-
-const getNextState = (previousState: QuestionPlayerState, e: KeyboardEvent): QuestionPlayerState => {
+const getNextState = (
+  previousState: QuestionPlayerState,
+  question: CompiledQuestion,
+  e: KeyboardEvent
+): QuestionPlayerState => {
   const { key } = e;
 
-  const nextState: QuestionPlayerState = { ...previousState };
+  const isSuspended = false;
 
-  if (previousState.isSuspended) {
-    nextState.isSuspended = false;
-    nextState.startedAt = Date.now();
-  }
+  const { currentChunkIndex, currentCharIndex, typedLines, typedString } = previousState;
+  const currentLineIndex = typedLines.length + 1;
+  const currentLine = question.roman[currentLineIndex];
 
-  if (previousState.isCurrentLineFinished) {
-    if (key !== "Enter") {
-      return nextState;
-    }
+  const matchedCandidates = currentLine[currentChunkIndex].candidates.filter(
+    candidate => candidate[currentCharIndex] === key
+  );
 
-    const nextLine = previousState.untypedLines[0];
-    const nextChar = nextLine[0];
-
+  const hasTypo = matchedCandidates.length === 0;
+  if (hasTypo) {
     return {
-      ...nextState,
-      untypedLines: previousState.untypedLines.slice(1),
-      untypedChars: nextLine.slice(1),
-      untypedCharStrings: [...nextChar.compiled],
-      currentLine: nextLine,
-      currentChar: nextChar,
-      typedLines: [...previousState.typedLines, previousState.typedString],
-      typedSource: "",
-      typedString: "",
-      isCurrentLineFinished: false
+      ...previousState,
+      hasTypo,
+      isSuspended
     };
   }
 
-  const updatedUntypedCharStrings = previousState.untypedCharStrings
-    .filter(charString => charString[0] === key)
-    .map(charString => charString.slice(1));
-  if (updatedUntypedCharStrings.length === 0) {
-    return {
-      ...nextState,
-      hasTypo: true
-    };
-  }
+  const isCurrentChunkFinished = matchedCandidates.some(candidate => candidate.length === currentCharIndex + 1);
+  const isCurrentLineFinished = isCurrentChunkFinished && currentLine.length === currentChunkIndex + 1;
 
-  if (previousState.hasTypo) {
-    const previousTypoCount = previousState.typoMap[key] || 0;
-    nextState.typoMap[key] = previousTypoCount + 1;
-  }
+  const nextChunkIndex = isCurrentLineFinished ? 0 : currentChunkIndex + 1;
+  const nextCharIndex = isCurrentChunkFinished ? 0 : currentCharIndex + 1;
 
-  const nextTypedString = previousState.typedString.concat(key);
+  const nextTypedString = isCurrentChunkFinished ? "" : `${typedString}${key}`;
+  const nextTypedLines = isCurrentLineFinished ? [...typedLines, `${typedString}${key}`] : typedLines;
 
-  nextState.untypedCharStrings = updatedUntypedCharStrings;
-  nextState.typedString = nextTypedString;
-  nextState.hasTypo = false;
-
-  const isCurrentCharFinished = updatedUntypedCharStrings.some(charString => charString.length === 0);
-  if (!isCurrentCharFinished) {
-    return nextState;
-  }
-
-  nextState.typedSource = previousState.typedSource.concat(previousState.currentChar.source);
-  nextState.untypedChars = previousState.untypedChars.slice(1);
-
-  if (previousState.untypedChars.length !== 0) {
-    const nextChar = previousState.untypedChars[0];
-
-    return {
-      ...nextState,
-      untypedCharStrings: [...nextChar.compiled],
-      currentChar: nextChar
-    };
-  }
-
-  nextState.isCurrentLineFinished = true;
-
-  if (previousState.untypedLines.length !== 0) {
-    return nextState;
-  }
+  const startedAt = previousState.isSuspended ? previousState.startedAt : Date.now();
 
   return {
-    ...nextState,
-    isCurrentItemFinished: true,
-    isSuspended: true,
-    typedLines: [...previousState.typedLines, nextTypedString],
-    totalTime: previousState.totalTime + (Date.now() - previousState.startedAt)
+    ...previousState,
+    currentChunkIndex: nextChunkIndex,
+    currentCharIndex: nextCharIndex,
+    typedLines: nextTypedLines,
+    typedString: nextTypedString,
+    hasTypo,
+    isSuspended,
+    startedAt
   };
 };

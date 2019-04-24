@@ -2,7 +2,7 @@ import { Classes, Collapse, MenuItem, Tag } from "@blueprintjs/core";
 import * as React from "react";
 import { useCallback, useState } from "react";
 import TextArea from "react-textarea-autosize";
-import { Question } from "../../../../shared/content";
+import { Question } from "../../../../shared/api/entities";
 import { contentActions } from "../../../actions/exerciseDetail";
 import { connector } from "../../../reducers";
 import { dialogActions } from "../../../reducers/dialog";
