@@ -83,7 +83,7 @@ const getNextState = (
   const isSuspended = false;
 
   const { currentChunkIndex, currentCharIndex, typedLines, typedString } = previousState;
-  const currentLineIndex = typedLines.length + 1;
+  const currentLineIndex = typedLines.length;
   const currentLine = question.roman[currentLineIndex];
 
   const matchedCandidates = currentLine[currentChunkIndex].candidates.filter(
