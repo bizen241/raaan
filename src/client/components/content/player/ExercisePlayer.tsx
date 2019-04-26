@@ -30,7 +30,7 @@ export const ExercisePlayer = connector(
       if (id === attempt.id && attempt.params !== undefined) {
         setQuestions(compileQuestions(attempt.params));
       }
-    }, [attempt.params]);
+    }, [attempt]);
 
     const onFinish = useCallback((result: QuestionResult) => next(result), []);
 
