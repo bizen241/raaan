@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useMemo } from "react";
 import { ExerciseDetail } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
 import { connector } from "../../../reducers";
@@ -14,9 +15,11 @@ export const ExercisePreviewer = connector(
     onClose: dialog.close
   }),
   ({ params, isOpen, onClose }) => {
+    const id = useMemo(() => Date.now().toString(), [params]);
+
     return (
       <Modal isOpen={isOpen} onClose={onClose}>
-        <ExercisePlayer id={Date.now().toString()} params={params} />
+        <ExercisePlayer id={id} params={params} />
       </Modal>
     );
   }

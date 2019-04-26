@@ -37,7 +37,7 @@ export interface AttemptState {
 }
 
 export const initialAttemptsState: AttemptState = {
-  id: Date.now().toString(),
+  id: "",
   plan: [],
   results: [],
   isRubricOpen: true,

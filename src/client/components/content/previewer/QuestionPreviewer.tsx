@@ -23,10 +23,11 @@ export const QuestionPreviewer = connector(
       }),
       [question]
     );
+    const id = useMemo(() => Date.now().toString(), [params]);
 
     return (
       <Modal isOpen={isOpen} onClose={onClose}>
-        <ExercisePlayer id={Date.now().toString()} params={params} />
+        <ExercisePlayer id={id} params={params} />
       </Modal>
     );
   }
