@@ -23,7 +23,7 @@ export const QuestionPreviewer = connector(
       }),
       [question]
     );
-    const id = useMemo(() => Date.now().toString(), [params]);
+    const id = useMemo(() => Date.now().toString(), [params, isOpen]);
 
     return (
       <Modal isOpen={isOpen} onClose={onClose}>

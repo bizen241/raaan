@@ -15,7 +15,7 @@ export const ExercisePreviewer = connector(
     onClose: dialog.close
   }),
   ({ params, isOpen, onClose }) => {
-    const id = useMemo(() => Date.now().toString(), [params]);
+    const id = useMemo(() => Date.now().toString(), [params, isOpen]);
 
     return (
       <Modal isOpen={isOpen} onClose={onClose}>
