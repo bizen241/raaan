@@ -102,10 +102,10 @@ const getNextState = (
   const isCurrentChunkFinished = matchedCandidates.some(candidate => candidate.length === currentCharIndex + 1);
   const isCurrentLineFinished = isCurrentChunkFinished && currentLine.length === currentChunkIndex + 1;
 
-  const nextChunkIndex = isCurrentLineFinished ? 0 : currentChunkIndex + 1;
+  const nextChunkIndex = isCurrentLineFinished ? 0 : isCurrentChunkFinished ? currentChunkIndex + 1 : currentChunkIndex;
   const nextCharIndex = isCurrentChunkFinished ? 0 : currentCharIndex + 1;
 
-  const nextTypedString = isCurrentChunkFinished ? "" : `${typedString}${key}`;
+  const nextTypedString = isCurrentLineFinished ? "" : `${typedString}${key}`;
   const nextTypedLines = isCurrentLineFinished ? [...typedLines, `${typedString}${key}`] : typedLines;
 
   const startedAt = previousState.isSuspended ? previousState.startedAt : Date.now();
