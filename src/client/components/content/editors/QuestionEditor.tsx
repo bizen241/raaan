@@ -29,7 +29,7 @@ export const QuestionEditor = connector(
 
     return (
       <Details onFocus={useCallback(() => onFocus(itemIndex), [itemIndex])}>
-        <Summary title={itemIndex} onClick={useCallback(() => toggleEditor(s => !s), [])}>
+        <Summary title={itemIndex} isOpen={isOpen} onClick={useCallback(() => toggleEditor(s => !s), [])}>
           <Tag minimal>{item.format}</Tag>
           <PopMenu
             items={[
