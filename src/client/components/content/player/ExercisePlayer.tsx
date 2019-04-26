@@ -7,7 +7,7 @@ import { CompiledQuestion, compileQuestions } from "../../../domain/content/comp
 import { connector } from "../../../reducers";
 import { attemptsActions, QuestionResult } from "../../../reducers/attempts";
 import { Column } from "../../ui";
-import { AttemptResult } from "./AttemptResult";
+import { AttemptResult } from "../renderers/AttemptResult";
 import { QuestionPlayer } from "./QuestionPlayer";
 
 export const ExercisePlayer = connector(
@@ -22,27 +22,35 @@ export const ExercisePlayer = connector(
     const [questions, setQuestions] = useState<CompiledQuestion[] | undefined>();
 
     useEffect(() => {
-      load(id, params);
+      if (id !== attempt.id) {
+        load(id, params);
+      }
     }, []);
     useEffect(() => {
-      setQuestions(compileQuestions(params));
-    });
+      if (id !== attempt.id && attempt.params !== undefined) {
+        setQuestions(compileQuestions(attempt.params));
+      }
+    }, [attempt.params]);
 
     if (attempt.id !== id || attempt.params === undefined || questions === undefined) {
       return (
         <Column>
-          <Callout>Loading...</Callout>
+          <Callout>ロード中...</Callout>
+        </Column>
+      );
+    }
+    if (questions.length === 0) {
+      return (
+        <Column>
+          <Callout>空の問題集です</Callout>
         </Column>
       );
     }
 
     const { results, plan } = attempt;
-    const cursor = results.length;
+    const resultCount = results.length;
 
-    if (questions.length === 0) {
-      return <div>Empty</div>;
-    }
-    if (cursor === plan.length) {
+    if (resultCount === plan.length) {
       return (
         <Column flex={1} center="both">
           <AttemptResult attempt={attempt} />
@@ -50,12 +58,12 @@ export const ExercisePlayer = connector(
       );
     }
 
-    const currentQuestion = questions[plan[cursor]];
+    const currentQuestion = questions[plan[resultCount]];
 
     return (
       <Column padding flex={1}>
         <QuestionPlayer
-          key={cursor}
+          key={resultCount}
           question={currentQuestion}
           onFinish={useCallback((result: QuestionResult) => next(result), [])}
         />

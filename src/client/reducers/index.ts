@@ -4,11 +4,11 @@ import { ComponentType } from "react";
 import { connect } from "react-redux";
 import { combineReducers } from "redux";
 import { ApiActions, apiReducer, ApiState } from "./api";
-import { AppActions, appReducer, AppState } from "./app";
+import { AppActions, appActions, appReducer, AppState } from "./app";
 import { AttemptsActions, attemptsReducer, AttemptState } from "./attempts";
 import { BuffersActions, buffersReducer, BuffersState } from "./buffers";
 import { CacheActions, cacheReducer, CacheState } from "./cache";
-import { DialogActions, dialogReducer, DialogState } from "./dialog";
+import { DialogActions, dialogActions, dialogReducer, DialogState } from "./dialog";
 
 export interface RootState {
   api: ApiState;
@@ -40,14 +40,17 @@ export type Actions =
   | DialogActions
   | RouterAction;
 
-// export const connect;
+const allAction = {
+  app: appActions,
+  dialog: dialogActions
+};
 
-export const connector = <OwnProps extends {}, SelectedState extends {}, SelectedActions extends {}>(
-  stateSelector: (state: RootState, ownProps: OwnProps) => SelectedState,
-  actionSelector: () => SelectedActions,
-  component: ComponentType<SelectedState & SelectedActions>
+export const connector = <OwnProps extends {}, StateProps extends {}, ActionProps extends {}>(
+  stateSelector: (state: RootState, ownProps: OwnProps) => StateProps,
+  actionSelector: (actions: typeof allAction) => ActionProps,
+  component: ComponentType<StateProps & ActionProps>
 ) =>
   connect(
     stateSelector,
-    actionSelector()
+    actionSelector(allAction)
   )(component as any);

@@ -28,7 +28,7 @@ export const attemptsActions = {
 export type AttemptsActions = ActionUnion<typeof attemptsActions>;
 
 export interface AttemptState {
-  id: string | number;
+  id: string;
   params?: SaveParams<ExerciseDetail>;
   plan: number[];
   results: QuestionResult[];

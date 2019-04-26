@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { createGlobalStyle, ThemeProvider } from "../../style";
-import { ConfigContext } from "./Initializer";
+import { ConfigContext } from "./Context";
 
 export const Style = React.memo<{ children: React.ReactNode }>(({ children }) => {
   const { theme = "default" } = useContext(ConfigContext);
@@ -29,6 +29,7 @@ export const Style = React.memo<{ children: React.ReactNode }>(({ children }) =>
     <ThemeProvider
       theme={useMemo(
         () => ({
+          name: themeName,
           background: themeName === "light" ? "#eeeeee" : "#30404d",
           accent: "#eeeeee"
         }),

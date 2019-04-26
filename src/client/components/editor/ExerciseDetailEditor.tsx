@@ -1,16 +1,16 @@
 import { Button, Classes, Divider } from "@blueprintjs/core";
-import * as React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { EntityEditorProps } from "..";
-import { ExerciseDetail } from "../../../../shared/api/entities";
-import { contentActions } from "../../../actions/exerciseDetail";
-import { connector } from "../../../reducers";
-import { dialogActions } from "../../../reducers/dialog";
-import { ExercisePreviewer } from "../../content/previewer/ExercisePreviewer";
-import { QuestionPreviewer } from "../../content/previewer/QuestionPreviewer";
-import { Column } from "../../ui";
-import { manageHotKey } from "../../utils/hotKey";
-import { QuestionEditor } from "./QuestionEditor";
+import * as React from "react";
+import { EntityEditorProps } from ".";
+import { ExerciseDetail } from "../../../shared/api/entities";
+import { contentActions } from "../../actions/exerciseDetail";
+import { connector } from "../../reducers";
+import { dialogActions } from "../../reducers/dialog";
+import { QuestionEditor } from "../content/editors/QuestionEditor";
+import { ExercisePreviewer } from "../content/previewer/ExercisePreviewer";
+import { QuestionPreviewer } from "../content/previewer/QuestionPreviewer";
+import { Column } from "../ui";
+import { manageHotKey } from "../utils/hotKey";
 
 export const ExerciseDetailEditor = connector(
   (state, ownProps: EntityEditorProps<ExerciseDetail>) => ({

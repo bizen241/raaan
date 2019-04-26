@@ -4,16 +4,16 @@ import { ExerciseDetail, Question } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
 import { createExerciseDetail } from "../../../domain/content";
 import { connector } from "../../../reducers";
-import { dialogActions } from "../../../reducers/dialog";
-import { ExercisePreviewDialog } from "./ExercisePreviewDialog";
+import { Modal } from "../../ui";
+import { ExercisePlayer } from "../player/ExercisePlayer";
 
 export const QuestionPreviewer = connector(
-  (state, ownProps: { question: Question }) => ({
+  ({ dialog }, ownProps: { question: Question }) => ({
     ...ownProps,
-    isOpen: state.dialog.name === "QuestionPreviewer"
+    isOpen: dialog.name === "QuestionPreviewer"
   }),
-  () => ({
-    onClose: dialogActions.close
+  ({ dialog }) => ({
+    onClose: dialog.close
   }),
   ({ question, isOpen, onClose }) => {
     const params = useMemo<SaveParams<ExerciseDetail>>(
@@ -24,6 +24,10 @@ export const QuestionPreviewer = connector(
       [question]
     );
 
-    return <ExercisePreviewDialog params={params} isOpen={isOpen} onClose={onClose} />;
+    return (
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ExercisePlayer id={Date.now().toString()} params={params} />
+      </Modal>
+    );
   }
 );

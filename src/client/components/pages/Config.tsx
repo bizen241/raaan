@@ -5,18 +5,17 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../reducers";
 import { EntityEditor } from "../editor";
+import { UserContext } from "../project/Context";
 import { Header } from "../project/Header";
-import { UserContext } from "../project/Initializer";
 import { Column } from "../ui";
 import { Page } from "./Page";
 
 export const Config = connector(
   state => ({
-    hasUpdate: state.app.hasUpdate,
-    configId: state.app.configId
+    hasUpdate: state.app.hasUpdate
   }),
   () => ({}),
-  ({ hasUpdate, configId }) => {
+  ({ hasUpdate }) => {
     const currentUser = useContext(UserContext);
     const isGuest = currentUser.permission === "Guest";
 
@@ -40,7 +39,7 @@ export const Config = connector(
             </Column>
           ) : null}
           <Column padding>
-            <EntityEditor entityType="UserConfig" entityId={configId} />
+            <EntityEditor entityType="UserConfig" entityId={currentUser.configId} />
           </Column>
           {!isGuest ? (
             <Column padding>

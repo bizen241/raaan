@@ -3,7 +3,7 @@ import * as React from "react";
 import { useContext, useMemo } from "react";
 import { Lang } from "../../../shared/api/entities";
 import { catalogs } from "../../intl";
-import { ConfigContext } from "./Initializer";
+import { ConfigContext } from "./Context";
 
 export const Translator = React.memo<{ children: React.ReactNode }>(({ children }) => {
   const { lang } = useContext(ConfigContext);

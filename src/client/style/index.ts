@@ -6,10 +6,12 @@ const {
   css,
   keyframes,
   createGlobalStyle,
+  ThemeConsumer,
   ThemeProvider
 } = styledComponents as ThemedStyledComponentsModule<{
+  name: "dark" | "light";
   background: string;
   accent: string;
 }>;
 
-export { styled, css, keyframes, createGlobalStyle, ThemeProvider };
+export { styled, css, keyframes, createGlobalStyle, ThemeConsumer, ThemeProvider };

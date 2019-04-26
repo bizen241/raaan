@@ -6,6 +6,7 @@ import { SearchResponse } from "../../shared/api/response/search";
 import { ActionUnion, createAction } from "../actions";
 import { mergeEntityStore } from "../api/response/entity";
 import { createSearchResultStore, mergeSearchResultStore, SearchResultStore } from "../api/response/search";
+import { guestUser, guestUserConfig } from "../components/project/Context";
 
 export enum CacheActionType {
   Get = "cache/get",
@@ -39,7 +40,15 @@ export type CacheState = {
 };
 
 export const initialCacheState: CacheState = {
-  get: createEntityStore(),
+  get: {
+    ...createEntityStore(),
+    User: {
+      [guestUser.id]: guestUser
+    },
+    UserConfig: {
+      [guestUserConfig.id]: guestUserConfig
+    }
+  },
   search: createSearchResultStore()
 };
 

@@ -2,18 +2,22 @@ import * as React from "react";
 import { ExerciseDetail } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
 import { connector } from "../../../reducers";
-import { dialogActions } from "../../../reducers/dialog";
-import { ExercisePreviewDialog } from "./ExercisePreviewDialog";
+import { Modal } from "../../ui";
+import { ExercisePlayer } from "../player/ExercisePlayer";
 
 export const ExercisePreviewer = connector(
-  (state, ownProps: { params: SaveParams<ExerciseDetail> }) => ({
+  ({ dialog }, ownProps: { params: SaveParams<ExerciseDetail> }) => ({
     ...ownProps,
-    isOpen: state.dialog.name === "ExercisePreviewer"
+    isOpen: dialog.name === "ExercisePreviewer"
   }),
-  () => ({
-    onClose: dialogActions.close
+  ({ dialog }) => ({
+    onClose: dialog.close
   }),
   ({ params, isOpen, onClose }) => {
-    return <ExercisePreviewDialog params={params} isOpen={isOpen} onClose={onClose} />;
+    return (
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ExercisePlayer id={Date.now().toString()} params={params} />
+      </Modal>
+    );
   }
 );
