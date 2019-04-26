@@ -27,7 +27,7 @@ export const ExercisePlayer = connector(
       }
     }, []);
     useEffect(() => {
-      if (id !== attempt.id && attempt.params !== undefined) {
+      if (id === attempt.id && attempt.params !== undefined) {
         setQuestions(compileQuestions(attempt.params));
       }
     }, [attempt.params]);
