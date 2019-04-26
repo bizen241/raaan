@@ -32,6 +32,8 @@ export const ExercisePlayer = connector(
       }
     }, [attempt.params]);
 
+    const onFinish = useCallback((result: QuestionResult) => next(result), []);
+
     if (attempt.id !== id || attempt.params === undefined || questions === undefined) {
       return (
         <Column>
@@ -62,11 +64,7 @@ export const ExercisePlayer = connector(
 
     return (
       <Column padding flex={1}>
-        <QuestionPlayer
-          key={resultCount}
-          question={currentQuestion}
-          onFinish={useCallback((result: QuestionResult) => next(result), [])}
-        />
+        <QuestionPlayer key={resultCount} question={currentQuestion} onFinish={onFinish} />
       </Column>
     );
   }
