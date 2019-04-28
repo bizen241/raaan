@@ -41,10 +41,18 @@ const compileQuestion = (question: Question): CompiledQuestion => {
     interlinearAnnotationChunks.forEach(chunk => {
       const [kanji, ruby] = chunk.split("\ufffa");
 
-      rubyLine.push({
-        kanji,
-        ruby
-      });
+      if (ruby !== undefined) {
+        rubyLine.push({
+          kanji,
+          ruby
+        });
+      } else {
+        rubyLine.push(
+          ...kanji.split("").map(char => ({
+            kanji: char
+          }))
+        );
+      }
     });
 
     rubyLines.push(rubyLine);
