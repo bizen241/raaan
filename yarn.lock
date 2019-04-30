@@ -1324,6 +1324,14 @@
   dependencies:
     "@types/node" "*"
 
+"@types/draft-js@0.10.30":
+  version "0.10.30"
+  resolved "https://registry.yarnpkg.com/@types/draft-js/-/draft-js-0.10.30.tgz#6fc64dd420b3d23e53c2fb041155d8338519e297"
+  integrity sha512-lKcRtkR5ahtFCprfs+QEP2K/pFsXEU7PeliSTalhzxhVFaHEYBdnppKXj4b4Gxihl+A/Xnk0OIa4sHpWMPourg==
+  dependencies:
+    "@types/react" "*"
+    immutable "^3.8.1"
+
 "@types/events@*":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-1.2.0.tgz#81a6731ce4df43619e5c8c945383b3e62a89ea86"
