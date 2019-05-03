@@ -33,7 +33,7 @@ export const QuestionPlayer: React.FunctionComponent<{
     startedAt: 0
   });
 
-  const { totalTime, typoMap, typedLines, startedAt } = state;
+  const { totalTime, typoMap, typedLines, isSuspended, startedAt } = state;
   const isFinished = typedLines.length === question.roman.length;
 
   useEffect(() => {
@@ -45,21 +45,23 @@ export const QuestionPlayer: React.FunctionComponent<{
     return () => document.removeEventListener("keydown", onKeyDown);
   });
   useEffect(() => {
-    const suspend = () => {
-      setState({
-        ...state,
-        isSuspended: true,
-        totalTime: totalTime + (Date.now() - startedAt)
-      });
-    };
+    if (!isSuspended) {
+      const suspend = () => {
+        setState({
+          ...state,
+          isSuspended: true,
+          totalTime: totalTime + (Date.now() - startedAt)
+        });
+      };
 
-    const timeoutId = setTimeout(suspend, 3000);
-    return clearTimeout(timeoutId);
+      const timeoutId = setTimeout(suspend, 3000);
+      return clearTimeout(timeoutId);
+    }
   }, [state]);
   useEffect(() => {
     if (isFinished) {
       onFinish({
-        totalTime,
+        totalTime: totalTime + (Date.now() - startedAt),
         typoMap,
         typedLines
       });
@@ -68,7 +70,7 @@ export const QuestionPlayer: React.FunctionComponent<{
 
   return (
     <Column flex={1}>
-      <QuestionRenderer question={question} state={state} />
+      <QuestionRenderer question={question} state={state} isFinished={isFinished} />
     </Column>
   );
 };
@@ -79,8 +81,12 @@ const getNextState = (
   e: KeyboardEvent
 ): QuestionPlayerState => {
   const { key } = e;
+  if (key === "Shift") {
+    return previousState;
+  }
 
   const isSuspended = false;
+  const startedAt = previousState.isSuspended ? Date.now() : previousState.startedAt;
 
   const { currentChunkIndex, currentCharIndex, typedLines, typedString } = previousState;
   const currentLineIndex = typedLines.length;
@@ -95,7 +101,8 @@ const getNextState = (
     return {
       ...previousState,
       hasTypo,
-      isSuspended
+      isSuspended,
+      startedAt
     };
   }
 
@@ -107,8 +114,6 @@ const getNextState = (
 
   const nextTypedString = isCurrentLineFinished ? "" : `${typedString}${key}`;
   const nextTypedLines = isCurrentLineFinished ? [...typedLines, `${typedString}${key}`] : typedLines;
-
-  const startedAt = previousState.isSuspended ? previousState.startedAt : Date.now();
 
   return {
     ...previousState,

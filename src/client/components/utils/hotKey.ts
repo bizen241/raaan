@@ -10,9 +10,16 @@ export const manageHotKey = (hotKeyMap: HotKeyMap, isEnabled: boolean = true) =>
   const handler = (e: KeyboardEvent) => {
     const key = e.key;
     const target = e.target as HTMLElement | null;
-    const tagName = target && target.tagName;
+    if (target == null) {
+      return;
+    }
+
+    const tagName = target.tagName;
 
     if (e.ctrlKey || e.altKey) {
+      return;
+    }
+    if (target.contentEditable) {
       return;
     }
     if (key !== "Escape" && (tagName === "INPUT" || tagName === "TEXTAREA")) {

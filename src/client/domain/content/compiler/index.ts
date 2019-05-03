@@ -37,9 +37,9 @@ const compileQuestion = (question: Question): CompiledQuestion => {
   sourceLines.forEach(sourceLine => {
     const rubyLine: RubyLine = [];
 
-    const interlinearAnnotationChunks = sourceLine.split(/[\ufff9\ufffb]/).filter(value => value.length !== 0);
+    const interlinearAnnotationChunks = sourceLine.split(/[｜）]/).filter(value => value.length !== 0);
     interlinearAnnotationChunks.forEach(chunk => {
-      const [kanji, ruby] = chunk.split("\ufffa");
+      const [kanji, ruby] = chunk.split("（");
 
       if (ruby !== undefined) {
         rubyLine.push({

@@ -1,6 +1,7 @@
 import { Classes } from "@blueprintjs/core";
 import * as React from "react";
-import { CompiledQuestion } from "../../../domain/content/compiler";
+import { useMemo } from "react";
+import { CompiledQuestion, RomanChunk, RubyChunk } from "../../../domain/content/compiler";
 import { keyframes, styled } from "../../../style";
 import { Column, Row } from "../../ui";
 import { QuestionPlayerState } from "../player/QuestionPlayer";
@@ -8,56 +9,40 @@ import { QuestionPlayerState } from "../player/QuestionPlayer";
 export const QuestionRenderer = React.memo<{
   question: CompiledQuestion;
   state: QuestionPlayerState;
-}>(({ question, state }) => {
-  const currentRubyChunkIndex = question.roman[state.typedLines.length][state.currentChunkIndex].pointer;
-  const nextKey =
-    question.roman[state.typedLines.length][state.currentChunkIndex].candidates[0][state.currentCharIndex];
+  isFinished: boolean;
+}>(({ question, state, isFinished }) => {
+  const currentLineIndex = state.typedLines.length;
+
+  if (isFinished) {
+    return (
+      <Column flex={1}>
+        <TypedLines rubyLines={question.ruby} currentLineIndex={currentLineIndex} />
+      </Column>
+    );
+  }
+
+  const currentRomanLine = question.roman[currentLineIndex];
+  const currentRomanChunkIndex = state.currentChunkIndex;
+
+  const currentRubyLine = question.ruby[currentLineIndex];
+  const currentRubyChunkIndex = currentRomanLine[currentRomanChunkIndex].pointer;
+
+  const isRoman = useMemo(() => currentRomanLine.some(romanChunk => romanChunk.kana !== romanChunk.candidates[0]), [
+    currentLineIndex
+  ]);
 
   return (
     <Column flex={1}>
-      <TypedLinesWrapper>
-        <TypedLines>
-          <Column flex={1} />
-          <Chars className={Classes.TEXT_DISABLED}>
-            {question.ruby
-              .slice(0, state.typedLines.length)
-              .map(rubyLine => rubyLine.map(rubyChunk => rubyChunk.kanji))}
-          </Chars>
-        </TypedLines>
-      </TypedLinesWrapper>
-      <TypingLine>
-        <TypedCharsWrapper>
-          <TypedChars className={Classes.TEXT_DISABLED}>
-            {question.ruby[state.typedLines.length].slice(0, currentRubyChunkIndex).map(rubyChunk => rubyChunk.kanji)}
-          </TypedChars>
-        </TypedCharsWrapper>
-        <UntypedCharsWrapper>
-          <Chars>
-            {question.ruby[state.typedLines.length].slice(currentRubyChunkIndex).map(rubyChunk => rubyChunk.kanji)}
-          </Chars>
-        </UntypedCharsWrapper>
-      </TypingLine>
-      <TypingLine>
-        <TypedCharsWrapper>
-          <TypedChars className={Classes.TEXT_DISABLED}>{state.typedString}</TypedChars>
-        </TypedCharsWrapper>
-        {state.hasTypo ? <TypoKey key={performance.now()}>{nextKey}</TypoKey> : <Chars>{nextKey}</Chars>}
-        <UntypedCharsWrapper>
-          <Chars>
-            {question.roman[state.typedLines.length][state.currentChunkIndex].candidates[0].slice(
-              state.currentCharIndex + 1
-            )}
-            {question.roman[state.typedLines.length]
-              .slice(state.currentChunkIndex + 1)
-              .map(romanChunk => romanChunk.candidates[0])}
-          </Chars>
-        </UntypedCharsWrapper>
-      </TypingLine>
-      <UntypedLines>
-        <Chars className={Classes.TEXT_DISABLED}>
-          {question.ruby.slice(state.typedLines.length + 1).map(rubyLine => rubyLine.map(rubyChunk => rubyChunk.kanji))}
-        </Chars>
-      </UntypedLines>
+      <TypedLines rubyLines={question.ruby} currentLineIndex={currentLineIndex} />
+      {isRoman ? <TypingRubyLine rubyLine={currentRubyLine} currentRubyChunkIndex={currentRubyChunkIndex} /> : null}
+      <TypingRomanLine
+        typedString={state.typedString}
+        hasTypo={state.hasTypo}
+        romanLine={currentRomanLine}
+        currentRomanChunkIndex={currentRomanChunkIndex}
+        currentCharIndex={state.currentCharIndex}
+      />
+      <UntypedLines rubyLines={question.ruby} currentLineIndex={currentLineIndex} />
     </Column>
   );
 });
@@ -68,6 +53,53 @@ const Chars = styled.span`
   line-height: 1.5em;
   white-space: pre;
 `;
+
+const RubyChunks = React.memo<{
+  rubyLine: RubyChunk[];
+}>(({ rubyLine }) => {
+  return (
+    <>
+      {rubyLine.map((rubyChunk, index) => (
+        <ruby key={index}>
+          {rubyChunk.kanji}
+          <rt>{rubyChunk.ruby || ""}</rt>
+        </ruby>
+      ))}
+    </>
+  );
+});
+
+const TypedLinesOuterWrapper = styled(Column)`
+  min-height: 50%;
+  position: relative;
+  overflow: hidden;
+`;
+
+const TypedLinesInnerWrapper = styled(Column)`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  flex: 1;
+`;
+
+const TypedLines = React.memo<{
+  rubyLines: RubyChunk[][];
+  currentLineIndex: number;
+}>(({ rubyLines, currentLineIndex }) => {
+  return (
+    <TypedLinesOuterWrapper>
+      <TypedLinesInnerWrapper>
+        <Column flex={1} />
+        {rubyLines.slice(0, currentLineIndex).map((rubyLine, index) => (
+          <Chars key={index} className={Classes.TEXT_DISABLED}>
+            {rubyLine.map(rubyChunk => rubyChunk.kanji)}
+          </Chars>
+        ))}
+      </TypedLinesInnerWrapper>
+    </TypedLinesOuterWrapper>
+  );
+});
 
 const TypedCharsWrapper = styled.div`
   flex-shrink: 0;
@@ -83,6 +115,31 @@ const TypedChars = styled(Chars)`
 const UntypedCharsWrapper = styled(Row)`
   overflow: hidden;
 `;
+
+const TypingLineWrapper = styled(Row)`
+  overflow: hidden;
+  flex: none;
+`;
+
+const TypingRubyLine = React.memo<{
+  rubyLine: RubyChunk[];
+  currentRubyChunkIndex: number;
+}>(({ rubyLine, currentRubyChunkIndex }) => {
+  return (
+    <TypingLineWrapper>
+      <TypedCharsWrapper>
+        <TypedChars className={Classes.TEXT_DISABLED}>
+          <RubyChunks rubyLine={rubyLine.slice(0, currentRubyChunkIndex)} />
+        </TypedChars>
+      </TypedCharsWrapper>
+      <UntypedCharsWrapper>
+        <Chars>
+          <RubyChunks rubyLine={rubyLine.slice(currentRubyChunkIndex)} />
+        </Chars>
+      </UntypedCharsWrapper>
+    </TypingLineWrapper>
+  );
+});
 
 const scale = keyframes`
   0% {
@@ -100,25 +157,49 @@ const TypoKey = styled(Chars)`
   animation: ${scale} 100ms ease-out;
 `;
 
-const TypedLinesWrapper = styled(Column)`
-  min-height: 50%;
-  position: relative;
+const TypingRomanLine = React.memo<{
+  typedString: string;
+  hasTypo: boolean;
+  romanLine: RomanChunk[];
+  currentRomanChunkIndex: number;
+  currentCharIndex: number;
+}>(({ typedString, hasTypo, romanLine, currentRomanChunkIndex, currentCharIndex }) => {
+  const currentRomanChunk = romanLine[currentRomanChunkIndex];
+  const nextKey = currentRomanChunk.candidates[0][currentCharIndex];
+
+  return (
+    <TypingLineWrapper>
+      <TypedCharsWrapper>
+        <TypedChars className={Classes.TEXT_DISABLED}>{typedString}</TypedChars>
+      </TypedCharsWrapper>
+      {hasTypo ? <TypoKey key={performance.now()}>{nextKey}</TypoKey> : <Chars>{nextKey}</Chars>}
+      <UntypedCharsWrapper>
+        <Chars>
+          {currentRomanChunk.candidates[0].slice(currentCharIndex + 1)}
+          {romanLine.slice(currentRomanChunkIndex + 1).map(romanChunk => romanChunk.candidates[0])}
+        </Chars>
+      </UntypedCharsWrapper>
+    </TypingLineWrapper>
+  );
+});
+
+const UntypedLinesWrapper = styled(Column)`
   overflow: hidden;
 `;
 
-const TypedLines = styled(Column)`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  overflow: hidden;
-  flex: 1;
-`;
+const UntypedLines = React.memo<{
+  rubyLines: RubyChunk[][];
+  currentLineIndex: number;
+}>(({ rubyLines, currentLineIndex }) => {
+  const start = currentLineIndex + 1;
 
-const TypingLine = styled(Row)`
-  overflow: hidden;
-  flex: none;
-`;
-
-const UntypedLines = styled(Column)`
-  overflow: hidden;
-`;
+  return (
+    <UntypedLinesWrapper>
+      {rubyLines.slice(start).map((rubyLine, index) => (
+        <Chars key={index} className={Classes.TEXT_DISABLED}>
+          {rubyLine.map(rubyChunk => rubyChunk.kanji)}
+        </Chars>
+      ))}
+    </UntypedLinesWrapper>
+  );
+});
