@@ -1,4 +1,4 @@
-import { Classes, Collapse, MenuItem, Tag } from "@blueprintjs/core";
+import { Classes, Collapse, MenuItem } from "@blueprintjs/core";
 import { CompositeDecorator, ContentState, Editor, EditorState } from "draft-js";
 import * as React from "react";
 import { useCallback, useState } from "react";
@@ -79,7 +79,6 @@ export const QuestionEditor = connector(
     return (
       <Details onFocus={useCallback(() => onFocus(itemIndex), [itemIndex])}>
         <Summary title={itemIndex.toString()} isOpen={isOpen} onClick={useCallback(() => toggleEditor(s => !s), [])}>
-          <Tag minimal>{item.format}</Tag>
           <PopMenu
             items={[
               <MenuItem
