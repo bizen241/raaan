@@ -1,11 +1,11 @@
-import { Callout } from "@blueprintjs/core";
+import { Button, Callout } from "@blueprintjs/core";
 import * as React from "react";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { EntityObject, EntityType } from "../../../shared/api/entities";
 import { connector } from "../../reducers";
 import { isLocalOnly } from "../../reducers/api";
-import { Buffer, buffersActions } from "../../reducers/buffers";
-import { Column } from "../ui";
+import { Buffer } from "../../reducers/buffers";
+import { Column, Row } from "../ui";
 import { ExerciseDetailEditor } from "./ExerciseDetailEditor";
 import { UserConfigEditor } from "./UserConfigEditor";
 import { UserEditor } from "./UserEditor";
@@ -18,15 +18,18 @@ export const EntityEditor = connector(
     loadStatus: state.api.get[entityType][entityId],
     uploadStatus: state.api.upload[entityType][entityId]
   }),
-  () => ({
-    load: buffersActions.load
+  actions => ({
+    load: actions.buffers.load,
+    upload: actions.api.upload
   }),
-  ({ entityType, bufferId, buffer, uploadStatus, load }) => {
+  ({ entityType, bufferId, buffer, uploadStatus, load, upload }) => {
     useEffect(() => {
       if (buffer === undefined) {
         load(entityType, bufferId);
       }
     }, []);
+
+    const onUpload = useCallback(() => upload(entityType, bufferId), []);
 
     if (buffer === undefined) {
       if (isLocalOnly(bufferId)) {
@@ -64,7 +67,15 @@ export const EntityEditor = connector(
       throw new Error("Editor is not defined");
     }
 
-    return <Editor bufferId={bufferId} buffer={buffer} />;
+    return (
+      <Column>
+        <Row padding>
+          <Row flex={1} />
+          <Button text="保存" icon="upload" onClick={onUpload} />
+        </Row>
+        <Editor bufferId={bufferId} buffer={buffer} />
+      </Column>
+    );
   }
 );
 

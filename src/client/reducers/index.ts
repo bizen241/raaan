@@ -3,10 +3,10 @@ import { History } from "history";
 import { ComponentType } from "react";
 import { connect } from "react-redux";
 import { combineReducers } from "redux";
-import { ApiActions, apiReducer, ApiState } from "./api";
+import { ApiActions, apiActions, apiReducer, ApiState } from "./api";
 import { AppActions, appActions, appReducer, AppState } from "./app";
 import { AttemptsActions, attemptsReducer, AttemptState } from "./attempts";
-import { BuffersActions, buffersReducer, BuffersState } from "./buffers";
+import { BuffersActions, buffersActions, buffersReducer, BuffersState } from "./buffers";
 import { CacheActions, cacheReducer, CacheState } from "./cache";
 import { DialogActions, dialogActions, dialogReducer, DialogState } from "./dialog";
 
@@ -41,7 +41,9 @@ export type Actions =
   | RouterAction;
 
 const allAction = {
+  api: apiActions,
   app: appActions,
+  buffers: buffersActions,
   dialog: dialogActions
 };
 
