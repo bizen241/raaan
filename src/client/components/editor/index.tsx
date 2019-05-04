@@ -5,7 +5,7 @@ import { EntityObject, EntityType } from "../../../shared/api/entities";
 import { connector } from "../../reducers";
 import { isLocalOnly } from "../../reducers/api";
 import { Buffer } from "../../reducers/buffers";
-import { Column, Row } from "../ui";
+import { Column } from "../ui";
 import { ExerciseDetailEditor } from "./ExerciseDetailEditor";
 import { UserConfigEditor } from "./UserConfigEditor";
 import { UserEditor } from "./UserEditor";
