@@ -23,6 +23,9 @@ export const Config = connector(
       <Page>
         <Header heading="設定" />
         <Column padding>
+          <h2>設定</h2>
+          <EntityEditor entityType="UserConfig" entityId={currentUser.configId} />
+          <h2>バージョン</h2>
           <Column padding>
             {hasUpdate ? (
               <Button text="アップデート" onClick={() => location.reload()} />
@@ -30,22 +33,18 @@ export const Config = connector(
               <Callout intent="success" title="最新のバージョンです" />
             )}
           </Column>
+          <h2>アカウント</h2>
           {isGuest ? (
             <Column padding>
               <Link className={`${Classes.BUTTON} ${Classes.INTENT_PRIMARY} ${Classes.iconClass("key")}`} to="/login">
                 <Trans>ログイン</Trans>
               </Link>
-              <Divider />
             </Column>
           ) : null}
-          <Column padding>
-            <EntityEditor entityType="UserConfig" entityId={currentUser.configId} />
-          </Column>
           {!isGuest ? (
             <Column padding>
-              <Divider />
-              <a href="/logout" className={`${Classes.BUTTON} ${Classes.iconClass("key")}`}>
-                <Trans>アカウント</Trans>
+              <a href="/logout" className={`${Classes.BUTTON} ${Classes.INTENT_WARNING} ${Classes.iconClass("key")}`}>
+                <Trans>ログアウト</Trans>
               </a>
             </Column>
           ) : null}
