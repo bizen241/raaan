@@ -23,7 +23,7 @@ export const Router = connector(
           <Switch location={location}>
             <Route exact={true} path="/" component={Home} />
             <Route exact={true} path="/creator" component={Creator} />
-            <Route exact={true} path="/content-revisions/:id/edit" component={Edit} />
+            <Route exact={true} path="/exercise-details/:id/edit" component={Edit} />
             <Route exact={true} path="/login" component={Login} />
             <Route exact={true} path="/config" component={Config} />
             <Route component={NotFound} />

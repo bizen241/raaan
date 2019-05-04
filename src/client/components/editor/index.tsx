@@ -69,10 +69,9 @@ export const EntityEditor = connector(
 
     return (
       <Column>
-        <Row padding>
-          <Row flex={1} />
+        <Column padding>
           <Button text="保存" icon="upload" onClick={onUpload} />
-        </Row>
+        </Column>
         <Editor bufferId={bufferId} buffer={buffer} />
       </Column>
     );

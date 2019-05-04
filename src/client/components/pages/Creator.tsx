@@ -16,7 +16,7 @@ export const Creator = connector(
   () => ({}),
   () => ({
     addBuffer: buffersActions.add,
-    editBuffer: (bufferId: string) => push(`/content-revisions/${bufferId}/edit`)
+    editBuffer: (bufferId: string) => push(`/exercise-details/${bufferId}/edit`)
   }),
   ({ addBuffer, editBuffer }) => {
     const onCreate = useCallback(() => {

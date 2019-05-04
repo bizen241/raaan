@@ -12,13 +12,13 @@ import { List } from "../List";
 export const ExerciseList = connector(
   state => ({
     searchResult: state.cache.search.Exercise[""],
-    contentCache: state.cache.get.Exercise
+    exerciseCache: state.cache.get.Exercise
   }),
   () => ({
     deleteBuffer: buffersActions.delete,
     search: apiActions.search
   }),
-  ({ searchResult, contentCache, deleteBuffer, search }) => {
+  ({ searchResult, exerciseCache, deleteBuffer, search }) => {
     const [limit, setLimit] = useState(10);
     const [offset, setOffset] = useState(0);
 
@@ -41,9 +41,9 @@ export const ExerciseList = connector(
       return <div>Loading...</div>;
     }
 
-    const contents = searchResult.ids
+    const exercises = searchResult.ids
       .slice(offset, offset + limit)
-      .map(exerciseId => exerciseId && contentCache[exerciseId]);
+      .map(exerciseId => exerciseId && exerciseCache[exerciseId]);
 
     return (
       <List
@@ -55,9 +55,8 @@ export const ExerciseList = connector(
         onChangeOffset={setOffset}
         focusKey="s"
       >
-        {contents.map(
-          content =>
-            content && <ExerciseListItem key={content.id} exerciseId={content.id} content={content} onDelete={onDelete} />
+        {exercises.map(
+          exercise => exercise && <ExerciseListItem key={exercise.id} exercise={exercise} onDelete={onDelete} />
         )}
       </List>
     );
@@ -65,21 +64,20 @@ export const ExerciseList = connector(
 );
 
 const ExerciseListItem: React.FunctionComponent<{
-  exerciseId: string;
-  content: Exercise;
+  exercise: Exercise;
   onDelete: (id: string) => void;
-}> = ({ exerciseId, content, onDelete }) => {
+}> = ({ exercise, onDelete }) => {
   return (
     <Row center="cross">
       <Row flex={1}>
-        <Link style={{ flex: 1 }} to={`/content-revisions/${exerciseId}/edit`}>
-          {content.title || "無題"}
+        <Link style={{ flex: 1 }} to={`/exercise-details/${exercise.detailId}/edit`}>
+          {exercise.title || "無題"}
         </Link>
       </Row>
       <PopMenu
         items={[
           <MenuItem key="p" text="プレビュー (p)" />,
-          <MenuItem key="d" text="削除 (d)" onClick={useCallback(() => onDelete(exerciseId), [])} intent="danger" />
+          <MenuItem key="d" text="削除 (d)" onClick={useCallback(() => onDelete(exercise.id), [])} intent="danger" />
         ]}
         hotKeys={{}}
       />
