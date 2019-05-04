@@ -10,6 +10,8 @@ import { ExerciseDetailEntity, ExerciseEntity } from "../../database/entities";
 export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const params: SaveParams<ExerciseDetail> = req.body;
 
+  let exerciseId: string | undefined;
+
   await getManager().transaction(async manager => {
     const newExerciseDetail = new ExerciseDetailEntity({
       lang: params.lang || "en",
@@ -25,9 +27,16 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
 
     const newExercise = new ExerciseEntity(currentUser, newExerciseDetail);
     await manager.save(newExercise);
-  });
 
-  const savedExercise = await getManager().findOne(ExerciseDetailEntity);
+    exerciseId = newExercise.id;
+  });
+  if (exerciseId === undefined) {
+    return next(createError(500));
+  }
+
+  const savedExercise = await getManager().findOne(ExerciseEntity, exerciseId, {
+    relations: ["author", "detail", "tags"]
+  });
   if (savedExercise === undefined) {
     return next(createError(500));
   }
