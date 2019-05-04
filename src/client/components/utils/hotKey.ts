@@ -19,7 +19,7 @@ export const manageHotKey = (hotKeyMap: HotKeyMap, isEnabled: boolean = true) =>
     if (e.ctrlKey || e.altKey) {
       return;
     }
-    if (target.contentEditable) {
+    if (target.isContentEditable) {
       return;
     }
     if (key !== "Escape" && (tagName === "INPUT" || tagName === "TEXTAREA")) {
