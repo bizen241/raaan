@@ -31,6 +31,21 @@ export const EntityEditor = connector(
 
     const onUpload = useCallback(() => upload(entityType, bufferId), []);
 
+    if (uploadStatus === 102) {
+      return (
+        <Column padding>
+          <Callout intent="primary" title="アップロード中です" />
+        </Column>
+      );
+    }
+    if (uploadStatus === 200) {
+      return (
+        <Column padding>
+          <Callout intent="success" title="アップロードが完了しました" />
+        </Column>
+      );
+    }
+
     if (buffer === undefined) {
       if (isLocalOnly(bufferId)) {
         return (
@@ -45,21 +60,6 @@ export const EntityEditor = connector(
           </Column>
         );
       }
-    }
-
-    if (uploadStatus === 102) {
-      return (
-        <Column padding>
-          <Callout intent="primary" title="アップロード中です" />
-        </Column>
-      );
-    }
-    if (uploadStatus === 200) {
-      return (
-        <Column padding>
-          <Callout intent="success" title="アップロードが完了しました" />
-        </Column>
-      );
     }
 
     const Editor = editors[entityType];
