@@ -1324,6 +1324,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/doublearray@*":
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/@types/doublearray/-/doublearray-0.0.29.tgz#3cbe6bb616af524648d440bbdf784e9c1e34009d"
+  integrity sha1-PL5rthavUkZI1EC733hOnB40AJ0=
+
 "@types/draft-js@0.10.30":
   version "0.10.30"
   resolved "https://registry.yarnpkg.com/@types/draft-js/-/draft-js-0.10.30.tgz#6fc64dd420b3d23e53c2fb041155d8338519e297"
@@ -1450,6 +1455,13 @@
   integrity sha512-2kLuPC5FDnWIDvaJBzsGTBQaBbnDweznicvK7UGYzlIJP4RJR2a4A/ByLUXEyEgag6jz8eHdlWExGDtH3EYUXQ==
   dependencies:
     "@types/jest-diff" "*"
+
+"@types/kuromoji@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@types/kuromoji/-/kuromoji-0.1.0.tgz#c8576688644864afa0c81f4d841a7142ad5293a6"
+  integrity sha512-gEAkIk4qxsK5ry64fCYFGjb3a+NQVOiNOT6fz0OyXizob+yewF4GFVX23GG4YNwKM2hB0J6fnMPMffFK+cYHnw==
+  dependencies:
+    "@types/doublearray" "*"
 
 "@types/lingui__core@*":
   version "2.2.1"
