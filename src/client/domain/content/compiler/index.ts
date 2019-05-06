@@ -1,5 +1,6 @@
 import { ExerciseDetail, Question } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
+import { katakanaToHiragana, replacePunctuationMark } from "./convert";
 import { isHatuon, isKana, isSokuon, isYoon, pairKanaToRomans, singleKanaToRomans } from "./hiragana";
 
 export interface RubyChunk {
@@ -31,7 +32,7 @@ export const compileQuestions = ({ questions = [] }: SaveParams<ExerciseDetail>)
 };
 
 const compileQuestion = (question: Question): CompiledQuestion => {
-  const sourceLines = question.value.split("\n");
+  const sourceLines = question.value.trim().split("\n");
 
   const rubyLines: RubyLine[] = [];
   sourceLines.forEach(sourceLine => {
@@ -116,12 +117,17 @@ const compileChar = (source: string): CompiledChunk => {
   const firstChar = source[0];
 
   if (isKana(firstChar)) {
-    return compileHiragana(source);
+    const hiragana = katakanaToHiragana(source);
+
+    return compileHiragana(hiragana);
   }
+
+  const hankaku = replacePunctuationMark(firstChar);
+  const lowercase = hankaku.toLowerCase();
 
   return {
     kana: firstChar,
-    candidates: [firstChar]
+    candidates: [lowercase]
   };
 };
 
