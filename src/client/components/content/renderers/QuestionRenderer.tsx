@@ -1,4 +1,4 @@
-import { Classes } from "@blueprintjs/core";
+import { Classes, Icon } from "@blueprintjs/core";
 import * as React from "react";
 import { useMemo } from "react";
 import { CompiledQuestion, RomanChunk, RubyChunk } from "../../../domain/content/compiler";
@@ -10,22 +10,16 @@ export const QuestionRenderer = React.memo<{
   question: CompiledQuestion;
   state: QuestionPlayerState;
   isFinished: boolean;
-}>(({ question, state, isFinished }) => {
-  const currentLineIndex = state.typedLines.length;
+  requireEnter: boolean;
+}>(({ question, state, isFinished, requireEnter }) => {
+  const { roman: romanLines, ruby: rubyLines } = question;
+  const { typedLines, typedString, currentChunkIndex, currentCharIndex, hasTypo } = state;
 
-  if (isFinished) {
-    return (
-      <Column flex={1}>
-        <TypedLines rubyLines={question.ruby} currentLineIndex={currentLineIndex} />
-      </Column>
-    );
-  }
+  const currentLineIndex = isFinished ? question.roman.length - 1 : typedLines.length;
+  const typedRomanString = !isFinished ? typedString : typedLines[currentLineIndex];
 
-  const currentRomanLine = question.roman[currentLineIndex];
-  const currentRomanChunkIndex = state.currentChunkIndex;
-
-  const currentRubyLine = question.ruby[currentLineIndex];
-  const currentRubyChunkIndex = currentRomanLine[currentRomanChunkIndex].pointer;
+  const currentRomanLine = romanLines[currentLineIndex];
+  const currentRomanChunk = currentRomanLine[currentChunkIndex];
 
   const isRoman = useMemo(() => currentRomanLine.some(romanChunk => romanChunk.kana !== romanChunk.candidates[0]), [
     currentLineIndex
@@ -33,24 +27,32 @@ export const QuestionRenderer = React.memo<{
 
   return (
     <Column flex={1}>
-      <TypedLines rubyLines={question.ruby} currentLineIndex={currentLineIndex} />
-      {isRoman ? <TypingRubyLine rubyLine={currentRubyLine} currentRubyChunkIndex={currentRubyChunkIndex} /> : null}
-      <TypingRomanLine
-        typedString={state.typedString}
-        hasTypo={state.hasTypo}
-        romanLine={currentRomanLine}
-        currentRomanChunkIndex={currentRomanChunkIndex}
-        currentCharIndex={state.currentCharIndex}
+      <TypedLines rubyLines={rubyLines} currentLineIndex={currentLineIndex} />
+      <TypingRubyLine
+        currentRubyLine={rubyLines[currentLineIndex]}
+        currentRomanChunk={currentRomanChunk}
+        isRoman={isRoman}
+        isFinished={isFinished}
       />
-      <UntypedLines rubyLines={question.ruby} currentLineIndex={currentLineIndex} />
+      <TypingRomanLine
+        currentRomanLine={currentRomanLine}
+        currentRomanChunkIndex={currentChunkIndex}
+        currentCharIndex={currentCharIndex}
+        typedRomanString={typedRomanString}
+        hasTypo={hasTypo}
+        requireEnter={requireEnter}
+        isFinished={isFinished}
+      />
+      <UntypedLines rubyLines={rubyLines} currentLineIndex={currentLineIndex} />
     </Column>
   );
 });
 
-const Chars = styled.span`
+const Chars = styled.div`
   flex-shrink: 0;
   font-size: 4vmax;
   line-height: 1.5em;
+  min-height: 1.5em;
   white-space: pre;
 `;
 
@@ -117,29 +119,49 @@ const UntypedCharsWrapper = styled(Row)`
 `;
 
 const TypingLineWrapper = styled(Row)`
+  align-items: center;
   overflow: hidden;
   flex: none;
 `;
 
 const TypingRubyLine = React.memo<{
-  rubyLine: RubyChunk[];
-  currentRubyChunkIndex: number;
-}>(({ rubyLine, currentRubyChunkIndex }) => {
+  currentRubyLine: RubyChunk[];
+  currentRomanChunk: RomanChunk | undefined;
+  isRoman: boolean;
+  isFinished: boolean;
+}>(({ currentRubyLine, currentRomanChunk, isRoman, isFinished }) => {
+  if (!isRoman) {
+    return null;
+  }
+
+  const currentRubyChunkIndex =
+    currentRomanChunk === undefined || isFinished ? currentRubyLine.length : currentRomanChunk.pointer;
+
   return (
     <TypingLineWrapper>
       <TypedCharsWrapper>
         <TypedChars className={Classes.TEXT_DISABLED}>
-          <RubyChunks rubyLine={rubyLine.slice(0, currentRubyChunkIndex)} />
+          <RubyChunks rubyLine={currentRubyLine.slice(0, currentRubyChunkIndex)} />
         </TypedChars>
       </TypedCharsWrapper>
       <UntypedCharsWrapper>
         <Chars>
-          <RubyChunks rubyLine={rubyLine.slice(currentRubyChunkIndex)} />
+          <RubyChunks rubyLine={currentRubyLine.slice(currentRubyChunkIndex)} />
         </Chars>
       </UntypedCharsWrapper>
     </TypingLineWrapper>
   );
 });
+
+const TypedRoman: React.FunctionComponent<{
+  typedRomanString: string;
+}> = ({ typedRomanString }) => {
+  return (
+    <TypedCharsWrapper>
+      <TypedChars className={Classes.TEXT_DISABLED}>{typedRomanString}</TypedChars>
+    </TypedCharsWrapper>
+  );
+};
 
 const scale = keyframes`
   0% {
@@ -157,31 +179,83 @@ const TypoKey = styled(Chars)`
   animation: ${scale} 100ms ease-out;
 `;
 
-const TypingRomanLine = React.memo<{
-  typedString: string;
-  hasTypo: boolean;
-  romanLine: RomanChunk[];
-  currentRomanChunkIndex: number;
+const TypingRoman: React.FunctionComponent<{
+  currentRomanChunk: RomanChunk | undefined;
   currentCharIndex: number;
-}>(({ typedString, hasTypo, romanLine, currentRomanChunkIndex, currentCharIndex }) => {
-  const currentRomanChunk = romanLine[currentRomanChunkIndex];
+  hasTypo: boolean;
+  isFinished: boolean;
+}> = ({ currentRomanChunk, currentCharIndex, hasTypo, isFinished }) => {
+  if (currentRomanChunk === undefined || isFinished) {
+    return null;
+  }
+
   const nextKey = currentRomanChunk.candidates[0][currentCharIndex];
 
+  return hasTypo ? <TypoKey key={performance.now()}>{nextKey}</TypoKey> : <Chars>{nextKey}</Chars>;
+};
+
+const UntypedRoman: React.FunctionComponent<{
+  currentRomanLine: RomanChunk[];
+  currentRomanChunk: RomanChunk | undefined;
+  currentRomanChunkIndex: number;
+  currentCharIndex: number;
+  isFinished: boolean;
+}> = ({ currentRomanLine, currentRomanChunk, currentRomanChunkIndex, currentCharIndex, isFinished }) => {
+  if (currentRomanChunk === undefined || isFinished) {
+    return null;
+  }
+
   return (
-    <TypingLineWrapper>
-      <TypedCharsWrapper>
-        <TypedChars className={Classes.TEXT_DISABLED}>{typedString}</TypedChars>
-      </TypedCharsWrapper>
-      {hasTypo ? <TypoKey key={performance.now()}>{nextKey}</TypoKey> : <Chars>{nextKey}</Chars>}
-      <UntypedCharsWrapper>
-        <Chars>
-          {currentRomanChunk.candidates[0].slice(currentCharIndex + 1)}
-          {romanLine.slice(currentRomanChunkIndex + 1).map(romanChunk => romanChunk.candidates[0])}
-        </Chars>
-      </UntypedCharsWrapper>
-    </TypingLineWrapper>
+    <UntypedCharsWrapper>
+      <Chars>
+        {currentRomanChunk.candidates[0].slice(currentCharIndex + 1)}
+        {currentRomanLine.slice(currentRomanChunkIndex + 1).map(romanChunk => romanChunk.candidates[0])}
+      </Chars>
+    </UntypedCharsWrapper>
   );
-});
+};
+
+const TypingRomanLine = React.memo<{
+  currentRomanLine: RomanChunk[];
+  currentRomanChunkIndex: number;
+  currentCharIndex: number;
+  typedRomanString: string;
+  hasTypo: boolean;
+  requireEnter: boolean;
+  isFinished: boolean;
+}>(
+  ({
+    typedRomanString,
+    hasTypo,
+    currentRomanLine,
+    currentRomanChunkIndex,
+    currentCharIndex,
+    requireEnter,
+    isFinished
+  }) => {
+    const currentRomanChunk = currentRomanLine[currentRomanChunkIndex];
+
+    return (
+      <TypingLineWrapper>
+        <TypedRoman typedRomanString={typedRomanString} />
+        <TypingRoman
+          currentRomanChunk={currentRomanChunk}
+          currentCharIndex={currentCharIndex}
+          hasTypo={hasTypo}
+          isFinished={isFinished}
+        />
+        <UntypedRoman
+          currentRomanLine={currentRomanLine}
+          currentRomanChunk={currentRomanChunk}
+          currentRomanChunkIndex={currentRomanChunkIndex}
+          currentCharIndex={currentCharIndex}
+          isFinished={isFinished}
+        />
+        {requireEnter ? <Icon icon="key-enter" /> : null}
+      </TypingLineWrapper>
+    );
+  }
+);
 
 const UntypedLinesWrapper = styled(Column)`
   overflow: hidden;
