@@ -14,7 +14,8 @@ const persistConfig: PersistConfig = {
   key: "root",
   version: 0,
   storage,
-  migrate
+  migrate,
+  blacklist: ["dialog"]
 };
 const persistedReducer = persistReducer(persistConfig, createReducer(history));
 
