@@ -28,6 +28,10 @@ const plugins = [
     {
       from: join(__dirname, "node_modules/@blueprintjs/icons/resources/icons"),
       to: join(__dirname, "dist/resources/icons")
+    },
+    {
+      from: join(__dirname, "node_modules/kuromoji/dict"),
+      to: join(__dirname, "dist/dict")
     }
   ])
 ];
