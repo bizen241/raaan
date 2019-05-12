@@ -4,7 +4,7 @@ import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { Question } from "../../../../shared/api/entities";
 import { contentActions } from "../../../actions/exerciseDetail";
-import { addRuby } from "../../../domain/content/ruby";
+import { addRuby, rubySeparatorCharacter, rubyTerminatorCharacter } from "../../../domain/content/ruby";
 import { connector } from "../../../reducers";
 import { dialogActions } from "../../../reducers/dialog";
 import { styled } from "../../../style";
@@ -87,7 +87,7 @@ export const QuestionEditor = connector(
   }
 );
 
-const RUBY_REGEX = /（[^）]*）/g;
+const rubyRegExp = new RegExp(`${rubySeparatorCharacter}[^${rubySeparatorCharacter}]*${rubyTerminatorCharacter}`, "g");
 
 const Anchor = styled.span`
   font-size: 80%;
@@ -122,7 +122,7 @@ const createEditorState = (value: string) =>
 
           let matched;
           // tslint:disable-next-line: no-conditional-assignment
-          while ((matched = RUBY_REGEX.exec(text)) !== null) {
+          while ((matched = rubyRegExp.exec(text)) !== null) {
             const start = matched.index;
 
             callback(start, start + matched[0].length);

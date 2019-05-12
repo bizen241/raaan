@@ -2,37 +2,35 @@ import * as kuromoji from "kuromoji";
 import { IpadicFeatures, Tokenizer } from "kuromoji";
 import { katakanaToHiragana } from "../compiler/convert";
 
-const OKURIGANA_REGEX = /[\u3041-\u3096]*$/;
+export const rubyAnchorCharacter = "｜";
+export const rubySeparatorCharacter = "《";
+export const rubyTerminatorCharacter = "》";
 
-export const addRuby = async (input: string, callback: (result: string) => void) => {
+export const addRuby = async (inputText: string, callback: (outputText: string) => void) => {
   const tokenizer = await getTokenizer();
-  const tokens = tokenizer.tokenize(input);
 
-  const serialized = tokens.map(token => {
-    const { surface_form: rawSurfaceForm, reading: rawReading } = token;
-    if (rawReading === undefined) {
-      return rawSurfaceForm;
-    }
+  const outputText = inputText
+    .split(rubyAnchorCharacter)
+    .map((sourceText, index) => {
+      if (sourceText.length === 0) {
+        return "";
+      }
 
-    const surfaceForm = katakanaToHiragana(rawSurfaceForm);
-    const reading = katakanaToHiragana(rawReading);
-    if (surfaceForm === reading) {
-      return rawSurfaceForm;
-    }
+      const rubiedTextLength = getRubiedTextLength(sourceText);
+      const hasRubiedText = index !== 0 && rubiedTextLength !== 0;
 
-    const okurigana = OKURIGANA_REGEX.exec(surfaceForm);
-    const okuriganaLength = okurigana != null ? okurigana[0].length : 0;
+      const rubiedText = hasRubiedText ? `${rubyAnchorCharacter}${sourceText.slice(0, rubiedTextLength + 1)}` : "";
+      const unrubiedText = hasRubiedText ? sourceText.slice(rubiedTextLength + 1) : sourceText;
 
-    const oyamoji = surfaceForm.slice(0, surfaceForm.length - okuriganaLength);
-    const yomigana = reading.slice(0, reading.length - okuriganaLength);
+      const tokens = tokenizer.tokenize(removeSpecialCharacters(unrubiedText));
+      const newRubiedTexts = tokens.map(token => createRubiedTextFromToken(token));
 
-    return `｜${oyamoji}（${yomigana}）${okurigana}`;
-  });
+      return rubiedText + newRubiedTexts.join("");
+    })
+    .join("");
 
-  callback(serialized.join(""));
+  callback(outputText);
 };
-
-let cachedTokenizer: Tokenizer<IpadicFeatures>;
 
 const getTokenizer = () =>
   new Promise<Tokenizer<IpadicFeatures>>((resolve, reject) => {
@@ -50,3 +48,63 @@ const getTokenizer = () =>
       resolve(tokenizer);
     });
   });
+
+const removeSpecialCharacters = (inputText: string) =>
+  inputText
+    .replace(rubyAnchorCharacter, "")
+    .replace(rubySeparatorCharacter, "")
+    .replace(rubyTerminatorCharacter, "");
+
+const getRubiedTextLength = (inputText: string) => {
+  const splitedByTerminatorTexts = inputText.split(rubyTerminatorCharacter);
+  if (splitedByTerminatorTexts.length === 1) {
+    return 0;
+  }
+
+  const splitedBySeparatorTexts = splitedByTerminatorTexts[0].split(rubySeparatorCharacter);
+  if (splitedBySeparatorTexts.length !== 2) {
+    return 0;
+  }
+
+  return splitedByTerminatorTexts[0].length;
+};
+
+const createRubiedTextFromToken = (token: IpadicFeatures) => {
+  const { surface_form: rawSurfaceForm, reading: rawReading } = token;
+  if (rawReading === undefined) {
+    return rawSurfaceForm;
+  }
+
+  const surfaceForm = katakanaToHiragana(rawSurfaceForm);
+  const reading = katakanaToHiragana(rawReading);
+  if (surfaceForm === reading) {
+    return rawSurfaceForm;
+  }
+
+  const okuriganaLength = getOkuriganaLength(surfaceForm, reading);
+  const oyamojiLength = surfaceForm.length - okuriganaLength;
+  const yomiganaLength = reading.length - okuriganaLength;
+
+  const oyamoji = surfaceForm.slice(0, oyamojiLength);
+  const yomigana = reading.slice(0, yomiganaLength);
+  const okurigana = reading.slice(yomiganaLength);
+
+  return `${rubyAnchorCharacter}${oyamoji}${rubySeparatorCharacter}${yomigana}${rubyTerminatorCharacter}${okurigana}`;
+};
+
+const getOkuriganaLength = (surfaceForm: string, reading: string) => {
+  const lastCharIndexOfSurfaceForm = surfaceForm.length - 1;
+  const lastCharIndexOfReading = reading.length - 1;
+
+  let okuriganaLength = 0;
+
+  while (
+    surfaceForm[lastCharIndexOfSurfaceForm - okuriganaLength] === reading[lastCharIndexOfReading - okuriganaLength]
+  ) {
+    okuriganaLength += 1;
+  }
+
+  return okuriganaLength;
+};
+
+let cachedTokenizer: Tokenizer<IpadicFeatures>;

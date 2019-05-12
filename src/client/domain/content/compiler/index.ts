@@ -1,5 +1,6 @@
 import { ExerciseDetail, Question } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
+import { rubyAnchorCharacter, rubySeparatorCharacter, rubyTerminatorCharacter } from "../ruby";
 import { katakanaToHiragana, replacePunctuationMark } from "./convert";
 import { isHatuon, isKana, isSokuon, isYoon, pairKanaToRomans, singleKanaToRomans } from "./hiragana";
 
@@ -31,6 +32,8 @@ export const compileQuestions = ({ questions = [] }: SaveParams<ExerciseDetail>)
   return compiledQuestions;
 };
 
+const rubyRegExp = new RegExp(`[${rubyAnchorCharacter}${rubyTerminatorCharacter}]`);
+
 const compileQuestion = (question: Question): CompiledQuestion => {
   const sourceLines = question.value.trim().split("\n");
 
@@ -38,23 +41,25 @@ const compileQuestion = (question: Question): CompiledQuestion => {
   sourceLines.forEach(sourceLine => {
     const rubyLine: RubyLine = [];
 
-    const interlinearAnnotationChunks = sourceLine.split(/[｜）]/).filter(value => value.length !== 0);
-    interlinearAnnotationChunks.forEach(chunk => {
-      const [kanji, ruby] = chunk.split("（");
+    sourceLine
+      .split(rubyRegExp)
+      .filter(chunk => chunk.length !== 0)
+      .forEach(chunk => {
+        const [kanji, ruby] = chunk.split(rubySeparatorCharacter);
 
-      if (ruby !== undefined) {
-        rubyLine.push({
-          kanji,
-          ruby
-        });
-      } else {
-        rubyLine.push(
-          ...kanji.split("").map(char => ({
-            kanji: char
-          }))
-        );
-      }
-    });
+        if (ruby !== undefined) {
+          rubyLine.push({
+            kanji,
+            ruby
+          });
+        } else {
+          rubyLine.push(
+            ...kanji.split("").map(char => ({
+              kanji: char
+            }))
+          );
+        }
+      });
 
     rubyLines.push(rubyLine);
   });
