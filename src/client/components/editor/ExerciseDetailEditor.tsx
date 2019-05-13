@@ -42,7 +42,7 @@ export const ExerciseDetailEditor = connector(
 
     return (
       <Column flex={1}>
-        <Column padding="around">
+        <Column padding="vertical">
           <label className={Classes.LABEL}>
             題名 (t)
             <Column>
@@ -60,13 +60,13 @@ export const ExerciseDetailEditor = connector(
         </Column>
         <Divider />
         <Column>
-          <Column padding="around">問題</Column>
+          <Column padding="vertical">問題</Column>
           {questions.map((item, index) => (
-            <Column key={item.id} padding="around">
+            <Column key={item.id} padding="vertical">
               <QuestionEditor bufferId={bufferId} itemIndex={index} item={item} onFocus={focus} />
             </Column>
           ))}
-          <Column padding="around">
+          <Column padding="vertical">
             <button
               className={`${Classes.BUTTON} ${Classes.LARGE}`}
               autoFocus
@@ -78,7 +78,7 @@ export const ExerciseDetailEditor = connector(
           </Column>
         </Column>
         <Divider />
-        <Column padding="around">
+        <Column padding="vertical">
           <Button large onClick={useCallback(() => openDialog("ExercisePreviewer"), [])}>
             プレビュー (P)
           </Button>

@@ -16,7 +16,6 @@ const Flex = styled.div<{
   padding-bottom: ${p => (p.padding === "around" || p.padding === "vertical" ? "0.5rem" : "0")};
   padding-right: ${p => (p.padding === "around" || p.padding === "horizontal" ? "0.5rem" : "0")};
   padding-left: ${p => (p.padding === "around" || p.padding === "horizontal" ? "0.5rem" : "0")};
-  border: solid 1px red;
 `;
 
 export const Row = styled(Flex)`

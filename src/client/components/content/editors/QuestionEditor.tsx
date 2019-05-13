@@ -68,7 +68,7 @@ export const QuestionEditor = connector(
         </Summary>
         <Collapse isOpen={isEditorOpen}>
           <Column padding="around">
-            <Column padding className={Classes.INPUT} style={{ height: "auto", padding: 0 }}>
+            <Column className={Classes.INPUT} style={{ height: "auto", padding: 0 }}>
               <Editor
                 editorState={editorState}
                 onChange={useCallback(

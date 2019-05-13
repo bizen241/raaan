@@ -7,7 +7,6 @@ import { connector } from "../../reducers";
 import { buffersActions, generateBufferId } from "../../reducers/buffers";
 import { ExerciseDetailBufferList } from "../list/buffers/ExerciseDetailBufferList";
 import { ExerciseList } from "../list/search/ExerciseList";
-import { Header } from "../project/Header";
 import { Column } from "../ui";
 import { manageHotKey } from "../utils/hotKey";
 import { Page } from "./Page";
@@ -34,17 +33,16 @@ export const Creator = connector(
     );
 
     return (
-      <Page>
-        <Header heading="作成" />
-        <Column padding="around">
+      <Page heading="作成">
+        <Column padding="vertical">
           <Button large intent="primary" onClick={onCreate}>
             新規作成 (n)
           </Button>
         </Column>
-        <Column padding="around">
+        <Column padding="vertical">
           <ExerciseDetailBufferList />
         </Column>
-        <Column padding="around">
+        <Column padding="vertical">
           <ExerciseList />
         </Column>
       </Page>

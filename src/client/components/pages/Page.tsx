@@ -1,6 +1,10 @@
+import { Button, ButtonGroup, Classes, Navbar, NavbarGroup } from "@blueprintjs/core";
+import { goBack, goForward } from "connected-react-router";
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { styled } from "../../style";
-import { Column } from "../ui";
+import { connector } from "../../reducers";
+import { Column, Row } from "../ui";
 
 const Outer = styled(Column)`
   width: 100%;
@@ -28,12 +32,44 @@ const Outer = styled(Column)`
   }
 `;
 
-export const Page: React.FunctionComponent = ({ children }) => {
-  return (
-    <Outer>
-      <Column padding="around" style={{ width: "100%", maxWidth: "1000px" }}>
-        {children}
-      </Column>
-    </Outer>
-  );
-};
+export const Page = connector(
+  (state, ownProps: { heading: string }) => ({
+    heading: ownProps.heading,
+    pathname: state.router.location.pathname
+  }),
+  () => ({
+    back: goBack,
+    forward: goForward
+  }),
+  ({ heading, pathname, back, forward, children }) => {
+    const isHome = pathname === "/";
+
+    return (
+      <Outer>
+        <Navbar style={{ display: "flex", justifyContent: "center", padding: 0 }}>
+          <NavbarGroup align="center" style={{ width: "100%", maxWidth: "1000px" }}>
+            <Row padding="around">
+              <ButtonGroup>
+                <Button icon="arrow-left" onClick={back} />
+                <Button icon="arrow-right" onClick={forward} />
+              </ButtonGroup>
+            </Row>
+            <Row padding="around" flex={1}>
+              <div className={Classes.TEXT_OVERFLOW_ELLIPSIS}>{heading}</div>
+            </Row>
+            <Row padding="around">
+              {isHome ? (
+                <Button icon="home" disabled />
+              ) : (
+                <Link className={`${Classes.BUTTON} ${Classes.iconClass("home")}`} to="/" />
+              )}
+            </Row>
+          </NavbarGroup>
+        </Navbar>
+        <Column padding="around" style={{ width: "100%", maxWidth: "1000px" }}>
+          {children}
+        </Column>
+      </Outer>
+    );
+  }
+);
