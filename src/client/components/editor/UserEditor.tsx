@@ -26,7 +26,7 @@ export const UserEditor = connector(
     const { name, permission } = buffer.edited;
     return (
       <Column>
-        <Column padding>
+        <Column padding="around">
           <label className={Classes.LABEL}>
             <Trans>名前</Trans>
             <Column>
@@ -41,7 +41,7 @@ export const UserEditor = connector(
             </Column>
           </label>
         </Column>
-        <Column padding>
+        <Column padding="around">
           <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
             <Trans>権限</Trans>
             <Column className={`${Classes.SELECT} ${Classes.MODIFIER_KEY}`}>

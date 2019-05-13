@@ -22,11 +22,11 @@ export const Config = connector(
     return (
       <Page>
         <Header heading="設定" />
-        <Column padding>
+        <Column>
           <h2>設定</h2>
           <EntityEditor entityType="UserConfig" entityId={currentUser.configId} />
           <h2>バージョン</h2>
-          <Column padding>
+          <Column padding="around">
             {hasUpdate ? (
               <Button text="アップデート" onClick={() => location.reload()} />
             ) : (
@@ -35,15 +35,18 @@ export const Config = connector(
           </Column>
           <h2>アカウント</h2>
           {isGuest ? (
-            <Column padding>
+            <Column padding="around">
               <Link className={`${Classes.BUTTON} ${Classes.INTENT_PRIMARY} ${Classes.iconClass("key")}`} to="/login">
                 <Trans>ログイン</Trans>
               </Link>
             </Column>
           ) : null}
           {!isGuest ? (
-            <Column padding>
-              <a href="/logout" className={`${Classes.BUTTON} ${Classes.INTENT_WARNING} ${Classes.iconClass("key")}`}>
+            <Column padding="around">
+              <a
+                href="/logout"
+                className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_WARNING} ${Classes.iconClass("key")}`}
+              >
                 <Trans>ログアウト</Trans>
               </a>
             </Column>

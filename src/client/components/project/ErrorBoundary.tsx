@@ -26,8 +26,8 @@ export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
 
     if (hasError) {
       return (
-        <Column padding>
-          <Column padding>
+        <Column padding="around">
+          <Column padding="around">
             <Button
               onClick={() => {
                 location.reload();
@@ -36,7 +36,7 @@ export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
               リロード
             </Button>
           </Column>
-          <Column padding>
+          <Column padding="around">
             <Button
               onClick={() => {
                 localStorage.clear();

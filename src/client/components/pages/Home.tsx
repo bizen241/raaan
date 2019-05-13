@@ -14,18 +14,18 @@ export const Home = connector(
       <Page>
         <Header heading="ホーム" />
         <Column>
-          <Column padding>
+          <Column padding="around">
             <Link className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.DISABLED}`} to="/player">
               練習する (P)
             </Link>
           </Column>
-          <Column padding>
+          <Column padding="around">
             <Link className={`${Classes.BUTTON} ${Classes.LARGE}`} to="/creator">
               作成する (C)
             </Link>
           </Column>
           <Divider />
-          <Column padding>
+          <Column padding="around">
             <Link className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.iconClass("cog")}`} to="/config">
               設定 (S)
             </Link>

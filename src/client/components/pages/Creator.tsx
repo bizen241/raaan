@@ -36,15 +36,15 @@ export const Creator = connector(
     return (
       <Page>
         <Header heading="作成" />
-        <Column padding>
+        <Column padding="around">
           <Button large intent="primary" onClick={onCreate}>
             新規作成 (n)
           </Button>
         </Column>
-        <Column padding>
+        <Column padding="around">
           <ExerciseDetailBufferList />
         </Column>
-        <Column padding>
+        <Column padding="around">
           <ExerciseList />
         </Column>
       </Page>

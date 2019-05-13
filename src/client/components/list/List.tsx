@@ -34,22 +34,22 @@ export const List = React.memo<{
       <Summary title={title} focusKey={focusKey} isOpen={isOpen} onClick={useCallback(() => toggleList(s => !s), [])} />
       <Collapse isOpen={isOpen}>
         {items.length > 0 ? (
-          <Column padding>
+          <Column padding="around">
             <Column>
               {items.map((child, index) => (
                 <Column key={offset + index}>
-                  <Column padding>{child}</Column>
+                  <Column padding="around">{child}</Column>
                   <Divider />
                 </Column>
               ))}
             </Column>
           </Column>
         ) : (
-          <Column center="both" padding>
+          <Column center="both" padding="around">
             アイテムがありません
           </Column>
         )}
-        <Column padding>
+        <Column padding="around">
           <ButtonGroup fill>
             <button
               onClick={hasPreviousPage ? goPreviousPage : undefined}

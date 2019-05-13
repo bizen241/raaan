@@ -3,7 +3,7 @@ import { styled } from "../../style";
 const Flex = styled.div<{
   center?: "main" | "cross" | "both";
   flex?: number | string;
-  padding?: boolean;
+  padding?: "around" | "vertical" | "horizontal";
   isResponsive?: boolean;
 }>`
   display: flex;
@@ -12,7 +12,11 @@ const Flex = styled.div<{
   align-items: ${p => (p.center === "cross" || p.center === "both" ? "center" : "unset")};
   justify-content: ${p => (p.center === "main" || p.center === "both" ? "center" : "unset")};
   flex: ${p => p.flex || "initial"};
-  padding: ${p => (p.padding ? "0.5rem" : "0")};
+  padding-top: ${p => (p.padding === "around" || p.padding === "vertical" ? "0.5rem" : "0")};
+  padding-bottom: ${p => (p.padding === "around" || p.padding === "vertical" ? "0.5rem" : "0")};
+  padding-right: ${p => (p.padding === "around" || p.padding === "horizontal" ? "0.5rem" : "0")};
+  padding-left: ${p => (p.padding === "around" || p.padding === "horizontal" ? "0.5rem" : "0")};
+  border: solid 1px red;
 `;
 
 export const Row = styled(Flex)`

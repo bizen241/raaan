@@ -20,7 +20,7 @@ export const Header = connector(
     return (
       <Navbar>
         <NavbarGroup align="center">
-          <Row padding>
+          <Row padding="around">
             <ButtonGroup>
               <Button icon="arrow-left" onClick={back} />
               <Button icon="arrow-right" onClick={forward} />
@@ -29,7 +29,7 @@ export const Header = connector(
           <Row padding flex={1}>
             <div className={Classes.TEXT_OVERFLOW_ELLIPSIS}>{heading}</div>
           </Row>
-          <Row padding>
+          <Row padding="around">
             {isHome ? (
               <Button icon="home" disabled />
             ) : (

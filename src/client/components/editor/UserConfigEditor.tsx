@@ -34,7 +34,7 @@ export const UserConfigEditor = connector(
 
     return (
       <Column>
-        <Column padding>
+        <Column padding="around">
           <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
             <Trans>言語</Trans>
             <Column className={`${Classes.SELECT} ${Classes.MODIFIER_KEY}`}>
@@ -54,7 +54,7 @@ export const UserConfigEditor = connector(
             </Column>
           </label>
         </Column>
-        <Column padding>
+        <Column padding="around">
           <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
             <Trans>テーマ</Trans>
             <Column className={`${Classes.SELECT} ${Classes.MODIFIER_KEY}`}>

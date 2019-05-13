@@ -31,7 +31,9 @@ const Outer = styled(Column)`
 export const Page: React.FunctionComponent = ({ children }) => {
   return (
     <Outer>
-      <Column style={{ width: "100%", maxWidth: "1000px" }}>{children}</Column>
+      <Column padding="around" style={{ width: "100%", maxWidth: "1000px" }}>
+        {children}
+      </Column>
     </Outer>
   );
 };

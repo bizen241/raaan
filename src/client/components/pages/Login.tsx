@@ -12,7 +12,7 @@ export const Login = connector(
     return (
       <Page>
         <Header heading="ログイン" />
-        <Column padding>
+        <Column padding="around">
           <AnchorButton large intent="primary" text="GitHubアカウントでログイン" href="/auth/github" />
         </Column>
       </Page>
