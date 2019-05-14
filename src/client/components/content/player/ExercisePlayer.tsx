@@ -63,7 +63,7 @@ export const ExercisePlayer = connector(
     const currentQuestion = questions[plan[resultCount]];
 
     return (
-      <Column padding flex={1}>
+      <Column flex={1}>
         <QuestionPlayer key={resultCount} question={currentQuestion} onFinish={onFinish} />
       </Column>
     );

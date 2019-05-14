@@ -23,7 +23,7 @@ export const Modal = React.memo<{
           }}
           className={theme.name === "light" ? "bp3-light" : "bp3-dark"}
         >
-          <Column className={Classes.DIALOG_BODY} padding flex={1}>
+          <Column className={Classes.DIALOG_BODY} padding="around" flex={1} style={{ margin: 0 }}>
             <Column flex={1}>{isOpen ? children : null}</Column>
             <Button onClick={onClose}>閉じる (Esc)</Button>
           </Column>

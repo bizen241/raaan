@@ -1,5 +1,5 @@
 import { Button, Classes, Navbar, NavbarGroup } from "@blueprintjs/core";
-import { goBack, goForward } from "connected-react-router";
+import { goBack } from "connected-react-router";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../reducers";

@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { ExerciseDetail } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
 import { connector } from "../../../reducers";
-import { Modal } from "../../ui";
+import { Column, Modal } from "../../ui";
 import { ExercisePlayer } from "../player/ExercisePlayer";
 
 export const ExercisePreviewer = connector(
@@ -19,7 +19,9 @@ export const ExercisePreviewer = connector(
 
     return (
       <Modal isOpen={isOpen} onClose={onClose}>
-        <ExercisePlayer id={id} params={params} />
+        <Column flex={1} padding="vertical">
+          <ExercisePlayer id={id} params={params} />
+        </Column>
       </Modal>
     );
   }
