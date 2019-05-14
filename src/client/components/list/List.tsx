@@ -1,9 +1,7 @@
-import { ButtonGroup, Classes, Collapse, Divider } from "@blueprintjs/core";
+import { Button, Classes, Collapse, HTMLTable } from "@blueprintjs/core";
 import * as React from "react";
 import { useCallback, useState } from "react";
-import { Details } from "../ui/Details";
-import { Column } from "../ui/Flex";
-import { Summary } from "../ui/Summary";
+import { Column, Details, Row, Summary } from "../ui";
 
 export const List = React.memo<{
   title: string;
@@ -14,8 +12,8 @@ export const List = React.memo<{
   onChangeOffset: (offset: number) => void;
   focusKey: string;
   children: React.ReactNode;
-}>(({ title, limit, offset, count, onChangeOffset, focusKey, children }) => {
-  const [isOpen, toggleList] = useState(true);
+}>(({ title, limit, offset, count, onChangeLimit, onChangeOffset, children }) => {
+  const [isSettingsOpen, toggleSettings] = useState(false);
 
   const goPreviousPage = useCallback(() => onChangeOffset(offset - limit), [limit, offset]);
   const goNextPage = useCallback(() => onChangeOffset(offset + limit), [limit, offset]);
@@ -28,45 +26,113 @@ export const List = React.memo<{
   }
 
   const items = children.filter(child => child != null && child !== undefined);
+  const padding = offset !== 0 ? Array(limit - items.length).fill(items[0]) : [];
+
+  const offsetOptions: React.ReactNode[] = [];
+  const pageCount = Math.ceil(count / limit);
+  for (let i = 0; i < pageCount; i++) {
+    const pageOffset = i * limit;
+
+    offsetOptions.push(
+      <option key={i} value={pageOffset.toString()}>{`${pageOffset + 1}-${pageOffset + limit}`}</option>
+    );
+  }
+
+  const paginationButtons = (
+    <Row padding="vertical">
+      <Row flex={1} style={{ paddingRight: "0.5rem" }}>
+        <Button
+          fill
+          large
+          text="前へ"
+          icon="chevron-left"
+          disabled={!hasPreviousPage}
+          onClick={hasPreviousPage ? goPreviousPage : undefined}
+        />
+      </Row>
+      <Row flex={1}>
+        <Button
+          fill
+          large
+          text="次へ"
+          rightIcon="chevron-right"
+          disabled={!hasNextPage}
+          onClick={hasNextPage ? goNextPage : undefined}
+        />
+      </Row>
+    </Row>
+  );
 
   return (
-    <Details>
-      <Summary title={title} focusKey={focusKey} isOpen={isOpen} onClick={useCallback(() => toggleList(s => !s), [])} />
-      <Collapse isOpen={isOpen}>
-        {items.length > 0 ? (
+    <Column>
+      <h2>{title}</h2>
+      <Details>
+        <Summary title="表示設定" isOpen={isSettingsOpen} onClick={useCallback(() => toggleSettings(s => !s), [])} />
+        <Collapse isOpen={isSettingsOpen}>
           <Column padding="around">
             <Column>
-              {items.map((child, index) => (
-                <Column key={offset + index}>
-                  <Column padding="around">{child}</Column>
-                  <Divider />
+              <label className={`${Classes.LABEL}`}>
+                <Column>件数</Column>
+                <Column className={`${Classes.SELECT} ${Classes.FILL}`}>
+                  <select
+                    value={limit.toString()}
+                    style={{ textAlign: "center" }}
+                    onChange={useCallback(
+                      (e: React.ChangeEvent<HTMLSelectElement>) => onChangeLimit(Number(e.target.value)),
+                      []
+                    )}
+                  >
+                    <option value={"10"}>10</option>
+                    <option value={"20"}>20</option>
+                    <option value={"50"}>50</option>
+                  </select>
                 </Column>
-              ))}
+              </label>
+            </Column>
+            <Column>
+              <label className={`${Classes.LABEL}`}>
+                <Column>範囲</Column>
+                <Column className={`${Classes.SELECT} ${Classes.FILL}`}>
+                  <select
+                    value={offset.toString()}
+                    style={{ textAlign: "center" }}
+                    onChange={useCallback(
+                      (e: React.ChangeEvent<HTMLSelectElement>) => onChangeOffset(Number(e.target.value)),
+                      []
+                    )}
+                  >
+                    {offsetOptions}
+                  </select>
+                </Column>
+              </label>
             </Column>
           </Column>
-        ) : (
-          <Column center="both" padding="around">
-            アイテムがありません
-          </Column>
-        )}
-        <Column padding="around">
-          <ButtonGroup fill>
-            <button
-              onClick={hasPreviousPage ? goPreviousPage : undefined}
-              className={`${Classes.BUTTON} ${hasPreviousPage ? "" : Classes.DISABLED} ${Classes.iconClass(
-                "chevron-left"
-              )}`}
-            />
-            <span className={`${Classes.BUTTON} ${Classes.FOCUS_DISABLED}`}>{(offset + limit) / limit}</span>
-            <button
-              onClick={hasNextPage ? goNextPage : undefined}
-              className={`${Classes.BUTTON} ${hasNextPage ? "" : Classes.DISABLED} ${Classes.iconClass(
-                "chevron-right"
-              )}`}
-            />
-          </ButtonGroup>
+        </Collapse>
+      </Details>
+      {paginationButtons}
+      {items.length > 0 ? (
+        <Column padding="vertical">
+          <HTMLTable bordered style={{ width: "100%" }}>
+            <tbody>
+              {items.map((item, index) => (
+                <tr key={offset + index}>
+                  <td>{item}</td>
+                </tr>
+              ))}
+              {padding.map((item, index) => (
+                <tr key={index}>
+                  <td style={{ visibility: "hidden" }}>{item}</td>
+                </tr>
+              ))}
+            </tbody>
+          </HTMLTable>
         </Column>
-      </Collapse>
-    </Details>
+      ) : (
+        <Column center="both" padding="vertical">
+          アイテムがありません
+        </Column>
+      )}
+      {paginationButtons}
+    </Column>
   );
 });

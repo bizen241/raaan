@@ -34,10 +34,10 @@ export const UserConfigEditor = connector(
 
     return (
       <Column>
-        <Column padding="around">
-          <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
+        <Column padding="vertical">
+          <label className={`${Classes.LABEL}`}>
             <Trans>言語</Trans>
-            <Column className={`${Classes.SELECT} ${Classes.MODIFIER_KEY}`}>
+            <Column className={`${Classes.SELECT} ${Classes.LARGE}`}>
               <select
                 defaultValue={lang || "default"}
                 onChange={useCallback(
@@ -54,10 +54,10 @@ export const UserConfigEditor = connector(
             </Column>
           </label>
         </Column>
-        <Column padding="around">
-          <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
+        <Column padding="vertical">
+          <label className={`${Classes.LABEL}`}>
             <Trans>テーマ</Trans>
-            <Column className={`${Classes.SELECT} ${Classes.MODIFIER_KEY}`}>
+            <Column className={`${Classes.SELECT} ${Classes.LARGE}`}>
               <select
                 defaultValue={theme || "default"}
                 onChange={useCallback(

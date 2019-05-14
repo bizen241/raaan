@@ -1,9 +1,9 @@
-import { Button, ButtonGroup, Classes, Navbar, NavbarGroup } from "@blueprintjs/core";
+import { Button, Classes, Navbar, NavbarGroup } from "@blueprintjs/core";
 import { goBack, goForward } from "connected-react-router";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { styled } from "../../style";
 import { connector } from "../../reducers";
+import { styled } from "../../style";
 import { Column, Row } from "../ui";
 
 const Outer = styled(Column)`
@@ -38,10 +38,9 @@ export const Page = connector(
     pathname: state.router.location.pathname
   }),
   () => ({
-    back: goBack,
-    forward: goForward
+    back: goBack
   }),
-  ({ heading, pathname, back, forward, children }) => {
+  ({ heading, pathname, back, children }) => {
     const isHome = pathname === "/";
 
     return (
@@ -49,10 +48,7 @@ export const Page = connector(
         <Navbar style={{ display: "flex", justifyContent: "center", padding: 0 }}>
           <NavbarGroup align="center" style={{ width: "100%", maxWidth: "1000px" }}>
             <Row padding="around">
-              <ButtonGroup>
-                <Button icon="arrow-left" onClick={back} />
-                <Button icon="arrow-right" onClick={forward} />
-              </ButtonGroup>
+              <Button icon="arrow-left" onClick={back} />
             </Row>
             <Row padding="around" flex={1}>
               <div className={Classes.TEXT_OVERFLOW_ELLIPSIS}>{heading}</div>

@@ -6,7 +6,7 @@ export const Details: React.FunctionComponent<{
   onFocus?: () => void;
 }> = ({ onFocus, children }) => {
   return (
-    <Column className={`${Classes.TREE} ${Classes.ELEVATION_0}`} onFocus={onFocus}>
+    <Column className={`${Classes.CARD} ${Classes.ELEVATION_0}`} style={{ padding: 0 }} onFocus={onFocus}>
       {children}
     </Column>
   );
