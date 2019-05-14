@@ -68,7 +68,7 @@ export const ExerciseDetailEditor = connector(
           ))}
           <Column padding="vertical">
             <button
-              className={`${Classes.BUTTON} ${Classes.LARGE}`}
+              className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_PRIMARY}`}
               autoFocus
               onClick={useCallback(() => appendItem(bufferId), [])}
               ref={appendButtonRef}

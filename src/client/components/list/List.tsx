@@ -73,7 +73,7 @@ export const List = React.memo<{
             <Column>
               <label className={`${Classes.LABEL}`}>
                 <Column>件数</Column>
-                <Column className={`${Classes.SELECT} ${Classes.FILL}`}>
+                <Column className={`${Classes.SELECT} ${Classes.FILL} ${Classes.LARGE}`}>
                   <select
                     value={limit.toString()}
                     style={{ textAlign: "center" }}
@@ -92,7 +92,7 @@ export const List = React.memo<{
             <Column>
               <label className={`${Classes.LABEL}`}>
                 <Column>範囲</Column>
-                <Column className={`${Classes.SELECT} ${Classes.FILL}`}>
+                <Column className={`${Classes.SELECT} ${Classes.FILL} ${Classes.LARGE}`}>
                   <select
                     value={offset.toString()}
                     style={{ textAlign: "center" }}

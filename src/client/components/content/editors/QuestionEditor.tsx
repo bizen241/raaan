@@ -89,13 +89,8 @@ export const QuestionEditor = connector(
 
 const rubyRegExp = new RegExp(`${rubySeparatorCharacter}[^${rubySeparatorCharacter}]*${rubyTerminatorCharacter}`, "g");
 
-const Anchor = styled.span`
+const SmallText = styled.span`
   font-size: 80%;
-  opacity: 0.8;
-`;
-const Ruby = styled.span`
-  font-size: 80%;
-  opacity: 0.8;
 `;
 
 const createEditorState = (value: string) =>
@@ -113,7 +108,7 @@ const createEditorState = (value: string) =>
           });
         },
         component: (props: { children: React.ReactNode; decoratedText: string }) => {
-          return <Anchor>{props.children}</Anchor>;
+          return <SmallText className={Classes.TEXT_DISABLED}>{props.children}</SmallText>;
         }
       },
       {
@@ -129,7 +124,7 @@ const createEditorState = (value: string) =>
           }
         },
         component: (props: React.HTMLProps<HTMLSpanElement>) => {
-          return <Ruby>{props.children}</Ruby>;
+          return <SmallText className={Classes.TEXT_DISABLED}>{props.children}</SmallText>;
         }
       }
     ])

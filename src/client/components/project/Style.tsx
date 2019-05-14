@@ -30,7 +30,7 @@ export const Style = React.memo<{ children: React.ReactNode }>(({ children }) =>
       theme={useMemo(
         () => ({
           name: themeName,
-          background: themeName === "light" ? "#eeeeee" : "#30404d",
+          background: themeName === "light" ? "#ffffff" : "#30404d",
           accent: "#eeeeee"
         }),
         [themeName]
