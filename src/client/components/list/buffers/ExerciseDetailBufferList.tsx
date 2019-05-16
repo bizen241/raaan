@@ -25,7 +25,6 @@ export const ExerciseDetailBufferList = connector(
 
     return (
       <List
-        title="編集中 (e)"
         limit={limit}
         offset={offset}
         count={bufferEntries.length}

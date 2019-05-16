@@ -1,4 +1,4 @@
-import { Button, Callout, Classes } from "@blueprintjs/core";
+import { Button, Callout, Classes, Divider } from "@blueprintjs/core";
 import { Trans } from "@lingui/react";
 import * as React from "react";
 import { useContext } from "react";
@@ -20,37 +20,43 @@ export const Config = connector(
 
     return (
       <Page heading="設定">
-        <h2>設定</h2>
-        <EntityEditor entityType="UserConfig" entityId={currentUser.configId} />
-        <h2>バージョン</h2>
         <Column padding="vertical">
-          {hasUpdate ? (
-            <Button text="アップデート" onClick={() => location.reload()} />
-          ) : (
-            <Callout intent="success" title="最新のバージョンです" />
-          )}
+          <h2 className={Classes.HEADING}>設定</h2>
+          <Column padding="vertical">
+            <EntityEditor entityType="UserConfig" entityId={currentUser.configId} />
+          </Column>
         </Column>
-        <h2>アカウント</h2>
-        {isGuest ? (
+        <Divider />
+        <Column padding="vertical">
+          <h2 className={Classes.HEADING}>バージョン</h2>
           <Column padding="vertical">
-            <Link
-              className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_PRIMARY} ${Classes.iconClass("key")}`}
-              to="/login"
-            >
-              <Trans>ログイン</Trans>
-            </Link>
+            {hasUpdate ? (
+              <Button text="アップデート" onClick={() => location.reload()} />
+            ) : (
+              <Callout intent="success" title="最新のバージョンです" />
+            )}
           </Column>
-        ) : null}
-        {!isGuest ? (
+        </Column>
+        <Column padding="vertical">
+          <h2 className={Classes.HEADING}>アカウント</h2>
           <Column padding="vertical">
-            <a
-              className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_WARNING} ${Classes.iconClass("key")}`}
-              href="/logout"
-            >
-              <Trans>ログアウト</Trans>
-            </a>
+            {isGuest ? (
+              <Link
+                className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_PRIMARY} ${Classes.iconClass("key")}`}
+                to="/login"
+              >
+                <Trans>ログイン</Trans>
+              </Link>
+            ) : (
+              <a
+                className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_WARNING} ${Classes.iconClass("key")}`}
+                href="/logout"
+              >
+                <Trans>ログアウト</Trans>
+              </a>
+            )}
           </Column>
-        ) : null}
+        </Column>
       </Page>
     );
   }

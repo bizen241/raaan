@@ -4,7 +4,6 @@ import { useCallback, useState } from "react";
 import { Column, Details, Row, Summary } from "../ui";
 
 export const List = React.memo<{
-  title: string;
   limit: number;
   offset: number;
   count: number;
@@ -12,7 +11,7 @@ export const List = React.memo<{
   onChangeOffset: (offset: number) => void;
   focusKey: string;
   children: React.ReactNode;
-}>(({ title, limit, offset, count, onChangeLimit, onChangeOffset, children }) => {
+}>(({ limit, offset, count, onChangeLimit, onChangeOffset, children }) => {
   const [isSettingsOpen, toggleSettings] = useState(false);
 
   const goPreviousPage = useCallback(() => onChangeOffset(offset - limit), [limit, offset]);
@@ -65,7 +64,6 @@ export const List = React.memo<{
 
   return (
     <Column>
-      <h2>{title}</h2>
       <Details>
         <Summary title="表示設定" isOpen={isSettingsOpen} onClick={useCallback(() => toggleSettings(s => !s), [])} />
         <Collapse isOpen={isSettingsOpen}>

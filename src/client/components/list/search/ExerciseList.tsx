@@ -47,7 +47,6 @@ export const ExerciseList = connector(
 
     return (
       <List
-        title="保存済み (s)"
         limit={limit}
         offset={offset}
         count={searchResult.count}

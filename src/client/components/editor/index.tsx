@@ -70,7 +70,7 @@ export const EntityEditor = connector(
     return (
       <Column>
         <Column padding="vertical">
-          <Button text="保存 (S)" icon="upload" intent="success" large onClick={onUpload} />
+          <Button text="保存" icon="upload" intent="success" large onClick={onUpload} />
         </Column>
         <Editor bufferId={bufferId} buffer={buffer} />
       </Column>

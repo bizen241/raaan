@@ -1,4 +1,4 @@
-import { Button } from "@blueprintjs/core";
+import { Button, Classes, Divider } from "@blueprintjs/core";
 import { push } from "connected-react-router";
 import * as React from "react";
 import { useCallback, useEffect } from "react";
@@ -36,14 +36,21 @@ export const Creator = connector(
       <Page heading="作成">
         <Column padding="vertical">
           <Button large intent="primary" onClick={onCreate}>
-            新規作成 (n)
+            新規作成
           </Button>
         </Column>
+        <Divider />
         <Column padding="vertical">
-          <ExerciseDetailBufferList />
+          <h2 className={Classes.HEADING}>編集中の問題集</h2>
+          <Column padding="vertical">
+            <ExerciseDetailBufferList />
+          </Column>
         </Column>
         <Column padding="vertical">
-          <ExerciseList />
+          <h2 className={Classes.HEADING}>保存済みの問題集</h2>
+          <Column padding="vertical">
+            <ExerciseList />
+          </Column>
         </Column>
       </Page>
     );

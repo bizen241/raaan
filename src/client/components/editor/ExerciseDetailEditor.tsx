@@ -44,7 +44,7 @@ export const ExerciseDetailEditor = connector(
       <Column flex={1}>
         <Column padding="vertical">
           <label className={Classes.LABEL}>
-            題名 (t)
+            題名
             <Column>
               <input
                 className={Classes.INPUT}
@@ -73,14 +73,14 @@ export const ExerciseDetailEditor = connector(
               onClick={useCallback(() => appendItem(bufferId), [])}
               ref={appendButtonRef}
             >
-              追加 (a)
+              追加
             </button>
           </Column>
         </Column>
         <Divider />
         <Column padding="vertical">
           <Button large onClick={useCallback(() => openDialog("ExercisePreviewer"), [])}>
-            プレビュー (P)
+            プレビュー
           </Button>
         </Column>
         <ExercisePreviewer params={buffer.edited} />
