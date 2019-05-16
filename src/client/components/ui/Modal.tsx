@@ -1,4 +1,4 @@
-import { Button, Classes, Dialog } from "@blueprintjs/core";
+import { Classes, Dialog } from "@blueprintjs/core";
 import * as React from "react";
 import { ThemeConsumer } from "../../style";
 import { Column } from "./Flex";
@@ -21,11 +21,11 @@ export const Modal = React.memo<{
             margin: 0,
             padding: 0
           }}
+          title=""
           className={theme.name === "light" ? "bp3-light" : "bp3-dark"}
         >
           <Column className={Classes.DIALOG_BODY} padding="around" flex={1} style={{ margin: 0 }}>
             <Column flex={1}>{isOpen ? children : null}</Column>
-            <Button onClick={onClose}>閉じる (Esc)</Button>
           </Column>
         </Dialog>
       )}
