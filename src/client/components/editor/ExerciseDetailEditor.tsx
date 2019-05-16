@@ -68,7 +68,7 @@ export const ExerciseDetailEditor = connector(
           ))}
           <Column padding="vertical">
             <button
-              className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_PRIMARY}`}
+              className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_PRIMARY} ${Classes.iconClass("plus")}`}
               autoFocus
               onClick={useCallback(() => appendItem(bufferId), [])}
               ref={appendButtonRef}
@@ -79,7 +79,7 @@ export const ExerciseDetailEditor = connector(
         </Column>
         <Divider />
         <Column padding="vertical">
-          <Button large onClick={useCallback(() => openDialog("ExercisePreviewer"), [])}>
+          <Button large icon="play" onClick={useCallback(() => openDialog("ExercisePreviewer"), [])}>
             プレビュー
           </Button>
         </Column>

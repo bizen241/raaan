@@ -35,19 +35,17 @@ export const Creator = connector(
     return (
       <Page>
         <Column padding="vertical">
-          <Button large intent="primary" onClick={onCreate}>
-            新規作成
-          </Button>
+          <Button text="新規作成" large icon="plus" intent="primary" onClick={onCreate} />
         </Column>
         <Divider />
         <Column padding="vertical">
-          <h2 className={Classes.HEADING}>編集中の問題集</h2>
+          <h2 className={Classes.HEADING}>編集中</h2>
           <Column padding="vertical">
             <ExerciseDetailBufferList />
           </Column>
         </Column>
         <Column padding="vertical">
-          <h2 className={Classes.HEADING}>保存済みの問題集</h2>
+          <h2 className={Classes.HEADING}>保存済み</h2>
           <Column padding="vertical">
             <ExerciseList />
           </Column>

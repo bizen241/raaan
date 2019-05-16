@@ -28,15 +28,16 @@ export const Config = connector(
         </Column>
         <Divider />
         <Column padding="vertical">
-          <h2 className={Classes.HEADING}>バージョン</h2>
+          <h2 className={Classes.HEADING}>更新</h2>
           <Column padding="vertical">
             {hasUpdate ? (
-              <Button text="アップデート" onClick={() => location.reload()} />
+              <Button text="更新する" onClick={() => location.reload()} />
             ) : (
               <Callout intent="success" title="最新のバージョンです" />
             )}
           </Column>
         </Column>
+        <Divider />
         <Column padding="vertical">
           <h2 className={Classes.HEADING}>アカウント</h2>
           <Column padding="vertical">
