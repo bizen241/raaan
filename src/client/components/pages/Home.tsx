@@ -10,7 +10,7 @@ export const Home = connector(
   () => ({}),
   () => {
     return (
-      <Page heading="ホーム">
+      <Page>
         <Column>
           <Column padding="vertical">
             <h2 className={Classes.HEADING}>練習する</h2>

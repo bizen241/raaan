@@ -12,7 +12,7 @@ export const Edit = connector(
   () => ({}),
   ({ id }) => {
     return (
-      <Page heading="編集">
+      <Page>
         <h2 className={Classes.HEADING}>編集中</h2>
         <EntityEditor entityType="ExerciseDetail" entityId={id} />
       </Page>

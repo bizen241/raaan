@@ -9,7 +9,7 @@ export const Login = connector(
   () => ({}),
   ({}) => {
     return (
-      <Page heading="ログイン">
+      <Page>
         <Column padding="vertical">
           <AnchorButton large intent="primary" text="GitHubアカウントでログイン" href="/auth/github" />
         </Column>

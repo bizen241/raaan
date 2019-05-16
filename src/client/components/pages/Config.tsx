@@ -19,7 +19,7 @@ export const Config = connector(
     const isGuest = currentUser.permission === "Guest";
 
     return (
-      <Page heading="設定">
+      <Page>
         <Column padding="vertical">
           <h2 className={Classes.HEADING}>設定</h2>
           <Column padding="vertical">

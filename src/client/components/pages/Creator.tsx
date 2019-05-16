@@ -33,7 +33,7 @@ export const Creator = connector(
     );
 
     return (
-      <Page heading="作成">
+      <Page>
         <Column padding="vertical">
           <Button large intent="primary" onClick={onCreate}>
             新規作成

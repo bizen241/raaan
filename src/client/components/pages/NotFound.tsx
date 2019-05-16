@@ -9,7 +9,7 @@ export const NotFound = connector(
   () => ({}),
   ({}) => {
     return (
-      <Page heading="404 Not Found">
+      <Page>
         <Column padding="vertical">
           <Callout intent="warning" title="ページが見つかりませんでした" />
         </Column>

@@ -33,15 +33,15 @@ const Outer = styled(Column)`
 `;
 
 export const Page = connector(
-  (state, ownProps: { heading: string }) => ({
-    heading: ownProps.heading,
+  state => ({
     pathname: state.router.location.pathname
   }),
   () => ({
     back: goBack
   }),
-  ({ heading, pathname, back, children }) => {
+  ({ pathname, back, children }) => {
     const isHome = pathname === "/";
+    const isConfig = pathname === "/config";
 
     return (
       <Outer>
@@ -50,14 +50,20 @@ export const Page = connector(
             <Row padding="around">
               <Button icon="arrow-left" onClick={back} />
             </Row>
-            <Row padding="around" flex={1}>
-              <div className={Classes.TEXT_OVERFLOW_ELLIPSIS}>{heading}</div>
+            <Row padding="around" center="both" flex={1}>
+              {isHome ? (
+                <span className={`${Classes.TEXT_LARGE} ${Classes.TEXT_DISABLED}`}>Raan</span>
+              ) : (
+                <Link className={`${Classes.TEXT_LARGE}`} to="/">
+                  Raan
+                </Link>
+              )}
             </Row>
             <Row padding="around">
-              {isHome ? (
-                <Button icon="home" disabled />
+              {isConfig ? (
+                <Button icon="cog" disabled />
               ) : (
-                <Link className={`${Classes.BUTTON} ${Classes.iconClass("home")}`} to="/" />
+                <Link className={`${Classes.BUTTON} ${Classes.iconClass("cog")}`} to="/config" />
               )}
             </Row>
           </NavbarGroup>
