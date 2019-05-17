@@ -4,7 +4,7 @@ import { connector } from "../../reducers";
 import { Column } from "../ui";
 import { Page } from "./Page";
 
-export const Login = connector(
+export const LoginPage = connector(
   () => ({}),
   () => ({}),
   ({}) => {

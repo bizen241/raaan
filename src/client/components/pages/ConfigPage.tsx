@@ -9,7 +9,7 @@ import { UserContext } from "../project/Context";
 import { Column } from "../ui";
 import { Page } from "./Page";
 
-export const Config = connector(
+export const ConfigPage = connector(
   state => ({
     hasUpdate: state.app.hasUpdate
   }),

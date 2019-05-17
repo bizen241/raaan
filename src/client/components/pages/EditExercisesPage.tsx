@@ -11,7 +11,7 @@ import { Column } from "../ui";
 import { manageHotKey } from "../utils/hotKey";
 import { Page } from "./Page";
 
-export const Creator = connector(
+export const EditExercisesPage = connector(
   () => ({}),
   () => ({
     addBuffer: buffersActions.add,

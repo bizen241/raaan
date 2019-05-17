@@ -5,7 +5,7 @@ import { connector } from "../../reducers";
 import { Column } from "../ui";
 import { Page } from "./Page";
 
-export const Home = connector(
+export const HomePage = connector(
   () => ({}),
   () => ({}),
   () => {
@@ -17,7 +17,7 @@ export const Home = connector(
             <Column padding="vertical">
               <Link
                 className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.iconClass("globe")} ${Classes.DISABLED}`}
-                to="/player"
+                to="/exercises"
               >
                 みんなの問題集
               </Link>
@@ -25,7 +25,7 @@ export const Home = connector(
             <Column padding="vertical">
               <Link
                 className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.iconClass("lock")} ${Classes.DISABLED}`}
-                to="/player"
+                to="/exercises/private"
               >
                 自分の問題集
               </Link>
@@ -35,7 +35,10 @@ export const Home = connector(
           <Column padding="vertical">
             <h2 className={Classes.HEADING}>作成する</h2>
             <Column padding="vertical">
-              <Link className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.iconClass("folder-new")}`} to="/creator">
+              <Link
+                className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.iconClass("folder-new")}`}
+                to="/exercises/edit"
+              >
                 問題集を作る
               </Link>
             </Column>
