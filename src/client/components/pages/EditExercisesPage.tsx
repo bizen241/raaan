@@ -47,7 +47,7 @@ export const EditExercisesPage = connector(
         <Column padding="vertical">
           <h2 className={Classes.HEADING}>保存済み</h2>
           <Column padding="vertical">
-            <ExerciseList />
+            <ExerciseList searchParams={{}} />
           </Column>
         </Column>
       </Page>

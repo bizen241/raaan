@@ -33,14 +33,14 @@ export const EntityEditor = connector(
 
     if (uploadStatus === 102) {
       return (
-        <Column padding="around">
+        <Column padding="vertical">
           <Callout intent="primary" title="アップロード中です" />
         </Column>
       );
     }
     if (uploadStatus === 200) {
       return (
-        <Column padding="around">
+        <Column padding="vertical">
           <Callout intent="success" title="アップロードが完了しました" />
         </Column>
       );
@@ -49,13 +49,13 @@ export const EntityEditor = connector(
     if (buffer === undefined) {
       if (isLocalOnly(bufferId)) {
         return (
-          <Column padding="around">
+          <Column padding="vertical">
             <Callout intent="warning" title="バッファが見つかりませんでした" />
           </Column>
         );
       } else {
         return (
-          <Column padding="around">
+          <Column padding="vertical">
             <Callout intent="primary" title="ロード中です" />
           </Column>
         );

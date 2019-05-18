@@ -1,9 +1,14 @@
 import { EntityObject, EntityType } from "../../../shared/api/entities";
 import { SearchParams } from "../../../shared/api/request/search";
 import { SearchResponse } from "../../../shared/api/response/search";
+import { stringifySearchParams } from "../request/search";
+
+type IdMap = {
+  [index: string]: string | undefined;
+};
 
 export interface SearchResult {
-  ids: Array<string | undefined | null>;
+  ids: IdMap;
   count: number;
   fetchedAt: number;
 }
@@ -26,25 +31,45 @@ export const createSearchResultStore = (): SearchResultStore => ({
   UserSession: {}
 });
 
-const getQueryString = <E extends EntityObject>(params: SearchParams<E>) => {
-  const urlSearchParams = new URLSearchParams(params as any);
+const hasDiff = (oldIds: IdMap, newIds: IdMap) => {
+  const hasDiffInRange = Object.entries(newIds).some(([index, newId]) => {
+    return oldIds[index] !== undefined && oldIds[index] !== newId;
+  });
 
-  const limit: keyof SearchParams<E> = "limit";
-  const offset: keyof SearchParams<E> = "offset";
-
-  urlSearchParams.delete(limit);
-  urlSearchParams.delete(offset);
-  urlSearchParams.sort();
-
-  return urlSearchParams.toString();
-};
-
-const isMergeable = (target: SearchResult, source: SearchResponse) => {
-  if (target.count !== source.count) {
-    return false;
+  if (hasDiffInRange) {
+    return hasDiffInRange;
   }
 
-  return !source.ids.some(id => target.ids.includes(id));
+  const swappedOldIds: { [id: string]: string | undefined } = {};
+  Object.entries(oldIds).forEach(([index, oldId]) => {
+    if (oldId !== undefined) {
+      swappedOldIds[oldId] = index;
+    }
+  });
+
+  const hasDiffOutOfRange = Object.entries(newIds).some(([index, newId]) => {
+    return newId !== undefined && swappedOldIds[newId] !== undefined && swappedOldIds[newId] !== index;
+  });
+
+  return hasDiffOutOfRange;
+};
+
+const mergeIds = (target: SearchResult, response: SearchResponse, offset: number) => {
+  const oldIds = target.ids;
+
+  const newIds: IdMap = {};
+  response.ids.forEach((id, index) => {
+    newIds[offset + index] = id;
+  });
+
+  if (target.count !== response.count || hasDiff(oldIds, newIds)) {
+    return newIds;
+  }
+
+  return {
+    ...oldIds,
+    ...newIds
+  };
 };
 
 export const mergeSearchResultStore = <E extends EntityObject>(
@@ -53,23 +78,21 @@ export const mergeSearchResultStore = <E extends EntityObject>(
   params: SearchParams<E>,
   response: SearchResponse
 ): SearchResultStore => {
-  const searchQueryString = getQueryString(params);
+  const searchQueryString = stringifySearchParams(params, true);
   const searchResultMap = store[entityType];
 
-  const target = searchResultMap[searchQueryString];
-
-  const { limit, offset } = params;
-
-  const targetIds = target && isMergeable(target, response) ? target.ids : [];
-  const sourceIds = [...response.ids, ...Array<null>(limit).fill(null)].slice(0, limit);
-  const mergedIds = [...targetIds.slice(0, offset), ...sourceIds, ...targetIds.slice(offset + limit)];
+  const target = searchResultMap[searchQueryString] || {
+    ids: {},
+    count: 0,
+    fetchedAt: Date.now()
+  };
 
   return {
     ...store,
     [entityType]: {
       ...searchResultMap,
       [searchQueryString]: {
-        ids: mergedIds,
+        ids: mergeIds(target, response, params.offset),
         count: response.count,
         fetchedAt: Date.now()
       }
