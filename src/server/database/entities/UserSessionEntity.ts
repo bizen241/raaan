@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
@@ -6,13 +6,12 @@ import { UserEntity } from "./UserEntity";
 export class UserSessionEntity extends BaseEntityClass {
   type: "UserSession" = "UserSession";
 
-  @Column("uuid")
-  userId: string;
-
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
   user?: UserEntity;
+  @RelationId((userSession: UserSessionEntity) => userSession.user)
+  userId!: string;
 
   @Column({
     type: "uuid",
@@ -35,7 +34,7 @@ export class UserSessionEntity extends BaseEntityClass {
   constructor(user: UserEntity, sessionId: string, expiredAt: Date) {
     super();
 
-    this.userId = user && user.id;
+    this.user = user;
     this.sessionId = sessionId;
     this.expireAt = expiredAt;
   }

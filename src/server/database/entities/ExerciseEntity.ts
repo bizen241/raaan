@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseDetailEntity } from "./ExerciseDetailEntity";
 import { ExerciseTagEntity } from "./ExerciseTagEntity";
@@ -8,27 +8,17 @@ import { UserEntity } from "./UserEntity";
 export class ExerciseEntity extends BaseEntityClass {
   type: "Exercise" = "Exercise";
 
-  @Column("uuid")
-  authorId: string;
-
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
-  @JoinColumn({
-    name: "authorId"
-  })
   author?: UserEntity;
+  @RelationId((exercise: ExerciseEntity) => exercise.author)
+  authorId!: string;
 
-  @Column("uuid")
-  detailId: string;
-
-  @OneToOne(() => ExerciseDetailEntity, contentDetail => contentDetail.exercise, {
-    onDelete: "CASCADE"
-  })
-  @JoinColumn({
-    name: "detailId"
-  })
+  @OneToOne(() => ExerciseDetailEntity, exerciseDetail => exerciseDetail.exercise)
   detail?: ExerciseDetailEntity;
+  @RelationId((exercise: ExerciseEntity) => exercise.detail)
+  detailId!: string;
 
   @ManyToMany(() => ExerciseTagEntity)
   @JoinTable({
@@ -45,7 +35,7 @@ export class ExerciseEntity extends BaseEntityClass {
   constructor(author: UserEntity, detail: ExerciseDetailEntity) {
     super();
 
-    this.authorId = author && author.id;
-    this.detailId = detail && detail.id;
+    this.author = author;
+    this.detail = detail;
   }
 }

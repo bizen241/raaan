@@ -9,6 +9,7 @@ export class UserAccountEntity extends BaseEntityClass {
   type: "UserAccount" = "UserAccount";
 
   @OneToOne(() => UserEntity, user => user.account, {
+    cascade: true,
     onDelete: "CASCADE"
   })
   @JoinColumn()

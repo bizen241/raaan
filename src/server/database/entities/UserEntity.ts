@@ -8,12 +8,6 @@ import { UserConfigEntity } from "./UserConfigEntity";
 export class UserEntity extends BaseEntityClass {
   type: "User" = "User";
 
-  @Column()
-  name: string;
-
-  @Column()
-  permission: Permission;
-
   @OneToOne(() => UserAccountEntity, userAccount => userAccount.user)
   account?: UserAccountEntity;
   @RelationId((user: UserEntity) => user.account)
@@ -23,6 +17,12 @@ export class UserEntity extends BaseEntityClass {
   config?: UserConfigEntity;
   @RelationId((user: UserEntity) => user.config)
   configId!: string;
+
+  @Column()
+  name: string;
+
+  @Column()
+  permission: Permission;
 
   constructor(name: string, permission: Permission) {
     super();

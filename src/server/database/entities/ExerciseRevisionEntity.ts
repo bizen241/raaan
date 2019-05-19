@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
+import { Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { ExerciseRevisionDetailEntity } from "./ExerciseRevisionDetailEntity";
@@ -7,32 +7,21 @@ import { ExerciseRevisionDetailEntity } from "./ExerciseRevisionDetailEntity";
 export class ExerciseRevisionEntity extends BaseEntityClass {
   type: "ExerciseRevision" = "ExerciseRevision";
 
-  @Column()
-  exerciseId: string;
-
   @ManyToOne(() => ExerciseEntity, {
     onDelete: "CASCADE"
   })
-  @JoinColumn({
-    name: "exerciseId"
-  })
-  exercise!: ExerciseEntity;
+  exercise?: ExerciseEntity;
+  @RelationId((exerciseRevision: ExerciseRevisionEntity) => exerciseRevision.exercise)
+  exerciseId!: string;
 
-  @Column()
-  detailId: string;
+  @OneToOne(() => ExerciseRevisionDetailEntity, exerciseRevisionDetail => exerciseRevisionDetail.revision)
+  detail?: ExerciseRevisionDetailEntity;
+  @RelationId((exerciseRevision: ExerciseRevisionEntity) => exerciseRevision.detail)
+  detailId!: string;
 
-  @OneToOne(() => ExerciseRevisionDetailEntity, contentRevisionDetail => contentRevisionDetail.revision, {
-    onDelete: "CASCADE"
-  })
-  @JoinColumn({
-    name: "detailId"
-  })
-  detail!: ExerciseRevisionDetailEntity;
-
-  constructor(content: ExerciseEntity, detail: ExerciseRevisionDetailEntity) {
+  constructor(exercise: ExerciseEntity) {
     super();
 
-    this.exerciseId = content && content.id;
-    this.detailId = detail && detail.id;
+    this.exercise = exercise;
   }
 }

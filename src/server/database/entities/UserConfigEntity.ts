@@ -8,6 +8,7 @@ export class UserConfigEntity extends BaseEntityClass {
   type: "UserConfig" = "UserConfig";
 
   @OneToOne(() => UserEntity, user => user.config, {
+    cascade: true,
     onDelete: "CASCADE"
   })
   @JoinColumn()
