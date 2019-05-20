@@ -4,6 +4,7 @@ import {
   ExerciseDetail,
   ExerciseRevision,
   ExerciseRevisionDetail,
+  ExerciseSummary,
   ExerciseTag,
   User,
   UserAccount,
@@ -20,6 +21,7 @@ export interface EntityStore {
   ExerciseDetail: { [id: string]: ExerciseDetail | undefined };
   ExerciseRevision: { [id: string]: ExerciseRevision | undefined };
   ExerciseRevisionDetail: { [id: string]: ExerciseRevisionDetail | undefined };
+  ExerciseSummary: { [id: string]: ExerciseSummary | undefined };
   ExerciseTag: { [id: string]: ExerciseTag | undefined };
   User: { [id: string]: User | undefined };
   UserAccount: { [id: string]: UserAccount | undefined };
@@ -32,6 +34,7 @@ export const createEntityStore = (): EntityStore => ({
   ExerciseDetail: {},
   ExerciseRevision: {},
   ExerciseRevisionDetail: {},
+  ExerciseSummary: {},
   ExerciseTag: {},
   User: {},
   UserAccount: {},

@@ -2,6 +2,7 @@ import { Exercise } from "./Exercise";
 import { ExerciseDetail } from "./ExerciseDetail";
 import { ExerciseRevision } from "./ExerciseRevision";
 import { ExerciseRevisionDetail } from "./ExerciseRevisionDetail";
+import { ExerciseSummary } from "./ExerciseSummary";
 import { ExerciseTag } from "./ExerciseTag";
 import { User } from "./User";
 import { UserAccount } from "./UserAccount";
@@ -13,6 +14,7 @@ export * from "./ExerciseDetail";
 export * from "./ExerciseDetailObject";
 export * from "./ExerciseRevision";
 export * from "./ExerciseRevisionDetail";
+export * from "./ExerciseSummary";
 export * from "./ExerciseTag";
 export * from "./User";
 export * from "./UserAccount";
@@ -24,6 +26,7 @@ export type EntityType =
   | "ExerciseDetail"
   | "ExerciseRevision"
   | "ExerciseRevisionDetail"
+  | "ExerciseSummary"
   | "ExerciseTag"
   | "User"
   | "UserAccount"
@@ -35,6 +38,7 @@ export type EntityObject =
   | ExerciseDetail
   | ExerciseRevision
   | ExerciseRevisionDetail
+  | ExerciseSummary
   | ExerciseTag
   | User
   | UserAccount
@@ -46,6 +50,7 @@ export type EntityTypeToObject = {
   ExerciseDetail: ExerciseDetail;
   ExerciseRevision: ExerciseRevision;
   ExerciseRevisionDetail: ExerciseRevisionDetail;
+  ExerciseSummary: ExerciseSummary;
   ExerciseTag: ExerciseTag;
   User: User;
   UserAccount: UserAccount;
@@ -58,6 +63,7 @@ type EntityTypeToEmptyObject = {
   ExerciseDetail: {};
   ExerciseRevision: {};
   ExerciseRevisionDetail: {};
+  ExerciseSummary: {};
   ExerciseTag: {};
   User: {};
   UserAccount: {};
@@ -71,6 +77,7 @@ export const createEntityTypeToEmptyObject = <T extends EntityTypeToEmptyObject>
     ExerciseDetail: {},
     ExerciseRevision: {},
     ExerciseRevisionDetail: {},
+    ExerciseSummary: {},
     ExerciseTag: {},
     User: {},
     UserAccount: {},

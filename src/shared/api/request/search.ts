@@ -5,6 +5,7 @@ import {
   ExerciseDetail,
   ExerciseRevision,
   ExerciseRevisionDetail,
+  ExerciseSummary,
   ExerciseTag,
   User,
   UserAccount,
@@ -22,6 +23,7 @@ export type SearchParamsMap = {
   ExerciseDetail: SearchParams<ExerciseDetail>;
   ExerciseRevision: SearchParams<ExerciseRevision>;
   ExerciseRevisionDetail: SearchParams<ExerciseRevisionDetail>;
+  ExerciseSummary: SearchParams<ExerciseSummary>;
   ExerciseTag: SearchParams<ExerciseTag>;
   User: SearchParams<User>;
   UserAccount: SearchParams<UserAccount>;

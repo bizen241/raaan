@@ -5,6 +5,7 @@ export const endpoints: { [P in EntityType]: string } = {
   ExerciseDetail: "exercise-details",
   ExerciseRevision: "exercise-revisions",
   ExerciseRevisionDetail: "exercise-revision-details",
+  ExerciseSummary: "exercise-summaries",
   ExerciseTag: "exercise-tags",
   User: "users",
   UserAccount: "user-accounts",

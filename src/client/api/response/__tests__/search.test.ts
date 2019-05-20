@@ -10,7 +10,7 @@ test("merge SearchResultStore", () => {
 
   searchResultStore[entityType] = {
     [query]: {
-      ids: [],
+      ids: {},
       count: 100,
       fetchedAt: new Date().valueOf()
     }

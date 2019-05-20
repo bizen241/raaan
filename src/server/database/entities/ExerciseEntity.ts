@@ -1,6 +1,7 @@
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseDetailEntity } from "./ExerciseDetailEntity";
+import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";
 import { ExerciseTagEntity } from "./ExerciseTagEntity";
 import { UserEntity } from "./UserEntity";
 
@@ -19,6 +20,11 @@ export class ExerciseEntity extends BaseEntityClass {
   detail?: ExerciseDetailEntity;
   @RelationId((exercise: ExerciseEntity) => exercise.detail)
   detailId!: string;
+
+  @OneToOne(() => ExerciseSummaryEntity, exerciseSummary => exerciseSummary.exercise)
+  summary?: ExerciseSummaryEntity;
+  @RelationId((exercise: ExerciseEntity) => exercise.summary)
+  summaryId!: string;
 
   @ManyToMany(() => ExerciseTagEntity)
   @JoinTable({

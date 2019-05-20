@@ -24,6 +24,7 @@ export const createSearchResultStore = (): SearchResultStore => ({
   ExerciseDetail: {},
   ExerciseRevision: {},
   ExerciseRevisionDetail: {},
+  ExerciseSummary: {},
   ExerciseTag: {},
   User: {},
   UserAccount: {},

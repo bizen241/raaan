@@ -7,6 +7,7 @@ import {
   ExerciseEntity,
   ExerciseRevisionDetailEntity,
   ExerciseRevisionEntity,
+  ExerciseSummaryEntity,
   ExerciseTagEntity,
   UserAccountEntity,
   UserConfigEntity,
@@ -49,23 +50,21 @@ const base = ({ id, createdAt, updatedAt }: BaseEntityClass): BaseEntityObject =
 type Normalizer<E> = (entity: E, store: EntityStore) => void;
 
 const normalizeExercise: Normalizer<ExerciseEntity> = (entity, store) => {
-  const { id, authorId, author, detailId, detail, tags = [], isLocked, isPrivate } = entity;
+  const { id, authorId, author, detailId, detail, summaryId, summary, tags = [], isLocked, isPrivate } = entity;
 
   store.Exercise[id] = {
     ...base(entity),
     authorId,
     detailId,
+    summaryId,
     tagIds: tags.map(tag => tag.id),
-    // from ExerciseSummaryEntity
-    lang: "en",
-    title: "",
-    description: "",
     isLocked,
     isPrivate
   };
 
   normalizeEntity(store, author);
   normalizeEntity(store, detail);
+  normalizeEntity(store, summary);
 };
 
 const normalizeExerciseDetail: Normalizer<ExerciseDetailEntity> = (entity, store) => {
@@ -110,6 +109,17 @@ const normalizeExerciseRevisionDetail: Normalizer<ExerciseRevisionDetailEntity> 
     questions,
     comment,
     navigationMode
+  };
+};
+
+const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (entity, store) => {
+  const { id, lang, title, description } = entity;
+
+  store.ExerciseSummary[id] = {
+    ...base(entity),
+    lang,
+    title,
+    description
   };
 };
 
@@ -177,6 +187,7 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   ExerciseDetail: normalizeExerciseDetail,
   ExerciseRevision: normalizeExerciseRevision,
   ExerciseRevisionDetail: normalizeExerciseRevisionDetail,
+  ExerciseSummary: normalizeExerciseSummary,
   ExerciseTag: normalizeExerciseTag,
   User: normalizeUser,
   UserAccount: normalizeUserAccount,

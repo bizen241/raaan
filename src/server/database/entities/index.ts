@@ -3,6 +3,7 @@ import { ExerciseDetailEntity } from "./ExerciseDetailEntity";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { ExerciseRevisionDetailEntity } from "./ExerciseRevisionDetailEntity";
 import { ExerciseRevisionEntity } from "./ExerciseRevisionEntity";
+import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";
 import { ExerciseTagEntity } from "./ExerciseTagEntity";
 import { UserAccountEntity } from "./UserAccountEntity";
 import { UserConfigEntity } from "./UserConfigEntity";
@@ -13,6 +14,7 @@ export * from "./ExerciseDetailEntity";
 export * from "./ExerciseEntity";
 export * from "./ExerciseRevisionDetailEntity";
 export * from "./ExerciseRevisionEntity";
+export * from "./ExerciseSummaryEntity";
 export * from "./ExerciseTagEntity";
 export * from "./UserAccountEntity";
 export * from "./UserConfigEntity";
@@ -24,6 +26,7 @@ export type Entity =
   | ExerciseEntity
   | ExerciseRevisionDetailEntity
   | ExerciseRevisionEntity
+  | ExerciseSummaryEntity
   | ExerciseTagEntity
   | UserAccountEntity
   | UserConfigEntity
@@ -35,6 +38,7 @@ export const entities = [
   ExerciseEntity,
   ExerciseRevisionDetailEntity,
   ExerciseRevisionEntity,
+  ExerciseSummaryEntity,
   ExerciseTagEntity,
   UserAccountEntity,
   UserConfigEntity,

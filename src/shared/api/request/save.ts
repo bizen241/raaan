@@ -5,6 +5,7 @@ import {
   ExerciseDetail,
   ExerciseRevision,
   ExerciseRevisionDetail,
+  ExerciseSummary,
   ExerciseTag,
   User,
   UserAccount,
@@ -19,6 +20,7 @@ export type SaveParamsMap = {
   ExerciseDetail: SaveParams<ExerciseDetail>;
   ExerciseRevision: SaveParams<ExerciseRevision>;
   ExerciseRevisionDetail: SaveParams<ExerciseRevisionDetail>;
+  ExerciseSummary: SaveParams<ExerciseSummary>;
   ExerciseTag: SaveParams<ExerciseTag>;
   User: SaveParams<User>;
   UserAccount: SaveParams<UserAccount>;
