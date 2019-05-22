@@ -2,26 +2,24 @@ import { Button, Classes, Divider } from "@blueprintjs/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as React from "react";
 import { EntityEditorProps } from ".";
-import { ExerciseDetail } from "../../../shared/api/entities";
-import { contentActions } from "../../actions/exerciseDetail";
+import { Exercise } from "../../../shared/api/entities";
 import { connector } from "../../reducers";
-import { dialogActions } from "../../reducers/dialog";
 import { QuestionEditor } from "../content/editors/QuestionEditor";
 import { ExercisePreviewer } from "../content/previewer/ExercisePreviewer";
 import { QuestionPreviewer } from "../content/previewer/QuestionPreviewer";
 import { Column } from "../ui";
 import { manageHotKey } from "../utils/hotKey";
 
-export const ExerciseDetailEditor = connector(
-  (state, ownProps: EntityEditorProps<ExerciseDetail>) => ({
+export const ExerciseEditor = connector(
+  (state, ownProps: EntityEditorProps<Exercise>) => ({
     ...ownProps,
     isVisible: state.dialog.name == null
   }),
-  () => ({
-    ...contentActions,
-    openDialog: dialogActions.open
+  actions => ({
+    ...actions.exercise,
+    openDialog: actions.dialog.open
   }),
-  ({ bufferId, buffer, isVisible, updateTitle, appendItem, openDialog }) => {
+  ({ bufferId, buffer, isVisible, updateTitle, appendQuestion, openDialog }) => {
     const { title, questions = [] } = buffer.edited;
 
     const titleInputRef = useRef<HTMLInputElement>(null);
@@ -61,16 +59,16 @@ export const ExerciseDetailEditor = connector(
         <Divider />
         <Column>
           <Column padding="vertical">問題</Column>
-          {questions.map((item, index) => (
-            <Column key={item.id} padding="vertical">
-              <QuestionEditor bufferId={bufferId} itemIndex={index} item={item} onFocus={focus} />
+          {questions.map((question, index) => (
+            <Column key={question.id} padding="vertical">
+              <QuestionEditor bufferId={bufferId} questionIndex={index} question={question} onFocus={focus} />
             </Column>
           ))}
           <Column padding="vertical">
             <button
               className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_PRIMARY} ${Classes.iconClass("plus")}`}
               autoFocus
-              onClick={useCallback(() => appendItem(bufferId), [])}
+              onClick={useCallback(() => appendQuestion(bufferId), [])}
               ref={appendButtonRef}
             >
               追加

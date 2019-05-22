@@ -3,6 +3,7 @@ import { History } from "history";
 import { ComponentType } from "react";
 import { connect } from "react-redux";
 import { combineReducers } from "redux";
+import { exerciseActions } from "../actions/exercise";
 import { ApiActions, apiActions, apiReducer, ApiState } from "./api";
 import { AppActions, appActions, appReducer, AppState } from "./app";
 import { AttemptsActions, attemptsReducer, AttemptState } from "./attempts";
@@ -44,7 +45,8 @@ const allAction = {
   api: apiActions,
   app: appActions,
   buffers: buffersActions,
-  dialog: dialogActions
+  dialog: dialogActions,
+  exercise: exerciseActions
 };
 
 export const connector = <OwnProps extends {}, StateProps extends {}, ActionProps extends {}>(

@@ -3,10 +3,8 @@ import { CompositeDecorator, ContentState, Editor, EditorState } from "draft-js"
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { Question } from "../../../../shared/api/entities";
-import { contentActions } from "../../../actions/exerciseDetail";
 import { addRuby, rubySeparatorCharacter, rubyTerminatorCharacter } from "../../../domain/content/ruby";
 import { connector } from "../../../reducers";
-import { dialogActions } from "../../../reducers/dialog";
 import { styled } from "../../../style";
 import { Column, Details, PopMenu, Summary } from "../../ui";
 
@@ -15,26 +13,26 @@ export const QuestionEditor = connector(
     _,
     ownProps: {
       bufferId: string;
-      itemIndex: number;
-      item: Question;
-      onFocus: (itemIndex: number) => void;
+      questionIndex: number;
+      question: Question;
+      onFocus: (questionIndex: number) => void;
     }
   ) => ({
     ...ownProps
   }),
-  () => ({
-    ...contentActions,
-    openDialog: dialogActions.open
+  actions => ({
+    ...actions.exercise,
+    openDialog: actions.dialog.open
   }),
-  ({ bufferId, item, itemIndex, updateItem, deleteItem, openDialog, onFocus }) => {
+  ({ bufferId, question, questionIndex, updateQuestion, deleteQuestion, openDialog, onFocus }) => {
     const [isEditorOpen, toggleEditor] = useState(true);
     const [isRubyRequested, toggleRubyState] = useState(false);
-    const [editorState, setEditorState] = useState(createEditorState(item.value));
+    const [editorState, setEditorState] = useState(createEditorState(question.value));
 
     useEffect(() => {
       if (isRubyRequested) {
         addRuby(editorState.getCurrentContent().getPlainText(), result => {
-          updateItem(bufferId, itemIndex, "value", result);
+          updateQuestion(bufferId, questionIndex, "value", result);
           setEditorState(createEditorState(result));
           toggleRubyState(false);
         });
@@ -42,9 +40,9 @@ export const QuestionEditor = connector(
     }, [isRubyRequested]);
 
     return (
-      <Details onFocus={useCallback(() => onFocus(itemIndex), [itemIndex])}>
+      <Details onFocus={useCallback(() => onFocus(questionIndex), [questionIndex])}>
         <Summary
-          title={itemIndex.toString()}
+          title={questionIndex.toString()}
           isOpen={isEditorOpen}
           onClick={useCallback(() => toggleEditor(s => !s), [])}
         >
@@ -59,7 +57,7 @@ export const QuestionEditor = connector(
               <MenuItem
                 key="d"
                 text="削除 (Delete)"
-                onClick={useCallback(() => deleteItem(bufferId, itemIndex), [itemIndex])}
+                onClick={useCallback(() => deleteQuestion(bufferId, questionIndex), [questionIndex])}
                 intent="danger"
               />
             ]}
@@ -73,10 +71,15 @@ export const QuestionEditor = connector(
                 editorState={editorState}
                 onChange={useCallback(
                   (nextEditorState: EditorState) => {
-                    updateItem(bufferId, itemIndex, "value", nextEditorState.getCurrentContent().getPlainText());
+                    updateQuestion(
+                      bufferId,
+                      questionIndex,
+                      "value",
+                      nextEditorState.getCurrentContent().getPlainText()
+                    );
                     setEditorState(nextEditorState);
                   },
-                  [itemIndex]
+                  [questionIndex]
                 )}
               />
             </Column>

@@ -1,8 +1,5 @@
 import { EntityManager } from "typeorm";
-import { ExerciseDetailEntity } from "./ExerciseDetailEntity";
 import { ExerciseEntity } from "./ExerciseEntity";
-import { ExerciseRevisionDetailEntity } from "./ExerciseRevisionDetailEntity";
-import { ExerciseRevisionEntity } from "./ExerciseRevisionEntity";
 import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";
 import { ExerciseTagEntity } from "./ExerciseTagEntity";
 import { UserAccountEntity } from "./UserAccountEntity";
@@ -10,10 +7,7 @@ import { UserConfigEntity } from "./UserConfigEntity";
 import { UserEntity } from "./UserEntity";
 import { UserSessionEntity } from "./UserSessionEntity";
 
-export * from "./ExerciseDetailEntity";
 export * from "./ExerciseEntity";
-export * from "./ExerciseRevisionDetailEntity";
-export * from "./ExerciseRevisionEntity";
 export * from "./ExerciseSummaryEntity";
 export * from "./ExerciseTagEntity";
 export * from "./UserAccountEntity";
@@ -22,10 +16,7 @@ export * from "./UserEntity";
 export * from "./UserSessionEntity";
 
 export type Entity =
-  | ExerciseDetailEntity
   | ExerciseEntity
-  | ExerciseRevisionDetailEntity
-  | ExerciseRevisionEntity
   | ExerciseSummaryEntity
   | ExerciseTagEntity
   | UserAccountEntity
@@ -34,10 +25,7 @@ export type Entity =
   | UserSessionEntity;
 
 export const entities = [
-  ExerciseDetailEntity,
   ExerciseEntity,
-  ExerciseRevisionDetailEntity,
-  ExerciseRevisionEntity,
   ExerciseSummaryEntity,
   ExerciseTagEntity,
   UserAccountEntity,

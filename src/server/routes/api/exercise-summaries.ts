@@ -1,13 +1,13 @@
 import { OperationFunction } from "express-openapi";
 import { getManager } from "typeorm";
-import { Exercise } from "../../../shared/api/entities";
+import { ExerciseSummary } from "../../../shared/api/entities";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { parseSearchParams } from "../../api/request/search/parse";
 import { responseSearchResult } from "../../api/response";
 import { ExerciseEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { tagIds, limit, offset } = parseSearchParams<Exercise>("Exercise", req.query);
+  const { tags, limit, offset } = parseSearchParams<ExerciseSummary>("ExerciseSummary", req.query);
 
   const query = await getManager()
     .createQueryBuilder(ExerciseEntity, "exercise")
@@ -17,8 +17,8 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
     .take(limit)
     .skip(offset);
 
-  if (tagIds !== undefined) {
-    query.innerJoin("exercise.tags", "tags", "tags.id IN (:...tagIds)", { tagIds: [] });
+  if (tags !== undefined) {
+    query.innerJoin("exercise.tags", "tags", "tags.name IN (:...tags)", { tags });
   }
 
   const result = await query.getManyAndCount();
@@ -27,7 +27,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
 });
 
 GET.apiDoc = createOperationDoc({
-  entityType: "Exercise",
+  entityType: "ExerciseSummary",
   summary: "Search contents",
   permission: "Guest",
   hasQuery: true

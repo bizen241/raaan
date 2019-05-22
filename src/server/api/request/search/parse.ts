@@ -5,6 +5,7 @@ import {
   ExerciseDetail,
   ExerciseRevision,
   ExerciseRevisionDetail,
+  ExerciseSummary,
   ExerciseTag,
   Lang,
   NavigationMode,
@@ -92,6 +93,17 @@ const parseExerciseRevisionDetail: Parser<ExerciseRevisionDetail> = query => {
   };
 };
 
+const parseExerciseSummary: Parser<ExerciseSummary> = query => {
+  const { lang, title, description } = query;
+
+  return {
+    lang,
+    title,
+    description,
+    ...page(query)
+  };
+};
+
 const parseExerciseTag: Parser<ExerciseTag> = query => {
   const { name } = query;
 
@@ -146,6 +158,7 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   ExerciseDetail: parseExerciseDetail,
   ExerciseRevision: parseExerciseRevision,
   ExerciseRevisionDetail: parseExerciseRevisionDetail,
+  ExerciseSummary: parseExerciseSummary,
   ExerciseTag: parseExerciseTag,
   User: parseUser,
   UserAccount: parseUserAccount,

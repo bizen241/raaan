@@ -1,7 +1,7 @@
-import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
-import { ExerciseDetailObject } from "../../../shared/api/entities";
+import { Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
+import { ExerciseTagEntity } from "./ExerciseTagEntity";
 
 @Entity("exercise-summaries")
 export class ExerciseSummaryEntity extends BaseEntityClass {
@@ -14,24 +14,15 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
   @JoinColumn()
   exercise?: ExerciseEntity;
   @RelationId((exerciseSummary: ExerciseSummaryEntity) => exerciseSummary.exercise)
-  exercisetId!: string;
+  exerciseId!: string;
 
-  @Column()
-  lang: string = "en";
+  @ManyToMany(() => ExerciseTagEntity)
+  @JoinTable({
+    name: "exercises_exercise_tags"
+  })
+  tags?: ExerciseTagEntity[];
 
-  @Column()
-  title: string = "";
-
-  @Column()
-  description: string = "";
-
-  constructor(params?: ExerciseDetailObject) {
+  constructor() {
     super();
-
-    if (params !== undefined) {
-      this.lang = params.lang;
-      this.title = params.title;
-      this.description = params.description;
-    }
   }
 }

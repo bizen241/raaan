@@ -1,6 +1,6 @@
 import { SearchResponse } from "../../../../shared/api/response/search";
 import { createHttpMocks, insertExercise, TestDatabase } from "../../../__tests__/helpers";
-import { GET } from "../exercises";
+import { GET } from "../exercise-summaries";
 
 const testDatabase = new TestDatabase();
 
