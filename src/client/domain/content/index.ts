@@ -1,16 +1,15 @@
 import * as uuid from "uuid";
-import { ExerciseDetail, Question } from "../../../shared/api/entities";
+import { Exercise, Question } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 
-export const createExerciseDetail = (): SaveParams<ExerciseDetail> => ({
+export const createExercise = (): SaveParams<Exercise> => ({
   title: "",
   lang: "ja",
-  tags: [],
+  tags: "",
   description: "",
   rubric: "",
-  questions: [],
   comment: "",
-  navigationMode: "random"
+  questions: []
 });
 
 export const createQuestion = (): Question => ({

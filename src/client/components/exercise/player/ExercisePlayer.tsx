@@ -1,7 +1,7 @@
 import { Callout } from "@blueprintjs/core";
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
-import { ExerciseDetail } from "../../../../shared/api/entities";
+import { Exercise } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
 import { CompiledQuestion, compileQuestions } from "../../../domain/content/compiler";
 import { connector } from "../../../reducers";
@@ -11,7 +11,7 @@ import { AttemptResult } from "../renderers/AttemptResult";
 import { QuestionPlayer } from "./QuestionPlayer";
 
 export const ExercisePlayer = connector(
-  (state, ownProps: { id: string; params: SaveParams<ExerciseDetail> }) => ({
+  (state, ownProps: { id: string; params: SaveParams<Exercise> }) => ({
     ...ownProps,
     attempt: state.attempts
   }),

@@ -2,9 +2,6 @@ import { Omit } from "react-redux";
 import {
   EntityObject,
   Exercise,
-  ExerciseDetail,
-  ExerciseRevision,
-  ExerciseRevisionDetail,
   ExerciseSummary,
   ExerciseTag,
   User,
@@ -20,9 +17,6 @@ export type SearchParams<E extends EntityObject> = Partial<Omit<E, "id" | "creat
 
 export type SearchParamsMap = {
   Exercise: SearchParams<Exercise>;
-  ExerciseDetail: SearchParams<ExerciseDetail>;
-  ExerciseRevision: SearchParams<ExerciseRevision>;
-  ExerciseRevisionDetail: SearchParams<ExerciseRevisionDetail>;
   ExerciseSummary: SearchParams<ExerciseSummary>;
   ExerciseTag: SearchParams<ExerciseTag>;
   User: SearchParams<User>;

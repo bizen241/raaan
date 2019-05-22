@@ -4,9 +4,9 @@ import * as React from "react";
 import { EntityEditorProps } from ".";
 import { Exercise } from "../../../shared/api/entities";
 import { connector } from "../../reducers";
-import { QuestionEditor } from "../content/editors/QuestionEditor";
-import { ExercisePreviewer } from "../content/previewer/ExercisePreviewer";
-import { QuestionPreviewer } from "../content/previewer/QuestionPreviewer";
+import { QuestionEditor } from "../exercise/editors/QuestionEditor";
+import { ExercisePreviewer } from "../exercise/previewer/ExercisePreviewer";
+import { QuestionPreviewer } from "../exercise/previewer/QuestionPreviewer";
 import { Column } from "../ui";
 import { manageHotKey } from "../utils/hotKey";
 

@@ -2,9 +2,6 @@ import { Omit } from "react-redux";
 import {
   EntityObject,
   Exercise,
-  ExerciseDetail,
-  ExerciseRevision,
-  ExerciseRevisionDetail,
   ExerciseSummary,
   ExerciseTag,
   User,
@@ -17,9 +14,6 @@ export type SaveParams<E extends EntityObject> = Partial<Omit<E, "id" | "created
 
 export type SaveParamsMap = {
   Exercise: SaveParams<Exercise>;
-  ExerciseDetail: SaveParams<ExerciseDetail>;
-  ExerciseRevision: SaveParams<ExerciseRevision>;
-  ExerciseRevisionDetail: SaveParams<ExerciseRevisionDetail>;
   ExerciseSummary: SaveParams<ExerciseSummary>;
   ExerciseTag: SaveParams<ExerciseTag>;
   User: SaveParams<User>;

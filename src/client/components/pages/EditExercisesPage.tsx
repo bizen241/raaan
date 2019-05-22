@@ -2,10 +2,10 @@ import { Button, Classes, Divider } from "@blueprintjs/core";
 import { push } from "connected-react-router";
 import * as React from "react";
 import { useCallback, useEffect } from "react";
-import { createExerciseDetail } from "../../domain/content";
+import { createExercise } from "../../domain/content";
 import { connector } from "../../reducers";
 import { buffersActions, generateBufferId } from "../../reducers/buffers";
-import { ExerciseDetailBufferList } from "../list/buffers/ExerciseDetailBufferList";
+import { ExerciseBufferList } from "../list/buffers/ExerciseBufferList";
 import { ExerciseList } from "../list/search/ExerciseList";
 import { Column } from "../ui";
 import { manageHotKey } from "../utils/hotKey";
@@ -21,7 +21,7 @@ export const EditExercisesPage = connector(
     const onCreate = useCallback(() => {
       const bufferId = generateBufferId();
 
-      addBuffer("ExerciseDetail", bufferId, createExerciseDetail());
+      addBuffer("Exercise", bufferId, createExercise());
       editBuffer(bufferId);
     }, []);
 
@@ -41,7 +41,7 @@ export const EditExercisesPage = connector(
         <Column padding="vertical">
           <h2 className={Classes.HEADING}>編集中</h2>
           <Column padding="vertical">
-            <ExerciseDetailBufferList />
+            <ExerciseBufferList />
           </Column>
         </Column>
         <Column padding="vertical">

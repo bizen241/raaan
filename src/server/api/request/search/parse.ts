@@ -2,13 +2,9 @@ import {
   EntityObject,
   EntityType,
   Exercise,
-  ExerciseDetail,
-  ExerciseRevision,
-  ExerciseRevisionDetail,
   ExerciseSummary,
   ExerciseTag,
   Lang,
-  NavigationMode,
   Permission,
   Theme,
   User,
@@ -42,53 +38,10 @@ const page = (query: { limit?: string; offset?: string }) => ({
 type Parser<E extends EntityObject> = (query: SearchQuery<E>) => SearchParams<E>;
 
 const parseExercise: Parser<Exercise> = query => {
-  const { detailId, tagIds } = query;
+  const { authorId } = query;
 
   return {
-    detailId,
-    tagIds: tagIds && JSON.parse(tagIds),
-    ...page(query)
-  };
-};
-
-const parseExerciseDetail: Parser<ExerciseDetail> = query => {
-  const { lang, tags, title, description, rubric, questions: items, comment, navigationMode } = query;
-
-  return {
-    lang,
-    tags: tags && JSON.parse(tags),
-    title,
-    description,
-    rubric,
-    questions: items && JSON.parse(items),
-    comment,
-    navigationMode: navigationMode as NavigationMode,
-    ...page(query)
-  };
-};
-
-const parseExerciseRevision: Parser<ExerciseRevision> = query => {
-  const { exerciseId, detailId } = query;
-
-  return {
-    exerciseId,
-    detailId,
-    ...page(query)
-  };
-};
-
-const parseExerciseRevisionDetail: Parser<ExerciseRevisionDetail> = query => {
-  const { lang, tags, title, description, rubric, questions, comment, navigationMode } = query;
-
-  return {
-    lang,
-    tags: tags && JSON.parse(tags),
-    title,
-    description,
-    rubric,
-    questions: questions && JSON.parse(questions),
-    comment,
-    navigationMode: navigationMode as NavigationMode,
+    authorId,
     ...page(query)
   };
 };
@@ -155,9 +108,6 @@ const parseUserSession: Parser<UserSession> = query => {
 
 const parsers: { [T in EntityType]: Parser<any> } = {
   Exercise: parseExercise,
-  ExerciseDetail: parseExerciseDetail,
-  ExerciseRevision: parseExerciseRevision,
-  ExerciseRevisionDetail: parseExerciseRevisionDetail,
   ExerciseSummary: parseExerciseSummary,
   ExerciseTag: parseExerciseTag,
   User: parseUser,

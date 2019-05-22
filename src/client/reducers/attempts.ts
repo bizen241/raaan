@@ -1,6 +1,6 @@
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { ExerciseDetail } from "../../shared/api/entities";
+import { Exercise } from "../../shared/api/entities";
 import { SaveParams } from "../../shared/api/request/save";
 import { ActionUnion, createAction } from "../actions";
 import { createPlan } from "../domain/content";
@@ -21,7 +21,7 @@ export interface QuestionResult {
 }
 
 export const attemptsActions = {
-  load: (id: string, params: SaveParams<ExerciseDetail>) => createAction(AttemptsActionType.Load, { id, params }),
+  load: (id: string, params: SaveParams<Exercise>) => createAction(AttemptsActionType.Load, { id, params }),
   next: (result: QuestionResult) => createAction(AttemptsActionType.Next, { result })
 };
 
@@ -29,7 +29,7 @@ export type AttemptsActions = ActionUnion<typeof attemptsActions>;
 
 export interface AttemptState {
   id: string;
-  params?: SaveParams<ExerciseDetail>;
+  params?: SaveParams<Exercise>;
   plan: number[];
   results: QuestionResult[];
   isRubricOpen: boolean;

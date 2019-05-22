@@ -15,17 +15,32 @@ export const EntityStoreSchema: Definition = {
             format: "uuid",
             type: "string"
           },
-          detailId: {
+          summaryId: {
             format: "uuid",
             type: "string"
           },
-          tagIds: {
-            type: "array",
-            items: { type: "string" }
-          },
           lang: { type: "string" },
           title: { type: "string" },
+          tags: { type: "string" },
           description: { type: "string" },
+          rubric: { type: "string" },
+          comment: { type: "string" },
+          questions: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                id: { type: "string" },
+                format: {
+                  enum: ["code", "math", "plain"],
+                  type: "string"
+                },
+                lang: { type: "string" },
+                value: { type: "string" },
+                comment: { type: "string" }
+              }
+            }
+          },
           isPrivate: { type: "boolean" },
           isLocked: { type: "boolean" },
           id: { format: "uuid", type: "string" },
@@ -35,221 +50,31 @@ export const EntityStoreSchema: Definition = {
         }
       }
     },
-    ExerciseDetail: {
+    ExerciseSummary: {
       type: "object",
       additionalProperties: {
         type: "object",
         properties: {
+          authorId: {
+            format: "uuid",
+            type: "string"
+          },
           exerciseId: {
             format: "uuid",
             type: "string"
           },
-          id: { format: "uuid", type: "string" },
-          createdAt: { type: "number" },
-          updatedAt: { type: "number" },
-          fetchedAt: { type: "number" },
-          lang: { type: "string" },
-          title: { type: "string" },
-          tags: {
+          tagIds: {
             type: "array",
             items: { type: "string" }
           },
+          lang: { type: "string" },
+          title: { type: "string" },
+          tags: { type: "string" },
           description: { type: "string" },
-          rubric: { type: "string" },
-          questions: {
-            type: "array",
-            items: {
-              anyOf: [
-                {
-                  type: "object",
-                  properties: {
-                    type: {
-                      type: "string",
-                      enum: ["text"]
-                    },
-                    lang: { type: "string" },
-                    id: { type: "string" },
-                    value: { type: "string" },
-                    comment: { type: "string" }
-                  }
-                },
-                {
-                  type: "object",
-                  properties: {
-                    type: {
-                      type: "string",
-                      enum: ["kana"]
-                    },
-                    id: { type: "string" },
-                    value: { type: "string" },
-                    comment: { type: "string" }
-                  }
-                },
-                {
-                  type: "object",
-                  properties: {
-                    type: {
-                      type: "string",
-                      enum: ["kanji"]
-                    },
-                    kanji: { type: "string" },
-                    id: { type: "string" },
-                    value: { type: "string" },
-                    comment: { type: "string" }
-                  }
-                },
-                {
-                  type: "object",
-                  properties: {
-                    type: {
-                      type: "string",
-                      enum: ["code"]
-                    },
-                    lang: { type: "string" },
-                    id: { type: "string" },
-                    value: { type: "string" },
-                    comment: { type: "string" }
-                  }
-                },
-                {
-                  type: "object",
-                  properties: {
-                    type: {
-                      type: "string",
-                      enum: ["math"]
-                    },
-                    id: { type: "string" },
-                    value: { type: "string" },
-                    comment: { type: "string" }
-                  }
-                }
-              ]
-            }
-          },
-          comment: { type: "string" },
-          navigationMode: {
-            enum: ["random", "sequential"],
-            type: "string"
-          }
-        }
-      }
-    },
-    ExerciseRevision: {
-      type: "object",
-      additionalProperties: {
-        type: "object",
-        properties: {
-          exerciseId: {
-            format: "uuid",
-            type: "string"
-          },
-          detailId: {
-            format: "uuid",
-            type: "string"
-          },
           id: { format: "uuid", type: "string" },
           createdAt: { type: "number" },
           updatedAt: { type: "number" },
           fetchedAt: { type: "number" }
-        }
-      }
-    },
-    ExerciseRevisionDetail: {
-      type: "object",
-      additionalProperties: {
-        type: "object",
-        properties: {
-          revisionId: {
-            format: "uuid",
-            type: "string"
-          },
-          id: { format: "uuid", type: "string" },
-          createdAt: { type: "number" },
-          updatedAt: { type: "number" },
-          fetchedAt: { type: "number" },
-          lang: { type: "string" },
-          title: { type: "string" },
-          tags: {
-            type: "array",
-            items: { type: "string" }
-          },
-          description: { type: "string" },
-          rubric: { type: "string" },
-          questions: {
-            type: "array",
-            items: {
-              anyOf: [
-                {
-                  type: "object",
-                  properties: {
-                    type: {
-                      type: "string",
-                      enum: ["text"]
-                    },
-                    lang: { type: "string" },
-                    id: { type: "string" },
-                    value: { type: "string" },
-                    comment: { type: "string" }
-                  }
-                },
-                {
-                  type: "object",
-                  properties: {
-                    type: {
-                      type: "string",
-                      enum: ["kana"]
-                    },
-                    id: { type: "string" },
-                    value: { type: "string" },
-                    comment: { type: "string" }
-                  }
-                },
-                {
-                  type: "object",
-                  properties: {
-                    type: {
-                      type: "string",
-                      enum: ["kanji"]
-                    },
-                    kanji: { type: "string" },
-                    id: { type: "string" },
-                    value: { type: "string" },
-                    comment: { type: "string" }
-                  }
-                },
-                {
-                  type: "object",
-                  properties: {
-                    type: {
-                      type: "string",
-                      enum: ["code"]
-                    },
-                    lang: { type: "string" },
-                    id: { type: "string" },
-                    value: { type: "string" },
-                    comment: { type: "string" }
-                  }
-                },
-                {
-                  type: "object",
-                  properties: {
-                    type: {
-                      type: "string",
-                      enum: ["math"]
-                    },
-                    id: { type: "string" },
-                    value: { type: "string" },
-                    comment: { type: "string" }
-                  }
-                }
-              ]
-            }
-          },
-          comment: { type: "string" },
-          navigationMode: {
-            enum: ["random", "sequential"],
-            type: "string"
-          }
         }
       }
     },
@@ -281,6 +106,10 @@ export const EntityStoreSchema: Definition = {
             ],
             type: "string"
           },
+          accountId: {
+            format: "uuid",
+            type: "string"
+          },
           configId: {
             format: "uuid",
             type: "string"
@@ -297,15 +126,12 @@ export const EntityStoreSchema: Definition = {
       additionalProperties: {
         type: "object",
         properties: {
-          userId: {
-            format: "uuid",
-            type: "string"
-          },
           provider: {
             type: "string",
             enum: ["github"]
           },
           accountId: { type: "string" },
+          email: { type: "string" },
           id: { format: "uuid", type: "string" },
           createdAt: { type: "number" },
           updatedAt: { type: "number" },

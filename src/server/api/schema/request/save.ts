@@ -14,214 +14,53 @@ export const SaveParamsMapSchema: Definition = {
           format: "uuid",
           type: "string"
         },
-        detailId: {
+        summaryId: {
+          format: "uuid",
+          type: "string"
+        },
+        lang: { type: "string" },
+        tags: { type: "string" },
+        description: { type: "string" },
+        rubric: { type: "string" },
+        comment: { type: "string" },
+        questions: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              id: { type: "string" },
+              format: {
+                enum: ["code", "math", "plain"],
+                type: "string"
+              },
+              lang: { type: "string" },
+              value: { type: "string" },
+              comment: { type: "string" }
+            }
+          }
+        },
+        isPrivate: { type: "boolean" },
+        isLocked: { type: "boolean" }
+      }
+    },
+    ExerciseSummary: {
+      type: "object",
+      properties: {
+        title: { type: "string" },
+        authorId: {
+          format: "uuid",
+          type: "string"
+        },
+        lang: { type: "string" },
+        tags: { type: "string" },
+        description: { type: "string" },
+        exerciseId: {
           format: "uuid",
           type: "string"
         },
         tagIds: {
           type: "array",
           items: { type: "string" }
-        },
-        lang: { type: "string" },
-        description: { type: "string" },
-        isPrivate: { type: "boolean" },
-        isLocked: { type: "boolean" }
-      }
-    },
-    ExerciseDetail: {
-      type: "object",
-      properties: {
-        title: { type: "string" },
-        lang: { type: "string" },
-        description: { type: "string" },
-        exerciseId: {
-          format: "uuid",
-          type: "string"
-        },
-        tags: {
-          type: "array",
-          items: { type: "string" }
-        },
-        rubric: { type: "string" },
-        questions: {
-          type: "array",
-          items: {
-            anyOf: [
-              {
-                type: "object",
-                properties: {
-                  type: {
-                    type: "string",
-                    enum: ["text"]
-                  },
-                  lang: { type: "string" },
-                  id: { type: "string" },
-                  value: { type: "string" },
-                  comment: { type: "string" }
-                }
-              },
-              {
-                type: "object",
-                properties: {
-                  type: {
-                    type: "string",
-                    enum: ["kana"]
-                  },
-                  id: { type: "string" },
-                  value: { type: "string" },
-                  comment: { type: "string" }
-                }
-              },
-              {
-                type: "object",
-                properties: {
-                  type: {
-                    type: "string",
-                    enum: ["kanji"]
-                  },
-                  kanji: { type: "string" },
-                  id: { type: "string" },
-                  value: { type: "string" },
-                  comment: { type: "string" }
-                }
-              },
-              {
-                type: "object",
-                properties: {
-                  type: {
-                    type: "string",
-                    enum: ["code"]
-                  },
-                  lang: { type: "string" },
-                  id: { type: "string" },
-                  value: { type: "string" },
-                  comment: { type: "string" }
-                }
-              },
-              {
-                type: "object",
-                properties: {
-                  type: {
-                    type: "string",
-                    enum: ["math"]
-                  },
-                  id: { type: "string" },
-                  value: { type: "string" },
-                  comment: { type: "string" }
-                }
-              }
-            ]
-          }
-        },
-        comment: { type: "string" },
-        navigationMode: {
-          enum: ["random", "sequential"],
-          type: "string"
-        }
-      }
-    },
-    ExerciseRevision: {
-      type: "object",
-      properties: {
-        detailId: {
-          format: "uuid",
-          type: "string"
-        },
-        exerciseId: {
-          format: "uuid",
-          type: "string"
-        }
-      }
-    },
-    ExerciseRevisionDetail: {
-      type: "object",
-      properties: {
-        title: { type: "string" },
-        lang: { type: "string" },
-        description: { type: "string" },
-        tags: {
-          type: "array",
-          items: { type: "string" }
-        },
-        rubric: { type: "string" },
-        questions: {
-          type: "array",
-          items: {
-            anyOf: [
-              {
-                type: "object",
-                properties: {
-                  type: {
-                    type: "string",
-                    enum: ["text"]
-                  },
-                  lang: { type: "string" },
-                  id: { type: "string" },
-                  value: { type: "string" },
-                  comment: { type: "string" }
-                }
-              },
-              {
-                type: "object",
-                properties: {
-                  type: {
-                    type: "string",
-                    enum: ["kana"]
-                  },
-                  id: { type: "string" },
-                  value: { type: "string" },
-                  comment: { type: "string" }
-                }
-              },
-              {
-                type: "object",
-                properties: {
-                  type: {
-                    type: "string",
-                    enum: ["kanji"]
-                  },
-                  kanji: { type: "string" },
-                  id: { type: "string" },
-                  value: { type: "string" },
-                  comment: { type: "string" }
-                }
-              },
-              {
-                type: "object",
-                properties: {
-                  type: {
-                    type: "string",
-                    enum: ["code"]
-                  },
-                  lang: { type: "string" },
-                  id: { type: "string" },
-                  value: { type: "string" },
-                  comment: { type: "string" }
-                }
-              },
-              {
-                type: "object",
-                properties: {
-                  type: {
-                    type: "string",
-                    enum: ["math"]
-                  },
-                  id: { type: "string" },
-                  value: { type: "string" },
-                  comment: { type: "string" }
-                }
-              }
-            ]
-          }
-        },
-        comment: { type: "string" },
-        navigationMode: {
-          enum: ["random", "sequential"],
-          type: "string"
-        },
-        revisionId: {
-          format: "uuid",
-          type: "string"
         }
       }
     },
@@ -242,6 +81,10 @@ export const SaveParamsMapSchema: Definition = {
           ],
           type: "string"
         },
+        accountId: {
+          format: "uuid",
+          type: "string"
+        },
         configId: {
           format: "uuid",
           type: "string"
@@ -251,15 +94,12 @@ export const SaveParamsMapSchema: Definition = {
     UserAccount: {
       type: "object",
       properties: {
-        userId: {
-          format: "uuid",
-          type: "string"
-        },
+        accountId: { type: "string" },
         provider: {
           type: "string",
           enum: ["github"]
         },
-        accountId: { type: "string" }
+        email: { type: "string" }
       }
     },
     UserConfig: {

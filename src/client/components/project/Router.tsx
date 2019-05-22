@@ -3,7 +3,7 @@ import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { connector } from "../../reducers";
 import { ConfigPage } from "../pages/ConfigPage";
-import { EditExerciseDetailPage } from "../pages/EditExerciseDetailPage";
+import { EditExercisePage } from "../pages/EditExercisePage";
 import { EditExercisesPage } from "../pages/EditExercisesPage";
 import { HomePage } from "../pages/HomePage";
 import { LoginPage } from "../pages/LoginPage";
@@ -25,7 +25,7 @@ export const Router = connector(
             <Route exact={true} path="/exercises" component={EditExercisesPage} />
             <Route exact={true} path="/exercises/private" component={EditExercisesPage} />
             <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
-            <Route exact={true} path="/exercise-details/:id/edit" component={EditExerciseDetailPage} />
+            <Route exact={true} path="/exercise-details/:id/edit" component={EditExercisePage} />
             <Route exact={true} path="/login" component={LoginPage} />
             <Route exact={true} path="/config" component={ConfigPage} />
             <Route component={NotFoundPage} />

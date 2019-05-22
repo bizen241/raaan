@@ -1,28 +1,20 @@
 import * as React from "react";
 import { useMemo } from "react";
-import { ExerciseDetail, Question } from "../../../../shared/api/entities";
+import { Exercise } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
-import { createExerciseDetail } from "../../../domain/content";
 import { connector } from "../../../reducers";
 import { Column, Modal } from "../../ui";
 import { ExercisePlayer } from "../player/ExercisePlayer";
 
-export const QuestionPreviewer = connector(
-  ({ dialog }, ownProps: { question: Question }) => ({
+export const ExercisePreviewer = connector(
+  ({ dialog }, ownProps: { params: SaveParams<Exercise> }) => ({
     ...ownProps,
-    isOpen: dialog.name === "QuestionPreviewer"
+    isOpen: dialog.name === "ExercisePreviewer"
   }),
   ({ dialog }) => ({
     onClose: dialog.close
   }),
-  ({ question, isOpen, onClose }) => {
-    const params = useMemo<SaveParams<ExerciseDetail>>(
-      () => ({
-        ...createExerciseDetail(),
-        questions: [question]
-      }),
-      [question]
-    );
+  ({ params, isOpen, onClose }) => {
     const id = useMemo(() => Date.now().toString(), [params, isOpen]);
 
     return (

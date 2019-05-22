@@ -56,6 +56,7 @@ PATCH.apiDoc = createOperationDoc({
   entityType: "Exercise",
   summary: "Update an exercise",
   permission: "Write",
+  hasId: true,
   hasBody: true
 });
 

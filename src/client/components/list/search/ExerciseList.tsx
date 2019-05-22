@@ -14,7 +14,7 @@ const ExerciseListItem = React.memo<EntityListItemProps<Exercise>>(({ entity: ex
   return (
     <Row center="cross">
       <Row flex={1}>
-        <Link style={{ flex: 1 }} to={`/exercise-details/${exercise.detailId}/edit`}>
+        <Link style={{ flex: 1 }} to={`/exercises/${exercise.id}/edit`}>
           {exercise.title || "無題"}
         </Link>
       </Row>

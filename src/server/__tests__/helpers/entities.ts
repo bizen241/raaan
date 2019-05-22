@@ -2,8 +2,8 @@ import { getManager } from "typeorm";
 import * as uuid from "uuid/v4";
 import { Permission } from "../../../shared/api/entities";
 import {
-  ExerciseDetailEntity,
   ExerciseEntity,
+  ExerciseSummaryEntity,
   UserAccountEntity,
   UserConfigEntity,
   UserEntity,
@@ -46,8 +46,8 @@ export const insertSession = async (user: UserEntity) => {
 export const insertExercise = async (user: UserEntity) => {
   const manager = getManager();
 
-  const detail = await manager.save(new ExerciseDetailEntity());
-  const exercise = await manager.save(new ExerciseEntity(user, detail));
+  const exerciseSummary = new ExerciseSummaryEntity();
+  const exercise = await manager.save(new ExerciseEntity(user, exerciseSummary, {}));
 
-  return { detail, exercise };
+  return { exercise, exerciseSummary };
 };

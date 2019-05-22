@@ -2,15 +2,15 @@ import { MenuItem } from "@blueprintjs/core";
 import * as React from "react";
 import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
-import { ExerciseDetail } from "../../../../shared/api/entities";
+import { Exercise } from "../../../../shared/api/entities";
 import { connector } from "../../../reducers";
 import { Buffer, buffersActions } from "../../../reducers/buffers";
 import { PopMenu, Row } from "../../ui";
 import { List } from "../List";
 
-export const ExerciseDetailBufferList = connector(
+export const ExerciseBufferList = connector(
   state => ({
-    bufferMap: state.buffers.ExerciseDetail
+    bufferMap: state.buffers.Exercise
   }),
   () => ({
     deleteBuffer: buffersActions.delete
@@ -19,7 +19,7 @@ export const ExerciseDetailBufferList = connector(
     const [limit, setLimit] = useState(10);
     const [offset, setOffset] = useState(0);
 
-    const onDelete = useCallback((id: string) => deleteBuffer("ExerciseDetail", id), []);
+    const onDelete = useCallback((id: string) => deleteBuffer("Exercise", id), []);
 
     const bufferEntries = Object.entries(bufferMap);
 
@@ -47,7 +47,7 @@ export const ExerciseDetailBufferList = connector(
 
 const EditorBufferListItem: React.FunctionComponent<{
   exerciseId: string;
-  buffer: Buffer<ExerciseDetail>;
+  buffer: Buffer<Exercise>;
   onDelete: (id: string) => void;
 }> = ({ exerciseId, buffer, onDelete }) => {
   return (
