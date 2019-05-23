@@ -15,7 +15,7 @@ export const EditExercisesPage = connector(
   () => ({}),
   () => ({
     addBuffer: buffersActions.add,
-    editBuffer: (bufferId: string) => push(`/exercise-details/${bufferId}/edit`)
+    editBuffer: (bufferId: string) => push(`/exercises/${bufferId}/edit`)
   }),
   ({ addBuffer, editBuffer }) => {
     const onCreate = useCallback(() => {

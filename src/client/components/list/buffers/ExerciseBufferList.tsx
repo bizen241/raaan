@@ -53,7 +53,7 @@ const EditorBufferListItem: React.FunctionComponent<{
   return (
     <Row center="cross">
       <Row flex={1}>
-        <Link style={{ flex: 1 }} to={`/exercise-details/${exerciseId}/edit`}>
+        <Link style={{ flex: 1 }} to={`/exercises/${exerciseId}/edit`}>
           {buffer.edited.title || "無題"}
         </Link>
       </Row>

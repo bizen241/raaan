@@ -25,7 +25,7 @@ export const Router = connector(
             <Route exact={true} path="/exercises" component={EditExercisesPage} />
             <Route exact={true} path="/exercises/private" component={EditExercisesPage} />
             <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
-            <Route exact={true} path="/exercise-details/:id/edit" component={EditExercisePage} />
+            <Route exact={true} path="/exercises/:id/edit" component={EditExercisePage} />
             <Route exact={true} path="/login" component={LoginPage} />
             <Route exact={true} path="/config" component={ConfigPage} />
             <Route component={NotFoundPage} />
