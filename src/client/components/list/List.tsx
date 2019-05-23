@@ -1,4 +1,4 @@
-import { Button, Classes, Collapse, HTMLTable } from "@blueprintjs/core";
+import { Button, Classes, Collapse, Divider, HTMLTable } from "@blueprintjs/core";
 import * as React from "react";
 import { useCallback, useState } from "react";
 import { Column, Details, Row, Summary } from "../ui";
@@ -9,9 +9,10 @@ export const List = React.memo<{
   count: number;
   onChangeLimit: (limit: number) => void;
   onChangeOffset: (offset: number) => void;
+  onReload?: () => void;
   focusKey: string;
   children: React.ReactNode;
-}>(({ limit, offset, count, onChangeLimit, onChangeOffset, children }) => {
+}>(({ limit, offset, count, onChangeLimit, onChangeOffset, onReload, children }) => {
   const [isSettingsOpen, toggleSettings] = useState(false);
 
   const goPreviousPage = useCallback(() => onChangeOffset(offset - limit), [limit, offset]);
@@ -65,7 +66,7 @@ export const List = React.memo<{
   return (
     <Column>
       <Details>
-        <Summary title="表示設定" isOpen={isSettingsOpen} onClick={useCallback(() => toggleSettings(s => !s), [])} />
+        <Summary title="メニュー" isOpen={isSettingsOpen} onClick={useCallback(() => toggleSettings(s => !s), [])} />
         <Collapse isOpen={isSettingsOpen}>
           <Column padding="around">
             <Column>
@@ -104,6 +105,14 @@ export const List = React.memo<{
                 </Column>
               </label>
             </Column>
+            {onReload !== undefined ? (
+              <>
+                <Divider />
+                <Column padding="vertical">
+                  <Button text="リロード" large onClick={onReload} />
+                </Column>
+              </>
+            ) : null}
           </Column>
         </Collapse>
       </Details>

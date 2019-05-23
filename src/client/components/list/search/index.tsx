@@ -49,7 +49,7 @@ export const EntityList = connector(
       );
 
       return searchResultMap[searchQuery];
-    }, [limit, offset]);
+    }, [searchResultMap, searchParams, limit, offset]);
     const selectedEntities = useMemo(() => {
       if (searchResult === undefined) {
         return undefined;
@@ -84,8 +84,17 @@ export const EntityList = connector(
           offset
         });
       }
-    }, [limit, offset]);
+    }, [searchParams, limit, offset]);
 
+    const onReload = useCallback(
+      () =>
+        searchEntity(entityType, {
+          ...searchParams,
+          limit,
+          offset
+        }),
+      [searchParams, limit, offset]
+    );
     const onDelete = useCallback((id: string) => deleteEntity(entityType, id), []);
 
     if (searchResult === undefined || selectedEntities === undefined) {
@@ -104,6 +113,7 @@ export const EntityList = connector(
           count={searchResult.count}
           onChangeLimit={setLimit}
           onChangeOffset={setOffset}
+          onReload={onReload}
           focusKey="s"
         >
           {selectedEntities.map(entity => (
