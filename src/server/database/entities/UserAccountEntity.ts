@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, RelationId, Unique } from "typeorm";
+import { Column, Entity, OneToOne, RelationId, Unique } from "typeorm";
 import { AuthProviderName } from "../../../shared/auth";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
@@ -8,10 +8,7 @@ import { UserEntity } from "./UserEntity";
 export class UserAccountEntity extends BaseEntityClass {
   type: "UserAccount" = "UserAccount";
 
-  @OneToOne(() => UserEntity, user => user.account, {
-    cascade: ["remove"]
-  })
-  @JoinColumn()
+  @OneToOne(() => UserEntity, user => user.account)
   user?: UserEntity;
   @RelationId((account: UserAccountEntity) => account.user)
   userId!: string;
@@ -27,10 +24,9 @@ export class UserAccountEntity extends BaseEntityClass {
   })
   email: string;
 
-  constructor(user: UserEntity, provider: AuthProviderName, accountId: string, email: string) {
+  constructor(provider: AuthProviderName, accountId: string, email: string) {
     super();
 
-    this.user = user;
     this.provider = provider;
     this.accountId = accountId;
     this.email = email;

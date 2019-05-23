@@ -43,6 +43,9 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
     return next(createError(403));
   }
 
+  if (params.title !== undefined) {
+    exercise.title = params.title;
+  }
   if (params.questions !== undefined) {
     exercise.questions = params.questions;
   }

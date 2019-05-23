@@ -13,9 +13,9 @@ import {
 export const insertUser = async (permission: Permission) => {
   const manager = getManager();
 
-  const user = await manager.save(new UserEntity(permission, permission));
-  const account = await manager.save(new UserAccountEntity(user, "github", uuid(), uuid()));
-  const config = await manager.save(new UserConfigEntity(user));
+  const account = new UserAccountEntity("github", uuid(), uuid());
+  const config = new UserConfigEntity();
+  const user = await manager.save(new UserEntity(account, config, permission, permission));
 
   return { account, config, user };
 };

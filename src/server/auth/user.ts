@@ -68,14 +68,11 @@ const updateUser = async (user: UserEntity, { provider, accountId, email }: Auth
 const createUser = async ({ provider, accountId, name, email }: AuthParams) => {
   const manager = getManager();
 
-  const user = new UserEntity(name, "Write");
+  const account = new UserAccountEntity(provider, accountId, email);
+  const config = new UserConfigEntity();
+  const user = new UserEntity(account, config, name, "Write");
+
   const savedUser = await manager.save(user);
-
-  const account = new UserAccountEntity(user, provider, accountId, email);
-  await manager.save(account);
-
-  const config = new UserConfigEntity(user);
-  await manager.save(config);
 
   return savedUser;
 };

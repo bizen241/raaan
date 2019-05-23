@@ -10,13 +10,10 @@ export const setAdminUser = async (env: ProcessEnv) => {
   if (result === undefined) {
     const { adminAccountProvider, adminAccountId, adminAccountName, adminAccountEmail } = env;
 
-    const adminUser = new UserEntity(adminAccountName, "Admin");
+    const adminUserAccount = new UserAccountEntity(adminAccountProvider, adminAccountId, adminAccountEmail);
+    const adminUserConfig = new UserConfigEntity();
+    const adminUser = new UserEntity(adminUserAccount, adminUserConfig, adminAccountName, "Admin");
+
     await manager.save(adminUser);
-
-    const adminUserAccount = new UserAccountEntity(adminUser, adminAccountProvider, adminAccountId, adminAccountEmail);
-    await manager.save(adminUserAccount);
-
-    const adminUserConfig = new UserConfigEntity(adminUser);
-    await manager.save(adminUserConfig);
   }
 };

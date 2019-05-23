@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
+import { Column, Entity, OneToOne, RelationId } from "typeorm";
 import { Lang, Theme } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
@@ -7,10 +7,7 @@ import { UserEntity } from "./UserEntity";
 export class UserConfigEntity extends BaseEntityClass {
   type: "UserConfig" = "UserConfig";
 
-  @OneToOne(() => UserEntity, user => user.config, {
-    cascade: ["remove"]
-  })
-  @JoinColumn()
+  @OneToOne(() => UserEntity, user => user.config)
   user?: UserEntity;
   @RelationId((config: UserConfigEntity) => config.user)
   userId!: string;
@@ -20,10 +17,4 @@ export class UserConfigEntity extends BaseEntityClass {
 
   @Column()
   theme: Theme = "default";
-
-  constructor(user: UserEntity) {
-    super();
-
-    this.user = user;
-  }
 }

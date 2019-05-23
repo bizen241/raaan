@@ -13,7 +13,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
     .createQueryBuilder(ExerciseSummaryEntity, "exerciseSummary")
     .leftJoinAndSelect("exerciseSummary.exercise", "exercise")
     .leftJoinAndSelect("exerciseSummary.tags", "tags")
-    .leftJoinAndSelect("exercise.author", "exercise.author")
+    .leftJoinAndSelect("exercise.author", "author")
     .take(limit)
     .skip(offset);
 

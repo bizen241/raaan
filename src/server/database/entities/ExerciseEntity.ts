@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, RelationId } from "typeorm";
 import { Exercise, Question } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { BaseEntityClass } from "./BaseEntityClass";
@@ -17,8 +17,9 @@ export class ExerciseEntity extends BaseEntityClass {
   authorId!: string;
 
   @OneToOne(() => ExerciseSummaryEntity, exerciseSummary => exerciseSummary.exercise, {
-    cascade: ["insert"]
+    cascade: ["insert", "remove"]
   })
+  @JoinColumn()
   summary?: ExerciseSummaryEntity;
   @RelationId((exercise: ExerciseEntity) => exercise.summary)
   summaryId!: string;

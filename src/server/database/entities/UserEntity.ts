@@ -1,4 +1,4 @@
-import { Column, Entity, OneToOne, RelationId } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
 import { Permission } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserAccountEntity } from "./UserAccountEntity";
@@ -9,15 +9,17 @@ export class UserEntity extends BaseEntityClass {
   type: "User" = "User";
 
   @OneToOne(() => UserAccountEntity, userAccount => userAccount.user, {
-    cascade: ["insert"]
+    cascade: ["insert", "remove"]
   })
+  @JoinColumn()
   account?: UserAccountEntity;
   @RelationId((user: UserEntity) => user.account)
   accountId!: string;
 
   @OneToOne(() => UserConfigEntity, userConfig => userConfig.user, {
-    cascade: ["insert"]
+    cascade: ["insert", "remove"]
   })
+  @JoinColumn()
   config?: UserConfigEntity;
   @RelationId((user: UserEntity) => user.config)
   configId!: string;
@@ -28,9 +30,11 @@ export class UserEntity extends BaseEntityClass {
   @Column()
   permission: Permission;
 
-  constructor(name: string, permission: Permission) {
+  constructor(account: UserAccountEntity, config: UserConfigEntity, name: string, permission: Permission) {
     super();
 
+    this.account = account;
+    this.config = config;
     this.name = name;
     this.permission = permission;
   }
