@@ -10,13 +10,15 @@ export class ExerciseEntity extends BaseEntityClass {
   type: "Exercise" = "Exercise";
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    cascade: ["remove"]
   })
   author?: UserEntity;
   @RelationId((exercise: ExerciseEntity) => exercise.author)
   authorId!: string;
 
-  @OneToOne(() => ExerciseSummaryEntity, exerciseSummary => exerciseSummary.exercise)
+  @OneToOne(() => ExerciseSummaryEntity, exerciseSummary => exerciseSummary.exercise, {
+    cascade: ["insert"]
+  })
   summary?: ExerciseSummaryEntity;
   @RelationId((exercise: ExerciseEntity) => exercise.summary)
   summaryId!: string;

@@ -8,8 +8,7 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
   type: "ExerciseSummary" = "ExerciseSummary";
 
   @OneToOne(() => ExerciseEntity, exercise => exercise.summary, {
-    cascade: true,
-    onDelete: "CASCADE"
+    cascade: ["remove"]
   })
   @JoinColumn()
   exercise?: ExerciseEntity;

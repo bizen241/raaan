@@ -8,12 +8,16 @@ import { UserConfigEntity } from "./UserConfigEntity";
 export class UserEntity extends BaseEntityClass {
   type: "User" = "User";
 
-  @OneToOne(() => UserAccountEntity, userAccount => userAccount.user)
+  @OneToOne(() => UserAccountEntity, userAccount => userAccount.user, {
+    cascade: ["insert"]
+  })
   account?: UserAccountEntity;
   @RelationId((user: UserEntity) => user.account)
   accountId!: string;
 
-  @OneToOne(() => UserConfigEntity, userConfig => userConfig.user)
+  @OneToOne(() => UserConfigEntity, userConfig => userConfig.user, {
+    cascade: ["insert"]
+  })
   config?: UserConfigEntity;
   @RelationId((user: UserEntity) => user.config)
   configId!: string;
