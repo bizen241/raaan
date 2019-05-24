@@ -1,3 +1,4 @@
+import { strict as assert } from "assert";
 import { serialize } from "cookie";
 import { sign } from "cookie-signature";
 import { insertSession, insertUser, testProcessEnv, TestServer } from "../../__tests__/helpers";
@@ -11,7 +12,7 @@ afterAll(async () => {
   await testServer.stop();
 });
 
-test("GET /logout success", async () => {
+test("GET /logout -> 200", async () => {
   const { user } = await insertUser("Write");
   const session = await insertSession(user);
 
@@ -21,14 +22,20 @@ test("GET /logout success", async () => {
     }
   });
 
-  expect(response.status).toEqual(200);
-  expect(response.headers.get("Content-Type")).toContain("text/plain");
-  expect(response.headers.get("Clear-Site-Data")).toBe(`"cache", "cookies", "storage", "executionContexts"`);
+  assert.equal(response.status, 200);
+
+  const contentTypeHeader = response.headers.get("Content-Type");
+  assert(contentTypeHeader && contentTypeHeader.includes("text/plain"));
+
+  const clearSiteDataHeader = response.headers.get("Clear-Site-Data");
+  assert(clearSiteDataHeader && clearSiteDataHeader === `"cache", "cookies", "storage", "executionContexts"`);
 });
 
-test("GET /logout failure", async () => {
+test("GET /logout -> 403", async () => {
   const response = await testServer.fetch("/logout");
 
-  expect(response.status).toEqual(403);
-  expect(response.headers.get("Content-Type")).toContain("text/html");
+  assert.equal(response.status, 403);
+
+  const contentTypeHeader = response.headers.get("Content-Type");
+  assert(contentTypeHeader && contentTypeHeader.includes("text/html"));
 });

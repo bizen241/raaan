@@ -1,3 +1,4 @@
+import { strict as assert } from "assert";
 import { UserSession } from "../../../../shared/api/entities";
 import { SearchResponse } from "../../../../shared/api/response/search";
 import { createHttpMocks, insertSession, insertUser, TestDatabase } from "../../../__tests__/helpers";
@@ -31,8 +32,8 @@ test("GET /api/user-sessions", async () => {
 
   await GET(req, res, () => null);
 
-  expect(res.statusCode).toEqual(200);
+  assert.equal(res._getStatusCode(), 200);
 
   const data = JSON.parse(res._getData()) as SearchResponse;
-  expect(data.ids).toBeDefined();
+  assert(data.ids);
 });

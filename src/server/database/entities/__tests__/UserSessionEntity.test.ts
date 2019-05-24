@@ -1,3 +1,4 @@
+import { strict as assert } from "assert";
 import { getManager } from "typeorm";
 import { insertSession, insertUser, TestDatabase } from "../../../__tests__/helpers";
 import { UserSessionEntity } from "../UserSessionEntity";
@@ -12,13 +13,10 @@ afterAll(async () => {
 });
 
 test("UserSessionEntity", async () => {
-  const manager = getManager();
-
   const { user } = await insertUser("Write");
 
   await insertSession(user);
 
-  const userSessions = await manager.find(UserSessionEntity);
-
-  expect(userSessions.length).toBe(1);
+  const userSessions = await getManager().find(UserSessionEntity);
+  assert.equal(userSessions.length, 1);
 });

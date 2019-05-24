@@ -31,32 +31,23 @@ export const getProcessEnv = (): ProcessEnv => {
 
   if (HOST === undefined) {
     throw new Error("HOST is not defined");
-  }
-  if (PORT === undefined) {
+  } else if (PORT === undefined) {
     throw new Error("PORT is not defined");
-  }
-  if (DATABASE_URL === undefined) {
+  } else if (DATABASE_URL === undefined) {
     throw new Error("DATABASE_URL is not defined");
-  }
-  if (SESSION_SECRET === undefined) {
+  } else if (SESSION_SECRET === undefined) {
     throw new Error("SESSION_SECRET is not defined");
-  }
-  if (ADMIN_ACCOUNT_PROVIDER === undefined) {
+  } else if (ADMIN_ACCOUNT_PROVIDER === undefined) {
     throw new Error("ADMIN_ACCOUNT_PROVIDER is not defined");
-  }
-  if (ADMIN_ACCOUNT_ID === undefined) {
+  } else if (ADMIN_ACCOUNT_ID === undefined) {
     throw new Error("ADMIN_ACCOUNT_ID is not defined");
-  }
-  if (ADMIN_ACCOUNT_NAME === undefined) {
+  } else if (ADMIN_ACCOUNT_NAME === undefined) {
     throw new Error("ADMIN_ACCOUNT_NAME is not defined");
-  }
-  if (ADMIN_ACCOUNT_EMAIL === undefined) {
+  } else if (ADMIN_ACCOUNT_EMAIL === undefined) {
     throw new Error("ADMIN_ACCOUNT_EMAIL is not defined");
-  }
-  if (GITHUB_CLIENT_ID === undefined) {
+  } else if (GITHUB_CLIENT_ID === undefined) {
     throw new Error("GITHUB_CLIENT_ID is not defined");
-  }
-  if (GITHUB_CLIENT_SECRET === undefined) {
+  } else if (GITHUB_CLIENT_SECRET === undefined) {
     throw new Error("GITHUB_CLIENT_SECRET is not defined");
   }
 

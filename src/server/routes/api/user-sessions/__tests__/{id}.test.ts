@@ -1,7 +1,10 @@
+import { strict as assert } from "assert";
+import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { EntityStore } from "../../../../../shared/api/response/get";
 import { createHttpMocks, insertSession, insertUser, TestDatabase } from "../../../../__tests__/helpers";
 import { PathParams } from "../../../../api/operation";
+import { UserSessionEntity } from "../../../../database/entities";
 import { DELETE, GET } from "../{id}";
 
 const testDatabase = new TestDatabase();
@@ -26,7 +29,7 @@ test("GET /api/user-sessions/{id} -> 404", async () => {
 
   await GET(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(404);
+  assert.equal(res._getStatusCode(), 404);
 });
 
 test("GET /api/user-sessions/{id} -> 403", async () => {
@@ -41,7 +44,7 @@ test("GET /api/user-sessions/{id} -> 403", async () => {
 
   await GET(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(403);
+  assert.equal(res._getStatusCode(), 403);
 });
 
 test("GET /api/user-sessions/{id} -> 200", async () => {
@@ -55,10 +58,10 @@ test("GET /api/user-sessions/{id} -> 200", async () => {
 
   await GET(req, res, next);
 
-  expect(res.statusCode).toEqual(200);
+  assert.equal(res._getStatusCode(), 200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.User[user.id]).toBeDefined();
+  assert(data.User[user.id]);
 });
 
 test("DELETE /api/user-sessions/{id} -> 404", async () => {
@@ -70,7 +73,7 @@ test("DELETE /api/user-sessions/{id} -> 404", async () => {
 
   await DELETE(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(404);
+  assert.equal(res._getStatusCode(), 404);
 });
 
 test("DELETE /api/user-sessions/{id} -> 403", async () => {
@@ -85,7 +88,7 @@ test("DELETE /api/user-sessions/{id} -> 403", async () => {
 
   await DELETE(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(403);
+  assert.equal(res._getStatusCode(), 403);
 });
 
 test("DELETE /api/user-sessions/{id} -> 200", async () => {
@@ -99,5 +102,8 @@ test("DELETE /api/user-sessions/{id} -> 200", async () => {
 
   await DELETE(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(200);
+  assert.equal(res._getStatusCode(), 200);
+
+  const deletedSession = await getManager().findOne(UserSessionEntity, session.id);
+  assert(!deletedSession);
 });

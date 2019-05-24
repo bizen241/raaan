@@ -1,3 +1,4 @@
+import { strict as assert } from "assert";
 import * as uuid from "uuid";
 import { EntityStore } from "../../../../../shared/api/response/get";
 import { createHttpMocks, insertUser, TestDatabase } from "../../../../__tests__/helpers";
@@ -26,7 +27,7 @@ test("GET /api/user-accounts/{id} -> 404", async () => {
 
   await GET(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(404);
+  assert.equal(res._getStatusCode(), 404);
 });
 
 test("GET /api/user-accounts/{id} -> 403", async () => {
@@ -40,7 +41,7 @@ test("GET /api/user-accounts/{id} -> 403", async () => {
 
   await GET(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(403);
+  assert.equal(res._getStatusCode(), 403);
 });
 
 test("GET /api/user-accounts/{id} -> 200", async () => {
@@ -52,9 +53,9 @@ test("GET /api/user-accounts/{id} -> 200", async () => {
 
   await GET(req, res, next);
 
-  expect(res.statusCode).toEqual(200);
+  assert.equal(res._getStatusCode(), 200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.UserAccount[account.id]).toBeDefined();
-  expect(data.User[user.id]).toBeDefined();
+  assert(data.User[user.id]);
+  assert(data.UserAccount[account.id]);
 });

@@ -1,3 +1,4 @@
+import { strict as assert } from "assert";
 import { EntityType } from "../../../../shared/api/entities";
 import { createEntityStore } from "../../../../shared/api/response/get";
 import { createSearchResultStore, mergeSearchResultStore } from "../search";
@@ -32,5 +33,5 @@ test("merge SearchResultStore", () => {
 
   const mergedSearchResult = mergedSearchResultMap[entityType][query];
 
-  expect(mergedSearchResult && mergedSearchResult.ids).toBeDefined();
+  assert(mergedSearchResult && mergedSearchResult.ids);
 });
