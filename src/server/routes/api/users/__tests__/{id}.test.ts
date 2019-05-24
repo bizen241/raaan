@@ -1,8 +1,9 @@
+import { strict as assert } from "assert";
 import { getManager } from "typeorm";
 import { EntityStore } from "../../../../../shared/api/response/get";
 import { createHttpMocks, insertUser, TestDatabase } from "../../../../__tests__/helpers";
 import { PathParams } from "../../../../api/operation";
-import { UserAccountEntity, UserEntity } from "../../../../database/entities";
+import { UserAccountEntity, UserConfigEntity, UserEntity } from "../../../../database/entities";
 import { DELETE, GET } from "../{id}";
 
 const testDatabase = new TestDatabase();
@@ -27,10 +28,11 @@ test("GET /api/users/{user} -> 200", async () => {
 
   await GET(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(200);
+  assert.equal(res._getStatusCode(), 200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.User[user.id]).toBeDefined();
+
+  assert(data.User[user.id]);
 });
 
 test("GET /api/users/{user} -> 404", async () => {
@@ -41,16 +43,14 @@ test("GET /api/users/{user} -> 404", async () => {
   };
 
   await getManager().remove(user);
-
   await GET(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(404);
+  assert.equal(res._getStatusCode(), 404);
 });
 
 test("DELETE /api/users/{user} -> 200", async () => {
   const { req, res, next } = await createHttpMocks("Admin");
-
-  const { user, account } = await insertUser("Write");
+  const { user, account, config } = await insertUser("Write");
 
   (req.params as PathParams) = {
     id: user.id
@@ -60,13 +60,15 @@ test("DELETE /api/users/{user} -> 200", async () => {
 
   await DELETE(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(200);
+  assert.equal(res._getStatusCode(), 200);
 
   const deletedUser = await manager.findOne(UserEntity, user.id);
   const deletedAccount = await manager.findOne(UserAccountEntity, account.id);
+  const deletedConfig = await manager.findOne(UserConfigEntity, config.id);
 
-  expect(deletedUser).toBeUndefined();
-  expect(deletedAccount).toBeUndefined();
+  assert.equal(deletedUser, undefined);
+  assert.equal(deletedAccount, undefined);
+  assert.equal(deletedConfig, undefined);
 });
 
 test("DELETE /api/users/{user} -> 403", async () => {
@@ -74,7 +76,7 @@ test("DELETE /api/users/{user} -> 403", async () => {
 
   await DELETE(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(403);
+  assert.equal(res._getStatusCode(), 403);
 });
 
 test("DELETE /api/users/{user} -> 404", async () => {
@@ -85,10 +87,9 @@ test("DELETE /api/users/{user} -> 404", async () => {
   };
 
   await getManager().remove(user);
-
   await DELETE(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(404);
+  assert.equal(res._getStatusCode(), 404);
 });
 
 test("DELETE /api/users/{user} -> 403", async () => {
@@ -100,5 +101,5 @@ test("DELETE /api/users/{user} -> 403", async () => {
 
   await DELETE(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(403);
+  assert.equal(res._getStatusCode(), 403);
 });

@@ -1,3 +1,4 @@
+import { strict as assert } from "assert";
 import { SearchResponse } from "../../../../shared/api/response/search";
 import { createHttpMocks, insertExercise, TestDatabase } from "../../../__tests__/helpers";
 import { GET } from "../exercise-summaries";
@@ -15,15 +16,14 @@ beforeEach(async () => {
   await testDatabase.reset();
 });
 
-test("GET /api/exercises", async () => {
+test("GET /api/exercise-summaries", async () => {
   const { req, res, next, user } = await createHttpMocks("Guest");
-
-  const { exercise } = await insertExercise(user);
+  const { exerciseSummary } = await insertExercise(user);
 
   await GET(req, res, next);
 
-  const data = JSON.parse(res._getData()) as SearchResponse;
+  assert.equal(res._getStatusCode(), 200);
 
-  expect(res.statusCode).toEqual(200);
-  expect(data.ids[0]).toEqual(exercise.id);
+  const data = JSON.parse(res._getData()) as SearchResponse;
+  assert.equal(data.ids[0], exerciseSummary.id);
 });

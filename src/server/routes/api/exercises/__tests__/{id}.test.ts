@@ -1,3 +1,4 @@
+import { strict as assert } from "assert";
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { EntityStore } from "../../../../../shared/api/response/get";
@@ -28,7 +29,7 @@ test("GET /api/contents/{id} -> 404", async () => {
 
   await GET(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(404);
+  assert.equal(res._getStatusCode(), 404);
 });
 
 test("GET /api/contents/{id} -> 200", async () => {
@@ -42,10 +43,10 @@ test("GET /api/contents/{id} -> 200", async () => {
 
   await GET(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(200);
+  assert.equal(res._getStatusCode(), 200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.Exercise[exercise.id]).toBeDefined();
+  assert(data.Exercise[exercise.id]);
 });
 
 test("DELETE /api/contents/{id} -> 404", async () => {
@@ -57,7 +58,7 @@ test("DELETE /api/contents/{id} -> 404", async () => {
 
   await DELETE(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(404);
+  assert.equal(res._getStatusCode(), 404);
 });
 
 test("DELETE /api/contents/{id} -> 200", async () => {
@@ -71,11 +72,11 @@ test("DELETE /api/contents/{id} -> 200", async () => {
 
   await DELETE(req, res, next);
 
-  expect(res._getStatusCode()).toEqual(200);
+  assert.equal(res._getStatusCode(), 200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  expect(data.Exercise[exercise.id]).toBeUndefined();
+  assert.equal(data.Exercise[exercise.id], undefined);
 
   const removedExercise = await getManager().findOne(ExerciseEntity, exercise.id);
-  expect(removedExercise).toBeUndefined();
+  assert.equal(removedExercise, undefined);
 });

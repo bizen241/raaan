@@ -7,7 +7,7 @@ export class UserSessionEntity extends BaseEntityClass {
   type: "UserSession" = "UserSession";
 
   @ManyToOne(() => UserEntity, {
-    cascade: ["remove"]
+    onDelete: "CASCADE"
   })
   user?: UserEntity;
   @RelationId((userSession: UserSessionEntity) => userSession.user)

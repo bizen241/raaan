@@ -1,4 +1,4 @@
-import { Entity, JoinTable, ManyToMany, OneToOne, RelationId } from "typeorm";
+import { Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { ExerciseTagEntity } from "./ExerciseTagEntity";
@@ -7,7 +7,10 @@ import { ExerciseTagEntity } from "./ExerciseTagEntity";
 export class ExerciseSummaryEntity extends BaseEntityClass {
   type: "ExerciseSummary" = "ExerciseSummary";
 
-  @OneToOne(() => ExerciseEntity, exercise => exercise.summary)
+  @OneToOne(() => ExerciseEntity, exercise => exercise.summary, {
+    onDelete: "CASCADE"
+  })
+  @JoinColumn()
   exercise?: ExerciseEntity;
   @RelationId((exerciseSummary: ExerciseSummaryEntity) => exerciseSummary.exercise)
   exerciseId!: string;
