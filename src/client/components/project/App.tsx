@@ -7,7 +7,6 @@ import { ErrorBoundary } from "./ErrorBoundary";
 import { Initializer } from "./Initializer";
 import { Router } from "./Router";
 import { Style } from "./Style";
-import { Translator } from "./Translator";
 
 export const App: React.FunctionComponent = () => {
   const { store, history, persistor } = configureStore();
@@ -18,11 +17,9 @@ export const App: React.FunctionComponent = () => {
         <PersistGate persistor={persistor}>
           <ConnectedRouter history={history}>
             <Initializer>
-              <Translator>
-                <Style>
-                  <Router />
-                </Style>
-              </Translator>
+              <Style>
+                <Router />
+              </Style>
             </Initializer>
           </ConnectedRouter>
         </PersistGate>

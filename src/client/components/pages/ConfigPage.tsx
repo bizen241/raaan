@@ -1,5 +1,4 @@
 import { Button, Callout, Classes, Divider } from "@blueprintjs/core";
-import { Trans } from "@lingui/react";
 import * as React from "react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
