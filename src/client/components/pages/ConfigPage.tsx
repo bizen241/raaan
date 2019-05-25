@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { connector } from "../../reducers";
 import { EntityEditor } from "../editor";
 import { UserContext } from "../project/Context";
+import { Message } from "../project/Message";
 import { Column } from "../ui";
 import { Page } from "./Page";
 
@@ -21,14 +22,18 @@ export const ConfigPage = connector(
     return (
       <Page>
         <Column padding="vertical">
-          <h2 className={Classes.HEADING}>設定</h2>
+          <h2 className={Classes.HEADING}>
+            <Message id="settings" />
+          </h2>
           <Column padding="vertical">
             <EntityEditor entityType="UserConfig" entityId={currentUser.configId} />
           </Column>
         </Column>
         <Divider />
         <Column padding="vertical">
-          <h2 className={Classes.HEADING}>更新</h2>
+          <h2 className={Classes.HEADING}>
+            <Message id="update" />
+          </h2>
           <Column padding="vertical">
             {hasUpdate ? (
               <Button text="更新する" onClick={() => location.reload()} />
@@ -39,21 +44,23 @@ export const ConfigPage = connector(
         </Column>
         <Divider />
         <Column padding="vertical">
-          <h2 className={Classes.HEADING}>アカウント</h2>
+          <h2 className={Classes.HEADING}>
+            <Message id="account" />
+          </h2>
           <Column padding="vertical">
             {isGuest ? (
               <Link
                 className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_PRIMARY} ${Classes.iconClass("key")}`}
                 to="/login"
               >
-                <Trans>ログイン</Trans>
+                <Message id="login" />
               </Link>
             ) : (
               <a
                 className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.INTENT_WARNING} ${Classes.iconClass("key")}`}
                 href="/logout"
               >
-                <Trans>ログアウト</Trans>
+                <Message id="logout" />
               </a>
             )}
           </Column>

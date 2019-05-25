@@ -2,6 +2,7 @@ import { Classes, Divider } from "@blueprintjs/core";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../reducers";
+import { Message } from "../project/Message";
 import { Column } from "../ui";
 import { Page } from "./Page";
 
@@ -48,7 +49,7 @@ export const HomePage = connector(
             <h2 className={Classes.HEADING}>その他</h2>
             <Column padding="vertical">
               <Link className={`${Classes.BUTTON} ${Classes.LARGE} ${Classes.iconClass("cog")}`} to="/config">
-                設定
+                <Message id="settings" />
               </Link>
             </Column>
           </Column>

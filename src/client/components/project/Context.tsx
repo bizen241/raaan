@@ -1,6 +1,6 @@
 import * as React from "react";
 import { createContext, useMemo } from "react";
-import { User, UserConfig } from "../../../shared/api/entities";
+import { Lang, LangName, User, UserConfig } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 
 const guestUserId = Date.now().toString();
@@ -27,6 +27,7 @@ export const guestUserConfig: UserConfig = {
 
 export const UserContext = createContext<User>(guestUser);
 export const ConfigContext = createContext<UserConfig>(guestUserConfig);
+export const LangContext = createContext<LangName>("ja");
 
 export const Context = React.memo<{
   user: User;
@@ -34,7 +35,7 @@ export const Context = React.memo<{
   config: UserConfig;
   configParams?: SaveParams<UserConfig>;
   children: React.ReactNode;
-}>(({ user, userParams, config, configParams, children }) => {
+}>(({ user, userParams = {}, config, configParams = {}, children }) => {
   const mergedUser = useMemo<User>(
     () => ({
       ...user,
@@ -50,9 +51,16 @@ export const Context = React.memo<{
     [config, configParams]
   );
 
+  const lang = getLang(configParams.lang || config.lang);
+
   return (
     <UserContext.Provider value={mergedUser}>
-      <ConfigContext.Provider value={mergedConfig}>{children}</ConfigContext.Provider>
+      <ConfigContext.Provider value={mergedConfig}>
+        <LangContext.Provider value={lang}>{children}</LangContext.Provider>
+      </ConfigContext.Provider>
     </UserContext.Provider>
   );
 });
+
+const getLang = (lang: Lang | undefined) =>
+  lang === "default" || lang === "system" || lang === undefined ? (navigator.language.slice(0, 2) as LangName) : lang;

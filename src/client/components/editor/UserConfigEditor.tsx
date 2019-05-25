@@ -1,11 +1,11 @@
 import { Classes } from "@blueprintjs/core";
-import { Trans } from "@lingui/react";
 import * as React from "react";
 import { useCallback } from "react";
 import { EntityEditorProps } from ".";
 import { Lang, Theme, UserConfig } from "../../../shared/api/entities";
 import { userConfigActions } from "../../actions/userConfig";
 import { connector } from "../../reducers";
+import { Message } from "../project/Message";
 import { Column } from "../ui";
 
 const langNameToLabel: { [T in Lang]: string } = {
@@ -36,7 +36,7 @@ export const UserConfigEditor = connector(
       <Column>
         <Column padding="vertical">
           <label className={`${Classes.LABEL}`}>
-            <Trans>言語</Trans>
+            <Message id="language" />
             <Column className={`${Classes.SELECT} ${Classes.LARGE}`}>
               <select
                 defaultValue={lang || "default"}
@@ -56,7 +56,7 @@ export const UserConfigEditor = connector(
         </Column>
         <Column padding="vertical">
           <label className={`${Classes.LABEL}`}>
-            <Trans>テーマ</Trans>
+            <Message id="theme" />
             <Column className={`${Classes.SELECT} ${Classes.LARGE}`}>
               <select
                 defaultValue={theme || "default"}

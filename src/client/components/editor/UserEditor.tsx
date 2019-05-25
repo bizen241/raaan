@@ -1,5 +1,4 @@
 import { Classes } from "@blueprintjs/core";
-import { Trans } from "@lingui/react";
 import * as React from "react";
 import { useCallback } from "react";
 import { EntityEditorProps } from ".";
@@ -28,7 +27,7 @@ export const UserEditor = connector(
       <Column>
         <Column padding="around">
           <label className={Classes.LABEL}>
-            <Trans>名前</Trans>
+            名前
             <Column>
               <input
                 className={Classes.INPUT}
@@ -43,7 +42,7 @@ export const UserEditor = connector(
         </Column>
         <Column padding="around">
           <label className={`${Classes.LABEL} ${Classes.MODIFIER_KEY}`}>
-            <Trans>権限</Trans>
+            権限
             <Column className={`${Classes.SELECT} ${Classes.MODIFIER_KEY}`}>
               <select
                 defaultValue={permission || "Guest"}
