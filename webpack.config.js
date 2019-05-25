@@ -6,6 +6,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 const HtmlPlugin = require("html-webpack-plugin");
 const { join } = require("path");
 const webpack = require("webpack");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const webpackDevServer = require("webpack-dev-server");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 
@@ -37,6 +38,7 @@ const plugins = [
 ];
 
 if (!isDevelopment) {
+  plugins.push(new BundleAnalyzerPlugin());
   plugins.push(
     new WorkboxPlugin.GenerateSW({
       swDest: "sw.js",
