@@ -5,7 +5,7 @@ import { EntityEditor } from "../editor";
 import { PageProps } from "../project/Router";
 import { Page } from "./Page";
 
-export const EditExercisePage = connector(
+const EditExercisePage = connector(
   (_, ownProps: PageProps) => ({
     id: ownProps.match.params.id
   }),
@@ -19,3 +19,5 @@ export const EditExercisePage = connector(
     );
   }
 );
+
+export default EditExercisePage;

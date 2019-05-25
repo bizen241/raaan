@@ -10,7 +10,7 @@ import { Message } from "../project/Message";
 import { Column } from "../ui";
 import { Page } from "./Page";
 
-export const ConfigPage = connector(
+const ConfigPage = connector(
   state => ({
     hasUpdate: state.app.hasUpdate
   }),
@@ -69,3 +69,5 @@ export const ConfigPage = connector(
     );
   }
 );
+
+export default ConfigPage;

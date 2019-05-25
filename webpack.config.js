@@ -74,9 +74,12 @@ const webpackDevServerConfiguration = isDevelopment
 const webpackConfiguration = {
   mode,
   devtool: isDevelopment ? "source-map" : undefined,
-  entry: join(__dirname, "src/client/index.ts"),
+  entry: {
+    index: join(__dirname, "src/client/index.ts")
+  },
   output: {
     filename: "[name].js",
+    chunkFilename: "[name].bundle.js",
     path: join(__dirname, "dist"),
     publicPath: "/"
   },
@@ -88,9 +91,6 @@ const webpackConfiguration = {
       {
         test: /\.tsx?$/,
         use: [
-          {
-            loader: "babel-loader"
-          },
           {
             loader: "ts-loader",
             options: {
