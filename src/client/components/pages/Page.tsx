@@ -1,10 +1,7 @@
-import { Button, Classes, Navbar, NavbarGroup } from "@blueprintjs/core";
-import { goBack } from "connected-react-router";
 import * as React from "react";
-import { Link } from "react-router-dom";
-import { connector } from "../../reducers";
 import { styled } from "../../style";
-import { Column, Row } from "../ui";
+import { Header } from "../project/Header";
+import { Column } from "../ui";
 
 const Outer = styled(Column)`
   width: 100%;
@@ -32,46 +29,18 @@ const Outer = styled(Column)`
   }
 `;
 
-export const Page = connector(
-  state => ({
-    pathname: state.router.location.pathname
-  }),
-  () => ({
-    back: goBack
-  }),
-  ({ pathname, back, children }) => {
-    const isHome = pathname === "/";
-    const isConfig = pathname === "/config";
+const Inner = styled(Column)`
+  width: 100%;
+  maxwidth: 1000px;
+`;
 
-    return (
-      <Outer>
-        <Navbar style={{ display: "flex", justifyContent: "center", padding: 0 }}>
-          <NavbarGroup align="center" style={{ width: "100%", maxWidth: "1000px" }}>
-            <Row padding="around">
-              <Button icon="arrow-left" onClick={back} />
-            </Row>
-            <Row padding="around" center="both" flex={1}>
-              {isHome ? (
-                <span className={`${Classes.TEXT_LARGE} ${Classes.TEXT_DISABLED}`}>Raan</span>
-              ) : (
-                <Link className={`${Classes.TEXT_LARGE}`} to="/">
-                  Raan
-                </Link>
-              )}
-            </Row>
-            <Row padding="around">
-              {isConfig ? (
-                <Button icon="cog" disabled />
-              ) : (
-                <Link className={`${Classes.BUTTON} ${Classes.iconClass("cog")}`} to="/config" />
-              )}
-            </Row>
-          </NavbarGroup>
-        </Navbar>
-        <Column padding="around" style={{ width: "100%", maxWidth: "1000px" }}>
-          {children}
-        </Column>
-      </Outer>
-    );
-  }
-);
+export const Page: React.FunctionComponent = ({ children }) => {
+  return (
+    <Outer>
+      <Header />
+      <Inner padding="around" style={{ width: "100%", maxWidth: "1000px" }}>
+        {children}
+      </Inner>
+    </Outer>
+  );
+};

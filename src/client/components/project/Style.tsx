@@ -30,13 +30,14 @@ export const Style = React.memo<{ children: React.ReactNode }>(({ children }) =>
       theme={useMemo(
         () => ({
           name: themeName,
-          background: themeName === "light" ? "#ffffff" : "#30404d",
+          base: themeName === "light" ? "#eeeeee" : "#212121",
+          main: themeName === "light" ? "#333333" : "#eeeeee",
           accent: "#eeeeee"
         }),
         [themeName]
       )}
     >
-      <div className={themeName === "light" ? "bp3-light" : "bp3-dark"}>
+      <div>
         <GlobalStyle />
         {children}
       </div>
@@ -53,9 +54,10 @@ const GlobalStyle = createGlobalStyle`
     width: 100vw;
     height: 100vh;
     margin: 0;
-    background-color: ${p => p.theme.background};
+    background-color: ${p => p.theme.base};
     overflow-x: hidden;
     overflow-y: scroll;
+    font-size: 16px;
   }
 
   #root {

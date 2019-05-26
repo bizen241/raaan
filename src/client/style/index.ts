@@ -10,7 +10,8 @@ const {
   ThemeProvider
 } = styledComponents as ThemedStyledComponentsModule<{
   name: "dark" | "light";
-  background: string;
+  base: string;
+  main: string;
   accent: string;
 }>;
 
