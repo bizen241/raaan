@@ -1,17 +1,18 @@
-import { Classes, Collapse, MenuItem } from "@blueprintjs/core";
-// import { CompositeDecorator, ContentState, Editor, EditorState } from "draft-js";
+import { Card, CardContent, CardHeader, IconButton, Menu, MenuItem, TextField } from "@material-ui/core";
+import { makeStyles, Theme } from "@material-ui/core/styles";
+import { MoreVert } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { Question } from "../../../../shared/api/entities";
 import {
   addRuby,
+  rubyAnchorCharacter,
   rubySeparatorCharacter,
-  rubyTerminatorCharacter,
-  rubyAnchorCharacter
+  rubyTerminatorCharacter
 } from "../../../domain/content/ruby";
 import { connector } from "../../../reducers";
 import { styled } from "../../../style";
-import { Column, Details, PopMenu, Summary } from "../../ui";
+import { Column } from "../../ui";
 
 export const QuestionEditor = connector(
   (
@@ -30,24 +31,12 @@ export const QuestionEditor = connector(
     openDialog: actions.dialog.open
   }),
   ({ bufferId, question, questionIndex, updateQuestion, deleteQuestion, openDialog, onFocus }) => {
-    const [isEditorOpen, toggleEditor] = useState(true);
+    const [menuAnchorElement, setMenuAnchorElement] = useState(null);
     const [isRubyRequested, toggleRubyState] = useState(false);
-    // const [editorState, setEditorState] = useState(createEditorState(question.value));
     const [isCompositing, toggleCompositionState] = useState(false);
 
     const { value } = question;
 
-    /*
-    useEffect(() => {
-      if (isRubyRequested) {
-        addRuby(editorState.getCurrentContent().getPlainText(), result => {
-          updateQuestion(bufferId, questionIndex, "value", result);
-          setEditorState(createEditorState(result));
-          toggleRubyState(false);
-        });
-      }
-    }, [isRubyRequested]);
-    */
     useEffect(() => {
       if (isRubyRequested) {
         addRuby(value, result => {
@@ -57,34 +46,9 @@ export const QuestionEditor = connector(
       }
     }, [isRubyRequested]);
 
-    const hoge: JSX.Element[] = [];
-    value.split("\n").forEach(line => {
-      // let cursor = 0;
-
-      /*
-        const anchorPosition = value.indexOf(rubyAnchorCharacter, cursor);
-        if (anchorPosition !== -1) {
-          hoge.push(<span key={cursor}>{value.slice(cursor, anchorPosition)}</span>, <span key={anchorPosition}>{rubyAnchorCharacter}</span>);
-
-          cursor = anchorPosition + 1;
-
-          return;
-        }
-
-        const separatorPosition = value.indexOf(rubySeparatorCharacter, cursor);
-        const terminatorPosition = value.indexOf(rubyTerminatorCharacter, cursor);
-        if (separatorPosition !== -1 && terminatorPosition !== -1 && separatorPosition < terminatorPosition) {
-          hoge.push(
-            <span></span>
-          );
-
-          cursor = terminatorPosition + 1;
-        }
-
-        if (terminatorPosition !== -1) {
-
-        }
-        */
+    const valueChunks: JSX.Element[] = [];
+    const valueLines = value.split("\n");
+    valueLines.forEach(line => {
       let cursor = 0;
       let matched: RegExpExecArray | null;
 
@@ -98,10 +62,10 @@ export const QuestionEditor = connector(
         const start = matched.index;
 
         if (cursor !== start) {
-          hoge.push(<span key={cursor}>{line.slice(cursor, start)}</span>);
+          valueChunks.push(<span key={cursor}>{line.slice(cursor, start)}</span>);
         }
 
-        hoge.push(
+        valueChunks.push(
           <span key={start} style={{ color: "#999" }}>
             {rubyAnchorCharacter}
           </span>,
@@ -117,144 +81,89 @@ export const QuestionEditor = connector(
       }
 
       if (cursor === 0) {
-        hoge.push(<span key="last">{line + "\n"}</span>);
+        valueChunks.push(<span key="last">{line + "\n"}</span>);
       } else {
-        hoge.push(<span key="last">{line.slice(cursor) + "\n"}</span>);
+        valueChunks.push(<span key="last">{line.slice(cursor) + "\n"}</span>);
       }
     });
 
+    const classes = useStyles({ isCompositing });
+
     return (
-      <Details onFocus={useCallback(() => onFocus(questionIndex), [questionIndex])}>
-        <Summary
+      <Card onFocus={useCallback(() => onFocus(questionIndex), [questionIndex])}>
+        <CardHeader
           title={questionIndex.toString()}
-          isOpen={isEditorOpen}
-          onClick={useCallback(() => toggleEditor(s => !s), [])}
-        >
-          <PopMenu
-            items={[
-              <MenuItem
-                key="p"
-                text="プレビュー (p)"
-                onClick={useCallback(() => openDialog("QuestionPreviewer"), [])}
-              />,
-              <MenuItem key="r" text="ルビ (r)" onClick={useCallback(() => toggleRubyState(true), [])} />,
-              <MenuItem
-                key="d"
-                text="削除 (Delete)"
-                onClick={useCallback(() => deleteQuestion(bufferId, questionIndex), [questionIndex])}
-                intent="danger"
-              />
-            ]}
-            hotKeys={{}}
-          />
-        </Summary>
-        <Collapse isOpen={isEditorOpen}>
-          <Column padding="around">
-            <Column style={{ position: "relative" }}>
-              {/*
-              <Editor
-                editorState={editorState}
-                onChange={useCallback(
-                  (nextEditorState: EditorState) => {
-                    updateQuestion(
-                      bufferId,
-                      questionIndex,
-                      "value",
-                      nextEditorState.getCurrentContent().getPlainText()
-                    );
-                    setEditorState(nextEditorState);
-                  },
-                  [questionIndex]
-                )}
-              />
-              */}
-              {!isCompositing ? <Highlight>{hoge}</Highlight> : null}
-              <TextArea
-                isCompositing={isCompositing}
-                onCompositionStart={useCallback(() => toggleCompositionState(true), [])}
-                onCompositionEnd={useCallback(() => toggleCompositionState(false), [])}
-                className={Classes.INPUT}
-                defaultValue={question.value}
-                onChange={useCallback(
-                  (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    updateQuestion(bufferId, questionIndex, "value", e.target.value),
-                  [questionIndex]
-                )}
-              />
-            </Column>
+          action={
+            <div>
+              <IconButton onClick={useCallback(e => setMenuAnchorElement(e.currentTarget), [])}>
+                <MoreVert />
+              </IconButton>
+              <Menu
+                anchorEl={menuAnchorElement}
+                open={Boolean(menuAnchorElement)}
+                onClose={useCallback(() => setMenuAnchorElement(null), [])}
+              >
+                <MenuItem onClick={useCallback(() => openDialog("QuestionPreviewer"), [])}>プレビュー</MenuItem>
+                <MenuItem onClick={useCallback(() => toggleRubyState(true), [])}>ルビ</MenuItem>
+                <MenuItem onClick={useCallback(() => deleteQuestion(bufferId, questionIndex), [questionIndex])}>
+                  削除
+                </MenuItem>
+              </Menu>
+            </div>
+          }
+        />
+        <CardContent>
+          <Column style={{ position: "relative" }}>
+            {!isCompositing ? <Highlight>{valueChunks}</Highlight> : null}
+            <TextField
+              variant="outlined"
+              multiline
+              className={classes.textField}
+              InputProps={{
+                classes: {
+                  inputMultiline: classes.inputMultiline
+                }
+              }}
+              onCompositionStart={useCallback(() => toggleCompositionState(true), [])}
+              onCompositionEnd={useCallback(() => toggleCompositionState(false), [])}
+              defaultValue={question.value}
+              onChange={useCallback(
+                (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  updateQuestion(bufferId, questionIndex, "value", e.target.value),
+                [questionIndex]
+              )}
+            />
           </Column>
-        </Collapse>
-      </Details>
+        </CardContent>
+      </Card>
     );
   }
 );
 
+const useStyles = makeStyles<Theme, { isCompositing: boolean }>(theme => ({
+  textField: {
+    position: "relative",
+    zIndex: 2
+  },
+  inputMultiline: props => ({
+    backgroundColor: "transparent",
+    caretColor: theme.palette.type === "light" ? "black" : "white",
+    color: props.isCompositing ? "inherit" : "transparent"
+  })
+}));
+
 const Highlight = styled.div`
   position: absolute;
-  font-size: 14px;
+  font-size: 16px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1.1875em;
   z-index: 1;
   pointer-events: none;
   background-color: transparent;
-  padding: 10px;
+  padding: 18.5px 14px
   white-space: pre-wrap;
   word-wrap: break-word;
   color: inherit;
+  width: 100%;
+  height: 100%;
 `;
-
-const TextArea = styled.textarea<{
-  isCompositing: boolean;
-}>`
-  position: relative;
-  margin: 0;
-  background-color: transparent !important;
-  z-index: 2;
-  caret-color: black;
-  color: ${p => (p.isCompositing ? "inherit" : "transparent !important")};
-  resize: none;
-  font-family: inherit;
-`;
-
-/*
-const rubyRegExp = new RegExp(`${rubySeparatorCharacter}[^${rubySeparatorCharacter}]*${rubyTerminatorCharacter}`, "g");
-
-const SmallText = styled.span`
-  font-size: 100%;
-`;
-
-const createEditorState = (value: string) =>
-  EditorState.createWithContent(
-    ContentState.createFromText(value),
-    new CompositeDecorator([
-      {
-        strategy: (contentBlock, callback) => {
-          const text = contentBlock.getText();
-
-          text.split("").forEach((char, index) => {
-            if (char === "｜") {
-              callback(index, index + 1);
-            }
-          });
-        },
-        component: (props: { children: React.ReactNode; decoratedText: string }) => {
-          return <SmallText className={Classes.TEXT_DISABLED}>{props.children}</SmallText>;
-        }
-      },
-      {
-        strategy: (contentBlock, callback) => {
-          const text = contentBlock.getText();
-
-          let matched;
-          // tslint:disable-next-line: no-conditional-assignment
-          while ((matched = rubyRegExp.exec(text)) !== null) {
-            const start = matched.index;
-
-            callback(start, start + matched[0].length);
-          }
-        },
-        component: (props: React.HTMLProps<HTMLSpanElement>) => {
-          return <SmallText className={Classes.TEXT_DISABLED}>{props.children}</SmallText>;
-        }
-      }
-    ])
-  );
-*/

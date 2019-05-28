@@ -31,16 +31,15 @@ const Outer = styled(Column)`
 
 const Inner = styled(Column)`
   width: 100%;
-  maxwidth: 1000px;
+  max-width: 1000px;
 `;
 
 export const Page: React.FunctionComponent = ({ children }) => {
   return (
     <Outer>
       <Header />
-      <Inner padding="around" style={{ width: "100%", maxWidth: "1000px" }}>
-        {children}
-      </Inner>
+      <Column padding="vertical" />
+      <Inner padding="around">{children}</Inner>
     </Outer>
   );
 };

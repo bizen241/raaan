@@ -1,4 +1,3 @@
-import { Classes } from "@blueprintjs/core";
 import * as React from "react";
 import { connector } from "../../reducers";
 import { EntityEditor } from "../editor";
@@ -13,7 +12,6 @@ const EditExercisePage = connector(
   ({ id }) => {
     return (
       <Page>
-        <h2 className={Classes.HEADING}>編集中</h2>
         <EntityEditor entityType="Exercise" entityId={id} />
       </Page>
     );

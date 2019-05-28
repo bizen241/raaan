@@ -1,19 +1,10 @@
+import { AppBar, IconButton, Toolbar } from "@material-ui/core";
+import { ArrowBack, Settings } from "@material-ui/icons";
 import { goBack } from "connected-react-router";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../reducers";
-import { styled } from "../../style";
-import { Column, FlatButton, Row } from "../ui";
-
-const Outer = styled(Column)`
-  width: 100%;
-  border-bottom: solid 1px ${p => p.theme.main}33;
-`;
-
-const Inner = styled(Row)`
-  width: 100%;
-  max-width: 1000px;
-`;
+import { Row } from "../ui";
 
 export const Header = connector(
   state => ({
@@ -23,29 +14,26 @@ export const Header = connector(
     back: goBack
   }),
   ({ pathname, back }) => {
-    const isHome = pathname === "/";
     const isConfig = pathname === "/config";
 
     return (
-      <Outer center="both">
-        <Inner>
-          <Row padding="around">
-            <FlatButton onClick={back}>←</FlatButton>
+      <AppBar position="static" color="default">
+        <Toolbar variant="dense">
+          <Row>
+            <IconButton onClick={back}>
+              <ArrowBack />
+            </IconButton>
           </Row>
-          <Row padding="around" center="both" flex={1}>
-            {isHome ? <span>Raan</span> : <Link to="/">Raan</Link>}
+          <Row flex={1} />
+          <Row>
+            {!isConfig ? (
+              <IconButton component={Link} to="/config">
+                <Settings />
+              </IconButton>
+            ) : null}
           </Row>
-          <Row padding="around">
-            {isConfig ? (
-              <FlatButton>⚙️</FlatButton>
-            ) : (
-              <FlatButton as={Link} to="/config">
-                ⚙️
-              </FlatButton>
-            )}
-          </Row>
-        </Inner>
-      </Outer>
+        </Toolbar>
+      </AppBar>
     );
   }
 );

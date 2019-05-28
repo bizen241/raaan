@@ -1,12 +1,25 @@
 import { Callout } from "@blueprintjs/core";
-import * as React from "react";
+import {
+  Box,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TablePagination,
+  TableRow,
+  Toolbar,
+  Typography
+} from "@material-ui/core";
+import { Refresh } from "@material-ui/icons";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import * as React from "react";
 import { EntityObject, EntityType } from "../../../../shared/api/entities";
 import { SearchParams } from "../../../../shared/api/request/search";
 import { stringifySearchParams } from "../../../api/request/search";
 import { connector } from "../../../reducers";
 import { Column } from "../../ui";
-import { List } from "../List";
 
 export interface EntityListProps<E extends EntityObject> {
   searchParams?: Partial<SearchParams<E>>;
@@ -14,7 +27,6 @@ export interface EntityListProps<E extends EntityObject> {
 
 export interface EntityListItemProps<E extends EntityObject> {
   entity: E;
-  onDelete: (id: string) => void;
 }
 
 export const EntityList = connector(
@@ -31,12 +43,13 @@ export const EntityList = connector(
     entityMap: state.cache.get[ownProps.entityType]
   }),
   actions => ({
-    searchEntity: actions.api.search,
-    deleteEntity: actions.api.delete
+    searchEntity: actions.api.search
   }),
-  ({ entityType, searchParams, itemComponent: ListItem, searchResultMap, entityMap, searchEntity, deleteEntity }) => {
+  ({ entityType, searchParams, itemComponent: ListItem, searchResultMap, entityMap, searchEntity }) => {
     const [limit, setLimit] = useState(10);
-    const [offset, setOffset] = useState(0);
+    const [page, setPage] = useState(0);
+
+    const offset = limit * page;
 
     const searchResult = useMemo(() => {
       const searchQuery = stringifySearchParams(
@@ -95,7 +108,6 @@ export const EntityList = connector(
         }),
       [searchParams, limit, offset]
     );
-    const onDelete = useCallback((id: string) => deleteEntity(entityType, id), []);
 
     if (searchResult === undefined || selectedEntities === undefined) {
       return (
@@ -106,21 +118,38 @@ export const EntityList = connector(
     }
 
     return (
-      <Column>
-        <List
-          limit={limit}
-          offset={offset}
-          count={searchResult.count}
-          onChangeLimit={setLimit}
-          onChangeOffset={setOffset}
-          onReload={onReload}
-          focusKey="s"
-        >
-          {selectedEntities.map(entity => (
-            <ListItem key={entity.id} entity={entity} onDelete={onDelete} />
-          ))}
-        </List>
-      </Column>
+      <Paper>
+        <Toolbar>
+          <Typography variant="h6">保存済み</Typography>
+          <Box component="span" flexGrow={1} />
+          <IconButton onClick={onReload}>
+            <Refresh />
+          </IconButton>
+        </Toolbar>
+        <Table>
+          <TableBody>
+            {selectedEntities.map(entity => (
+              <TableRow key={entity.id}>
+                <TableCell>
+                  <ListItem entity={entity} />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPage={limit}
+                page={page}
+                count={searchResult.count}
+                labelRowsPerPage="表示件数:"
+                onChangePage={useCallback((_, newPage) => setPage(newPage), [])}
+                onChangeRowsPerPage={useCallback(e => setLimit(parseInt(e.target.value, 10)), [])}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </Paper>
     );
   }
 );

@@ -1,4 +1,15 @@
-import { Button, Classes, Collapse, Divider, HTMLTable } from "@blueprintjs/core";
+import { Button, Classes, Collapse, Divider } from "@blueprintjs/core";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableHead,
+  TableFooter,
+  TablePagination
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import * as React from "react";
 import { useCallback, useState } from "react";
 import { Column, Details, Row, Summary } from "../ui";
@@ -63,6 +74,8 @@ export const List = React.memo<{
     </Row>
   );
 
+  const classes = useStyles();
+
   return (
     <Column>
       <Details>
@@ -118,22 +131,27 @@ export const List = React.memo<{
       </Details>
       {paginationButtons}
       {items.length > 0 ? (
-        <Column padding="vertical">
-          <HTMLTable bordered style={{ width: "100%" }}>
-            <tbody>
+        <Paper className={classes.root}>
+          <Table>
+            <TableBody>
               {items.map((item, index) => (
-                <tr key={offset + index}>
-                  <td>{item}</td>
-                </tr>
+                <TableRow key={offset + index}>
+                  <TableCell>{item}</TableCell>
+                </TableRow>
               ))}
               {padding.map((item, index) => (
-                <tr key={index}>
-                  <td style={{ visibility: "hidden" }}>{item}</td>
-                </tr>
+                <TableRow key={index}>
+                  <TableCell style={{ visibility: "hidden" }}>{item}</TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </HTMLTable>
-        </Column>
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </Paper>
       ) : (
         <Column center="both" padding="vertical">
           アイテムがありません
@@ -143,3 +161,9 @@ export const List = React.memo<{
     </Column>
   );
 });
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.type === "light" ? "#fff" : "#1e1e1e"
+  }
+}));

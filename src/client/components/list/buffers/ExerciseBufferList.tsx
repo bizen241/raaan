@@ -1,69 +1,20 @@
-import { MenuItem } from "@blueprintjs/core";
+import { Link } from "@material-ui/core";
 import * as React from "react";
-import { useCallback, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { BufferList, BufferListItemProps } from ".";
 import { Exercise } from "../../../../shared/api/entities";
-import { connector } from "../../../reducers";
-import { Buffer, buffersActions } from "../../../reducers/buffers";
-import { PopMenu, Row } from "../../ui";
-import { List } from "../List";
+import { Column } from "../../ui";
 
-export const ExerciseBufferList = connector(
-  state => ({
-    bufferMap: state.buffers.Exercise
-  }),
-  () => ({
-    deleteBuffer: buffersActions.delete
-  }),
-  ({ bufferMap, deleteBuffer }) => {
-    const [limit, setLimit] = useState(10);
-    const [offset, setOffset] = useState(0);
+export const ExerciseBufferList = React.memo(() => {
+  return <BufferList entityType="Exercise" itemComponent={EditorBufferListItem} />;
+});
 
-    const onDelete = useCallback((id: string) => deleteBuffer("Exercise", id), []);
-
-    const bufferEntries = Object.entries(bufferMap);
-
-    return (
-      <List
-        limit={limit}
-        offset={offset}
-        count={bufferEntries.length}
-        onChangeLimit={setLimit}
-        onChangeOffset={setOffset}
-        focusKey="e"
-      >
-        {bufferEntries
-          .slice(offset, offset + limit)
-          .map(
-            ([exerciseId, buffer]) =>
-              buffer && (
-                <EditorBufferListItem key={exerciseId} exerciseId={exerciseId} buffer={buffer} onDelete={onDelete} />
-              )
-          )}
-      </List>
-    );
-  }
-);
-
-const EditorBufferListItem: React.FunctionComponent<{
-  exerciseId: string;
-  buffer: Buffer<Exercise>;
-  onDelete: (id: string) => void;
-}> = ({ exerciseId, buffer, onDelete }) => {
+const EditorBufferListItem = React.memo<BufferListItemProps<Exercise>>(({ bufferId, buffer }) => {
   return (
-    <Row center="cross">
-      <Row flex={1}>
-        <Link style={{ flex: 1 }} to={`/exercises/${exerciseId}/edit`}>
-          {buffer.edited.title || "無題"}
-        </Link>
-      </Row>
-      <PopMenu
-        items={[
-          <MenuItem key="p" text="プレビュー (p)" />,
-          <MenuItem key="d" text="削除 (d)" onClick={useCallback(() => onDelete(exerciseId), [])} intent="danger" />
-        ]}
-        hotKeys={{}}
-      />
-    </Row>
+    <Column>
+      <Link color="textPrimary" component={RouterLink} to={`/exercises/${bufferId}/edit`}>
+        {buffer.edited.title || "無題"}
+      </Link>
+    </Column>
   );
-};
+});

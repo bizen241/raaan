@@ -1,4 +1,6 @@
-import { Button, Callout } from "@blueprintjs/core";
+import { Callout } from "@blueprintjs/core";
+import { Button, Divider } from "@material-ui/core";
+import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useEffect } from "react";
 import { EntityObject, EntityType } from "../../../shared/api/entities";
@@ -69,10 +71,16 @@ export const EntityEditor = connector(
 
     return (
       <Column>
-        <Column padding="vertical">
-          <Button text="保存" icon="upload" intent="success" large onClick={onUpload} />
-        </Column>
         <Editor bufferId={bufferId} buffer={buffer} />
+        <Column padding="vertical">
+          <Divider variant="middle" />
+        </Column>
+        <Column padding="vertical">
+          <Button variant="contained" size="large" onClick={onUpload}>
+            <CloudUpload style={{ marginRight: "0.5em" }} />
+            保存
+          </Button>
+        </Column>
       </Column>
     );
   }

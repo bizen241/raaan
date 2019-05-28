@@ -1,32 +1,43 @@
+import { Button } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { Edit, Keyboard } from "@material-ui/icons";
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { connector } from "../../reducers";
-import { Message } from "../project/Message";
-import { Button, Column } from "../ui";
+import { Column } from "../ui";
 import { Page } from "./Page";
 
 export const HomePage = connector(
   () => ({}),
   () => ({}),
   () => {
+    const classes = useStyles();
+
     return (
       <Page>
         <Column padding="vertical">
-          <Button as={Link} to="/exercises" style={{ fontSize: "32px" }}>
+          <Button className={classes.button} variant="outlined" component={RouterLink} to="/">
+            <Keyboard className={classes.leftIcon} />
             遊ぶ
           </Button>
         </Column>
         <Column padding="vertical">
-          <Button as={Link} to="/exercises/edit" style={{ fontSize: "32px" }}>
+          <Button className={classes.button} variant="outlined" component={RouterLink} to="/exercises/edit">
+            <Edit className={classes.leftIcon} />
             作る
-          </Button>
-        </Column>
-        <Column padding="vertical">
-          <Button as={Link} to="/config">
-            <Message id="settings" />
           </Button>
         </Column>
       </Page>
     );
   }
 );
+
+const useStyles = makeStyles(theme => ({
+  button: {
+    fontSize: 32
+  },
+  leftIcon: {
+    marginRight: theme.spacing(1),
+    fontSize: "1em"
+  }
+}));

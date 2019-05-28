@@ -1,3 +1,4 @@
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import * as React from "react";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { createGlobalStyle, ThemeProvider } from "../../style";
@@ -25,22 +26,33 @@ export const Style = React.memo<{ children: React.ReactNode }>(({ children }) =>
     return () => mediaQueryList.removeListener(handler);
   }, [theme]);
 
+  const muiTheme = createMuiTheme({
+    palette: {
+      type: themeName,
+      background: {
+        paper: themeName === "light" ? "#fff" : "#1e1e1e"
+      }
+    }
+  });
+
   return (
     <ThemeProvider
       theme={useMemo(
         () => ({
           name: themeName,
-          base: themeName === "light" ? "#eeeeee" : "#212121",
-          main: themeName === "light" ? "#333333" : "#eeeeee",
+          base: themeName === "light" ? "#f5f5f5" : "#121212",
+          main: themeName === "light" ? "#333333" : "#ffffff",
           accent: "#eeeeee"
         }),
         [themeName]
       )}
     >
-      <div>
-        <GlobalStyle />
-        {children}
-      </div>
+      <MuiThemeProvider theme={muiTheme}>
+        <div>
+          <GlobalStyle />
+          {children}
+        </div>
+      </MuiThemeProvider>
     </ThemeProvider>
   );
 });
@@ -58,6 +70,7 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: hidden;
     overflow-y: scroll;
     font-size: 16px;
+    color: ${p => p.theme.main};
   }
 
   #root {
@@ -65,12 +78,7 @@ const GlobalStyle = createGlobalStyle`
     flex-direction: column;
   }
 
-  .public-DraftEditor-content {
-    padding: 0 10px;
-    border-radius: 3px;
-  }
-
-  .public-DraftEditor-content:focus {
-    box-shadow: 0 0 0 1px #137cbd, 0 0 0 3px rgba(19, 124, 189, 0.3), inset 0 1px 1px rgba(16, 22, 26, 0.2);
+  .MuiTableCell-root.MuiTableCell-footer.MuiTablePagination-root {
+    border: none;
   }
 `;

@@ -1,4 +1,6 @@
-import { Button, Classes, Divider } from "@blueprintjs/core";
+import { Divider } from "@blueprintjs/core";
+import { Button } from "@material-ui/core";
+import { Add } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import * as React from "react";
 import { useCallback, useEffect } from "react";
@@ -35,20 +37,17 @@ export const EditExercisesPage = connector(
     return (
       <Page>
         <Column padding="vertical">
-          <Button text="新規作成" large icon="plus" intent="primary" onClick={onCreate} />
+          <Button variant="contained" size="large" color="primary" onClick={onCreate}>
+            <Add style={{ marginRight: "0.5em" }} />
+            新しい問題集を作る
+          </Button>
         </Column>
         <Divider />
         <Column padding="vertical">
-          <h2 className={Classes.HEADING}>編集中</h2>
-          <Column padding="vertical">
-            <ExerciseBufferList />
-          </Column>
+          <ExerciseBufferList />
         </Column>
         <Column padding="vertical">
-          <h2 className={Classes.HEADING}>保存済み</h2>
-          <Column padding="vertical">
-            <ExerciseList searchParams={{}} />
-          </Column>
+          <ExerciseList searchParams={{}} />
         </Column>
       </Page>
     );
