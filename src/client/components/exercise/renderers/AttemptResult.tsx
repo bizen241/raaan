@@ -1,4 +1,4 @@
-import { Divider } from "@blueprintjs/core";
+import { Divider } from "@material-ui/core";
 import * as React from "react";
 import { AttemptState } from "../../../reducers/attempts";
 import { styled } from "../../../style";
@@ -38,19 +38,19 @@ export const AttemptResult: React.FunctionComponent<{
         <Padding />
         <IndexValue>{score.toFixed(0)}</IndexValue>
       </Row>
-      <Divider />
+      <Divider variant="middle" />
       <Row center="cross" isResponsive={true}>
         <IndexType>時間</IndexType>
         <Padding />
         <IndexValue>{totalTime.toFixed(2)}&nbsp;秒</IndexValue>
       </Row>
-      <Divider />
+      <Divider variant="middle" />
       <Row center="cross" isResponsive={true}>
         <IndexType>スピード</IndexType>
         <Padding />
         <IndexValue>{typeSpeed.toFixed(2)}&nbsp;打/秒</IndexValue>
       </Row>
-      <Divider />
+      <Divider variant="middle" />
       <Row center="cross" isResponsive={true}>
         <IndexType>正確性</IndexType>
         <Padding />

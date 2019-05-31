@@ -1,8 +1,8 @@
-import { Button, Divider, TextField } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import { Add, PlayArrow } from "@material-ui/icons";
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as React from "react";
-import { EntityEditorProps } from ".";
+import { EntityEditor, EntityEditorContainerProps, EntityEditorRendererProps } from ".";
 import { Exercise } from "../../../shared/api/entities";
 import { connector } from "../../reducers";
 import { QuestionEditor } from "../exercise/editors/QuestionEditor";
@@ -11,8 +11,12 @@ import { QuestionPreviewer } from "../exercise/previewer/QuestionPreviewer";
 import { Column } from "../ui";
 import { manageHotKey } from "../utils/hotKey";
 
-export const ExerciseEditor = connector(
-  (state, ownProps: EntityEditorProps<Exercise>) => ({
+export const ExerciseEditor = React.memo<EntityEditorContainerProps>(props => (
+  <EntityEditor {...props} entityType="Exercise" rendererComponent={ExerciseEditorRenderer} />
+));
+
+const ExerciseEditorRenderer = connector(
+  (state, ownProps: EntityEditorRendererProps<Exercise>) => ({
     ...ownProps,
     isVisible: state.dialog.name == null
   }),
@@ -54,7 +58,15 @@ export const ExerciseEditor = connector(
           />
         </Column>
         <Column padding="vertical">
-          <Divider variant="middle" />
+          <Button
+            variant="contained"
+            size="large"
+            color="secondary"
+            onClick={useCallback(() => openDialog("ExercisePreviewer"), [])}
+          >
+            <PlayArrow style={{ marginRight: "0.5em" }} />
+            プレビュー
+          </Button>
         </Column>
         <Column>
           {questions.map((question, index) => (
@@ -74,15 +86,6 @@ export const ExerciseEditor = connector(
               問題を追加
             </Button>
           </Column>
-        </Column>
-        <Column padding="vertical">
-          <Divider variant="middle" />
-        </Column>
-        <Column padding="vertical">
-          <Button variant="contained" size="large" onClick={useCallback(() => openDialog("ExercisePreviewer"), [])}>
-            <PlayArrow style={{ marginRight: "0.5em" }} />
-            プレビュー
-          </Button>
         </Column>
         <ExercisePreviewer params={buffer.edited} />
         <QuestionPreviewer question={questions[focusedItemIndex]} />

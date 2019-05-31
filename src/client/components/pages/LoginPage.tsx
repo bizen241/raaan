@@ -1,4 +1,4 @@
-import { AnchorButton } from "@blueprintjs/core";
+import { Button } from "@material-ui/core";
 import * as React from "react";
 import { connector } from "../../reducers";
 import { Column } from "../ui";
@@ -11,7 +11,9 @@ export const LoginPage = connector(
     return (
       <Page>
         <Column padding="vertical">
-          <AnchorButton large intent="primary" text="GitHubアカウントでログイン" href="/auth/github" />
+          <Button variant="contained" size="large" component="a" href="/auth/github">
+            GitHubアカウントでログイン
+          </Button>
         </Column>
       </Page>
     );

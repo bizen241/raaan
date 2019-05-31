@@ -1,5 +1,4 @@
-import { Divider } from "@blueprintjs/core";
-import { Button } from "@material-ui/core";
+import { Button, Divider } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import * as React from "react";
@@ -42,7 +41,9 @@ export const EditExercisesPage = connector(
             新しい問題集を作る
           </Button>
         </Column>
-        <Divider />
+        <Column padding="vertical">
+          <Divider variant="middle" />
+        </Column>
         <Column padding="vertical">
           <ExerciseBufferList />
         </Column>

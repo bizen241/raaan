@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connector } from "../../reducers";
-import { EntityEditor } from "../editor";
+import { ExerciseEditor } from "../editor/ExerciseEditor";
 import { PageProps } from "../project/Router";
 import { Page } from "./Page";
 
@@ -12,7 +12,7 @@ const EditExercisePage = connector(
   ({ id }) => {
     return (
       <Page>
-        <EntityEditor entityType="Exercise" entityId={id} />
+        <ExerciseEditor bufferId={id} />
       </Page>
     );
   }

@@ -1,6 +1,8 @@
-import { Callout } from "@blueprintjs/core";
 import {
   Box,
+  Card,
+  CardHeader,
+  CircularProgress,
   IconButton,
   Paper,
   Table,
@@ -19,7 +21,6 @@ import { EntityObject, EntityType } from "../../../../shared/api/entities";
 import { SearchParams } from "../../../../shared/api/request/search";
 import { stringifySearchParams } from "../../../api/request/search";
 import { connector } from "../../../reducers";
-import { Column } from "../../ui";
 
 export interface EntityListProps<E extends EntityObject> {
   searchParams?: Partial<SearchParams<E>>;
@@ -111,9 +112,9 @@ export const EntityList = connector(
 
     if (searchResult === undefined || selectedEntities === undefined) {
       return (
-        <Column padding="vertical">
-          <Callout intent="primary" title="ロード中です" />
-        </Column>
+        <Card>
+        <CardHeader avatar={<CircularProgress />} title="ロード中です" />
+      </Card>
       );
     }
 

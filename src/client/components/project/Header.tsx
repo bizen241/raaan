@@ -1,10 +1,12 @@
-import { AppBar, IconButton, Toolbar } from "@material-ui/core";
-import { ArrowBack, Settings } from "@material-ui/icons";
+import { AppBar, IconButton, Menu, MenuItem, Toolbar } from "@material-ui/core";
+import { AccountCircle, ArrowBack, Home, Info, MoreVert, Settings } from "@material-ui/icons";
 import { goBack } from "connected-react-router";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../reducers";
 import { Row } from "../ui";
+import { iconStyles } from "../ui/styles";
+import { Message } from "./Message";
 
 export const Header = connector(
   state => ({
@@ -14,24 +16,52 @@ export const Header = connector(
     back: goBack
   }),
   ({ pathname, back }) => {
-    const isConfig = pathname === "/config";
+    const [menuAnchorElement, setMenuAnchorElement] = React.useState(null);
+
+    const iconClasses = iconStyles();
 
     return (
       <AppBar position="static" color="default">
         <Toolbar variant="dense">
-          <Row>
-            <IconButton onClick={back}>
-              <ArrowBack />
-            </IconButton>
-          </Row>
+          <IconButton onClick={back}>
+            <ArrowBack />
+          </IconButton>
           <Row flex={1} />
-          <Row>
-            {!isConfig ? (
-              <IconButton component={Link} to="/config">
-                <Settings />
-              </IconButton>
-            ) : null}
-          </Row>
+          <div>
+            <IconButton onClick={React.useCallback(e => setMenuAnchorElement(e.currentTarget), [])}>
+              <MoreVert />
+            </IconButton>
+            <Menu
+              anchorEl={menuAnchorElement}
+              open={Boolean(menuAnchorElement)}
+              onClose={React.useCallback(() => setMenuAnchorElement(null), [])}
+            >
+              {pathname !== "/config" ? (
+                <MenuItem component={Link} to="/config">
+                  <Settings className={iconClasses.leftIcon} />
+                  <Message id="settings" />
+                </MenuItem>
+              ) : null}
+              {pathname !== "/" ? (
+                <MenuItem component={Link} to="/">
+                  <Home className={iconClasses.leftIcon} />
+                  ホーム
+                </MenuItem>
+              ) : null}
+              {pathname !== "/account" ? (
+                <MenuItem component={Link} to="/account">
+                  <AccountCircle className={iconClasses.leftIcon} />
+                  <Message id="account" />
+                </MenuItem>
+              ) : null}
+              {pathname !== "/app" ? (
+                <MenuItem component={Link} to="/app">
+                  <Info className={iconClasses.leftIcon} />
+                  アプリについて
+                </MenuItem>
+              ) : null}
+            </Menu>
+          </div>
         </Toolbar>
       </AppBar>
     );

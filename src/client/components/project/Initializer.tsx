@@ -1,8 +1,7 @@
-import { Callout } from "@blueprintjs/core";
+import { Card, CardHeader, CircularProgress } from "@material-ui/core";
 import * as React from "react";
 import { useEffect } from "react";
 import { connector } from "../../reducers";
-import { Column } from "../ui";
 import { Context } from "./Context";
 
 export const Initializer = connector(
@@ -28,9 +27,9 @@ export const Initializer = connector(
 
     if (!isReady || user === undefined || config === undefined) {
       return (
-        <Column>
-          <Callout>ロード中...</Callout>
-        </Column>
+        <Card>
+          <CardHeader avatar={<CircularProgress />} title="ロード中です" />
+        </Card>
       );
     }
     if (hasError) {

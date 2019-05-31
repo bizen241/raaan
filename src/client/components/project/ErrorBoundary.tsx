@@ -1,17 +1,18 @@
-import { Button } from "@blueprintjs/core";
+import { Button, Box, Card, CardActions, CardContent, CardHeader } from "@material-ui/core";
 import * as React from "react";
-import { Column } from "../ui";
 
 interface ErrorBoundaryState {
   hasError: boolean;
+  error?: Error;
 }
 
 export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
   static getDerivedStateFromError(e: Error): ErrorBoundaryState {
-    console.log(e);
+    console.error(e);
 
     return {
-      hasError: true
+      hasError: true,
+      error: e
     };
   }
 
@@ -22,31 +23,34 @@ export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
   }
 
   render() {
-    const { hasError } = this.state;
+    const { hasError, error = new Error() } = this.state;
 
     if (hasError) {
       return (
-        <Column padding="around">
-          <Column padding="around">
-            <Button
-              onClick={() => {
-                location.reload();
-              }}
-            >
-              リロード
-            </Button>
-          </Column>
-          <Column padding="around">
-            <Button
-              onClick={() => {
-                localStorage.clear();
-                location.reload();
-              }}
-            >
-              すべて削除してリロード
-            </Button>
-          </Column>
-        </Column>
+        <Box p={1}>
+          <Card>
+            <CardHeader title="エラーが発生しました" subheader={error.message} />
+            <CardContent>{error.stack}</CardContent>
+            <CardActions>
+              <Button
+                color="primary"
+                onClick={() => {
+                  location.reload();
+                }}
+              >
+                リロード
+              </Button>
+              <Button
+                onClick={() => {
+                  localStorage.clear();
+                  location.reload();
+                }}
+              >
+                すべて削除してリロード
+              </Button>
+            </CardActions>
+          </Card>
+        </Box>
       );
     } else {
       return this.props.children;

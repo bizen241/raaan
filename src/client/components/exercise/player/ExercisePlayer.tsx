@@ -1,6 +1,6 @@
-import { Callout } from "@blueprintjs/core";
+import { Card, CardHeader, CircularProgress } from "@material-ui/core";
+import { Error } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useEffect, useState } from "react";
 import { Exercise } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
 import { CompiledQuestion, compileQuestions } from "../../../domain/content/compiler";
@@ -19,33 +19,33 @@ export const ExercisePlayer = connector(
     ...attemptsActions
   }),
   ({ id, params, attempt, load, next }) => {
-    const [questions, setQuestions] = useState<CompiledQuestion[] | undefined>();
+    const [questions, setQuestions] = React.useState<CompiledQuestion[] | undefined>();
 
-    useEffect(() => {
+    React.useEffect(() => {
       if (id !== attempt.id) {
         load(id, params);
       }
     }, []);
-    useEffect(() => {
+    React.useEffect(() => {
       if (id === attempt.id && attempt.params !== undefined) {
         setQuestions(compileQuestions(attempt.params));
       }
     }, [attempt]);
 
-    const onFinish = useCallback((result: QuestionResult) => next(result), []);
+    const onFinish = React.useCallback((result: QuestionResult) => next(result), []);
 
     if (attempt.id !== id || attempt.params === undefined || questions === undefined) {
       return (
-        <Column>
-          <Callout>ロード中...</Callout>
-        </Column>
+        <Card>
+          <CardHeader avatar={<CircularProgress />} title="ロード中です" />
+        </Card>
       );
     }
     if (questions.length === 0) {
       return (
-        <Column>
-          <Callout>空の問題集です</Callout>
-        </Column>
+        <Card>
+          <CardHeader avatar={<Error />} title="空の問題集です" />
+        </Card>
       );
     }
 

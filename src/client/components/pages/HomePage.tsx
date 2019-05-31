@@ -11,7 +11,7 @@ export const HomePage = connector(
   () => ({}),
   () => ({}),
   () => {
-    const classes = useStyles();
+    const classes = styles();
 
     return (
       <Page>
@@ -32,7 +32,7 @@ export const HomePage = connector(
   }
 );
 
-const useStyles = makeStyles(theme => ({
+const styles = makeStyles(theme => ({
   button: {
     fontSize: 32
   },

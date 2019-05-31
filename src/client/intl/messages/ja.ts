@@ -5,5 +5,5 @@ export const ja = {
   logout: "ログアウト",
   settings: "設定",
   theme: "テーマ",
-  update: "アップデート"
+  update: "更新"
 };
