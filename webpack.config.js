@@ -1,12 +1,9 @@
 // @ts-check
 
-/// <reference path="src/typings/webpack.d.ts" />
-
 const CopyPlugin = require("copy-webpack-plugin");
 const HtmlPlugin = require("html-webpack-plugin");
 const { join } = require("path");
 const webpack = require("webpack");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const webpackDevServer = require("webpack-dev-server");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 
