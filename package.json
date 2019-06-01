@@ -6,8 +6,7 @@
   "main": "out/server/index.js",
   "scripts": {
     "start": "node out/server/index.js",
-    "build": "run-s build:intl build:client build:server",
-    "build:intl": "run-s intl:extract intl:compile",
+    "build": "run-s build:client build:server",
     "build:schema": "node scripts/schema.js",
     "build:client": "rimraf dist && cross-env NODE_ENV=production webpack",
     "build:server": "rimraf out && tsc --project config/tsconfig.server.json",
@@ -21,9 +20,6 @@
     "test:jest": "jest",
     "test:cov": "jest --coverage",
     "test:ci": "yarn test:ts && jest --coverage --runInBand && cat ./coverage/lcov.info | coveralls",
-    "intl:extract": "lingui extract --clean",
-    "intl:compile": "lingui compile",
-    "intl:add": "lingui add-locale",
     "db": "typeorm",
     "postinstall": "yarn build"
   },
