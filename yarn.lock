@@ -1133,14 +1133,6 @@
   resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-transform-react/-/babel-plugin-transform-react-2.7.4.tgz#7ed5414ee685f1b12c63228581f1404d9b767ea5"
   integrity sha512-U4ocmtqOIjqDQX9tYrOLDNR7Tp8EmDPoBUtXyXfAPb4ukA3CePphuz89N8lDZVsTUQwBDNDynP/3qiLr1pW4QQ==
 
-"@lingui/babel-preset-react@2.7.4":
-  version "2.7.4"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-preset-react/-/babel-preset-react-2.7.4.tgz#57b2e0715ba42f514201851e012fdac4f91b971b"
-  integrity sha512-Lr7YP2e4mniC+NxxxTAWe2yKFEEzuZbhPIio7NzroBBuB8YS91hdD2KR9ppbvOjXT2VX8Javg83k/KFVAUtwxg==
-  dependencies:
-    "@lingui/babel-plugin-transform-js" "2.7.4"
-    "@lingui/babel-plugin-transform-react" "2.7.4"
-
 "@lingui/cli@2.7.4":
   version "2.7.4"
   resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-2.7.4.tgz#a3b352fcbf6382d08f898a983fb2eb661c06a99f"

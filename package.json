@@ -65,7 +65,6 @@
     "@babel/plugin-syntax-dynamic-import": "7.2.0",
     "@babel/preset-env": "7.4.3",
     "@babel/preset-react": "7.0.0",
-    "@lingui/babel-preset-react": "2.7.4",
     "@lingui/cli": "2.7.4",
     "@types/body-parser": "1.17.0",
     "@types/compression": "0.0.36",
