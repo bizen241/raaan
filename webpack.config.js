@@ -34,7 +34,6 @@ const plugins = [
 ];
 
 if (!isDevelopment) {
-  plugins.push(new BundleAnalyzerPlugin());
   plugins.push(
     new WorkboxPlugin.GenerateSW({
       swDest: "sw.js",
