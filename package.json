@@ -36,7 +36,6 @@
     "cookie-signature": "1.1.0",
     "cors": "2.8.5",
     "dotenv": "7.0.0",
-    "draft-js": "0.10.5",
     "express": "4.16.4",
     "express-openapi": "4.5.0",
     "express-session": "1.16.1",
