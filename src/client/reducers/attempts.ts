@@ -17,7 +17,7 @@ export interface TypoMap {
 export interface QuestionResult {
   totalTime: number;
   typoMap: TypoMap;
-  typedLines: string[];
+  typedLines: string[][];
 }
 
 export const attemptsActions = {

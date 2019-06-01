@@ -24,8 +24,7 @@ export const AttemptResult: React.FunctionComponent<{
 }> = ({ attempt: { results } }) => {
   const totalTime = results.reduce((time, result) => time + result.totalTime, 0) / 1000;
   const totalTypeCount = results.reduce(
-    (totalLength, result) =>
-      totalLength + result.typedLines.reduce((resultLength, typedLine) => resultLength + typedLine.length, 0),
+    (totalLength, result) => totalLength + result.typedLines.map(typedLine => typedLine.join("")).join("").length,
     0
   );
   const typeSpeed = totalTime === 0 ? 0 : totalTypeCount / totalTime;

@@ -2,7 +2,7 @@ import { connectRouter, RouterAction, RouterState } from "connected-react-router
 import { History } from "history";
 import { ComponentType } from "react";
 import { connect } from "react-redux";
-import { combineReducers, Dispatch as ReduxDispatch } from "redux";
+import { combineReducers } from "redux";
 import { exerciseActions } from "../actions/exercise";
 import { ApiActions, apiActions, apiReducer, ApiState } from "./api";
 import { AppActions, appActions, appReducer, AppState } from "./app";

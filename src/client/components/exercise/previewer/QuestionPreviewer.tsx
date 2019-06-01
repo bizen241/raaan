@@ -29,8 +29,8 @@ export const QuestionPreviewer = connector(
 
     return (
       <Dialog fullScreen open={isOpen} onClose={onClose}>
-        <AppBar>
-          <Toolbar>
+        <AppBar position="relative">
+          <Toolbar variant="dense">
             <IconButton edge="start" color="inherit" onClick={onClose}>
               <Close />
             </IconButton>

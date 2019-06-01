@@ -1,44 +1,38 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
-import { CompiledQuestion, RomanChunk } from "../../../domain/content/compiler";
+import { CompiledQuestion } from "../../../domain/content/compiler";
 import { QuestionResult, TypoMap } from "../../../reducers/attempts";
 import { Column } from "../../ui";
 import { QuestionRenderer } from "../renderers/QuestionRenderer";
 
 export interface QuestionPlayerState {
-  currentChunkIndex: number;
-  currentCharIndex: number;
-  typedLines: string[];
-  typedString: string;
+  typedLines: string[][];
   typoMap: TypoMap;
   hasTypo: boolean;
   totalTime: number;
-  isSuspended: boolean;
   startedAt: number;
+  isSuspended: boolean;
+  isFinished: boolean;
 }
-
-const REQUIRE_ENTER = false;
 
 export const QuestionPlayer: React.FunctionComponent<{
   question: CompiledQuestion;
   onFinish: (result: QuestionResult) => void;
 }> = ({ question, onFinish }) => {
-  const [state, setState] = useState<QuestionPlayerState>({
-    currentChunkIndex: 0,
-    currentCharIndex: 0,
-    typedLines: question.roman[0].length === 0 ? [""] : [],
-    typedString: "",
+  const isEmptyQuestion = question.roman[0].length === 0;
+
+  const [state, setState] = React.useState<QuestionPlayerState>({
+    typedLines: [[""]],
     typoMap: {},
     hasTypo: false,
     totalTime: 0,
+    startedAt: 0,
     isSuspended: true,
-    startedAt: 0
+    isFinished: false
   });
 
-  const { totalTime, typoMap, typedLines, isSuspended, startedAt } = state;
-  const isFinished = typedLines.length === question.roman.length;
+  const { typedLines, typoMap, totalTime, startedAt, isSuspended, isFinished } = state;
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!isSuspended) {
       const suspend = () => {
         setState({
@@ -52,7 +46,7 @@ export const QuestionPlayer: React.FunctionComponent<{
       return clearTimeout(timeoutId);
     }
   }, [state]);
-  useEffect(() => {
+  React.useEffect(() => {
     if (isFinished) {
       onFinish({
         totalTime: startedAt === 0 ? 0 : totalTime + (Date.now() - startedAt),
@@ -64,16 +58,20 @@ export const QuestionPlayer: React.FunctionComponent<{
     }
 
     const onKeyDown = (e: KeyboardEvent) => {
-      setState(previousState => getNextState(previousState, question, REQUIRE_ENTER, e));
+      setState(previousState => getNextState(previousState, question, e));
     };
 
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [isFinished]);
 
+  if (isEmptyQuestion) {
+    return null;
+  }
+
   return (
     <Column flex={1}>
-      <QuestionRenderer question={question} state={state} isFinished={isFinished} requireEnter={REQUIRE_ENTER} />
+      <QuestionRenderer question={question} state={state} />
     </Column>
   );
 };
@@ -81,171 +79,78 @@ export const QuestionPlayer: React.FunctionComponent<{
 const getNextState = (
   previousState: QuestionPlayerState,
   question: CompiledQuestion,
-  requireEnter: boolean,
   e: KeyboardEvent
 ): QuestionPlayerState => {
+  const { typedLines, startedAt, isSuspended } = previousState;
+  const { roman: romanLines } = question;
   const { key } = e;
-  const isEnter = key === "Enter";
 
-  const isModifierKey = (isEnter && !requireEnter) || (!isEnter && key.length !== 1);
-  if (isModifierKey) {
+  if (key === "Crtl" || key === "Shift" || key === "Alt") {
     return previousState;
   }
 
   const nextTimeState = {
-    isSuspended: false,
-    startedAt: previousState.isSuspended ? Date.now() : previousState.startedAt
+    startedAt: isSuspended ? Date.now() : startedAt,
+    isSuspended: false
   };
 
-  const { currentChunkIndex, currentCharIndex, typedLines, typedString } = previousState;
-  const romanLines = question.roman;
+  const currentLineIndex = typedLines.length - 1;
+  const currentChunkIndex = typedLines[currentLineIndex].length - 1;
 
-  const currentLineIndex = typedLines.length;
   const currentLine = romanLines[currentLineIndex];
   const currentChunk = currentLine[currentChunkIndex];
 
-  const isWaitingEnter = currentChunk === undefined;
+  const typedLine = typedLines[currentLineIndex];
+  const typedChunk = typedLine[currentChunkIndex];
+
+  const currentCharIndex = typedChunk.length;
+
+  const isWaitingEnter =
+    typedLine.length === currentLine.length && currentChunk.candidates.some(candidate => candidate === typedChunk);
+
   if (isWaitingEnter) {
-    if (isEnter) {
+    if (key === "Enter") {
       return {
         ...previousState,
         ...nextTimeState,
-        currentChunkIndex: 0,
-        currentCharIndex: 0,
-        typedLines: [...typedLines, typedString],
-        typedString: ""
+        typedLines: [...typedLines, [""]]
       };
     } else {
-      return previousState;
+      return {
+        ...previousState,
+        ...nextTimeState
+      };
     }
-  } else if (isEnter) {
-    return previousState;
   }
 
-  const matchedCandidates = getMatchedCandidates(key, typedString, currentChunk, currentCharIndex);
+  const nextTypedChunk = `${typedChunk}${key}`;
+  const nextCandidates = currentChunk.candidates.filter(
+    candidate => candidate.slice(0, currentCharIndex + 1) === nextTypedChunk
+  );
 
-  const isCurrentChunkFinished = matchedCandidates.some(candidate => candidate.length === currentCharIndex + 1);
+  if (nextCandidates.length === 0) {
+    return {
+      ...previousState,
+      ...nextTimeState,
+      hasTypo: true
+    };
+  }
+
+  const isCurrentChunkFinished = nextCandidates.some(candidate => candidate.length === nextTypedChunk.length);
   const isCurrentLineFinished = isCurrentChunkFinished && currentLine.length === currentChunkIndex + 1;
+  const isCurrentQuestionFinished = isCurrentLineFinished && romanLines.length === currentLineIndex + 1;
 
-  const currentTypedString = `${typedString}${key}`;
-
-  const shouldWaitEnter = isCurrentLineFinished && requireEnter;
-  if (shouldWaitEnter) {
-    return {
-      ...previousState,
-      ...nextTimeState,
-      hasTypo: false,
-      currentChunkIndex: currentChunkIndex + 1,
-      typedString: currentTypedString
-    };
-  }
-
-  const hasTypo = matchedCandidates.length === 0;
-  if (hasTypo) {
-    return {
-      ...previousState,
-      ...nextTimeState,
-      hasTypo
-    };
-  }
+  const nextTypedLine =
+    isCurrentChunkFinished && !isCurrentLineFinished
+      ? [...typedLine.slice(0, currentChunkIndex), nextTypedChunk, ""]
+      : [...typedLine.slice(0, currentChunkIndex), nextTypedChunk];
+  const nextTypedLines = [...typedLines.slice(0, currentLineIndex), nextTypedLine];
 
   return {
     ...previousState,
     ...nextTimeState,
-    hasTypo,
-    currentChunkIndex: getNextChunkIndex(currentChunkIndex, {
-      isCurrentLineFinished,
-      isCurrentChunkFinished
-    }),
-    currentCharIndex: getNextCharIndex(currentCharIndex, {
-      isCurrentChunkFinished
-    }),
-    typedLines: getNextTypedLines(typedLines, currentTypedString, romanLines, {
-      isCurrentLineFinished
-    }),
-    typedString: getNextTypedString(currentTypedString, {
-      isCurrentLineFinished
-    })
+    typedLines: nextTypedLines,
+    hasTypo: false,
+    isFinished: isCurrentQuestionFinished
   };
-};
-
-const getMatchedCandidates = (
-  key: string,
-  previousTypedString: string,
-  currentChunk: RomanChunk,
-  currentCharIndex: number
-) => {
-  const previousTypedCandidateString = currentCharIndex === 0 ? "" : previousTypedString.slice(currentCharIndex * -1);
-  const currentTypedCandidateString = `${previousTypedCandidateString}${key}`;
-
-  return currentChunk.candidates.filter(
-    candidate => candidate.slice(0, currentCharIndex + 1) === currentTypedCandidateString
-  );
-};
-
-const getNextChunkIndex = (
-  currentChunkIndex: number,
-  flags: {
-    isCurrentLineFinished: boolean;
-    isCurrentChunkFinished: boolean;
-  }
-) => {
-  if (flags.isCurrentLineFinished) {
-    return 0;
-  }
-
-  if (flags.isCurrentChunkFinished) {
-    return currentChunkIndex + 1;
-  }
-
-  return currentChunkIndex;
-};
-
-const getNextCharIndex = (
-  currentCharIndex: number,
-  flags: {
-    isCurrentChunkFinished: boolean;
-  }
-) => {
-  if (flags.isCurrentChunkFinished) {
-    return 0;
-  } else {
-    return currentCharIndex + 1;
-  }
-};
-
-const getNextTypedLines = (
-  previousTypedLines: string[],
-  currentTypedString: string,
-  romanLines: RomanChunk[][],
-  flags: {
-    isCurrentLineFinished: boolean;
-  }
-) => {
-  if (!flags.isCurrentLineFinished) {
-    return previousTypedLines;
-  }
-
-  const currentLineIndex = previousTypedLines.length;
-  const nextRomanLine = romanLines[currentLineIndex + 1];
-  const isNextLineEmpty = nextRomanLine !== undefined && nextRomanLine.length === 0;
-
-  if (!isNextLineEmpty) {
-    return [...previousTypedLines, currentTypedString];
-  }
-
-  return [...previousTypedLines, currentTypedString, ""];
-};
-
-const getNextTypedString = (
-  currentTypedString: string,
-  flags: {
-    isCurrentLineFinished: boolean;
-  }
-) => {
-  if (flags.isCurrentLineFinished) {
-    return "";
-  } else {
-    return currentTypedString;
-  }
 };

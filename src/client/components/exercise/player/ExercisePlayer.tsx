@@ -54,7 +54,7 @@ export const ExercisePlayer = connector(
 
     if (resultCount === plan.length) {
       return (
-        <Column flex={1} center="both">
+        <Column center="both" style={{ height: "100%" }}>
           <AttemptResult attempt={attempt} />
         </Column>
       );
@@ -63,7 +63,7 @@ export const ExercisePlayer = connector(
     const currentQuestion = questions[plan[resultCount]];
 
     return (
-      <Column flex={1}>
+      <Column style={{ height: "100%" }}>
         <QuestionPlayer key={resultCount} question={currentQuestion} onFinish={onFinish} />
       </Column>
     );

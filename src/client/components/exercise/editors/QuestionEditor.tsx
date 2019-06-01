@@ -11,7 +11,6 @@ import {
   rubyTerminatorCharacter
 } from "../../../domain/content/ruby";
 import { connector } from "../../../reducers";
-import { styled } from "../../../style";
 import { Column } from "../../ui";
 
 export const QuestionEditor = connector(
@@ -46,48 +45,7 @@ export const QuestionEditor = connector(
       }
     }, [isRubyRequested]);
 
-    const valueChunks: JSX.Element[] = [];
-    const valueLines = value.split("\n");
-    valueLines.forEach(line => {
-      let cursor = 0;
-      let matched: RegExpExecArray | null;
-
-      const rubyRegExp = new RegExp(
-        `${rubyAnchorCharacter}([^${rubySeparatorCharacter}]+)${rubySeparatorCharacter}([^${rubyTerminatorCharacter}]+)${rubyTerminatorCharacter}`,
-        "g"
-      );
-
-      // tslint:disable-next-line: no-conditional-assignment
-      while ((matched = rubyRegExp.exec(line)) !== null) {
-        const start = matched.index;
-
-        if (cursor !== start) {
-          valueChunks.push(<span key={cursor}>{line.slice(cursor, start)}</span>);
-        }
-
-        valueChunks.push(
-          <span key={start} style={{ color: "#999" }}>
-            {rubyAnchorCharacter}
-          </span>,
-          <span key={start + 1}>{matched[1]}</span>,
-          <span key={start + 2} style={{ color: "#999" }}>
-            {rubySeparatorCharacter}
-            {matched[2]}
-            {rubyTerminatorCharacter}
-          </span>
-        );
-
-        cursor += matched[0].length;
-      }
-
-      if (cursor === 0) {
-        valueChunks.push(<span key="last">{line + "\n"}</span>);
-      } else {
-        valueChunks.push(<span key="last">{line.slice(cursor) + "\n"}</span>);
-      }
-    });
-
-    const classes = useStyles({ isCompositing });
+    const classes = useTextFieldStyles({ isCompositing });
 
     return (
       <Card onFocus={useCallback(() => onFocus(questionIndex), [questionIndex])}>
@@ -114,7 +72,7 @@ export const QuestionEditor = connector(
         />
         <CardContent>
           <Column style={{ position: "relative" }}>
-            {!isCompositing ? <Highlight>{valueChunks}</Highlight> : null}
+            {!isCompositing ? <HighlightedValue value={value} /> : null}
             <TextField
               variant="outlined"
               multiline
@@ -126,7 +84,7 @@ export const QuestionEditor = connector(
               }}
               onCompositionStart={useCallback(() => toggleCompositionState(true), [])}
               onCompositionEnd={useCallback(() => toggleCompositionState(false), [])}
-              defaultValue={question.value}
+              value={question.value}
               onChange={useCallback(
                 (e: React.ChangeEvent<HTMLTextAreaElement>) =>
                   updateQuestion(bufferId, questionIndex, "value", e.target.value),
@@ -140,7 +98,60 @@ export const QuestionEditor = connector(
   }
 );
 
-const useStyles = makeStyles<Theme, { isCompositing: boolean }>(theme => ({
+const rubyRegExp = new RegExp(
+  `${rubyAnchorCharacter}([^${rubySeparatorCharacter}]+)${rubySeparatorCharacter}([^${rubyTerminatorCharacter}]+)${rubyTerminatorCharacter}`,
+  "g"
+);
+
+const HighlightedValue = React.memo<{ value: string }>(({ value }) => {
+  const classes = useHighlightStyles();
+
+  const highlightedLines: JSX.Element[][] = [];
+
+  value.split("\n").forEach(line => {
+    const highlightedLine: JSX.Element[] = [];
+
+    let cursor = 0;
+    let matched: RegExpExecArray | null;
+
+    // tslint:disable-next-line: no-conditional-assignment
+    while ((matched = rubyRegExp.exec(line)) !== null) {
+      const start = matched.index;
+
+      if (cursor !== start) {
+        highlightedLine.push(<span key={cursor}>{line.slice(cursor, start)}</span>);
+
+        cursor = start;
+      }
+
+      highlightedLine.push(
+        <span key={start} style={{ color: "#999" }}>
+          {rubyAnchorCharacter}
+        </span>,
+        <span key={start + 1}>{matched[1]}</span>,
+        <span key={start + 2} style={{ color: "#999" }}>
+          {rubySeparatorCharacter}
+          {matched[2]}
+          {rubyTerminatorCharacter}
+        </span>
+      );
+
+      cursor += matched[0].length;
+    }
+
+    if (cursor === 0) {
+      highlightedLine.push(<span key={cursor}>{line + "\n"}</span>);
+    } else {
+      highlightedLine.push(<span key={cursor}>{line.slice(cursor) + "\n"}</span>);
+    }
+
+    highlightedLines.push(highlightedLine);
+  });
+
+  return <div className={classes.root}>{highlightedLines}</div>;
+});
+
+const useTextFieldStyles = makeStyles<Theme, { isCompositing: boolean }>(theme => ({
   textField: {
     position: "relative",
     zIndex: 2
@@ -152,18 +163,20 @@ const useStyles = makeStyles<Theme, { isCompositing: boolean }>(theme => ({
   })
 }));
 
-const Highlight = styled.div`
-  position: absolute;
-  font-size: 16px;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-  line-height: 1.1875em;
-  z-index: 1;
-  pointer-events: none;
-  background-color: transparent;
-  padding: 18.5px 14px
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  color: inherit;
-  width: 100%;
-  height: 100%;
-`;
+const useHighlightStyles = makeStyles(() => ({
+  root: {
+    padding: "18.5px 14px",
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    zIndex: 1,
+    backgroundColor: "transparent",
+    lineHeight: "1.1875em",
+    color: "inherit",
+    fontSize: "16px",
+    fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
+    whiteSpace: "pre-wrap",
+    wordWrap: "break-word",
+    pointerEvents: "none"
+  }
+}));
