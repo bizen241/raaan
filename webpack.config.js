@@ -24,7 +24,7 @@ const plugins = [
   new CopyPlugin([
     {
       from: join(__dirname, "assets"),
-      ignore: ["*.ejs", "*.svg", "locales/**/*"]
+      ignore: ["*.ejs", "*.svg"]
     },
     {
       from: join(__dirname, "node_modules/kuromoji/dict"),
@@ -92,25 +92,6 @@ const webpackConfiguration = {
               transpileOnly: true,
               configFile: join(__dirname, "config/tsconfig.client.json")
             }
-          }
-        ]
-      },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: "style-loader"
-          },
-          {
-            loader: "css-loader"
-          }
-        ]
-      },
-      {
-        test: /\.(ttf|woff|eot)$/,
-        use: [
-          {
-            loader: "file-loader"
           }
         ]
       }
