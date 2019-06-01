@@ -61,7 +61,6 @@
     "uuid": "3.3.2"
   },
   "devDependencies": {
-    "@babel/preset-env": "7.4.3",
     "@babel/preset-react": "7.0.0",
     "@types/body-parser": "1.17.0",
     "@types/compression": "0.0.36",
