@@ -109,12 +109,14 @@ export const EntityList = connector(
         }),
       [searchParams, limit, offset]
     );
+    const onChangePage = useCallback((_, newPage) => setPage(newPage), []);
+    const onChangeRowsPerPage = useCallback(e => setLimit(parseInt(e.target.value, 10)), []);
 
     if (searchResult === undefined || selectedEntities === undefined) {
       return (
         <Card>
-        <CardHeader avatar={<CircularProgress />} title="ロード中です" />
-      </Card>
+          <CardHeader avatar={<CircularProgress />} title="ロード中です" />
+        </Card>
       );
     }
 
@@ -144,8 +146,8 @@ export const EntityList = connector(
                 page={page}
                 count={searchResult.count}
                 labelRowsPerPage="表示件数:"
-                onChangePage={useCallback((_, newPage) => setPage(newPage), [])}
-                onChangeRowsPerPage={useCallback(e => setLimit(parseInt(e.target.value, 10)), [])}
+                onChangePage={onChangePage}
+                onChangeRowsPerPage={onChangeRowsPerPage}
               />
             </TableRow>
           </TableFooter>
