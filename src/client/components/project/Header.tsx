@@ -22,48 +22,52 @@ export const Header = connector(
 
     return (
       <AppBar position="static" color="default">
-        <Toolbar variant="dense" disableGutters>
-          <IconButton onClick={back}>
-            <ArrowBack />
-          </IconButton>
-          <Typography component="span">{title}</Typography>
-          <Box flex={1} />
-          <div>
-            <IconButton onClick={React.useCallback(e => setMenuAnchorElement(e.currentTarget), [])}>
-              <MoreVert />
-            </IconButton>
-            <Menu
-              anchorEl={menuAnchorElement}
-              open={Boolean(menuAnchorElement)}
-              onClose={React.useCallback(() => setMenuAnchorElement(null), [])}
-            >
-              {pathname !== "/config" ? (
-                <MenuItem component={Link} to="/config">
-                  <Settings className={iconClasses.leftIcon} />
-                  <Message id="settings" />
-                </MenuItem>
-              ) : null}
-              {pathname !== "/" ? (
-                <MenuItem component={Link} to="/">
-                  <Home className={iconClasses.leftIcon} />
-                  ホーム
-                </MenuItem>
-              ) : null}
-              {pathname !== "/account" ? (
-                <MenuItem component={Link} to="/account">
-                  <AccountCircle className={iconClasses.leftIcon} />
-                  <Message id="account" />
-                </MenuItem>
-              ) : null}
-              {pathname !== "/app" ? (
-                <MenuItem component={Link} to="/app">
-                  <Info className={iconClasses.leftIcon} />
-                  アプリについて
-                </MenuItem>
-              ) : null}
-            </Menu>
-          </div>
-        </Toolbar>
+        <Box display="flex" flexDirection="column" alignItems="center">
+          <Box display="flex" flexDirection="column" width="100%" maxWidth="1000px">
+            <Toolbar variant="dense" disableGutters>
+              <IconButton onClick={back}>
+                <ArrowBack />
+              </IconButton>
+              <Typography component="span">{title}</Typography>
+              <Box flex={1} />
+              <div>
+                <IconButton onClick={React.useCallback(e => setMenuAnchorElement(e.currentTarget), [])}>
+                  <MoreVert />
+                </IconButton>
+                <Menu
+                  anchorEl={menuAnchorElement}
+                  open={Boolean(menuAnchorElement)}
+                  onClose={React.useCallback(() => setMenuAnchorElement(null), [])}
+                >
+                  {pathname !== "/config" ? (
+                    <MenuItem component={Link} to="/config">
+                      <Settings className={iconClasses.leftIcon} />
+                      <Message id="settings" />
+                    </MenuItem>
+                  ) : null}
+                  {pathname !== "/" ? (
+                    <MenuItem component={Link} to="/">
+                      <Home className={iconClasses.leftIcon} />
+                      ホーム
+                    </MenuItem>
+                  ) : null}
+                  {pathname !== "/account" ? (
+                    <MenuItem component={Link} to="/account">
+                      <AccountCircle className={iconClasses.leftIcon} />
+                      <Message id="account" />
+                    </MenuItem>
+                  ) : null}
+                  {pathname !== "/app" ? (
+                    <MenuItem component={Link} to="/app">
+                      <Info className={iconClasses.leftIcon} />
+                      アプリについて
+                    </MenuItem>
+                  ) : null}
+                </Menu>
+              </div>
+            </Toolbar>
+          </Box>
+        </Box>
       </AppBar>
     );
   }

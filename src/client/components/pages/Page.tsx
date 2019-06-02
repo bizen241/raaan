@@ -1,32 +1,16 @@
+import { Box } from "@material-ui/core";
 import * as React from "react";
-import { styled } from "../../style";
 import { Header } from "../project/Header";
-
-const Outer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  align-items: center;
-`;
-
-const Inner = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 1000px;
-  padding: 8px;
-`;
 
 export const Page: React.FunctionComponent<{
   title?: React.ReactNode;
 }> = ({ title, children }) => {
   return (
-    <Outer>
+    <Box display="flex" flexDirection="column" alignItems="center" width="100%" position="absolute" top={0} left={0}>
       <Header title={title} />
-      <Inner>{children}</Inner>
-    </Outer>
+      <Box display="flex" flexDirection="column" width="100%" maxWidth="1000px" p={1}>
+        {children}
+      </Box>
+    </Box>
   );
 };
