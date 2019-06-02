@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Suspense } from "react";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { connector } from "../../reducers";
 import AccountPage from "../pages/AccountPage";
 import AppPage from "../pages/AppPage";
@@ -22,24 +21,20 @@ export const Router = connector(
   () => ({}),
   ({ location }) => {
     return (
-      <TransitionGroup component={null}>
-        <CSSTransition key={location.key} classNames="page" timeout={300}>
-          <Suspense fallback={<div>Loading...</div>}>
-            <Switch location={location}>
-              <Route exact={true} path="/" component={HomePage} />
-              <Route exact={true} path="/exercises" component={EditExercisesPage} />
-              <Route exact={true} path="/exercises/private" component={EditExercisesPage} />
-              <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
-              <Route exact={true} path="/exercises/:id/edit" component={EditExercisePage} />
-              <Route exact={true} path="/login" component={LoginPage} />
-              <Route exact={true} path="/config" component={ConfigPage} />
-              <Route exact={true} path="/account" component={AccountPage} />
-              <Route exact={true} path="/app" component={AppPage} />
-              <Route component={NotFoundPage} />
-            </Switch>
-          </Suspense>
-        </CSSTransition>
-      </TransitionGroup>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Switch location={location}>
+          <Route exact={true} path="/" component={HomePage} />
+          <Route exact={true} path="/exercises" component={EditExercisesPage} />
+          <Route exact={true} path="/exercises/private" component={EditExercisesPage} />
+          <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
+          <Route exact={true} path="/exercises/:id/edit" component={EditExercisePage} />
+          <Route exact={true} path="/login" component={LoginPage} />
+          <Route exact={true} path="/config" component={ConfigPage} />
+          <Route exact={true} path="/account" component={AccountPage} />
+          <Route exact={true} path="/app" component={AppPage} />
+          <Route component={NotFoundPage} />
+        </Switch>
+      </Suspense>
     );
   }
 );
