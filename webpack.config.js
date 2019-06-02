@@ -36,8 +36,8 @@ if (!isDevelopment) {
       swDest: "sw.js",
       clientsClaim: true,
       skipWaiting: true,
-      exclude: [/\.png$/, /\.txt$/],
-      navigateFallback: "/",
+      exclude: [/\.png$/, /\.txt$/, /\.gz$/],
+      navigateFallback: "/index.html",
       navigateFallbackBlacklist: [/^\/api/, /^\/auth/, /^\/logout/]
     })
   );
