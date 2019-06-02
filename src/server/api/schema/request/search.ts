@@ -12,14 +12,8 @@ export const SearchParamsMapSchema: Definition = {
           type: "object",
           properties: {
             title: { type: "string" },
-            authorId: {
-              format: "uuid",
-              type: "string"
-            },
-            summaryId: {
-              format: "uuid",
-              type: "string"
-            },
+            authorId: { format: "uuid", type: "string" },
+            summaryId: { format: "uuid", type: "string" },
             lang: { type: "string" },
             tags: { type: "string" },
             description: { type: "string" },
@@ -31,14 +25,7 @@ export const SearchParamsMapSchema: Definition = {
                 type: "object",
                 properties: {
                   id: { type: "string" },
-                  format: {
-                    enum: [
-                      "code",
-                      "math",
-                      "plain"
-                    ],
-                    type: "string"
-                  },
+                  format: { enum: ["code", "math", "plain"], type: "string" },
                   lang: { type: "string" },
                   value: { type: "string" },
                   comment: { type: "string" }
@@ -49,13 +36,7 @@ export const SearchParamsMapSchema: Definition = {
             isLocked: { type: "boolean" }
           }
         },
-        {
-          type: "object",
-          properties: {
-            limit: { type: "number" },
-            offset: { type: "number" }
-          }
-        }
+        { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
       ]
     },
     ExerciseSummary: {
@@ -64,45 +45,21 @@ export const SearchParamsMapSchema: Definition = {
           type: "object",
           properties: {
             title: { type: "string" },
-            authorId: {
-              format: "uuid",
-              type: "string"
-            },
+            authorId: { format: "uuid", type: "string" },
             lang: { type: "string" },
             tags: { type: "string" },
             description: { type: "string" },
-            exerciseId: {
-              format: "uuid",
-              type: "string"
-            },
-            tagIds: {
-              type: "array",
-              items: { type: "string" }
-            }
+            exerciseId: { format: "uuid", type: "string" },
+            tagIds: { type: "array", items: { type: "string" } }
           }
         },
-        {
-          type: "object",
-          properties: {
-            limit: { type: "number" },
-            offset: { type: "number" }
-          }
-        }
+        { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
       ]
     },
     ExerciseTag: {
       allOf: [
-        {
-          type: "object",
-          properties: { name: { type: "string" } }
-        },
-        {
-          type: "object",
-          properties: {
-            limit: { type: "number" },
-            offset: { type: "number" }
-          }
-        }
+        { type: "object", properties: { name: { type: "string" } } },
+        { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
       ]
     },
     User: {
@@ -111,32 +68,12 @@ export const SearchParamsMapSchema: Definition = {
           type: "object",
           properties: {
             name: { type: "string" },
-            permission: {
-              enum: [
-                "Admin",
-                "Guest",
-                "Owner",
-                "Write"
-              ],
-              type: "string"
-            },
-            accountId: {
-              format: "uuid",
-              type: "string"
-            },
-            configId: {
-              format: "uuid",
-              type: "string"
-            }
+            permission: { enum: ["Admin", "Guest", "Owner", "Write"], type: "string" },
+            accountId: { format: "uuid", type: "string" },
+            configId: { format: "uuid", type: "string" }
           }
         },
-        {
-          type: "object",
-          properties: {
-            limit: { type: "number" },
-            offset: { type: "number" }
-          }
-        }
+        { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
       ]
     },
     UserAccount: {
@@ -145,20 +82,11 @@ export const SearchParamsMapSchema: Definition = {
           type: "object",
           properties: {
             accountId: { type: "string" },
-            provider: {
-              type: "string",
-              enum: ["github"]
-            },
+            provider: { type: "string", enum: ["github"] },
             email: { type: "string" }
           }
         },
-        {
-          type: "object",
-          properties: {
-            limit: { type: "number" },
-            offset: { type: "number" }
-          }
-        }
+        { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
       ]
     },
     UserConfig: {
@@ -166,54 +94,17 @@ export const SearchParamsMapSchema: Definition = {
         {
           type: "object",
           properties: {
-            theme: {
-              enum: [
-                "dark",
-                "default",
-                "light",
-                "system"
-              ],
-              type: "string"
-            },
-            lang: {
-              enum: [
-                "default",
-                "en",
-                "ja",
-                "system"
-              ],
-              type: "string"
-            }
+            lang: { enum: ["default", "en", "ja", "system"], type: "string" },
+            theme: { enum: ["dark", "default", "light", "system"], type: "string" }
           }
         },
-        {
-          type: "object",
-          properties: {
-            limit: { type: "number" },
-            offset: { type: "number" }
-          }
-        }
+        { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
       ]
     },
     UserSession: {
       allOf: [
-        {
-          type: "object",
-          properties: {
-            userId: {
-              format: "uuid",
-              type: "string"
-            },
-            userAgent: { type: "string" }
-          }
-        },
-        {
-          type: "object",
-          properties: {
-            limit: { type: "number" },
-            offset: { type: "number" }
-          }
-        }
+        { type: "object", properties: { userId: { format: "uuid", type: "string" }, userAgent: { type: "string" } } },
+        { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
       ]
     }
   }

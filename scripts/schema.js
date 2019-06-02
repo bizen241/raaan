@@ -30,7 +30,7 @@ const generateSchema = (inputFilePath, outputFilePath, typeName) => {
 
 	export const ${typeName}Schema: Definition = ${JSON.stringify(schema)}
 	`;
-  const prettieredSchema = prettier.format(decoratedSchema, { parser: "typescript", printWidth: 50 });
+  const prettieredSchema = prettier.format(decoratedSchema, { parser: "typescript", printWidth: 120 });
 
   fs.writeFileSync(path.join(process.cwd(), outputFilePath), prettieredSchema);
 };

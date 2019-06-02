@@ -10,14 +10,8 @@ export const SaveParamsMapSchema: Definition = {
       type: "object",
       properties: {
         title: { type: "string" },
-        authorId: {
-          format: "uuid",
-          type: "string"
-        },
-        summaryId: {
-          format: "uuid",
-          type: "string"
-        },
+        authorId: { format: "uuid", type: "string" },
+        summaryId: { format: "uuid", type: "string" },
         lang: { type: "string" },
         tags: { type: "string" },
         description: { type: "string" },
@@ -29,10 +23,7 @@ export const SaveParamsMapSchema: Definition = {
             type: "object",
             properties: {
               id: { type: "string" },
-              format: {
-                enum: ["code", "math", "plain"],
-                type: "string"
-              },
+              format: { enum: ["code", "math", "plain"], type: "string" },
               lang: { type: "string" },
               value: { type: "string" },
               comment: { type: "string" }
@@ -47,88 +38,42 @@ export const SaveParamsMapSchema: Definition = {
       type: "object",
       properties: {
         title: { type: "string" },
-        authorId: {
-          format: "uuid",
-          type: "string"
-        },
+        authorId: { format: "uuid", type: "string" },
         lang: { type: "string" },
         tags: { type: "string" },
         description: { type: "string" },
-        exerciseId: {
-          format: "uuid",
-          type: "string"
-        },
-        tagIds: {
-          type: "array",
-          items: { type: "string" }
-        }
+        exerciseId: { format: "uuid", type: "string" },
+        tagIds: { type: "array", items: { type: "string" } }
       }
     },
-    ExerciseTag: {
-      type: "object",
-      properties: { name: { type: "string" } }
-    },
+    ExerciseTag: { type: "object", properties: { name: { type: "string" } } },
     User: {
       type: "object",
       properties: {
         name: { type: "string" },
-        permission: {
-          enum: [
-            "Admin",
-            "Guest",
-            "Owner",
-            "Write"
-          ],
-          type: "string"
-        },
-        accountId: {
-          format: "uuid",
-          type: "string"
-        },
-        configId: {
-          format: "uuid",
-          type: "string"
-        }
+        permission: { enum: ["Admin", "Guest", "Owner", "Write"], type: "string" },
+        accountId: { format: "uuid", type: "string" },
+        configId: { format: "uuid", type: "string" }
       }
     },
     UserAccount: {
       type: "object",
       properties: {
         accountId: { type: "string" },
-        provider: {
-          type: "string",
-          enum: ["github"]
-        },
+        provider: { type: "string", enum: ["github"] },
         email: { type: "string" }
       }
     },
     UserConfig: {
       type: "object",
       properties: {
-        theme: {
-          enum: [
-            "dark",
-            "default",
-            "light",
-            "system"
-          ],
-          type: "string"
-        },
-        lang: {
-          enum: ["default", "en", "ja", "system"],
-          type: "string"
-        }
+        lang: { enum: ["default", "en", "ja", "system"], type: "string" },
+        theme: { enum: ["dark", "default", "light", "system"], type: "string" }
       }
     },
     UserSession: {
       type: "object",
-      properties: {
-        userId: {
-          format: "uuid",
-          type: "string"
-        },
-        userAgent: { type: "string" }
-      }
+      properties: { userId: { format: "uuid", type: "string" }, userAgent: { type: "string" } }
     }
   }
 };

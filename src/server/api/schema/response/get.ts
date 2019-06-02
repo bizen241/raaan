@@ -11,14 +11,8 @@ export const EntityStoreSchema: Definition = {
       additionalProperties: {
         type: "object",
         properties: {
-          authorId: {
-            format: "uuid",
-            type: "string"
-          },
-          summaryId: {
-            format: "uuid",
-            type: "string"
-          },
+          authorId: { format: "uuid", type: "string" },
+          summaryId: { format: "uuid", type: "string" },
           lang: { type: "string" },
           title: { type: "string" },
           tags: { type: "string" },
@@ -31,10 +25,7 @@ export const EntityStoreSchema: Definition = {
               type: "object",
               properties: {
                 id: { type: "string" },
-                format: {
-                  enum: ["code", "math", "plain"],
-                  type: "string"
-                },
+                format: { enum: ["code", "math", "plain"], type: "string" },
                 lang: { type: "string" },
                 value: { type: "string" },
                 comment: { type: "string" }
@@ -55,18 +46,9 @@ export const EntityStoreSchema: Definition = {
       additionalProperties: {
         type: "object",
         properties: {
-          authorId: {
-            format: "uuid",
-            type: "string"
-          },
-          exerciseId: {
-            format: "uuid",
-            type: "string"
-          },
-          tagIds: {
-            type: "array",
-            items: { type: "string" }
-          },
+          authorId: { format: "uuid", type: "string" },
+          exerciseId: { format: "uuid", type: "string" },
+          tagIds: { type: "array", items: { type: "string" } },
           lang: { type: "string" },
           title: { type: "string" },
           tags: { type: "string" },
@@ -97,23 +79,9 @@ export const EntityStoreSchema: Definition = {
         type: "object",
         properties: {
           name: { type: "string" },
-          permission: {
-            enum: [
-              "Admin",
-              "Guest",
-              "Owner",
-              "Write"
-            ],
-            type: "string"
-          },
-          accountId: {
-            format: "uuid",
-            type: "string"
-          },
-          configId: {
-            format: "uuid",
-            type: "string"
-          },
+          permission: { enum: ["Admin", "Guest", "Owner", "Write"], type: "string" },
+          accountId: { format: "uuid", type: "string" },
+          configId: { format: "uuid", type: "string" },
           id: { format: "uuid", type: "string" },
           createdAt: { type: "number" },
           updatedAt: { type: "number" },
@@ -126,10 +94,7 @@ export const EntityStoreSchema: Definition = {
       additionalProperties: {
         type: "object",
         properties: {
-          provider: {
-            type: "string",
-            enum: ["github"]
-          },
+          provider: { type: "string", enum: ["github"] },
           accountId: { type: "string" },
           email: { type: "string" },
           id: { format: "uuid", type: "string" },
@@ -144,24 +109,8 @@ export const EntityStoreSchema: Definition = {
       additionalProperties: {
         type: "object",
         properties: {
-          lang: {
-            enum: [
-              "default",
-              "en",
-              "ja",
-              "system"
-            ],
-            type: "string"
-          },
-          theme: {
-            enum: [
-              "dark",
-              "default",
-              "light",
-              "system"
-            ],
-            type: "string"
-          },
+          lang: { enum: ["default", "en", "ja", "system"], type: "string" },
+          theme: { enum: ["dark", "default", "light", "system"], type: "string" },
           id: { format: "uuid", type: "string" },
           createdAt: { type: "number" },
           updatedAt: { type: "number" },
@@ -174,10 +123,7 @@ export const EntityStoreSchema: Definition = {
       additionalProperties: {
         type: "object",
         properties: {
-          userId: {
-            format: "uuid",
-            type: "string"
-          },
+          userId: { format: "uuid", type: "string" },
           userAgent: { type: "string" },
           id: { format: "uuid", type: "string" },
           createdAt: { type: "number" },
