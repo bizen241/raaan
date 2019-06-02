@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, IconButton, Menu, MenuItem, TextField } from "@material-ui/core";
+import { Box, Card, CardContent, CardHeader, IconButton, Menu, MenuItem, TextField } from "@material-ui/core";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { MoreVert } from "@material-ui/icons";
 import * as React from "react";
@@ -11,7 +11,6 @@ import {
   rubyTerminatorCharacter
 } from "../../../domain/content/ruby";
 import { connector } from "../../../reducers";
-import { Column } from "../../ui";
 
 export const QuestionEditor = connector(
   (
@@ -71,7 +70,7 @@ export const QuestionEditor = connector(
           }
         />
         <CardContent>
-          <Column style={{ position: "relative" }}>
+          <Box display="flex" flexDirection="column" position="relative">
             {!isCompositing ? <HighlightedValue value={value} /> : null}
             <TextField
               variant="outlined"
@@ -91,7 +90,7 @@ export const QuestionEditor = connector(
                 [questionIndex]
               )}
             />
-          </Column>
+          </Box>
         </CardContent>
       </Card>
     );

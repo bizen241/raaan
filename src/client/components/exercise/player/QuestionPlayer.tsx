@@ -1,7 +1,6 @@
 import * as React from "react";
 import { CompiledQuestion } from "../../../domain/content/compiler";
 import { QuestionResult, TypoMap } from "../../../reducers/attempts";
-import { Column } from "../../ui";
 import { QuestionRenderer } from "../renderers/QuestionRenderer";
 
 export interface QuestionPlayerState {
@@ -69,11 +68,7 @@ export const QuestionPlayer: React.FunctionComponent<{
     return null;
   }
 
-  return (
-    <Column flex={1}>
-      <QuestionRenderer question={question} state={state} />
-    </Column>
-  );
+  return <QuestionRenderer question={question} state={state} />;
 };
 
 const getNextState = (

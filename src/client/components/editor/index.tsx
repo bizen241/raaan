@@ -1,4 +1,4 @@
-import { Button, Card, CardHeader, CircularProgress, Divider } from "@material-ui/core";
+import { Box, Button, Card, CardHeader, CircularProgress, Divider } from "@material-ui/core";
 import { CloudUpload, Done, Error } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useEffect } from "react";
@@ -6,7 +6,6 @@ import { EntityObject, EntityType } from "../../../shared/api/entities";
 import { connector } from "../../reducers";
 import { isLocalOnly } from "../../reducers/api";
 import { Buffer } from "../../reducers/buffers";
-import { Column } from "../ui";
 
 export interface EntityEditorContainerProps {
   bufferId: string;
@@ -82,18 +81,18 @@ export const EntityEditor = connector(
     }
 
     return (
-      <Column>
-        <Column padding="vertical">
+      <Box display="flex" flexDirection="column">
+        <Box display="flex" flexDirection="column" py={1}>
           <Button variant="outlined" size="large" onClick={onUpload}>
             <CloudUpload style={{ marginRight: "0.5em" }} />
             アップロード
           </Button>
-        </Column>
-        <Column padding="vertical">
+        </Box>
+        <Box display="flex" flexDirection="column" py={1}>
           <Divider variant="middle" />
-        </Column>
+        </Box>
         <Renderer bufferId={bufferId} buffer={buffer} />
-      </Column>
+      </Box>
     );
   }
 );

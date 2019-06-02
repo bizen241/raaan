@@ -1,10 +1,9 @@
-import { Button } from "@material-ui/core";
+import { Box, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Edit, Keyboard } from "@material-ui/icons";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { connector } from "../../reducers";
-import { Column } from "../ui";
 import { Page } from "./Page";
 
 export const HomePage = connector(
@@ -15,18 +14,18 @@ export const HomePage = connector(
 
     return (
       <Page>
-        <Column padding="vertical">
+        <Box display="flex" flexDirection="column" py={1}>
           <Button className={classes.button} variant="outlined" component={RouterLink} to="/">
             <Keyboard className={classes.leftIcon} />
             遊ぶ
           </Button>
-        </Column>
-        <Column padding="vertical">
+        </Box>
+        <Box display="flex" flexDirection="column" py={1}>
           <Button className={classes.button} variant="outlined" component={RouterLink} to="/exercises/edit">
             <Edit className={classes.leftIcon} />
             作る
           </Button>
-        </Column>
+        </Box>
       </Page>
     );
   }

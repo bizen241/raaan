@@ -1,4 +1,4 @@
-import { Button, TextField } from "@material-ui/core";
+import { Box, Button, TextField } from "@material-ui/core";
 import { Add, PlayArrow } from "@material-ui/icons";
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as React from "react";
@@ -8,7 +8,6 @@ import { connector } from "../../reducers";
 import { QuestionEditor } from "../exercise/editors/QuestionEditor";
 import { ExercisePreviewer } from "../exercise/previewer/ExercisePreviewer";
 import { QuestionPreviewer } from "../exercise/previewer/QuestionPreviewer";
-import { Column } from "../ui";
 import { manageHotKey } from "../utils/hotKey";
 
 export const ExerciseEditor = React.memo<EntityEditorContainerProps>(props => (
@@ -44,8 +43,8 @@ const ExerciseEditorRenderer = connector(
     );
 
     return (
-      <Column flex={1}>
-        <Column padding="vertical">
+      <Box display="flex" flexDirection="column" flex={1}>
+        <Box display="flex" flexDirection="column" py={1}>
           <TextField
             variant="outlined"
             label="題名"
@@ -56,8 +55,8 @@ const ExerciseEditorRenderer = connector(
               []
             )}
           />
-        </Column>
-        <Column padding="vertical">
+        </Box>
+        <Box display="flex" flexDirection="column" py={1}>
           <Button
             variant="contained"
             size="large"
@@ -67,29 +66,27 @@ const ExerciseEditorRenderer = connector(
             <PlayArrow style={{ marginRight: "0.5em" }} />
             プレビュー
           </Button>
-        </Column>
-        <Column>
-          {questions.map((question, index) => (
-            <Column key={question.id} padding="vertical">
-              <QuestionEditor bufferId={bufferId} questionIndex={index} question={question} onFocus={focus} />
-            </Column>
-          ))}
-          <Column padding="vertical">
-            <Button
-              variant="contained"
-              size="large"
-              color="primary"
-              onClick={useCallback(() => appendQuestion(bufferId), [])}
-              ref={appendButtonRef}
-            >
-              <Add style={{ marginRight: "0.5em" }} />
-              問題を追加
-            </Button>
-          </Column>
-        </Column>
+        </Box>
+        {questions.map((question, index) => (
+          <Box key={question.id} display="flex" flexDirection="column" py={1}>
+            <QuestionEditor bufferId={bufferId} questionIndex={index} question={question} onFocus={focus} />
+          </Box>
+        ))}
+        <Box display="flex" flexDirection="column" py={1}>
+          <Button
+            variant="contained"
+            size="large"
+            color="primary"
+            onClick={useCallback(() => appendQuestion(bufferId), [])}
+            ref={appendButtonRef}
+          >
+            <Add style={{ marginRight: "0.5em" }} />
+            問題を追加
+          </Button>
+        </Box>
         <ExercisePreviewer params={buffer.edited} />
         <QuestionPreviewer question={questions[focusedItemIndex]} />
-      </Column>
+      </Box>
     );
   }
 );

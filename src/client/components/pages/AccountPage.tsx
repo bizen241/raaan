@@ -6,7 +6,6 @@ import { Link as RouterLink } from "react-router-dom";
 import { connector } from "../../reducers";
 import { UserContext } from "../project/Context";
 import { Message } from "../project/Message";
-import { Column } from "../ui";
 import { iconStyles } from "../ui/styles";
 import { Page } from "./Page";
 
@@ -21,19 +20,17 @@ const AccountPage = connector(
 
     return (
       <Page>
-        <Column padding="vertical">
-          {isGuest ? (
-            <Button variant="contained" size="large" component={RouterLink} to="/login">
-              <AccountCircle className={iconClasses.leftIcon} />
-              <Message id="login" />
-            </Button>
-          ) : (
-            <Button variant="contained" size="large" component={RouterLink} to="/login">
-              <AccountCircle className={iconClasses.leftIcon} />
-              <Message id="logout" />
-            </Button>
-          )}
-        </Column>
+        {isGuest ? (
+          <Button variant="contained" size="large" component={RouterLink} to="/login">
+            <AccountCircle className={iconClasses.leftIcon} />
+            <Message id="login" />
+          </Button>
+        ) : (
+          <Button variant="contained" size="large" component={RouterLink} to="/login">
+            <AccountCircle className={iconClasses.leftIcon} />
+            <Message id="logout" />
+          </Button>
+        )}
       </Page>
     );
   }

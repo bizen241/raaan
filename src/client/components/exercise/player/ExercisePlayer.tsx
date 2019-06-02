@@ -6,7 +6,6 @@ import { SaveParams } from "../../../../shared/api/request/save";
 import { CompiledQuestion, compileQuestions } from "../../../domain/content/compiler";
 import { connector } from "../../../reducers";
 import { attemptsActions, QuestionResult } from "../../../reducers/attempts";
-import { Column } from "../../ui";
 import { AttemptResult } from "../renderers/AttemptResult";
 import { QuestionPlayer } from "./QuestionPlayer";
 
@@ -58,10 +57,6 @@ export const ExercisePlayer = connector(
 
     const currentQuestion = questions[plan[resultCount]];
 
-    return (
-      <Column style={{ height: "100%" }}>
-        <QuestionPlayer key={resultCount} question={currentQuestion} onFinish={onFinish} />
-      </Column>
-    );
+    return <QuestionPlayer key={resultCount} question={currentQuestion} onFinish={onFinish} />;
   }
 );

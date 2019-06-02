@@ -1,4 +1,4 @@
-import { AppBar, Dialog, IconButton, Toolbar } from "@material-ui/core";
+import { AppBar, Dialog, DialogContent, IconButton, Toolbar } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import * as React from "react";
 import { useMemo } from "react";
@@ -6,7 +6,6 @@ import { Exercise, Question } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
 import { createExercise } from "../../../domain/content";
 import { connector } from "../../../reducers";
-import { Column } from "../../ui";
 import { ExercisePlayer } from "../player/ExercisePlayer";
 
 export const QuestionPreviewer = connector(
@@ -36,9 +35,9 @@ export const QuestionPreviewer = connector(
             </IconButton>
           </Toolbar>
         </AppBar>
-        <Column flex={1} padding="around">
+        <DialogContent>
           <ExercisePlayer id={id} params={params} />
-        </Column>
+        </DialogContent>
       </Dialog>
     );
   }
