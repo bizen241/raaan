@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, CardHeader, Grid, Typography } from "@material-ui/core";
+import { Box, Button, Card, CardActions, CardContent, CardHeader, Typography } from "@material-ui/core";
 import { Done, NotificationImportant } from "@material-ui/icons";
 import * as React from "react";
 import { connector } from "../../reducers";
@@ -20,23 +20,15 @@ const AppPage = connector(
           <CardHeader title="バージョン" />
           <CardContent>
             {hasUpdate ? (
-              <Grid container>
-                <Grid item>
-                  <NotificationImportant className={iconClasses.leftIcon} />
-                </Grid>
-                <Grid item xs zeroMinWidth>
-                  <Typography>更新があります</Typography>
-                </Grid>
-              </Grid>
+              <Box display="flex">
+                <NotificationImportant className={iconClasses.leftIcon} />
+                <Typography>更新があります</Typography>
+              </Box>
             ) : (
-              <Grid container>
-                <Grid item>
-                  <Done className={iconClasses.leftIcon} />
-                </Grid>
-                <Grid item xs zeroMinWidth>
-                  <Typography>最新版です</Typography>
-                </Grid>
-              </Grid>
+              <Box display="flex">
+                <Done className={iconClasses.leftIcon} />
+                <Typography>最新版です</Typography>
+              </Box>
             )}
           </CardContent>
           <CardActions>
