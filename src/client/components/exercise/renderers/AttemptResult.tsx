@@ -1,23 +1,6 @@
-import { Divider } from "@material-ui/core";
+import { Box, Divider, makeStyles } from "@material-ui/core";
 import * as React from "react";
 import { AttemptState } from "../../../reducers/attempts";
-import { styled } from "../../../style";
-import { Column, Row } from "../../ui";
-
-const IndexType = styled(Row)`
-  font-size: 2vmax;
-  line-height: 1.5em;
-`;
-
-const Padding = styled(Row)`
-  flex: 1;
-  min-width: 2em;
-`;
-
-const IndexValue = styled(Row)`
-  font-size: 3vmax;
-  line-height: 1.5em;
-`;
 
 export const AttemptResult: React.FunctionComponent<{
   attempt: AttemptState;
@@ -30,31 +13,31 @@ export const AttemptResult: React.FunctionComponent<{
   const typeSpeed = totalTime === 0 ? 0 : totalTypeCount / totalTime;
   const score = typeSpeed * 1 * 60;
 
+  const classes = useStyles();
+
   return (
-    <Column center="main">
-      <Row center="cross" isResponsive={true}>
-        <IndexType>スコア</IndexType>
-        <Padding />
-        <IndexValue>{score.toFixed(0)}</IndexValue>
-      </Row>
-      <Divider variant="middle" />
-      <Row center="cross" isResponsive={true}>
-        <IndexType>時間</IndexType>
-        <Padding />
-        <IndexValue>{totalTime.toFixed(2)}&nbsp;秒</IndexValue>
-      </Row>
-      <Divider variant="middle" />
-      <Row center="cross" isResponsive={true}>
-        <IndexType>スピード</IndexType>
-        <Padding />
-        <IndexValue>{typeSpeed.toFixed(2)}&nbsp;打/秒</IndexValue>
-      </Row>
-      <Divider variant="middle" />
-      <Row center="cross" isResponsive={true}>
-        <IndexType>正確性</IndexType>
-        <Padding />
-        <IndexValue>??&nbsp;%</IndexValue>
-      </Row>
-    </Column>
+    <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+      <Box display="flex" flexDirection="column">
+        <span className={classes.key}>スコア</span>
+        <span className={classes.value}>{score.toFixed(0)}</span>
+        <Divider />
+        <span className={classes.key}>時間</span>
+        <span className={classes.value}>{totalTime.toFixed(2)}秒</span>
+        <Divider />
+        <span className={classes.key}>速さ</span>
+        <span className={classes.value}>{typeSpeed.toFixed(2)}打/秒</span>
+      </Box>
+    </Box>
   );
 };
+
+const useStyles = makeStyles(() => ({
+  key: {
+    height: "1.5em",
+    fontSize: "2vmax"
+  },
+  value: {
+    height: "1.5em",
+    fontSize: "4vmax"
+  }
+}));

@@ -1,10 +1,9 @@
-import { AppBar, IconButton, Menu, MenuItem, Toolbar } from "@material-ui/core";
+import { AppBar, Box, IconButton, Menu, MenuItem, Toolbar } from "@material-ui/core";
 import { AccountCircle, ArrowBack, Home, Info, MoreVert, Settings } from "@material-ui/icons";
 import { goBack } from "connected-react-router";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../reducers";
-import { Row } from "../ui";
 import { iconStyles } from "../ui/styles";
 import { Message } from "./Message";
 
@@ -26,7 +25,7 @@ export const Header = connector(
           <IconButton onClick={back}>
             <ArrowBack />
           </IconButton>
-          <Row flex={1} />
+          <Box flex={1} />
           <div>
             <IconButton onClick={React.useCallback(e => setMenuAnchorElement(e.currentTarget), [])}>
               <MoreVert />

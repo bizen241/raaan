@@ -20,7 +20,7 @@ export const ExercisePreviewer = connector(
 
     return (
       <Dialog fullScreen open={isOpen} onClose={onClose}>
-        <AppBar>
+        <AppBar position="relative">
           <Toolbar variant="dense">
             <IconButton edge="start" color="inherit" onClick={onClose}>
               <Close />

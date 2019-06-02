@@ -18,14 +18,6 @@ const Flex = styled.div<{
   padding-left: ${p => (p.padding === "around" || p.padding === "horizontal" ? "0.5rem" : "0")};
 `;
 
-export const Row = styled(Flex)`
-  flex-direction: row;
-
-  @media (orientation: portrait) {
-    flex-direction: ${p => (p.isResponsive ? "column" : "row")};
-  }
-`;
-
 export const Column = styled(Flex)`
   flex-direction: column;
 
