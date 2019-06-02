@@ -1,7 +1,7 @@
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { CssBaseline } from "@material-ui/core";
+import { createMuiTheme, makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
 import * as React from "react";
-import { useContext, useEffect, useMemo, useState } from "react";
-import { createGlobalStyle, ThemeProvider } from "../../style";
+import { useContext, useEffect, useState } from "react";
 import { ConfigContext } from "./Context";
 
 export const Style = React.memo<{ children: React.ReactNode }>(({ children }) => {
@@ -30,55 +30,26 @@ export const Style = React.memo<{ children: React.ReactNode }>(({ children }) =>
     palette: {
       type: themeName,
       background: {
+        default: themeName === "light" ? "#f5f5f5" : "#121212",
         paper: themeName === "light" ? "#fff" : "#1e1e1e"
       }
     }
   });
 
+  useStyles();
+
   return (
-    <ThemeProvider
-      theme={useMemo(
-        () => ({
-          name: themeName,
-          base: themeName === "light" ? "#f5f5f5" : "#121212",
-          main: themeName === "light" ? "#333333" : "#ffffff",
-          accent: "#eeeeee"
-        }),
-        [themeName]
-      )}
-    >
-      <MuiThemeProvider theme={muiTheme}>
-        <div>
-          <GlobalStyle />
-          {children}
-        </div>
-      </MuiThemeProvider>
-    </ThemeProvider>
+    <MuiThemeProvider theme={muiTheme}>
+      <CssBaseline />
+      {children}
+    </MuiThemeProvider>
   );
 });
 
-const GlobalStyle = createGlobalStyle`
-  * {
-    box-sizing: border-box;
+const useStyles = makeStyles({
+  "@global": {
+    ".MuiTableCell-root.MuiTableCell-footer.MuiTablePagination-root": {
+      border: "none"
+    }
   }
-
-  html, body {
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    background-color: ${p => p.theme.base};
-    overflow-x: hidden;
-    overflow-y: scroll;
-    font-size: 16px;
-    color: ${p => p.theme.main};
-  }
-
-  #root {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .MuiTableCell-root.MuiTableCell-footer.MuiTablePagination-root {
-    border: none;
-  }
-`;
+});
