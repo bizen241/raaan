@@ -23,6 +23,9 @@
     "test:jest": "jest",
     "test:cov": "jest --coverage",
     "test:ci": "yarn test:ts && jest --coverage --runInBand && cat ./coverage/lcov.info | coveralls",
+    "lint": "run-s lint:tslint lint:prettier",
+    "lint:tslint": "tslint --project .",
+    "lint:prettier": "prettier --check \"src/**/*.{ts,tsx}\"",
     "db": "typeorm",
     "postinstall": "yarn build"
   },
