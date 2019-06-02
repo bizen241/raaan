@@ -1,4 +1,4 @@
-import { AppBar, Box, IconButton, Menu, MenuItem, Toolbar } from "@material-ui/core";
+import { AppBar, Box, IconButton, Menu, MenuItem, Toolbar, Typography } from "@material-ui/core";
 import { AccountCircle, ArrowBack, Home, Info, MoreVert, Settings } from "@material-ui/icons";
 import { goBack } from "connected-react-router";
 import * as React from "react";
@@ -8,23 +8,25 @@ import { iconStyles } from "../ui/styles";
 import { Message } from "./Message";
 
 export const Header = connector(
-  state => ({
+  (state, ownProps: { title?: React.ReactNode }) => ({
+    ...ownProps,
     pathname: state.router.location.pathname
   }),
   () => ({
     back: goBack
   }),
-  ({ pathname, back }) => {
+  ({ title = "", pathname, back }) => {
     const [menuAnchorElement, setMenuAnchorElement] = React.useState(null);
 
     const iconClasses = iconStyles();
 
     return (
       <AppBar position="static" color="default">
-        <Toolbar variant="dense">
+        <Toolbar variant="dense" disableGutters>
           <IconButton onClick={back}>
             <ArrowBack />
           </IconButton>
+          <Typography component="span">{title}</Typography>
           <Box flex={1} />
           <div>
             <IconButton onClick={React.useCallback(e => setMenuAnchorElement(e.currentTarget), [])}>

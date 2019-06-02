@@ -20,10 +20,12 @@ const Inner = styled.div`
   padding: 8px;
 `;
 
-export const Page: React.FunctionComponent = ({ children }) => {
+export const Page: React.FunctionComponent<{
+  title?: React.ReactNode;
+}> = ({ title, children }) => {
   return (
     <Outer>
-      <Header />
+      <Header title={title} />
       <Inner>{children}</Inner>
     </Outer>
   );

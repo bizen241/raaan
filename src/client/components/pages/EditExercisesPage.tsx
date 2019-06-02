@@ -33,7 +33,7 @@ export const EditExercisesPage = connector(
     );
 
     return (
-      <Page>
+      <Page title="作る">
         <Box display="flex" flexDirection="column" py={1}>
           <Button variant="contained" size="large" color="primary" onClick={onCreate}>
             <Add style={{ marginRight: "0.5em" }} />
