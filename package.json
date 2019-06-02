@@ -55,7 +55,6 @@
     "redux-devtools-extension": "2.13.8",
     "redux-persist": "5.10.0",
     "redux-thunk": "2.3.0",
-    "styled-components": "4.2.0",
     "swagger-ui-express": "4.0.2",
     "typeorm": "0.2.16",
     "typescript-json-schema": "0.37.0",
