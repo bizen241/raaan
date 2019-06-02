@@ -20,4 +20,5 @@ jobs:
             - ~/.cache/yarn
           key: yarn-v1-{{ checksum "yarn.lock" }}
       - run: yarn build
+      - run: yarn lint
       - run: yarn test:ci
