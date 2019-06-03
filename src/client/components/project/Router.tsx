@@ -5,9 +5,11 @@ import { connector } from "../../reducers";
 import AccountPage from "../pages/AccountPage";
 import AppPage from "../pages/AppPage";
 import { EditExercisesPage } from "../pages/EditExercisesPage";
+import { ExercisePage } from "../pages/ExercisePage";
 import { HomePage } from "../pages/HomePage";
 import { LoginPage } from "../pages/LoginPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
+import { UserExercisesPage } from "../pages/UserExercisesPage";
 
 export type PageProps = RouteComponentProps<{ id: string }>;
 
@@ -24,9 +26,11 @@ export const Router = connector(
       <Suspense fallback={<div>Loading...</div>}>
         <Switch location={location}>
           <Route exact={true} path="/" component={HomePage} />
-          <Route exact={true} path="/exercises" component={EditExercisesPage} />
-          <Route exact={true} path="/exercises/private" component={EditExercisesPage} />
+          <Route exact={true} path="/users/:id" component={NotFoundPage /*UserPage*/} />
+          <Route exact={true} path="/users/:id/exercises" component={UserExercisesPage} />
+          <Route exact={true} path="/exercises" component={NotFoundPage /*ExercisesPage*/} />
           <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
+          <Route exact={true} path="/exercises/:id" component={ExercisePage} />
           <Route exact={true} path="/exercises/:id/edit" component={EditExercisePage} />
           <Route exact={true} path="/login" component={LoginPage} />
           <Route exact={true} path="/config" component={ConfigPage} />

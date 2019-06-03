@@ -7,7 +7,6 @@ import {
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableFooter,
   TablePagination,
   TableRow,
@@ -23,7 +22,8 @@ import { stringifySearchParams } from "../../../api/request/search";
 import { connector } from "../../../reducers";
 
 export interface EntityListProps<E extends EntityObject> {
-  searchParams?: Partial<SearchParams<E>>;
+  title?: React.ReactNode;
+  searchParams: Partial<SearchParams<E>>;
 }
 
 export interface EntityListItemProps<E extends EntityObject> {
@@ -34,8 +34,9 @@ export const EntityList = connector(
   (
     state,
     ownProps: {
+      title?: React.ReactNode;
       entityType: EntityType;
-      searchParams?: Partial<SearchParams<any>>;
+      searchParams: Partial<SearchParams<any>>;
       itemComponent: React.ComponentType<EntityListItemProps<any>>;
     }
   ) => ({
@@ -46,7 +47,7 @@ export const EntityList = connector(
   actions => ({
     searchEntity: actions.api.search
   }),
-  ({ entityType, searchParams, itemComponent: ListItem, searchResultMap, entityMap, searchEntity }) => {
+  ({ title, entityType, searchParams, itemComponent: ListItem, searchResultMap, entityMap, searchEntity }) => {
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(0);
 
@@ -123,7 +124,7 @@ export const EntityList = connector(
     return (
       <Paper>
         <Toolbar>
-          <Typography variant="h6">保存済み</Typography>
+          <Typography variant="h6">{title || "検索結果"}</Typography>
           <Box component="span" flexGrow={1} />
           <IconButton onClick={onReload}>
             <Refresh />
@@ -133,9 +134,7 @@ export const EntityList = connector(
           <TableBody>
             {selectedEntities.map(entity => (
               <TableRow key={entity.id}>
-                <TableCell>
-                  <ListItem entity={entity} />
-                </TableCell>
+                <ListItem entity={entity} />
               </TableRow>
             ))}
           </TableBody>

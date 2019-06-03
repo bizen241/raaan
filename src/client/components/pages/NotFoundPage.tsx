@@ -11,7 +11,7 @@ export const NotFoundPage = connector(
     return (
       <Page>
         <Card>
-          <CardHeader avatar={<Error />} title="バッファが見つかりませんでした" />
+          <CardHeader avatar={<Error />} title="ページが見つかりませんでした" />
         </Card>
       </Page>
     );
