@@ -48,7 +48,7 @@ export const EditExercisesPage = connector(
         <Box display="flex" flexDirection="column" py={1}>
           <Button variant="contained" size="large" component={RouterLink} to={`/users/${currentUser.id}/exercises`}>
             <Edit className={classes.leftIcon} />
-            編集する
+            自分の問題集
           </Button>
         </Box>
         <Box display="flex" flexDirection="column" py={1}>

@@ -13,9 +13,9 @@ export const HomePage = connector(
     const classes = styles();
 
     return (
-      <Page>
+      <Page title="ホーム">
         <Box display="flex" flexDirection="column" py={1}>
-          <Button className={classes.button} variant="outlined" component={RouterLink} to="/">
+          <Button className={classes.button} variant="outlined" component={RouterLink} to="/exercises">
             <Keyboard className={classes.leftIcon} />
             遊ぶ
           </Button>
