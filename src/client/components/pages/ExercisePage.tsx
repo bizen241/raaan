@@ -1,14 +1,14 @@
 import * as React from "react";
-import { connector } from "../../reducers";
 import { PageProps } from "../project/Router";
+import { ExerciseViewer } from "../viewer/ExerciseViewer";
 import { Page } from "./Page";
 
-export const ExercisePage = connector(
-  (_, ownProps: PageProps) => ({
-    id: ownProps.match.params.id
-  }),
-  () => ({}),
-  ({ id }) => {
-    return <Page>{id}</Page>;
-  }
-);
+export const ExercisePage = React.memo<PageProps>(props => {
+  const exerciseId = props.match.params.id;
+
+  return (
+    <Page title="問題集の詳細">
+      <ExerciseViewer entityId={exerciseId} />
+    </Page>
+  );
+});
