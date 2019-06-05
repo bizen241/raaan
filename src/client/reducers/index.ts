@@ -6,18 +6,14 @@ import { combineReducers } from "redux";
 import { exerciseActions } from "../actions/exercise";
 import { ApiActions, apiActions, apiReducer, ApiState } from "./api";
 import { AppActions, appActions, appReducer, AppState } from "./app";
-import { AttemptsActions, attemptsReducer, AttemptState } from "./attempts";
 import { BuffersActions, buffersActions, buffersReducer, BuffersState } from "./buffers";
 import { CacheActions, cacheReducer, CacheState } from "./cache";
-import { DialogActions, dialogActions, dialogReducer, DialogState } from "./dialog";
 
 export interface RootState {
   api: ApiState;
   app: AppState;
-  attempts: AttemptState;
   buffers: BuffersState;
   cache: CacheState;
-  dialog: DialogState;
   router: RouterState;
 }
 
@@ -25,27 +21,17 @@ export const createReducer = (history: History) =>
   combineReducers({
     api: apiReducer,
     app: appReducer,
-    attempts: attemptsReducer,
     buffers: buffersReducer,
     cache: cacheReducer,
-    dialog: dialogReducer,
     router: connectRouter(history)
   });
 
-export type Actions =
-  | ApiActions
-  | AppActions
-  | AttemptsActions
-  | BuffersActions
-  | CacheActions
-  | DialogActions
-  | RouterAction;
+export type Actions = ApiActions | AppActions | BuffersActions | CacheActions | RouterAction;
 
 export const actions = {
   api: apiActions,
   app: appActions,
   buffers: buffersActions,
-  dialog: dialogActions,
   exercise: exerciseActions
 };
 

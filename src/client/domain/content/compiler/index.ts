@@ -1,5 +1,4 @@
-import { Exercise, Question } from "../../../../shared/api/entities";
-import { SaveParams } from "../../../../shared/api/request/save";
+import { Question } from "../../../../shared/api/entities";
 import { rubyAnchorCharacter, rubySeparatorCharacter, rubyTerminatorCharacter } from "../ruby";
 import { katakanaToHiragana, replacePunctuationMark } from "./convert";
 import { isHatuon, isKana, isSokuon, isYoon, pairKanaToRomans, singleKanaToRomans } from "./hiragana";
@@ -22,7 +21,7 @@ export interface CompiledQuestion {
   roman: RomanLine[];
 }
 
-export const compileQuestions = ({ questions = [] }: SaveParams<Exercise>) => {
+export const compileQuestions = (questions: Question[]) => {
   const compiledQuestions: CompiledQuestion[] = [];
 
   questions.forEach(question => {

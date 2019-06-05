@@ -20,15 +20,15 @@ export const QuestionEditor = connector(
       questionIndex: number;
       question: Question;
       onFocus: (questionIndex: number) => void;
+      onPreview: (questionIndex: number) => void;
     }
   ) => ({
     ...ownProps
   }),
   actions => ({
-    ...actions.exercise,
-    openDialog: actions.dialog.open
+    ...actions.exercise
   }),
-  ({ bufferId, question, questionIndex, updateQuestion, deleteQuestion, openDialog, onFocus }) => {
+  ({ bufferId, question, questionIndex, updateQuestion, deleteQuestion, onFocus, onPreview }) => {
     const [menuAnchorElement, setMenuAnchorElement] = useState(null);
     const [isRubyRequested, toggleRubyState] = useState(false);
     const [isCompositing, toggleCompositionState] = useState(false);
@@ -60,7 +60,7 @@ export const QuestionEditor = connector(
                 open={Boolean(menuAnchorElement)}
                 onClose={useCallback(() => setMenuAnchorElement(null), [])}
               >
-                <MenuItem onClick={useCallback(() => openDialog("QuestionPreviewer"), [])}>プレビュー</MenuItem>
+                <MenuItem onClick={useCallback(() => onPreview(questionIndex), [questionIndex])}>プレビュー</MenuItem>
                 <MenuItem onClick={useCallback(() => toggleRubyState(true), [])}>ルビ</MenuItem>
                 <MenuItem onClick={useCallback(() => deleteQuestion(bufferId, questionIndex), [questionIndex])}>
                   削除

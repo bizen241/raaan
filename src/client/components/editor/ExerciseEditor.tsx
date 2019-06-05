@@ -1,5 +1,5 @@
-import { AppBar, Box, Button, Dialog, DialogContent, IconButton, TextField, Toolbar } from "@material-ui/core";
-import { Add, Close, PlayArrow } from "@material-ui/icons";
+import { Box, Button, Dialog, TextField } from "@material-ui/core";
+import { Add, PlayArrow } from "@material-ui/icons";
 import { useCallback, useRef, useState } from "react";
 import * as React from "react";
 import { EntityEditor, EntityEditorContainerProps, EntityEditorRendererProps } from ".";
@@ -25,18 +25,14 @@ const ExerciseEditorRenderer = connector(
     const titleInputRef = useRef<HTMLInputElement>(null);
     const appendButtonRef = useRef<HTMLButtonElement>(null);
 
-    const [previewerState, togglePreviewer] = useState({
-      isOpen: false,
-      questionIndices: [0]
-    });
-    const onClosePreviewer = React.useCallback(
-      () =>
-        togglePreviewer({
-          isOpen: false,
-          questionIndices: []
-        }),
-      []
-    );
+    const [focusedQuestionIndex, focusQuestion] = useState(0);
+    const onFocusQuestion = React.useCallback((questionIndex: number) => focusQuestion(questionIndex), []);
+
+    const [isExercisePreviewerOpen, toggleExercisePreviewer] = useState(false);
+    const [isQuestionPreviewerOpen, toggleQuestionPreviewer] = useState(false);
+
+    const onToggleExercisePreviewer = React.useCallback(() => toggleExercisePreviewer(s => !s), []);
+    const onToggleQuestionPreviewer = React.useCallback(() => toggleQuestionPreviewer(s => !s), []);
 
     return (
       <Box display="flex" flexDirection="column" flex={1}>
@@ -53,26 +49,20 @@ const ExerciseEditorRenderer = connector(
           />
         </Box>
         <Box display="flex" flexDirection="column" py={1}>
-          <Button
-            variant="contained"
-            size="large"
-            color="secondary"
-            onClick={useCallback(
-              () =>
-                togglePreviewer({
-                  isOpen: true,
-                  questionIndices: []
-                }),
-              []
-            )}
-          >
+          <Button variant="contained" size="large" color="secondary" onClick={onToggleExercisePreviewer}>
             <PlayArrow style={{ marginRight: "0.5em" }} />
             プレビュー
           </Button>
         </Box>
         {questions.map((question, index) => (
           <Box key={question.id} display="flex" flexDirection="column" py={1}>
-            <QuestionEditor bufferId={bufferId} questionIndex={index} question={question} onFocus={focus} />
+            <QuestionEditor
+              bufferId={bufferId}
+              questionIndex={index}
+              question={question}
+              onFocus={onFocusQuestion}
+              onPreview={onToggleQuestionPreviewer}
+            />
           </Box>
         ))}
         <Box display="flex" flexDirection="column" py={1}>
@@ -87,17 +77,16 @@ const ExerciseEditorRenderer = connector(
             問題を追加
           </Button>
         </Box>
-        <Dialog fullScreen open={previewerState.isOpen} onClose={onClosePreviewer}>
-          <AppBar position="relative">
-            <Toolbar variant="dense">
-              <IconButton edge="start" color="inherit" onClick={onClosePreviewer}>
-                <Close />
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-          <DialogContent>
-            <ExercisePlayer exerciseId={bufferId} isPreview onClose={onClosePreviewer} />
-          </DialogContent>
+        <Dialog fullScreen open={isExercisePreviewerOpen} onClose={onToggleExercisePreviewer}>
+          <ExercisePlayer exerciseId={bufferId} isPreview onClose={onToggleExercisePreviewer} />
+        </Dialog>
+        <Dialog fullScreen open={isQuestionPreviewerOpen} onClose={onToggleQuestionPreviewer}>
+          <ExercisePlayer
+            exerciseId={bufferId}
+            questionIndex={focusedQuestionIndex}
+            isPreview
+            onClose={onToggleQuestionPreviewer}
+          />
         </Dialog>
       </Box>
     );

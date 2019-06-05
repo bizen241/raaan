@@ -1,5 +1,5 @@
-import { Card, CardHeader, CircularProgress } from "@material-ui/core";
-import { Error } from "@material-ui/icons";
+import { AppBar, Card, CardHeader, CircularProgress, DialogContent, IconButton, Toolbar } from "@material-ui/core";
+import { Close, Error } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createPlan } from "../../../domain/content";
@@ -22,10 +22,10 @@ export interface QuestionResult {
 
 export const ExercisePlayer = React.memo<{
   exerciseId: string;
-  questionIndices?: number[];
+  questionIndex?: number;
   isPreview?: boolean;
   onClose: () => void;
-}>(({ exerciseId, isPreview = false }) => {
+}>(({ exerciseId, questionIndex, isPreview = false, onClose }) => {
   const dispatch = useDispatch();
   const exercise = useSelector((state: RootState) => {
     if (isPreview) {
@@ -48,10 +48,11 @@ export const ExercisePlayer = React.memo<{
 
   React.useEffect(() => {
     if (exercise !== undefined) {
-      const selectedQuestions = exercise.questions || [];
+      const sourceQuestions = exercise.questions || [];
+      const selectedQuestions = questionIndex !== undefined ? [sourceQuestions[questionIndex]] : sourceQuestions;
 
       setAttempt({
-        questions: compileQuestions(exercise),
+        questions: compileQuestions(selectedQuestions),
         plan: createPlan(selectedQuestions)
       });
     }
@@ -61,17 +62,17 @@ export const ExercisePlayer = React.memo<{
 
   if (exercise === undefined && isPreview) {
     return (
-      <Card>
+      <MessageContainer onClose={onClose}>
         <CardHeader avatar={<Error />} title="バッファが見つかりませんでした" />
-      </Card>
+      </MessageContainer>
     );
   }
 
   if (exercise === undefined || attempt === undefined) {
     return (
-      <Card>
+      <MessageContainer onClose={onClose}>
         <CardHeader avatar={<CircularProgress />} title="ロード中です" />
-      </Card>
+      </MessageContainer>
     );
   }
 
@@ -79,9 +80,9 @@ export const ExercisePlayer = React.memo<{
 
   if (questions.length === 0) {
     return (
-      <Card>
+      <MessageContainer onClose={onClose}>
         <CardHeader avatar={<Error />} title="空の問題集です" />
-      </Card>
+      </MessageContainer>
     );
   }
 
@@ -89,11 +90,52 @@ export const ExercisePlayer = React.memo<{
   const isFinished = resultCount === plan.length;
 
   if (isFinished) {
-    return <AttemptResult attempt={attempt} results={results} />;
+    return (
+      <>
+        <AppBar position="relative">
+          <Toolbar variant="dense">
+            <IconButton edge="start" color="inherit" onClick={onClose}>
+              <Close />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <DialogContent>
+          <AttemptResult attempt={attempt} results={results} />
+        </DialogContent>
+      </>
+    );
   }
 
   const currentQuestionIndex = plan[resultCount];
   const currentQuestion = questions[currentQuestionIndex];
 
-  return <QuestionPlayer key={resultCount} question={currentQuestion} onFinish={onNext} />;
+  return (
+    <>
+      <AppBar position="relative">
+        <Toolbar variant="dense">
+          <IconButton edge="start" color="inherit" onClick={onClose}>
+            <Close />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <DialogContent>
+        <QuestionPlayer key={resultCount} question={currentQuestion} onFinish={onNext} />
+      </DialogContent>
+    </>
+  );
 });
+
+const MessageContainer = React.memo<{ onClose: () => void; children: React.ReactNode }>(({ onClose, children }) => (
+  <>
+    <AppBar position="relative">
+      <Toolbar variant="dense">
+        <IconButton edge="start" color="inherit" onClick={onClose}>
+          <Close />
+        </IconButton>
+      </Toolbar>
+    </AppBar>
+    <DialogContent>
+      <Card>{children}</Card>
+    </DialogContent>
+  </>
+));
