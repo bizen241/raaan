@@ -1,45 +1,41 @@
-import { Box, Button, TextField } from "@material-ui/core";
-import { Add, PlayArrow } from "@material-ui/icons";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { AppBar, Box, Button, Dialog, DialogContent, IconButton, TextField, Toolbar } from "@material-ui/core";
+import { Add, Close, PlayArrow } from "@material-ui/icons";
+import { useCallback, useRef, useState } from "react";
 import * as React from "react";
 import { EntityEditor, EntityEditorContainerProps, EntityEditorRendererProps } from ".";
 import { Exercise } from "../../../shared/api/entities";
 import { connector } from "../../reducers";
 import { QuestionEditor } from "../exercise/editors/QuestionEditor";
-import { ExercisePreviewer } from "../exercise/previewer/ExercisePreviewer";
-import { QuestionPreviewer } from "../exercise/previewer/QuestionPreviewer";
-import { manageHotKey } from "../utils/hotKey";
+import { ExercisePlayer } from "../exercise/player/ExercisePlayer";
 
 export const ExerciseEditor = React.memo<EntityEditorContainerProps>(props => (
   <EntityEditor {...props} entityType="Exercise" rendererComponent={ExerciseEditorRenderer} />
 ));
 
 const ExerciseEditorRenderer = connector(
-  (state, ownProps: EntityEditorRendererProps<Exercise>) => ({
-    ...ownProps,
-    isVisible: state.dialog.name == null
+  (_, ownProps: EntityEditorRendererProps<Exercise>) => ({
+    ...ownProps
   }),
   actions => ({
-    ...actions.exercise,
-    openDialog: actions.dialog.open
+    ...actions.exercise
   }),
-  ({ bufferId, buffer, isVisible, updateTitle, appendQuestion, openDialog }) => {
+  ({ bufferId, buffer, updateTitle, appendQuestion }) => {
     const { title, questions = [] } = buffer.edited;
 
     const titleInputRef = useRef<HTMLInputElement>(null);
     const appendButtonRef = useRef<HTMLButtonElement>(null);
 
-    const [focusedItemIndex, focus] = useState(0);
-
-    useEffect(
-      manageHotKey(
-        {
-          t: () => titleInputRef.current && titleInputRef.current.focus(),
-          a: () => appendButtonRef.current && appendButtonRef.current.click()
-        },
-        isVisible
-      ),
-      [isVisible]
+    const [previewerState, togglePreviewer] = useState({
+      isOpen: false,
+      questionIndices: [0]
+    });
+    const onClosePreviewer = React.useCallback(
+      () =>
+        togglePreviewer({
+          isOpen: false,
+          questionIndices: []
+        }),
+      []
     );
 
     return (
@@ -61,7 +57,14 @@ const ExerciseEditorRenderer = connector(
             variant="contained"
             size="large"
             color="secondary"
-            onClick={useCallback(() => openDialog("ExercisePreviewer"), [])}
+            onClick={useCallback(
+              () =>
+                togglePreviewer({
+                  isOpen: true,
+                  questionIndices: []
+                }),
+              []
+            )}
           >
             <PlayArrow style={{ marginRight: "0.5em" }} />
             プレビュー
@@ -84,8 +87,18 @@ const ExerciseEditorRenderer = connector(
             問題を追加
           </Button>
         </Box>
-        <ExercisePreviewer params={buffer.edited} />
-        <QuestionPreviewer question={questions[focusedItemIndex]} />
+        <Dialog fullScreen open={previewerState.isOpen} onClose={onClosePreviewer}>
+          <AppBar position="relative">
+            <Toolbar variant="dense">
+              <IconButton edge="start" color="inherit" onClick={onClosePreviewer}>
+                <Close />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+          <DialogContent>
+            <ExercisePlayer exerciseId={bufferId} isPreview onClose={onClosePreviewer} />
+          </DialogContent>
+        </Dialog>
       </Box>
     );
   }

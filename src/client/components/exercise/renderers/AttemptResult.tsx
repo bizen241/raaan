@@ -1,10 +1,11 @@
 import { Box, Divider, makeStyles } from "@material-ui/core";
 import * as React from "react";
-import { AttemptState } from "../../../reducers/attempts";
+import { Attempt, QuestionResult } from "../player/ExercisePlayer";
 
 export const AttemptResult: React.FunctionComponent<{
-  attempt: AttemptState;
-}> = ({ attempt: { results } }) => {
+  attempt: Attempt;
+  results: QuestionResult[];
+}> = ({ results }) => {
   const totalTime = results.reduce((time, result) => time + result.totalTime, 0) / 1000;
   const totalTypeCount = results.reduce(
     (totalLength, result) => totalLength + result.typedLines.map(typedLine => typedLine.join("")).join("").length,

@@ -1,62 +1,99 @@
 import { Card, CardHeader, CircularProgress } from "@material-ui/core";
 import { Error } from "@material-ui/icons";
 import * as React from "react";
-import { Exercise } from "../../../../shared/api/entities";
-import { SaveParams } from "../../../../shared/api/request/save";
+import { useDispatch, useSelector } from "react-redux";
+import { createPlan } from "../../../domain/content";
 import { CompiledQuestion, compileQuestions } from "../../../domain/content/compiler";
-import { connector } from "../../../reducers";
-import { attemptsActions, QuestionResult } from "../../../reducers/attempts";
+import { RootState } from "../../../reducers";
+import { apiActions } from "../../../reducers/api";
 import { AttemptResult } from "../renderers/AttemptResult";
 import { QuestionPlayer } from "./QuestionPlayer";
 
-export const ExercisePlayer = connector(
-  (state, ownProps: { id: string; params: SaveParams<Exercise> }) => ({
-    ...ownProps,
-    attempt: state.attempts
-  }),
-  () => ({
-    ...attemptsActions
-  }),
-  ({ id, params, attempt, load, next }) => {
-    const [questions, setQuestions] = React.useState<CompiledQuestion[] | undefined>();
+export interface Attempt {
+  questions: CompiledQuestion[];
+  plan: number[];
+}
 
-    React.useEffect(() => {
-      if (id !== attempt.id) {
-        load(id, params);
-      }
-    }, []);
-    React.useEffect(() => {
-      if (id === attempt.id && attempt.params !== undefined) {
-        setQuestions(compileQuestions(attempt.params));
-      }
-    }, [attempt]);
+export interface QuestionResult {
+  totalTime: number;
+  typoMap: any;
+  typedLines: string[][];
+}
 
-    const onFinish = React.useCallback((result: QuestionResult) => next(result), []);
+export const ExercisePlayer = React.memo<{
+  exerciseId: string;
+  questionIndices?: number[];
+  isPreview?: boolean;
+  onClose: () => void;
+}>(({ exerciseId, isPreview = false }) => {
+  const dispatch = useDispatch();
+  const exercise = useSelector((state: RootState) => {
+    if (isPreview) {
+      const buffer = state.buffers.Exercise[exerciseId];
 
-    if (attempt.id !== id || attempt.params === undefined || questions === undefined) {
-      return (
-        <Card>
-          <CardHeader avatar={<CircularProgress />} title="ロード中です" />
-        </Card>
-      );
+      return buffer && buffer.edited;
+    } else {
+      return state.cache.get.Exercise[exerciseId];
     }
-    if (questions.length === 0) {
-      return (
-        <Card>
-          <CardHeader avatar={<Error />} title="空の問題集です" />
-        </Card>
-      );
+  });
+
+  React.useEffect(() => {
+    if (exercise === undefined && !isPreview) {
+      dispatch(apiActions.get("Exercise", exerciseId));
     }
+  }, []);
 
-    const { results, plan } = attempt;
-    const resultCount = results.length;
+  const [attempt, setAttempt] = React.useState<Attempt>();
+  const [results, updateResults] = React.useState<QuestionResult[]>([]);
 
-    if (resultCount === plan.length) {
-      return <AttemptResult attempt={attempt} />;
+  React.useEffect(() => {
+    if (exercise !== undefined) {
+      const selectedQuestions = exercise.questions || [];
+
+      setAttempt({
+        questions: compileQuestions(exercise),
+        plan: createPlan(selectedQuestions)
+      });
     }
+  }, [exercise]);
 
-    const currentQuestion = questions[plan[resultCount]];
+  const onNext = React.useCallback((result: QuestionResult) => updateResults(s => [...s, result]), []);
 
-    return <QuestionPlayer key={resultCount} question={currentQuestion} onFinish={onFinish} />;
+  if (exercise === undefined && isPreview) {
+    return (
+      <Card>
+        <CardHeader avatar={<Error />} title="バッファが見つかりませんでした" />
+      </Card>
+    );
   }
-);
+
+  if (exercise === undefined || attempt === undefined) {
+    return (
+      <Card>
+        <CardHeader avatar={<CircularProgress />} title="ロード中です" />
+      </Card>
+    );
+  }
+
+  const { questions, plan } = attempt;
+
+  if (questions.length === 0) {
+    return (
+      <Card>
+        <CardHeader avatar={<Error />} title="空の問題集です" />
+      </Card>
+    );
+  }
+
+  const resultCount = results.length;
+  const isFinished = resultCount === plan.length;
+
+  if (isFinished) {
+    return <AttemptResult attempt={attempt} results={results} />;
+  }
+
+  const currentQuestionIndex = plan[resultCount];
+  const currentQuestion = questions[currentQuestionIndex];
+
+  return <QuestionPlayer key={resultCount} question={currentQuestion} onFinish={onNext} />;
+});
