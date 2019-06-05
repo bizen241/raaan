@@ -2,6 +2,7 @@ import { AppBar, Box, IconButton, Menu, MenuItem, Toolbar, Typography } from "@m
 import { AccountCircle, ArrowBack, Home, Info, MoreVert, Settings } from "@material-ui/icons";
 import { goBack } from "connected-react-router";
 import * as React from "react";
+import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { connector } from "../../reducers";
 import { iconStyles } from "../ui/styles";
@@ -16,7 +17,7 @@ export const Header = connector(
     back: goBack
   }),
   ({ title = "", pathname, back }) => {
-    const [menuAnchorElement, setMenuAnchorElement] = React.useState(null);
+    const [menuAnchorElement, setMenuAnchorElement] = useState(null);
 
     const iconClasses = iconStyles();
 
@@ -31,13 +32,13 @@ export const Header = connector(
               <Typography component="span">{title}</Typography>
               <Box flex={1} />
               <div>
-                <IconButton onClick={React.useCallback(e => setMenuAnchorElement(e.currentTarget), [])}>
+                <IconButton onClick={useCallback(e => setMenuAnchorElement(e.currentTarget), [])}>
                   <MoreVert />
                 </IconButton>
                 <Menu
                   anchorEl={menuAnchorElement}
                   open={Boolean(menuAnchorElement)}
-                  onClose={React.useCallback(() => setMenuAnchorElement(null), [])}
+                  onClose={useCallback(() => setMenuAnchorElement(null), [])}
                 >
                   {pathname !== "/config" ? (
                     <MenuItem component={Link} to="/config">

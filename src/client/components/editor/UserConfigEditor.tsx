@@ -1,5 +1,6 @@
 import { Box, FormControl, InputLabel, MenuItem, OutlinedInput, Select } from "@material-ui/core";
 import * as React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { EntityEditor, EntityEditorContainerProps, EntityEditorRendererProps } from ".";
 import { Lang, Theme, UserConfig } from "../../../shared/api/entities";
 import { userConfigActions } from "../../actions/userConfig";
@@ -34,17 +35,17 @@ const UserConfigEditorRenderer = connector(
   ({ bufferId, buffer, updateLang, updateTheme }) => {
     const { lang, theme } = buffer.edited;
 
-    const langInputLabel = React.useRef<HTMLLabelElement>(null);
-    const [langLabelWidth, setLangLabelWidth] = React.useState(0);
-    React.useEffect(() => {
+    const langInputLabel = useRef<HTMLLabelElement>(null);
+    const [langLabelWidth, setLangLabelWidth] = useState(0);
+    useEffect(() => {
       if (langInputLabel.current != null) {
         setLangLabelWidth(langInputLabel.current.offsetWidth);
       }
     }, [lang]);
 
-    const themeInputLabel = React.useRef<HTMLLabelElement>(null);
-    const [themeLabelWidth, setThemeLabelWidth] = React.useState(0);
-    React.useEffect(() => {
+    const themeInputLabel = useRef<HTMLLabelElement>(null);
+    const [themeLabelWidth, setThemeLabelWidth] = useState(0);
+    useEffect(() => {
       if (themeInputLabel.current != null) {
         setThemeLabelWidth(themeInputLabel.current.offsetWidth);
       }
@@ -60,7 +61,7 @@ const UserConfigEditorRenderer = connector(
             <Select
               input={<OutlinedInput labelWidth={langLabelWidth} id="lang" />}
               value={lang || "default"}
-              onChange={React.useCallback(
+              onChange={useCallback(
                 (e: React.ChangeEvent<{ value: unknown }>) => updateLang(bufferId, e.target.value as Lang),
                 []
               )}
@@ -81,7 +82,7 @@ const UserConfigEditorRenderer = connector(
             <Select
               input={<OutlinedInput labelWidth={themeLabelWidth} id="theme" />}
               value={theme || "default"}
-              onChange={React.useCallback(
+              onChange={useCallback(
                 (e: React.ChangeEvent<{ value: unknown }>) => updateTheme(bufferId, e.target.value as Theme),
                 []
               )}

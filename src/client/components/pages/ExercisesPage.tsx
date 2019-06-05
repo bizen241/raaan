@@ -1,6 +1,7 @@
 import { Box, Button } from "@material-ui/core";
 import { Folder } from "@material-ui/icons";
 import * as React from "react";
+import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { ExerciseList } from "../list/search/ExerciseList";
 import { UserContext } from "../project/Context";
@@ -9,7 +10,7 @@ import { iconStyles } from "../ui/styles";
 import { Page } from "./Page";
 
 export const ExercisesPage = React.memo<PageProps>(() => {
-  const currentUser = React.useContext(UserContext);
+  const currentUser = useContext(UserContext);
 
   const classes = iconStyles();
 

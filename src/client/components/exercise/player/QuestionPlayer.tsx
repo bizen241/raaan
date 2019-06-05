@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { CompiledQuestion } from "../../../domain/content/compiler";
 import { QuestionResult, TypoMap } from "../../../reducers/attempts";
 import { QuestionRenderer } from "../renderers/QuestionRenderer";
@@ -19,7 +20,7 @@ export const QuestionPlayer: React.FunctionComponent<{
 }> = ({ question, onFinish }) => {
   const isEmptyQuestion = question.roman[0].length === 0;
 
-  const [state, setState] = React.useState<QuestionPlayerState>({
+  const [state, setState] = useState<QuestionPlayerState>({
     typedLines: [[""]],
     typoMap: {},
     hasTypo: false,
@@ -31,7 +32,7 @@ export const QuestionPlayer: React.FunctionComponent<{
 
   const { typedLines, typoMap, totalTime, startedAt, isSuspended, isFinished } = state;
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isSuspended) {
       const suspend = () => {
         setState({
@@ -45,7 +46,7 @@ export const QuestionPlayer: React.FunctionComponent<{
       return clearTimeout(timeoutId);
     }
   }, [state]);
-  React.useEffect(() => {
+  useEffect(() => {
     if (isFinished) {
       onFinish({
         totalTime: startedAt === 0 ? 0 : totalTime + (Date.now() - startedAt),

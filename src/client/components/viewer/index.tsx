@@ -1,5 +1,6 @@
 import { Card, CardHeader, CircularProgress } from "@material-ui/core";
 import * as React from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EntityObject, EntityType } from "../../../shared/api/entities";
 import { RootState } from "../../reducers";
@@ -24,7 +25,7 @@ export const EntityViewer = React.memo<{
     entity: state.cache.get[entityType][entityId]
   }));
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (entity === undefined) {
       dispatch(apiActions.get(entityType, entityId));
     }

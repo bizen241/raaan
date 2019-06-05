@@ -1,7 +1,7 @@
 import { Box, Button, Dialog, TextField } from "@material-ui/core";
 import { Add, PlayArrow } from "@material-ui/icons";
-import { useCallback, useRef, useState } from "react";
 import * as React from "react";
+import { useCallback, useRef, useState } from "react";
 import { EntityEditor, EntityEditorContainerProps, EntityEditorRendererProps } from ".";
 import { Exercise } from "../../../shared/api/entities";
 import { connector } from "../../reducers";
@@ -26,13 +26,13 @@ const ExerciseEditorRenderer = connector(
     const appendButtonRef = useRef<HTMLButtonElement>(null);
 
     const [focusedQuestionIndex, focusQuestion] = useState(0);
-    const onFocusQuestion = React.useCallback((questionIndex: number) => focusQuestion(questionIndex), []);
+    const onFocusQuestion = useCallback((questionIndex: number) => focusQuestion(questionIndex), []);
 
     const [isExercisePreviewerOpen, toggleExercisePreviewer] = useState(false);
     const [isQuestionPreviewerOpen, toggleQuestionPreviewer] = useState(false);
 
-    const onToggleExercisePreviewer = React.useCallback(() => toggleExercisePreviewer(s => !s), []);
-    const onToggleQuestionPreviewer = React.useCallback(() => toggleQuestionPreviewer(s => !s), []);
+    const onToggleExercisePreviewer = useCallback(() => toggleExercisePreviewer(s => !s), []);
+    const onToggleQuestionPreviewer = useCallback(() => toggleQuestionPreviewer(s => !s), []);
 
     return (
       <Box display="flex" flexDirection="column" flex={1}>

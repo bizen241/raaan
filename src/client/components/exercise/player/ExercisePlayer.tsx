@@ -1,6 +1,7 @@
 import { AppBar, Card, CardHeader, CircularProgress, DialogContent, IconButton, Toolbar } from "@material-ui/core";
 import { Close, Error } from "@material-ui/icons";
 import * as React from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createPlan } from "../../../domain/content";
 import { CompiledQuestion, compileQuestions } from "../../../domain/content/compiler";
@@ -37,16 +38,16 @@ export const ExercisePlayer = React.memo<{
     }
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (exercise === undefined && !isPreview) {
       dispatch(apiActions.get("Exercise", exerciseId));
     }
   }, []);
 
-  const [attempt, setAttempt] = React.useState<Attempt>();
-  const [results, updateResults] = React.useState<QuestionResult[]>([]);
+  const [attempt, setAttempt] = useState<Attempt>();
+  const [results, updateResults] = useState<QuestionResult[]>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (exercise !== undefined) {
       const sourceQuestions = exercise.questions || [];
       const selectedQuestions = questionIndex !== undefined ? [sourceQuestions[questionIndex]] : sourceQuestions;
@@ -58,7 +59,7 @@ export const ExercisePlayer = React.memo<{
     }
   }, [exercise]);
 
-  const onNext = React.useCallback((result: QuestionResult) => updateResults(s => [...s, result]), []);
+  const onNext = useCallback((result: QuestionResult) => updateResults(s => [...s, result]), []);
 
   if (exercise === undefined && isPreview) {
     return (

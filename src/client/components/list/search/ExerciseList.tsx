@@ -1,6 +1,7 @@
 import { Box, IconButton, Link, TableCell } from "@material-ui/core";
 import { Edit } from "@material-ui/icons";
 import * as React from "react";
+import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { EntityList, EntityListItemProps, EntityListProps } from ".";
 import { ExerciseSummary } from "../../../../shared/api/entities";
@@ -11,7 +12,7 @@ export const ExerciseList = React.memo<EntityListProps<ExerciseSummary>>(props =
 });
 
 const ExerciseListItem = React.memo<EntityListItemProps<ExerciseSummary>>(({ entity: exerciseSummary }) => {
-  const currentUser = React.useContext(UserContext);
+  const currentUser = useContext(UserContext);
 
   return (
     <>

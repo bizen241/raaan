@@ -1,5 +1,6 @@
 import { Box, makeStyles } from "@material-ui/core";
 import * as React from "react";
+import { useMemo } from "react";
 import { CompiledQuestion } from "../../../domain/content/compiler";
 import { QuestionPlayerState } from "../player/QuestionPlayer";
 
@@ -21,10 +22,9 @@ export const QuestionRenderer = React.memo<{
 
   const currentCharIndex = typedChunk.length;
 
-  const isRoman = React.useMemo(
-    () => currentRomanLine.some(romanChunk => romanChunk.kana !== romanChunk.candidates[0]),
-    [currentLineIndex]
-  );
+  const isRoman = useMemo(() => currentRomanLine.some(romanChunk => romanChunk.kana !== romanChunk.candidates[0]), [
+    currentLineIndex
+  ]);
 
   const currentCandidates = currentRomanChunk.candidates.filter(
     candidate => candidate.slice(0, currentCharIndex) === typedChunk

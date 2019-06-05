@@ -2,7 +2,7 @@ import { Box, Button, Divider } from "@material-ui/core";
 import { Add, Edit } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import * as React from "react";
-import { useCallback, useEffect } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createExercise } from "../../domain/content";
 import { connector } from "../../reducers";
@@ -34,7 +34,7 @@ export const EditExercisesPage = connector(
       []
     );
 
-    const currentUser = React.useContext(UserContext);
+    const currentUser = useContext(UserContext);
     const classes = iconStyles();
 
     return (
