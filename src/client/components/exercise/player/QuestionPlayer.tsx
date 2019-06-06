@@ -1,12 +1,12 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { CompiledQuestion } from "../../../domain/content/compiler";
-import { QuestionResult, TypoMap } from "../../../reducers/attempts";
 import { QuestionRenderer } from "../renderers/QuestionRenderer";
+import { QuestionResult } from "./ExercisePlayer";
 
 export interface QuestionPlayerState {
   typedLines: string[][];
-  typoMap: TypoMap;
+  typoMap: any;
   hasTypo: boolean;
   totalTime: number;
   startedAt: number;

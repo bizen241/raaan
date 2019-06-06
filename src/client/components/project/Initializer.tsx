@@ -1,50 +1,50 @@
 import { Card, CardHeader, CircularProgress } from "@material-ui/core";
 import * as React from "react";
 import { useEffect } from "react";
-import { connector } from "../../reducers";
+import { useDispatch, useSelector } from "react-redux";
+import { actions, RootState } from "../../reducers";
 import { Context } from "./Context";
 
-export const Initializer = connector(
-  ({ app, cache, buffers }) => ({
-    ...app,
-    users: cache.get.User,
-    userBuffers: buffers.User,
-    configs: cache.get.UserConfig,
-    configBuffers: buffers.UserConfig
-  }),
-  ({ app }) => ({
-    initialize: app.initialize
-  }),
-  ({ userId, isReady, hasError, users, userBuffers, configs, configBuffers, initialize, children }) => {
-    useEffect(() => {
-      initialize();
-    }, []);
+export const Initializer = React.memo<{ children: React.ReactNode }>(({ children }) => {
+  const dispatch = useDispatch();
+  const { userId, isReady, hasError, users, userBuffers, configs, configBuffers } = useSelector(
+    ({ app, cache, buffers }: RootState) => ({
+      ...app,
+      users: cache.get.User,
+      userBuffers: buffers.User,
+      configs: cache.get.UserConfig,
+      configBuffers: buffers.UserConfig
+    })
+  );
 
-    const user = users[userId];
-    const userBuffer = userBuffers[userId];
-    const config = user && configs[user.configId];
-    const configBuffer = user && configBuffers[user.configId];
+  useEffect(() => {
+    dispatch(actions.app.initialize());
+  }, []);
 
-    if (!isReady || user === undefined || config === undefined) {
-      return (
-        <Card>
-          <CardHeader avatar={<CircularProgress />} title="ロード中です" />
-        </Card>
-      );
-    }
-    if (hasError) {
-      throw new Error();
-    }
+  const user = users[userId];
+  const userBuffer = userBuffers[userId];
+  const config = user && configs[user.configId];
+  const configBuffer = user && configBuffers[user.configId];
 
+  if (!isReady || user === undefined || config === undefined) {
     return (
-      <Context
-        user={user}
-        userParams={userBuffer && userBuffer.edited}
-        config={config}
-        configParams={configBuffer && configBuffer.edited}
-      >
-        {children}
-      </Context>
+      <Card>
+        <CardHeader avatar={<CircularProgress />} title="ロード中です" />
+      </Card>
     );
   }
-);
+  if (hasError) {
+    throw new Error();
+  }
+
+  return (
+    <Context
+      user={user}
+      userParams={userBuffer && userBuffer.edited}
+      config={config}
+      configParams={configBuffer && configBuffer.edited}
+    >
+      {children}
+    </Context>
+  );
+});

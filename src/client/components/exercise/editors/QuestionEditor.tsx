@@ -3,6 +3,7 @@ import { makeStyles, Theme } from "@material-ui/core/styles";
 import { MoreVert } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Question } from "../../../../shared/api/entities";
 import {
   addRuby,
@@ -10,92 +11,86 @@ import {
   rubySeparatorCharacter,
   rubyTerminatorCharacter
 } from "../../../domain/content/ruby";
-import { connector } from "../../../reducers";
+import { actions } from "../../../reducers";
 
-export const QuestionEditor = connector(
-  (
-    _,
-    ownProps: {
-      bufferId: string;
-      questionIndex: number;
-      question: Question;
-      onFocus: (questionIndex: number) => void;
-      onPreview: (questionIndex: number) => void;
+export const QuestionEditor = React.memo<{
+  bufferId: string;
+  questionIndex: number;
+  question: Question;
+  onFocus: (questionIndex: number) => void;
+  onPreview: (questionIndex: number) => void;
+}>(({ bufferId, question, questionIndex, onFocus, onPreview }) => {
+  const dispatch = useDispatch();
+
+  const [menuAnchorElement, setMenuAnchorElement] = useState(null);
+  const [isRubyRequested, toggleRubyState] = useState(false);
+  const [isCompositing, toggleCompositionState] = useState(false);
+
+  const { value } = question;
+
+  useEffect(() => {
+    if (isRubyRequested) {
+      addRuby(value, result => {
+        dispatch(actions.exercise.updateQuestion(bufferId, questionIndex, "value", result));
+        toggleRubyState(false);
+      });
     }
-  ) => ({
-    ...ownProps
-  }),
-  actions => ({
-    ...actions.exercise
-  }),
-  ({ bufferId, question, questionIndex, updateQuestion, deleteQuestion, onFocus, onPreview }) => {
-    const [menuAnchorElement, setMenuAnchorElement] = useState(null);
-    const [isRubyRequested, toggleRubyState] = useState(false);
-    const [isCompositing, toggleCompositionState] = useState(false);
+  }, [isRubyRequested]);
 
-    const { value } = question;
+  const onDelete = useCallback(() => dispatch(actions.exercise.deleteQuestion(bufferId, questionIndex)), [
+    questionIndex
+  ]);
+  const onUpdateValue = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+      dispatch(actions.exercise.updateQuestion(bufferId, questionIndex, "value", e.target.value)),
+    [questionIndex]
+  );
 
-    useEffect(() => {
-      if (isRubyRequested) {
-        addRuby(value, result => {
-          updateQuestion(bufferId, questionIndex, "value", result);
-          toggleRubyState(false);
-        });
-      }
-    }, [isRubyRequested]);
+  const classes = useTextFieldStyles({ isCompositing });
 
-    const classes = useTextFieldStyles({ isCompositing });
-
-    return (
-      <Card onFocus={useCallback(() => onFocus(questionIndex), [questionIndex])}>
-        <CardHeader
-          title={questionIndex.toString()}
-          action={
-            <div>
-              <IconButton onClick={useCallback(e => setMenuAnchorElement(e.currentTarget), [])}>
-                <MoreVert />
-              </IconButton>
-              <Menu
-                anchorEl={menuAnchorElement}
-                open={Boolean(menuAnchorElement)}
-                onClose={useCallback(() => setMenuAnchorElement(null), [])}
-              >
-                <MenuItem onClick={useCallback(() => onPreview(questionIndex), [questionIndex])}>プレビュー</MenuItem>
-                <MenuItem onClick={useCallback(() => toggleRubyState(true), [])}>ルビ</MenuItem>
-                <MenuItem onClick={useCallback(() => deleteQuestion(bufferId, questionIndex), [questionIndex])}>
-                  削除
-                </MenuItem>
-              </Menu>
-            </div>
-          }
-        />
-        <CardContent>
-          <Box display="flex" flexDirection="column" position="relative">
-            {!isCompositing ? <HighlightedValue value={value} /> : null}
-            <TextField
-              variant="outlined"
-              multiline
-              className={classes.textField}
-              InputProps={{
-                classes: {
-                  inputMultiline: classes.inputMultiline
-                }
-              }}
-              onCompositionStart={useCallback(() => toggleCompositionState(true), [])}
-              onCompositionEnd={useCallback(() => toggleCompositionState(false), [])}
-              value={question.value}
-              onChange={useCallback(
-                (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                  updateQuestion(bufferId, questionIndex, "value", e.target.value),
-                [questionIndex]
-              )}
-            />
-          </Box>
-        </CardContent>
-      </Card>
-    );
-  }
-);
+  return (
+    <Card onFocus={useCallback(() => onFocus(questionIndex), [questionIndex])}>
+      <CardHeader
+        title={questionIndex.toString()}
+        action={
+          <div>
+            <IconButton onClick={useCallback(e => setMenuAnchorElement(e.currentTarget), [])}>
+              <MoreVert />
+            </IconButton>
+            <Menu
+              anchorEl={menuAnchorElement}
+              open={Boolean(menuAnchorElement)}
+              onClose={useCallback(() => setMenuAnchorElement(null), [])}
+            >
+              <MenuItem onClick={useCallback(() => onPreview(questionIndex), [questionIndex])}>プレビュー</MenuItem>
+              <MenuItem onClick={useCallback(() => toggleRubyState(true), [])}>ルビ</MenuItem>
+              <MenuItem onClick={onDelete}>削除</MenuItem>
+            </Menu>
+          </div>
+        }
+      />
+      <CardContent>
+        <Box display="flex" flexDirection="column" position="relative">
+          {!isCompositing ? <HighlightedValue value={value} /> : null}
+          <TextField
+            variant="outlined"
+            multiline
+            className={classes.textField}
+            InputProps={{
+              classes: {
+                inputMultiline: classes.inputMultiline
+              }
+            }}
+            onCompositionStart={useCallback(() => toggleCompositionState(true), [])}
+            onCompositionEnd={useCallback(() => toggleCompositionState(false), [])}
+            value={question.value}
+            onChange={onUpdateValue}
+          />
+        </Box>
+      </CardContent>
+    </Card>
+  );
+});
 
 const rubyRegExp = new RegExp(
   `${rubyAnchorCharacter}([^${rubySeparatorCharacter}]+)${rubySeparatorCharacter}([^${rubyTerminatorCharacter}]+)${rubyTerminatorCharacter}`,

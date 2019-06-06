@@ -1,9 +1,8 @@
 import { connectRouter, RouterAction, RouterState } from "connected-react-router";
 import { History } from "history";
-import { ComponentType } from "react";
-import { connect } from "react-redux";
 import { combineReducers } from "redux";
 import { exerciseActions } from "../actions/exercise";
+import { userConfigActions } from "../actions/userConfig";
 import { ApiActions, apiActions, apiReducer, ApiState } from "./api";
 import { AppActions, appActions, appReducer, AppState } from "./app";
 import { BuffersActions, buffersActions, buffersReducer, BuffersState } from "./buffers";
@@ -32,15 +31,6 @@ export const actions = {
   api: apiActions,
   app: appActions,
   buffers: buffersActions,
-  exercise: exerciseActions
+  exercise: exerciseActions,
+  userConfig: userConfigActions
 };
-
-export const connector = <OwnProps extends {}, StateProps extends {}, ActionProps extends {}>(
-  stateSelector: (state: RootState, ownProps: OwnProps) => StateProps,
-  actionSelector: (allAction: typeof actions) => ActionProps,
-  component: ComponentType<StateProps & ActionProps>
-) =>
-  connect(
-    stateSelector,
-    actionSelector(actions)
-  )(component as any);
