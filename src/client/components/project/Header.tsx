@@ -24,7 +24,7 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box display="flex" flexDirection="column" width="100%" maxWidth="1000px" px={1}>
           <Toolbar variant="dense" disableGutters>
-            <IconButton onClick={useCallback(() => dispatch(goBack), [])}>
+            <IconButton onClick={useCallback(() => dispatch(goBack()), [])}>
               <ArrowBack />
             </IconButton>
             <Typography component="span">{title}</Typography>
