@@ -10,28 +10,21 @@ import { ExerciseEntity, ExerciseSummaryEntity } from "../../database/entities";
 export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const params: SaveParams<Exercise> = req.body;
 
-  let exerciseId: string | undefined;
-
   await getManager().transaction(async manager => {
     const newExerciseSummary = new ExerciseSummaryEntity();
     const newExercise = new ExerciseEntity(currentUser, newExerciseSummary, params);
 
     await manager.save(newExercise);
 
-    exerciseId = newExercise.id;
-  });
-  if (exerciseId === undefined) {
-    return next(createError(500));
-  }
+    const savedExercise = await getManager().findOne(ExerciseEntity, newExercise.id, {
+      relations: ["author", "summary"]
+    });
+    if (savedExercise === undefined) {
+      return next(createError(500));
+    }
 
-  const savedExercise = await getManager().findOne(ExerciseEntity, exerciseId, {
-    relations: ["author", "summary"]
+    responseFindResult(res, savedExercise);
   });
-  if (savedExercise === undefined) {
-    return next(createError(500));
-  }
-
-  responseFindResult(res, savedExercise);
 });
 
 POST.apiDoc = createOperationDoc({
