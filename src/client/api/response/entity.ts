@@ -4,6 +4,8 @@ export const mergeEntityStore = (target: EntityStore, source: EntityStore): Enti
   Exercise: { ...target.Exercise, ...source.Exercise },
   ExerciseSummary: { ...target.ExerciseSummary, ...source.ExerciseSummary },
   ExerciseTag: { ...target.ExerciseTag, ...source.ExerciseTag },
+  Submission: { ...target.Submission, ...source.Submission },
+  SubmissionSummary: { ...target.SubmissionSummary, ...source.SubmissionSummary },
   User: { ...target.User, ...source.User },
   UserAccount: { ...target.UserAccount, ...source.UserAccount },
   UserConfig: { ...target.UserConfig, ...source.UserConfig },

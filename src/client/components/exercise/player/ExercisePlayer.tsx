@@ -5,8 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createPlan } from "../../../domain/content";
 import { CompiledQuestion, compileQuestions } from "../../../domain/content/compiler";
-import { RootState } from "../../../reducers";
-import { apiActions } from "../../../reducers/api";
+import { actions, RootState } from "../../../reducers";
 import { AttemptResult } from "../renderers/AttemptResult";
 import { QuestionPlayer } from "./QuestionPlayer";
 
@@ -40,12 +39,15 @@ export const ExercisePlayer = React.memo<{
 
   useEffect(() => {
     if (exercise === undefined && !isPreview) {
-      dispatch(apiActions.get("Exercise", exerciseId));
+      dispatch(actions.api.get("Exercise", exerciseId));
     }
   }, []);
 
   const [attempt, setAttempt] = useState<Attempt>();
   const [results, updateResults] = useState<QuestionResult[]>([]);
+
+  const resultCount = results.length;
+  const isFinished = attempt !== undefined && attempt.plan.length === resultCount;
 
   useEffect(() => {
     if (exercise !== undefined) {
@@ -58,6 +60,15 @@ export const ExercisePlayer = React.memo<{
       });
     }
   }, [exercise]);
+  useEffect(() => {
+    if (isFinished && !isPreview) {
+      const submissionId = Date.now().toString();
+      const submission = {};
+
+      dispatch(actions.buffers.add("Submission", submissionId, submission));
+      dispatch(actions.api.upload("Submission", submissionId));
+    }
+  }, [isFinished]);
 
   const onNext = useCallback((result: QuestionResult) => updateResults(s => [...s, result]), []);
 
@@ -86,9 +97,6 @@ export const ExercisePlayer = React.memo<{
       </MessageContainer>
     );
   }
-
-  const resultCount = results.length;
-  const isFinished = resultCount === plan.length;
 
   if (isFinished) {
     return (

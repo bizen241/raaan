@@ -6,6 +6,8 @@ import {
   ExerciseEntity,
   ExerciseSummaryEntity,
   ExerciseTagEntity,
+  SubmissionEntity,
+  SubmissionSummaryEntity,
   UserAccountEntity,
   UserConfigEntity,
   UserEntity,
@@ -114,6 +116,30 @@ const normalizeExerciseTag: Normalizer<ExerciseTagEntity> = (entity, store) => {
   };
 };
 
+const normalizeSubmission: Normalizer<SubmissionEntity> = (entity, store) => {
+  const { id, userId, exerciseId, time, accuracy } = entity;
+
+  store.Submission[id] = {
+    ...base(entity),
+    userId,
+    exerciseId,
+    time,
+    accuracy
+  };
+};
+
+const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (entity, store) => {
+  const { id, userId, exerciseId, averageTime, averageAccuracy } = entity;
+
+  store.SubmissionSummary[id] = {
+    ...base(entity),
+    userId,
+    exerciseId,
+    averageTime,
+    averageAccuracy
+  };
+};
+
 const normalizeUser: Normalizer<UserEntity> = (entity, store) => {
   const { id, accountId, config, configId, name, permission } = entity;
 
@@ -167,6 +193,8 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Exercise: normalizeExercise,
   ExerciseSummary: normalizeExerciseSummary,
   ExerciseTag: normalizeExerciseTag,
+  Submission: normalizeSubmission,
+  SubmissionSummary: normalizeSubmissionSummary,
   User: normalizeUser,
   UserAccount: normalizeUserAccount,
   UserConfig: normalizeUserConfig,

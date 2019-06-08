@@ -6,6 +6,8 @@ import {
   ExerciseTag,
   Lang,
   Permission,
+  Submission,
+  SubmissionSummary,
   Theme,
   User,
   UserAccount,
@@ -66,6 +68,18 @@ const parseExerciseTag: Parser<ExerciseTag> = query => {
   };
 };
 
+const parseSubmission: Parser<Submission> = query => {
+  return {
+    ...page(query)
+  };
+};
+
+const parseSubmissionSummary: Parser<SubmissionSummary> = query => {
+  return {
+    ...page(query)
+  };
+};
+
 const parseUser: Parser<User> = query => {
   const { name, permission } = query;
 
@@ -110,6 +124,8 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   Exercise: parseExercise,
   ExerciseSummary: parseExerciseSummary,
   ExerciseTag: parseExerciseTag,
+  Submission: parseSubmission,
+  SubmissionSummary: parseSubmissionSummary,
   User: parseUser,
   UserAccount: parseUserAccount,
   UserConfig: parseUserConfig,
