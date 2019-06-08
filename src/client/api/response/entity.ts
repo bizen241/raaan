@@ -7,7 +7,9 @@ export const mergeEntityStore = (target: EntityStore, source: EntityStore): Enti
   Submission: { ...target.Submission, ...source.Submission },
   SubmissionSummary: { ...target.SubmissionSummary, ...source.SubmissionSummary },
   User: { ...target.User, ...source.User },
+  UserDiary: { ...target.UserDiary, ...source.UserDiary },
   UserAccount: { ...target.UserAccount, ...source.UserAccount },
   UserConfig: { ...target.UserConfig, ...source.UserConfig },
-  UserSession: { ...target.UserSession, ...source.UserSession }
+  UserSession: { ...target.UserSession, ...source.UserSession },
+  UserSummary: { ...target.UserSummary, ...source.UserSummary }
 });
