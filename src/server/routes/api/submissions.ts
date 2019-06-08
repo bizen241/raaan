@@ -5,13 +5,15 @@ import { Submission } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
-import { ExerciseEntity, SubmissionSummaryEntity } from "../../database/entities";
+import { ExerciseEntity, SubmissionSummaryEntity, UserDiaryEntity } from "../../database/entities";
 
 export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { exerciseId, time, accuracy }: SaveParams<Submission> = req.body;
   if (exerciseId === undefined || time === undefined || accuracy === undefined) {
     return next(createError(400));
   }
+
+  const date = new Date();
 
   await getManager().transaction(async manager => {
     const exercise = await manager.findOne(ExerciseEntity, exerciseId);
@@ -38,11 +40,38 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
       await manager.save(newSubmissionSummary);
     }
 
-    const savedSubmissionSummary = await manager.findOne(SubmissionSummaryEntity, {
+    const userDiary = await manager.findOne(UserDiaryEntity, {
       userId: currentUser.id,
-      exerciseId: exercise.id
+      date
     });
+
+    if (userDiary !== undefined) {
+      userDiary.playCount += 1;
+
+      await manager.save(userDiary);
+    } else {
+      const newUserDiary = new UserDiaryEntity(currentUser, date);
+
+      await manager.save(newUserDiary);
+    }
+
+    const savedSubmissionSummary =
+      submissionSummary ||
+      (await manager.findOne(SubmissionSummaryEntity, {
+        userId: currentUser.id,
+        exerciseId: exercise.id
+      }));
     if (savedSubmissionSummary === undefined) {
+      return next(createError(500));
+    }
+
+    const savedUserDiary =
+      userDiary ||
+      (await manager.findOne(UserDiaryEntity, {
+        userId: currentUser.id,
+        date
+      }));
+    if (savedUserDiary === undefined) {
       return next(createError(500));
     }
 
