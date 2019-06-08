@@ -8,7 +8,9 @@ import {
   User,
   UserAccount,
   UserConfig,
-  UserSession
+  UserDiary,
+  UserSession,
+  UserSummary
 } from "../entities";
 
 export interface EntityMap<E extends EntityObject> {
@@ -24,7 +26,9 @@ export interface EntityStore {
   User: { [id: string]: User | undefined };
   UserAccount: { [id: string]: UserAccount | undefined };
   UserConfig: { [id: string]: UserConfig | undefined };
+  UserDiary: { [id: string]: UserDiary | undefined };
   UserSession: { [id: string]: UserSession | undefined };
+  UserSummary: { [id: string]: UserSummary | undefined };
 }
 
 export const createEntityStore = (): EntityStore => ({
@@ -36,5 +40,7 @@ export const createEntityStore = (): EntityStore => ({
   User: {},
   UserAccount: {},
   UserConfig: {},
-  UserSession: {}
+  UserDiary: {},
+  UserSession: {},
+  UserSummary: {}
 });

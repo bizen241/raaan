@@ -12,7 +12,9 @@ import {
   User,
   UserAccount,
   UserConfig,
-  UserSession
+  UserDiary,
+  UserSession,
+  UserSummary
 } from "../../../../shared/api/entities";
 import { SearchParams } from "../../../../shared/api/request/search";
 import { AuthProviderName } from "../../../../shared/auth";
@@ -110,11 +112,29 @@ const parseUserConfig: Parser<UserConfig> = query => {
   };
 };
 
+const parseUserDiary: Parser<UserDiary> = query => {
+  const { userId } = query;
+
+  return {
+    userId,
+    ...page(query)
+  };
+};
+
 const parseUserSession: Parser<UserSession> = query => {
   const { userAgent, userId } = query;
 
   return {
     userAgent,
+    userId,
+    ...page(query)
+  };
+};
+
+const parseUserSummary: Parser<UserSummary> = query => {
+  const { userId } = query;
+
+  return {
     userId,
     ...page(query)
   };
@@ -129,5 +149,7 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   User: parseUser,
   UserAccount: parseUserAccount,
   UserConfig: parseUserConfig,
-  UserSession: parseUserSession
+  UserDiary: parseUserDiary,
+  UserSession: parseUserSession,
+  UserSummary: parseUserSummary
 };

@@ -10,8 +10,10 @@ import {
   SubmissionSummaryEntity,
   UserAccountEntity,
   UserConfigEntity,
+  UserDiaryEntity,
   UserEntity,
-  UserSessionEntity
+  UserSessionEntity,
+  UserSummaryEntity
 } from "../../database/entities";
 import { BaseEntityClass } from "../../database/entities/BaseEntityClass";
 
@@ -177,6 +179,17 @@ const normalizeUserConfig: Normalizer<UserConfigEntity> = (entity, store) => {
   };
 };
 
+const normalizeUserDiary: Normalizer<UserDiaryEntity> = (entity, store) => {
+  const { id, userId, date, playCount } = entity;
+
+  store.UserDiary[id] = {
+    ...base(entity),
+    userId,
+    date: date.toString(),
+    playCount
+  };
+};
+
 const normalizeUserSession: Normalizer<UserSessionEntity> = (entity, store) => {
   const { id, user, userId, userAgent } = entity;
 
@@ -189,6 +202,16 @@ const normalizeUserSession: Normalizer<UserSessionEntity> = (entity, store) => {
   normalizeEntity(store, user);
 };
 
+const normalizeUserSummary: Normalizer<UserSummaryEntity> = (entity, store) => {
+  const { id, userId, playCount } = entity;
+
+  store.UserSummary[id] = {
+    ...base(entity),
+    userId,
+    playCount
+  };
+};
+
 const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Exercise: normalizeExercise,
   ExerciseSummary: normalizeExerciseSummary,
@@ -198,5 +221,7 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   User: normalizeUser,
   UserAccount: normalizeUserAccount,
   UserConfig: normalizeUserConfig,
-  UserSession: normalizeUserSession
+  UserDiary: normalizeUserDiary,
+  UserSession: normalizeUserSession,
+  UserSummary: normalizeUserSummary
 };

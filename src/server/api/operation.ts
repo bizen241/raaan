@@ -2,6 +2,7 @@ import { NextFunction } from "connect";
 import { Request, RequestHandler, Response } from "express";
 import * as createError from "http-errors";
 import { OpenAPIV3 } from "openapi-types";
+import { endpoints } from "../../shared/api/endpoint";
 import { EntityType, Permission } from "../../shared/api/entities";
 import { UserEntity } from "../database/entities";
 import { getGuestUser } from "../database/setup/guest";
@@ -10,18 +11,6 @@ import { SaveParamsMapSchema } from "./schema/request/save";
 export interface PathParams {
   id: string;
 }
-
-const tags: { [P in EntityType]: string } = {
-  Exercise: "exercises",
-  ExerciseSummary: "exercise-summaries",
-  ExerciseTag: "exercise-tags",
-  Submission: "submissions",
-  SubmissionSummary: "submission-summaries",
-  User: "users",
-  UserAccount: "user-accounts",
-  UserConfig: "user-config",
-  UserSession: "user-sessions"
-};
 
 interface OperationDocument {
   entityType: EntityType;
@@ -84,7 +73,7 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
 
   return {
     summary,
-    tags: [tag || tags[entityType]],
+    tags: [tag || endpoints[entityType]],
     parameters,
     requestBody,
     responses,

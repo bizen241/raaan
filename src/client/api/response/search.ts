@@ -28,7 +28,9 @@ export const createSearchResultStore = (): SearchResultStore => ({
   User: {},
   UserAccount: {},
   UserConfig: {},
-  UserSession: {}
+  UserDiary: {},
+  UserSession: {},
+  UserSummary: {}
 });
 
 const hasDiff = (oldIds: IdMap, newIds: IdMap) => {
