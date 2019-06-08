@@ -6,18 +6,22 @@ import { SubmissionEntity } from "./SubmissionEntity";
 import { SubmissionSummaryEntity } from "./SubmissionSummaryEntity";
 import { UserAccountEntity } from "./UserAccountEntity";
 import { UserConfigEntity } from "./UserConfigEntity";
+import { UserDiaryEntity } from "./UserDiaryEntity";
 import { UserEntity } from "./UserEntity";
 import { UserSessionEntity } from "./UserSessionEntity";
+import { UserSummaryEntity } from "./UserSummaryEntity";
 
 export * from "./ExerciseEntity";
 export * from "./ExerciseSummaryEntity";
 export * from "./ExerciseTagEntity";
-export * from "./UserAccountEntity";
-export * from "./UserConfigEntity";
-export * from "./UserEntity";
 export * from "./SubmissionEntity";
 export * from "./SubmissionSummaryEntity";
+export * from "./UserAccountEntity";
+export * from "./UserConfigEntity";
+export * from "./UserDiaryEntity";
+export * from "./UserEntity";
 export * from "./UserSessionEntity";
+export * from "./UserSummaryEntity";
 
 export type Entity =
   | SubmissionSummaryEntity
@@ -27,8 +31,10 @@ export type Entity =
   | ExerciseTagEntity
   | UserAccountEntity
   | UserConfigEntity
+  | UserDiaryEntity
   | UserEntity
-  | UserSessionEntity;
+  | UserSessionEntity
+  | UserSummaryEntity;
 
 export const entities = [
   SubmissionSummaryEntity,
@@ -38,8 +44,10 @@ export const entities = [
   ExerciseTagEntity,
   UserAccountEntity,
   UserConfigEntity,
+  UserAccountEntity,
   UserEntity,
-  UserSessionEntity
+  UserSessionEntity,
+  UserSummaryEntity
 ];
 
 export type EntityCreator<E extends Entity> = (manager: EntityManager, params: Partial<E>) => Promise<E>;
