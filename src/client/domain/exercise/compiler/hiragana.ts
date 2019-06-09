@@ -6,7 +6,7 @@ export const isYoon = (source: string) => "きにひみりぎぢびぴ".includes
 export const isSokuon = (source: string) => source[0] === "っ";
 export const isHatuon = (source: string) => source[0] === "ん";
 
-const singleHiraganaToRomans: { [key: string]: string[] } = {
+export const singleHiraganaToRomans: { [key: string]: string[] } = {
   あ: ["a"],
   い: ["i"],
   う: ["u"],
@@ -93,9 +93,7 @@ const singleHiraganaToRomans: { [key: string]: string[] } = {
   ゎ: ["xwa", "lwa"]
 };
 
-export const singleKanaToRomans = (kana: string) => singleHiraganaToRomans[kana];
-
-const pairHiraganaToRomans: { [key: string]: string[] | undefined } = {
+export const pairHiraganaToRomans: { [key: string]: string[] | undefined } = {
   いぇ: ["ye"],
   うぃ: ["whi", "wi"],
   うぇ: ["whe", "we"],
@@ -144,5 +142,3 @@ const pairHiraganaToRomans: { [key: string]: string[] | undefined } = {
   どぅ: ["dwu"],
   どぉ: ["dwo"]
 };
-
-export const pairKanaToRomans = (kana: string) => pairHiraganaToRomans[kana];

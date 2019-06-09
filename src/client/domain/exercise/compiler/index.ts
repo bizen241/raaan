@@ -1,7 +1,7 @@
 import { Question } from "../../../../shared/api/entities";
 import { rubyAnchorCharacter, rubySeparatorCharacter, rubyTerminatorCharacter } from "../ruby";
 import { convertKatakanaToHiragana, convertPunctuationMark } from "./convert";
-import { isHatuon, isKana, isSokuon, isYoon, pairKanaToRomans, singleKanaToRomans } from "./hiragana";
+import { isHatuon, isKana, isSokuon, isYoon, pairHiraganaToRomans, singleHiraganaToRomans } from "./hiragana";
 
 export interface RubyChunk {
   kanji: string;
@@ -141,13 +141,13 @@ const compileHiragana = (source: string): CompiledChunk => {
 
   if (isKana(secondChar)) {
     const pairChar = `${firstChar}${secondChar}`;
-    const pairRomans = pairKanaToRomans(pairChar);
+    const pairRomans = pairHiraganaToRomans[pairChar];
 
     if (pairRomans !== undefined) {
       const candidates = [...pairRomans];
 
-      const firstRomans = singleKanaToRomans(firstChar);
-      const secondRomans = singleKanaToRomans(secondChar);
+      const firstRomans = singleHiraganaToRomans[firstChar];
+      const secondRomans = singleHiraganaToRomans[secondChar];
 
       firstRomans.forEach(firstRoman => {
         secondRomans.forEach(secondRoman => {
@@ -170,15 +170,15 @@ const compileHiragana = (source: string): CompiledChunk => {
 
   return {
     kana: firstChar,
-    candidates: singleKanaToRomans(firstChar)
+    candidates: singleHiraganaToRomans[firstChar]
   };
 };
 
 const compileYoon = (source: string): CompiledChunk => {
   const firstChar = source[0];
   const secondChar = source[1];
-  const firstRomans = singleKanaToRomans(firstChar);
-  const secondRomans = singleKanaToRomans(secondChar);
+  const firstRomans = singleHiraganaToRomans[firstChar];
+  const secondRomans = singleHiraganaToRomans[secondChar];
 
   const candidates = [`${firstRomans[0][0]}y${secondRomans[0][2]}`];
 
@@ -196,7 +196,7 @@ const compileYoon = (source: string): CompiledChunk => {
 
 const compileSokuon = (source: string): CompiledChunk => {
   const firstChar = source[0];
-  const firstRomans = singleKanaToRomans(firstChar);
+  const firstRomans = singleHiraganaToRomans[firstChar];
 
   const compiledSecondChar = compileHiragana(source.slice(1));
 
@@ -218,7 +218,7 @@ const compileSokuon = (source: string): CompiledChunk => {
 
 const compileHatuon = (source: string): CompiledChunk => {
   const secondChar = source[1];
-  const secondRomans = singleKanaToRomans(secondChar);
+  const secondRomans = singleHiraganaToRomans[secondChar];
 
   const compiledSecondChar = compileHiragana(source.slice(1));
 
