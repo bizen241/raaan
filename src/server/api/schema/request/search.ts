@@ -62,6 +62,34 @@ export const SearchParamsMapSchema: Definition = {
         { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
       ]
     },
+    Submission: {
+      allOf: [
+        {
+          type: "object",
+          properties: {
+            time: { type: "number" },
+            exerciseId: { format: "uuid", type: "string" },
+            userId: { format: "uuid", type: "string" },
+            accuracy: { type: "number" }
+          }
+        },
+        { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
+      ]
+    },
+    SubmissionSummary: {
+      allOf: [
+        {
+          type: "object",
+          properties: {
+            exerciseId: { format: "uuid", type: "string" },
+            userId: { format: "uuid", type: "string" },
+            averageTime: { type: "number" },
+            averageAccuracy: { type: "number" }
+          }
+        },
+        { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
+      ]
+    },
     User: {
       allOf: [
         {
@@ -101,9 +129,28 @@ export const SearchParamsMapSchema: Definition = {
         { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
       ]
     },
+    UserDiary: {
+      allOf: [
+        {
+          type: "object",
+          properties: {
+            userId: { format: "uuid", type: "string" },
+            date: { type: "string" },
+            playCount: { type: "number" }
+          }
+        },
+        { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
+      ]
+    },
     UserSession: {
       allOf: [
         { type: "object", properties: { userId: { format: "uuid", type: "string" }, userAgent: { type: "string" } } },
+        { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
+      ]
+    },
+    UserSummary: {
+      allOf: [
+        { type: "object", properties: { userId: { format: "uuid", type: "string" }, playCount: { type: "number" } } },
         { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
       ]
     }

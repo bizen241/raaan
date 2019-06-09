@@ -47,6 +47,24 @@ export const SaveParamsMapSchema: Definition = {
       }
     },
     ExerciseTag: { type: "object", properties: { name: { type: "string" } } },
+    Submission: {
+      type: "object",
+      properties: {
+        time: { type: "number" },
+        exerciseId: { format: "uuid", type: "string" },
+        userId: { format: "uuid", type: "string" },
+        accuracy: { type: "number" }
+      }
+    },
+    SubmissionSummary: {
+      type: "object",
+      properties: {
+        exerciseId: { format: "uuid", type: "string" },
+        userId: { format: "uuid", type: "string" },
+        averageTime: { type: "number" },
+        averageAccuracy: { type: "number" }
+      }
+    },
     User: {
       type: "object",
       properties: {
@@ -71,9 +89,21 @@ export const SaveParamsMapSchema: Definition = {
         theme: { enum: ["dark", "default", "light", "system"], type: "string" }
       }
     },
+    UserDiary: {
+      type: "object",
+      properties: {
+        userId: { format: "uuid", type: "string" },
+        date: { type: "string" },
+        playCount: { type: "number" }
+      }
+    },
     UserSession: {
       type: "object",
       properties: { userId: { format: "uuid", type: "string" }, userAgent: { type: "string" } }
+    },
+    UserSummary: {
+      type: "object",
+      properties: { userId: { format: "uuid", type: "string" }, playCount: { type: "number" } }
     }
   }
 };
