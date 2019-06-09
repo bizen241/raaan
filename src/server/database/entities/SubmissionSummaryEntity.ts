@@ -5,7 +5,7 @@ import { UserEntity } from "./UserEntity";
 
 @Entity("submission-summaries")
 export class SubmissionSummaryEntity extends BaseEntityClass {
-  type: "Submission" = "Submission";
+  type: "SubmissionSummary" = "SubmissionSummary";
 
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
