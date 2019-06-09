@@ -1,4 +1,4 @@
-import { Column, Entity, OneToOne, RelationId } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
@@ -9,6 +9,7 @@ export class UserSummaryEntity extends BaseEntityClass {
   @OneToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
+  @JoinColumn()
   user?: UserEntity;
   @RelationId((userSummary: UserSummaryEntity) => userSummary.user)
   userId!: string;
