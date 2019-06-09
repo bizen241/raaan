@@ -73,6 +73,38 @@ export const EntityStoreSchema: Definition = {
         }
       }
     },
+    Submission: {
+      type: "object",
+      additionalProperties: {
+        type: "object",
+        properties: {
+          userId: { format: "uuid", type: "string" },
+          exerciseId: { format: "uuid", type: "string" },
+          time: { type: "number" },
+          accuracy: { type: "number" },
+          id: { format: "uuid", type: "string" },
+          createdAt: { type: "number" },
+          updatedAt: { type: "number" },
+          fetchedAt: { type: "number" }
+        }
+      }
+    },
+    SubmissionSummary: {
+      type: "object",
+      additionalProperties: {
+        type: "object",
+        properties: {
+          userId: { format: "uuid", type: "string" },
+          exerciseId: { format: "uuid", type: "string" },
+          averageTime: { type: "number" },
+          averageAccuracy: { type: "number" },
+          id: { format: "uuid", type: "string" },
+          createdAt: { type: "number" },
+          updatedAt: { type: "number" },
+          fetchedAt: { type: "number" }
+        }
+      }
+    },
     User: {
       type: "object",
       additionalProperties: {
@@ -118,6 +150,21 @@ export const EntityStoreSchema: Definition = {
         }
       }
     },
+    UserDiary: {
+      type: "object",
+      additionalProperties: {
+        type: "object",
+        properties: {
+          userId: { format: "uuid", type: "string" },
+          date: { type: "string" },
+          playCount: { type: "number" },
+          id: { format: "uuid", type: "string" },
+          createdAt: { type: "number" },
+          updatedAt: { type: "number" },
+          fetchedAt: { type: "number" }
+        }
+      }
+    },
     UserSession: {
       type: "object",
       additionalProperties: {
@@ -125,6 +172,20 @@ export const EntityStoreSchema: Definition = {
         properties: {
           userId: { format: "uuid", type: "string" },
           userAgent: { type: "string" },
+          id: { format: "uuid", type: "string" },
+          createdAt: { type: "number" },
+          updatedAt: { type: "number" },
+          fetchedAt: { type: "number" }
+        }
+      }
+    },
+    UserSummary: {
+      type: "object",
+      additionalProperties: {
+        type: "object",
+        properties: {
+          userId: { format: "uuid", type: "string" },
+          playCount: { type: "number" },
           id: { format: "uuid", type: "string" },
           createdAt: { type: "number" },
           updatedAt: { type: "number" },
