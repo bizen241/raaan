@@ -44,7 +44,7 @@ export const entities = [
   ExerciseTagEntity,
   UserAccountEntity,
   UserConfigEntity,
-  UserAccountEntity,
+  UserDiaryEntity,
   UserEntity,
   UserSessionEntity,
   UserSummaryEntity
