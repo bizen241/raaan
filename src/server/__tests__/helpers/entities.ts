@@ -7,7 +7,8 @@ import {
   UserAccountEntity,
   UserConfigEntity,
   UserEntity,
-  UserSessionEntity
+  UserSessionEntity,
+  UserSummaryEntity
 } from "../../database/entities";
 
 export const insertUser = async (permission: Permission) => {
@@ -15,7 +16,8 @@ export const insertUser = async (permission: Permission) => {
 
   const account = new UserAccountEntity("github", uuid(), uuid());
   const config = new UserConfigEntity();
-  const user = await manager.save(new UserEntity(account, config, permission, permission));
+  const summary = new UserSummaryEntity();
+  const user = await manager.save(new UserEntity(account, config, summary, permission, permission));
 
   return { account, config, user };
 };

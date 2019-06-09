@@ -5,7 +5,7 @@ import { Submission } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
-import { ExerciseEntity, SubmissionSummaryEntity, UserDiaryEntity } from "../../database/entities";
+import { ExerciseEntity, SubmissionSummaryEntity, UserDiaryEntity, UserSummaryEntity } from "../../database/entities";
 
 export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { exerciseId, time, accuracy }: SaveParams<Submission> = req.body;
@@ -55,6 +55,15 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
       await manager.save(newUserDiary);
     }
 
+    const userSummary = await manager.findOne(UserSummaryEntity, currentUser.summaryId);
+    if (userSummary === undefined) {
+      return next(createError(500));
+    }
+
+    userSummary.playCount += 1;
+
+    await manager.save(userSummary);
+
     const savedSubmissionSummary =
       submissionSummary ||
       (await manager.findOne(SubmissionSummaryEntity, {
@@ -75,7 +84,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
       return next(createError(500));
     }
 
-    responseFindResult(res, savedSubmissionSummary);
+    responseFindResult(res, savedSubmissionSummary, savedUserDiary, userSummary);
   });
 });
 

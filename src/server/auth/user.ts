@@ -1,6 +1,6 @@
 import { getManager } from "typeorm";
 import { AuthProviderName } from "../../shared/auth";
-import { UserAccountEntity, UserConfigEntity, UserEntity } from "../database/entities";
+import { UserAccountEntity, UserConfigEntity, UserEntity, UserSummaryEntity } from "../database/entities";
 
 interface AuthParams {
   provider: AuthProviderName;
@@ -70,7 +70,8 @@ const createUser = async ({ provider, accountId, name, email }: AuthParams) => {
 
   const account = new UserAccountEntity(provider, accountId, email);
   const config = new UserConfigEntity();
-  const user = new UserEntity(account, config, name, "Write");
+  const summary = new UserSummaryEntity();
+  const user = new UserEntity(account, config, summary, name, "Write");
 
   const savedUser = await manager.save(user);
 

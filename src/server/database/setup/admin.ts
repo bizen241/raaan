@@ -1,6 +1,6 @@
 import { getManager } from "typeorm";
 import { ProcessEnv } from "../../env";
-import { UserAccountEntity, UserConfigEntity, UserEntity } from "../entities";
+import { UserAccountEntity, UserConfigEntity, UserEntity, UserSummaryEntity } from "../entities";
 
 export const setAdminUser = async (env: ProcessEnv) => {
   const manager = getManager();
@@ -12,7 +12,8 @@ export const setAdminUser = async (env: ProcessEnv) => {
 
     const adminUserAccount = new UserAccountEntity(adminAccountProvider, adminAccountId, adminAccountEmail);
     const adminUserConfig = new UserConfigEntity();
-    const adminUser = new UserEntity(adminUserAccount, adminUserConfig, adminAccountName, "Admin");
+    const adminUserSummary = new UserSummaryEntity();
+    const adminUser = new UserEntity(adminUserAccount, adminUserConfig, adminUserSummary, adminAccountName, "Admin");
 
     await manager.save(adminUser);
   }
