@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { CompiledQuestion } from "../../../domain/content/compiler";
+import { CompiledQuestion } from "../../../domain/exercise/compiler";
 import { QuestionRenderer } from "../renderers/QuestionRenderer";
 import { QuestionResult } from "./ExercisePlayer";
 

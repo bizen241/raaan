@@ -1,6 +1,6 @@
 import { Question } from "../../../../shared/api/entities";
 import { rubyAnchorCharacter, rubySeparatorCharacter, rubyTerminatorCharacter } from "../ruby";
-import { katakanaToHiragana, replacePunctuationMark } from "./convert";
+import { convertKatakanaToHiragana, convertPunctuationMark } from "./convert";
 import { isHatuon, isKana, isSokuon, isYoon, pairKanaToRomans, singleKanaToRomans } from "./hiragana";
 
 export interface RubyChunk {
@@ -121,12 +121,12 @@ const compileChar = (source: string): CompiledChunk => {
   const firstChar = source[0];
 
   if (isKana(firstChar)) {
-    const hiragana = katakanaToHiragana(source);
+    const hiragana = convertKatakanaToHiragana(source);
 
     return compileHiragana(hiragana);
   }
 
-  const hankaku = replacePunctuationMark(firstChar);
+  const hankaku = convertPunctuationMark(firstChar);
   const lowercase = hankaku.toLowerCase();
 
   return {

@@ -1,5 +1,5 @@
 import { Exercise, Question } from "../../shared/api/entities";
-import { createQuestion } from "../domain/content";
+import { createQuestion } from "../domain/exercise/create";
 import { editBuffer } from "../reducers/buffers";
 
 const updateTitle = (bufferId: string, title: string) =>

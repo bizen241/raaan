@@ -1,6 +1,6 @@
 import * as kuromoji from "kuromoji";
 import { IpadicFeatures, Tokenizer } from "kuromoji";
-import { katakanaToHiragana } from "../compiler/convert";
+import { convertKatakanaToHiragana } from "./compiler/convert";
 
 export const rubyAnchorCharacter = "｜";
 export const rubySeparatorCharacter = "《";
@@ -75,8 +75,8 @@ const createRubiedTextFromToken = (token: IpadicFeatures) => {
     return rawSurfaceForm;
   }
 
-  const surfaceForm = katakanaToHiragana(rawSurfaceForm);
-  const reading = katakanaToHiragana(rawReading);
+  const surfaceForm = convertKatakanaToHiragana(rawSurfaceForm);
+  const reading = convertKatakanaToHiragana(rawReading);
   if (surfaceForm === reading) {
     return rawSurfaceForm;
   }

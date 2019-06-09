@@ -1,7 +1,7 @@
 import { Box, makeStyles } from "@material-ui/core";
 import * as React from "react";
 import { useMemo } from "react";
-import { CompiledQuestion } from "../../../domain/content/compiler";
+import { CompiledQuestion } from "../../../domain/exercise/compiler";
 import { QuestionPlayerState } from "../player/QuestionPlayer";
 
 export const QuestionRenderer = React.memo<{

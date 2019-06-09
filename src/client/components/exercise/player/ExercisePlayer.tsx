@@ -3,8 +3,10 @@ import { Close, Error } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createPlan } from "../../../domain/content";
-import { CompiledQuestion, compileQuestions } from "../../../domain/content/compiler";
+import { Submission } from "../../../../shared/api/entities";
+import { SaveParams } from "../../../../shared/api/request/save";
+import { CompiledQuestion, compileQuestions } from "../../../domain/exercise/compiler";
+import { createPlan } from "../../../domain/exercise/create";
 import { actions, RootState } from "../../../reducers";
 import { AttemptResult } from "../renderers/AttemptResult";
 import { QuestionPlayer } from "./QuestionPlayer";
@@ -61,9 +63,13 @@ export const ExercisePlayer = React.memo<{
     }
   }, [exercise]);
   useEffect(() => {
-    if (isFinished && !isPreview) {
+    if (isFinished && !isPreview && attempt !== undefined) {
       const submissionId = Date.now().toString();
-      const submission = {};
+      const submission: SaveParams<Submission> = {
+        exerciseId,
+        time: 10,
+        accuracy: 100
+      };
 
       dispatch(actions.buffers.add("Submission", submissionId, submission));
       dispatch(actions.api.upload("Submission", submissionId));

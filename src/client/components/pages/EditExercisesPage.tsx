@@ -5,7 +5,7 @@ import * as React from "react";
 import { useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
-import { createExercise } from "../../domain/content";
+import { createExercise } from "../../domain/exercise/create";
 import { actions } from "../../reducers";
 import { generateBufferId } from "../../reducers/buffers";
 import { ExerciseBufferList } from "../list/buffers/ExerciseBufferList";

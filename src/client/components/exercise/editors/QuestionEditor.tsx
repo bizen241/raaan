@@ -10,7 +10,7 @@ import {
   rubyAnchorCharacter,
   rubySeparatorCharacter,
   rubyTerminatorCharacter
-} from "../../../domain/content/ruby";
+} from "../../../domain/exercise/ruby";
 import { actions } from "../../../reducers";
 
 export const QuestionEditor = React.memo<{
