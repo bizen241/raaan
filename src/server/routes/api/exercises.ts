@@ -16,7 +16,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
 
     await manager.save(newExercise);
 
-    const savedExercise = await getManager().findOne(ExerciseEntity, newExercise.id, {
+    const savedExercise = await manager.findOne(ExerciseEntity, newExercise.id, {
       relations: ["author", "summary"]
     });
     if (savedExercise === undefined) {
