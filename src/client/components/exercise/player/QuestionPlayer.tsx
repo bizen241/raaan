@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
+import { QuestionResult } from "../../../domain/attempt";
 import { CompiledQuestion } from "../../../domain/exercise/compiler";
 import { QuestionRenderer } from "../renderers/QuestionRenderer";
-import { QuestionResult } from "./ExercisePlayer";
 
 export interface QuestionPlayerState {
   typedLines: string[][];

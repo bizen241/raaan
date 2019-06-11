@@ -5,22 +5,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Submission } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
-import { CompiledQuestion, compileQuestions } from "../../../domain/exercise/compiler";
-import { createPlan } from "../../../domain/exercise/create";
+import { Attempt, createPlan, getTotalTime, QuestionResult } from "../../../domain/attempt";
+import { compileQuestions } from "../../../domain/exercise/compiler";
 import { actions, RootState } from "../../../reducers";
 import { AttemptResult } from "../renderers/AttemptResult";
 import { QuestionPlayer } from "./QuestionPlayer";
-
-export interface Attempt {
-  questions: CompiledQuestion[];
-  plan: number[];
-}
-
-export interface QuestionResult {
-  totalTime: number;
-  typoMap: any;
-  typedLines: string[][];
-}
 
 export const ExercisePlayer = React.memo<{
   exerciseId: string;
@@ -67,7 +56,7 @@ export const ExercisePlayer = React.memo<{
       const submissionId = Date.now().toString();
       const submission: SaveParams<Submission> = {
         exerciseId,
-        time: 10,
+        time: getTotalTime(results),
         accuracy: 100
       };
 

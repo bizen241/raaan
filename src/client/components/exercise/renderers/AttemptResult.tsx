@@ -1,17 +1,15 @@
 import { Box, Divider, makeStyles } from "@material-ui/core";
 import * as React from "react";
-import { Attempt, QuestionResult } from "../player/ExercisePlayer";
+import { Attempt, getTotalTime, getTotalTypeCount, QuestionResult } from "../../../domain/attempt";
 
 export const AttemptResult: React.FunctionComponent<{
   attempt: Attempt;
   results: QuestionResult[];
 }> = ({ results }) => {
-  const totalTime = results.reduce((time, result) => time + result.totalTime, 0) / 1000;
-  const totalTypeCount = results.reduce(
-    (totalLength, result) => totalLength + result.typedLines.map(typedLine => typedLine.join("")).join("").length,
-    0
-  );
-  const typeSpeed = totalTime === 0 ? 0 : totalTypeCount / totalTime;
+  const totalTime = getTotalTime(results) / 1000;
+  const totalTypeCount = getTotalTypeCount(results);
+
+  const typeSpeed = totalTypeCount / totalTime;
   const score = typeSpeed * 1 * 60;
 
   const classes = useStyles();

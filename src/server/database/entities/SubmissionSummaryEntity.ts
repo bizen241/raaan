@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne, RelationId } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
+import { SubmissionEntity } from "./SubmissionEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity("submission-summaries")
@@ -21,21 +22,31 @@ export class SubmissionSummaryEntity extends BaseEntityClass {
   @RelationId((submissionSummary: SubmissionSummaryEntity) => submissionSummary.exercise)
   exerciseId!: string;
 
-  @Column()
-  averageTime: number;
+  @OneToOne(() => SubmissionEntity, {
+    cascade: true
+  })
+  @JoinColumn()
+  latest: SubmissionEntity;
+  @RelationId((submissionSummary: SubmissionSummaryEntity) => submissionSummary.latest)
+  latestId!: string;
 
-  @Column()
-  averageAccuracy: number;
+  @OneToOne(() => SubmissionEntity, {
+    cascade: true
+  })
+  @JoinColumn()
+  best: SubmissionEntity;
+  @RelationId((submissionSummary: SubmissionSummaryEntity) => submissionSummary.best)
+  bestId!: string;
 
   @Column()
   playCount: number = 1;
 
-  constructor(user: UserEntity, exercise: ExerciseEntity, averageTime: number, averageAccuracy: number) {
+  constructor(user: UserEntity, exercise: ExerciseEntity, submission: SubmissionEntity) {
     super();
 
     this.user = user;
     this.exercise = exercise;
-    this.averageTime = averageTime;
-    this.averageAccuracy = averageAccuracy;
+    this.latest = submission;
+    this.best = submission;
   }
 }

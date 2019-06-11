@@ -5,7 +5,13 @@ import { Submission } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
-import { ExerciseEntity, SubmissionSummaryEntity, UserDiaryEntity, UserSummaryEntity } from "../../database/entities";
+import {
+  ExerciseEntity,
+  SubmissionEntity,
+  SubmissionSummaryEntity,
+  UserDiaryEntity,
+  UserSummaryEntity
+} from "../../database/entities";
 
 export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { exerciseId, time, accuracy }: SaveParams<Submission> = req.body;
@@ -21,27 +27,44 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
       return next(createError(400));
     }
 
-    const submissionSummary = await manager.findOne(SubmissionSummaryEntity, {
-      userId: currentUser.id,
-      exerciseId: exercise.id
-    });
+    const submission = new SubmissionEntity(currentUser, exercise, time, accuracy);
+
+    const submissionSummary = await manager.findOne(
+      SubmissionSummaryEntity,
+      {
+        user: currentUser,
+        exercise
+      },
+      { relations: ["latest", "best"] }
+    );
 
     if (submissionSummary !== undefined) {
-      const { averageTime, averageAccuracy, playCount } = submissionSummary;
+      const { latest, best } = submissionSummary;
 
-      submissionSummary.averageTime += (time - averageTime) / (playCount + 1);
-      submissionSummary.averageAccuracy += (accuracy - averageAccuracy) / (playCount + 1);
+      submissionSummary.latest = submission;
       submissionSummary.playCount += 1;
+
+      const shouldBestSubmissionUpdate = time * accuracy > best.time * best.accuracy;
+
+      if (shouldBestSubmissionUpdate) {
+        submissionSummary.best = submission;
+      }
+
+      if (shouldBestSubmissionUpdate) {
+        await manager.remove(latest);
+      } else if (latest.id !== best.id) {
+        await manager.remove([latest, best]);
+      }
 
       await manager.save(submissionSummary);
     } else {
-      const newSubmissionSummary = new SubmissionSummaryEntity(currentUser, exercise, time, accuracy);
+      const newSubmissionSummary = new SubmissionSummaryEntity(currentUser, exercise, submission);
 
       await manager.save(newSubmissionSummary);
     }
 
     const userDiary = await manager.findOne(UserDiaryEntity, {
-      userId: currentUser.id,
+      user: currentUser,
       date
     });
 
@@ -66,10 +89,14 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
 
     const savedSubmissionSummary =
       submissionSummary ||
-      (await manager.findOne(SubmissionSummaryEntity, {
-        userId: currentUser.id,
-        exerciseId: exercise.id
-      }));
+      (await manager.findOne(
+        SubmissionSummaryEntity,
+        {
+          user: currentUser,
+          exercise
+        },
+        { relations: ["latest", "best"] }
+      ));
     if (savedSubmissionSummary === undefined) {
       return next(createError(500));
     }
@@ -77,7 +104,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
     const savedUserDiary =
       userDiary ||
       (await manager.findOne(UserDiaryEntity, {
-        userId: currentUser.id,
+        user: currentUser,
         date
       }));
     if (savedUserDiary === undefined) {

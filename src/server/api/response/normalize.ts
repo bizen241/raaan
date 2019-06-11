@@ -131,15 +131,19 @@ const normalizeSubmission: Normalizer<SubmissionEntity> = (entity, store) => {
 };
 
 const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (entity, store) => {
-  const { id, userId, exerciseId, averageTime, averageAccuracy } = entity;
+  const { id, userId, exerciseId, latest, latestId, best, bestId, playCount } = entity;
 
   store.SubmissionSummary[id] = {
     ...base(entity),
     userId,
     exerciseId,
-    averageTime,
-    averageAccuracy
+    latestId,
+    bestId,
+    playCount
   };
+
+  normalizeEntity(store, latest);
+  normalizeEntity(store, best);
 };
 
 const normalizeUser: Normalizer<UserEntity> = (entity, store) => {

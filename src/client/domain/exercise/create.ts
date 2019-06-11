@@ -19,15 +19,3 @@ export const createQuestion = (): Question => ({
   value: "",
   comment: ""
 });
-
-export const createPlan = (items: Question[]) => {
-  const plan = [...Array(items.length).keys()];
-
-  for (let i = plan.length - 1; i >= 0; i--) {
-    const random = Math.floor(Math.random() * (i + 1));
-
-    [plan[i], plan[random]] = [plan[random], plan[i]];
-  }
-
-  return plan;
-};
