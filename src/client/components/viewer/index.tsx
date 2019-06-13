@@ -1,4 +1,5 @@
 import { Card, CardHeader, CircularProgress } from "@material-ui/core";
+import { Done, Error } from "@material-ui/icons";
 import * as React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,8 +22,10 @@ export const EntityViewer = React.memo<{
   renderer: React.ComponentType<EntityViewerRendererProps<any>>;
 }>(({ entityType, entityId, renderer: Renderer }) => {
   const dispatch = useDispatch();
-  const { entity } = useSelector((state: RootState) => ({
-    entity: state.cache.get[entityType][entityId]
+  const { entity, getStatus, deleteStatus } = useSelector((state: RootState) => ({
+    entity: state.cache.get[entityType][entityId],
+    getStatus: state.api.get[entityType][entityId],
+    deleteStatus: state.api.delete[entityType][entityId]
   }));
 
   useEffect(() => {
@@ -31,6 +34,27 @@ export const EntityViewer = React.memo<{
     }
   }, []);
 
+  if (getStatus === 404) {
+    return (
+      <Card>
+        <CardHeader avatar={<Error />} title="見つかりませんでした" />
+      </Card>
+    );
+  }
+  if (deleteStatus === 102) {
+    return (
+      <Card>
+        <CardHeader avatar={<CircularProgress />} title="削除中です" />
+      </Card>
+    );
+  }
+  if (deleteStatus === 200) {
+    return (
+      <Card>
+        <CardHeader avatar={<Done />} title="削除が完了しました" />
+      </Card>
+    );
+  }
   if (entity === undefined) {
     return (
       <Card>
