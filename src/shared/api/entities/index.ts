@@ -81,6 +81,8 @@ export const createEntityTypeToEmptyObject = <T extends EntityTypeToEmptyObject>
     Exercise: {},
     ExerciseSummary: {},
     ExerciseTag: {},
+    Submission: {},
+    SubmissionSummary: {},
     User: {},
     UserAccount: {},
     UserConfig: {},
