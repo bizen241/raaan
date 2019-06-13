@@ -77,7 +77,11 @@ const parseSubmission: Parser<Submission> = query => {
 };
 
 const parseSubmissionSummary: Parser<SubmissionSummary> = query => {
+  const { userId, exerciseId } = query;
+
   return {
+    userId,
+    exerciseId,
     ...page(query)
   };
 };
