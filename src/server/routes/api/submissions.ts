@@ -50,13 +50,13 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
         submissionSummary.best = submission;
       }
 
-      if (shouldBestSubmissionUpdate) {
-        await manager.remove(latest);
-      } else if (latest.id !== best.id) {
-        await manager.remove([latest, best]);
-      }
-
       await manager.save(submissionSummary);
+
+      if (shouldBestSubmissionUpdate) {
+        await manager.remove([latest, best]);
+      } else if (latest.id !== best.id) {
+        await manager.remove(latest);
+      }
     } else {
       const newSubmissionSummary = new SubmissionSummaryEntity(currentUser, exercise, submission);
 
