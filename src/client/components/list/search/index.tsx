@@ -15,12 +15,12 @@ import {
 } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useCallback, useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
 import { EntityObject, EntityType } from "../../../../shared/api/entities";
 import { SearchParams } from "../../../../shared/api/request/search";
-import { stringifySearchParams } from "../../../api/request/search";
-import { actions, RootState } from "../../../reducers";
+import { useSearch } from "../../../hooks/search";
+import { actions } from "../../../reducers";
 
 export interface EntityListProps<E extends EntityObject> {
   title?: React.ReactNode;
@@ -36,79 +36,26 @@ export const EntityList = React.memo<{
   entityType: EntityType;
   searchParams: Partial<SearchParams<any>>;
   itemComponent: React.ComponentType<EntityListItemProps<any>>;
-}>(({ title, entityType, searchParams, itemComponent: ListItem }) => {
+}>(({ title, entityType, searchParams: partialSearchParams, itemComponent: ListItem }) => {
   const dispatch = useDispatch();
-  const { searchResultMap, entityMap } = useSelector((state: RootState) => ({
-    searchResultMap: state.cache.search[entityType],
-    entityMap: state.cache.get[entityType]
-  }));
 
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
 
   const offset = limit * page;
 
-  const searchResult = useMemo(() => {
-    const searchQuery = stringifySearchParams(
-      {
-        ...searchParams,
-        limit,
-        offset
-      },
-      true
-    );
-
-    return searchResultMap[searchQuery];
-  }, [searchResultMap, searchParams, limit, offset]);
-  const selectedEntities = useMemo(() => {
-    if (searchResult === undefined) {
-      return undefined;
-    }
-
-    const entities: EntityObject[] = [];
-    const entityIds = searchResult.ids;
-    const lastIndex = Math.min(offset + limit, searchResult.count - 1);
-
-    for (let index = offset; index <= lastIndex; index++) {
-      const entityId = entityIds[index];
-      if (entityId === undefined) {
-        return undefined;
-      }
-
-      const entity = entityMap[entityId];
-      if (entity === undefined) {
-        return undefined;
-      }
-
-      entities.push(entity);
-    }
-
-    return entities;
-  }, [searchResult]);
-
-  useEffect(() => {
-    if (searchResult === undefined || selectedEntities === undefined) {
-      dispatch(
-        actions.api.search(entityType, {
-          ...searchParams,
-          limit,
-          offset
-        })
-      );
-    }
-  }, [searchParams, limit, offset]);
-
-  const onReload = useCallback(
-    () =>
-      dispatch(
-        actions.api.search(entityType, {
-          ...searchParams,
-          limit,
-          offset
-        })
-      ),
-    [searchParams, limit, offset]
+  const searchParams = useMemo(
+    () => ({
+      ...partialSearchParams,
+      limit,
+      offset
+    }),
+    [partialSearchParams, limit, offset]
   );
+
+  const { searchResult, selectedEntities } = useSearch(entityType, searchParams);
+
+  const onReload = useCallback(() => dispatch(actions.api.search(entityType, searchParams)), [searchParams]);
   const onChangePage = useCallback((_, newPage) => setPage(newPage), []);
   const onChangeRowsPerPage = useCallback(e => setLimit(parseInt(e.target.value, 10)), []);
 
