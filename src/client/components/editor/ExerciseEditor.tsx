@@ -7,7 +7,7 @@ import { EntityEditor, EntityEditorContainerProps, EntityEditorRendererProps } f
 import { Exercise } from "../../../shared/api/entities";
 import { actions } from "../../reducers";
 import { QuestionEditor } from "../exercise/editors/QuestionEditor";
-import { ExercisePlayer } from "../exercise/player/ExercisePlayer";
+import { ExercisePreviewer } from "../exercise/player/ExercisePreviewer";
 import { iconStyles } from "../ui/styles";
 
 export const ExerciseEditor = React.memo<EntityEditorContainerProps>(props => (
@@ -74,13 +74,12 @@ const ExerciseEditorRenderer = React.memo<EntityEditorRendererProps<Exercise>>((
         </Button>
       </Box>
       <Dialog fullScreen open={isExercisePreviewerOpen} onClose={onToggleExercisePreviewer}>
-        <ExercisePlayer exerciseId={bufferId} isPreview onClose={onToggleExercisePreviewer} />
+        <ExercisePreviewer buffer={buffer.edited} onClose={onToggleExercisePreviewer} />
       </Dialog>
       <Dialog fullScreen open={isQuestionPreviewerOpen} onClose={onToggleQuestionPreviewer}>
-        <ExercisePlayer
-          exerciseId={bufferId}
+        <ExercisePreviewer
+          buffer={buffer.edited}
           questionIndex={focusedQuestionIndex}
-          isPreview
           onClose={onToggleQuestionPreviewer}
         />
       </Dialog>
