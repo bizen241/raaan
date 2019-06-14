@@ -9,7 +9,7 @@ import { Exercise, SubmissionSummary } from "../../../shared/api/entities";
 import { SearchParams } from "../../../shared/api/request/search";
 import { useSearch } from "../../hooks/search";
 import { actions } from "../../reducers";
-import { ExercisePlayer } from "../exercise/player/ExercisePlayer";
+import { ExercisePlayer } from "../player/ExercisePlayer";
 import { UserContext } from "../project/Context";
 import { iconStyles } from "../ui/styles";
 

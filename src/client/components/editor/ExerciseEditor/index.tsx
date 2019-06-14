@@ -3,12 +3,12 @@ import { Add, PlayArrow } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { EntityEditor, EntityEditorContainerProps, EntityEditorRendererProps } from ".";
-import { Exercise } from "../../../shared/api/entities";
-import { actions } from "../../reducers";
-import { QuestionEditor } from "../exercise/editors/QuestionEditor";
-import { ExercisePreviewer } from "../exercise/player/ExercisePreviewer";
-import { iconStyles } from "../ui/styles";
+import { EntityEditor, EntityEditorContainerProps, EntityEditorRendererProps } from "../";
+import { Exercise } from "../../../../shared/api/entities";
+import { actions } from "../../../reducers";
+import { ExercisePreviewer } from "../../player/ExercisePreviewer";
+import { iconStyles } from "../../ui/styles";
+import { QuestionEditor } from "./QuestionEditor";
 
 export const ExerciseEditor = React.memo<EntityEditorContainerProps>(props => (
   <EntityEditor {...props} entityType="Exercise" rendererComponent={ExerciseEditorRenderer} />

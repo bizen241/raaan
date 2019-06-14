@@ -1,6 +1,6 @@
 import { Box, Divider, makeStyles } from "@material-ui/core";
 import * as React from "react";
-import { Attempt, getTotalTime, getTotalTypeCount, QuestionResult } from "../../../domain/attempt";
+import { Attempt, getTotalTime, getTotalTypeCount, QuestionResult } from "../../domain/attempt";
 
 export const AttemptResult: React.FunctionComponent<{
   attempt: Attempt;

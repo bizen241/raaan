@@ -2,11 +2,11 @@ import { AppBar, CircularProgress, DialogContent, IconButton, Toolbar } from "@m
 import { Close, Error } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
-import { Exercise } from "../../../../shared/api/entities";
-import { SaveParams } from "../../../../shared/api/request/save";
-import { Attempt, createPlan, QuestionResult } from "../../../domain/attempt";
-import { compileQuestions } from "../../../domain/exercise/compiler";
-import { AttemptResult } from "../renderers/AttemptResult";
+import { Exercise } from "../../../shared/api/entities";
+import { SaveParams } from "../../../shared/api/request/save";
+import { Attempt, createPlan, QuestionResult } from "../../domain/attempt";
+import { compileQuestions } from "../../domain/exercise/compiler";
+import { AttemptResult } from "./AttemptResult";
 import { AttemptMessage } from "./AttemptMessage";
 import { QuestionPlayer } from "./QuestionPlayer";
 
