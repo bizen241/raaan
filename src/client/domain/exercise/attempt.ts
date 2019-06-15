@@ -1,5 +1,5 @@
 import { Question } from "../../../shared/api/entities";
-import { CompiledQuestion } from "../exercise/compiler";
+import { CompiledQuestion } from "../../../shared/exercise/compiler";
 
 export interface Attempt {
   questions: CompiledQuestion[];

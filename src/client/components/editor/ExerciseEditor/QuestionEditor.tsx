@@ -6,11 +6,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Question } from "../../../../shared/api/entities";
 import {
-  addRuby,
   rubyAnchorCharacter,
   rubySeparatorCharacter,
   rubyTerminatorCharacter
-} from "../../../domain/exercise/ruby";
+} from "../../../../shared/exercise/ruby/characters";
+import { addRuby } from "../../../domain/exercise/ruby";
 import { actions } from "../../../reducers";
 
 export const QuestionEditor = React.memo<{

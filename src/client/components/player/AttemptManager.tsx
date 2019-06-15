@@ -4,10 +4,10 @@ import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { Exercise } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
-import { Attempt, createPlan, QuestionResult } from "../../domain/attempt";
-import { compileQuestions } from "../../domain/exercise/compiler";
-import { AttemptResult } from "./AttemptResult";
+import { compileQuestions } from "../../../shared/exercise/compiler";
+import { Attempt, createPlan, QuestionResult } from "../../domain/exercise/attempt";
 import { AttemptMessage } from "./AttemptMessage";
+import { AttemptResult } from "./AttemptResult";
 import { QuestionPlayer } from "./QuestionPlayer";
 
 export const AttemptManager = React.memo<{

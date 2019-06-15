@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { QuestionResult } from "../../domain/attempt";
-import { CompiledQuestion } from "../../domain/exercise/compiler";
+import { CompiledQuestion } from "../../../shared/exercise/compiler";
+import { QuestionResult } from "../../domain/exercise/attempt";
 import { QuestionRenderer } from "./QuestionRenderer";
 
 export interface QuestionPlayerState {

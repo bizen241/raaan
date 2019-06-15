@@ -48,7 +48,7 @@ export const insertSession = async (user: UserEntity) => {
 export const insertExercise = async (user: UserEntity) => {
   const manager = getManager();
 
-  const exerciseSummary = new ExerciseSummaryEntity();
+  const exerciseSummary = new ExerciseSummaryEntity(0, 0);
   const exercise = await manager.save(new ExerciseEntity(user, exerciseSummary, {}));
 
   return { exercise, exerciseSummary };

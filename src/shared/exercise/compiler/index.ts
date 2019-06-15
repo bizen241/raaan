@@ -1,5 +1,5 @@
-import { Question } from "../../../../shared/api/entities";
-import { rubyAnchorCharacter, rubySeparatorCharacter, rubyTerminatorCharacter } from "../ruby";
+import { Question } from "../../api/entities";
+import { rubyAnchorCharacter, rubySeparatorCharacter, rubyTerminatorCharacter } from "../ruby/characters";
 import { convertKatakanaToHiragana, convertPunctuationMark } from "./convert";
 import { isHatuon, isKana, isSokuon, isYoon, pairHiraganaToRomans, singleHiraganaToRomans } from "./hiragana";
 

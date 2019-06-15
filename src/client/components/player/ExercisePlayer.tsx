@@ -6,7 +6,7 @@ import { Exercise, Submission, SubmissionSummary } from "../../../shared/api/ent
 import { SaveParams } from "../../../shared/api/request/save";
 import { SearchParams } from "../../../shared/api/request/search";
 import { stringifySearchParams } from "../../api/request/search";
-import { getTotalTime, QuestionResult } from "../../domain/attempt";
+import { getTotalTime, QuestionResult } from "../../domain/exercise/attempt";
 import { useEntity } from "../../hooks/search";
 import { actions, RootState } from "../../reducers";
 import { UserContext } from "../project/Context";

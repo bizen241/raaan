@@ -1,4 +1,4 @@
-import { Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, RelationId } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { ExerciseTagEntity } from "./ExerciseTagEntity";
@@ -21,7 +21,19 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
   })
   tags?: ExerciseTagEntity[];
 
-  constructor() {
+  @Column()
+  maxKeystrokes: number;
+
+  @Column()
+  minKeystrokes: number;
+
+  @Column()
+  playCount: number = 0;
+
+  constructor(maxKeystrokes: number, minKeystrokes: number) {
     super();
+
+    this.maxKeystrokes = maxKeystrokes;
+    this.minKeystrokes = minKeystrokes;
   }
 }

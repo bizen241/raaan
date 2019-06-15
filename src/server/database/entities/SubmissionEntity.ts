@@ -22,16 +22,20 @@ export class SubmissionEntity extends BaseEntityClass {
   exerciseId!: string;
 
   @Column()
+  keystrokes: number;
+
+  @Column()
   time: number;
 
   @Column()
   accuracy: number;
 
-  constructor(user: UserEntity, exercise: ExerciseEntity, time: number, accuracy: number) {
+  constructor(user: UserEntity, exercise: ExerciseEntity, keystrokes: number, time: number, accuracy: number) {
     super();
 
     this.user = user;
     this.exercise = exercise;
+    this.keystrokes = keystrokes;
     this.time = time;
     this.accuracy = accuracy;
   }

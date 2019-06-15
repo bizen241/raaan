@@ -3,6 +3,7 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { Exercise } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
+import { getKeystrokes } from "../../../shared/exercise/keystrokes";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
 import { ExerciseEntity, ExerciseSummaryEntity } from "../../database/entities";
@@ -11,7 +12,9 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
   const params: SaveParams<Exercise> = req.body;
 
   await getManager().transaction(async manager => {
-    const newExerciseSummary = new ExerciseSummaryEntity();
+    const { maxKeystrokes, minKeystrokes } = getKeystrokes(params.questions);
+
+    const newExerciseSummary = new ExerciseSummaryEntity(maxKeystrokes, minKeystrokes);
     const newExercise = new ExerciseEntity(currentUser, newExerciseSummary, params);
 
     await manager.save(newExercise);

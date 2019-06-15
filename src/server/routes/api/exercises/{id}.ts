@@ -3,6 +3,7 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { Exercise } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
+import { getKeystrokes } from "../../../../shared/exercise/keystrokes";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
 import { ExerciseEntity } from "../../../database/entities";
@@ -36,7 +37,7 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
   const exercise = await manager.findOne(ExerciseEntity, exerciseId, {
     relations: ["author", "summary"]
   });
-  if (exercise === undefined) {
+  if (exercise === undefined || exercise.summary === undefined) {
     return next(createError(500));
   }
   if (exercise.authorId !== currentUser.id) {
@@ -48,6 +49,11 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
   }
   if (params.questions !== undefined) {
     exercise.questions = params.questions;
+
+    const { maxKeystrokes, minKeystrokes } = getKeystrokes(params.questions);
+
+    exercise.summary.maxKeystrokes = maxKeystrokes;
+    exercise.summary.minKeystrokes = minKeystrokes;
   }
 
   await manager.save(exercise);

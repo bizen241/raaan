@@ -119,31 +119,40 @@ const normalizeExerciseTag: Normalizer<ExerciseTagEntity> = (entity, store) => {
 };
 
 const normalizeSubmission: Normalizer<SubmissionEntity> = (entity, store) => {
-  const { id, userId, exerciseId, time, accuracy } = entity;
+  const { id, userId, exerciseId, keystrokes, time, accuracy } = entity;
 
   store.Submission[id] = {
     ...base(entity),
     userId,
     exerciseId,
+    keystrokes,
     time,
     accuracy
   };
 };
 
 const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (entity, store) => {
-  const { id, userId, exerciseId, latest, latestId, best, bestId, playCount } = entity;
+  const { id, userId, exerciseId, latest, best, playCount } = entity;
+  if (latest === undefined || best === undefined) {
+    return;
+  }
 
   store.SubmissionSummary[id] = {
     ...base(entity),
     userId,
     exerciseId,
-    latestId,
-    bestId,
+    latest: {
+      keystrokes: latest.keystrokes,
+      time: latest.time,
+      accuracy: latest.accuracy
+    },
+    best: {
+      keystrokes: best.keystrokes,
+      time: best.time,
+      accuracy: best.accuracy
+    },
     playCount
   };
-
-  normalizeEntity(store, latest);
-  normalizeEntity(store, best);
 };
 
 const normalizeUser: Normalizer<UserEntity> = (entity, store) => {
