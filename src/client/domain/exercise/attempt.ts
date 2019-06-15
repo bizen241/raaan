@@ -31,7 +31,7 @@ export const createPlan = (items: Question[]) => {
 
 export const getTotalTime = (results: QuestionResult[]) => results.reduce((time, result) => time + result.totalTime, 1);
 
-export const getTotalTypeCount = (results: QuestionResult[]) =>
+export const getKeystrokesFromResults = (results: QuestionResult[]) =>
   results.reduce(
     (totalTypeCount, result) => totalTypeCount + result.typedLines.map(typedLine => typedLine.join("")).join("").length,
     0

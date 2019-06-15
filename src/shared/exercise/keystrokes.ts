@@ -1,7 +1,7 @@
 import { Question } from "../api/entities";
 import { compileQuestions } from "./compiler";
 
-export const getKeystrokes = (questions: Question[] = []) => {
+export const getKeystrokesFromQuestions = (questions: Question[] = []) => {
   const compiledQuestions = compileQuestions(questions);
 
   let maxKeystrokes = 0;

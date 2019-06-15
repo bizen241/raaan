@@ -1,16 +1,21 @@
 import { Box, Divider, makeStyles } from "@material-ui/core";
 import * as React from "react";
-import { Attempt, getTotalTime, getTotalTypeCount, QuestionResult } from "../../domain/exercise/attempt";
+import { calculateScore } from "../../../shared/exercise/score";
+import { Attempt, getKeystrokesFromResults, getTotalTime, QuestionResult } from "../../domain/exercise/attempt";
 
 export const AttemptResult: React.FunctionComponent<{
   attempt: Attempt;
   results: QuestionResult[];
 }> = ({ results }) => {
-  const totalTime = getTotalTime(results) / 1000;
-  const totalTypeCount = getTotalTypeCount(results);
+  const time = getTotalTime(results);
+  const keystrokes = getKeystrokesFromResults(results);
 
-  const typeSpeed = totalTypeCount / totalTime;
-  const score = typeSpeed * 1 * 60;
+  const speed = (keystrokes / (time / 1000)) * 60;
+  const score = calculateScore({
+    keystrokes,
+    time,
+    accuracy: 100
+  });
 
   const classes = useStyles();
 
@@ -18,13 +23,13 @@ export const AttemptResult: React.FunctionComponent<{
     <Box display="flex" justifyContent="center" alignItems="center" height="100%">
       <Box display="flex" flexDirection="column">
         <span className={classes.key}>スコア</span>
-        <span className={classes.value}>{score.toFixed(0)}</span>
+        <span className={classes.value}>{score}</span>
         <Divider />
         <span className={classes.key}>時間</span>
-        <span className={classes.value}>{totalTime.toFixed(2)}秒</span>
+        <span className={classes.value}>{(time / 1000).toFixed(2)}秒</span>
         <Divider />
         <span className={classes.key}>速さ</span>
-        <span className={classes.value}>{typeSpeed.toFixed(2)}打/秒</span>
+        <span className={classes.value}>{speed.toFixed(0)}&nbsp;打/分</span>
       </Box>
     </Box>
   );

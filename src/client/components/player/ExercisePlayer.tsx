@@ -1,12 +1,12 @@
 import { CircularProgress } from "@material-ui/core";
-import * as React from "react";
 import { useCallback, useContext, useEffect, useMemo } from "react";
+import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Exercise, Submission, SubmissionSummary } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { SearchParams } from "../../../shared/api/request/search";
 import { stringifySearchParams } from "../../api/request/search";
-import { getTotalTime, QuestionResult } from "../../domain/exercise/attempt";
+import { getKeystrokesFromResults, getTotalTime, QuestionResult } from "../../domain/exercise/attempt";
 import { useEntity } from "../../hooks/search";
 import { actions, RootState } from "../../reducers";
 import { UserContext } from "../project/Context";
@@ -41,6 +41,7 @@ export const ExercisePlayer = React.memo<{
     if (questionIndex === undefined) {
       const submission: SaveParams<Submission> = {
         exerciseId,
+        keystrokes: getKeystrokesFromResults(results),
         time: getTotalTime(results),
         accuracy: 100
       };
