@@ -9,14 +9,12 @@ import { cacheActions } from "./cache";
 
 export enum AppActionType {
   Ready = "app/ready",
-  Error = "app/error",
   SetUser = "app/set-user",
   UpdateFound = "app/update-found"
 }
 
 const appSyncActions = {
   ready: () => createAction(AppActionType.Ready),
-  error: () => createAction(AppActionType.Error),
   setUser: (user: User) => createAction(AppActionType.SetUser, { user }),
   updateFound: () => createAction(AppActionType.UpdateFound)
 };
@@ -41,7 +39,7 @@ const initialize = (): AsyncAction => async dispatch => {
 
     dispatch(appSyncActions.ready());
   } catch (e) {
-    dispatch(appSyncActions.error());
+    throw e;
   }
 };
 
@@ -53,14 +51,12 @@ export const appActions = {
 export type AppState = {
   userId: string;
   isReady: boolean;
-  hasError: boolean;
   hasUpdate: boolean;
 };
 
 export const initialAppState: AppState = {
   userId: guestUser.id,
   isReady: false,
-  hasError: false,
   hasUpdate: false
 };
 
@@ -71,12 +67,6 @@ export const appReducer: Reducer<AppState, Actions> = (state = initialAppState, 
         ...state,
         isReady: true,
         hasUpdate: false
-      };
-    }
-    case AppActionType.Error: {
-      return {
-        ...state,
-        hasError: true
       };
     }
     case AppActionType.SetUser: {

@@ -7,7 +7,7 @@ import { Context } from "./Context";
 
 export const Initializer = React.memo<{ children: React.ReactNode }>(({ children }) => {
   const dispatch = useDispatch();
-  const { userId, isReady, hasError, users, userBuffers, configs, configBuffers } = useSelector(
+  const { userId, isReady, users, userBuffers, configs, configBuffers } = useSelector(
     ({ app, cache, buffers }: RootState) => ({
       ...app,
       users: cache.get.User,
@@ -32,9 +32,6 @@ export const Initializer = React.memo<{ children: React.ReactNode }>(({ children
         <CardHeader avatar={<CircularProgress />} title="ロード中です" />
       </Card>
     );
-  }
-  if (hasError) {
-    throw new Error();
   }
 
   return (
