@@ -1,7 +1,7 @@
 import { Box, Button, Dialog, TextField } from "@material-ui/core";
 import { Add, PlayArrow } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { EntityEditor, EntityEditorContainerProps, EntityEditorRendererProps } from "../";
 import { Exercise } from "../../../../shared/api/entities";
@@ -19,15 +19,11 @@ const ExerciseEditorRenderer = React.memo<EntityEditorRendererProps<Exercise>>((
 
   const { title, questions = [] } = buffer.edited;
 
-  const titleInputRef = useRef<HTMLInputElement>(null);
-  const appendButtonRef = useRef<HTMLButtonElement>(null);
-
   const [focusedQuestionIndex, focusQuestion] = useState(0);
   const onFocusQuestion = useCallback((questionIndex: number) => focusQuestion(questionIndex), []);
 
   const [isExercisePreviewerOpen, toggleExercisePreviewer] = useState(false);
   const [isQuestionPreviewerOpen, toggleQuestionPreviewer] = useState(false);
-
   const onToggleExercisePreviewer = useCallback(() => toggleExercisePreviewer(s => !s), []);
   const onToggleQuestionPreviewer = useCallback(() => toggleQuestionPreviewer(s => !s), []);
 
@@ -42,13 +38,7 @@ const ExerciseEditorRenderer = React.memo<EntityEditorRendererProps<Exercise>>((
   return (
     <Box display="flex" flexDirection="column" flex={1}>
       <Box display="flex" flexDirection="column" py={1}>
-        <TextField
-          variant="outlined"
-          label="題名"
-          defaultValue={title}
-          inputRef={titleInputRef}
-          onChange={onUpdateTitle}
-        />
+        <TextField variant="outlined" label="題名" defaultValue={title} onChange={onUpdateTitle} />
       </Box>
       <Box display="flex" flexDirection="column" py={1}>
         <Button variant="contained" size="large" color="secondary" onClick={onToggleExercisePreviewer}>
@@ -68,7 +58,7 @@ const ExerciseEditorRenderer = React.memo<EntityEditorRendererProps<Exercise>>((
         </Box>
       ))}
       <Box display="flex" flexDirection="column" py={1}>
-        <Button variant="contained" size="large" color="primary" onClick={onAppendQuestion} ref={appendButtonRef}>
+        <Button variant="contained" size="large" color="primary" onClick={onAppendQuestion}>
           <Add className={iconClasses.leftIcon} />
           問題を追加
         </Button>
