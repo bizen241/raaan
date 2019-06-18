@@ -5,11 +5,7 @@ import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Question } from "../../../../shared/api/entities";
-import {
-  rubyAnchorCharacter,
-  rubySeparatorCharacter,
-  rubyTerminatorCharacter
-} from "../../../../shared/exercise/ruby/characters";
+import { rubyAnchorCharacter, rubySeparatorCharacter, rubyTerminatorCharacter } from "../../../../shared/exercise";
 import { addRuby } from "../../../domain/exercise/ruby";
 import { actions } from "../../../reducers";
 

@@ -19,10 +19,14 @@ export class UserDiaryEntity extends BaseEntityClass {
   @Column()
   playCount: number = 1;
 
-  constructor(user: UserEntity, date: Date) {
+  @Column()
+  typeCount: number;
+
+  constructor(user: UserEntity, date: Date, typeCount: number) {
     super();
 
     this.user = user;
     this.date = date;
+    this.typeCount = typeCount;
   }
 }

@@ -16,13 +16,13 @@ export const ExercisesPage = React.memo<PageProps>(() => {
 
   return (
     <Page title="検索">
-      <Box display="flex" flexDirection="column" py={1}>
+      <Box display="flex" flexDirection="column" pb={1}>
         <Button variant="contained" size="large" component={RouterLink} to={`/users/${currentUser.id}/exercises`}>
           <Folder className={classes.leftIcon} />
           自分の問題集
         </Button>
       </Box>
-      <Box display="flex" flexDirection="column" py={1}>
+      <Box display="flex" flexDirection="column" pb={1}>
         <ExerciseList searchParams={{}} />
       </Box>
     </Page>

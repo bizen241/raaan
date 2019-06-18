@@ -1,11 +1,7 @@
 import * as kuromoji from "kuromoji";
 import { IpadicFeatures, Tokenizer } from "kuromoji";
+import { rubyAnchorCharacter, rubySeparatorCharacter, rubyTerminatorCharacter } from "../../../shared/exercise";
 import { convertKatakanaToHiragana } from "../../../shared/exercise/compiler/convert";
-import {
-  rubyAnchorCharacter,
-  rubySeparatorCharacter,
-  rubyTerminatorCharacter
-} from "../../../shared/exercise/ruby/characters";
 
 export const addRuby = async (inputText: string, callback: (outputText: string) => void) => {
   const tokenizer = await getTokenizer();

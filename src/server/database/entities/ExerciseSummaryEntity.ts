@@ -22,18 +22,18 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
   tags?: ExerciseTagEntity[];
 
   @Column()
-  maxKeystrokes: number;
+  maxTypeCount: number;
 
   @Column()
-  minKeystrokes: number;
+  minTypeCount: number;
 
   @Column()
   playCount: number = 0;
 
-  constructor(maxKeystrokes: number, minKeystrokes: number) {
+  constructor(maxTypeCount: number, minTypeCount: number) {
     super();
 
-    this.maxKeystrokes = maxKeystrokes;
-    this.minKeystrokes = minKeystrokes;
+    this.maxTypeCount = maxTypeCount;
+    this.minTypeCount = minTypeCount;
   }
 }

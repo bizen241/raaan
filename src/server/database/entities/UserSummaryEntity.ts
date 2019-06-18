@@ -15,7 +15,10 @@ export class UserSummaryEntity extends BaseEntityClass {
   userId!: string;
 
   @Column()
-  playCount: number = 1;
+  playCount: number = 0;
+
+  @Column()
+  typeCount: number = 0;
 
   constructor() {
     super();

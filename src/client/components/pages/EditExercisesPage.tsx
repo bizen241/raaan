@@ -28,22 +28,22 @@ export const EditExercisesPage = React.memo(() => {
 
   return (
     <Page title="作る">
-      <Box display="flex" flexDirection="column" py={1}>
+      <Box display="flex" flexDirection="column" pb={1}>
         <Button variant="contained" size="large" color="primary" onClick={onCreate}>
           <Add className={classes.leftIcon} />
           新規作成
         </Button>
       </Box>
-      <Box display="flex" flexDirection="column" py={1}>
+      <Box display="flex" flexDirection="column" pb={1}>
         <Button variant="contained" size="large" component={RouterLink} to={`/users/${currentUser.id}/exercises`}>
           <Edit className={classes.leftIcon} />
           自分の問題集
         </Button>
       </Box>
-      <Box display="flex" flexDirection="column" py={1}>
+      <Box display="flex" flexDirection="column" pb={1}>
         <Divider variant="middle" />
       </Box>
-      <Box display="flex" flexDirection="column" py={1}>
+      <Box display="flex" flexDirection="column" pb={1}>
         <ExerciseBufferList />
       </Box>
     </Page>

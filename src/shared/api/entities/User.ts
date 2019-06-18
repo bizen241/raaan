@@ -7,4 +7,5 @@ export interface User extends BaseEntityObject {
   permission: Permission;
   accountId: UUID;
   configId: UUID;
+  summaryId: UUID;
 }

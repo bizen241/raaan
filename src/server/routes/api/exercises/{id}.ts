@@ -3,7 +3,7 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { Exercise } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
-import { getKeystrokesFromQuestions } from "../../../../shared/exercise/keystrokes";
+import { getTypeCountFromQuestions } from "../../../../shared/exercise";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
 import { ExerciseEntity } from "../../../database/entities";
@@ -50,10 +50,10 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
   if (params.questions !== undefined) {
     exercise.questions = params.questions;
 
-    const { maxKeystrokes, minKeystrokes } = getKeystrokesFromQuestions(params.questions);
+    const { maxTypeCount, minTypeCount } = getTypeCountFromQuestions(params.questions);
 
-    exercise.summary.maxKeystrokes = maxKeystrokes;
-    exercise.summary.minKeystrokes = minKeystrokes;
+    exercise.summary.maxTypeCount = maxTypeCount;
+    exercise.summary.minTypeCount = minTypeCount;
   }
 
   await manager.save(exercise);

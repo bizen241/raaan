@@ -1,7 +1,7 @@
 import { BaseEntityObject, UUID } from "./BaseEntityObject";
 
 export interface AttemptResult {
-  keystrokes: number;
+  typeCount: number;
   time: number;
   accuracy: number;
 }

@@ -22,7 +22,7 @@ export class SubmissionEntity extends BaseEntityClass {
   exerciseId!: string;
 
   @Column()
-  keystrokes: number;
+  typeCount: number;
 
   @Column()
   time: number;
@@ -30,12 +30,12 @@ export class SubmissionEntity extends BaseEntityClass {
   @Column()
   accuracy: number;
 
-  constructor(user: UserEntity, exercise: ExerciseEntity, keystrokes: number, time: number, accuracy: number) {
+  constructor(user: UserEntity, exercise: ExerciseEntity, typeCount: number, time: number, accuracy: number) {
     super();
 
     this.user = user;
     this.exercise = exercise;
-    this.keystrokes = keystrokes;
+    this.typeCount = typeCount;
     this.time = time;
     this.accuracy = accuracy;
   }

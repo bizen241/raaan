@@ -1,18 +1,18 @@
 import { Box, Divider, makeStyles } from "@material-ui/core";
 import * as React from "react";
-import { calculateScore } from "../../../shared/exercise/score";
-import { Attempt, getKeystrokesFromResults, getTotalTime, QuestionResult } from "../../domain/exercise/attempt";
+import { getScore } from "../../../shared/exercise";
+import { Attempt, getTotalTime, getTypeCountFromResults, QuestionResult } from "../../domain/exercise/attempt";
 
 export const AttemptResult: React.FunctionComponent<{
   attempt: Attempt;
   results: QuestionResult[];
 }> = ({ results }) => {
   const time = getTotalTime(results);
-  const keystrokes = getKeystrokesFromResults(results);
+  const typeCount = getTypeCountFromResults(results);
 
-  const speed = (keystrokes / (time / 1000)) * 60;
-  const score = calculateScore({
-    keystrokes,
+  const speed = (typeCount / (time / 1000)) * 60;
+  const score = getScore({
+    typeCount,
     time,
     accuracy: 100
   });

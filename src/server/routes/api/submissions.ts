@@ -3,7 +3,7 @@ import * as createError from "http-errors";
 import { EntityManager, getManager } from "typeorm";
 import { Submission } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
-import { calculateScore } from "../../../shared/exercise/score";
+import { getScore } from "../../../shared/exercise";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
 import {
@@ -17,8 +17,8 @@ import {
 } from "../../database/entities";
 
 export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { exerciseId, keystrokes, time, accuracy }: SaveParams<Submission> = req.body;
-  if (exerciseId === undefined || keystrokes === undefined || time === undefined || accuracy === undefined) {
+  const { exerciseId, typeCount, time, accuracy }: SaveParams<Submission> = req.body;
+  if (exerciseId === undefined || typeCount === undefined || time === undefined || accuracy === undefined) {
     return next(createError(400));
   }
 
@@ -33,10 +33,10 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
       return next(createError(500));
     }
 
-    const submission = await manager.save(new SubmissionEntity(currentUser, exercise, keystrokes, time, accuracy));
+    const submission = await manager.save(new SubmissionEntity(currentUser, exercise, typeCount, time, accuracy));
     const submissionSummary = await saveSubmissionSummary(manager, currentUser, exercise, submission);
-    const userDiary = await saveUserDiary(manager, currentUser);
-    const userSummary = await saveUserSummary(manager, currentUser);
+    const userDiary = await saveUserDiary(manager, currentUser, typeCount);
+    const userSummary = await saveUserSummary(manager, currentUser, typeCount);
     const exerciseSummary = await saveExerciseSummary(manager, exercise.summary);
 
     responseFindResult(res, submissionSummary, userDiary, userSummary, exerciseSummary);
@@ -73,7 +73,7 @@ const saveSubmissionSummary = async (
     submissionSummary.latest = submission;
     submissionSummary.playCount += 1;
 
-    const shouldBestSubmissionUpdate = calculateScore(submission) > calculateScore(best);
+    const shouldBestSubmissionUpdate = getScore(submission) > getScore(best);
 
     if (shouldBestSubmissionUpdate) {
       submissionSummary.best = submission;
@@ -97,7 +97,7 @@ const saveSubmissionSummary = async (
   }
 };
 
-const saveUserDiary = async (manager: EntityManager, currentUser: UserEntity) => {
+const saveUserDiary = async (manager: EntityManager, currentUser: UserEntity, typeCount: number) => {
   const date = new Date();
 
   const userDiary = await manager.findOne(UserDiaryEntity, {
@@ -107,12 +107,13 @@ const saveUserDiary = async (manager: EntityManager, currentUser: UserEntity) =>
 
   if (userDiary !== undefined) {
     userDiary.playCount += 1;
+    userDiary.typeCount += typeCount;
 
     await manager.save(userDiary);
 
     return userDiary;
   } else {
-    const newUserDiary = new UserDiaryEntity(currentUser, date);
+    const newUserDiary = new UserDiaryEntity(currentUser, date, typeCount);
 
     await manager.save(newUserDiary);
 
@@ -120,13 +121,14 @@ const saveUserDiary = async (manager: EntityManager, currentUser: UserEntity) =>
   }
 };
 
-const saveUserSummary = async (manager: EntityManager, currentUser: UserEntity) => {
+const saveUserSummary = async (manager: EntityManager, currentUser: UserEntity, typeCount: number) => {
   const userSummary = await manager.findOne(UserSummaryEntity, currentUser.summaryId);
   if (userSummary === undefined) {
     throw createError(500);
   }
 
   userSummary.playCount += 1;
+  userSummary.typeCount += typeCount;
 
   await manager.save(userSummary);
 

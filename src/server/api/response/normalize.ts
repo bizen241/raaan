@@ -119,13 +119,13 @@ const normalizeExerciseTag: Normalizer<ExerciseTagEntity> = (entity, store) => {
 };
 
 const normalizeSubmission: Normalizer<SubmissionEntity> = (entity, store) => {
-  const { id, userId, exerciseId, keystrokes, time, accuracy } = entity;
+  const { id, userId, exerciseId, typeCount, time, accuracy } = entity;
 
   store.Submission[id] = {
     ...base(entity),
     userId,
     exerciseId,
-    keystrokes,
+    typeCount,
     time,
     accuracy
   };
@@ -142,12 +142,12 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (entity,
     userId,
     exerciseId,
     latest: {
-      keystrokes: latest.keystrokes,
+      typeCount: latest.typeCount,
       time: latest.time,
       accuracy: latest.accuracy
     },
     best: {
-      keystrokes: best.keystrokes,
+      typeCount: best.typeCount,
       time: best.time,
       accuracy: best.accuracy
     },
@@ -156,17 +156,19 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (entity,
 };
 
 const normalizeUser: Normalizer<UserEntity> = (entity, store) => {
-  const { id, accountId, config, configId, name, permission } = entity;
+  const { id, accountId, config, configId, summary, summaryId, name, permission } = entity;
 
   store.User[id] = {
     ...base(entity),
     name,
     permission,
     accountId,
-    configId
+    configId,
+    summaryId
   };
 
   normalizeEntity(store, config);
+  normalizeEntity(store, summary);
 };
 
 const normalizeUserAccount: Normalizer<UserAccountEntity> = (entity, store) => {
@@ -216,12 +218,13 @@ const normalizeUserSession: Normalizer<UserSessionEntity> = (entity, store) => {
 };
 
 const normalizeUserSummary: Normalizer<UserSummaryEntity> = (entity, store) => {
-  const { id, userId, playCount } = entity;
+  const { id, userId, playCount, typeCount } = entity;
 
   store.UserSummary[id] = {
     ...base(entity),
     userId,
-    playCount
+    playCount,
+    typeCount
   };
 };
 
