@@ -6,18 +6,23 @@ import { Link as RouterLink } from "react-router-dom";
 import { ExerciseList } from "../list/search/ExerciseList";
 import { UserContext } from "../project/Context";
 import { PageProps } from "../project/Router";
-import { iconStyles } from "../ui/styles";
+import { useStyles } from "../ui/styles";
 import { Page } from "./Page";
 
 export const ExercisesPage = React.memo<PageProps>(() => {
   const currentUser = useContext(UserContext);
 
-  const classes = iconStyles();
+  const classes = useStyles();
 
   return (
     <Page title="検索">
       <Box display="flex" flexDirection="column" pb={1}>
-        <Button variant="contained" size="large" component={RouterLink} to={`/users/${currentUser.id}/exercises`}>
+        <Button
+          className={classes.largeButton}
+          variant="contained"
+          component={RouterLink}
+          to={`/users/${currentUser.id}/exercises`}
+        >
           <Folder className={classes.leftIcon} />
           自分の問題集
         </Button>

@@ -12,7 +12,7 @@ export const UserExercisesPage = React.memo<PageProps>(({ match }) => {
 
   return (
     <Page title={userId === currentUser.id ? "自分の問題集" : "ユーザーの問題集"}>
-      <Box display="flex" flexDirection="column" py={1}>
+      <Box display="flex" flexDirection="column" pb={1}>
         <ExerciseList
           searchParams={{
             authorId: userId

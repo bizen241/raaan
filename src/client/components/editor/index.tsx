@@ -7,6 +7,7 @@ import { EntityObject, EntityType } from "../../../shared/api/entities";
 import { actions, RootState } from "../../reducers";
 import { isLocalOnly } from "../../reducers/api";
 import { Buffer } from "../../reducers/buffers";
+import { useStyles } from "../ui/styles";
 
 export interface EntityEditorContainerProps {
   bufferId: string;
@@ -22,6 +23,7 @@ export const EntityEditor = React.memo<{
   bufferId: string;
   rendererComponent: React.ComponentType<EntityEditorRendererProps<any>>;
 }>(({ entityType, bufferId, rendererComponent: Renderer }) => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const { buffer, uploadStatus } = useSelector((state: RootState) => ({
     buffer: state.buffers[entityType][bufferId],
@@ -70,8 +72,8 @@ export const EntityEditor = React.memo<{
   return (
     <Box display="flex" flexDirection="column">
       <Box display="flex" flexDirection="column" py={1}>
-        <Button variant="outlined" size="large" onClick={onUpload}>
-          <CloudUpload style={{ marginRight: "0.5em" }} />
+        <Button className={classes.largeButton} variant="contained" size="large" onClick={onUpload}>
+          <CloudUpload className={classes.leftIcon} />
           アップロード
         </Button>
       </Box>

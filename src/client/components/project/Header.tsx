@@ -6,7 +6,7 @@ import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../reducers";
-import { iconStyles } from "../ui/styles";
+import { useStyles } from "../ui/styles";
 import { Message } from "./Message";
 
 export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) => {
@@ -17,7 +17,7 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
 
   const [menuAnchorElement, setMenuAnchorElement] = useState(null);
 
-  const iconClasses = iconStyles();
+  const classes = useStyles();
 
   return (
     <AppBar position="static" color="default">
@@ -40,25 +40,25 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
               >
                 {pathname !== "/config" ? (
                   <MenuItem component={Link} to="/config">
-                    <Settings className={iconClasses.leftIcon} />
+                    <Settings className={classes.leftIcon} />
                     <Message id="settings" />
                   </MenuItem>
                 ) : null}
                 {pathname !== "/" ? (
                   <MenuItem component={Link} to="/">
-                    <Home className={iconClasses.leftIcon} />
+                    <Home className={classes.leftIcon} />
                     ホーム
                   </MenuItem>
                 ) : null}
                 {pathname !== "/account" ? (
                   <MenuItem component={Link} to="/account">
-                    <AccountCircle className={iconClasses.leftIcon} />
+                    <AccountCircle className={classes.leftIcon} />
                     <Message id="account" />
                   </MenuItem>
                 ) : null}
                 {pathname !== "/app" ? (
                   <MenuItem component={Link} to="/app">
-                    <Info className={iconClasses.leftIcon} />
+                    <Info className={classes.leftIcon} />
                     アプリについて
                   </MenuItem>
                 ) : null}

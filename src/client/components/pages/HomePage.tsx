@@ -4,27 +4,33 @@ import * as React from "react";
 import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { UserContext } from "../project/Context";
-import { iconStyles } from "../ui/styles";
+import { useStyles } from "../ui/styles";
 import { UserSummaryViewer } from "../viewer/UserSummaryViewer";
 import { Page } from "./Page";
 
 export const HomePage = React.memo(() => {
   const currentUser = useContext(UserContext);
 
-  const classes = iconStyles();
+  const classes = useStyles();
 
   return (
     <Page title="ホーム">
       <Box display="flex" flexDirection="column" pb={1}>
-        <Button variant="contained" color="primary" component={RouterLink} to="/exercises">
+        <Button
+          className={classes.largeButton}
+          variant="contained"
+          color="primary"
+          component={RouterLink}
+          to="/exercises"
+        >
           <Keyboard className={classes.leftIcon} />
-          <Typography variant="h6">遊ぶ</Typography>
+          遊ぶ
         </Button>
       </Box>
       <Box display="flex" flexDirection="column" pb={1}>
-        <Button variant="contained" component={RouterLink} to="/exercises/edit">
+        <Button className={classes.largeButton} variant="contained" component={RouterLink} to="/exercises/edit">
           <Edit className={classes.leftIcon} />
-          <Typography variant="h6">作る</Typography>
+          作る
         </Button>
       </Box>
       <Card>

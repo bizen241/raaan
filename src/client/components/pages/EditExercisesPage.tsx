@@ -1,4 +1,4 @@
-import { Box, Button, Divider } from "@material-ui/core";
+import { Box, Button } from "@material-ui/core";
 import { Add, Edit } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import * as React from "react";
@@ -10,7 +10,7 @@ import { actions } from "../../reducers";
 import { generateBufferId } from "../../reducers/buffers";
 import { ExerciseBufferList } from "../list/buffers/ExerciseBufferList";
 import { UserContext } from "../project/Context";
-import { iconStyles } from "../ui/styles";
+import { useStyles } from "../ui/styles";
 import { Page } from "./Page";
 
 export const EditExercisesPage = React.memo(() => {
@@ -24,24 +24,26 @@ export const EditExercisesPage = React.memo(() => {
   }, []);
 
   const currentUser = useContext(UserContext);
-  const classes = iconStyles();
+  const classes = useStyles();
 
   return (
     <Page title="作る">
       <Box display="flex" flexDirection="column" pb={1}>
-        <Button variant="contained" size="large" color="primary" onClick={onCreate}>
+        <Button className={classes.largeButton} variant="contained" color="primary" onClick={onCreate}>
           <Add className={classes.leftIcon} />
           新規作成
         </Button>
       </Box>
       <Box display="flex" flexDirection="column" pb={1}>
-        <Button variant="contained" size="large" component={RouterLink} to={`/users/${currentUser.id}/exercises`}>
+        <Button
+          className={classes.largeButton}
+          variant="contained"
+          component={RouterLink}
+          to={`/users/${currentUser.id}/exercises`}
+        >
           <Edit className={classes.leftIcon} />
           自分の問題集
         </Button>
-      </Box>
-      <Box display="flex" flexDirection="column" pb={1}>
-        <Divider variant="middle" />
       </Box>
       <Box display="flex" flexDirection="column" pb={1}>
         <ExerciseBufferList />

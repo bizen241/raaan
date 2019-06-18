@@ -7,7 +7,7 @@ import { EntityEditor, EntityEditorContainerProps, EntityEditorRendererProps } f
 import { Exercise } from "../../../../shared/api/entities";
 import { actions } from "../../../reducers";
 import { ExercisePreviewer } from "../../player/ExercisePreviewer";
-import { iconStyles } from "../../ui/styles";
+import { useStyles } from "../../ui/styles";
 import { QuestionEditor } from "./QuestionEditor";
 
 export const ExerciseEditor = React.memo<EntityEditorContainerProps>(props => (
@@ -33,7 +33,7 @@ const ExerciseEditorRenderer = React.memo<EntityEditorRendererProps<Exercise>>((
   );
   const onAppendQuestion = useCallback(() => dispatch(actions.exercise.appendQuestion(bufferId)), []);
 
-  const iconClasses = iconStyles();
+  const classes = useStyles();
 
   return (
     <Box display="flex" flexDirection="column" flex={1}>
@@ -41,8 +41,13 @@ const ExerciseEditorRenderer = React.memo<EntityEditorRendererProps<Exercise>>((
         <TextField variant="outlined" label="題名" defaultValue={title} onChange={onUpdateTitle} />
       </Box>
       <Box display="flex" flexDirection="column" py={1}>
-        <Button variant="contained" size="large" color="secondary" onClick={onToggleExercisePreviewer}>
-          <PlayArrow className={iconClasses.leftIcon} />
+        <Button
+          className={classes.largeButton}
+          variant="contained"
+          color="secondary"
+          onClick={onToggleExercisePreviewer}
+        >
+          <PlayArrow className={classes.leftIcon} />
           プレビュー
         </Button>
       </Box>
@@ -58,8 +63,8 @@ const ExerciseEditorRenderer = React.memo<EntityEditorRendererProps<Exercise>>((
         </Box>
       ))}
       <Box display="flex" flexDirection="column" py={1}>
-        <Button variant="contained" size="large" color="primary" onClick={onAppendQuestion}>
-          <Add className={iconClasses.leftIcon} />
+        <Button className={classes.largeButton} variant="contained" color="primary" onClick={onAppendQuestion}>
+          <Add className={classes.leftIcon} />
           問題を追加
         </Button>
       </Box>

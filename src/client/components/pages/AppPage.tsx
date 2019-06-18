@@ -4,7 +4,7 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../reducers";
 import { Message } from "../project/Message";
-import { iconStyles } from "../ui/styles";
+import { useStyles } from "../ui/styles";
 import { Page } from "./Page";
 
 const AppPage = React.memo(() => {
@@ -12,7 +12,7 @@ const AppPage = React.memo(() => {
     hasUpdate: state.app.hasUpdate
   }));
 
-  const iconClasses = iconStyles();
+  const classes = useStyles();
 
   return (
     <Page>
@@ -21,12 +21,12 @@ const AppPage = React.memo(() => {
         <CardContent>
           {hasUpdate ? (
             <Box display="flex">
-              <NotificationImportant className={iconClasses.leftIcon} />
+              <NotificationImportant className={classes.leftIcon} />
               <Typography>更新があります</Typography>
             </Box>
           ) : (
             <Box display="flex">
-              <Done className={iconClasses.leftIcon} />
+              <Done className={classes.leftIcon} />
               <Typography>最新版です</Typography>
             </Box>
           )}

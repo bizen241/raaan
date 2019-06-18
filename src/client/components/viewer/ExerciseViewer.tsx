@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, IconButton, Menu, MenuItem, Typography } from "@material-ui/core";
+import { Box, Button, Card, CardContent, Dialog, IconButton, Menu, MenuItem, Typography } from "@material-ui/core";
 import { Delete, Edit, MoreVert, PlayArrow } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useMemo, useState } from "react";
@@ -11,7 +11,7 @@ import { useSearch } from "../../hooks/search";
 import { actions } from "../../reducers";
 import { ExercisePlayer } from "../player/ExercisePlayer";
 import { UserContext } from "../project/Context";
-import { iconStyles } from "../ui/styles";
+import { useStyles } from "../ui/styles";
 
 export const ExerciseViewer = React.memo<EntityViewerContainerProps>(props => {
   return <EntityViewer {...props} entityType="Exercise" renderer={ExerciseViewerRenderer} />;
@@ -41,7 +41,7 @@ const ExerciseViewerRenderer = React.memo<EntityViewerRendererProps<Exercise>>(
 
     const [menuAnchorElement, setMenuAnchorElement] = useState(null);
 
-    const iconClasses = iconStyles();
+    const classes = useStyles();
 
     return (
       <Box display="flex" flexDirection="column">
@@ -57,27 +57,44 @@ const ExerciseViewerRenderer = React.memo<EntityViewerRendererProps<Exercise>>(
               onClose={useCallback(() => setMenuAnchorElement(null), [])}
             >
               <MenuItem onClick={useCallback(() => dispatch(actions.api.delete("Exercise", exerciseId)), [])}>
-                <Delete className={iconClasses.leftIcon} />
+                <Delete className={classes.leftIcon} />
                 削除
               </MenuItem>
             </Menu>
           </Box>
         </Box>
-        <Box display="flex" flexDirection="column" py={1}>
+        <Box display="flex" flexDirection="column" pb={1}>
           <Typography variant="h4">{exercise.title || "無題"}</Typography>
         </Box>
-        <Box display="flex" flexDirection="column" py={1}>
-          <Typography variant="body1">提出した回数: {playCount}</Typography>
+        <Box display="flex" flexDirection="column" pb={1}>
+          <Card>
+            <CardContent>
+              <Box display="flex" flexDirection="column">
+                <Typography>提出した回数</Typography>
+                <Typography variant="h4">{playCount}</Typography>
+              </Box>
+            </CardContent>
+          </Card>
         </Box>
-        <Box display="flex" flexDirection="column" py={1}>
-          <Button variant="contained" size="large" color="primary" onClick={onToggleExercisePreviewer}>
-            <PlayArrow className={iconClasses.leftIcon} />
+        <Box display="flex" flexDirection="column" pb={1}>
+          <Button
+            className={classes.largeButton}
+            variant="contained"
+            color="primary"
+            onClick={onToggleExercisePreviewer}
+          >
+            <PlayArrow className={classes.leftIcon} />
             始める
           </Button>
         </Box>
-        <Box display="flex" flexDirection="column" py={1}>
-          <Button variant="contained" size="large" component={RouterLink} to={`/exercises/${exerciseId}/edit`}>
-            <Edit className={iconClasses.leftIcon} />
+        <Box display="flex" flexDirection="column" pb={1}>
+          <Button
+            className={classes.largeButton}
+            variant="contained"
+            component={RouterLink}
+            to={`/exercises/${exerciseId}/edit`}
+          >
+            <Edit className={classes.leftIcon} />
             編集する
           </Button>
         </Box>
