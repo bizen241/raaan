@@ -12,6 +12,7 @@ export const guestUser: User = {
   permission: "Guest",
   accountId: "",
   configId: guestUserConfigId,
+  summaryId: "",
   createdAt: 0,
   updatedAt: 0,
   fetchedAt: 0
