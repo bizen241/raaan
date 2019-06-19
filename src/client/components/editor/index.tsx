@@ -71,13 +71,13 @@ export const EntityEditor = React.memo<{
 
   return (
     <Box display="flex" flexDirection="column">
-      <Box display="flex" flexDirection="column" py={1}>
+      <Box display="flex" flexDirection="column" pb={1}>
         <Button className={classes.largeButton} variant="contained" size="large" onClick={onUpload}>
           <CloudUpload className={classes.leftIcon} />
           アップロード
         </Button>
       </Box>
-      <Box display="flex" flexDirection="column" py={1}>
+      <Box display="flex" flexDirection="column" pb={1}>
         <Divider variant="middle" />
       </Box>
       <Renderer bufferId={bufferId} buffer={buffer} />

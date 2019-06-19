@@ -1,5 +1,5 @@
-import { Box, Button, Card, CardActions, CardContent, CardHeader, Typography } from "@material-ui/core";
-import { Done, NotificationImportant } from "@material-ui/icons";
+import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, Typography } from "@material-ui/core";
+import { Done, NotificationImportant, Sync } from "@material-ui/icons";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../reducers";
@@ -17,7 +17,15 @@ const AppPage = React.memo(() => {
   return (
     <Page>
       <Card>
-        <CardHeader title="バージョン" />
+        <CardHeader
+          avatar={
+            <Avatar>
+              <Sync />
+            </Avatar>
+          }
+          title="バージョン"
+          titleTypographyProps={{ variant: "h6" }}
+        />
         <CardContent>
           {hasUpdate ? (
             <Box display="flex">

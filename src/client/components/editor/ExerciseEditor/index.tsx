@@ -37,10 +37,10 @@ const ExerciseEditorRenderer = React.memo<EntityEditorRendererProps<Exercise>>((
 
   return (
     <Box display="flex" flexDirection="column" flex={1}>
-      <Box display="flex" flexDirection="column" py={1}>
+      <Box display="flex" flexDirection="column" pb={1}>
         <TextField variant="outlined" label="題名" defaultValue={title} onChange={onUpdateTitle} />
       </Box>
-      <Box display="flex" flexDirection="column" py={1}>
+      <Box display="flex" flexDirection="column" pb={1}>
         <Button
           className={classes.largeButton}
           variant="contained"
@@ -52,7 +52,7 @@ const ExerciseEditorRenderer = React.memo<EntityEditorRendererProps<Exercise>>((
         </Button>
       </Box>
       {questions.map((question, index) => (
-        <Box key={question.id} display="flex" flexDirection="column" py={1}>
+        <Box key={question.id} display="flex" flexDirection="column" pb={1}>
           <QuestionEditor
             bufferId={bufferId}
             questionIndex={index}
@@ -62,7 +62,7 @@ const ExerciseEditorRenderer = React.memo<EntityEditorRendererProps<Exercise>>((
           />
         </Box>
       ))}
-      <Box display="flex" flexDirection="column" py={1}>
+      <Box display="flex" flexDirection="column" pb={1}>
         <Button className={classes.largeButton} variant="contained" color="primary" onClick={onAppendQuestion}>
           <Add className={classes.leftIcon} />
           問題を追加

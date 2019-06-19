@@ -1,19 +1,16 @@
 import {
-  Box,
+  Avatar,
   Card,
   CardHeader,
   CircularProgress,
   IconButton,
-  Paper,
   Table,
   TableBody,
   TableFooter,
   TablePagination,
-  TableRow,
-  Toolbar,
-  Typography
+  TableRow
 } from "@material-ui/core";
-import { Refresh } from "@material-ui/icons";
+import { List, Refresh } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -68,14 +65,21 @@ export const EntityList = React.memo<{
   }
 
   return (
-    <Paper>
-      <Toolbar>
-        <Typography variant="h6">{title || "検索結果"}</Typography>
-        <Box component="span" flexGrow={1} />
-        <IconButton onClick={onReload}>
-          <Refresh />
-        </IconButton>
-      </Toolbar>
+    <Card>
+      <CardHeader
+        avatar={
+          <Avatar>
+            <List />
+          </Avatar>
+        }
+        title={title || "検索結果"}
+        titleTypographyProps={{ variant: "h6" }}
+        action={
+          <IconButton onClick={onReload}>
+            <Refresh />
+          </IconButton>
+        }
+      />
       <Table>
         <TableBody>
           {selectedEntities.map(entity => (
@@ -97,6 +101,6 @@ export const EntityList = React.memo<{
           </TableRow>
         </TableFooter>
       </Table>
-    </Paper>
+    </Card>
   );
 });

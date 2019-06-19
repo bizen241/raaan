@@ -1,16 +1,16 @@
 import {
+  Avatar,
+  Card,
+  CardHeader,
   IconButton,
-  Paper,
   Table,
   TableBody,
   TableCell,
   TableFooter,
   TablePagination,
-  TableRow,
-  Toolbar,
-  Typography
+  TableRow
 } from "@material-ui/core";
-import { Delete } from "@material-ui/icons";
+import { Delete, List } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,10 +40,16 @@ export const BufferList = React.memo<{
   const bufferEntries = Object.entries(bufferMap);
 
   return (
-    <Paper>
-      <Toolbar>
-        <Typography variant="h6">編集中</Typography>
-      </Toolbar>
+    <Card>
+      <CardHeader
+        avatar={
+          <Avatar>
+            <List />
+          </Avatar>
+        }
+        title="編集中"
+        titleTypographyProps={{ variant: "h6" }}
+      />
       <Table>
         <TableBody>
           {bufferEntries.slice(offset, offset + limit).map(([bufferId, buffer]) => (
@@ -72,6 +78,6 @@ export const BufferList = React.memo<{
           </TableRow>
         </TableFooter>
       </Table>
-    </Paper>
+    </Card>
   );
 });
