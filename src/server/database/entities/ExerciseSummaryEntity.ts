@@ -28,7 +28,7 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
   minTypeCount: number;
 
   @Column()
-  playCount: number = 0;
+  submitCount: number = 0;
 
   constructor(maxTypeCount: number, minTypeCount: number) {
     super();

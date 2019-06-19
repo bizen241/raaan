@@ -95,7 +95,7 @@ export const SaveParamsMapSchema: Definition = {
     },
     UserSummary: {
       type: "object",
-      properties: { userId: { format: "uuid", type: "string" }, playCount: { type: "number" } }
+      properties: { userId: { format: "uuid", type: "string" }, submitCount: { type: "number" } }
     }
   }
 };

@@ -137,7 +137,7 @@ export const SearchParamsMapSchema: Definition = {
     },
     UserSummary: {
       allOf: [
-        { type: "object", properties: { userId: { format: "uuid", type: "string" }, playCount: { type: "number" } } },
+        { type: "object", properties: { userId: { format: "uuid", type: "string" }, submitCount: { type: "number" } } },
         { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
       ]
     }

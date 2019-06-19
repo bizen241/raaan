@@ -131,7 +131,7 @@ const normalizeSubmission: Normalizer<SubmissionEntity> = (entity, store) => {
 };
 
 const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (entity, store) => {
-  const { id, userId, exerciseId, latest, best, playCount } = entity;
+  const { id, userId, exerciseId, latest, best, submitCount } = entity;
   if (latest === undefined || best === undefined) {
     return;
   }
@@ -150,7 +150,7 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (entity,
       time: best.time,
       accuracy: best.accuracy
     },
-    playCount
+    submitCount
   };
 };
 
@@ -206,12 +206,12 @@ const normalizeUserSession: Normalizer<UserSessionEntity> = (entity, store) => {
 };
 
 const normalizeUserSummary: Normalizer<UserSummaryEntity> = (entity, store) => {
-  const { id, userId, playCount, typeCount } = entity;
+  const { id, userId, submitCount, typeCount } = entity;
 
   store.UserSummary[id] = {
     ...base(entity),
     userId,
-    playCount,
+    submitCount,
     typeCount
   };
 };

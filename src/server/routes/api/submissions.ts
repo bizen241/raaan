@@ -69,7 +69,7 @@ const saveSubmissionSummary = async (
     const { latest, best } = submissionSummary;
 
     submissionSummary.latest = submission;
-    submissionSummary.playCount += 1;
+    submissionSummary.submitCount += 1;
 
     const shouldBestSubmissionUpdate = getScore(submission) > getScore(best);
 
@@ -101,7 +101,7 @@ const saveUserSummary = async (manager: EntityManager, currentUser: UserEntity, 
     throw createError(500);
   }
 
-  userSummary.playCount += 1;
+  userSummary.submitCount += 1;
   userSummary.typeCount += typeCount;
 
   await manager.save(userSummary);
@@ -110,7 +110,7 @@ const saveUserSummary = async (manager: EntityManager, currentUser: UserEntity, 
 };
 
 const saveExerciseSummary = async (manager: EntityManager, exerciseSummary: ExerciseSummaryEntity) => {
-  exerciseSummary.playCount += 1;
+  exerciseSummary.submitCount += 1;
 
   await manager.save(exerciseSummary);
 

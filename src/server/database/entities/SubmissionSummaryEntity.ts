@@ -39,7 +39,7 @@ export class SubmissionSummaryEntity extends BaseEntityClass {
   bestId!: string;
 
   @Column()
-  playCount: number = 1;
+  submitCount: number = 1;
 
   constructor(user: UserEntity, exercise: ExerciseEntity, submission: SubmissionEntity) {
     super();

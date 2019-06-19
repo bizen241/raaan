@@ -170,7 +170,7 @@ export const EntityStoreSchema: Definition = {
         type: "object",
         properties: {
           userId: { format: "uuid", type: "string" },
-          playCount: { type: "number" },
+          submitCount: { type: "number" },
           id: { format: "uuid", type: "string" },
           createdAt: { type: "number" },
           updatedAt: { type: "number" },

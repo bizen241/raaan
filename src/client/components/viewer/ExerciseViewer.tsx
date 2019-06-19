@@ -37,7 +37,7 @@ const ExerciseViewerRenderer = React.memo<EntityViewerRendererProps<Exercise>>(
 
     const { selectedEntities: submissionSummaries = [] } = useSearch("SubmissionSummary", searchParams);
     const submissionSummary = submissionSummaries[0];
-    const playCount = (submissionSummary && submissionSummary.playCount) || 0;
+    const submitCount = (submissionSummary && submissionSummary.submitCount) || 0;
 
     const [menuAnchorElement, setMenuAnchorElement] = useState(null);
 
@@ -71,7 +71,7 @@ const ExerciseViewerRenderer = React.memo<EntityViewerRendererProps<Exercise>>(
             <CardContent>
               <Box display="flex" flexDirection="column">
                 <Typography>提出した回数</Typography>
-                <Typography variant="h4">{playCount}</Typography>
+                <Typography variant="h4">{submitCount}</Typography>
               </Box>
             </CardContent>
           </Card>

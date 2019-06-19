@@ -12,7 +12,7 @@ const UserSummaryViewerRenderer = React.memo<EntityViewerRendererProps<UserSumma
     <Box display="flex" flexDirection="column">
       <Box display="flex" flexDirection="column" mb={1}>
         <Typography>提出回数</Typography>
-        <Typography variant="h4">{userSummary.playCount}</Typography>
+        <Typography variant="h4">{userSummary.submitCount}</Typography>
         <Divider />
       </Box>
       <Box display="flex" flexDirection="column" mb={1}>
