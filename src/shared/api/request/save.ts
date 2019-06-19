@@ -9,7 +9,6 @@ import {
   User,
   UserAccount,
   UserConfig,
-  UserDiary,
   UserSession,
   UserSummary
 } from "../entities";
@@ -25,7 +24,6 @@ export type SaveParamsMap = {
   User: SaveParams<User>;
   UserAccount: SaveParams<UserAccount>;
   UserConfig: SaveParams<UserConfig>;
-  UserDiary: SaveParams<UserDiary>;
   UserSession: SaveParams<UserSession>;
   UserSummary: SaveParams<UserSummary>;
 };

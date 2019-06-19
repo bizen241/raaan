@@ -89,14 +89,6 @@ export const SaveParamsMapSchema: Definition = {
         theme: { enum: ["dark", "default", "light", "system"], type: "string" }
       }
     },
-    UserDiary: {
-      type: "object",
-      properties: {
-        userId: { format: "uuid", type: "string" },
-        date: { type: "string" },
-        playCount: { type: "number" }
-      }
-    },
     UserSession: {
       type: "object",
       properties: { userId: { format: "uuid", type: "string" }, userAgent: { type: "string" } }

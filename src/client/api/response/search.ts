@@ -28,7 +28,6 @@ export const createSearchResultStore = (): SearchResultStore => ({
   User: {},
   UserAccount: {},
   UserConfig: {},
-  UserDiary: {},
   UserSession: {},
   UserSummary: {}
 });

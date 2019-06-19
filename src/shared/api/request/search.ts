@@ -9,7 +9,6 @@ import {
   User,
   UserAccount,
   UserConfig,
-  UserDiary,
   UserSession,
   UserSummary
 } from "../entities";
@@ -28,7 +27,6 @@ export type SearchParamsMap = {
   User: SearchParams<User>;
   UserAccount: SearchParams<UserAccount>;
   UserConfig: SearchParams<UserConfig>;
-  UserDiary: SearchParams<UserDiary>;
   UserSession: SearchParams<UserSession>;
   UserSummary: SearchParams<UserSummary>;
 };

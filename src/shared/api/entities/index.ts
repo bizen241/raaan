@@ -6,7 +6,6 @@ import { SubmissionSummary } from "./SubmissionSummary";
 import { User } from "./User";
 import { UserAccount } from "./UserAccount";
 import { UserConfig } from "./UserConfig";
-import { UserDiary } from "./UserDiary";
 import { UserSession } from "./UserSession";
 import { UserSummary } from "./UserSummary";
 
@@ -18,7 +17,6 @@ export * from "./SubmissionSummary";
 export * from "./User";
 export * from "./UserAccount";
 export * from "./UserConfig";
-export * from "./UserDiary";
 export * from "./UserSession";
 export * from "./UserSummary";
 
@@ -31,7 +29,6 @@ export type EntityType =
   | "User"
   | "UserAccount"
   | "UserConfig"
-  | "UserDiary"
   | "UserSession"
   | "UserSummary";
 
@@ -44,7 +41,6 @@ export type EntityObject =
   | User
   | UserAccount
   | UserConfig
-  | UserDiary
   | UserSession
   | UserSummary;
 
@@ -57,7 +53,6 @@ export type EntityTypeToObject = {
   User: User;
   UserAccount: UserAccount;
   UserConfig: UserConfig;
-  UserDiary: UserDiary;
   UserSession: UserSession;
   UserSummary: UserSummary;
 };
@@ -71,7 +66,6 @@ type EntityTypeToEmptyObject = {
   User: {};
   UserAccount: {};
   UserConfig: {};
-  UserDiary: {};
   UserSession: {};
   UserSummary: {};
 };
@@ -86,7 +80,6 @@ export const createEntityTypeToEmptyObject = <T extends EntityTypeToEmptyObject>
     User: {},
     UserAccount: {},
     UserConfig: {},
-    UserDiary: {},
     UserSession: {},
     UserSummary: {}
   } as T);

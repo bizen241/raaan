@@ -10,7 +10,6 @@ import {
   SubmissionSummaryEntity,
   UserAccountEntity,
   UserConfigEntity,
-  UserDiaryEntity,
   UserEntity,
   UserSessionEntity,
   UserSummaryEntity
@@ -194,17 +193,6 @@ const normalizeUserConfig: Normalizer<UserConfigEntity> = (entity, store) => {
   };
 };
 
-const normalizeUserDiary: Normalizer<UserDiaryEntity> = (entity, store) => {
-  const { id, userId, date, playCount } = entity;
-
-  store.UserDiary[id] = {
-    ...base(entity),
-    userId,
-    date: date.toString(),
-    playCount
-  };
-};
-
 const normalizeUserSession: Normalizer<UserSessionEntity> = (entity, store) => {
   const { id, user, userId, userAgent } = entity;
 
@@ -237,7 +225,6 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   User: normalizeUser,
   UserAccount: normalizeUserAccount,
   UserConfig: normalizeUserConfig,
-  UserDiary: normalizeUserDiary,
   UserSession: normalizeUserSession,
   UserSummary: normalizeUserSummary
 };

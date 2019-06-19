@@ -129,19 +129,6 @@ export const SearchParamsMapSchema: Definition = {
         { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
       ]
     },
-    UserDiary: {
-      allOf: [
-        {
-          type: "object",
-          properties: {
-            userId: { format: "uuid", type: "string" },
-            date: { type: "string" },
-            playCount: { type: "number" }
-          }
-        },
-        { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } }
-      ]
-    },
     UserSession: {
       allOf: [
         { type: "object", properties: { userId: { format: "uuid", type: "string" }, userAgent: { type: "string" } } },

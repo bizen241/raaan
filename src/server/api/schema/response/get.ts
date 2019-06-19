@@ -150,21 +150,6 @@ export const EntityStoreSchema: Definition = {
         }
       }
     },
-    UserDiary: {
-      type: "object",
-      additionalProperties: {
-        type: "object",
-        properties: {
-          userId: { format: "uuid", type: "string" },
-          date: { type: "string" },
-          playCount: { type: "number" },
-          id: { format: "uuid", type: "string" },
-          createdAt: { type: "number" },
-          updatedAt: { type: "number" },
-          fetchedAt: { type: "number" }
-        }
-      }
-    },
     UserSession: {
       type: "object",
       additionalProperties: {

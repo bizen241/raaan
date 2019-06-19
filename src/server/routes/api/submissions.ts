@@ -11,7 +11,6 @@ import {
   ExerciseSummaryEntity,
   SubmissionEntity,
   SubmissionSummaryEntity,
-  UserDiaryEntity,
   UserEntity,
   UserSummaryEntity
 } from "../../database/entities";
@@ -35,11 +34,10 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
 
     const submission = await manager.save(new SubmissionEntity(currentUser, exercise, typeCount, time, accuracy));
     const submissionSummary = await saveSubmissionSummary(manager, currentUser, exercise, submission);
-    const userDiary = await saveUserDiary(manager, currentUser, typeCount);
     const userSummary = await saveUserSummary(manager, currentUser, typeCount);
     const exerciseSummary = await saveExerciseSummary(manager, exercise.summary);
 
-    responseFindResult(res, submissionSummary, userDiary, userSummary, exerciseSummary);
+    responseFindResult(res, submissionSummary, userSummary, exerciseSummary);
   });
 });
 
@@ -94,30 +92,6 @@ const saveSubmissionSummary = async (
     await manager.save(newSubmissionSummary);
 
     return newSubmissionSummary;
-  }
-};
-
-const saveUserDiary = async (manager: EntityManager, currentUser: UserEntity, typeCount: number) => {
-  const date = new Date();
-
-  const userDiary = await manager.findOne(UserDiaryEntity, {
-    user: currentUser,
-    date
-  });
-
-  if (userDiary !== undefined) {
-    userDiary.playCount += 1;
-    userDiary.typeCount += typeCount;
-
-    await manager.save(userDiary);
-
-    return userDiary;
-  } else {
-    const newUserDiary = new UserDiaryEntity(currentUser, date, typeCount);
-
-    await manager.save(newUserDiary);
-
-    return newUserDiary;
   }
 };
 
