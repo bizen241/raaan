@@ -25,7 +25,7 @@ GET.apiDoc = createOperationDoc({
 });
 
 export const DELETE: OperationFunction = errorBoundary(async (_, res, next, currentUser) => {
-  if (currentUser.permission === "Admin") {
+  if (currentUser.permission === "Owner") {
     return next(createError(403));
   }
 
@@ -33,7 +33,7 @@ export const DELETE: OperationFunction = errorBoundary(async (_, res, next, curr
 
   setClearSiteData(res);
 
-  res.sendStatus(200);
+  res.redirect("/");
 });
 
 DELETE.apiDoc = createOperationDoc({

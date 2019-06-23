@@ -8,12 +8,12 @@ import { UserEntity } from "../../../database/entities";
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   const { id: userId }: PathParams = req.params;
 
-  const loadedUser = await getManager().findOne(UserEntity, userId);
-  if (loadedUser === undefined) {
+  const user = await getManager().findOne(UserEntity, userId);
+  if (user === undefined) {
     return next(createError(404));
   }
 
-  responseFindResult(res, loadedUser);
+  responseFindResult(res, user);
 });
 
 GET.apiDoc = createOperationDoc({
@@ -23,24 +23,20 @@ GET.apiDoc = createOperationDoc({
   hasId: true
 });
 
-export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  if (currentUser.permission !== "Owner" && currentUser.permission !== "Admin") {
-    return next(createError(403));
-  }
-
+export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
   const { id: userId }: PathParams = req.params;
 
-  const loadedUser = await getManager().findOne(UserEntity, userId);
-  if (loadedUser === undefined) {
+  const user = await getManager().findOne(UserEntity, userId);
+  if (user === undefined) {
     return next(createError(404));
   }
-  if (loadedUser.permission === "Owner" || loadedUser.permission === "Admin") {
+  if (user.permission === "Owner") {
     return next(createError(403));
   }
 
-  await getManager().remove(loadedUser);
+  await getManager().remove(user);
 
-  responseFindResult(res, loadedUser);
+  responseFindResult(res);
 });
 
 DELETE.apiDoc = createOperationDoc({
