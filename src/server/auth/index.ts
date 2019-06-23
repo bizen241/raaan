@@ -12,7 +12,7 @@ export const prepareAuth = (processEnv: ProcessEnv, app: Express) => {
   passport.serializeUser((user: UserEntity, done) => {
     done(null, user.id);
   });
-  passport.deserializeUser(async (id, done) => {
+  passport.deserializeUser(async (id: string, done) => {
     try {
       const user = await getManager().findOne(UserEntity, id);
       if (user === undefined) {

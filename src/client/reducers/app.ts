@@ -1,3 +1,4 @@
+import { push } from "connected-react-router";
 import { Reducer } from "redux";
 import { Actions } from ".";
 import { User } from "../../shared/api/entities";
@@ -21,7 +22,9 @@ const appSyncActions = {
 
 export type AppActions = ActionUnion<typeof appSyncActions>;
 
-const initialize = (): AsyncAction => async dispatch => {
+const initialize = (): AsyncAction => async (dispatch, getState) => {
+  const previousUserId = getState().app.userId;
+
   try {
     if (navigator.onLine) {
       const result = await getCurrentUser();
@@ -30,6 +33,10 @@ const initialize = (): AsyncAction => async dispatch => {
       if (currentUser !== undefined) {
         dispatch(cacheActions.get(result));
         dispatch(appSyncActions.setUser(currentUser));
+
+        if (currentUser.id !== previousUserId) {
+          dispatch(push("/"));
+        }
       }
     }
 

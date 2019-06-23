@@ -1,8 +1,7 @@
-import { Button } from "@material-ui/core";
-import { AccountCircle } from "@material-ui/icons";
+import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, Typography } from "@material-ui/core";
+import { Delete, Warning } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
-import { Link as RouterLink } from "react-router-dom";
 import { UserContext } from "../project/Context";
 import { Message } from "../project/Message";
 import { useStyles } from "../ui/styles";
@@ -10,25 +9,63 @@ import { Page } from "./Page";
 
 const AccountPage = React.memo(() => {
   const currentUser = useContext(UserContext);
-  const isGuest = currentUser.permission === "Guest";
 
   const classes = useStyles();
 
-  return (
-    <Page>
-      {isGuest ? (
-        <Button className={classes.largeButton} variant="contained" component={RouterLink} to="/login">
-          <AccountCircle className={classes.leftIcon} />
-          <Message id="login" />
+  if (currentUser.permission !== "Guest") {
+    return (
+      <Page title="アカウント">
+        <Box pb={1}>
+          <Card>
+            <CardHeader
+              avatar={
+                <Avatar className={classes.cardAvatar}>
+                  <Delete />
+                </Avatar>
+              }
+              title={<Message id="logout" />}
+              titleTypographyProps={{ variant: "h6" }}
+            />
+            <CardContent>
+              <Typography variant="body1">すべての下書きがブラウザから削除されます。</Typography>
+            </CardContent>
+            <CardActions>
+              <Button className={classes.largeButton} color="primary" component="a" href="/logout">
+                <Message id="logout" />
+              </Button>
+            </CardActions>
+          </Card>
+        </Box>
+        <Card>
+          <CardHeader
+            avatar={
+              <Avatar className={classes.cardAvatar}>
+                <Warning />
+              </Avatar>
+            }
+            title="アカウント削除"
+            titleTypographyProps={{ variant: "h6" }}
+          />
+          <CardContent>
+            <Typography variant="body1">すべての情報がサーバーから削除されます。</Typography>
+          </CardContent>
+          <CardActions>
+            <Button className={classes.largeButton} color="primary" component="a" href="/logout">
+              アカウントを削除
+            </Button>
+          </CardActions>
+        </Card>
+      </Page>
+    );
+  } else {
+    return (
+      <Page title="アカウント">
+        <Button className={classes.largeButton} variant="contained" component="a" href="/auth/github">
+          GitHubアカウントでログイン
         </Button>
-      ) : (
-        <Button className={classes.largeButton} variant="contained" component={RouterLink} to="/logout">
-          <AccountCircle className={classes.leftIcon} />
-          <Message id="logout" />
-        </Button>
-      )}
-    </Page>
-  );
+      </Page>
+    );
+  }
 });
 
 export default AccountPage;

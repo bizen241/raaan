@@ -1,6 +1,6 @@
-import { Box, Card, CardContent, CardHeader, IconButton, Menu, MenuItem, TextField } from "@material-ui/core";
+import { Avatar, Box, Card, CardContent, CardHeader, IconButton, Menu, MenuItem, TextField } from "@material-ui/core";
 import { makeStyles, Theme } from "@material-ui/core/styles";
-import { MoreVert } from "@material-ui/icons";
+import { MoreVert, Note } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -8,6 +8,7 @@ import { Question } from "../../../../shared/api/entities";
 import { rubyAnchorCharacter, rubySeparatorCharacter, rubyTerminatorCharacter } from "../../../../shared/exercise";
 import { addRuby } from "../../../domain/exercise/ruby";
 import { actions } from "../../../reducers";
+import { useStyles } from "../../ui/styles";
 
 export const QuestionEditor = React.memo<{
   bufferId: string;
@@ -42,12 +43,19 @@ export const QuestionEditor = React.memo<{
     [questionIndex]
   );
 
-  const classes = useTextFieldStyles({ isCompositing });
+  const classes = useStyles();
+  const textFieldClasses = useTextFieldStyles({ isCompositing });
 
   return (
     <Card onFocus={useCallback(() => onFocus(questionIndex), [questionIndex])}>
       <CardHeader
+        avatar={
+          <Avatar className={classes.cardAvatar}>
+            <Note />
+          </Avatar>
+        }
         title={questionIndex.toString()}
+        titleTypographyProps={{ variant: "h6" }}
         action={
           <div>
             <IconButton onClick={useCallback(e => setMenuAnchorElement(e.currentTarget), [])}>
@@ -71,10 +79,10 @@ export const QuestionEditor = React.memo<{
           <TextField
             variant="outlined"
             multiline
-            className={classes.textField}
+            className={textFieldClasses.textField}
             InputProps={{
               classes: {
-                inputMultiline: classes.inputMultiline
+                inputMultiline: textFieldClasses.inputMultiline
               }
             }}
             onCompositionStart={useCallback(() => toggleCompositionState(true), [])}

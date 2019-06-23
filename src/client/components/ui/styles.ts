@@ -8,5 +8,9 @@ export const useStyles = makeStyles(theme => ({
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
     fontSize: theme.typography.h6.fontSize
+  },
+  cardAvatar: {
+    color: theme.palette.text.primary,
+    backgroundColor: theme.palette.background.paper
   }
 }));

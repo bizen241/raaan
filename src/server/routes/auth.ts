@@ -14,18 +14,14 @@ authRouter.get("/:provider", async (req, res, next) => {
     return next(createError(500));
   }
   if (req.user !== undefined) {
-    return next(createError(403));
+    return res.redirect("/");
   }
 
-  const userSession = getManager().findOne(UserSessionEntity, { sessionId: req.sessionID });
+  const guestUser = await getGuestUser();
+  const expireAt = Date.now() + 10 * 60 * 1000;
+  const newUserSession = new UserSessionEntity(guestUser, req.sessionID, new Date(expireAt));
 
-  if (userSession === undefined) {
-    const guestUser = await getGuestUser();
-    const expireAt = Date.now() + 10 * 60 * 1000;
-    const newUserSession = new UserSessionEntity(guestUser, req.sessionID, new Date(expireAt));
-
-    await getManager().save(newUserSession);
-  }
+  await getManager().save(newUserSession);
 
   passport.authenticate(provider)(req, res, next);
 });
@@ -49,9 +45,9 @@ authRouter.get("/:provider/callback", (req, res, next) => {
         }
 
         const expireAt = Date.now() + 1000 * 24 * 60 * 60 * 1000;
-        const session = new UserSessionEntity(user, req.sessionID, new Date(expireAt));
+        const newUserSession = new UserSessionEntity(user, req.sessionID, new Date(expireAt));
 
-        await getManager().save(session);
+        await getManager().save(newUserSession);
 
         req.login(user, (loginError: Error | null) => {
           if (loginError) {

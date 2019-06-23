@@ -9,7 +9,6 @@ import { EditExercisesPage } from "../pages/EditExercisesPage";
 import { ExercisePage } from "../pages/ExercisePage";
 import { ExercisesPage } from "../pages/ExercisesPage";
 import { HomePage } from "../pages/HomePage";
-import { LoginPage } from "../pages/LoginPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { UserExercisesPage } from "../pages/UserExercisesPage";
 
@@ -33,7 +32,6 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
         <Route exact={true} path="/exercises/:id" component={ExercisePage} />
         <Route exact={true} path="/exercises/:id/edit" component={EditExercisePage} />
-        <Route exact={true} path="/login" component={LoginPage} />
         <Route exact={true} path="/config" component={ConfigPage} />
         <Route exact={true} path="/account" component={AccountPage} />
         <Route exact={true} path="/app" component={AppPage} />

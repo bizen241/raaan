@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { EntityObject, EntityType } from "../../../../shared/api/entities";
 import { actions, RootState } from "../../../reducers";
 import { Buffer } from "../../../reducers/buffers";
+import { useStyles } from "../../ui/styles";
 
 export interface BufferListItemProps<E extends EntityObject> {
   bufferId: string;
@@ -39,11 +40,13 @@ export const BufferList = React.memo<{
 
   const bufferEntries = Object.entries(bufferMap);
 
+  const classes = useStyles();
+
   return (
     <Card>
       <CardHeader
         avatar={
-          <Avatar>
+          <Avatar className={classes.cardAvatar}>
             <List />
           </Avatar>
         }

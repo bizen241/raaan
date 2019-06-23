@@ -18,6 +18,7 @@ import { EntityObject, EntityType } from "../../../../shared/api/entities";
 import { SearchParams } from "../../../../shared/api/request/search";
 import { useSearch } from "../../../hooks/search";
 import { actions } from "../../../reducers";
+import { useStyles } from "../../ui/styles";
 
 export interface EntityListProps<E extends EntityObject> {
   title?: React.ReactNode;
@@ -56,6 +57,8 @@ export const EntityList = React.memo<{
   const onChangePage = useCallback((_, newPage) => setPage(newPage), []);
   const onChangeRowsPerPage = useCallback(e => setLimit(parseInt(e.target.value, 10)), []);
 
+  const classes = useStyles();
+
   if (searchResult === undefined || selectedEntities === undefined) {
     return (
       <Card>
@@ -68,7 +71,7 @@ export const EntityList = React.memo<{
     <Card>
       <CardHeader
         avatar={
-          <Avatar>
+          <Avatar className={classes.cardAvatar}>
             <List />
           </Avatar>
         }

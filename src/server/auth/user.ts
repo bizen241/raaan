@@ -9,12 +9,10 @@ interface AuthParams {
   email: string;
 }
 
-export const saveUser = async (sessionUser: UserEntity | undefined, params: AuthParams) => {
-  const { provider, accountId, email } = params;
+export const saveUser = async (_: UserEntity | undefined, params: AuthParams) => {
+  const { provider, accountId } = params;
 
-  const manager = getManager();
-
-  const account = await manager.findOne(
+  const account = await getManager().findOne(
     UserAccountEntity,
     {
       provider,
@@ -25,55 +23,30 @@ export const saveUser = async (sessionUser: UserEntity | undefined, params: Auth
     }
   );
 
-  if (account !== undefined) {
-    if (account.user === undefined) {
-      throw new Error();
-    }
-
-    if (account.email !== email) {
-      account.email = email;
-
-      await manager.save(account);
-    }
-
-    return account.user;
-  }
-
-  if (sessionUser === undefined) {
+  if (account === undefined) {
     return createUser(params);
   } else {
-    return updateUser(sessionUser, params);
+    return updateUser(account, params);
   }
-};
-
-const updateUser = async (user: UserEntity, { provider, accountId, email }: AuthParams) => {
-  const manager = getManager();
-
-  const account = await manager.findOne(UserAccountEntity, {
-    user
-  });
-  if (account === undefined) {
-    throw new Error();
-  }
-
-  account.provider = provider;
-  account.accountId = accountId;
-  account.email = email;
-
-  await manager.save(account);
-
-  return user;
 };
 
 const createUser = async ({ provider, accountId, name, email }: AuthParams) => {
-  const manager = getManager();
-
   const account = new UserAccountEntity(provider, accountId, email);
   const config = new UserConfigEntity();
   const summary = new UserSummaryEntity();
   const user = new UserEntity(account, config, summary, name, "Write");
 
-  const savedUser = await manager.save(user);
+  const savedUser = await getManager().save(user);
 
   return savedUser;
+};
+
+const updateUser = async (account: UserAccountEntity, { email }: AuthParams) => {
+  if (account.email !== email) {
+    account.email = email;
+
+    await getManager().save(account);
+  }
+
+  return account.user;
 };

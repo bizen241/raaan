@@ -19,7 +19,7 @@ const AppPage = React.memo(() => {
       <Card>
         <CardHeader
           avatar={
-            <Avatar>
+            <Avatar className={classes.cardAvatar}>
               <Sync />
             </Avatar>
           }

@@ -29,5 +29,5 @@ logoutRouter.get("/", async (req, res, next) => {
 
   setClearSiteData(res);
 
-  res.sendStatus(200);
+  res.redirect("/");
 });
