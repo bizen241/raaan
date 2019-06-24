@@ -8,9 +8,9 @@ import { responseSearchResult } from "../../api/response";
 import { UserSessionEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { userId, userAgent, limit, offset } = parseSearchParams<UserSession>("UserSession", req.query);
+  const { userId, limit, offset } = parseSearchParams<UserSession>("UserSession", req.query);
 
-  if (userId !== currentUser.id && currentUser.permission !== "Admin") {
+  if (userId !== currentUser.id) {
     return next(createError(403));
   }
 
@@ -21,18 +21,17 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
       id: userId
     };
   }
-  if (userAgent !== undefined) {
-    where.userAgent = userAgent;
-  }
 
-  const result = await getManager().findAndCount(UserSessionEntity, {
+  const [userSessions, count] = await getManager().findAndCount(UserSessionEntity, {
     where,
     relations: ["user"],
     take: limit,
     skip: offset
   });
 
-  responseSearchResult(res, ...result);
+  const filteredUserSessions = userSessions.filter(userSession => userSession.sessionId !== req.sessionID);
+
+  responseSearchResult(res, filteredUserSessions, count - 1);
 });
 
 GET.apiDoc = createOperationDoc({
