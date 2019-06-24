@@ -7,11 +7,11 @@ import { EntityList, EntityListItemProps, EntityListProps } from ".";
 import { ExerciseSummary } from "../../../../shared/api/entities";
 import { UserContext } from "../../project/Context";
 
-export const ExerciseList = React.memo<EntityListProps<ExerciseSummary>>(props => {
-  return <EntityList {...props} entityType="ExerciseSummary" itemComponent={ExerciseListItem} />;
+export const ExerciseSummaryList = React.memo<EntityListProps<ExerciseSummary>>(props => {
+  return <EntityList {...props} entityType="ExerciseSummary" itemComponent={ExerciseSummaryListItem} />;
 });
 
-const ExerciseListItem = React.memo<EntityListItemProps<ExerciseSummary>>(({ entity: exerciseSummary }) => {
+const ExerciseSummaryListItem = React.memo<EntityListItemProps<ExerciseSummary>>(({ entity: exerciseSummary }) => {
   const currentUser = useContext(UserContext);
 
   return (

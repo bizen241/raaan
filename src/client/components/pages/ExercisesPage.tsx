@@ -3,7 +3,7 @@ import { Folder } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { ExerciseList } from "../list/search/ExerciseList";
+import { ExerciseSummaryList } from "../list/search/ExerciseSummaryList";
 import { UserContext } from "../project/Context";
 import { PageProps } from "../project/Router";
 import { useStyles } from "../ui/styles";
@@ -28,7 +28,7 @@ export const ExercisesPage = React.memo<PageProps>(() => {
         </Button>
       </Box>
       <Box display="flex" flexDirection="column" pb={1}>
-        <ExerciseList searchParams={{}} />
+        <ExerciseSummaryList searchParams={{}} />
       </Box>
     </Page>
   );

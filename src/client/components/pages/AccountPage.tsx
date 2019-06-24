@@ -2,6 +2,7 @@ import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, Typogr
 import { Delete, Warning } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
+import { UserSessionList } from "../list/search/UserSessionList";
 import { UserContext } from "../project/Context";
 import { Message } from "../project/Message";
 import { useStyles } from "../ui/styles";
@@ -15,6 +16,14 @@ const AccountPage = React.memo(() => {
   if (currentUser.permission !== "Guest") {
     return (
       <Page title="アカウント">
+        <Box pb={1}>
+          <UserSessionList
+            title="セッション一覧"
+            searchParams={{
+              userId: currentUser.id
+            }}
+          />
+        </Box>
         <Box pb={1}>
           <Card>
             <CardHeader
