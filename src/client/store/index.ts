@@ -5,17 +5,20 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { PersistConfig, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
-import { createReducer } from "../reducers";
+import { createReducer, RootState } from "../reducers";
 import { migrate } from "./migrations";
 
 const history = createBrowserHistory();
 
-const persistConfig: PersistConfig = {
+const persistConfig: PersistConfig<RootState> = {
   key: "root",
   version: 0,
   storage,
   migrate,
-  blacklist: ["dialog"]
+  blacklist: ["dialog"],
+  writeFailHandler: () => {
+    window.dispatchEvent(new Event("quotaexceeded"));
+  }
 };
 const persistedReducer = persistReducer(persistConfig, createReducer(history));
 

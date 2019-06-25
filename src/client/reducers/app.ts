@@ -31,6 +31,8 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
   window.addEventListener("online", () => dispatch(appSyncActions.network(true)));
   window.addEventListener("offline", () => dispatch(appSyncActions.network(false)));
 
+  window.addEventListener("quotaexceeded", e => console.log(e));
+
   try {
     const result = await getCurrentUser();
     const currentUser = Object.values(result.User)[0];
