@@ -19,15 +19,20 @@ import { actions, RootState } from "../../../reducers";
 import { Buffer } from "../../../reducers/buffers";
 import { useStyles } from "../../ui/styles";
 
+export interface BufferListProps {
+  title?: React.ReactNode;
+}
+
 export interface BufferListItemProps<E extends EntityObject> {
   bufferId: string;
   buffer: Buffer<E>;
 }
 
 export const BufferList = React.memo<{
+  title?: React.ReactNode;
   entityType: EntityType;
   itemComponent: React.ComponentType<BufferListItemProps<any>>;
-}>(({ entityType, itemComponent: ListItem }) => {
+}>(({ title, entityType, itemComponent: ListItem }) => {
   const dispatch = useDispatch();
   const { bufferMap } = useSelector((state: RootState) => ({
     bufferMap: state.buffers[entityType]
@@ -50,7 +55,7 @@ export const BufferList = React.memo<{
             <List />
           </Avatar>
         }
-        title="編集中"
+        title={title || "編集中"}
         titleTypographyProps={{ variant: "h6" }}
       />
       <Table>

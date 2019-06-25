@@ -10,7 +10,7 @@ export const SubmissionHistoryPage = React.memo<PageProps>(() => {
 
   return (
     <Page title="提出履歴">
-      <SubmissionSummaryList searchParams={{ userId: currentUser.id }} />
+      <SubmissionSummaryList title="提出履歴" searchParams={{ userId: currentUser.id }} />
     </Page>
   );
 });

@@ -15,7 +15,7 @@ export const ExercisesPage = React.memo<PageProps>(() => {
   const classes = useStyles();
 
   return (
-    <Page title="検索">
+    <Page title="遊ぶ">
       <Box display="flex" flexDirection="column" pb={1}>
         <Button
           className={classes.largeButton}
@@ -35,7 +35,7 @@ export const ExercisesPage = React.memo<PageProps>(() => {
         </Button>
       </Box>
       <Box display="flex" flexDirection="column" pb={1}>
-        <ExerciseSummaryList searchParams={{}} />
+        <ExerciseSummaryList title="検索結果" searchParams={{}} />
       </Box>
     </Page>
   );

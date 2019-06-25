@@ -1,11 +1,11 @@
 import { Box, Link } from "@material-ui/core";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { BufferList, BufferListItemProps } from ".";
+import { BufferList, BufferListItemProps, BufferListProps } from ".";
 import { Exercise } from "../../../../shared/api/entities";
 
-export const ExerciseBufferList = React.memo(() => {
-  return <BufferList entityType="Exercise" itemComponent={EditorBufferListItem} />;
+export const ExerciseBufferList = React.memo<BufferListProps>(props => {
+  return <BufferList {...props} entityType="Exercise" itemComponent={EditorBufferListItem} />;
 });
 
 const EditorBufferListItem = React.memo<BufferListItemProps<Exercise>>(({ bufferId, buffer }) => {

@@ -46,7 +46,7 @@ export const EditExercisesPage = React.memo(() => {
         </Button>
       </Box>
       <Box display="flex" flexDirection="column" pb={1}>
-        <ExerciseBufferList />
+        <ExerciseBufferList title="編集中の問題集" />
       </Box>
     </Page>
   );
