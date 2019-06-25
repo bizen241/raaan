@@ -1,7 +1,6 @@
 import { push } from "connected-react-router";
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { User } from "../../shared/api/entities";
 import { ActionUnion, AsyncAction, createAction } from "../actions";
 import { getCurrentUser } from "../api/client";
 import { guestUser } from "../components/project/Context";
@@ -10,13 +9,13 @@ import { cacheActions } from "./cache";
 
 export enum AppActionType {
   Ready = "app/ready",
-  SetUser = "app/set-user",
+  Network = "app/network",
   UpdateFound = "app/update-found"
 }
 
 const appSyncActions = {
-  ready: () => createAction(AppActionType.Ready),
-  setUser: (user: User) => createAction(AppActionType.SetUser, { user }),
+  ready: (userId: string) => createAction(AppActionType.Ready, { userId }),
+  network: (isOnline: boolean) => createAction(AppActionType.Network, { isOnline }),
   updateFound: () => createAction(AppActionType.UpdateFound)
 };
 
@@ -25,28 +24,29 @@ export type AppActions = ActionUnion<typeof appSyncActions>;
 const initialize = (): AsyncAction => async (dispatch, getState) => {
   const previousUserId = getState().app.userId;
 
+  if (process.env.NODE_ENV === "production") {
+    install(() => dispatch(appSyncActions.updateFound()));
+  }
+
+  window.addEventListener("online", () => dispatch(appSyncActions.network(true)));
+  window.addEventListener("offline", () => dispatch(appSyncActions.network(false)));
+
   try {
-    if (navigator.onLine) {
-      const result = await getCurrentUser();
-      const currentUser = Object.values(result.User)[0];
+    const result = await getCurrentUser();
+    const currentUser = Object.values(result.User)[0];
 
-      if (currentUser !== undefined) {
-        dispatch(cacheActions.get(result));
-        dispatch(appSyncActions.setUser(currentUser));
-
-        if (currentUser.id !== previousUserId) {
-          dispatch(push("/"));
-        }
-      }
+    if (currentUser === undefined) {
+      throw new Error();
     }
 
-    if (process.env.NODE_ENV === "production") {
-      install(() => dispatch(appSyncActions.updateFound()));
+    if (currentUser.id !== previousUserId) {
+      dispatch(push("/"));
     }
 
-    dispatch(appSyncActions.ready());
+    dispatch(cacheActions.get(result));
+    dispatch(appSyncActions.ready(currentUser.id));
   } catch (e) {
-    throw e;
+    dispatch(appSyncActions.ready(previousUserId));
   }
 };
 
@@ -58,30 +58,36 @@ export const appActions = {
 export type AppState = {
   userId: string;
   isReady: boolean;
+  isOnline: boolean;
   hasUpdate: boolean;
 };
 
 export const initialAppState: AppState = {
   userId: guestUser.id,
   isReady: false,
+  isOnline: true,
   hasUpdate: false
 };
 
 export const appReducer: Reducer<AppState, Actions> = (state = initialAppState, action) => {
   switch (action.type) {
     case AppActionType.Ready: {
-      return {
-        ...state,
-        isReady: true,
-        hasUpdate: false
-      };
-    }
-    case AppActionType.SetUser: {
-      const { user } = action.payload;
+      const { userId } = action.payload;
 
       return {
         ...state,
-        userId: user.id
+        userId,
+        isReady: true,
+        isOnline: navigator.onLine,
+        hasUpdate: false
+      };
+    }
+    case AppActionType.Network: {
+      const { isOnline } = action.payload;
+
+      return {
+        ...state,
+        isOnline
       };
     }
     case AppActionType.UpdateFound: {
