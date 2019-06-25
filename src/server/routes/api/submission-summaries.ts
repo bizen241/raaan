@@ -11,15 +11,18 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
 
   const query = await getManager()
     .createQueryBuilder(SubmissionSummaryEntity, "submissionSummary")
+    .leftJoinAndSelect("submissionSummary.user", "user")
+    .leftJoinAndSelect("submissionSummary.exercise", "exercise")
+    .leftJoinAndSelect("submissionSummary.latest", "latest")
+    .leftJoinAndSelect("submissionSummary.best", "best")
+    .leftJoinAndSelect("exercise.summary", "summary")
     .take(limit)
     .skip(offset);
 
   if (userId !== undefined) {
-    query.leftJoin("submissionSummary.user", "user");
     query.andWhere("user.id = :userId", { userId });
   }
   if (exerciseId !== undefined) {
-    query.leftJoin("submissionSummary.exercise", "exercise");
     query.andWhere("exercise.id = :exerciseId", { exerciseId });
   }
 
