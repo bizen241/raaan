@@ -1,17 +1,17 @@
 import { Box, Button, Card, CardContent, Dialog, IconButton, Menu, MenuItem, Typography } from "@material-ui/core";
 import { Delete, Edit, MoreVert, PlayArrow } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { EntityViewer, EntityViewerContainerProps, EntityViewerRendererProps } from ".";
-import { Exercise, SubmissionSummary } from "../../../shared/api/entities";
-import { SearchParams } from "../../../shared/api/request/search";
-import { useSearch } from "../../hooks/search";
+import { Exercise } from "../../../shared/api/entities";
 import { actions } from "../../reducers";
 import { ExercisePlayer } from "../player/ExercisePlayer";
 import { UserContext } from "../project/Context";
 import { useStyles } from "../ui/styles";
+import { ExerciseSummaryViewer } from "./ExerciseSummaryViewer";
+import { SubmissionSummaryViewer } from "./SubmissionSummaryViewer";
 
 export const ExerciseViewer = React.memo<EntityViewerContainerProps>(props => {
   return <EntityViewer {...props} entityType="Exercise" renderer={ExerciseViewerRenderer} />;
@@ -24,20 +24,6 @@ const ExerciseViewerRenderer = React.memo<EntityViewerRendererProps<Exercise>>(
 
     const [isExercisePreviewerOpen, toggleExercisePreviewer] = useState(false);
     const onToggleExercisePreviewer = useCallback(() => toggleExercisePreviewer(s => !s), []);
-
-    const searchParams: SearchParams<SubmissionSummary> = useMemo(
-      () => ({
-        userId: currentUser.id,
-        exerciseId,
-        limit: 1,
-        offset: 0
-      }),
-      []
-    );
-
-    const { selectedEntities: submissionSummaries = [] } = useSearch("SubmissionSummary", searchParams);
-    const submissionSummary = submissionSummaries[0];
-    const submitCount = (submissionSummary && submissionSummary.submitCount) || 0;
 
     const [menuAnchorElement, setMenuAnchorElement] = useState(null);
 
@@ -69,10 +55,14 @@ const ExerciseViewerRenderer = React.memo<EntityViewerRendererProps<Exercise>>(
         <Box display="flex" flexDirection="column" pb={1}>
           <Card>
             <CardContent>
-              <Box display="flex" flexDirection="column">
-                <Typography>提出した回数</Typography>
-                <Typography variant="h4">{submitCount}</Typography>
-              </Box>
+              <SubmissionSummaryViewer userId={currentUser.id} exerciseId={exerciseId} />
+            </CardContent>
+          </Card>
+        </Box>
+        <Box display="flex" flexDirection="column" pb={1}>
+          <Card>
+            <CardContent>
+              <ExerciseSummaryViewer entityId={exercise.summaryId} />
             </CardContent>
           </Card>
         </Box>

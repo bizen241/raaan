@@ -87,8 +87,8 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (entity, store) => {
 };
 
 const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (entity, store) => {
-  const { id, exercise, exerciseId, tags } = entity;
-  if (exercise === undefined || tags === undefined) {
+  const { id, exercise, exerciseId, tags = [], submitCount } = entity;
+  if (exercise === undefined) {
     return;
   }
 
@@ -98,11 +98,11 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (entity, sto
     ...base(entity),
     authorId,
     exerciseId,
-    tagIds: tags.map(tag => tag.id),
     lang,
     title,
     tags: tags.map(tag => tag.name).join(","),
-    description
+    description,
+    submitCount
   };
 
   normalizeEntity(store, author);
