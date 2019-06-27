@@ -6,6 +6,7 @@ import { UserSessionList } from "../list/search/UserSessionList";
 import { UserContext } from "../project/Context";
 import { Message } from "../project/Message";
 import { useStyles } from "../ui/styles";
+import { UserAccountViewer } from "../viewer/UserAccountViewer";
 import { Page } from "./Page";
 
 const AccountPage = React.memo(() => {
@@ -16,6 +17,22 @@ const AccountPage = React.memo(() => {
   if (currentUser.permission !== "Guest") {
     return (
       <Page title="アカウント">
+        <Box pb={1}>
+          <Card>
+            <CardHeader
+              avatar={
+                <Avatar className={classes.cardAvatar}>
+                  <Delete />
+                </Avatar>
+              }
+              title="アカウント情報"
+              titleTypographyProps={{ variant: "h6" }}
+            />
+            <CardContent>
+              <UserAccountViewer entityId={currentUser.accountId} />
+            </CardContent>
+          </Card>
+        </Box>
         <Box pb={1}>
           <UserSessionList
             title="セッション一覧"

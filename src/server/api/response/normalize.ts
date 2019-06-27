@@ -158,7 +158,7 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (entity,
 };
 
 const normalizeUser: Normalizer<UserEntity> = (entity, store) => {
-  const { id, accountId, config, configId, summary, summaryId, name, permission } = entity;
+  const { id, account, accountId, config, configId, summary, summaryId, name, permission } = entity;
 
   store.User[id] = {
     ...base(entity),
@@ -169,6 +169,7 @@ const normalizeUser: Normalizer<UserEntity> = (entity, store) => {
     summaryId
   };
 
+  normalizeEntity(store, account);
   normalizeEntity(store, config);
   normalizeEntity(store, summary);
 };
