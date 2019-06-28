@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, Typography } from "@material-ui/core";
-import { Delete, Warning } from "@material-ui/icons";
+import { AccountCircle, Delete, Warning } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { UserSessionList } from "../list/search/UserSessionList";
@@ -22,7 +22,7 @@ const AccountPage = React.memo(() => {
             <CardHeader
               avatar={
                 <Avatar className={classes.cardAvatar}>
-                  <Delete />
+                  <AccountCircle />
                 </Avatar>
               }
               title="アカウント情報"
