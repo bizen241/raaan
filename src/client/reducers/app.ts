@@ -3,6 +3,7 @@ import { Reducer } from "redux";
 import { Actions } from ".";
 import { ActionUnion, AsyncAction, createAction } from "../actions";
 import { getCurrentUser } from "../api/client";
+import { FetchError } from "../api/client/request";
 import { guestUser } from "../components/project/Context";
 import { install } from "../install";
 import { cacheActions } from "./cache";
@@ -48,7 +49,11 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
     dispatch(cacheActions.get(result));
     dispatch(appSyncActions.ready(currentUser.id));
   } catch (e) {
-    dispatch(appSyncActions.ready(previousUserId));
+    if (e instanceof FetchError && e.code === 403) {
+      dispatch(appSyncActions.ready(guestUser.id));
+    } else {
+      dispatch(appSyncActions.ready(previousUserId));
+    }
   }
 };
 

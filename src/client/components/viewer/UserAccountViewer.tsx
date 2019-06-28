@@ -11,18 +11,24 @@ const UserAccountViewerRenderer = React.memo<EntityViewerRendererProps<UserAccou
   return (
     <Box display="flex" flexDirection="column">
       <Box display="flex" flexDirection="column" mb={2}>
-        <Typography gutterBottom>プロバイダ</Typography>
-        <Typography variant="h5">{userAccount.provider}</Typography>
+        <Typography gutterBottom variant="subtitle1">
+          プロバイダ
+        </Typography>
+        <Typography variant="body1">{userAccount.provider}</Typography>
         <Divider />
       </Box>
       <Box display="flex" flexDirection="column" mb={2}>
-        <Typography gutterBottom>ID</Typography>
-        <Typography variant="h5">{userAccount.accountId}</Typography>
+        <Typography gutterBottom variant="subtitle1">
+          ID
+        </Typography>
+        <Typography variant="body1">{userAccount.accountId}</Typography>
         <Divider />
       </Box>
       <Box display="flex" flexDirection="column" mb={2}>
-        <Typography gutterBottom>メールアドレス</Typography>
-        <Typography variant="h5">{userAccount.email}</Typography>
+        <Typography gutterBottom variant="subtitle1">
+          メールアドレス
+        </Typography>
+        <Typography variant="body1">{userAccount.email}</Typography>
         <Divider />
       </Box>
     </Box>

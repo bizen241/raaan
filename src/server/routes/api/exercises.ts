@@ -26,7 +26,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
       return next(createError(500));
     }
 
-    responseFindResult(res, savedExercise);
+    responseFindResult(req, res, savedExercise);
   });
 });
 

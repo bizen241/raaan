@@ -26,9 +26,9 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
     query.andWhere("exercise.id = :exerciseId", { exerciseId });
   }
 
-  const result = await query.getManyAndCount();
+  const [submissionSummaries, count] = await query.getManyAndCount();
 
-  responseSearchResult(res, ...result);
+  responseSearchResult(req, res, submissionSummaries, count);
 });
 
 GET.apiDoc = createOperationDoc({

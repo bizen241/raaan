@@ -116,10 +116,9 @@ const parseUserConfig: Parser<UserConfig> = query => {
 };
 
 const parseUserSession: Parser<UserSession> = query => {
-  const { userAgent, userId } = query;
+  const { userId } = query;
 
   return {
-    userAgent,
     userId,
     ...page(query)
   };

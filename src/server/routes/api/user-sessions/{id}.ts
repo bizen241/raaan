@@ -22,7 +22,7 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
 
   await manager.remove(userSession);
 
-  responseFindResult(res, userSession);
+  responseFindResult(req, res, userSession);
 });
 
 DELETE.apiDoc = createOperationDoc({

@@ -2,6 +2,7 @@ import { Router } from "express";
 import * as createError from "http-errors";
 import * as passport from "passport";
 import { getManager } from "typeorm";
+import { UAParser } from "ua-parser-js";
 import { UserEntity, UserSessionEntity } from "../database/entities";
 import { getGuestUser } from "../database/setup/guest";
 
@@ -18,8 +19,7 @@ authRouter.get("/:provider", async (req, res, next) => {
   }
 
   const guestUser = await getGuestUser();
-  const expireAt = Date.now() + 10 * 60 * 1000;
-  const newUserSession = new UserSessionEntity(guestUser, req.sessionID, new Date(expireAt));
+  const newUserSession = new UserSessionEntity(guestUser, req.sessionID);
 
   await getManager().save(newUserSession);
 
@@ -44,8 +44,17 @@ authRouter.get("/:provider/callback", (req, res, next) => {
           return next(createError(500));
         }
 
-        const expireAt = Date.now() + 1000 * 24 * 60 * 60 * 1000;
-        const newUserSession = new UserSessionEntity(user, req.sessionID, new Date(expireAt));
+        const userAgentParser = new UAParser(req.headers["user-agent"]);
+        const { type: deviceType, vendor, model } = userAgentParser.getDevice();
+        const os = userAgentParser.getOS();
+        const browser = userAgentParser.getBrowser();
+
+        const newUserSession = new UserSessionEntity(user, req.sessionID, {
+          deviceType: deviceType || "desktop",
+          deviceName: vendor !== undefined && model !== undefined ? `${vendor} ${model.slice(0, 100)}` : "",
+          os: os.name || "",
+          browser: browser.name || ""
+        });
 
         await getManager().save(newUserSession);
 

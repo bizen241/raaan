@@ -18,7 +18,7 @@ export const request = async <T>(method: Method, path: string, body?: SaveParams
   });
 
   if (!response.ok) {
-    throw new Error();
+    throw new FetchError(response.status);
   }
 
   const json = await response.json().catch(() => {
@@ -27,3 +27,13 @@ export const request = async <T>(method: Method, path: string, body?: SaveParams
 
   return json as T;
 };
+
+export class FetchError extends Error {
+  code: number;
+
+  constructor(code: number) {
+    super();
+
+    this.code = code;
+  }
+}

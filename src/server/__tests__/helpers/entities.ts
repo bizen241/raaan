@@ -25,7 +25,7 @@ export const insertUser = async (permission: Permission) => {
 export const insertSession = async (user: UserEntity) => {
   const manager = getManager();
 
-  const session = new UserSessionEntity(user, uuid(), new Date());
+  const session = new UserSessionEntity(user, uuid());
   session.data = {
     cookie: {
       path: "/",

@@ -2,5 +2,10 @@ import { BaseEntityObject, UUID } from "./BaseEntityObject";
 
 export interface UserSession extends BaseEntityObject {
   userId: UUID;
-  userAgent: string;
+  accessCount: number;
+  deviceType: string;
+  deviceName: string;
+  os: string;
+  browser: string;
+  isCurrent: boolean;
 }

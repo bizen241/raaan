@@ -13,7 +13,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
     return next(createError(404));
   }
 
-  responseFindResult(res, user);
+  responseFindResult(req, res, user);
 });
 
 GET.apiDoc = createOperationDoc({
@@ -36,7 +36,7 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next) =>
 
   await getManager().remove(user);
 
-  responseFindResult(res);
+  responseFindResult(req, res);
 });
 
 DELETE.apiDoc = createOperationDoc({

@@ -16,17 +16,21 @@ import {
 } from "../../database/entities";
 import { BaseEntityClass } from "../../database/entities/BaseEntityClass";
 
-export const normalizeEntities = (entities: Entity[]): EntityStore => {
+export interface RequestContext {
+  sessionId?: string;
+}
+
+export const normalizeEntities = (context: RequestContext, entities: Entity[]): EntityStore => {
   const store = createEntityStore();
 
   entities.forEach(entity => {
-    normalizeEntity(store, entity);
+    normalizeEntity(context, store, entity);
   });
 
   return store;
 };
 
-const normalizeEntity = (store: EntityStore, entity: Entity | undefined) => {
+const normalizeEntity = (context: RequestContext, store: EntityStore, entity: Entity | undefined) => {
   if (entity === undefined) {
     return;
   }
@@ -37,7 +41,7 @@ const normalizeEntity = (store: EntityStore, entity: Entity | undefined) => {
     return;
   }
 
-  normalizers[type](entity, store);
+  normalizers[type](context, store, entity);
 };
 
 const base = ({ id, createdAt, updatedAt }: BaseEntityClass): BaseEntityObject => ({
@@ -47,9 +51,9 @@ const base = ({ id, createdAt, updatedAt }: BaseEntityClass): BaseEntityObject =
   fetchedAt: new Date().valueOf()
 });
 
-type Normalizer<E> = (entity: E, store: EntityStore) => void;
+type Normalizer<E> = (context: RequestContext, store: EntityStore, entity: E) => void;
 
-const normalizeExercise: Normalizer<ExerciseEntity> = (entity, store) => {
+const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) => {
   const {
     id,
     author,
@@ -82,11 +86,11 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (entity, store) => {
     isPrivate
   };
 
-  normalizeEntity(store, author);
-  normalizeEntity(store, summary);
+  normalizeEntity(context, store, author);
+  normalizeEntity(context, store, summary);
 };
 
-const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (entity, store) => {
+const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (context, store, entity) => {
   const { id, exercise, exerciseId, tags = [], submitCount } = entity;
   if (exercise === undefined) {
     return;
@@ -105,10 +109,10 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (entity, sto
     submitCount
   };
 
-  normalizeEntity(store, author);
+  normalizeEntity(context, store, author);
 };
 
-const normalizeExerciseTag: Normalizer<ExerciseTagEntity> = (entity, store) => {
+const normalizeExerciseTag: Normalizer<ExerciseTagEntity> = (_, store, entity) => {
   const { id, name } = entity;
 
   store.ExerciseTag[id] = {
@@ -117,7 +121,7 @@ const normalizeExerciseTag: Normalizer<ExerciseTagEntity> = (entity, store) => {
   };
 };
 
-const normalizeSubmission: Normalizer<SubmissionEntity> = (entity, store) => {
+const normalizeSubmission: Normalizer<SubmissionEntity> = (_, store, entity) => {
   const { id, userId, exerciseId, typeCount, time, accuracy } = entity;
 
   store.Submission[id] = {
@@ -130,7 +134,7 @@ const normalizeSubmission: Normalizer<SubmissionEntity> = (entity, store) => {
   };
 };
 
-const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (entity, store) => {
+const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context, store, entity) => {
   const { id, userId, exerciseId, exercise, latest, best, submitCount } = entity;
   if (exercise === undefined || exercise.summary === undefined || latest === undefined || best === undefined) {
     return;
@@ -154,10 +158,10 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (entity,
     submitCount
   };
 
-  normalizeEntity(store, exercise.summary);
+  normalizeEntity(context, store, exercise.summary);
 };
 
-const normalizeUser: Normalizer<UserEntity> = (entity, store) => {
+const normalizeUser: Normalizer<UserEntity> = (context, store, entity) => {
   const { id, account, accountId, config, configId, summary, summaryId, name, permission } = entity;
 
   store.User[id] = {
@@ -169,12 +173,12 @@ const normalizeUser: Normalizer<UserEntity> = (entity, store) => {
     summaryId
   };
 
-  normalizeEntity(store, account);
-  normalizeEntity(store, config);
-  normalizeEntity(store, summary);
+  normalizeEntity(context, store, account);
+  normalizeEntity(context, store, config);
+  normalizeEntity(context, store, summary);
 };
 
-const normalizeUserAccount: Normalizer<UserAccountEntity> = (entity, store) => {
+const normalizeUserAccount: Normalizer<UserAccountEntity> = (context, store, entity) => {
   const { id, user, provider, accountId, email } = entity;
 
   store.UserAccount[id] = {
@@ -184,10 +188,10 @@ const normalizeUserAccount: Normalizer<UserAccountEntity> = (entity, store) => {
     email
   };
 
-  normalizeEntity(store, user);
+  normalizeEntity(context, store, user);
 };
 
-const normalizeUserConfig: Normalizer<UserConfigEntity> = (entity, store) => {
+const normalizeUserConfig: Normalizer<UserConfigEntity> = (_, store, entity) => {
   const { id, lang, theme } = entity;
 
   store.UserConfig[id] = {
@@ -197,19 +201,24 @@ const normalizeUserConfig: Normalizer<UserConfigEntity> = (entity, store) => {
   };
 };
 
-const normalizeUserSession: Normalizer<UserSessionEntity> = (entity, store) => {
-  const { id, user, userId, userAgent } = entity;
+const normalizeUserSession: Normalizer<UserSessionEntity> = (context, store, entity) => {
+  const { id, user, userId, accessCount, deviceType, deviceName, os, browser } = entity;
 
   store.UserSession[id] = {
     ...base(entity),
     userId,
-    userAgent
+    accessCount,
+    deviceType,
+    deviceName,
+    os,
+    browser,
+    isCurrent: entity.sessionId === context.sessionId
   };
 
-  normalizeEntity(store, user);
+  normalizeEntity(context, store, user);
 };
 
-const normalizeUserSummary: Normalizer<UserSummaryEntity> = (entity, store) => {
+const normalizeUserSummary: Normalizer<UserSummaryEntity> = (_, store, entity) => {
   const { id, userId, submitCount, typeCount } = entity;
 
   store.UserSummary[id] = {

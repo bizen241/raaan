@@ -31,28 +31,34 @@ export const ConfigContext = createContext<UserConfig>(guestUserConfig);
 export const LangContext = createContext<LangName>("ja");
 
 export const Context = React.memo<{
-  user: User;
+  user?: User;
   userParams?: SaveParams<User>;
-  config: UserConfig;
+  config?: UserConfig;
   configParams?: SaveParams<UserConfig>;
   children: React.ReactNode;
 }>(({ user, userParams = {}, config, configParams = {}, children }) => {
   const mergedUser = useMemo<User>(
-    () => ({
-      ...user,
-      ...userParams
-    }),
+    () =>
+      user !== undefined
+        ? {
+            ...user,
+            ...userParams
+          }
+        : guestUser,
     [user, userParams]
   );
   const mergedConfig = useMemo<UserConfig>(
-    () => ({
-      ...config,
-      ...configParams
-    }),
+    () =>
+      config !== undefined
+        ? {
+            ...config,
+            ...configParams
+          }
+        : guestUserConfig,
     [config, configParams]
   );
 
-  const lang = getLang(configParams.lang || config.lang);
+  const lang = getLang(mergedConfig.lang);
 
   return (
     <UserContext.Provider value={mergedUser}>

@@ -1,5 +1,5 @@
-import { Box, IconButton, TableCell } from "@material-ui/core";
-import { Delete } from "@material-ui/icons";
+import { Box, IconButton, TableCell, Typography } from "@material-ui/core";
+import { Computer, Delete, Smartphone } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
@@ -18,18 +18,23 @@ const UserSessionListItem = React.memo<EntityListItemProps<UserSession>>(({ enti
 
   return (
     <>
+      <TableCell padding="checkbox">
+        <Box pl={2}>{userSession.deviceType === "desktop" ? <Computer /> : <Smartphone />}</Box>
+      </TableCell>
       <TableCell>
         <Box display="flex" flexDirection="column">
-          {userSession.userAgent}
+          <Typography>{userSession.deviceName}</Typography>
+          <Typography>{userSession.os}</Typography>
+          <Typography>{userSession.browser}</Typography>
         </Box>
       </TableCell>
-      {userSession.userId === currentUser.id ? (
-        <TableCell padding="checkbox">
+      <TableCell padding="checkbox">
+        {userSession.userId === currentUser.id && !userSession.isCurrent ? (
           <IconButton onClick={useCallback(() => dispatch(actions.api.delete("UserSession", userSession.id)), [])}>
             <Delete />
           </IconButton>
-        </TableCell>
-      ) : null}
+        ) : null}
+      </TableCell>
     </>
   );
 });

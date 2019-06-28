@@ -40,7 +40,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
     submissionSummary.exercise = exercise;
     exerciseSummary.exercise = exercise;
 
-    responseFindResult(res, submissionSummary, userSummary, exerciseSummary);
+    responseFindResult(req, res, submissionSummary, userSummary, exerciseSummary);
   });
 });
 

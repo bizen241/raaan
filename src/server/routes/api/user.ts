@@ -6,7 +6,7 @@ import { responseFindResult } from "../../api/response";
 import { UserEntity } from "../../database/entities";
 import { setClearSiteData } from "../logout";
 
-export const GET: OperationFunction = errorBoundary(async (_, res, next, currentUser) => {
+export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const user = await getManager().findOne(UserEntity, currentUser.id, {
     relations: ["account", "config", "summary"]
   });
@@ -14,7 +14,7 @@ export const GET: OperationFunction = errorBoundary(async (_, res, next, current
     return next(createError(404));
   }
 
-  responseFindResult(res, user);
+  responseFindResult(req, res, user);
 });
 
 GET.apiDoc = createOperationDoc({

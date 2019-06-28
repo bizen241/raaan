@@ -23,19 +23,38 @@ export class UserSessionEntity extends BaseEntityClass {
   data: any = {};
 
   @Column()
-  userAgent: string = "";
-
-  @Column()
   accessCount: number = 0;
 
-  @Column("timestamp without time zone")
-  expireAt: Date;
+  @Column()
+  deviceType: string = "";
 
-  constructor(user: UserEntity, sessionId: string, expiredAt: Date) {
+  @Column()
+  deviceName: string = "";
+
+  @Column()
+  os: string = "";
+
+  @Column()
+  browser: string = "";
+
+  constructor(user: UserEntity, sessionId: string, userAgent?: UserAgent) {
     super();
 
     this.user = user;
     this.sessionId = sessionId;
-    this.expireAt = expiredAt;
+
+    if (userAgent !== undefined) {
+      this.deviceType = userAgent.deviceType;
+      this.deviceName = userAgent.deviceName;
+      this.os = userAgent.os;
+      this.browser = userAgent.browser;
+    }
   }
+}
+
+interface UserAgent {
+  deviceType: string;
+  deviceName: string;
+  os: string;
+  browser: string;
 }

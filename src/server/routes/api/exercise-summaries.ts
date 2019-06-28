@@ -23,7 +23,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
 
   const result = await query.getManyAndCount();
 
-  responseSearchResult(res, ...result);
+  responseSearchResult(req, res, ...result);
 });
 
 GET.apiDoc = createOperationDoc({

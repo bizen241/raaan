@@ -29,9 +29,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     skip: offset
   });
 
-  const filteredUserSessions = userSessions.filter(userSession => userSession.sessionId !== req.sessionID);
-
-  responseSearchResult(res, filteredUserSessions, count - 1);
+  responseSearchResult(req, res, userSessions, count);
 });
 
 GET.apiDoc = createOperationDoc({

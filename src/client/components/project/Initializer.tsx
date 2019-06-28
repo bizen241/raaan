@@ -26,7 +26,7 @@ export const Initializer = React.memo<{ children: React.ReactNode }>(({ children
   const config = user && configs[user.configId];
   const configBuffer = user && configBuffers[user.configId];
 
-  if (!isReady || user === undefined || config === undefined) {
+  if (!isReady) {
     return (
       <Card>
         <CardHeader avatar={<CircularProgress />} title="ロード中です" />

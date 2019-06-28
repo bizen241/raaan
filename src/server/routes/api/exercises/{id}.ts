@@ -18,7 +18,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
     return next(createError(404));
   }
 
-  responseFindResult(res, loadedExercise);
+  responseFindResult(req, res, loadedExercise);
 });
 
 GET.apiDoc = createOperationDoc({
@@ -58,7 +58,7 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
 
   await manager.save(exercise);
 
-  responseFindResult(res, exercise);
+  responseFindResult(req, res, exercise);
 });
 
 PATCH.apiDoc = createOperationDoc({
@@ -83,7 +83,7 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next) =>
 
   await manager.remove(loadedExercise);
 
-  responseFindResult(res);
+  responseFindResult(req, res);
 });
 
 DELETE.apiDoc = createOperationDoc({
