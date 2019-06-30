@@ -7,13 +7,14 @@ export interface Attempt {
 }
 
 export interface Typo {
+  key: string;
   lineIndex: number;
   charIndex: number;
 }
 
 export interface QuestionResult {
   totalTime: number;
-  typoMap: any;
+  typos: Typo[];
   typedLines: string[][];
 }
 
@@ -29,10 +30,20 @@ export const createPlan = (items: Question[]) => {
   return plan;
 };
 
-export const getTotalTime = (results: QuestionResult[]) => results.reduce((time, result) => time + result.totalTime, 1);
+export const summarizeResults = (results: QuestionResult[]) => {
+  const time = results.reduce((totalTime, result) => totalTime + result.totalTime, 1);
 
-export const getTypeCountFromResults = (results: QuestionResult[]) =>
-  results.reduce(
+  const typeCount = results.reduce(
     (totalTypeCount, result) => totalTypeCount + result.typedLines.map(typedLine => typedLine.join("")).join("").length,
     0
   );
+
+  const typoCount = results.reduce((totalTypoCount, result) => totalTypoCount + result.typos.length, 0);
+  const accuracy = Math.floor(((typeCount - typoCount) / typeCount) * 100);
+
+  return {
+    time,
+    typeCount,
+    accuracy
+  };
+};

@@ -33,14 +33,16 @@ export const SubmissionSummaryViewer = React.memo<{
   return <EntityViewer entityType="SubmissionSummary" entityId={entityId} renderer={SubmissionSummaryViewerRenderer} />;
 });
 
-const SubmissionSummaryViewerRenderer = React.memo<EntityViewerRendererProps<SubmissionSummary>>(({ entity: submissionSummary }) => {
-  return (
-    <Box display="flex" flexDirection="column">
-      <Box display="flex" flexDirection="column" mb={1}>
-        <Typography>自分の提出回数</Typography>
-        <Typography variant="h4">{submissionSummary.submitCount}</Typography>
-        <Divider />
+const SubmissionSummaryViewerRenderer = React.memo<EntityViewerRendererProps<SubmissionSummary>>(
+  ({ entity: submissionSummary }) => {
+    return (
+      <Box display="flex" flexDirection="column">
+        <Box display="flex" flexDirection="column" mb={1}>
+          <Typography>自分の提出回数</Typography>
+          <Typography variant="h4">{submissionSummary.submitCount}</Typography>
+          <Divider />
+        </Box>
       </Box>
-    </Box>
-  );
-});
+    );
+  }
+);

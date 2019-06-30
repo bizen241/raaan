@@ -1,20 +1,19 @@
 import { Box, Divider, makeStyles } from "@material-ui/core";
 import * as React from "react";
 import { getScore } from "../../../shared/exercise";
-import { Attempt, getTotalTime, getTypeCountFromResults, QuestionResult } from "../../domain/exercise/attempt";
+import { Attempt, QuestionResult, summarizeResults } from "../../domain/exercise/attempt";
 
 export const AttemptResult: React.FunctionComponent<{
   attempt: Attempt;
   results: QuestionResult[];
 }> = ({ results }) => {
-  const time = getTotalTime(results);
-  const typeCount = getTypeCountFromResults(results);
+  const { time, typeCount, accuracy } = summarizeResults(results);
 
   const speed = (typeCount / (time / 1000)) * 60;
   const score = getScore({
     typeCount,
     time,
-    accuracy: 100
+    accuracy
   });
 
   const classes = useStyles();
@@ -30,6 +29,9 @@ export const AttemptResult: React.FunctionComponent<{
         <Divider />
         <span className={classes.key}>速さ</span>
         <span className={classes.value}>{speed.toFixed(0)}&nbsp;打/分</span>
+        <Divider />
+        <span className={classes.key}>正確性</span>
+        <span className={classes.value}>{accuracy}&nbsp;%</span>
       </Box>
     </Box>
   );
@@ -37,11 +39,10 @@ export const AttemptResult: React.FunctionComponent<{
 
 const useStyles = makeStyles(() => ({
   key: {
-    height: "1.5em",
-    fontSize: "2vmax"
+    fontSize: "2vmax",
+    marginTop: "0.5em"
   },
   value: {
-    height: "1.5em",
     fontSize: "4vmax"
   }
 }));

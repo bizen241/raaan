@@ -1,12 +1,12 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { CompiledQuestion } from "../../../shared/exercise/compiler";
-import { QuestionResult } from "../../domain/exercise/attempt";
+import { QuestionResult, Typo } from "../../domain/exercise/attempt";
 import { QuestionRenderer } from "./QuestionRenderer";
 
 export interface QuestionPlayerState {
   typedLines: string[][];
-  typoMap: any;
+  typos: Typo[];
   hasTypo: boolean;
   totalTime: number;
   startedAt: number;
@@ -22,7 +22,7 @@ export const QuestionPlayer: React.FunctionComponent<{
 
   const [state, setState] = useState<QuestionPlayerState>({
     typedLines: [[""]],
-    typoMap: {},
+    typos: [],
     hasTypo: false,
     totalTime: 0,
     startedAt: 0,
@@ -30,7 +30,7 @@ export const QuestionPlayer: React.FunctionComponent<{
     isFinished: false
   });
 
-  const { typedLines, typoMap, totalTime, startedAt, isSuspended, isFinished } = state;
+  const { typedLines, typos, totalTime, startedAt, isSuspended, isFinished } = state;
 
   useEffect(() => {
     if (!isSuspended) {
@@ -50,7 +50,7 @@ export const QuestionPlayer: React.FunctionComponent<{
     if (isFinished) {
       onFinish({
         totalTime: startedAt === 0 ? 0 : totalTime + (Date.now() - startedAt),
-        typoMap,
+        typos,
         typedLines
       });
 
@@ -77,7 +77,7 @@ const getNextState = (
   question: CompiledQuestion,
   e: KeyboardEvent
 ): QuestionPlayerState => {
-  const { typedLines, startedAt, isSuspended } = previousState;
+  const { typedLines, typos, startedAt, isSuspended } = previousState;
   const { roman: romanLines } = question;
   const { key } = e;
 
@@ -123,14 +123,26 @@ const getNextState = (
   const nextCandidates = currentChunk.candidates.filter(
     candidate => candidate.slice(0, currentCharIndex + 1) === nextTypedChunk
   );
+  const hasTypo = nextCandidates.length === 0;
 
-  if (nextCandidates.length === 0) {
+  if (hasTypo) {
     return {
       ...previousState,
       ...nextTimeState,
       hasTypo: true
     };
   }
+
+  const nextTypos: Typo[] = previousState.hasTypo
+    ? [
+        ...typos,
+        {
+          key,
+          lineIndex: currentLineIndex,
+          charIndex: currentCharIndex
+        }
+      ]
+    : typos;
 
   const isCurrentChunkFinished = nextCandidates.some(candidate => candidate.length === nextTypedChunk.length);
   const isCurrentLineFinished = isCurrentChunkFinished && currentLine.length === currentChunkIndex + 1;
@@ -146,6 +158,7 @@ const getNextState = (
     ...previousState,
     ...nextTimeState,
     typedLines: nextTypedLines,
+    typos: nextTypos,
     hasTypo: false,
     isFinished: isCurrentQuestionFinished
   };

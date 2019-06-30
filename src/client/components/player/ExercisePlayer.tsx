@@ -6,7 +6,7 @@ import { Exercise, Submission, SubmissionSummary } from "../../../shared/api/ent
 import { SaveParams } from "../../../shared/api/request/save";
 import { SearchParams } from "../../../shared/api/request/search";
 import { stringifySearchParams } from "../../api/request/search";
-import { getTotalTime, getTypeCountFromResults, QuestionResult } from "../../domain/exercise/attempt";
+import { QuestionResult, summarizeResults } from "../../domain/exercise/attempt";
 import { useEntity } from "../../hooks/search";
 import { actions, RootState } from "../../reducers";
 import { UserContext } from "../project/Context";
@@ -41,9 +41,7 @@ export const ExercisePlayer = React.memo<{
     if (questionIndex === undefined) {
       const submission: SaveParams<Submission> = {
         exerciseId,
-        typeCount: getTypeCountFromResults(results),
-        time: getTotalTime(results),
-        accuracy: 100
+        ...summarizeResults(results)
       };
 
       dispatch(actions.buffers.add("Submission", submissionId, submission));
