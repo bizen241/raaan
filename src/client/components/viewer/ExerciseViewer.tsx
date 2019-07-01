@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, Dialog, IconButton, Menu, MenuItem, Typography } from "@material-ui/core";
+import { Box, Button, Dialog, IconButton, Menu, MenuItem, Typography } from "@material-ui/core";
 import { Delete, Edit, MoreVert, PlayArrow } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
@@ -53,18 +53,10 @@ const ExerciseViewerRenderer = React.memo<EntityViewerRendererProps<Exercise>>(
           <Typography variant="h4">{exercise.title || "無題"}</Typography>
         </Box>
         <Box display="flex" flexDirection="column" pb={1}>
-          <Card>
-            <CardContent>
-              <SubmissionSummaryViewer userId={currentUser.id} exerciseId={exerciseId} />
-            </CardContent>
-          </Card>
+          <SubmissionSummaryViewer userId={currentUser.id} exerciseId={exerciseId} />
         </Box>
         <Box display="flex" flexDirection="column" pb={1}>
-          <Card>
-            <CardContent>
-              <ExerciseSummaryViewer entityId={exercise.summaryId} />
-            </CardContent>
-          </Card>
+          <ExerciseSummaryViewer entityId={exercise.summaryId} />
         </Box>
         <Box display="flex" flexDirection="column" pb={1}>
           <Button

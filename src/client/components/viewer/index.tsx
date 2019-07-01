@@ -1,4 +1,4 @@
-import { Card, CardHeader, CircularProgress } from "@material-ui/core";
+import { Avatar, Card, CardHeader, CircularProgress } from "@material-ui/core";
 import { Done, Error } from "@material-ui/icons";
 import * as React from "react";
 import { useEffect } from "react";
@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { EntityObject, EntityType } from "../../../shared/api/entities";
 import { RootState } from "../../reducers";
 import { apiActions } from "../../reducers/api";
+import { useStyles } from "../ui/styles";
 
 export interface EntityViewerContainerProps {
   entityId: string;
@@ -21,6 +22,7 @@ export const EntityViewer = React.memo<{
   entityId: string;
   renderer: React.ComponentType<EntityViewerRendererProps<any>>;
 }>(({ entityType, entityId, renderer: Renderer }) => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const { entity, getStatus, deleteStatus } = useSelector((state: RootState) => ({
     entity: state.cache.get[entityType][entityId],
@@ -37,28 +39,60 @@ export const EntityViewer = React.memo<{
   if (getStatus === 404) {
     return (
       <Card>
-        <CardHeader avatar={<Error />} title="見つかりませんでした" />
+        <CardHeader
+          avatar={
+            <Avatar className={classes.cardAvatar}>
+              <Error />
+            </Avatar>
+          }
+          title="見つかりませんでした"
+          titleTypographyProps={{ variant: "h6" }}
+        />
       </Card>
     );
   }
   if (deleteStatus === 102) {
     return (
       <Card>
-        <CardHeader avatar={<CircularProgress />} title="削除中です" />
+        <CardHeader
+          avatar={
+            <Avatar className={classes.cardAvatar}>
+              <CircularProgress />
+            </Avatar>
+          }
+          title="削除中です"
+          titleTypographyProps={{ variant: "h6" }}
+        />
       </Card>
     );
   }
   if (deleteStatus === 200) {
     return (
       <Card>
-        <CardHeader avatar={<Done />} title="削除が完了しました" />
+        <CardHeader
+          avatar={
+            <Avatar className={classes.cardAvatar}>
+              <Done />
+            </Avatar>
+          }
+          title="削除が完了しました"
+          titleTypographyProps={{ variant: "h6" }}
+        />
       </Card>
     );
   }
   if (entity === undefined) {
     return (
       <Card>
-        <CardHeader avatar={<CircularProgress />} title="ロード中です" />
+        <CardHeader
+          avatar={
+            <Avatar className={classes.cardAvatar}>
+              <CircularProgress />
+            </Avatar>
+          }
+          title="ロード中です"
+          titleTypographyProps={{ variant: "h6" }}
+        />
       </Card>
     );
   }

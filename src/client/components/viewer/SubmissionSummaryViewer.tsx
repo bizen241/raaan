@@ -1,4 +1,4 @@
-import { Box, Divider, Typography } from "@material-ui/core";
+import { Box, Card, CardContent, Divider, Typography } from "@material-ui/core";
 import * as React from "react";
 import { useMemo } from "react";
 import { EntityViewer, EntityViewerRendererProps } from ".";
@@ -27,7 +27,19 @@ export const SubmissionSummaryViewer = React.memo<{
 
   const entityId = searchResult.ids[0];
   if (entityId === undefined) {
-    return null;
+    return (
+      <Card>
+        <CardContent>
+          <Box display="flex" flexDirection="column">
+            <Box display="flex" flexDirection="column" mb={1}>
+              <Typography>自分の提出回数</Typography>
+              <Typography variant="h4">0</Typography>
+              <Divider />
+            </Box>
+          </Box>
+        </CardContent>
+      </Card>
+    );
   }
 
   return <EntityViewer entityType="SubmissionSummary" entityId={entityId} renderer={SubmissionSummaryViewerRenderer} />;
@@ -36,13 +48,17 @@ export const SubmissionSummaryViewer = React.memo<{
 const SubmissionSummaryViewerRenderer = React.memo<EntityViewerRendererProps<SubmissionSummary>>(
   ({ entity: submissionSummary }) => {
     return (
-      <Box display="flex" flexDirection="column">
-        <Box display="flex" flexDirection="column" mb={1}>
-          <Typography>自分の提出回数</Typography>
-          <Typography variant="h4">{submissionSummary.submitCount}</Typography>
-          <Divider />
-        </Box>
-      </Box>
+      <Card>
+        <CardContent>
+          <Box display="flex" flexDirection="column">
+            <Box display="flex" flexDirection="column" mb={1}>
+              <Typography>自分の提出回数</Typography>
+              <Typography variant="h4">{submissionSummary.submitCount}</Typography>
+              <Divider />
+            </Box>
+          </Box>
+        </CardContent>
+      </Card>
     );
   }
 );
