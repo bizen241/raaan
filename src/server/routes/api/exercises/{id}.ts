@@ -55,6 +55,9 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
     exercise.summary.maxTypeCount = maxTypeCount;
     exercise.summary.minTypeCount = minTypeCount;
   }
+  if (params.isPrivate !== undefined && !exercise.isLocked) {
+    exercise.isPrivate = params.isPrivate;
+  }
 
   await manager.save(exercise);
 

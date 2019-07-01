@@ -50,9 +50,10 @@ const parseExercise: Parser<Exercise> = query => {
 };
 
 const parseExerciseSummary: Parser<ExerciseSummary> = query => {
-  const { lang, title, description } = query;
+  const { authorId, lang, title, description } = query;
 
   return {
+    authorId,
     lang,
     title,
     description,
