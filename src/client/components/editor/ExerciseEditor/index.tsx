@@ -1,14 +1,16 @@
-import { Box, Button, Dialog, TextField } from "@material-ui/core";
+import { Box, Button, Dialog, Divider, TextField } from "@material-ui/core";
 import { Add, PlayArrow } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { EntityEditor, EntityEditorContainerProps, EntityEditorRendererProps } from "../";
 import { Exercise } from "../../../../shared/api/entities";
+import { createQuestion } from "../../../domain/exercise/create";
 import { actions } from "../../../reducers";
 import { ExercisePreviewer } from "../../player/ExercisePreviewer";
 import { useStyles } from "../../ui/styles";
 import { QuestionEditor } from "./QuestionEditor";
+import { TagEditor } from "./TagEditor";
 
 export const ExerciseEditor = React.memo<EntityEditorContainerProps>(props => (
   <EntityEditor {...props} entityType="Exercise" rendererComponent={ExerciseEditorRenderer} />
@@ -28,10 +30,14 @@ const ExerciseEditorRenderer = React.memo<EntityEditorRendererProps<Exercise>>((
   const onToggleQuestionPreviewer = useCallback(() => toggleQuestionPreviewer(s => !s), []);
 
   const onUpdateTitle = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => dispatch(actions.exercise.updateTitle(bufferId, e.target.value)),
+    (e: React.ChangeEvent<HTMLInputElement>) =>
+      dispatch(actions.buffers.updateValue<Exercise>("Exercise", bufferId, "title", e.target.value)),
     []
   );
-  const onAppendQuestion = useCallback(() => dispatch(actions.exercise.appendQuestion(bufferId)), []);
+  const onAppendQuestion = useCallback(
+    () => dispatch(actions.buffers.appendArrayItem<Exercise>("Exercise", bufferId, "questions", createQuestion())),
+    []
+  );
 
   const classes = useStyles();
 
@@ -41,15 +47,10 @@ const ExerciseEditorRenderer = React.memo<EntityEditorRendererProps<Exercise>>((
         <TextField variant="outlined" label="題名" defaultValue={title} onChange={onUpdateTitle} />
       </Box>
       <Box display="flex" flexDirection="column" pb={1}>
-        <Button
-          className={classes.largeButton}
-          variant="contained"
-          color="secondary"
-          onClick={onToggleExercisePreviewer}
-        >
-          <PlayArrow className={classes.leftIcon} />
-          プレビュー
-        </Button>
+        <TagEditor />
+      </Box>
+      <Box pb={1}>
+        <Divider variant="middle" />
       </Box>
       {questions.map((question, index) => (
         <Box key={question.id} display="flex" flexDirection="column" pb={1}>
@@ -66,6 +67,17 @@ const ExerciseEditorRenderer = React.memo<EntityEditorRendererProps<Exercise>>((
         <Button className={classes.largeButton} variant="contained" color="primary" onClick={onAppendQuestion}>
           <Add className={classes.leftIcon} />
           問題を追加
+        </Button>
+      </Box>
+      <Box display="flex" flexDirection="column" pb={1}>
+        <Button
+          className={classes.largeButton}
+          variant="contained"
+          color="secondary"
+          onClick={onToggleExercisePreviewer}
+        >
+          <PlayArrow className={classes.leftIcon} />
+          プレビュー
         </Button>
       </Box>
       <Dialog fullScreen open={isExercisePreviewerOpen} onClose={onToggleExercisePreviewer}>

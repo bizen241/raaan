@@ -5,7 +5,7 @@ import { SaveParams } from "../../../shared/api/request/save";
 export const createExercise = (): SaveParams<Exercise> => ({
   title: "",
   lang: "ja",
-  tags: "",
+  tags: [],
   description: "",
   rubric: "",
   comment: "",

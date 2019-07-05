@@ -48,12 +48,12 @@ const UserConfigEditorRenderer = React.memo<EntityEditorRendererProps<UserConfig
 
   const onUpdateLang = useCallback(
     (e: React.ChangeEvent<{ value: unknown }>) =>
-      dispatch(actions.userConfig.updateLang(bufferId, e.target.value as Lang)),
+      dispatch(actions.buffers.updateValue<UserConfig>("UserConfig", bufferId, "lang", e.target.value as Lang)),
     []
   );
   const onUpdateTheme = useCallback(
     (e: React.ChangeEvent<{ value: unknown }>) =>
-      dispatch(actions.userConfig.updateTheme(bufferId, e.target.value as Theme)),
+      dispatch(actions.buffers.updateValue<UserConfig>("UserConfig", bufferId, "theme", e.target.value as Theme)),
     []
   );
 

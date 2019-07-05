@@ -34,20 +34,12 @@ const ExerciseViewerRenderer = React.memo<EntityViewerRendererProps<Exercise>>(
 
     const onPublish = useCallback(() => {
       dispatch(actions.buffers.load("Exercise", exerciseId));
-      dispatch(
-        actions.buffers.edit<Exercise>("Exercise", exerciseId, {
-          isPrivate: false
-        })
-      );
+      dispatch(actions.buffers.updateValue<Exercise>("Exercise", exerciseId, "isPrivate", false));
       dispatch(actions.api.upload("Exercise", exerciseId));
     }, []);
     const onUnpublish = useCallback(() => {
       dispatch(actions.buffers.load("Exercise", exerciseId));
-      dispatch(
-        actions.buffers.edit<Exercise>("Exercise", exerciseId, {
-          isPrivate: true
-        })
-      );
+      dispatch(actions.buffers.updateValue<Exercise>("Exercise", exerciseId, "isPrivate", true));
       dispatch(actions.api.upload("Exercise", exerciseId));
     }, []);
 

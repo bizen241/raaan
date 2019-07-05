@@ -29,11 +29,14 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
   @Column()
   submitCount: number = 0;
 
-  constructor(maxTypeCount: number, minTypeCount: number, tags: ExerciseTagEntity[] = []) {
+  constructor(maxTypeCount: number, minTypeCount: number, tags?: ExerciseTagEntity[]) {
     super();
 
     this.maxTypeCount = maxTypeCount;
     this.minTypeCount = minTypeCount;
-    this.tags = tags;
+
+    if (tags !== undefined) {
+      this.tags = tags;
+    }
   }
 }

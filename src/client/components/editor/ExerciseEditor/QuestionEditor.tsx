@@ -4,7 +4,7 @@ import { MoreVert, Note } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Question } from "../../../../shared/api/entities";
+import { Exercise, Question } from "../../../../shared/api/entities";
 import { rubyAnchorCharacter, rubySeparatorCharacter, rubyTerminatorCharacter } from "../../../../shared/exercise";
 import { addRuby } from "../../../domain/exercise/ruby";
 import { actions } from "../../../reducers";
@@ -28,18 +28,27 @@ export const QuestionEditor = React.memo<{
   useEffect(() => {
     if (isRubyRequested) {
       addRuby(value, result => {
-        dispatch(actions.exercise.updateQuestion(bufferId, questionIndex, "value", result));
+        dispatch(
+          actions.buffers.updateArrayItem<Exercise>("Exercise", bufferId, "questions", questionIndex, {
+            value: result
+          })
+        );
         toggleRubyState(false);
       });
     }
-  }, [isRubyRequested]);
+  }, [questionIndex, isRubyRequested]);
 
-  const onDelete = useCallback(() => dispatch(actions.exercise.deleteQuestion(bufferId, questionIndex)), [
-    questionIndex
-  ]);
+  const onDelete = useCallback(
+    () => dispatch(actions.buffers.deleteArrayItem<Exercise>("Exercise", bufferId, "questions", questionIndex)),
+    [questionIndex]
+  );
   const onUpdateValue = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-      dispatch(actions.exercise.updateQuestion(bufferId, questionIndex, "value", e.target.value)),
+      dispatch(
+        actions.buffers.updateArrayItem<Exercise>("Exercise", bufferId, "questions", questionIndex, {
+          value: e.target.value
+        })
+      ),
     [questionIndex]
   );
 
