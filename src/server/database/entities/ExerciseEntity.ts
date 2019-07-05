@@ -30,7 +30,7 @@ export class ExerciseEntity extends BaseEntityClass {
   title: string = "";
 
   @Column("json")
-  tags: string = "";
+  tags: string[] = [];
 
   @Column()
   description: string = "";
@@ -62,7 +62,7 @@ export class ExerciseEntity extends BaseEntityClass {
     if (params !== undefined) {
       this.lang = params.lang || "en";
       this.title = params.title || "";
-      this.tags = params.tags || "";
+      this.tags = params.tags || [];
       this.description = params.description || "";
       this.rubric = params.rubric || "";
       this.comment = params.comment || "";

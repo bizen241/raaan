@@ -15,7 +15,7 @@ export interface Exercise extends BaseEntityObject {
   summaryId: UUID;
   lang: string;
   title: string;
-  tags: string;
+  tags: string[];
   description: string;
   rubric: string;
   comment: string;

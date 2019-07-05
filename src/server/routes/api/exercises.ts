@@ -6,7 +6,8 @@ import { SaveParams } from "../../../shared/api/request/save";
 import { getTypeCountFromQuestions } from "../../../shared/exercise";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
-import { ExerciseEntity, ExerciseSummaryEntity } from "../../database/entities";
+import { ExerciseEntity, ExerciseSummaryEntity, ExerciseTagEntity } from "../../database/entities";
+import { normalizeTags } from "../../exercise";
 
 export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const params: SaveParams<Exercise> = req.body;
@@ -14,7 +15,12 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
   await getManager().transaction(async manager => {
     const { maxTypeCount, minTypeCount } = getTypeCountFromQuestions(params.questions);
 
-    const newExerciseSummary = new ExerciseSummaryEntity(maxTypeCount, minTypeCount);
+    const tags: ExerciseTagEntity[] = [];
+    normalizeTags(params.tags).forEach(async tag => {
+      tags.push(new ExerciseTagEntity(tag));
+    });
+
+    const newExerciseSummary = new ExerciseSummaryEntity(maxTypeCount, minTypeCount, tags);
     const newExercise = new ExerciseEntity(currentUser, newExerciseSummary, params);
 
     await manager.save(newExercise);

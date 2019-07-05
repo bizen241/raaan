@@ -6,7 +6,8 @@ import { SaveParams } from "../../../../shared/api/request/save";
 import { getTypeCountFromQuestions } from "../../../../shared/exercise";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
-import { ExerciseEntity } from "../../../database/entities";
+import { ExerciseEntity, ExerciseTagEntity } from "../../../database/entities";
+import { normalizeTags } from "../../../exercise";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   const { id: exerciseId }: PathParams = req.params;
@@ -35,9 +36,9 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
   const manager = getManager();
 
   const exercise = await manager.findOne(ExerciseEntity, exerciseId, {
-    relations: ["author", "summary"]
+    relations: ["author", "summary", "summary.tags"]
   });
-  if (exercise === undefined || exercise.summary === undefined) {
+  if (exercise === undefined || exercise.summary === undefined || exercise.summary.tags === undefined) {
     return next(createError(500));
   }
   if (exercise.authorId !== currentUser.id) {
@@ -46,6 +47,17 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
 
   if (params.title !== undefined) {
     exercise.title = params.title;
+  }
+  if (params.tags !== undefined) {
+    await manager.remove(exercise.summary.tags);
+
+    const tags: ExerciseTagEntity[] = [];
+    normalizeTags(params.tags).forEach(async tag => {
+      tags.push(new ExerciseTagEntity(tag));
+    });
+
+    exercise.tags = params.tags;
+    exercise.summary.tags = tags;
   }
   if (params.questions !== undefined) {
     exercise.questions = params.questions;
