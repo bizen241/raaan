@@ -44,7 +44,7 @@ const ExerciseEditorRenderer = React.memo<EntityEditorRendererProps<Exercise>>((
   return (
     <Box display="flex" flexDirection="column" flex={1}>
       <Box display="flex" flexDirection="column" py={1}>
-        <TextField variant="outlined" label="題名" defaultValue={title} onChange={onUpdateTitle} />
+        <TextField variant="outlined" label="題名" value={title} onChange={onUpdateTitle} />
       </Box>
       <Box display="flex" flexDirection="column" pb={1}>
         <TagEditor />

@@ -2,13 +2,13 @@ import { Avatar, Box, Card, CardContent, CardHeader, IconButton, Menu, MenuItem,
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { MoreVert, Note } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Exercise, Question } from "../../../../shared/api/entities";
-import { rubyAnchorCharacter, rubySeparatorCharacter, rubyTerminatorCharacter } from "../../../../shared/exercise";
 import { addRuby } from "../../../domain/exercise/ruby";
 import { actions } from "../../../reducers";
 import { useStyles } from "../../ui/styles";
+import { Highlighter } from "./Highlighter";
 
 export const QuestionEditor = React.memo<{
   bufferId: string;
@@ -19,9 +19,14 @@ export const QuestionEditor = React.memo<{
 }>(({ bufferId, question, questionIndex, onFocus, onPreview }) => {
   const dispatch = useDispatch();
 
+  const textFieldRef = useRef<HTMLTextAreaElement>(null);
+
   const [menuAnchorElement, setMenuAnchorElement] = useState(null);
   const [isRubyRequested, toggleRubyState] = useState(false);
   const [isCompositing, toggleCompositionState] = useState(false);
+
+  const classes = useStyles();
+  const textFieldClasses = useTextFieldStyles({ isCompositing });
 
   const { value } = question;
 
@@ -33,6 +38,11 @@ export const QuestionEditor = React.memo<{
             value: result
           })
         );
+
+        if (textFieldRef.current !== null) {
+          textFieldRef.current.value = result;
+        }
+
         toggleRubyState(false);
       });
     }
@@ -51,9 +61,6 @@ export const QuestionEditor = React.memo<{
       ),
     [questionIndex]
   );
-
-  const classes = useStyles();
-  const textFieldClasses = useTextFieldStyles({ isCompositing });
 
   return (
     <Card onFocus={useCallback(() => onFocus(questionIndex), [questionIndex])}>
@@ -84,7 +91,7 @@ export const QuestionEditor = React.memo<{
       />
       <CardContent>
         <Box display="flex" flexDirection="column" position="relative">
-          {!isCompositing ? <HighlightedValue value={value} /> : null}
+          {!isCompositing ? <Highlighter value={value} /> : null}
           <TextField
             variant="outlined"
             multiline
@@ -96,66 +103,14 @@ export const QuestionEditor = React.memo<{
             }}
             onCompositionStart={useCallback(() => toggleCompositionState(true), [])}
             onCompositionEnd={useCallback(() => toggleCompositionState(false), [])}
-            value={question.value}
+            inputRef={textFieldRef}
+            defaultValue={value}
             onChange={onUpdateValue}
           />
         </Box>
       </CardContent>
     </Card>
   );
-});
-
-const rubyRegExp = new RegExp(
-  `${rubyAnchorCharacter}([^${rubySeparatorCharacter}]+)${rubySeparatorCharacter}([^${rubyTerminatorCharacter}]+)${rubyTerminatorCharacter}`,
-  "g"
-);
-
-const HighlightedValue = React.memo<{ value: string }>(({ value }) => {
-  const classes = useHighlightStyles();
-
-  const highlightedLines: JSX.Element[][] = [];
-
-  value.split("\n").forEach(line => {
-    const highlightedLine: JSX.Element[] = [];
-
-    let cursor = 0;
-    let matched: RegExpExecArray | null;
-
-    // tslint:disable-next-line: no-conditional-assignment
-    while ((matched = rubyRegExp.exec(line)) !== null) {
-      const start = matched.index;
-
-      if (cursor !== start) {
-        highlightedLine.push(<span key={cursor}>{line.slice(cursor, start)}</span>);
-
-        cursor = start;
-      }
-
-      highlightedLine.push(
-        <span key={start} style={{ color: "#999" }}>
-          {rubyAnchorCharacter}
-        </span>,
-        <span key={start + 1}>{matched[1]}</span>,
-        <span key={start + 2} style={{ color: "#999" }}>
-          {rubySeparatorCharacter}
-          {matched[2]}
-          {rubyTerminatorCharacter}
-        </span>
-      );
-
-      cursor += matched[0].length;
-    }
-
-    if (cursor === 0) {
-      highlightedLine.push(<span key={cursor}>{line + "\n"}</span>);
-    } else {
-      highlightedLine.push(<span key={cursor}>{line.slice(cursor) + "\n"}</span>);
-    }
-
-    highlightedLines.push(highlightedLine);
-  });
-
-  return <div className={classes.root}>{highlightedLines}</div>;
 });
 
 const useTextFieldStyles = makeStyles<Theme, { isCompositing: boolean }>(theme => ({
@@ -168,22 +123,4 @@ const useTextFieldStyles = makeStyles<Theme, { isCompositing: boolean }>(theme =
     caretColor: theme.palette.type === "light" ? "black" : "white",
     color: props.isCompositing ? "inherit" : "transparent"
   })
-}));
-
-const useHighlightStyles = makeStyles(() => ({
-  root: {
-    padding: "18.5px 14px",
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    zIndex: 1,
-    backgroundColor: "transparent",
-    lineHeight: "1.1875em",
-    color: "inherit",
-    fontSize: "16px",
-    fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
-    whiteSpace: "pre-wrap",
-    wordWrap: "break-word",
-    pointerEvents: "none"
-  }
 }));
