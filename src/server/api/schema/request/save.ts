@@ -13,7 +13,7 @@ export const SaveParamsMapSchema: Definition = {
         authorId: { format: "uuid", type: "string" },
         summaryId: { format: "uuid", type: "string" },
         lang: { type: "string" },
-        tags: { type: "string" },
+        tags: { type: "array", items: { type: "string" } },
         description: { type: "string" },
         rubric: { type: "string" },
         comment: { type: "string" },
@@ -40,10 +40,10 @@ export const SaveParamsMapSchema: Definition = {
         title: { type: "string" },
         authorId: { format: "uuid", type: "string" },
         lang: { type: "string" },
-        tags: { type: "string" },
+        tags: { type: "array", items: { type: "string" } },
         description: { type: "string" },
         exerciseId: { format: "uuid", type: "string" },
-        tagIds: { type: "array", items: { type: "string" } }
+        submitCount: { type: "number" }
       }
     },
     ExerciseTag: { type: "object", properties: { name: { type: "string" } } },
@@ -53,6 +53,7 @@ export const SaveParamsMapSchema: Definition = {
         time: { type: "number" },
         exerciseId: { format: "uuid", type: "string" },
         userId: { format: "uuid", type: "string" },
+        typeCount: { type: "number" },
         accuracy: { type: "number" }
       }
     },
@@ -60,15 +61,24 @@ export const SaveParamsMapSchema: Definition = {
       type: "object",
       properties: {
         exerciseId: { format: "uuid", type: "string" },
+        submitCount: { type: "number" },
         userId: { format: "uuid", type: "string" },
-        averageTime: { type: "number" },
-        averageAccuracy: { type: "number" }
+        exerciseSummaryId: { format: "uuid", type: "string" },
+        latest: {
+          type: "object",
+          properties: { typeCount: { type: "number" }, time: { type: "number" }, accuracy: { type: "number" } }
+        },
+        best: {
+          type: "object",
+          properties: { typeCount: { type: "number" }, time: { type: "number" }, accuracy: { type: "number" } }
+        }
       }
     },
     User: {
       type: "object",
       properties: {
         name: { type: "string" },
+        summaryId: { format: "uuid", type: "string" },
         permission: { enum: ["Admin", "Guest", "Owner", "Write"], type: "string" },
         accountId: { format: "uuid", type: "string" },
         configId: { format: "uuid", type: "string" }
@@ -91,11 +101,23 @@ export const SaveParamsMapSchema: Definition = {
     },
     UserSession: {
       type: "object",
-      properties: { userId: { format: "uuid", type: "string" }, userAgent: { type: "string" } }
+      properties: {
+        browser: { type: "string" },
+        userId: { format: "uuid", type: "string" },
+        accessCount: { type: "number" },
+        deviceType: { type: "string" },
+        deviceName: { type: "string" },
+        os: { type: "string" },
+        isCurrent: { type: "boolean" }
+      }
     },
     UserSummary: {
       type: "object",
-      properties: { userId: { format: "uuid", type: "string" }, submitCount: { type: "number" } }
+      properties: {
+        submitCount: { type: "number" },
+        userId: { format: "uuid", type: "string" },
+        typeCount: { type: "number" }
+      }
     }
   }
 };

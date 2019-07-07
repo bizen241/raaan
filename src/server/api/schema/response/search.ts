@@ -19,7 +19,7 @@ export const SearchResponseSchema: Definition = {
               summaryId: { format: "uuid", type: "string" },
               lang: { type: "string" },
               title: { type: "string" },
-              tags: { type: "string" },
+              tags: { type: "array", items: { type: "string" } },
               description: { type: "string" },
               rubric: { type: "string" },
               comment: { type: "string" },
@@ -52,11 +52,11 @@ export const SearchResponseSchema: Definition = {
             properties: {
               authorId: { format: "uuid", type: "string" },
               exerciseId: { format: "uuid", type: "string" },
-              tagIds: { type: "array", items: { type: "string" } },
               lang: { type: "string" },
               title: { type: "string" },
-              tags: { type: "string" },
+              tags: { type: "array", items: { type: "string" } },
               description: { type: "string" },
+              submitCount: { type: "number" },
               id: { format: "uuid", type: "string" },
               createdAt: { type: "number" },
               updatedAt: { type: "number" },
@@ -84,6 +84,7 @@ export const SearchResponseSchema: Definition = {
             properties: {
               userId: { format: "uuid", type: "string" },
               exerciseId: { format: "uuid", type: "string" },
+              typeCount: { type: "number" },
               time: { type: "number" },
               accuracy: { type: "number" },
               id: { format: "uuid", type: "string" },
@@ -100,8 +101,16 @@ export const SearchResponseSchema: Definition = {
             properties: {
               userId: { format: "uuid", type: "string" },
               exerciseId: { format: "uuid", type: "string" },
-              averageTime: { type: "number" },
-              averageAccuracy: { type: "number" },
+              exerciseSummaryId: { format: "uuid", type: "string" },
+              latest: {
+                type: "object",
+                properties: { typeCount: { type: "number" }, time: { type: "number" }, accuracy: { type: "number" } }
+              },
+              best: {
+                type: "object",
+                properties: { typeCount: { type: "number" }, time: { type: "number" }, accuracy: { type: "number" } }
+              },
+              submitCount: { type: "number" },
               id: { format: "uuid", type: "string" },
               createdAt: { type: "number" },
               updatedAt: { type: "number" },
@@ -118,6 +127,7 @@ export const SearchResponseSchema: Definition = {
               permission: { enum: ["Admin", "Guest", "Owner", "Write"], type: "string" },
               accountId: { format: "uuid", type: "string" },
               configId: { format: "uuid", type: "string" },
+              summaryId: { format: "uuid", type: "string" },
               id: { format: "uuid", type: "string" },
               createdAt: { type: "number" },
               updatedAt: { type: "number" },
@@ -160,7 +170,12 @@ export const SearchResponseSchema: Definition = {
             type: "object",
             properties: {
               userId: { format: "uuid", type: "string" },
-              userAgent: { type: "string" },
+              accessCount: { type: "number" },
+              deviceType: { type: "string" },
+              deviceName: { type: "string" },
+              os: { type: "string" },
+              browser: { type: "string" },
+              isCurrent: { type: "boolean" },
               id: { format: "uuid", type: "string" },
               createdAt: { type: "number" },
               updatedAt: { type: "number" },
@@ -175,6 +190,7 @@ export const SearchResponseSchema: Definition = {
             properties: {
               userId: { format: "uuid", type: "string" },
               submitCount: { type: "number" },
+              typeCount: { type: "number" },
               id: { format: "uuid", type: "string" },
               createdAt: { type: "number" },
               updatedAt: { type: "number" },
