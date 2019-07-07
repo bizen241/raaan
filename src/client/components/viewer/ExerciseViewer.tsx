@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, IconButton, Menu, MenuItem, Typography } from "@material-ui/core";
+import { Box, Button, Chip, Dialog, IconButton, Menu, MenuItem, Typography } from "@material-ui/core";
 import { Delete, Edit, Lock, MoreVert, PlayArrow, Public } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
@@ -80,6 +80,13 @@ const ExerciseViewerRenderer = React.memo<EntityViewerRendererProps<Exercise>>(
         </Box>
         <Box pb={1}>
           <Typography variant="h4">{exercise.title || "無題"}</Typography>
+        </Box>
+        <Box display="flex" pb={1}>
+          {exercise.tags.map(tag => (
+            <Box key={tag} pr={1}>
+              <Chip label={tag} />
+            </Box>
+          ))}
         </Box>
         <Box display="flex" flexDirection="column" pb={1}>
           <Button

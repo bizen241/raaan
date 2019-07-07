@@ -42,7 +42,7 @@ export const TagsEditor = React.memo<{
           </Box>
           <Box display="flex">
             {tags.map(tag => (
-              <Box pr={1}>
+              <Box key={tag} pr={1}>
                 <Chip label={tag} />
               </Box>
             ))}
@@ -55,7 +55,7 @@ export const TagsEditor = React.memo<{
             <Table>
               <TableBody>
                 {tags.map((tag, index) => (
-                  <TagEditor exerciseId={exerciseId} tagIndex={index} tag={tag} />
+                  <TagEditor key={index} exerciseId={exerciseId} tagIndex={index} tag={tag} />
                 ))}
               </TableBody>
             </Table>
