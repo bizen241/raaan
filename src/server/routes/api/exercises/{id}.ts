@@ -52,8 +52,8 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
     await manager.remove(exercise.summary.tags);
 
     const tags: ExerciseTagEntity[] = [];
-    normalizeTags(params.tags).forEach(async tag => {
-      tags.push(new ExerciseTagEntity(tag));
+    normalizeTags(params.tags).forEach(async tagName => {
+      tags.push(new ExerciseTagEntity(tagName));
     });
 
     exercise.tags = params.tags;

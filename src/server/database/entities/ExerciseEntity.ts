@@ -1,5 +1,6 @@
+import { Omit } from "react-redux";
 import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
-import { Exercise, Question } from "../../../shared/api/entities";
+import { Exercise, Question, removeIds, Tag } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";
@@ -30,7 +31,7 @@ export class ExerciseEntity extends BaseEntityClass {
   title: string = "";
 
   @Column("json")
-  tags: string[] = [];
+  tags: Array<Omit<Tag, "id">> = [];
 
   @Column()
   description: string = "";
@@ -39,7 +40,7 @@ export class ExerciseEntity extends BaseEntityClass {
   rubric: string = "";
 
   @Column("json")
-  questions: Question[] = [];
+  questions: Array<Omit<Question, "id">> = [];
 
   @Column()
   comment: string = "";
@@ -62,11 +63,11 @@ export class ExerciseEntity extends BaseEntityClass {
     if (params !== undefined) {
       this.lang = params.lang || "en";
       this.title = params.title || "";
-      this.tags = params.tags || [];
+      this.tags = removeIds(params.tags || []);
       this.description = params.description || "";
       this.rubric = params.rubric || "";
       this.comment = params.comment || "";
-      this.questions = params.questions || [];
+      this.questions = removeIds(params.questions || []);
     }
   }
 }

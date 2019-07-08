@@ -28,8 +28,9 @@ const ExerciseViewerRenderer = React.memo<EntityViewerRendererProps<Exercise>>(
 
     const [menuAnchorElement, setMenuAnchorElement] = useState(null);
 
-    const { buffer } = useSelector((state: RootState) => ({
-      buffer: state.buffers.Exercise[exerciseId]
+    const { buffer, exerciseSummary } = useSelector((state: RootState) => ({
+      buffer: state.buffers.Exercise[exerciseId],
+      exerciseSummary: state.cache.get.ExerciseSummary[exercise.summaryId]
     }));
 
     const onPublish = useCallback(() => {
@@ -82,11 +83,12 @@ const ExerciseViewerRenderer = React.memo<EntityViewerRendererProps<Exercise>>(
           <Typography variant="h4">{exercise.title || "無題"}</Typography>
         </Box>
         <Box display="flex" pb={1}>
-          {exercise.tags.map(tag => (
-            <Box key={tag} pr={1}>
-              <Chip label={tag} />
-            </Box>
-          ))}
+          {exerciseSummary &&
+            exerciseSummary.tags.map(tag => (
+              <Box key={tag} pr={1}>
+                <Chip label={tag} clickable component={RouterLink} to={`/tags/${tag}`} />
+              </Box>
+            ))}
         </Box>
         <Box display="flex" flexDirection="column" pb={1}>
           <Button

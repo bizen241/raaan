@@ -77,11 +77,11 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) =
     summaryId,
     lang,
     title,
-    tags,
+    tags: tags.map((tag, index) => ({ id: index, ...tag })),
     description,
     rubric,
     comment,
-    questions,
+    questions: questions.map((question, index) => ({ id: index, ...question })),
     isLocked,
     isPrivate
   };

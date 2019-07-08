@@ -13,7 +13,7 @@ import { NotFoundPage } from "../pages/NotFoundPage";
 import { SubmissionHistoryPage } from "../pages/SubmissionHistoryPage";
 import { UserExercisesPage } from "../pages/UserExercisesPage";
 
-export type PageProps = RouteComponentProps<{ id: string }>;
+export type PageProps = RouteComponentProps<{ id: string; name: string }>;
 
 const ConfigPage = React.lazy(() => import("../pages/ConfigPage"));
 const EditExercisePage = React.lazy(() => import("../pages/EditExercisePage"));

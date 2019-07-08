@@ -24,10 +24,10 @@ export const QuestionsEditor = React.memo<{
   const [isQuestionPreviewerOpen, toggleQuestionPreviewer] = useState(false);
   const onToggleQuestionPreviewer = useCallback(() => toggleQuestionPreviewer(s => !s), []);
 
-  const onAppendQuestion = useCallback(
-    () => dispatch(actions.buffers.appendArrayItem<Exercise>("Exercise", exerciseId, "questions", createQuestion())),
-    []
-  );
+  const onAppendQuestion = useCallback(() => {
+    const id = questions.reduce((maxId, question) => Math.max(question.id, maxId), 0);
+    dispatch(actions.buffers.appendArrayItem<Exercise>("Exercise", exerciseId, "questions", createQuestion(id)));
+  }, [questions.length]);
 
   return (
     <Box display="flex" flexDirection="column">

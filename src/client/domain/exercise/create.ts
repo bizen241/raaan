@@ -1,4 +1,3 @@
-import * as uuid from "uuid";
 import { Exercise, Question } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 
@@ -12,8 +11,8 @@ export const createExercise = (): SaveParams<Exercise> => ({
   questions: []
 });
 
-export const createQuestion = (): Question => ({
-  id: uuid(),
+export const createQuestion = (id: number): Question => ({
+  id,
   format: "plain",
   lang: "",
   value: "",

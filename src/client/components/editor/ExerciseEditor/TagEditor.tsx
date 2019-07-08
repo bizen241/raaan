@@ -3,13 +3,13 @@ import { Delete } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { Exercise } from "../../../../shared/api/entities";
+import { Exercise, Tag } from "../../../../shared/api/entities";
 import { actions } from "../../../reducers";
 
 export const TagEditor = React.memo<{
   exerciseId: string;
   tagIndex: number;
-  tag: string;
+  tag: Tag;
 }>(({ exerciseId, tagIndex, tag }) => {
   const dispatch = useDispatch();
 
@@ -19,7 +19,11 @@ export const TagEditor = React.memo<{
   );
   const onUpdate = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-      dispatch(actions.buffers.updateArrayItem<Exercise>("Exercise", exerciseId, "tags", tagIndex, e.target.value)),
+      dispatch(
+        actions.buffers.updateArrayItem<Exercise>("Exercise", exerciseId, "tags", tagIndex, {
+          name: e.target.value
+        })
+      ),
     [tagIndex]
   );
 
@@ -27,7 +31,7 @@ export const TagEditor = React.memo<{
     <TableRow>
       <TableCell padding="none">
         <Box display="flex" flexDirection="column" py={1}>
-          <TextField variant="outlined" defaultValue={tag} onChange={onUpdate} />
+          <TextField variant="outlined" defaultValue={tag.name} onChange={onUpdate} />
         </Box>
       </TableCell>
       <TableCell padding="checkbox">
