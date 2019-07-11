@@ -35,7 +35,7 @@ export const ExercisesPage = React.memo<PageProps>(() => {
         </Button>
       </Box>
       <Box display="flex" flexDirection="column" pb={1}>
-        <ExerciseSummaryList title="検索結果" searchParams={{}} />
+        <ExerciseSummaryList />
       </Box>
     </Page>
   );

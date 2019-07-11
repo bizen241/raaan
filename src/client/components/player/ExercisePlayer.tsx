@@ -1,13 +1,13 @@
 import { CircularProgress } from "@material-ui/core";
-import * as React from "react";
 import { useCallback, useContext, useEffect, useMemo } from "react";
+import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Exercise, Submission, SubmissionSummary } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { SearchParams } from "../../../shared/api/request/search";
 import { stringifySearchParams } from "../../api/request/search";
 import { QuestionResult, summarizeResults } from "../../domain/exercise/attempt";
-import { useEntity } from "../../hooks/search";
+import { useEntity } from "../../hooks/entity";
 import { actions, RootState } from "../../reducers";
 import { UserContext } from "../project/Context";
 import { AttemptManager } from "./AttemptManager";

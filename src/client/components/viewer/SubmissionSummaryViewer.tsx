@@ -1,7 +1,6 @@
 import { Box, Card, CardContent, Divider, Typography } from "@material-ui/core";
 import * as React from "react";
 import { useMemo } from "react";
-import { EntityViewer, EntityViewerRendererProps } from ".";
 import { SubmissionSummary } from "../../../shared/api/entities";
 import { SearchParams } from "../../../shared/api/request/search";
 import { useSearch } from "../../hooks/search";
@@ -20,45 +19,20 @@ export const SubmissionSummaryViewer = React.memo<{
     []
   );
 
-  const { searchResult } = useSearch("SubmissionSummary", searchParams);
-  if (searchResult === undefined) {
-    return null;
-  }
+  const { entities } = useSearch<SubmissionSummary>("SubmissionSummary", searchParams);
+  const submissionSummary = entities[0];
 
-  const entityId = searchResult.ids[0];
-  if (entityId === undefined) {
-    return (
-      <Card>
-        <CardContent>
-          <Box display="flex" flexDirection="column">
-            <Box display="flex" flexDirection="column" mb={1}>
-              <Typography>自分の提出回数</Typography>
-              <Typography variant="h4">0</Typography>
-              <Divider />
-            </Box>
+  return (
+    <Card>
+      <CardContent>
+        <Box display="flex" flexDirection="column">
+          <Box display="flex" flexDirection="column" mb={1}>
+            <Typography>自分の提出回数</Typography>
+            <Typography variant="h4">{submissionSummary !== undefined ? submissionSummary.submitCount : 0}</Typography>
+            <Divider />
           </Box>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  return <EntityViewer entityType="SubmissionSummary" entityId={entityId} renderer={SubmissionSummaryViewerRenderer} />;
+        </Box>
+      </CardContent>
+    </Card>
+  );
 });
-
-const SubmissionSummaryViewerRenderer = React.memo<EntityViewerRendererProps<SubmissionSummary>>(
-  ({ entity: submissionSummary }) => {
-    return (
-      <Card>
-        <CardContent>
-          <Box display="flex" flexDirection="column">
-            <Box display="flex" flexDirection="column" mb={1}>
-              <Typography>自分の提出回数</Typography>
-              <Typography variant="h4">{submissionSummary.submitCount}</Typography>
-              <Divider />
-            </Box>
-          </Box>
-        </CardContent>
-      </Card>
-    );
-  }
-);

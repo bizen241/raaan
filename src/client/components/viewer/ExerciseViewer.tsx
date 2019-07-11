@@ -1,37 +1,34 @@
-import { Box, Button, Chip, Dialog, IconButton, Menu, MenuItem, Typography } from "@material-ui/core";
+import { Box, Button, Dialog, IconButton, Menu, MenuItem, Typography } from "@material-ui/core";
 import { Delete, Edit, Lock, MoreVert, PlayArrow, Public } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
-import { EntityViewer, EntityViewerContainerProps, EntityViewerRendererProps } from ".";
+import { createEntityViewer } from ".";
 import { Exercise } from "../../../shared/api/entities";
+import { useMenu } from "../../hooks/menu";
 import { actions, RootState } from "../../reducers";
 import { ExercisePlayer } from "../player/ExercisePlayer";
 import { UserContext } from "../project/Context";
 import { useStyles } from "../ui/styles";
 import { ExerciseSummaryViewer } from "./ExerciseSummaryViewer";
+import { ExerciseTagsViewer } from "./ExerciseTagsViewer";
 import { SubmissionSummaryViewer } from "./SubmissionSummaryViewer";
 
-export const ExerciseViewer = React.memo<EntityViewerContainerProps>(props => {
-  return <EntityViewer {...props} entityType="Exercise" renderer={ExerciseViewerRenderer} />;
-});
-
-const ExerciseViewerRenderer = React.memo<EntityViewerRendererProps<Exercise>>(
-  ({ entityId: exerciseId, entity: exercise }) => {
+export const ExerciseViewer = createEntityViewer<Exercise>(
+  "Exercise",
+  React.memo(({ entity: exercise, entityId: exerciseId }) => {
     const classes = useStyles();
-    const dispatch = useDispatch();
     const currentUser = useContext(UserContext);
+    const menu = useMenu();
+    const dispatch = useDispatch();
+
+    const { buffer } = useSelector((state: RootState) => ({
+      buffer: state.buffers.Exercise[exerciseId]
+    }));
 
     const [isExercisePreviewerOpen, toggleExercisePreviewer] = useState(false);
     const onToggleExercisePreviewer = useCallback(() => toggleExercisePreviewer(s => !s), []);
-
-    const [menuAnchorElement, setMenuAnchorElement] = useState(null);
-
-    const { buffer, exerciseSummary } = useSelector((state: RootState) => ({
-      buffer: state.buffers.Exercise[exerciseId],
-      exerciseSummary: state.cache.get.ExerciseSummary[exercise.summaryId]
-    }));
 
     const onPublish = useCallback(() => {
       dispatch(actions.buffers.load("Exercise", exerciseId));
@@ -43,6 +40,8 @@ const ExerciseViewerRenderer = React.memo<EntityViewerRendererProps<Exercise>>(
       dispatch(actions.buffers.updateValue<Exercise>("Exercise", exerciseId, "isPrivate", true));
       dispatch(actions.api.upload("Exercise", exerciseId));
     }, []);
+
+    const onDelete = useCallback(() => dispatch(actions.api.delete("Exercise", exerciseId)), []);
 
     const { isPrivate } = exercise;
 
@@ -58,21 +57,17 @@ const ExerciseViewerRenderer = React.memo<EntityViewerRendererProps<Exercise>>(
           ) : null}
           <Box flex={1} />
           <Box>
-            <IconButton onClick={useCallback(e => setMenuAnchorElement(e.currentTarget), [])}>
+            <IconButton onClick={menu.onOpen}>
               <MoreVert />
             </IconButton>
-            <Menu
-              anchorEl={menuAnchorElement}
-              open={Boolean(menuAnchorElement)}
-              onClose={useCallback(() => setMenuAnchorElement(null), [])}
-            >
+            <Menu anchorEl={menu.anchorElement} open={Boolean(menu.anchorElement)} onClose={menu.onClose}>
               {!isPrivate ? (
                 <MenuItem disabled={buffer !== undefined} onClick={onUnpublish}>
                   <Lock className={classes.leftIcon} />
                   非公開にする
                 </MenuItem>
               ) : null}
-              <MenuItem onClick={useCallback(() => dispatch(actions.api.delete("Exercise", exerciseId)), [])}>
+              <MenuItem onClick={onDelete}>
                 <Delete className={classes.leftIcon} />
                 削除
               </MenuItem>
@@ -83,12 +78,7 @@ const ExerciseViewerRenderer = React.memo<EntityViewerRendererProps<Exercise>>(
           <Typography variant="h4">{exercise.title || "無題"}</Typography>
         </Box>
         <Box display="flex" pb={1}>
-          {exerciseSummary &&
-            exerciseSummary.tags.map(tag => (
-              <Box key={tag} pr={1}>
-                <Chip label={tag} clickable component={RouterLink} to={`/tags/${tag}`} />
-              </Box>
-            ))}
+          <ExerciseTagsViewer entityId={exercise.summaryId} />
         </Box>
         <Box display="flex" flexDirection="column" pb={1}>
           <Button
@@ -136,5 +126,5 @@ const ExerciseViewerRenderer = React.memo<EntityViewerRendererProps<Exercise>>(
         </Dialog>
       </Box>
     );
-  }
+  })
 );

@@ -12,98 +12,71 @@ import {
 } from "@material-ui/core";
 import { List, Refresh } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
 import { EntityObject, EntityType } from "../../../../shared/api/entities";
 import { SearchParams } from "../../../../shared/api/request/search";
 import { useSearch } from "../../../hooks/search";
-import { actions } from "../../../reducers";
 import { useStyles } from "../../ui/styles";
 
-export interface EntityListProps<E extends EntityObject> {
+interface EntityListProps<E extends EntityObject> {
   title?: React.ReactNode;
-  searchParams: Partial<SearchParams<E>>;
+  initialSearchParams?: Partial<SearchParams<E>>;
 }
 
-export interface EntityListItemProps<E extends EntityObject> {
+interface EntityListItemProps<E extends EntityObject> {
   entity: E;
 }
 
-export const EntityList = React.memo<{
-  title?: React.ReactNode;
-  entityType: EntityType;
-  searchParams: Partial<SearchParams<any>>;
-  itemComponent: React.ComponentType<EntityListItemProps<any>>;
-}>(({ title, entityType, searchParams: partialSearchParams, itemComponent: ListItem }) => {
-  const dispatch = useDispatch();
+export const createEntityList = <E extends EntityObject>(
+  entityType: EntityType,
+  ListItem: React.ComponentType<EntityListItemProps<E>>
+) =>
+  React.memo<EntityListProps<E>>(({ title, initialSearchParams = {} }) => {
+    const classes = useStyles();
 
-  const [limit, setLimit] = useState(10);
-  const [page, setPage] = useState(0);
+    const { entities, status, limit, page, count, onReload, onChangePage, onChangeRowsPerPage } = useSearch(
+      entityType,
+      initialSearchParams
+    );
 
-  const offset = limit * page;
+    if (status !== undefined && status !== 200) {
+      return (
+        <Card>
+          <CardHeader avatar={<CircularProgress />} title="ロード中です" />
+        </Card>
+      );
+    }
 
-  const searchParams = useMemo(
-    () => ({
-      ...partialSearchParams,
-      limit,
-      offset
-    }),
-    [partialSearchParams, limit, offset]
-  );
-
-  const { searchResult, selectedEntities } = useSearch(entityType, searchParams);
-
-  const onReload = useCallback(() => dispatch(actions.api.search(entityType, searchParams)), [searchParams]);
-  const onChangePage = useCallback((_, newPage) => setPage(newPage), []);
-  const onChangeRowsPerPage = useCallback(e => setLimit(parseInt(e.target.value, 10)), []);
-
-  const classes = useStyles();
-
-  if (searchResult === undefined || selectedEntities === undefined) {
     return (
       <Card>
-        <CardHeader avatar={<CircularProgress />} title="ロード中です" />
+        <CardHeader
+          avatar={
+            <Avatar className={classes.cardAvatar}>
+              <List />
+            </Avatar>
+          }
+          title={title || "検索結果"}
+          titleTypographyProps={{ variant: "h6" }}
+          action={
+            <IconButton onClick={onReload}>
+              <Refresh />
+            </IconButton>
+          }
+        />
+        <Table>
+          <TableBody>{entities.map(entity => entity && <ListItem key={entity.id} entity={entity} />)}</TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPage={limit}
+                page={page}
+                count={count}
+                labelRowsPerPage="表示件数:"
+                onChangePage={onChangePage}
+                onChangeRowsPerPage={onChangeRowsPerPage}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
       </Card>
     );
-  }
-
-  return (
-    <Card>
-      <CardHeader
-        avatar={
-          <Avatar className={classes.cardAvatar}>
-            <List />
-          </Avatar>
-        }
-        title={title || "検索結果"}
-        titleTypographyProps={{ variant: "h6" }}
-        action={
-          <IconButton onClick={onReload}>
-            <Refresh />
-          </IconButton>
-        }
-      />
-      <Table>
-        <TableBody>
-          {selectedEntities.map(entity => (
-            <TableRow key={entity.id}>
-              <ListItem entity={entity} />
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPage={limit}
-              page={page}
-              count={searchResult.count}
-              labelRowsPerPage="表示件数:"
-              onChangePage={onChangePage}
-              onChangeRowsPerPage={onChangeRowsPerPage}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </Card>
-  );
-});
+  });

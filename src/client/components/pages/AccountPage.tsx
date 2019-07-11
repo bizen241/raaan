@@ -36,7 +36,7 @@ const AccountPage = React.memo(() => {
         <Box pb={1}>
           <UserSessionList
             title="セッション一覧"
-            searchParams={{
+            initialSearchParams={{
               userId: currentUser.id
             }}
           />

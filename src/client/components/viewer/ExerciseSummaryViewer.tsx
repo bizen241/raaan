@@ -1,14 +1,11 @@
 import { Box, Card, CardContent, Divider, Typography } from "@material-ui/core";
 import * as React from "react";
-import { EntityViewer, EntityViewerContainerProps, EntityViewerRendererProps } from ".";
+import { createEntityViewer } from ".";
 import { ExerciseSummary } from "../../../shared/api/entities";
 
-export const ExerciseSummaryViewer = React.memo<EntityViewerContainerProps>(props => {
-  return <EntityViewer {...props} entityType="ExerciseSummary" renderer={ExerciseSummaryViewerRenderer} />;
-});
-
-const ExerciseSummaryViewerRenderer = React.memo<EntityViewerRendererProps<ExerciseSummary>>(
-  ({ entity: exerciseSummary }) => {
+export const ExerciseSummaryViewer = createEntityViewer<ExerciseSummary>(
+  "ExerciseSummary",
+  React.memo(({ entity: exerciseSummary }) => {
     return (
       <Card>
         <CardContent>
@@ -22,5 +19,5 @@ const ExerciseSummaryViewerRenderer = React.memo<EntityViewerRendererProps<Exerc
         </CardContent>
       </Card>
     );
-  }
+  })
 );

@@ -1,28 +1,42 @@
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EntityObject, EntityType } from "../../shared/api/entities";
 import { SearchParams } from "../../shared/api/request/search";
 import { stringifySearchParams } from "../api/request/search";
 import { actions, RootState } from "../reducers";
 
-export const useSearch = <E extends EntityObject>(entityType: EntityType, searchParams: SearchParams<E>) => {
+export const useSearch = <E extends EntityObject>(
+  entityType: EntityType,
+  initialSearchParams: Partial<SearchParams<E>>
+) => {
   const dispatch = useDispatch();
 
-  const { searchResultMap, entityMap } = useSelector((state: RootState) => ({
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(0);
+
+  const offset = limit * page;
+
+  const [searchParams] = useState({
+    ...initialSearchParams,
+    limit,
+    offset
+  } as SearchParams<E>);
+
+  const { searchStatusMap, searchResultMap, entityMap } = useSelector((state: RootState) => ({
+    searchStatusMap: state.api.search[entityType],
     searchResultMap: state.cache.search[entityType],
     entityMap: state.cache.get[entityType]
   }));
 
-  const searchQuery = stringifySearchParams(searchParams, true);
-  const searchResult = searchResultMap[searchQuery];
+  const searchStatus = searchStatusMap[stringifySearchParams(searchParams)];
+  const searchResult = searchResultMap[stringifySearchParams(searchParams, true)];
+
   const selectedEntities = useMemo(() => {
     if (searchResult === undefined) {
       return undefined;
     }
 
-    const { offset, limit } = searchParams;
-
-    const entities: EntityObject[] = [];
+    const entities: Array<E | undefined> = [];
     const entityIds = searchResult.ids;
     const lastIndex = Math.min(offset + limit, searchResult.count - 1);
 
@@ -37,7 +51,7 @@ export const useSearch = <E extends EntityObject>(entityType: EntityType, search
         return undefined;
       }
 
-      entities.push(entity);
+      entities.push(entity as E);
     }
 
     return entities;
@@ -50,28 +64,16 @@ export const useSearch = <E extends EntityObject>(entityType: EntityType, search
   }, [searchParams]);
 
   return {
-    searchResult,
-    selectedEntities: selectedEntities as E[]
-  };
-};
-
-export const useEntity = <E extends EntityObject>(entityType: EntityType, entityId: string) => {
-  const dispatch = useDispatch();
-  const { entity, getStatus, deleteStatus } = useSelector((state: RootState) => ({
-    entity: state.cache.get[entityType][entityId],
-    getStatus: state.api.get[entityType][entityId],
-    deleteStatus: state.api.delete[entityType][entityId]
-  }));
-
-  useEffect(() => {
-    if (entity === undefined) {
-      dispatch(actions.api.get(entityType, entityId));
-    }
-  }, []);
-
-  return {
-    entity: entity as E | undefined,
-    getStatus,
-    deleteStatus
+    limit,
+    page,
+    count: searchResult !== undefined ? searchResult.count : 0,
+    entities: selectedEntities || [],
+    status: searchStatus,
+    onReload: useCallback(() => dispatch(actions.api.search(entityType, searchParams)), [searchParams]),
+    onChangePage: useCallback((_, nextPage: number) => setPage(nextPage), []),
+    onChangeRowsPerPage: useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => setLimit(parseInt(e.target.value, 10)),
+      []
+    )
   };
 };
