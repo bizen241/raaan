@@ -26,7 +26,7 @@ const ExerciseEditorRenderer = React.memo<EntityEditorRendererProps<Exercise>>((
 
   const onUpdateTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) =>
-      dispatch(actions.buffers.updateValue<Exercise>("Exercise", bufferId, "title", e.target.value)),
+      dispatch(actions.buffers.update<Exercise>("Exercise", bufferId, { title: e.target.value })),
     []
   );
 

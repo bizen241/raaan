@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import { Add, ExpandMore, Label } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Exercise, Tag } from "../../../../shared/api/entities";
 import { actions } from "../../../reducers";
@@ -22,19 +22,35 @@ import { TagEditor } from "./TagEditor";
 export const TagsEditor = React.memo<{
   exerciseId: string;
   tags: Tag[];
-}>(({ exerciseId, tags }) => {
-  const dispatch = useDispatch();
+}>(({ exerciseId, tags: initialTags }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const [tags, setTags] = useState(initialTags);
 
   const onAppendTag = useCallback(() => {
     const id = tags.reduce((maxId, tag) => Math.max(tag.id, maxId), 0);
-    dispatch(
-      actions.buffers.appendArrayItem<Exercise>("Exercise", exerciseId, "tags", {
-        id,
-        name: ""
-      })
-    );
-  }, [tags.length]);
+
+    setTags(prevTags => {
+      const nextTags = [...prevTags, { id, name: "" }];
+      dispatch(actions.buffers.update<Exercise>("Exercise", exerciseId, { tags: nextTags }));
+      return nextTags;
+    });
+  }, []);
+  const onUpdateTag = useCallback((index: number, value: string) => {
+    setTags(prevTags => {
+      const nextTags = [...prevTags.slice(0, index), { ...prevTags[index], name: value }, ...prevTags.slice(index + 1)];
+      dispatch(actions.buffers.update<Exercise>("Exercise", exerciseId, { tags: nextTags }));
+      return nextTags;
+    });
+  }, []);
+  const onDeleteTag = useCallback((index: number) => {
+    setTags(prevTags => {
+      const nextTags = [...prevTags.slice(0, index), ...prevTags.slice(index + 1)];
+      dispatch(actions.buffers.update<Exercise>("Exercise", exerciseId, { tags: nextTags }));
+      return nextTags;
+    });
+  }, []);
 
   return (
     <ExpansionPanel>
@@ -59,7 +75,7 @@ export const TagsEditor = React.memo<{
         <Table>
           <TableBody>
             {tags.map((tag, index) => (
-              <TagEditor key={tag.id} exerciseId={exerciseId} tagIndex={index} tag={tag} />
+              <TagEditor key={tag.id} tagIndex={index} tag={tag} onUpdate={onUpdateTag} onDelete={onDeleteTag} />
             ))}
           </TableBody>
         </Table>

@@ -1,28 +1,25 @@
-import { Avatar, Box, Card, CardContent, CardHeader, IconButton, Menu, MenuItem, TextField } from "@material-ui/core";
+import { Avatar, Box, Card, CardContent, CardHeader, MenuItem, TextField } from "@material-ui/core";
 import { makeStyles, Theme } from "@material-ui/core/styles";
-import { MoreVert, Note } from "@material-ui/icons";
+import { Note } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Exercise, Question } from "../../../../shared/api/entities";
+import { useCallback, useRef, useState } from "react";
+import { Question } from "../../../../shared/api/entities";
 import { addRuby } from "../../../domain/exercise/ruby";
-import { actions } from "../../../reducers";
+import { Menu } from "../../ui/Menu";
 import { useStyles } from "../../ui/styles";
 import { Highlighter } from "./Highlighter";
 
 export const QuestionEditor = React.memo<{
-  bufferId: string;
   questionIndex: number;
   question: Question;
   onFocus: (questionIndex: number) => void;
+  onUpdate: (questionIndex: number, question: Partial<Question>) => void;
+  onDelete: (questionIndex: number) => void;
   onPreview: (questionIndex: number) => void;
-}>(({ bufferId, question, questionIndex, onFocus, onPreview }) => {
-  const dispatch = useDispatch();
-
+}>(({ question, questionIndex, onFocus, onUpdate, onDelete, onPreview }) => {
   const textFieldRef = useRef<HTMLTextAreaElement>(null);
 
-  const [menuAnchorElement, setMenuAnchorElement] = useState(null);
-  const [isRubyRequested, toggleRubyState] = useState(false);
+  const [isAddingRuby, toggleRubyState] = useState(false);
   const [isCompositing, toggleCompositionState] = useState(false);
 
   const classes = useStyles();
@@ -30,37 +27,25 @@ export const QuestionEditor = React.memo<{
 
   const { value } = question;
 
-  useEffect(() => {
-    if (isRubyRequested) {
-      addRuby(value, result => {
-        dispatch(
-          actions.buffers.updateArrayItem<Exercise>("Exercise", bufferId, "questions", questionIndex, {
-            value: result
-          })
-        );
-
-        if (textFieldRef.current !== null) {
-          textFieldRef.current.value = result;
-        }
-
-        toggleRubyState(false);
-      });
+  const onAddRuby = useCallback(() => {
+    if (textFieldRef.current == null) {
+      return;
     }
-  }, [questionIndex, isRubyRequested]);
 
-  const onDelete = useCallback(
-    () => dispatch(actions.buffers.deleteArrayItem<Exercise>("Exercise", bufferId, "questions", questionIndex)),
-    [questionIndex]
-  );
-  const onUpdateValue = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-      dispatch(
-        actions.buffers.updateArrayItem<Exercise>("Exercise", bufferId, "questions", questionIndex, {
-          value: e.target.value
-        })
-      ),
-    [questionIndex]
-  );
+    toggleRubyState(true);
+
+    addRuby(textFieldRef.current.value, result => {
+      if (textFieldRef.current !== null) {
+        onUpdate(questionIndex, {
+          value: result
+        });
+
+        textFieldRef.current.value = result;
+      }
+
+      toggleRubyState(false);
+    });
+  }, [questionIndex]);
 
   return (
     <Card onFocus={useCallback(() => onFocus(questionIndex), [questionIndex])}>
@@ -73,26 +58,18 @@ export const QuestionEditor = React.memo<{
         title={questionIndex.toString()}
         titleTypographyProps={{ variant: "h6" }}
         action={
-          <div>
-            <IconButton onClick={useCallback(e => setMenuAnchorElement(e.currentTarget), [])}>
-              <MoreVert />
-            </IconButton>
-            <Menu
-              anchorEl={menuAnchorElement}
-              open={Boolean(menuAnchorElement)}
-              onClose={useCallback(() => setMenuAnchorElement(null), [])}
-            >
-              <MenuItem onClick={useCallback(() => onPreview(questionIndex), [questionIndex])}>プレビュー</MenuItem>
-              <MenuItem onClick={useCallback(() => toggleRubyState(true), [])}>ルビ</MenuItem>
-              <MenuItem onClick={onDelete}>削除</MenuItem>
-            </Menu>
-          </div>
+          <Menu>
+            <MenuItem onClick={useCallback(() => onPreview(questionIndex), [questionIndex])}>プレビュー</MenuItem>
+            <MenuItem onClick={useCallback(() => onAddRuby(), [])}>ルビ</MenuItem>
+            <MenuItem onClick={useCallback(() => onDelete(questionIndex), [questionIndex])}>削除</MenuItem>
+          </Menu>
         }
       />
       <CardContent>
         <Box display="flex" flexDirection="column" position="relative">
           {!isCompositing ? <Highlighter value={value} /> : null}
           <TextField
+            disabled={isAddingRuby}
             variant="outlined"
             multiline
             className={textFieldClasses.textField}
@@ -105,7 +82,13 @@ export const QuestionEditor = React.memo<{
             onCompositionEnd={useCallback(() => toggleCompositionState(false), [])}
             inputRef={textFieldRef}
             defaultValue={value}
-            onChange={onUpdateValue}
+            onChange={useCallback(
+              (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                onUpdate(questionIndex, {
+                  value: e.target.value
+                }),
+              [questionIndex]
+            )}
           />
         </Box>
       </CardContent>

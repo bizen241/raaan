@@ -7,10 +7,7 @@ import { apiActions } from "./api";
 
 export enum BuffersActionType {
   Add = "buffers/add",
-  UpdateValue = "buffers/update-value",
-  AppendArrayItem = "buffers/append-array-item",
-  UpdateArrayItem = "buffers/update-array-item",
-  DeleteArrayItem = "buffers/delete-array-item",
+  Update = "buffers/update",
   Reset = "buffers/reset",
   Delete = "buffers/delete"
 }
@@ -29,34 +26,11 @@ const buffersSyncActions = {
       id,
       params
     }),
-  updateValue: <E extends EntityObject>(type: EntityType, id: string, key: keyof E, value: any) =>
-    createAction(BuffersActionType.UpdateValue, {
+  update: <E extends EntityObject>(type: EntityType, id: string, params: SaveParams<E>) =>
+    createAction(BuffersActionType.Update, {
       type,
       id,
-      key,
-      value
-    }),
-  appendArrayItem: <E extends EntityObject>(type: EntityType, id: string, key: keyof E, item: any) =>
-    createAction(BuffersActionType.AppendArrayItem, {
-      type,
-      id,
-      key,
-      item
-    }),
-  updateArrayItem: <E extends EntityObject>(type: EntityType, id: string, key: keyof E, index: number, item: any) =>
-    createAction(BuffersActionType.UpdateArrayItem, {
-      type,
-      id,
-      key,
-      index,
-      item
-    }),
-  deleteArrayItem: <E extends EntityObject>(type: EntityType, id: string, key: keyof E, index: number) =>
-    createAction(BuffersActionType.DeleteArrayItem, {
-      type,
-      id,
-      key,
-      index
+      params
     }),
   reset: (type: EntityType, id: string) =>
     createAction(BuffersActionType.Reset, {
@@ -120,8 +94,8 @@ export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBu
         }
       };
     }
-    case BuffersActionType.UpdateValue: {
-      const { type, id, key, value } = action.payload;
+    case BuffersActionType.Update: {
+      const { type, id, params } = action.payload;
       const buffer = state[type][id];
       if (buffer === undefined) {
         return state;
@@ -135,86 +109,7 @@ export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBu
             ...buffer,
             edited: {
               ...buffer.edited,
-              [key]: value
-            }
-          }
-        }
-      };
-    }
-    case BuffersActionType.AppendArrayItem: {
-      const { type, id, key, item } = action.payload;
-      const buffer = state[type][id];
-      if (buffer === undefined) {
-        return state;
-      }
-
-      const params = buffer.edited as any;
-
-      return {
-        ...state,
-        [type]: {
-          ...state[type],
-          [id]: {
-            ...buffer,
-            edited: {
-              ...buffer.edited,
-              [key]: [...params[key], item]
-            }
-          }
-        }
-      };
-    }
-    case BuffersActionType.UpdateArrayItem: {
-      const { type, id, key, index, item } = action.payload;
-      const buffer = state[type][id];
-      if (buffer === undefined) {
-        return state;
-      }
-
-      const params = buffer.edited as any;
-      const array: any[] = params[key] || [];
-
-      const updatedItem =
-        typeof item === "object"
-          ? {
-              ...array[index],
-              ...item
-            }
-          : item;
-
-      return {
-        ...state,
-        [type]: {
-          ...state[type],
-          [id]: {
-            ...buffer,
-            edited: {
-              ...params,
-              [key]: [...array.slice(0, index), updatedItem, ...array.slice(index + 1)]
-            }
-          }
-        }
-      };
-    }
-    case BuffersActionType.DeleteArrayItem: {
-      const { type, id, key, index } = action.payload;
-      const buffer = state[type][id];
-      if (buffer === undefined) {
-        return state;
-      }
-
-      const params = buffer.edited as any;
-      const array: any[] = params[key] || [];
-
-      return {
-        ...state,
-        [type]: {
-          ...state[type],
-          [id]: {
-            ...buffer,
-            edited: {
-              ...params,
-              [key]: [...array.slice(0, index), ...array.slice(index + 1)]
+              ...params
             }
           }
         }

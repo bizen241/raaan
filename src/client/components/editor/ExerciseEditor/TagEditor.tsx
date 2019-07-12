@@ -2,40 +2,28 @@ import { Box, IconButton, TableCell, TableRow, TextField } from "@material-ui/co
 import { Delete } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { Exercise, Tag } from "../../../../shared/api/entities";
-import { actions } from "../../../reducers";
+import { Tag } from "../../../../shared/api/entities";
 
 export const TagEditor = React.memo<{
-  exerciseId: string;
   tagIndex: number;
   tag: Tag;
-}>(({ exerciseId, tagIndex, tag }) => {
-  const dispatch = useDispatch();
-
-  const onDelete = useCallback(
-    () => dispatch(actions.buffers.deleteArrayItem<Exercise>("Exercise", exerciseId, "tags", tagIndex)),
-    [tagIndex]
-  );
-  const onUpdate = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-      dispatch(
-        actions.buffers.updateArrayItem<Exercise>("Exercise", exerciseId, "tags", tagIndex, {
-          name: e.target.value
-        })
-      ),
-    [tagIndex]
-  );
+  onUpdate: (tagIndex: number, value: string) => void;
+  onDelete: (tagIndex: number) => void;
+}>(({ tagIndex, tag, onUpdate, onDelete }) => {
+  const updateTag = useCallback((e: React.ChangeEvent<HTMLInputElement>) => onUpdate(tagIndex, e.target.value), [
+    tagIndex
+  ]);
+  const deleteTag = useCallback(() => onDelete(tagIndex), [tagIndex]);
 
   return (
     <TableRow>
       <TableCell padding="none">
         <Box display="flex" flexDirection="column" py={1}>
-          <TextField variant="outlined" defaultValue={tag.name} onChange={onUpdate} />
+          <TextField variant="outlined" defaultValue={tag.name} onChange={updateTag} />
         </Box>
       </TableCell>
       <TableCell padding="checkbox">
-        <IconButton onClick={onDelete}>
+        <IconButton onClick={deleteTag}>
           <Delete />
         </IconButton>
       </TableCell>
