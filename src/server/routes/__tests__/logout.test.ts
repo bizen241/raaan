@@ -24,9 +24,6 @@ test("GET /logout -> 200", async () => {
 
   assert.equal(response.status, 200);
 
-  const contentTypeHeader = response.headers.get("Content-Type");
-  assert(contentTypeHeader && contentTypeHeader.includes("text/plain"));
-
   const clearSiteDataHeader = response.headers.get("Clear-Site-Data");
   assert(clearSiteDataHeader && clearSiteDataHeader === `"cache", "cookies", "storage", "executionContexts"`);
 });

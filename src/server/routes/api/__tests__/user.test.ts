@@ -26,7 +26,7 @@ test("GET /api/user -> 200", async () => {
   const data = JSON.parse(res._getData()) as EntityStore;
   assert.notEqual(data.User[user.id], undefined);
   assert.notEqual(data.UserConfig[config.id], undefined);
-  assert.equal(data.UserAccount[account.id], undefined);
+  assert.notEqual(data.UserAccount[account.id], undefined);
 });
 
 test("DELETE /api/user -> 200", async () => {
@@ -34,11 +34,11 @@ test("DELETE /api/user -> 200", async () => {
 
   await DELETE(req, res, next);
 
-  assert.equal(res._getStatusCode(), 200);
+  assert.equal(res._getStatusCode(), 302);
 });
 
 test("DELETE /api/user -> 403", async () => {
-  const { req, res, next } = await createHttpMocks("Admin");
+  const { req, res, next } = await createHttpMocks("Owner");
 
   await DELETE(req, res, next);
 

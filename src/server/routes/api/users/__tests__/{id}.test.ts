@@ -48,8 +48,12 @@ test("GET /api/users/{user} -> 404", async () => {
   assert.equal(res._getStatusCode(), 404);
 });
 
+test("DELETE /api/users/{user} requires Owner premission", async () => {
+  assert(DELETE.apiDoc && DELETE.apiDoc.security && DELETE.apiDoc.security[0].Owner);
+});
+
 test("DELETE /api/users/{user} -> 200", async () => {
-  const { req, res, next } = await createHttpMocks("Admin");
+  const { req, res, next } = await createHttpMocks("Owner");
   const { user, account, config } = await insertUser("Write");
 
   (req.params as PathParams) = {
@@ -71,16 +75,8 @@ test("DELETE /api/users/{user} -> 200", async () => {
   assert.equal(deletedConfig, undefined);
 });
 
-test("DELETE /api/users/{user} -> 403", async () => {
-  const { req, res, next } = await createHttpMocks("Write");
-
-  await DELETE(req, res, next);
-
-  assert.equal(res._getStatusCode(), 403);
-});
-
 test("DELETE /api/users/{user} -> 404", async () => {
-  const { req, res, next, user } = await createHttpMocks("Admin");
+  const { req, res, next, user } = await createHttpMocks("Owner");
 
   (req.params as PathParams) = {
     id: user.id
@@ -93,7 +89,7 @@ test("DELETE /api/users/{user} -> 404", async () => {
 });
 
 test("DELETE /api/users/{user} -> 403", async () => {
-  const { req, res, next, user } = await createHttpMocks("Admin");
+  const { req, res, next, user } = await createHttpMocks("Owner");
 
   (req.params as PathParams) = {
     id: user.id
