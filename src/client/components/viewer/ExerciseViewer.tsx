@@ -1,15 +1,15 @@
-import { Box, Button, Dialog, IconButton, Menu, MenuItem, Typography } from "@material-ui/core";
-import { Delete, Edit, Lock, MoreVert, PlayArrow, Public } from "@material-ui/icons";
+import { Box, Button, Dialog, IconButton, MenuItem, Typography } from "@material-ui/core";
+import { Delete, Edit, Lock, PlayArrow, Public } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { createEntityViewer } from ".";
 import { Exercise } from "../../../shared/api/entities";
-import { useMenu } from "../../hooks/menu";
 import { actions, RootState } from "../../reducers";
 import { ExercisePlayer } from "../player/ExercisePlayer";
 import { UserContext } from "../project/Context";
+import { Menu } from "../ui/Menu";
 import { useStyles } from "../ui/styles";
 import { ExerciseSummaryViewer } from "./ExerciseSummaryViewer";
 import { ExerciseTagsViewer } from "./ExerciseTagsViewer";
@@ -20,7 +20,6 @@ export const ExerciseViewer = createEntityViewer<Exercise>(
   React.memo(({ entity: exercise, entityId: exerciseId }) => {
     const classes = useStyles();
     const currentUser = useContext(UserContext);
-    const menu = useMenu();
     const dispatch = useDispatch();
 
     const { buffer } = useSelector((state: RootState) => ({
@@ -57,10 +56,7 @@ export const ExerciseViewer = createEntityViewer<Exercise>(
           ) : null}
           <Box flex={1} />
           <Box>
-            <IconButton onClick={menu.onOpen}>
-              <MoreVert />
-            </IconButton>
-            <Menu anchorEl={menu.anchorElement} open={Boolean(menu.anchorElement)} onClose={menu.onClose}>
+            <Menu>
               {!isPrivate ? (
                 <MenuItem disabled={buffer !== undefined} onClick={onUnpublish}>
                   <Lock className={classes.leftIcon} />
