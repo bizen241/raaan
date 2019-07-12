@@ -1,6 +1,6 @@
 import { ActionCreatorsMapObject } from "redux";
 import { ThunkAction } from "redux-thunk";
-import { Actions, RootState } from "../reducers";
+import { Actions, RootState } from ".";
 
 interface Action<T extends string, P> {
   type: T;

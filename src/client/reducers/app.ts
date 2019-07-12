@@ -1,11 +1,11 @@
 import { push } from "connected-react-router";
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { ActionUnion, AsyncAction, createAction } from "../actions";
 import { getCurrentUser } from "../api/client";
 import { FetchError } from "../api/client/request";
 import { guestUser } from "../components/project/Context";
 import { install } from "../install";
+import { ActionUnion, AsyncAction, createAction } from "./action";
 import { cacheActions } from "./cache";
 
 export enum AppActionType {

@@ -3,9 +3,9 @@ import { Reducer } from "redux";
 import { Actions } from ".";
 import { createEntityTypeToEmptyObject, EntityObject, EntityType, EntityTypeToObject } from "../../shared/api/entities";
 import { SearchParams } from "../../shared/api/request/search";
-import { ActionUnion, AsyncAction, createAction } from "../actions";
 import * as api from "../api/client";
 import { stringifySearchParams } from "../api/request/search";
+import { ActionUnion, AsyncAction, createAction } from "./action";
 import { buffersActions } from "./buffers";
 import { cacheActions } from "./cache";
 

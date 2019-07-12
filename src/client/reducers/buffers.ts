@@ -2,7 +2,7 @@ import { Reducer } from "redux";
 import { Actions } from ".";
 import { createEntityTypeToEmptyObject, EntityObject, EntityType, EntityTypeToObject } from "../../shared/api/entities";
 import { SaveParams } from "../../shared/api/request/save";
-import { ActionUnion, AsyncAction, createAction } from "../actions";
+import { ActionUnion, AsyncAction, createAction } from "./action";
 import { apiActions } from "./api";
 
 export enum BuffersActionType {
