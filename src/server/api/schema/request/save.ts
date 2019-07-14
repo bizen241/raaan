@@ -13,10 +13,7 @@ export const SaveParamsMapSchema: Definition = {
         authorId: { format: "uuid", type: "string" },
         summaryId: { format: "uuid", type: "string" },
         lang: { type: "string" },
-        tags: {
-          type: "array",
-          items: { type: "object", properties: { id: { type: "number" }, name: { type: "string" } } }
-        },
+        tags: { type: "array", items: { type: "string" } },
         description: { type: "string" },
         rubric: { type: "string" },
         comment: { type: "string" },
@@ -25,7 +22,6 @@ export const SaveParamsMapSchema: Definition = {
           items: {
             type: "object",
             properties: {
-              id: { type: "number" },
               format: { enum: ["code", "math", "plain"], type: "string" },
               lang: { type: "string" },
               value: { type: "string" },
