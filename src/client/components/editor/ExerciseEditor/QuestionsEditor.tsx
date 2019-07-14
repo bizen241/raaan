@@ -11,6 +11,11 @@ import { QuestionPreviewer } from "../../player/QuestionPreviewer";
 import { useStyles } from "../../ui/styles";
 import { QuestionEditor } from "./QuestionEditor";
 
+type IdentifiedQuestion = {
+  id: number;
+  content: Question;
+};
+
 export const QuestionsEditor = React.memo<{
   exerciseId: string;
   questions: Question[];
@@ -24,32 +29,52 @@ export const QuestionsEditor = React.memo<{
   const [isQuestionPreviewerOpen, toggleQuestionPreviewer] = useState(false);
   const onToggleQuestionPreviewer = useCallback(() => toggleQuestionPreviewer(s => !s), []);
 
-  const [questions, setQuestions] = useState(initialQuestions);
+  const [questions, setQuestions] = useState<IdentifiedQuestion[]>(
+    initialQuestions.map((question, index) => ({
+      id: index,
+      content: question
+    }))
+  );
+
+  const updateBuffer = (nextQuestions: IdentifiedQuestion[]) =>
+    dispatch(
+      actions.buffers.update<Exercise>("Exercise", exerciseId, {
+        questions: nextQuestions.map(question => question.content)
+      })
+    );
 
   const onAppendQuestion = useCallback(() => {
-    const id = questions.reduce((maxId, question) => Math.max(question.id, maxId), 0);
+    const id = questions.reduce((maxId, question) => Math.max(question.id, maxId), 0) + 1;
 
     setQuestions(prevQuestions => {
-      const nextQuestions = [...prevQuestions, createQuestion(id)];
-      dispatch(actions.buffers.update<Exercise>("Exercise", exerciseId, { questions: nextQuestions }));
+      const nextQuestions = [...prevQuestions, { id, content: createQuestion() }];
+
+      updateBuffer(nextQuestions);
       return nextQuestions;
     });
   }, []);
-  const onUpdateQuestion = useCallback((index: number, question: Partial<Question>) => {
+  const onUpdateQuestion = useCallback((index: number, updatedProps: Partial<Question>) => {
     setQuestions(prevQuestions => {
+      const targetQuestion = prevQuestions[index];
+
       const nextQuestions = [
         ...prevQuestions.slice(0, index),
-        { ...prevQuestions[index], ...question },
+        {
+          id: targetQuestion.id,
+          content: { ...targetQuestion.content, ...updatedProps }
+        },
         ...prevQuestions.slice(index + 1)
       ];
-      dispatch(actions.buffers.update<Exercise>("Exercise", exerciseId, { questions: nextQuestions }));
+
+      updateBuffer(nextQuestions);
       return nextQuestions;
     });
   }, []);
   const onDeleteQuestion = useCallback((index: number) => {
     setQuestions(prevQuestions => {
       const nextQuestions = [...prevQuestions.slice(0, index), ...prevQuestions.slice(index + 1)];
-      dispatch(actions.buffers.update<Exercise>("Exercise", exerciseId, { questions: nextQuestions }));
+
+      updateBuffer(nextQuestions);
       return nextQuestions;
     });
   }, []);
@@ -60,7 +85,7 @@ export const QuestionsEditor = React.memo<{
         <Box key={question.id} display="flex" flexDirection="column" pb={1}>
           <QuestionEditor
             questionIndex={index}
-            question={question}
+            question={question.content}
             onFocus={onFocusQuestion}
             onUpdate={onUpdateQuestion}
             onDelete={onDeleteQuestion}
@@ -75,7 +100,7 @@ export const QuestionsEditor = React.memo<{
         </Button>
       </Box>
       <Dialog fullScreen open={isQuestionPreviewerOpen} onClose={onToggleQuestionPreviewer}>
-        <QuestionPreviewer question={questions[focusedQuestionIndex]} onClose={onToggleQuestionPreviewer} />
+        <QuestionPreviewer question={questions[focusedQuestionIndex].content} onClose={onToggleQuestionPreviewer} />
       </Dialog>
     </Box>
   );

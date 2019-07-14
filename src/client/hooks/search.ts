@@ -16,11 +16,11 @@ export const useSearch = <E extends EntityObject>(
 
   const offset = limit * page;
 
-  const [searchParams] = useState({
+  const [searchParams, setSearchParams] = useState({
     ...initialSearchParams,
     limit,
     offset
-  } as SearchParams<E>);
+  });
 
   const { searchStatusMap, searchResultMap, entityMap } = useSelector((state: RootState) => ({
     searchStatusMap: state.api.search[entityType],
@@ -68,8 +68,10 @@ export const useSearch = <E extends EntityObject>(
     page,
     count: searchResult !== undefined ? searchResult.count : 0,
     entities: selectedEntities || [],
+    params: searchParams,
     status: searchStatus,
     onReload: useCallback(() => dispatch(actions.api.search(entityType, searchParams)), [searchParams]),
+    onChangeParams: useCallback((params: Partial<SearchParams<E>>) => setSearchParams(s => ({ ...s, ...params })), []),
     onChangePage: useCallback((_, nextPage: number) => setPage(nextPage), []),
     onChangeRowsPerPage: useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => setLimit(parseInt(e.target.value, 10)),

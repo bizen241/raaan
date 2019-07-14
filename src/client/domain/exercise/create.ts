@@ -11,8 +11,7 @@ export const createExercise = (): SaveParams<Exercise> => ({
   questions: []
 });
 
-export const createQuestion = (id: number): Question => ({
-  id,
+export const createQuestion = (): Question => ({
   format: "plain",
   lang: "",
   value: "",

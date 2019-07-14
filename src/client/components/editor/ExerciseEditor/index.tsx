@@ -9,7 +9,6 @@ import { actions } from "../../../reducers";
 import { ExercisePreviewer } from "../../player/ExercisePreviewer";
 import { useStyles } from "../../ui/styles";
 import { QuestionsEditor } from "./QuestionsEditor";
-import { TagsEditor } from "./TagsEditor";
 
 export const ExerciseEditor = React.memo<EntityEditorContainerProps>(props => (
   <EntityEditor {...props} entityType="Exercise" rendererComponent={ExerciseEditorRenderer} />
@@ -19,24 +18,30 @@ const ExerciseEditorRenderer = React.memo<EntityEditorRendererProps<Exercise>>((
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const { title, questions = [], tags = [] } = buffer.edited;
+  const { title, tags = [], questions = [] } = buffer.edited;
 
   const [isExercisePreviewerOpen, toggleExercisePreviewer] = useState(false);
   const onToggleExercisePreviewer = useCallback(() => toggleExercisePreviewer(s => !s), []);
 
+  const updateBuffer = (nextExercise: Partial<Exercise>) =>
+    dispatch(actions.buffers.update<Exercise>("Exercise", bufferId, nextExercise));
+
   const onUpdateTitle = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) =>
-      dispatch(actions.buffers.update<Exercise>("Exercise", bufferId, { title: e.target.value })),
+    (e: React.ChangeEvent<HTMLInputElement>) => updateBuffer({ title: e.target.value }),
+    []
+  );
+  const onUpdateTags = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => updateBuffer({ tags: e.target.value.split(/\s/) }),
     []
   );
 
   return (
     <Box display="flex" flexDirection="column" flex={1}>
       <Box display="flex" flexDirection="column" py={1}>
-        <TextField variant="outlined" label="題名" value={title} onChange={onUpdateTitle} />
+        <TextField variant="outlined" label="題名" defaultValue={title} onChange={onUpdateTitle} />
       </Box>
       <Box display="flex" flexDirection="column" pb={1}>
-        <TagsEditor exerciseId={bufferId} tags={tags} />
+        <TextField variant="outlined" label="タグ" defaultValue={tags.join(" ")} onChange={onUpdateTags} />
       </Box>
       <Box pb={1}>
         <Divider variant="middle" />

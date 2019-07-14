@@ -1,7 +1,7 @@
-import { Box, IconButton, Link, TableCell, TableRow } from "@material-ui/core";
+import { Box, IconButton, Link, TableCell, TableRow, TextField } from "@material-ui/core";
 import { Edit } from "@material-ui/icons";
 import * as React from "react";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createEntityList } from ".";
 import { ExerciseSummary } from "../../../../shared/api/entities";
@@ -29,6 +29,34 @@ export const ExerciseSummaryList = createEntityList<ExerciseSummary>(
           </TableCell>
         ) : null}
       </TableRow>
+    );
+  }),
+  React.memo(({ searchParams, onChange }) => {
+    return (
+      <>
+        <Box display="flex" flexDirection="column" pb={1}>
+          <TextField
+            label="タグ"
+            variant="outlined"
+            defaultValue={(searchParams.tags || []).join(" ")}
+            onChange={useCallback(
+              (e: React.ChangeEvent<HTMLInputElement>) => onChange({ tags: e.target.value.split(" ") }),
+              []
+            )}
+          />
+        </Box>
+        <Box display="flex" flexDirection="column" pb={1}>
+          <TextField
+            label="題名"
+            variant="outlined"
+            defaultValue={(searchParams.tags || []).join(" ")}
+            onChange={useCallback(
+              (e: React.ChangeEvent<HTMLInputElement>) => onChange({ tags: e.target.value.split(" ") }),
+              []
+            )}
+          />
+        </Box>
+      </>
     );
   })
 );
