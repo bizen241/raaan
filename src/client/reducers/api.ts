@@ -81,6 +81,7 @@ const deleteEntity = (type: EntityType, id: string): AsyncAction => async dispat
     await api.deleteEntity(type, id);
 
     dispatch(cacheActions.purge(type, id));
+    dispatch(buffersActions.delete(type, id));
     dispatch(apiSyncActions.update("delete", type, id, 200));
   } catch (e) {
     dispatch(apiSyncActions.update("delete", type, id, 404));
