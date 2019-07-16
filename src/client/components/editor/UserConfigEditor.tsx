@@ -59,7 +59,7 @@ const UserConfigEditorRenderer = React.memo<EntityEditorRendererProps<UserConfig
 
   return (
     <Box display="flex" flexDirection="column">
-      <Box display="flex" flexDirection="column" py={1}>
+      <Box display="flex" flexDirection="column" pb={1}>
         <FormControl variant="outlined">
           <InputLabel ref={langInputLabel} htmlFor="lang">
             <Message id="language" />
