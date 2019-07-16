@@ -79,6 +79,8 @@ export const QuestionsEditor = React.memo<{
     });
   }, []);
 
+  const focusedQuestion = questions[focusedQuestionIndex];
+
   return (
     <Box display="flex" flexDirection="column">
       {questions.map((question, index) => (
@@ -93,15 +95,17 @@ export const QuestionsEditor = React.memo<{
           />
         </Box>
       ))}
-      <Box display="flex" flexDirection="column" pb={1}>
+      <Box display="flex" flexDirection="column">
         <Button className={classes.largeButton} variant="contained" color="primary" onClick={onAppendQuestion}>
           <Add className={classes.leftIcon} />
           問題を追加
         </Button>
       </Box>
-      <Dialog fullScreen open={isQuestionPreviewerOpen} onClose={onToggleQuestionPreviewer}>
-        <QuestionPreviewer question={questions[focusedQuestionIndex].content} onClose={onToggleQuestionPreviewer} />
-      </Dialog>
+      {focusedQuestion && (
+        <Dialog fullScreen open={isQuestionPreviewerOpen} onClose={onToggleQuestionPreviewer}>
+          <QuestionPreviewer question={focusedQuestion.content} onClose={onToggleQuestionPreviewer} />
+        </Dialog>
+      )}
     </Box>
   );
 });
