@@ -42,11 +42,11 @@ export const EditExercisesPage = React.memo(() => {
           to={`/users/${currentUser.id}/exercises`}
         >
           <Edit className={classes.leftIcon} />
-          自分の問題集
+          保存済み
         </Button>
       </Box>
       <Box display="flex" flexDirection="column" pb={1}>
-        <ExerciseBufferList title="編集中の問題集" />
+        <ExerciseBufferList title="編集中" />
       </Box>
     </Page>
   );

@@ -8,9 +8,9 @@ export const ExerciseTagsViewer = createEntityViewer<ExerciseSummary>(
   "ExerciseSummary",
   React.memo(({ entity: exerciseSummary }) => {
     return (
-      <Box>
+      <Box display="flex">
         {exerciseSummary.tags.map(tag => (
-          <Box key={tag} pr={1}>
+          <Box key={tag} pr={1} pb={1}>
             <Chip label={tag} clickable component={RouterLink} to={`/tags/${tag}`} />
           </Box>
         ))}

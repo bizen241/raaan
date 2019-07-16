@@ -1,5 +1,5 @@
 import { Box, Button } from "@material-ui/core";
-import { Folder, History } from "@material-ui/icons";
+import { Folder } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -26,12 +26,6 @@ export const ExercisesPage = React.memo<PageProps>(() => {
         >
           <Folder className={classes.leftIcon} />
           自分の問題集
-        </Button>
-      </Box>
-      <Box display="flex" flexDirection="column" pb={1}>
-        <Button className={classes.largeButton} variant="contained" component={RouterLink} to={`/exercises/history`}>
-          <History className={classes.leftIcon} />
-          提出履歴
         </Button>
       </Box>
       <Box display="flex" flexDirection="column" pb={1}>

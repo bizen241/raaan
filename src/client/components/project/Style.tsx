@@ -1,4 +1,6 @@
 import { CssBaseline } from "@material-ui/core";
+import blueGrey from "@material-ui/core/colors/blueGrey";
+import teal from "@material-ui/core/colors/teal";
 import { createMuiTheme, makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
 import * as React from "react";
 import { useContext, useEffect, useState } from "react";
@@ -32,7 +34,9 @@ export const Style = React.memo<{ children: React.ReactNode }>(({ children }) =>
       background: {
         default: themeName === "light" ? "#f5f5f5" : "#121212",
         paper: themeName === "light" ? "#fff" : "#1e1e1e"
-      }
+      },
+      primary: teal,
+      secondary: blueGrey
     }
   });
 
