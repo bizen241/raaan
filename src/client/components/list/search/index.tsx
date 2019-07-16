@@ -8,6 +8,7 @@ import {
   IconButton,
   Table,
   TableBody,
+  TableCell,
   TableFooter,
   TablePagination,
   TableRow
@@ -61,13 +62,8 @@ export const createEntityList = <E extends EntityObject>(
       []
     );
 
-    if (status !== undefined && status !== 200) {
-      return (
-        <Card>
-          <CardHeader avatar={<CircularProgress />} title="ロード中です" />
-        </Card>
-      );
-    }
+    const isLoading = status !== undefined && status !== 200;
+    const emptyRows = !isLoading && limit - entities.length;
 
     return (
       <Card>
@@ -99,7 +95,23 @@ export const createEntityList = <E extends EntityObject>(
           </Box>
         )}
         <Table>
-          <TableBody>{entities.map(entity => entity && <ItemComponent key={entity.id} entity={entity} />)}</TableBody>
+          <TableBody>
+            {isLoading && (
+              <TableRow style={{ height: 49 * limit }}>
+                <TableCell>
+                  <Box display="flex" alignItems="center" justifyContent="center">
+                    <CircularProgress />
+                  </Box>
+                </TableCell>
+              </TableRow>
+            )}
+            {!isLoading && entities.map(entity => entity && <ItemComponent key={entity.id} entity={entity} />)}
+            {emptyRows && (
+              <TableRow style={{ height: 49 * emptyRows }}>
+                <TableCell colSpan={3} />
+              </TableRow>
+            )}
+          </TableBody>
           <TableFooter>
             <TableRow>
               <TablePagination
