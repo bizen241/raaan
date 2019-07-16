@@ -50,12 +50,13 @@ const parseExercise: Parser<Exercise> = query => {
 };
 
 const parseExerciseSummary: Parser<ExerciseSummary> = query => {
-  const { authorId, lang, title, description } = query;
+  const { authorId, lang, title, tags, description } = query;
 
   return {
     authorId,
     lang,
     title,
+    tags: tags !== undefined ? tags.split(",") : undefined,
     description,
     ...page(query)
   };

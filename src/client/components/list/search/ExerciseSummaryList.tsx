@@ -40,7 +40,7 @@ export const ExerciseSummaryList = createEntityList<ExerciseSummary>(
             variant="outlined"
             defaultValue={(searchParams.tags || []).join(" ")}
             onChange={useCallback(
-              (e: React.ChangeEvent<HTMLInputElement>) => onChange({ tags: e.target.value.split(" ") }),
+              (e: React.ChangeEvent<HTMLInputElement>) => onChange({ tags: e.target.value.split(/\s/) }),
               []
             )}
           />
@@ -49,11 +49,8 @@ export const ExerciseSummaryList = createEntityList<ExerciseSummary>(
           <TextField
             label="題名"
             variant="outlined"
-            defaultValue={(searchParams.tags || []).join(" ")}
-            onChange={useCallback(
-              (e: React.ChangeEvent<HTMLInputElement>) => onChange({ tags: e.target.value.split(" ") }),
-              []
-            )}
+            defaultValue={searchParams.title}
+            onChange={useCallback((e: React.ChangeEvent<HTMLInputElement>) => onChange({ title: e.target.value }), [])}
           />
         </Box>
       </>
