@@ -7,10 +7,10 @@ export interface ProcessEnv {
   serverPort: number;
   databaseUrl: string;
   sessionSecret: string;
-  adminAccountProvider: AuthProviderName;
-  adminAccountId: string;
-  adminAccountName: string;
-  adminAccountEmail: string;
+  ownerAccountProvider: AuthProviderName;
+  ownerAccountId: string;
+  ownerAccountName: string;
+  ownerAccountEmail: string;
   githubClientId: string;
   githubClientSecret: string;
 }
@@ -21,10 +21,10 @@ export const getProcessEnv = (): ProcessEnv => {
     PORT,
     DATABASE_URL,
     SESSION_SECRET,
-    ADMIN_ACCOUNT_PROVIDER,
-    ADMIN_ACCOUNT_ID,
-    ADMIN_ACCOUNT_NAME,
-    ADMIN_ACCOUNT_EMAIL,
+    OWNER_ACCOUNT_PROVIDER,
+    OWNER_ACCOUNT_ID,
+    OWNER_ACCOUNT_NAME,
+    OWNER_ACCOUNT_EMAIL,
     GITHUB_CLIENT_ID,
     GITHUB_CLIENT_SECRET
   } = process.env;
@@ -37,22 +37,22 @@ export const getProcessEnv = (): ProcessEnv => {
     throw new Error("DATABASE_URL is not defined");
   } else if (SESSION_SECRET === undefined) {
     throw new Error("SESSION_SECRET is not defined");
-  } else if (ADMIN_ACCOUNT_PROVIDER === undefined) {
-    throw new Error("ADMIN_ACCOUNT_PROVIDER is not defined");
-  } else if (ADMIN_ACCOUNT_ID === undefined) {
-    throw new Error("ADMIN_ACCOUNT_ID is not defined");
-  } else if (ADMIN_ACCOUNT_NAME === undefined) {
-    throw new Error("ADMIN_ACCOUNT_NAME is not defined");
-  } else if (ADMIN_ACCOUNT_EMAIL === undefined) {
-    throw new Error("ADMIN_ACCOUNT_EMAIL is not defined");
+  } else if (OWNER_ACCOUNT_PROVIDER === undefined) {
+    throw new Error("OWNER_ACCOUNT_PROVIDER is not defined");
+  } else if (OWNER_ACCOUNT_ID === undefined) {
+    throw new Error("OWNER_ACCOUNT_ID is not defined");
+  } else if (OWNER_ACCOUNT_NAME === undefined) {
+    throw new Error("OWNER_ACCOUNT_NAME is not defined");
+  } else if (OWNER_ACCOUNT_EMAIL === undefined) {
+    throw new Error("OWNER_ACCOUNT_EMAIL is not defined");
   } else if (GITHUB_CLIENT_ID === undefined) {
     throw new Error("GITHUB_CLIENT_ID is not defined");
   } else if (GITHUB_CLIENT_SECRET === undefined) {
     throw new Error("GITHUB_CLIENT_SECRET is not defined");
   }
 
-  if (!isAuthProviderName(ADMIN_ACCOUNT_PROVIDER)) {
-    throw new Error("ADMIN_ACCOUNT_PROVIDER is invalid");
+  if (!isAuthProviderName(OWNER_ACCOUNT_PROVIDER)) {
+    throw new Error("OWNER_ACCOUNT_PROVIDER is invalid");
   }
 
   return {
@@ -60,10 +60,10 @@ export const getProcessEnv = (): ProcessEnv => {
     serverPort: Number(PORT),
     databaseUrl: DATABASE_URL,
     sessionSecret: SESSION_SECRET,
-    adminAccountProvider: ADMIN_ACCOUNT_PROVIDER,
-    adminAccountId: ADMIN_ACCOUNT_ID,
-    adminAccountName: ADMIN_ACCOUNT_NAME,
-    adminAccountEmail: ADMIN_ACCOUNT_EMAIL,
+    ownerAccountProvider: OWNER_ACCOUNT_PROVIDER,
+    ownerAccountId: OWNER_ACCOUNT_ID,
+    ownerAccountName: OWNER_ACCOUNT_NAME,
+    ownerAccountEmail: OWNER_ACCOUNT_EMAIL,
     githubClientId: GITHUB_CLIENT_ID,
     githubClientSecret: GITHUB_CLIENT_SECRET
   };

@@ -2,8 +2,8 @@ import { Server } from "http";
 import { Connection } from "typeorm";
 import { createApp } from "./app";
 import { connectDatabase } from "./database";
-import { setAdminUser } from "./database/setup/admin";
 import { setGuestUser } from "./database/setup/guest";
+import { setOwnerUser } from "./database/setup/owner";
 import { ProcessEnv } from "./env";
 
 export const startServer = async (processEnv: ProcessEnv) => {
@@ -11,7 +11,7 @@ export const startServer = async (processEnv: ProcessEnv) => {
 
   await database.synchronize();
   await setGuestUser();
-  await setAdminUser(processEnv);
+  await setOwnerUser(processEnv);
 
   return new Promise<{ server: Server; database: Connection }>(resolve => {
     const { serverPort } = processEnv;
