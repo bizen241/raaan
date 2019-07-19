@@ -19,10 +19,10 @@ beforeEach(async () => {
 });
 
 test("GET /api/user-sessions", async () => {
-  const { user } = await insertUser("Write");
+  const { user } = await insertUser("Read");
   await insertSession(user);
 
-  const { req, res } = await createHttpMocks("Write");
+  const { req, res } = await createHttpMocks("Read");
 
   const query: SearchQuery<UserSession> = {
     userId: req.user.id

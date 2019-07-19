@@ -2,10 +2,10 @@ import { strict as assert } from "assert";
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { EntityStore } from "../../../../../shared/api/response/get";
-import { createHttpMocks, insertExercise, TestDatabase } from "../../../../__tests__/helpers";
+import { createHttpMocks, hasSecurity, insertExercise, TestDatabase } from "../../../../__tests__/helpers";
 import { PathParams } from "../../../../api/operation";
 import { ExerciseEntity } from "../../../../database/entities";
-import { DELETE, GET } from "../{id}";
+import { DELETE, GET, PATCH } from "../{id}";
 
 const testDatabase = new TestDatabase();
 
@@ -20,7 +20,7 @@ beforeEach(async () => {
   await testDatabase.reset();
 });
 
-test("GET /api/contents/{id} -> 404", async () => {
+test("GET /api/exercises/{id} -> 404", async () => {
   const { req, res, next } = await createHttpMocks("Guest");
 
   (req.params as PathParams) = {
@@ -32,7 +32,7 @@ test("GET /api/contents/{id} -> 404", async () => {
   assert.equal(res._getStatusCode(), 404);
 });
 
-test("GET /api/contents/{id} -> 200", async () => {
+test("GET /api/exercises/{id} -> 200", async () => {
   const { req, res, next, user } = await createHttpMocks("Guest");
 
   const { exercise } = await insertExercise(user);
@@ -49,7 +49,11 @@ test("GET /api/contents/{id} -> 200", async () => {
   assert(data.Exercise[exercise.id]);
 });
 
-test("DELETE /api/contents/{id} -> 404", async () => {
+test("PATCH /api/exercises/{id} requires Write premission", async () => {
+  assert(hasSecurity(PATCH.apiDoc, "Write"));
+});
+
+test("DELETE /api/exercises/{id} -> 404", async () => {
   const { req, res, next } = await createHttpMocks("Admin");
 
   (req.params as PathParams) = {
@@ -61,8 +65,8 @@ test("DELETE /api/contents/{id} -> 404", async () => {
   assert.equal(res._getStatusCode(), 404);
 });
 
-test("DELETE /api/contents/{id} -> 200", async () => {
-  const { req, res, next, user } = await createHttpMocks("Write");
+test("DELETE /api/exercises/{id} -> 200", async () => {
+  const { req, res, next, user } = await createHttpMocks("Read");
 
   const { exercise } = await insertExercise(user);
 

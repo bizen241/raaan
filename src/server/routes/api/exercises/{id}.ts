@@ -6,20 +6,21 @@ import { SaveParams } from "../../../../shared/api/request/save";
 import { getTypeCountFromQuestions } from "../../../../shared/exercise";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
+import { hasPermission } from "../../../api/security";
 import { ExerciseEntity, ExerciseTagEntity } from "../../../database/entities";
 import { normalizeTags } from "../../../exercise";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   const { id: exerciseId }: PathParams = req.params;
 
-  const loadedExercise = await getManager().findOne(ExerciseEntity, exerciseId, {
-    relations: ["author", "summary"]
+  const exercise = await getManager().findOne(ExerciseEntity, exerciseId, {
+    relations: ["author", "summary", "summary.tags"]
   });
-  if (loadedExercise === undefined) {
+  if (exercise === undefined) {
     return next(createError(404));
   }
 
-  responseFindResult(req, res, loadedExercise);
+  responseFindResult(req, res, exercise);
 });
 
 GET.apiDoc = createOperationDoc({
@@ -38,37 +39,54 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
   const exercise = await manager.findOne(ExerciseEntity, exerciseId, {
     relations: ["author", "summary", "summary.tags"]
   });
-  if (exercise === undefined || exercise.summary === undefined || exercise.summary.tags === undefined) {
+  if (exercise === undefined) {
+    return next(createError(404));
+  }
+  if (exercise.summary === undefined || exercise.summary.tags === undefined) {
     return next(createError(500));
   }
-  if (exercise.authorId !== currentUser.id) {
+
+  const isAuthor = exercise.authorId !== currentUser.id;
+  if (!isAuthor && !hasPermission(currentUser, "Admin")) {
     return next(createError(403));
   }
 
-  if (params.title !== undefined) {
-    exercise.title = params.title;
-  }
-  if (params.tags !== undefined) {
-    await manager.remove(exercise.summary.tags);
+  if (isAuthor) {
+    if (params.title !== undefined) {
+      exercise.title = params.title;
+    }
+    if (params.tags !== undefined) {
+      await manager.remove(exercise.summary.tags);
 
-    const tags: ExerciseTagEntity[] = [];
-    normalizeTags(params.tags).forEach(async tagName => {
-      tags.push(new ExerciseTagEntity(tagName));
-    });
+      const tags: ExerciseTagEntity[] = [];
+      normalizeTags(params.tags).forEach(async tagName => {
+        tags.push(new ExerciseTagEntity(tagName));
+      });
 
-    exercise.tags = params.tags;
-    exercise.summary.tags = tags;
-  }
-  if (params.questions !== undefined) {
-    exercise.questions = params.questions;
+      exercise.tags = params.tags;
+      exercise.summary.tags = tags;
+    }
+    if (params.questions !== undefined) {
+      exercise.questions = params.questions;
 
-    const { maxTypeCount, minTypeCount } = getTypeCountFromQuestions(params.questions);
+      const { maxTypeCount, minTypeCount } = getTypeCountFromQuestions(params.questions);
 
-    exercise.summary.maxTypeCount = maxTypeCount;
-    exercise.summary.minTypeCount = minTypeCount;
-  }
-  if (params.isPrivate !== undefined && !exercise.isLocked) {
-    exercise.isPrivate = params.isPrivate;
+      exercise.summary.maxTypeCount = maxTypeCount;
+      exercise.summary.minTypeCount = minTypeCount;
+    }
+    if (params.isPrivate !== undefined) {
+      if (!exercise.isLocked) {
+        exercise.isPrivate = params.isPrivate;
+      }
+    }
+  } else {
+    if (params.isLocked !== undefined) {
+      exercise.isLocked = params.isLocked;
+
+      if (params.isLocked) {
+        exercise.isPrivate = true;
+      }
+    }
   }
 
   await manager.save(exercise);
@@ -84,19 +102,22 @@ PATCH.apiDoc = createOperationDoc({
   hasBody: true
 });
 
-export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
+export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { id: exerciseId }: PathParams = req.params;
 
   const manager = getManager();
 
-  const loadedExercise = await manager.findOne(ExerciseEntity, exerciseId, {
-    relations: ["author", "summary"]
-  });
-  if (loadedExercise === undefined) {
+  const exercise = await manager.findOne(ExerciseEntity, exerciseId);
+  if (exercise === undefined) {
     return next(createError(404));
   }
 
-  await manager.remove(loadedExercise);
+  const isAuthor = exercise.authorId === currentUser.id;
+  if (!isAuthor) {
+    return next(createError(403));
+  }
+
+  await manager.remove(exercise);
 
   responseFindResult(req, res);
 });
@@ -104,6 +125,6 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next) =>
 DELETE.apiDoc = createOperationDoc({
   entityType: "Exercise",
   summary: "Delete an exercise",
-  permission: "Admin",
+  permission: "Read",
   hasId: true
 });

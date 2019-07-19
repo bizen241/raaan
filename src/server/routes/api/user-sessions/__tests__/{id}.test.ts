@@ -20,7 +20,7 @@ beforeEach(async () => {
 });
 
 test("DELETE /api/user-sessions/{id} -> 404", async () => {
-  const { req, res, next } = await createHttpMocks("Write");
+  const { req, res, next } = await createHttpMocks("Read");
 
   (req.params as PathParams) = {
     id: uuid()
@@ -32,9 +32,9 @@ test("DELETE /api/user-sessions/{id} -> 404", async () => {
 });
 
 test("DELETE /api/user-sessions/{id} -> 403", async () => {
-  const { req, res, next } = await createHttpMocks("Write");
+  const { req, res, next } = await createHttpMocks("Read");
 
-  const { user } = await insertUser("Write");
+  const { user } = await insertUser("Read");
   const session = await insertSession(user);
 
   (req.params as PathParams) = {
@@ -47,7 +47,7 @@ test("DELETE /api/user-sessions/{id} -> 403", async () => {
 });
 
 test("DELETE /api/user-sessions/{id} -> 200", async () => {
-  const { req, res, next, user } = await createHttpMocks("Write");
+  const { req, res, next, user } = await createHttpMocks("Read");
 
   const session = await insertSession(user);
 

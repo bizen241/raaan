@@ -16,7 +16,9 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
   if (userSession === undefined) {
     return next(createError(404));
   }
-  if (userSession.userId !== currentUser.id) {
+
+  const isOwnSession = userSession.userId !== currentUser.id;
+  if (isOwnSession) {
     return next(createError(403));
   }
 
@@ -28,6 +30,6 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
 DELETE.apiDoc = createOperationDoc({
   entityType: "UserSession",
   summary: "Delete a user session",
-  permission: "Write",
+  permission: "Read",
   hasId: true
 });

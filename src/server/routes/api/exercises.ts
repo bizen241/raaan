@@ -1,5 +1,4 @@
 import { OperationFunction } from "express-openapi";
-import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { Exercise } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
@@ -9,7 +8,7 @@ import { responseFindResult } from "../../api/response";
 import { ExerciseEntity, ExerciseSummaryEntity, ExerciseTagEntity } from "../../database/entities";
 import { normalizeTags } from "../../exercise";
 
-export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
+export const POST: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
   const params: SaveParams<Exercise> = req.body;
 
   await getManager().transaction(async manager => {
@@ -20,19 +19,12 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
       tags.push(new ExerciseTagEntity(tag));
     });
 
-    const newExerciseSummary = new ExerciseSummaryEntity(maxTypeCount, minTypeCount, tags);
-    const newExercise = new ExerciseEntity(currentUser, newExerciseSummary, params);
+    const exerciseSummary = new ExerciseSummaryEntity(maxTypeCount, minTypeCount, tags);
+    const exercise = new ExerciseEntity(currentUser, exerciseSummary, params);
 
-    await manager.save(newExercise);
+    await manager.save(exercise);
 
-    const savedExercise = await manager.findOne(ExerciseEntity, newExercise.id, {
-      relations: ["author", "summary"]
-    });
-    if (savedExercise === undefined) {
-      return next(createError(500));
-    }
-
-    responseFindResult(req, res, savedExercise);
+    responseFindResult(req, res, exercise);
   });
 });
 

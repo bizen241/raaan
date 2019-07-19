@@ -19,23 +19,25 @@ export const GET: OperationFunction = errorBoundary(async (req, res, _, currentU
   if (authorId !== undefined) {
     query.andWhere("author.id = :authorId", { authorId });
   }
-  if (authorId === undefined || authorId !== currentUser.id) {
-    query.andWhere("exercise.isPrivate = false");
-  }
   if (tags !== undefined) {
     query.innerJoinAndSelect("exerciseSummary.tags", "tags", "tags.name IN (:...tags)", { tags });
   } else {
     query.leftJoinAndSelect("exerciseSummary.tags", "tags");
   }
 
-  const result = await query.getManyAndCount();
+  const isAuthor = authorId !== undefined && authorId === currentUser.id;
+  if (!isAuthor) {
+    query.andWhere("exercise.isPrivate = false");
+  }
 
-  responseSearchResult(req, res, ...result);
+  const [exerciseSummaries, count] = await query.getManyAndCount();
+
+  responseSearchResult(req, res, exerciseSummaries, count);
 });
 
 GET.apiDoc = createOperationDoc({
   entityType: "ExerciseSummary",
-  summary: "Search contents",
+  summary: "Search exercises",
   permission: "Guest",
   hasQuery: true
 });

@@ -47,7 +47,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
 POST.apiDoc = createOperationDoc({
   entityType: "Submission",
   summary: "Create a submission",
-  permission: "Write",
+  permission: "Read",
   hasBody: true
 });
 

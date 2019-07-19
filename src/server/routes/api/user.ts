@@ -39,6 +39,6 @@ export const DELETE: OperationFunction = errorBoundary(async (_, res, next, curr
 DELETE.apiDoc = createOperationDoc({
   entityType: "User",
   summary: "Delete the authenticated user",
-  permission: "Write",
+  permission: "Read",
   tag: "user"
 });

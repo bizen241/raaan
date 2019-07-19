@@ -1,6 +1,6 @@
 import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { FindConditions, getManager } from "typeorm";
+import { getManager } from "typeorm";
 import { UserSession } from "../../../shared/api/entities";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { parseSearchParams } from "../../api/request/search/parse";
@@ -10,24 +10,22 @@ import { UserSessionEntity } from "../../database/entities";
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { userId, limit, offset } = parseSearchParams<UserSession>("UserSession", req.query);
 
-  if (userId !== currentUser.id) {
+  const isOwnSessions = userId === currentUser.id;
+  if (!isOwnSessions) {
     return next(createError(403));
   }
 
-  const where: FindConditions<UserSessionEntity> = {};
+  const query = await getManager()
+    .createQueryBuilder(UserSessionEntity, "userSession")
+    .leftJoinAndSelect("userSession.user", "user")
+    .take(limit)
+    .skip(offset);
 
   if (userId !== undefined) {
-    where.user = {
-      id: userId
-    };
+    query.andWhere("user.id = :userId", { userId });
   }
 
-  const [userSessions, count] = await getManager().findAndCount(UserSessionEntity, {
-    where,
-    relations: ["user"],
-    take: limit,
-    skip: offset
-  });
+  const [userSessions, count] = await query.getManyAndCount();
 
   responseSearchResult(req, res, userSessions, count);
 });
@@ -35,6 +33,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
 GET.apiDoc = createOperationDoc({
   entityType: "UserSession",
   summary: "Search user sessions",
-  permission: "Write",
+  permission: "Read",
   hasQuery: true
 });

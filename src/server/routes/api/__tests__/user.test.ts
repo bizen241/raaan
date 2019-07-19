@@ -17,7 +17,7 @@ beforeEach(async () => {
 });
 
 test("GET /api/user -> 200", async () => {
-  const { req, res, next, user, account, config } = await createHttpMocks("Write");
+  const { req, res, next, user, account, config } = await createHttpMocks("Read");
 
   await GET(req, res, next);
 
@@ -30,7 +30,7 @@ test("GET /api/user -> 200", async () => {
 });
 
 test("DELETE /api/user -> 200", async () => {
-  const { req, res, next } = await createHttpMocks("Write");
+  const { req, res, next } = await createHttpMocks("Read");
 
   await DELETE(req, res, next);
 
