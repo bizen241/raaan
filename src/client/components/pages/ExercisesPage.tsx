@@ -10,24 +10,27 @@ import { useStyles } from "../ui/styles";
 import { Page } from "./Page";
 
 export const ExercisesPage = React.memo<PageProps>(() => {
+  const classes = useStyles();
   const currentUser = useContext(UserContext);
 
-  const classes = useStyles();
+  const isGuest = currentUser.permission === "Guest";
 
   return (
     <Page title="遊ぶ">
-      <Box display="flex" flexDirection="column" pb={1}>
-        <Button
-          className={classes.largeButton}
-          variant="contained"
-          color="primary"
-          component={RouterLink}
-          to={`/users/${currentUser.id}/exercises`}
-        >
-          <Folder className={classes.leftIcon} />
-          自分の問題集
-        </Button>
-      </Box>
+      {!isGuest && (
+        <Box display="flex" flexDirection="column" pb={1}>
+          <Button
+            className={classes.largeButton}
+            variant="contained"
+            color="primary"
+            component={RouterLink}
+            to={`/users/${currentUser.id}/exercises`}
+          >
+            <Folder className={classes.leftIcon} />
+            自分の問題集
+          </Button>
+        </Box>
+      )}
       <Box display="flex" flexDirection="column" pb={1}>
         <ExerciseSummaryList />
       </Box>
