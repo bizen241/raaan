@@ -1,6 +1,6 @@
-import { EntityType } from "../../../shared/api/entities";
+import { createEntityTypeToObject, EntityType } from "../../../shared/api/entities";
 import { BaseEntityObject } from "../../../shared/api/entities/BaseEntityObject";
-import { createEntityStore, EntityStore } from "../../../shared/api/response/get";
+import { EntityStore } from "../../../shared/api/response/get";
 import {
   Entity,
   ExerciseEntity,
@@ -21,7 +21,7 @@ export interface RequestContext {
 }
 
 export const normalizeEntities = (context: RequestContext, entities: Entity[]): EntityStore => {
-  const store = createEntityStore();
+  const store: EntityStore = createEntityTypeToObject();
 
   entities.forEach(entity => {
     normalizeEntity(context, store, entity);

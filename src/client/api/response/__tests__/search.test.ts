@@ -1,13 +1,12 @@
 import { strict as assert } from "assert";
-import { EntityType } from "../../../../shared/api/entities";
-import { createEntityStore } from "../../../../shared/api/response/get";
-import { createSearchResultStore, mergeSearchResultStore } from "../search";
+import { createEntityTypeToObject, EntityType } from "../../../../shared/api/entities";
+import { mergeSearchResultStore, SearchResultStore } from "../search";
 
 test("merge SearchResultStore", () => {
   const query = "";
 
   const entityType: EntityType = "User";
-  const searchResultStore = createSearchResultStore();
+  const searchResultStore: SearchResultStore = createEntityTypeToObject();
 
   searchResultStore[entityType] = {
     [query]: {
@@ -27,7 +26,7 @@ test("merge SearchResultStore", () => {
     {
       ids: [],
       count: 0,
-      entities: createEntityStore()
+      entities: createEntityTypeToObject()
     }
   );
 

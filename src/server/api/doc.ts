@@ -1,7 +1,7 @@
 import { OpenAPIV3 } from "openapi-types";
 import { ProcessEnv } from "../env";
 // import { SaveParamsMapSchema } from "./schema/request/save";
-import { SearchParamsMapSchema } from "./schema/request/search";
+import { SearchParamsMapSchema } from "./request/schema/search";
 import { EntityStoreSchema } from "./schema/response/get";
 import { SearchResponseSchema } from "./schema/response/search";
 import { securitySchemes } from "./security";

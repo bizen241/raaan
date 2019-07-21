@@ -63,12 +63,14 @@ export const HomePage = React.memo(() => {
           </Card>
         )}
       </Box>
-      <Box display="flex" flexDirection="column" pb={1}>
-        <Button className={classes.largeButton} variant="contained" component={RouterLink} to={`/exercises/history`}>
-          <History className={classes.leftIcon} />
-          履歴
-        </Button>
-      </Box>
+      {!isGuest && (
+        <Box display="flex" flexDirection="column" pb={1}>
+          <Button className={classes.largeButton} variant="contained" component={RouterLink} to={`/exercises/history`}>
+            <History className={classes.leftIcon} />
+            履歴
+          </Button>
+        </Box>
+      )}
     </Page>
   );
 });

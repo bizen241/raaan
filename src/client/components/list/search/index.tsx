@@ -105,7 +105,7 @@ export const createEntityList = <E extends EntityObject>(
                 </TableCell>
               </TableRow>
             )}
-            {!isLoading && entities.map(entity => entity && <ItemComponent key={entity.id} entity={entity} />)}
+            {!isLoading && entities.map(entity => entity && <ItemComponent key={entity.id} entity={entity as E} />)}
             {emptyRows && (
               <TableRow style={{ height: 49 * emptyRows }}>
                 <TableCell colSpan={3} />

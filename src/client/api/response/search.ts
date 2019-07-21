@@ -7,30 +7,17 @@ type IdMap = {
   [index: string]: string | undefined;
 };
 
-export interface SearchResult {
+interface SearchResult {
   ids: IdMap;
   count: number;
   fetchedAt: number;
 }
 
-export interface SearchResultMap {
+interface SearchResultMap {
   [query: string]: SearchResult | undefined;
 }
 
 export type SearchResultStore = { [P in EntityType]: SearchResultMap };
-
-export const createSearchResultStore = (): SearchResultStore => ({
-  Exercise: {},
-  ExerciseSummary: {},
-  ExerciseTag: {},
-  Submission: {},
-  SubmissionSummary: {},
-  User: {},
-  UserAccount: {},
-  UserConfig: {},
-  UserSession: {},
-  UserSummary: {}
-});
 
 const hasDiff = (oldIds: IdMap, newIds: IdMap) => {
   const hasDiffInRange = Object.entries(newIds).some(([index, newId]) => {
@@ -93,7 +80,7 @@ export const mergeSearchResultStore = <E extends EntityObject>(
     [entityType]: {
       ...searchResultMap,
       [searchQueryString]: {
-        ids: mergeIds(target, response, params.offset),
+        ids: mergeIds(target, response, params.offset || 0),
         count: response.count,
         fetchedAt: Date.now()
       }

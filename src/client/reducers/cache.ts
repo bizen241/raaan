@@ -1,10 +1,9 @@
 import { Reducer } from "redux";
-import { EntityType } from "../../shared/api/entities";
+import { createEntityTypeToObject, EntityType, mergeEntityTypeToObject } from "../../shared/api/entities";
 import { SearchParams } from "../../shared/api/request/search";
-import { createEntityStore, EntityStore } from "../../shared/api/response/get";
+import { EntityStore } from "../../shared/api/response/get";
 import { SearchResponse } from "../../shared/api/response/search";
-import { mergeEntityStore } from "../api/response/entity";
-import { createSearchResultStore, mergeSearchResultStore, SearchResultStore } from "../api/response/search";
+import { mergeSearchResultStore, SearchResultStore } from "../api/response/search";
 import { guestUser, guestUserConfig } from "../components/project/Context";
 import { ActionUnion, createAction } from "./action";
 
@@ -41,7 +40,7 @@ export type CacheState = {
 
 export const initialCacheState: CacheState = {
   get: {
-    ...createEntityStore(),
+    ...createEntityTypeToObject(),
     User: {
       [guestUser.id]: guestUser
     },
@@ -49,7 +48,7 @@ export const initialCacheState: CacheState = {
       [guestUserConfig.id]: guestUserConfig
     }
   },
-  search: createSearchResultStore()
+  search: createEntityTypeToObject()
 };
 
 export const cacheReducer: Reducer<CacheState, CacheActions> = (state = initialCacheState, action) => {
@@ -59,14 +58,14 @@ export const cacheReducer: Reducer<CacheState, CacheActions> = (state = initialC
 
       return {
         ...state,
-        get: mergeEntityStore(state.get, result)
+        get: mergeEntityTypeToObject(state.get, result)
       };
     }
     case CacheActionType.Search: {
       const { type, params, result } = action.payload;
 
       return {
-        get: mergeEntityStore(state.get, result.entities),
+        get: mergeEntityTypeToObject(state.get, result.entities),
         search: mergeSearchResultStore(state.search, type, params, result)
       };
     }

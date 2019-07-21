@@ -44,7 +44,7 @@ export type EntityObject =
   | UserSession
   | UserSummary;
 
-export type EntityTypeToObject = {
+export type EntityTypeToEntity = {
   Exercise: Exercise;
   ExerciseSummary: ExerciseSummary;
   ExerciseTag: ExerciseTag;
@@ -57,21 +57,10 @@ export type EntityTypeToObject = {
   UserSummary: UserSummary;
 };
 
-type EntityTypeToEmptyObject = {
-  Exercise: {};
-  ExerciseSummary: {};
-  ExerciseTag: {};
-  Submission: {};
-  SubmissionSummary: {};
-  User: {};
-  UserAccount: {};
-  UserConfig: {};
-  UserSession: {};
-  UserSummary: {};
-};
+type EntityTypeToObject = { [P in keyof EntityTypeToEntity]: object };
 
-export const createEntityTypeToEmptyObject = <T extends EntityTypeToEmptyObject>() =>
-  ({
+export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
+  const entityTypeToObject: EntityTypeToObject = {
     Exercise: {},
     ExerciseSummary: {},
     ExerciseTag: {},
@@ -82,4 +71,20 @@ export const createEntityTypeToEmptyObject = <T extends EntityTypeToEmptyObject>
     UserConfig: {},
     UserSession: {},
     UserSummary: {}
-  } as T);
+  };
+
+  return entityTypeToObject as T;
+};
+
+export const mergeEntityTypeToObject = <T extends EntityTypeToObject>(target: Partial<T>, source: Partial<T>): T => {
+  const merged: T = createEntityTypeToObject();
+
+  (Object.keys(merged) as EntityType[]).forEach(entityType => {
+    merged[entityType] = {
+      ...target[entityType],
+      ...source[entityType]
+    };
+  });
+
+  return merged;
+};

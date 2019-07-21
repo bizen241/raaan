@@ -1,6 +1,6 @@
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { createEntityTypeToEmptyObject, EntityObject, EntityType, EntityTypeToObject } from "../../shared/api/entities";
+import { createEntityTypeToObject, EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { SaveParams } from "../../shared/api/request/save";
 import { ActionUnion, AsyncAction, createAction } from "./action";
 import { apiActions } from "./api";
@@ -71,12 +71,12 @@ export const buffersActions = {
 };
 
 export type BuffersState = {
-  [P in keyof EntityTypeToObject]: {
-    [id: string]: Buffer<EntityTypeToObject[P]> | undefined;
+  [P in keyof EntityTypeToEntity]: {
+    [id: string]: Buffer<EntityTypeToEntity[P]> | undefined;
   }
 };
 
-export const initialBuffersState = createEntityTypeToEmptyObject<BuffersState>();
+export const initialBuffersState = createEntityTypeToObject<BuffersState>();
 
 export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBuffersState, action) => {
   switch (action.type) {

@@ -6,7 +6,7 @@ import { endpoints } from "../../shared/api/endpoint";
 import { EntityType, Permission } from "../../shared/api/entities";
 import { UserEntity } from "../database/entities";
 import { getGuestUser } from "../database/setup/guest";
-import { SaveParamsMapSchema } from "./schema/request/save";
+import { SaveParamsMapSchema } from "./request/schema/save";
 
 export interface PathParams {
   id: string;

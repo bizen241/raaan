@@ -1,7 +1,7 @@
 import { LOCATION_CHANGE } from "connected-react-router";
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { createEntityTypeToEmptyObject, EntityObject, EntityType, EntityTypeToObject } from "../../shared/api/entities";
+import { createEntityTypeToObject, EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { SearchParams } from "../../shared/api/request/search";
 import * as api from "../api/client";
 import { stringifySearchParams } from "../api/request/search";
@@ -97,7 +97,7 @@ export const apiActions = {
 };
 
 type ResponseCodeMap = {
-  [P in keyof EntityTypeToObject]: {
+  [P in keyof EntityTypeToEntity]: {
     [key: string]: number | undefined;
   }
 };
@@ -110,10 +110,10 @@ export type ApiState = {
 };
 
 export const initialApiState: ApiState = {
-  get: createEntityTypeToEmptyObject<ResponseCodeMap>(),
-  search: createEntityTypeToEmptyObject<ResponseCodeMap>(),
-  upload: createEntityTypeToEmptyObject<ResponseCodeMap>(),
-  delete: createEntityTypeToEmptyObject<ResponseCodeMap>()
+  get: createEntityTypeToObject(),
+  search: createEntityTypeToObject(),
+  upload: createEntityTypeToObject(),
+  delete: createEntityTypeToObject()
 };
 
 export const apiReducer: Reducer<ApiState, Actions> = (state = initialApiState, action) => {

@@ -35,7 +35,5 @@ const generateSchema = (inputFilePath, outputFilePath, typeName) => {
   fs.writeFileSync(path.join(process.cwd(), outputFilePath), prettieredSchema);
 };
 
-generateSchema("src/shared/api/request/save.ts", "src/server/api/schema/request/save.ts", "SaveParamsMap");
-generateSchema("src/shared/api/request/search.ts", "src/server/api/schema/request/search.ts", "SearchParamsMap");
-generateSchema("src/shared/api/response/get.ts", "src/server/api/schema/response/get.ts", "EntityStore");
-generateSchema("src/shared/api/response/search.ts", "src/server/api/schema/response/search.ts", "SearchResponse");
+generateSchema("src/shared/api/request/save.ts", "src/server/api/request/schema/save.ts", "SaveParamsMap");
+generateSchema("src/shared/api/request/search.ts", "src/server/api/request/schema/search.ts", "SearchParamsMap");

@@ -1,12 +1,13 @@
 import { Box, Button, Card, CardHeader, CircularProgress, Divider } from "@material-ui/core";
 import { CloudUpload, Done, Error } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useEffect } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EntityObject, EntityType } from "../../../shared/api/entities";
 import { actions, RootState } from "../../reducers";
 import { isLocalOnly } from "../../reducers/api";
 import { Buffer } from "../../reducers/buffers";
+import { UserContext } from "../project/Context";
 import { useStyles } from "../ui/styles";
 
 export interface EntityEditorContainerProps {
@@ -23,6 +24,7 @@ export const EntityEditor = React.memo<{
   bufferId: string;
   rendererComponent: React.ComponentType<EntityEditorRendererProps<any>>;
 }>(({ entityType, bufferId, rendererComponent: Renderer }) => {
+  const currentUser = useContext(UserContext);
   const classes = useStyles();
   const dispatch = useDispatch();
   const { buffer, uploadStatus } = useSelector((state: RootState) => ({
@@ -31,7 +33,7 @@ export const EntityEditor = React.memo<{
   }));
 
   useEffect(() => {
-    if (buffer === undefined) {
+    if (buffer === undefined && !isLocalOnly(bufferId)) {
       dispatch(actions.buffers.load(entityType, bufferId));
     }
   }, []);
@@ -69,10 +71,12 @@ export const EntityEditor = React.memo<{
     }
   }
 
+  const isGuest = currentUser.permission === "Guest";
+
   return (
     <Box display="flex" flexDirection="column">
       <Box display="flex" flexDirection="column" pb={1}>
-        <Button className={classes.largeButton} variant="contained" size="large" onClick={onUpload}>
+        <Button className={classes.largeButton} variant="contained" size="large" disabled={isGuest} onClick={onUpload}>
           <CloudUpload className={classes.leftIcon} />
           アップロード
         </Button>

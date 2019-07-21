@@ -78,7 +78,7 @@ export const SaveParamsMapSchema: Definition = {
       properties: {
         name: { type: "string" },
         summaryId: { format: "uuid", type: "string" },
-        permission: { enum: ["Admin", "Guest", "Owner", "Write"], type: "string" },
+        permission: { enum: ["Admin", "Guest", "Owner", "Read", "Write"], type: "string" },
         accountId: { format: "uuid", type: "string" },
         configId: { format: "uuid", type: "string" }
       }

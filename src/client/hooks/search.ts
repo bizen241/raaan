@@ -5,10 +5,7 @@ import { SearchParams } from "../../shared/api/request/search";
 import { stringifySearchParams } from "../api/request/search";
 import { actions, RootState } from "../reducers";
 
-export const useSearch = <E extends EntityObject>(
-  entityType: EntityType,
-  initialSearchParams: Partial<SearchParams<E>>
-) => {
+export const useSearch = <E extends EntityObject>(entityType: EntityType, initialSearchParams: SearchParams<E>) => {
   const dispatch = useDispatch();
 
   const [limit, setLimit] = useState(10);
@@ -16,7 +13,7 @@ export const useSearch = <E extends EntityObject>(
 
   const offset = limit * page;
 
-  const [searchParams, setSearchParams] = useState({
+  const [searchParams, setSearchParams] = useState<SearchParams<E>>({
     ...initialSearchParams,
     limit,
     offset
