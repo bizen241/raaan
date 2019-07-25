@@ -15,8 +15,8 @@ import * as React from "react";
 import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EntityObject, EntityType } from "../../../../shared/api/entities";
+import { SaveParams } from "../../../../shared/api/request/save";
 import { actions, RootState } from "../../../reducers";
-import { Buffer } from "../../../reducers/buffers";
 import { useStyles } from "../../ui/styles";
 
 export interface BufferListProps {
@@ -25,7 +25,7 @@ export interface BufferListProps {
 
 export interface BufferListItemProps<E extends EntityObject> {
   bufferId: string;
-  buffer: Buffer<E>;
+  buffer: SaveParams<E>;
 }
 
 export const createBufferList = <E extends EntityObject>(

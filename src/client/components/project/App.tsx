@@ -3,6 +3,7 @@ import * as React from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { configureStore } from "../../store";
+import { Context } from "./Context";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { Initializer } from "./Initializer";
 import { Router } from "./Router";
@@ -17,9 +18,11 @@ export const App: React.FunctionComponent = () => {
         <PersistGate persistor={persistor}>
           <ConnectedRouter history={history}>
             <Initializer>
-              <Style>
-                <Router />
-              </Style>
+              <Context>
+                <Style>
+                  <Router />
+                </Style>
+              </Context>
             </Initializer>
           </ConnectedRouter>
         </PersistGate>

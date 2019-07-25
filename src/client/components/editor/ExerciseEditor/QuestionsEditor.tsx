@@ -2,11 +2,7 @@ import { Box, Button, Dialog } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { useCallback, useState } from "react";
 import * as React from "react";
-import { useDispatch } from "react-redux";
-import { Exercise } from "../../../../shared/api/entities";
 import { Question } from "../../../../shared/api/entities";
-import { createQuestion } from "../../../domain/exercise/create";
-import { actions } from "../../../reducers";
 import { QuestionPreviewer } from "../../player/QuestionPreviewer";
 import { useStyles } from "../../ui/styles";
 import { QuestionEditor } from "./QuestionEditor";
@@ -17,11 +13,10 @@ type IdentifiedQuestion = {
 };
 
 export const QuestionsEditor = React.memo<{
-  exerciseId: string;
   questions: Question[];
-}>(({ exerciseId, questions: initialQuestions }) => {
+  onChange: (questions: Question[]) => void;
+}>(({ onChange, ...props }) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
 
   const [focusedQuestionIndex, focusQuestion] = useState(0);
   const onFocusQuestion = useCallback((questionIndex: number) => focusQuestion(questionIndex), []);
@@ -30,18 +25,14 @@ export const QuestionsEditor = React.memo<{
   const onToggleQuestionPreviewer = useCallback(() => toggleQuestionPreviewer(s => !s), []);
 
   const [questions, setQuestions] = useState<IdentifiedQuestion[]>(
-    initialQuestions.map((question, index) => ({
+    props.questions.map((question, index) => ({
       id: index,
       content: question
     }))
   );
 
-  const updateBuffer = (nextQuestions: IdentifiedQuestion[]) =>
-    dispatch(
-      actions.buffers.update<Exercise>("Exercise", exerciseId, {
-        questions: nextQuestions.map(question => question.content)
-      })
-    );
+  const updateQuestions = (nextQuestions: IdentifiedQuestion[]) =>
+    onChange(nextQuestions.map(question => question.content));
 
   const onAppendQuestion = useCallback(() => {
     const id = questions.reduce((maxId, question) => Math.max(question.id, maxId), 0) + 1;
@@ -49,7 +40,7 @@ export const QuestionsEditor = React.memo<{
     setQuestions(prevQuestions => {
       const nextQuestions = [...prevQuestions, { id, content: createQuestion() }];
 
-      updateBuffer(nextQuestions);
+      updateQuestions(nextQuestions);
       return nextQuestions;
     });
   }, []);
@@ -66,7 +57,7 @@ export const QuestionsEditor = React.memo<{
         ...prevQuestions.slice(index + 1)
       ];
 
-      updateBuffer(nextQuestions);
+      updateQuestions(nextQuestions);
       return nextQuestions;
     });
   }, []);
@@ -74,7 +65,7 @@ export const QuestionsEditor = React.memo<{
     setQuestions(prevQuestions => {
       const nextQuestions = [...prevQuestions.slice(0, index), ...prevQuestions.slice(index + 1)];
 
-      updateBuffer(nextQuestions);
+      updateQuestions(nextQuestions);
       return nextQuestions;
     });
   }, []);
@@ -108,4 +99,11 @@ export const QuestionsEditor = React.memo<{
       )}
     </Box>
   );
+});
+
+const createQuestion = (): Question => ({
+  format: "plain",
+  lang: "",
+  value: "",
+  comment: ""
 });

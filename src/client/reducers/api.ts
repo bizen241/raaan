@@ -62,9 +62,7 @@ const uploadEntity = (type: EntityType, id: string): AsyncAction => async (dispa
   dispatch(apiSyncActions.update("upload", type, id, 102));
 
   try {
-    const result = isLocalOnly(id)
-      ? await api.createEntity(type, buffer.edited)
-      : await api.updateEntity(type, id, buffer.edited);
+    const result = isLocalOnly(id) ? await api.createEntity(type, buffer) : await api.updateEntity(type, id, buffer);
 
     dispatch(cacheActions.get(result));
     dispatch(apiSyncActions.update("upload", type, id, 200));

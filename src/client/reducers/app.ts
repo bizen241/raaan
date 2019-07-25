@@ -1,6 +1,7 @@
 import { push } from "connected-react-router";
 import { Reducer } from "redux";
 import { Actions } from ".";
+import { User } from "../../shared/api/entities";
 import { getCurrentUser } from "../api/client";
 import { FetchError } from "../api/client/request";
 import { guestUser } from "../components/project/Context";
@@ -15,7 +16,7 @@ export enum AppActionType {
 }
 
 const appSyncActions = {
-  ready: (userId: string) => createAction(AppActionType.Ready, { userId }),
+  ready: (user: Pick<User, "id" | "configId">) => createAction(AppActionType.Ready, { user }),
   network: (isOnline: boolean) => createAction(AppActionType.Network, { isOnline }),
   updateFound: () => createAction(AppActionType.UpdateFound)
 };
@@ -23,7 +24,7 @@ const appSyncActions = {
 export type AppActions = ActionUnion<typeof appSyncActions>;
 
 const initialize = (): AsyncAction => async (dispatch, getState) => {
-  const previousUserId = getState().app.userId;
+  const previousUser = getState().app.user;
 
   if (process.env.NODE_ENV === "production") {
     install(() => dispatch(appSyncActions.updateFound()));
@@ -42,17 +43,17 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
       throw new Error();
     }
 
-    if (currentUser.id !== previousUserId) {
+    if (currentUser.id !== previousUser.id) {
       dispatch(push("/"));
     }
 
     dispatch(cacheActions.get(result));
-    dispatch(appSyncActions.ready(currentUser.id));
+    dispatch(appSyncActions.ready(currentUser));
   } catch (e) {
     if (e instanceof FetchError && e.code === 403) {
-      dispatch(appSyncActions.ready(guestUser.id));
+      dispatch(appSyncActions.ready(guestUser));
     } else {
-      dispatch(appSyncActions.ready(previousUserId));
+      dispatch(appSyncActions.ready(previousUser));
     }
   }
 };
@@ -63,14 +64,20 @@ export const appActions = {
 };
 
 export type AppState = {
-  userId: string;
+  user: {
+    id: string;
+    configId: string;
+  };
   isReady: boolean;
   isOnline: boolean;
   hasUpdate: boolean;
 };
 
 export const initialAppState: AppState = {
-  userId: guestUser.id,
+  user: {
+    id: guestUser.id,
+    configId: guestUser.configId
+  },
   isReady: false,
   isOnline: true,
   hasUpdate: false
@@ -79,11 +86,14 @@ export const initialAppState: AppState = {
 export const appReducer: Reducer<AppState, Actions> = (state = initialAppState, action) => {
   switch (action.type) {
     case AppActionType.Ready: {
-      const { userId } = action.payload;
+      const { user } = action.payload;
 
       return {
         ...state,
-        userId,
+        user: {
+          id: user.id,
+          configId: user.configId
+        },
         isReady: true,
         isOnline: navigator.onLine,
         hasUpdate: false

@@ -44,7 +44,8 @@ export const ExercisePlayer = React.memo<{
         ...summarizeResults(results)
       };
 
-      dispatch(actions.buffers.add("Submission", submissionId, submission));
+      dispatch(actions.buffers.add("Submission", submissionId));
+      dispatch(actions.buffers.update("Submission", submissionId, submission));
       dispatch(actions.api.upload("Submission", submissionId));
     }
   }, []);

@@ -5,7 +5,6 @@ import * as React from "react";
 import { useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
-import { createExercise } from "../../domain/exercise/create";
 import { actions } from "../../reducers";
 import { generateBufferId } from "../../reducers/buffers";
 import { ExerciseBufferList } from "../list/buffers/ExerciseBufferList";
@@ -14,17 +13,16 @@ import { useStyles } from "../ui/styles";
 import { Page } from "./Page";
 
 export const EditExercisesPage = React.memo(() => {
+  const classes = useStyles();
+  const currentUser = useContext(UserContext);
   const dispatch = useDispatch();
 
   const onCreate = useCallback(() => {
     const bufferId = generateBufferId();
 
-    dispatch(actions.buffers.add("Exercise", bufferId, createExercise()));
+    dispatch(actions.buffers.add("Exercise", bufferId));
     dispatch(push(`/exercises/${bufferId}/edit`));
   }, []);
-
-  const currentUser = useContext(UserContext);
-  const classes = useStyles();
 
   return (
     <Page title="作る">

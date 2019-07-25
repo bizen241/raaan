@@ -10,7 +10,7 @@ export const ExerciseBufferList = createBufferList<Exercise>(
     return (
       <Box display="flex" flexDirection="column">
         <Link color="textPrimary" component={RouterLink} to={`/exercises/${bufferId}/edit`}>
-          {buffer.edited.title || "無題"}
+          {buffer.title || "無題"}
         </Link>
       </Box>
     );

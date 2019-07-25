@@ -30,12 +30,12 @@ export const ExerciseViewer = createEntityViewer<Exercise>(
     const onToggleExercisePreviewer = useCallback(() => toggleExercisePreviewer(s => !s), []);
 
     const onPublish = useCallback(() => {
-      dispatch(actions.buffers.load("Exercise", exerciseId));
+      dispatch(actions.buffers.add("Exercise", exerciseId));
       dispatch(actions.buffers.update<Exercise>("Exercise", exerciseId, { isPrivate: false }));
       dispatch(actions.api.upload("Exercise", exerciseId));
     }, []);
     const onUnpublish = useCallback(() => {
-      dispatch(actions.buffers.load("Exercise", exerciseId));
+      dispatch(actions.buffers.add("Exercise", exerciseId));
       dispatch(actions.buffers.update<Exercise>("Exercise", exerciseId, { isPrivate: true }));
       dispatch(actions.api.upload("Exercise", exerciseId));
     }, []);

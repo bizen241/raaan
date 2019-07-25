@@ -2,40 +2,26 @@ import { Reducer } from "redux";
 import { Actions } from ".";
 import { createEntityTypeToObject, EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { SaveParams } from "../../shared/api/request/save";
-import { ActionUnion, AsyncAction, createAction } from "./action";
-import { apiActions } from "./api";
+import { guestUserConfig } from "../components/project/Context";
+import { ActionUnion, createAction } from "./action";
 
 export enum BuffersActionType {
   Add = "buffers/add",
   Update = "buffers/update",
-  Reset = "buffers/reset",
   Delete = "buffers/delete"
 }
 
-export type Buffer<E extends EntityObject> = {
-  source: SaveParams<E>;
-  edited: SaveParams<E>;
-  createdAt: number;
-  updatedAt: number;
-};
-
-const buffersSyncActions = {
-  add: <E extends EntityObject>(type: EntityType, id: string, params: SaveParams<E>) =>
+export const buffersActions = {
+  add: (type: EntityType, id: string) =>
     createAction(BuffersActionType.Add, {
       type,
-      id,
-      params
+      id
     }),
   update: <E extends EntityObject>(type: EntityType, id: string, params: SaveParams<E>) =>
     createAction(BuffersActionType.Update, {
       type,
       id,
       params
-    }),
-  reset: (type: EntityType, id: string) =>
-    createAction(BuffersActionType.Reset, {
-      type,
-      id
     }),
   delete: (type: EntityType, id: string) =>
     createAction(BuffersActionType.Delete, {
@@ -44,52 +30,38 @@ const buffersSyncActions = {
     })
 };
 
-export type BuffersActions = ActionUnion<typeof buffersSyncActions>;
+export type BuffersActions = ActionUnion<typeof buffersActions>;
 
 export const generateBufferId = () => Date.now().toString();
 
-const load = (entityType: EntityType, entityId: string): AsyncAction => async (dispatch, getState) => {
-  const isCached = getState().cache.get[entityType][entityId] !== undefined;
-
-  if (!isCached) {
-    await apiActions.get(entityType, entityId)(dispatch, getState, undefined);
-  }
-
-  const entity = getState().cache.get[entityType][entityId];
-  if (entity === undefined) {
-    return;
-  }
-
-  const { id, createdAt, updatedAt, fetchedAt, ...params } = entity;
-
-  dispatch(buffersActions.add(entityType, entityId, params));
-};
-
-export const buffersActions = {
-  ...buffersSyncActions,
-  load
-};
-
 export type BuffersState = {
   [P in keyof EntityTypeToEntity]: {
-    [id: string]: Buffer<EntityTypeToEntity[P]> | undefined;
+    [id: string]: SaveParams<EntityTypeToEntity[P]> | undefined;
   }
 };
 
-export const initialBuffersState = createEntityTypeToObject<BuffersState>();
+export const initialBuffersState: BuffersState = {
+  ...createEntityTypeToObject<BuffersState>(),
+  UserConfig: {
+    [guestUserConfig.id]: {
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    }
+  }
+};
 
 export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBuffersState, action) => {
   switch (action.type) {
     case BuffersActionType.Add: {
-      const { type, id, params } = action.payload;
+      const { type, id } = action.payload;
 
       return {
         ...state,
         [type]: {
           ...state[type],
           [id]: {
-            source: params,
-            edited: params
+            createdAt: Date.now(),
+            updatedAt: Date.now()
           }
         }
       };
@@ -107,28 +79,7 @@ export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBu
           ...state[type],
           [id]: {
             ...buffer,
-            edited: {
-              ...buffer.edited,
-              ...params
-            }
-          }
-        }
-      };
-    }
-    case BuffersActionType.Reset: {
-      const { type, id } = action.payload;
-      const buffer = state[type][id];
-      if (buffer === undefined) {
-        return state;
-      }
-
-      return {
-        ...state,
-        [type]: {
-          ...state[type],
-          [id]: {
-            ...buffer,
-            edited: buffer.source
+            ...params
           }
         }
       };

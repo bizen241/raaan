@@ -1,7 +1,8 @@
 import * as React from "react";
 import { createContext, useMemo } from "react";
+import { useSelector } from "react-redux";
 import { Lang, LangName, User, UserConfig } from "../../../shared/api/entities";
-import { SaveParams } from "../../../shared/api/request/save";
+import { RootState } from "../../reducers";
 
 const guestUserId = Date.now().toString();
 const guestUserConfigId = Date.now().toString();
@@ -31,38 +32,38 @@ export const ConfigContext = createContext<UserConfig>(guestUserConfig);
 export const LangContext = createContext<LangName>("ja");
 
 export const Context = React.memo<{
-  user?: User;
-  userParams?: SaveParams<User>;
-  config?: UserConfig;
-  configParams?: SaveParams<UserConfig>;
   children: React.ReactNode;
-}>(({ user, userParams = {}, config, configParams = {}, children }) => {
+}>(({ children }) => {
+  const { user, userBuffer, userConfig, userConfigBuffer } = useSelector(({ app, cache, buffers }: RootState) => ({
+    user: cache.get.User[app.user.id],
+    userBuffer: buffers.User[app.user.id],
+    userConfig: cache.get.UserConfig[app.user.configId],
+    userConfigBuffer: buffers.UserConfig[app.user.configId]
+  }));
+  if (user === undefined || userConfig === undefined) {
+    throw new Error("ユーザーの取得に失敗しました");
+  }
+
   const mergedUser = useMemo<User>(
-    () =>
-      user !== undefined
-        ? {
-            ...user,
-            ...userParams
-          }
-        : guestUser,
-    [user, userParams]
+    () => ({
+      ...user,
+      ...userBuffer
+    }),
+    [user, userBuffer]
   );
-  const mergedConfig = useMemo<UserConfig>(
-    () =>
-      config !== undefined
-        ? {
-            ...config,
-            ...configParams
-          }
-        : guestUserConfig,
-    [config, configParams]
+  const mergedUserConfig = useMemo<UserConfig>(
+    () => ({
+      ...userConfig,
+      ...userConfigBuffer
+    }),
+    [userConfig, userConfigBuffer]
   );
 
-  const lang = getLang(mergedConfig.lang);
+  const lang = getLang(mergedUserConfig.lang);
 
   return (
     <UserContext.Provider value={mergedUser}>
-      <ConfigContext.Provider value={mergedConfig}>
+      <ConfigContext.Provider value={mergedUserConfig}>
         <LangContext.Provider value={lang}>{children}</LangContext.Provider>
       </ConfigContext.Provider>
     </UserContext.Provider>
