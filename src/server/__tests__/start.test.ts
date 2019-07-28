@@ -10,8 +10,8 @@ test("start", async () => {
   const guestUser = await getManager().findOne(UserEntity, { permission: "Guest" });
   assert.notEqual(guestUser, undefined);
 
-  const adminUser = await getManager().findOne(UserEntity, { permission: "Admin" });
-  assert.notEqual(adminUser, undefined);
+  const ownerUser = await getManager().findOne(UserEntity, { permission: "Owner" });
+  assert.notEqual(ownerUser, undefined);
 
   await database.close();
 
