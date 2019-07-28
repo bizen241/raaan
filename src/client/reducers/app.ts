@@ -7,6 +7,7 @@ import { FetchError } from "../api/client/request";
 import { guestUser } from "../components/project/Context";
 import { install } from "../install";
 import { ActionUnion, AsyncAction, createAction } from "./action";
+import { isLocalOnly } from "./api";
 import { cacheActions } from "./cache";
 
 export enum AppActionType {
@@ -51,7 +52,11 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
     dispatch(appSyncActions.ready(currentUser));
   } catch (e) {
     if (e instanceof FetchError && e.code === 403) {
-      dispatch(appSyncActions.ready(guestUser));
+      if (isLocalOnly(previousUser.id)) {
+        dispatch(appSyncActions.ready(previousUser));
+      } else {
+        dispatch(appSyncActions.ready(guestUser));
+      }
     } else {
       dispatch(appSyncActions.ready(previousUser));
     }
