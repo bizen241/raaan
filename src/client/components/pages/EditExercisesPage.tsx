@@ -24,6 +24,8 @@ export const EditExercisesPage = React.memo(() => {
     dispatch(push(`/exercises/${bufferId}/edit`));
   }, []);
 
+  const isGuest = currentUser.permission === "Guest";
+
   return (
     <Page title="作る">
       <Box display="flex" flexDirection="column" pb={1}>
@@ -32,17 +34,19 @@ export const EditExercisesPage = React.memo(() => {
           新規作成
         </Button>
       </Box>
-      <Box display="flex" flexDirection="column" pb={1}>
-        <Button
-          className={classes.largeButton}
-          variant="contained"
-          component={RouterLink}
-          to={`/users/${currentUser.id}/exercises`}
-        >
-          <Edit className={classes.leftIcon} />
-          保存済み
-        </Button>
-      </Box>
+      {!isGuest && (
+        <Box display="flex" flexDirection="column" pb={1}>
+          <Button
+            className={classes.largeButton}
+            variant="contained"
+            component={RouterLink}
+            to={`/users/${currentUser.id}/exercises`}
+          >
+            <Edit className={classes.leftIcon} />
+            保存済み
+          </Button>
+        </Box>
+      )}
       <Box display="flex" flexDirection="column" pb={1}>
         <ExerciseBufferList title="編集中" />
       </Box>
