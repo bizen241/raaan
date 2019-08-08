@@ -10,9 +10,9 @@ export class SubmissionEntity extends BaseEntityClass {
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
-  user?: UserEntity;
-  @RelationId((submission: SubmissionEntity) => submission.user)
-  userId!: string;
+  submitter?: UserEntity;
+  @RelationId((submission: SubmissionEntity) => submission.submitter)
+  submitterId!: string;
 
   @ManyToOne(() => ExerciseEntity, {
     onDelete: "CASCADE"
@@ -30,10 +30,10 @@ export class SubmissionEntity extends BaseEntityClass {
   @Column()
   accuracy: number;
 
-  constructor(user: UserEntity, exercise: ExerciseEntity, typeCount: number, time: number, accuracy: number) {
+  constructor(submitter: UserEntity, exercise: ExerciseEntity, typeCount: number, time: number, accuracy: number) {
     super();
 
-    this.user = user;
+    this.submitter = submitter;
     this.exercise = exercise;
     this.typeCount = typeCount;
     this.time = time;

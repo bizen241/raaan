@@ -46,7 +46,7 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
     return next(createError(500));
   }
 
-  const isAuthor = exercise.authorId !== currentUser.id;
+  const isAuthor = exercise.authorId === currentUser.id;
   if (!isAuthor && !hasPermission(currentUser, "Admin")) {
     return next(createError(403));
   }
@@ -67,6 +67,7 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
       exercise.summary.tags = tags;
     }
     if (params.questions !== undefined) {
+      console.log(params.questions);
       exercise.questions = params.questions;
 
       const { maxTypeCount, minTypeCount } = getTypeCountFromQuestions(params.questions);

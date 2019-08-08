@@ -27,6 +27,9 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
   minTypeCount: number;
 
   @Column()
+  upvoteCount: number = 0;
+
+  @Column()
   submitCount: number = 0;
 
   constructor(maxTypeCount: number, minTypeCount: number, tags?: ExerciseTagEntity[]) {

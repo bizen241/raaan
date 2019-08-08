@@ -4,6 +4,7 @@ import { EntityStore } from "../../../shared/api/response/get";
 import {
   Entity,
   ExerciseEntity,
+  ExerciseReportEntity,
   ExerciseSummaryEntity,
   ExerciseTagEntity,
   SubmissionEntity,
@@ -15,6 +16,7 @@ import {
   UserSummaryEntity
 } from "../../database/entities";
 import { BaseEntityClass } from "../../database/entities/BaseEntityClass";
+import { ExerciseVoteEntity } from "../../database/entities/ExerciseVoteEntity";
 
 export interface RequestContext {
   sessionId?: string;
@@ -90,6 +92,16 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) =
   normalizeEntity(context, store, summary);
 };
 
+const normalizeExerciseReport: Normalizer<ExerciseReportEntity> = (_, store, entity) => {
+  const { id, targetId, reporterId } = entity;
+
+  store.ExerciseReport[id] = {
+    ...base(entity),
+    targetId,
+    reporterId
+  };
+};
+
 const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (context, store, entity) => {
   const { id, exercise, exerciseId, tags = [], submitCount } = entity;
   if (exercise === undefined) {
@@ -121,12 +133,23 @@ const normalizeExerciseTag: Normalizer<ExerciseTagEntity> = (_, store, entity) =
   };
 };
 
+const normalizeExerciseVote: Normalizer<ExerciseVoteEntity> = (_, store, entity) => {
+  const { id, targetId, voterId, isUp } = entity;
+
+  store.ExerciseVote[id] = {
+    ...base(entity),
+    targetId,
+    voterId,
+    isUp
+  };
+};
+
 const normalizeSubmission: Normalizer<SubmissionEntity> = (_, store, entity) => {
-  const { id, userId, exerciseId, typeCount, time, accuracy } = entity;
+  const { id, submitterId, exerciseId, typeCount, time, accuracy } = entity;
 
   store.Submission[id] = {
     ...base(entity),
-    userId,
+    submitterId,
     exerciseId,
     typeCount,
     time,
@@ -135,14 +158,14 @@ const normalizeSubmission: Normalizer<SubmissionEntity> = (_, store, entity) => 
 };
 
 const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context, store, entity) => {
-  const { id, userId, exerciseId, exercise, latest, best, submitCount } = entity;
+  const { id, submitterId, exerciseId, exercise, latest, best, submitCount } = entity;
   if (exercise === undefined || exercise.summary === undefined || latest === undefined || best === undefined) {
     return;
   }
 
   store.SubmissionSummary[id] = {
     ...base(entity),
-    userId,
+    submitterId,
     exerciseId,
     exerciseSummaryId: exercise.summaryId,
     latest: {
@@ -231,8 +254,10 @@ const normalizeUserSummary: Normalizer<UserSummaryEntity> = (_, store, entity) =
 
 const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Exercise: normalizeExercise,
+  ExerciseReport: normalizeExerciseReport,
   ExerciseSummary: normalizeExerciseSummary,
   ExerciseTag: normalizeExerciseTag,
+  ExerciseVote: normalizeExerciseVote,
   Submission: normalizeSubmission,
   SubmissionSummary: normalizeSubmissionSummary,
   User: normalizeUser,

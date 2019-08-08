@@ -88,7 +88,7 @@ export const ExerciseViewer = createEntityViewer<Exercise>(
           </Button>
         </Box>
         <Box display="flex" flexDirection="column" pb={1}>
-          <SubmissionSummaryViewer userId={currentUser.id} exerciseId={exerciseId} />
+          <SubmissionSummaryViewer submitterId={currentUser.id} exerciseId={exerciseId} />
         </Box>
         <Box display="flex" flexDirection="column" pb={1}>
           <ExerciseSummaryViewer entityId={exercise.summaryId} />

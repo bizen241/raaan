@@ -11,9 +11,9 @@ export class SubmissionSummaryEntity extends BaseEntityClass {
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
-  user?: UserEntity;
-  @RelationId((submissionSummary: SubmissionSummaryEntity) => submissionSummary.user)
-  userId!: string;
+  submitter?: UserEntity;
+  @RelationId((submissionSummary: SubmissionSummaryEntity) => submissionSummary.submitter)
+  submitterId!: string;
 
   @ManyToOne(() => ExerciseEntity, {
     onDelete: "CASCADE"
@@ -41,10 +41,10 @@ export class SubmissionSummaryEntity extends BaseEntityClass {
   @Column()
   submitCount: number = 1;
 
-  constructor(user: UserEntity, exercise: ExerciseEntity, submission: SubmissionEntity) {
+  constructor(submitter: UserEntity, exercise: ExerciseEntity, submission: SubmissionEntity) {
     super();
 
-    this.user = user;
+    this.submitter = submitter;
     this.exercise = exercise;
     this.latest = submission;
     this.best = submission;

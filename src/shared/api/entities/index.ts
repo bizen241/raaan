@@ -1,6 +1,8 @@
 import { Exercise } from "./Exercise";
+import { ExerciseReport } from "./ExerciseReport";
 import { ExerciseSummary } from "./ExerciseSummary";
 import { ExerciseTag } from "./ExerciseTag";
+import { ExerciseVote } from "./ExerciseVote";
 import { Submission } from "./Submission";
 import { SubmissionSummary } from "./SubmissionSummary";
 import { User } from "./User";
@@ -10,8 +12,10 @@ import { UserSession } from "./UserSession";
 import { UserSummary } from "./UserSummary";
 
 export * from "./Exercise";
+export * from "./ExerciseReport";
 export * from "./ExerciseSummary";
 export * from "./ExerciseTag";
+export * from "./ExerciseVote";
 export * from "./Submission";
 export * from "./SubmissionSummary";
 export * from "./User";
@@ -22,8 +26,10 @@ export * from "./UserSummary";
 
 export type EntityType =
   | "Exercise"
+  | "ExerciseReport"
   | "ExerciseSummary"
   | "ExerciseTag"
+  | "ExerciseVote"
   | "Submission"
   | "SubmissionSummary"
   | "User"
@@ -34,8 +40,10 @@ export type EntityType =
 
 export type EntityObject =
   | Exercise
+  | ExerciseReport
   | ExerciseSummary
   | ExerciseTag
+  | ExerciseVote
   | Submission
   | SubmissionSummary
   | User
@@ -46,8 +54,10 @@ export type EntityObject =
 
 export type EntityTypeToEntity = {
   Exercise: Exercise;
+  ExerciseReport: ExerciseReport;
   ExerciseSummary: ExerciseSummary;
   ExerciseTag: ExerciseTag;
+  ExerciseVote: ExerciseVote;
   Submission: Submission;
   SubmissionSummary: SubmissionSummary;
   User: User;
@@ -62,8 +72,10 @@ type EntityTypeToObject = { [P in keyof EntityTypeToEntity]: object };
 export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
   const entityTypeToObject: EntityTypeToObject = {
     Exercise: {},
+    ExerciseReport: {},
     ExerciseSummary: {},
     ExerciseTag: {},
+    ExerciseVote: {},
     Submission: {},
     SubmissionSummary: {},
     User: {},

@@ -1,7 +1,7 @@
 import { BaseEntityObject, UUID } from "./BaseEntityObject";
 
 export interface Submission extends BaseEntityObject {
-  userId: UUID;
+  submitterId: UUID;
   exerciseId: UUID;
   typeCount: number;
   time: number;

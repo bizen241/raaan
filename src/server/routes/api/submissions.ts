@@ -60,7 +60,7 @@ const saveSubmissionSummary = async (
   const submissionSummary = await manager.findOne(
     SubmissionSummaryEntity,
     {
-      user: currentUser,
+      submitter: currentUser,
       exercise
     },
     { relations: ["latest", "best"] }

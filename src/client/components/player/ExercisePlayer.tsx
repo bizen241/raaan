@@ -24,7 +24,7 @@ export const ExercisePlayer = React.memo<{
   const submissionId = useMemo(() => Date.now().toString(), []);
 
   const searchParams: SearchParams<SubmissionSummary> = {
-    userId: currentUser.id,
+    submitterId: currentUser.id,
     exerciseId,
     limit: 1,
     offset: 0

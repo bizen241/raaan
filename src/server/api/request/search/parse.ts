@@ -2,8 +2,10 @@ import {
   EntityObject,
   EntityType,
   Exercise,
+  ExerciseReport,
   ExerciseSummary,
   ExerciseTag,
+  ExerciseVote,
   Lang,
   Permission,
   Submission,
@@ -49,6 +51,15 @@ const parseExercise: Parser<Exercise> = query => {
   };
 };
 
+const parseExerciseReport: Parser<ExerciseReport> = query => {
+  const { targetId, reporterId } = query;
+
+  return {
+    targetId,
+    reporterId
+  };
+};
+
 const parseExerciseSummary: Parser<ExerciseSummary> = query => {
   const { authorId, lang, title, tags, description } = query;
 
@@ -71,6 +82,15 @@ const parseExerciseTag: Parser<ExerciseTag> = query => {
   };
 };
 
+const parseExerciseVote: Parser<ExerciseVote> = query => {
+  const { targetId, voterId } = query;
+
+  return {
+    targetId,
+    voterId
+  };
+};
+
 const parseSubmission: Parser<Submission> = query => {
   return {
     ...page(query)
@@ -78,10 +98,10 @@ const parseSubmission: Parser<Submission> = query => {
 };
 
 const parseSubmissionSummary: Parser<SubmissionSummary> = query => {
-  const { userId, exerciseId } = query;
+  const { submitterId: userId, exerciseId } = query;
 
   return {
-    userId,
+    submitterId: userId,
     exerciseId,
     ...page(query)
   };
@@ -137,8 +157,10 @@ const parseUserSummary: Parser<UserSummary> = query => {
 
 const parsers: { [T in EntityType]: Parser<any> } = {
   Exercise: parseExercise,
+  ExerciseReport: parseExerciseReport,
   ExerciseSummary: parseExerciseSummary,
   ExerciseTag: parseExerciseTag,
+  ExerciseVote: parseExerciseVote,
   Submission: parseSubmission,
   SubmissionSummary: parseSubmissionSummary,
   User: parseUser,

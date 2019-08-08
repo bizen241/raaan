@@ -8,16 +8,19 @@ import { responseSearchResult } from "../../api/response";
 import { SubmissionSummaryEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { userId, exerciseId, limit, offset } = parseSearchParams<SubmissionSummary>("SubmissionSummary", req.query);
+  const { submitterId, exerciseId, limit, offset } = parseSearchParams<SubmissionSummary>(
+    "SubmissionSummary",
+    req.query
+  );
 
-  const isOwnSubmissions = userId === currentUser.id;
+  const isOwnSubmissions = submitterId === currentUser.id;
   if (!isOwnSubmissions) {
     return next(createError(403));
   }
 
   const query = await getManager()
     .createQueryBuilder(SubmissionSummaryEntity, "submissionSummary")
-    .leftJoinAndSelect("submissionSummary.user", "user")
+    .leftJoinAndSelect("submissionSummary.submitter", "submitter")
     .leftJoinAndSelect("submissionSummary.exercise", "exercise")
     .leftJoinAndSelect("submissionSummary.latest", "latest")
     .leftJoinAndSelect("submissionSummary.best", "best")
@@ -25,8 +28,8 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     .take(limit)
     .skip(offset);
 
-  if (userId !== undefined) {
-    query.andWhere("user.id = :userId", { userId });
+  if (submitterId !== undefined) {
+    query.andWhere("submitter.id = :submitterId", { submitterId });
   }
   if (exerciseId !== undefined) {
     query.andWhere("exercise.id = :exerciseId", { exerciseId });

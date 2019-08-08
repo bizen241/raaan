@@ -6,12 +6,12 @@ import { SearchParams } from "../../../shared/api/request/search";
 import { useSearch } from "../../hooks/search";
 
 export const SubmissionSummaryViewer = React.memo<{
-  userId: string;
+  submitterId: string;
   exerciseId: string;
-}>(({ userId, exerciseId }) => {
+}>(({ submitterId, exerciseId }) => {
   const searchParams: SearchParams<SubmissionSummary> = useMemo(
     () => ({
-      userId,
+      submitterId,
       exerciseId,
       limit: 1,
       offset: 0

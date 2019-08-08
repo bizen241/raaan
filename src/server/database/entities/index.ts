@@ -1,5 +1,6 @@
 import { EntityManager } from "typeorm";
 import { ExerciseEntity } from "./ExerciseEntity";
+import { ExerciseReportEntity } from "./ExerciseReportEntity";
 import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";
 import { ExerciseTagEntity } from "./ExerciseTagEntity";
 import { SubmissionEntity } from "./SubmissionEntity";
@@ -11,6 +12,7 @@ import { UserSessionEntity } from "./UserSessionEntity";
 import { UserSummaryEntity } from "./UserSummaryEntity";
 
 export * from "./ExerciseEntity";
+export * from "./ExerciseReportEntity";
 export * from "./ExerciseSummaryEntity";
 export * from "./ExerciseTagEntity";
 export * from "./SubmissionEntity";
@@ -22,11 +24,12 @@ export * from "./UserSessionEntity";
 export * from "./UserSummaryEntity";
 
 export type Entity =
-  | SubmissionSummaryEntity
-  | SubmissionEntity
   | ExerciseEntity
+  | ExerciseReportEntity
   | ExerciseSummaryEntity
   | ExerciseTagEntity
+  | SubmissionEntity
+  | SubmissionSummaryEntity
   | UserAccountEntity
   | UserConfigEntity
   | UserEntity
@@ -37,6 +40,7 @@ export const entities = [
   SubmissionSummaryEntity,
   SubmissionEntity,
   ExerciseEntity,
+  ExerciseReportEntity,
   ExerciseSummaryEntity,
   ExerciseTagEntity,
   UserAccountEntity,

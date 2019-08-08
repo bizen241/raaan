@@ -7,7 +7,7 @@ export interface AttemptResult {
 }
 
 export interface SubmissionSummary extends BaseEntityObject {
-  userId: UUID;
+  submitterId: UUID;
   exerciseId: UUID;
   exerciseSummaryId: UUID;
   latest: AttemptResult;
