@@ -12,6 +12,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, _, currentU
   const query = await getManager()
     .createQueryBuilder(ExerciseSummaryEntity, "exerciseSummary")
     .leftJoinAndSelect("exerciseSummary.exercise", "exercise")
+    .leftJoinAndSelect("exerciseSummary.tags", "tags")
     .leftJoinAndSelect("exercise.author", "author")
     .take(limit)
     .skip(offset);
@@ -20,9 +21,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, _, currentU
     query.andWhere("author.id = :authorId", { authorId });
   }
   if (tags !== undefined) {
-    query.innerJoinAndSelect("exerciseSummary.tags", "tags", "tags.name IN (:...tags)", { tags });
-  } else {
-    query.leftJoinAndSelect("exerciseSummary.tags", "tags");
+    query.innerJoinAndSelect("exerciseSummary.tagsIndex", "tagsIndex", "tagsIndex.name IN (:...tags)", { tags });
   }
 
   const isAuthor = authorId !== undefined && authorId === currentUser.id;

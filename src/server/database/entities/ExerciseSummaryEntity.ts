@@ -20,6 +20,9 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
   })
   tags?: ExerciseTagEntity[];
 
+  @OneToMany(() => ExerciseTagEntity, exerciseTag => exerciseTag.exerciseSummary)
+  tagsIndex?: ExerciseTagEntity[];
+
   @Column()
   maxTypeCount: number;
 
