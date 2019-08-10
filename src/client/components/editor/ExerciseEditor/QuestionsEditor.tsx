@@ -1,4 +1,4 @@
-import { Box, Button, Dialog } from "@material-ui/core";
+import { Box, Button, Dialog, Typography } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { useCallback, useState } from "react";
 import * as React from "react";
@@ -89,7 +89,7 @@ export const QuestionsEditor = React.memo<{
       <Box display="flex" flexDirection="column">
         <Button className={classes.largeButton} variant="contained" color="primary" onClick={onAppendQuestion}>
           <Add className={classes.leftIcon} />
-          問題を追加
+          <Typography>問題を追加</Typography>
         </Button>
       </Box>
       {focusedQuestion && (

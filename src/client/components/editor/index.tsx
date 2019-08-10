@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardHeader, CircularProgress, Divider } from "@material-ui/core";
+import { Box, Button, Card, CardHeader, CircularProgress, Divider, Typography } from "@material-ui/core";
 import { CloudUpload, Done, Error } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useEffect } from "react";
@@ -90,11 +90,8 @@ export const createEntityEditor = <E extends EntityObject>(
             onClick={onUpload}
           >
             <CloudUpload className={classes.leftIcon} />
-            アップロード
+            <Typography>アップロード</Typography>
           </Button>
-        </Box>
-        <Box display="flex" flexDirection="column" pb={1}>
-          <Divider variant="middle" />
         </Box>
         <RendererComponent bufferId={bufferId} buffer={buffer} source={entity} onChange={onChange} />
       </Box>

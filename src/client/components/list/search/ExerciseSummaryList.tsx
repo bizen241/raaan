@@ -1,5 +1,5 @@
-import { Box, IconButton, Link, TableCell, TableRow, TextField } from "@material-ui/core";
-import { Edit } from "@material-ui/icons";
+import { Box, IconButton, Link, TableCell, TableRow, TextField, Typography, InputAdornment } from "@material-ui/core";
+import { Edit, Search } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -17,7 +17,7 @@ export const ExerciseSummaryList = createEntityList<ExerciseSummary>(
         <TableCell>
           <Box display="flex" flexDirection="column">
             <Link color="textPrimary" component={RouterLink} to={`/exercises/${exerciseSummary.exerciseId}`}>
-              {exerciseSummary.title || "無題"}
+              <Typography>{exerciseSummary.title || "無題"}</Typography>
             </Link>
           </Box>
         </TableCell>
@@ -35,23 +35,48 @@ export const ExerciseSummaryList = createEntityList<ExerciseSummary>(
     return (
       <>
         <Box display="flex" flexDirection="column" pb={1}>
-          <TextField
-            label="タグ"
-            variant="outlined"
-            defaultValue={(searchParams.tags || []).join(" ")}
-            onChange={useCallback(
-              (e: React.ChangeEvent<HTMLInputElement>) => onChange({ tags: e.target.value.split(/\s/) }),
-              []
-            )}
-          />
+          <Box display="flex" flexDirection="column" component="label">
+            <Typography color="textSecondary">題名</Typography>
+            <TextField
+              variant="outlined"
+              defaultValue={searchParams.title}
+              onChange={useCallback(
+                (e: React.ChangeEvent<HTMLInputElement>) => onChange({ title: e.target.value }),
+                []
+              )}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton edge="end">
+                      <Search />
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Box>
         </Box>
-        <Box display="flex" flexDirection="column" pb={1}>
-          <TextField
-            label="題名"
-            variant="outlined"
-            defaultValue={searchParams.title}
-            onChange={useCallback((e: React.ChangeEvent<HTMLInputElement>) => onChange({ title: e.target.value }), [])}
-          />
+        <Box display="flex" flexDirection="column">
+          <Box display="flex" flexDirection="column" component="label">
+            <Typography color="textSecondary">タグ</Typography>
+            <TextField
+              variant="outlined"
+              defaultValue={(searchParams.tags || []).join(" ")}
+              onChange={useCallback(
+                (e: React.ChangeEvent<HTMLInputElement>) => onChange({ tags: e.target.value.split(/\s/) }),
+                []
+              )}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton edge="end">
+                      <Search />
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Box>
         </Box>
       </>
     );

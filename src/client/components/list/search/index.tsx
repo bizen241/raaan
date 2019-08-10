@@ -1,19 +1,21 @@
 import {
   Avatar,
   Box,
-  Button,
   Card,
+  CardContent,
   CardHeader,
   CircularProgress,
+  Divider,
   IconButton,
   Table,
   TableBody,
   TableCell,
   TableFooter,
   TablePagination,
-  TableRow
+  TableRow,
+  Typography
 } from "@material-ui/core";
-import { List, Refresh, Search } from "@material-ui/icons";
+import { List, Refresh } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useState } from "react";
 import { EntityObject, EntityType } from "../../../../shared/api/entities";
@@ -73,8 +75,7 @@ export const createEntityList = <E extends EntityObject>(
               <List />
             </Avatar>
           }
-          title={title || "検索結果"}
-          titleTypographyProps={{ variant: "h6" }}
+          title={<Typography>{title || "検索結果"}</Typography>}
           action={
             <IconButton onClick={onReload}>
               <Refresh />
@@ -82,18 +83,13 @@ export const createEntityList = <E extends EntityObject>(
           }
         />
         {ParamsComponent && (
-          <Box display="flex" flexDirection="column" px={1} pb={2}>
-            <ParamsComponent searchParams={nextSearchParams} onChange={onChangeNextSearchParams} />
-            <Button
-              className={classes.largeButton}
-              variant="contained"
-              onClick={() => onChangeParams(nextSearchParams)}
-            >
-              <Search className={classes.leftIcon} />
-              検索
-            </Button>
-          </Box>
+          <CardContent>
+            <Box display="flex" flexDirection="column">
+              <ParamsComponent searchParams={nextSearchParams} onChange={onChangeNextSearchParams} />
+            </Box>
+          </CardContent>
         )}
+        <Divider />
         <Table>
           <TableBody>
             {isLoading && (

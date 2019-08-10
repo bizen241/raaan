@@ -1,4 +1,4 @@
-import { Box, Button } from "@material-ui/core";
+import { Box, Button, Typography } from "@material-ui/core";
 import { Add, Edit } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import * as React from "react";
@@ -31,7 +31,7 @@ export const EditExercisesPage = React.memo(() => {
       <Box display="flex" flexDirection="column" pb={1}>
         <Button className={classes.largeButton} variant="contained" color="primary" onClick={onCreate}>
           <Add className={classes.leftIcon} />
-          新規作成
+          <Typography>新規作成</Typography>
         </Button>
       </Box>
       {!isGuest && (
@@ -43,7 +43,7 @@ export const EditExercisesPage = React.memo(() => {
             to={`/users/${currentUser.id}/exercises`}
           >
             <Edit className={classes.leftIcon} />
-            保存済み
+            <Typography>保存済み</Typography>
           </Button>
         </Box>
       )}

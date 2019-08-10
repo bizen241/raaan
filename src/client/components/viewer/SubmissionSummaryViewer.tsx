@@ -1,14 +1,18 @@
-import { Box, Card, CardContent, Divider, Typography } from "@material-ui/core";
+import { Avatar, Box, Card, CardContent, CardHeader, Divider, Typography } from "@material-ui/core";
+import { Person } from "@material-ui/icons";
 import * as React from "react";
 import { useMemo } from "react";
 import { SubmissionSummary } from "../../../shared/api/entities";
 import { SearchParams } from "../../../shared/api/request/search";
 import { useSearch } from "../../hooks/search";
+import { useStyles } from "../ui/styles";
 
 export const SubmissionSummaryViewer = React.memo<{
   submitterId: string;
   exerciseId: string;
 }>(({ submitterId, exerciseId }) => {
+  const classes = useStyles();
+
   const searchParams: SearchParams<SubmissionSummary> = useMemo(
     () => ({
       submitterId,
@@ -24,14 +28,35 @@ export const SubmissionSummaryViewer = React.memo<{
 
   return (
     <Card>
+      <CardHeader
+        title={<Typography>自分の記録</Typography>}
+        avatar={
+          <Avatar className={classes.cardAvatar}>
+            <Person />
+          </Avatar>
+        }
+      />
       <CardContent>
-        <Box display="flex" flexDirection="column">
-          <Box display="flex" flexDirection="column" mb={1}>
-            <Typography>自分の提出回数</Typography>
-            <Typography variant="h4">{submissionSummary !== undefined ? submissionSummary.submitCount : 0}</Typography>
-            <Divider />
+        {submissionSummary !== undefined ? (
+          <Box display="flex" flexDirection="column">
+            <Box display="flex" flexDirection="column" mb={1}>
+              <Typography color="textSecondary">提出回数</Typography>
+              <Typography variant="h5" component="span">
+                {submissionSummary.submitCount}
+              </Typography>
+              <Divider />
+            </Box>
+            <Box display="flex" flexDirection="column" mb={1}>
+              <Typography color="textSecondary">最初の提出</Typography>
+              <Typography variant="h5" component="span">
+                {submissionSummary.createdAt}
+              </Typography>
+              <Divider />
+            </Box>
           </Box>
-        </Box>
+        ) : (
+          <Typography>まだ提出していません</Typography>
+        )}
       </CardContent>
     </Card>
   );

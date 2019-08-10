@@ -1,6 +1,5 @@
-import { Avatar, Box, Card, CardContent, CardHeader, MenuItem, TextField } from "@material-ui/core";
+import { Avatar, Box, Card, CardContent, CardHeader, MenuItem, TextField, Typography } from "@material-ui/core";
 import { makeStyles, Theme } from "@material-ui/core/styles";
-import { Note } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useRef, useState } from "react";
 import { Question } from "../../../../shared/api/entities";
@@ -52,11 +51,10 @@ export const QuestionEditor = React.memo<{
       <CardHeader
         avatar={
           <Avatar className={classes.cardAvatar}>
-            <Note />
+            <Typography color="textSecondary">{questionIndex.toString()}</Typography>
           </Avatar>
         }
-        title={questionIndex.toString()}
-        titleTypographyProps={{ variant: "h6" }}
+        // title={question.title}
         action={
           <Menu>
             <MenuItem onClick={useCallback(() => onPreview(questionIndex), [questionIndex])}>プレビュー</MenuItem>

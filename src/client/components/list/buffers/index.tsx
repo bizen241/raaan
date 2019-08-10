@@ -8,7 +8,8 @@ import {
   TableCell,
   TableFooter,
   TablePagination,
-  TableRow
+  TableRow,
+  Typography
 } from "@material-ui/core";
 import { Delete, List } from "@material-ui/icons";
 import * as React from "react";
@@ -55,8 +56,7 @@ export const createBufferList = <E extends EntityObject>(
               <List />
             </Avatar>
           }
-          title={title || "編集中"}
-          titleTypographyProps={{ variant: "h6" }}
+          title={<Typography>{title || "編集中"}</Typography>}
         />
         <Table>
           <TableBody>

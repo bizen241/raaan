@@ -8,25 +8,19 @@ export const UserAccountViewer = createEntityViewer<UserAccount>(
   React.memo(({ entity: userAccount }) => {
     return (
       <Box display="flex" flexDirection="column">
-        <Box display="flex" flexDirection="column" mb={2}>
-          <Typography gutterBottom variant="subtitle1">
-            プロバイダ
-          </Typography>
-          <Typography variant="body1">{userAccount.provider}</Typography>
+        <Box display="flex" flexDirection="column" mb={1}>
+          <Typography color="textSecondary">プロバイダ</Typography>
+          <Typography>{userAccount.provider}</Typography>
           <Divider />
         </Box>
-        <Box display="flex" flexDirection="column" mb={2}>
-          <Typography gutterBottom variant="subtitle1">
-            ID
-          </Typography>
-          <Typography variant="body1">{userAccount.accountId}</Typography>
+        <Box display="flex" flexDirection="column" mb={1}>
+          <Typography color="textSecondary">ID</Typography>
+          <Typography>{userAccount.accountId}</Typography>
           <Divider />
         </Box>
-        <Box display="flex" flexDirection="column" mb={2}>
-          <Typography gutterBottom variant="subtitle1">
-            メールアドレス
-          </Typography>
-          <Typography variant="body1">{userAccount.email}</Typography>
+        <Box display="flex" flexDirection="column" mb={1}>
+          <Typography color="textSecondary">メールアドレス</Typography>
+          <Typography>{userAccount.email}</Typography>
           <Divider />
         </Box>
       </Box>

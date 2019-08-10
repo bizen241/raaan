@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Card, CardActions, CardHeader } from "@material-ui/core";
+import { Avatar, Box, Button, Card, CardActions, CardHeader, Typography } from "@material-ui/core";
 import { Edit, History, Home, Keyboard } from "@material-ui/icons";
 import { useContext } from "react";
 import * as React from "react";
@@ -26,7 +26,7 @@ export const HomePage = React.memo(() => {
           to="/exercises"
         >
           <Keyboard className={classes.leftIcon} />
-          遊ぶ
+          <Typography>遊ぶ</Typography>
         </Button>
       </Box>
       <Box display="flex" flexDirection="column" pb={1}>
@@ -38,7 +38,7 @@ export const HomePage = React.memo(() => {
           to="/exercises/edit"
         >
           <Edit className={classes.leftIcon} />
-          作る
+          <Typography>作る</Typography>
         </Button>
       </Box>
       <Box pb={1}>
@@ -52,12 +52,13 @@ export const HomePage = React.memo(() => {
                   <Home />
                 </Avatar>
               }
-              title="ようこそ"
-              titleTypographyProps={{ variant: "h6" }}
+              title={<Typography>ようこそ</Typography>}
             />
             <CardActions>
               <Button className={classes.largeButton} color="primary" component={RouterLink} to="/account">
-                <Message id="login" />
+                <Typography>
+                  <Message id="login" />
+                </Typography>
               </Button>
             </CardActions>
           </Card>
@@ -67,7 +68,7 @@ export const HomePage = React.memo(() => {
         <Box display="flex" flexDirection="column" pb={1}>
           <Button className={classes.largeButton} variant="contained" component={RouterLink} to={`/exercises/history`}>
             <History className={classes.leftIcon} />
-            履歴
+            <Typography>履歴</Typography>
           </Button>
         </Box>
       )}

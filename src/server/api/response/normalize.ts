@@ -103,7 +103,7 @@ const normalizeExerciseReport: Normalizer<ExerciseReportEntity> = (_, store, ent
 };
 
 const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (context, store, entity) => {
-  const { id, exercise, exerciseId, tags = [], submitCount } = entity;
+  const { id, exercise, exerciseId, tags = [], upvoteCount, submitCount } = entity;
   if (exercise === undefined) {
     return;
   }
@@ -118,6 +118,7 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (context, st
     title,
     tags: tags.map(tag => tag.name),
     description,
+    upvoteCount,
     submitCount
   };
 

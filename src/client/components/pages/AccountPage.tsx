@@ -25,8 +25,7 @@ const AccountPage = React.memo(() => {
                   <AccountCircle />
                 </Avatar>
               }
-              title="アカウント情報"
-              titleTypographyProps={{ variant: "h6" }}
+              title={<Typography>アカウント情報</Typography>}
             />
             <CardContent>
               <UserAccountViewer entityId={currentUser.accountId} />
@@ -49,15 +48,20 @@ const AccountPage = React.memo(() => {
                   <Delete />
                 </Avatar>
               }
-              title={<Message id="logout" />}
-              titleTypographyProps={{ variant: "h6" }}
+              title={
+                <Typography>
+                  <Message id="logout" />
+                </Typography>
+              }
             />
             <CardContent>
-              <Typography variant="body1">すべての下書きがブラウザから削除されます。</Typography>
+              <Typography>すべての下書きがブラウザから削除されます。</Typography>
             </CardContent>
             <CardActions>
               <Button className={classes.largeButton} color="primary" component="a" href="/logout">
-                <Message id="logout" />
+                <Typography>
+                  <Message id="logout" />
+                </Typography>
               </Button>
             </CardActions>
           </Card>
@@ -69,15 +73,14 @@ const AccountPage = React.memo(() => {
                 <Warning />
               </Avatar>
             }
-            title="アカウント削除"
-            titleTypographyProps={{ variant: "h6" }}
+            title={<Typography>アカウント削除</Typography>}
           />
           <CardContent>
-            <Typography variant="body1">すべての情報がサーバーから削除されます。</Typography>
+            <Typography>すべての情報がサーバーから削除されます。</Typography>
           </CardContent>
           <CardActions>
             <Button className={classes.largeButton} color="primary" component="a" href="/logout">
-              アカウントを削除
+              <Typography>アカウントを削除</Typography>
             </Button>
           </CardActions>
         </Card>
@@ -87,7 +90,7 @@ const AccountPage = React.memo(() => {
     return (
       <Page title="アカウント">
         <Button className={classes.largeButton} variant="contained" component="a" href="/auth/github">
-          GitHubアカウントでログイン
+          <Typography>GitHubアカウントでログイン</Typography>
         </Button>
       </Page>
     );

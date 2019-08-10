@@ -32,19 +32,23 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
               {pathname !== "/config" ? (
                 <MenuItem component={Link} to="/config">
                   <Settings className={classes.leftIcon} />
-                  <Message id="settings" />
+                  <Typography>
+                    <Message id="settings" />
+                  </Typography>
                 </MenuItem>
               ) : null}
               {pathname !== "/" ? (
                 <MenuItem component={Link} to="/">
                   <Home className={classes.leftIcon} />
-                  ホーム
+                  <Typography>ホーム</Typography>
                 </MenuItem>
               ) : null}
               {pathname !== "/account" ? (
                 <MenuItem component={Link} to="/account">
                   <AccountCircle className={classes.leftIcon} />
-                  <Message id="account" />
+                  <Typography>
+                    <Message id="account" />
+                  </Typography>
                 </MenuItem>
               ) : null}
               {pathname !== "/app" ? (

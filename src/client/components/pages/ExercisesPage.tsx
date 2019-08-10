@@ -1,4 +1,4 @@
-import { Box, Button } from "@material-ui/core";
+import { Box, Button, Typography } from "@material-ui/core";
 import { Folder } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
@@ -27,7 +27,7 @@ export const ExercisesPage = React.memo<PageProps>(() => {
             to={`/users/${currentUser.id}/exercises`}
           >
             <Folder className={classes.leftIcon} />
-            自分の問題集
+            <Typography>自分の問題集</Typography>
           </Button>
         </Box>
       )}

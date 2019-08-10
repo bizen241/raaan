@@ -6,8 +6,7 @@ export const useStyles = makeStyles(theme => ({
   },
   largeButton: {
     paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    fontSize: theme.typography.h6.fontSize
+    paddingBottom: theme.spacing(1)
   },
   cardAvatar: {
     color: theme.palette.text.primary,
