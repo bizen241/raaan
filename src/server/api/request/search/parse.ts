@@ -35,7 +35,7 @@ const bool = (value: string | undefined) => {
 };
 */
 
-const page = (query: { limit?: string; offset?: string }) => ({
+const page = <E extends EntityObject>(query: SearchQuery<E>) => ({
   limit: (query.limit && Number(query.limit)) || 10,
   offset: (query.offset && Number(query.offset)) || 0
 });
@@ -67,7 +67,7 @@ const parseExerciseSummary: Parser<ExerciseSummary> = query => {
     authorId,
     lang,
     title,
-    tags: tags !== undefined ? tags.split(",") : undefined,
+    tags,
     description,
     ...page(query)
   };

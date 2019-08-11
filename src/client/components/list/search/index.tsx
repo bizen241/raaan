@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 import { List, Refresh } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { EntityObject, EntityType } from "../../../../shared/api/entities";
 import { SearchParams } from "../../../../shared/api/request/search";
 import { useSearch } from "../../../hooks/search";
@@ -25,7 +25,7 @@ import { useStyles } from "../../ui/styles";
 
 interface EntityListProps<E extends EntityObject> {
   title?: React.ReactNode;
-  initialSearchParams?: Partial<SearchParams<E>>;
+  initialSearchParams?: SearchParams<E>;
 }
 
 interface EntityListItemProps<E extends EntityObject> {
@@ -33,8 +33,8 @@ interface EntityListItemProps<E extends EntityObject> {
 }
 
 interface EntityListParamsProps<E extends EntityObject> {
-  searchParams: Partial<SearchParams<E>>;
-  onChange: (params: Partial<SearchParams<E>>) => void;
+  params: SearchParams<E>;
+  onChange: (params: SearchParams<E>) => void;
 }
 
 export const createEntityList = <E extends EntityObject>(
@@ -45,23 +45,9 @@ export const createEntityList = <E extends EntityObject>(
   React.memo<EntityListProps<E>>(({ title, initialSearchParams = {} }) => {
     const classes = useStyles();
 
-    const {
-      entities,
-      // params: currentSearchParams,
-      status,
-      limit,
-      page,
-      count,
-      onReload,
-      onChangeParams,
-      onChangePage,
-      onChangeRowsPerPage
-    } = useSearch(entityType, initialSearchParams);
-
-    const [nextSearchParams, setNextSearchParams] = useState(initialSearchParams);
-    const onChangeNextSearchParams = useCallback(
-      (params: Partial<SearchParams<E>>) => setNextSearchParams(s => ({ ...s, ...params })),
-      []
+    const { entities, params, status, limit, offset, count, onReload, onChange } = useSearch<E>(
+      entityType,
+      initialSearchParams
     );
 
     const isLoading = status !== undefined && status !== 200;
@@ -85,7 +71,7 @@ export const createEntityList = <E extends EntityObject>(
         {ParamsComponent && (
           <CardContent>
             <Box display="flex" flexDirection="column">
-              <ParamsComponent searchParams={nextSearchParams} onChange={onChangeNextSearchParams} />
+              <ParamsComponent params={params} onChange={onChange} />
             </Box>
           </CardContent>
         )}
@@ -112,11 +98,23 @@ export const createEntityList = <E extends EntityObject>(
             <TableRow>
               <TablePagination
                 rowsPerPage={limit}
-                page={page}
+                page={offset / limit}
                 count={count}
                 labelRowsPerPage="表示件数:"
-                onChangePage={onChangePage}
-                onChangeRowsPerPage={onChangeRowsPerPage}
+                onChangePage={useCallback(
+                  (_, page) =>
+                    onChange({
+                      offset: page * limit
+                    } as SearchParams<E>),
+                  [limit]
+                )}
+                onChangeRowsPerPage={useCallback(
+                  (e: React.ChangeEvent<HTMLInputElement>) =>
+                    onChange({
+                      limit: parseInt(e.target.value, 10)
+                    } as SearchParams<E>),
+                  []
+                )}
               />
             </TableRow>
           </TableFooter>

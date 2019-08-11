@@ -116,7 +116,7 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (context, st
     exerciseId,
     lang,
     title,
-    tags: tags.map(tag => tag.name),
+    tags: tags.map(tag => tag.name).join(" "),
     description,
     upvoteCount,
     submitCount

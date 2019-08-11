@@ -8,16 +8,12 @@ import { actions, RootState } from "../reducers";
 export const useSearch = <E extends EntityObject>(entityType: EntityType, initialSearchParams: SearchParams<E>) => {
   const dispatch = useDispatch();
 
-  const [limit, setLimit] = useState(10);
-  const [page, setPage] = useState(0);
-
-  const offset = limit * page;
-
   const [searchParams, setSearchParams] = useState<SearchParams<E>>({
-    ...initialSearchParams,
-    limit,
-    offset
+    limit: 10,
+    offset: 0,
+    ...initialSearchParams
   });
+  const { limit = 10, offset = 0 } = searchParams;
 
   const { searchStatusMap, searchResultMap, entityMap } = useSelector((state: RootState) => ({
     searchStatusMap: state.api.search[entityType],
@@ -62,17 +58,12 @@ export const useSearch = <E extends EntityObject>(entityType: EntityType, initia
 
   return {
     limit,
-    page,
+    offset,
     count: searchResult !== undefined ? searchResult.count : 0,
     entities: selectedEntities || [],
     params: searchParams,
     status: searchStatus,
     onReload: useCallback(() => dispatch(actions.api.search(entityType, searchParams)), [searchParams]),
-    onChangeParams: useCallback((params: Partial<SearchParams<E>>) => setSearchParams(s => ({ ...s, ...params })), []),
-    onChangePage: useCallback((_, nextPage: number) => setPage(nextPage), []),
-    onChangeRowsPerPage: useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => setLimit(parseInt(e.target.value, 10)),
-      []
-    )
+    onChange: useCallback((params: SearchParams<E>) => setSearchParams(s => ({ ...s, ...params })), [])
   };
 };

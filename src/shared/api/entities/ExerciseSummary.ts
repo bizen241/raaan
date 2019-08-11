@@ -5,7 +5,7 @@ export interface ExerciseSummary extends BaseEntityObject {
   exerciseId: UUID;
   lang: string;
   title: string;
-  tags: string[];
+  tags: string;
   description: string;
   upvoteCount: number;
   submitCount: number;
