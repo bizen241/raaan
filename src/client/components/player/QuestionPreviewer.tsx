@@ -5,8 +5,9 @@ import { AttemptManager } from "./AttemptManager";
 
 export const QuestionPreviewer = React.memo<{
   question: Question;
+  isOpen: boolean;
   onClose: () => void;
-}>(({ question, onClose }) => {
+}>(({ question, isOpen, onClose }) => {
   const exercise = useMemo(
     () => ({
       questions: [question]
@@ -14,5 +15,5 @@ export const QuestionPreviewer = React.memo<{
     [question]
   );
 
-  return <AttemptManager exercise={exercise} onClose={onClose} />;
+  return <AttemptManager exercise={exercise} isOpen={isOpen} onClose={onClose} />;
 });

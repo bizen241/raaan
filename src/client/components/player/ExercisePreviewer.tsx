@@ -5,7 +5,8 @@ import { AttemptManager } from "./AttemptManager";
 
 export const ExercisePreviewer = React.memo<{
   exercise: SaveParams<Exercise>;
+  isOpen: boolean;
   onClose: () => void;
-}>(({ exercise, onClose }) => {
-  return <AttemptManager exercise={exercise} onClose={onClose} />;
+}>(({ exercise, isOpen, onClose }) => {
+  return <AttemptManager exercise={exercise} isOpen={isOpen} onClose={onClose} />;
 });

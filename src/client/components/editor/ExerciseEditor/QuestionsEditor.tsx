@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, Typography } from "@material-ui/core";
+import { Box, Button, Typography } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { useCallback, useState } from "react";
 import * as React from "react";
@@ -93,9 +93,11 @@ export const QuestionsEditor = React.memo<{
         </Button>
       </Box>
       {focusedQuestion && (
-        <Dialog fullScreen open={isQuestionPreviewerOpen} onClose={onToggleQuestionPreviewer}>
-          <QuestionPreviewer question={focusedQuestion.content} onClose={onToggleQuestionPreviewer} />
-        </Dialog>
+        <QuestionPreviewer
+          question={focusedQuestion.content}
+          isOpen={isQuestionPreviewerOpen}
+          onClose={onToggleQuestionPreviewer}
+        />
       )}
     </Box>
   );

@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, Dialog, TextField, Typography } from "@material-ui/core";
+import { Box, Button, Card, CardContent, TextField, Typography } from "@material-ui/core";
 import { PlayArrow } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useState } from "react";
@@ -66,9 +66,7 @@ export const ExerciseEditor = createEntityEditor<Exercise>(
             <Typography>プレビュー</Typography>
           </Button>
         </Box>
-        <Dialog fullScreen open={isExercisePreviewerOpen} onClose={onToggleExercisePreviewer}>
-          <ExercisePreviewer exercise={buffer} onClose={onToggleExercisePreviewer} />
-        </Dialog>
+        <ExercisePreviewer exercise={buffer} isOpen={isExercisePreviewerOpen} onClose={onToggleExercisePreviewer} />
       </Box>
     );
   })

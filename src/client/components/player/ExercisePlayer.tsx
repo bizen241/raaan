@@ -16,8 +16,9 @@ import { AttemptMessage } from "./AttemptMessage";
 export const ExercisePlayer = React.memo<{
   exerciseId: string;
   questionIndex?: number;
+  isOpen: boolean;
   onClose: () => void;
-}>(({ exerciseId, questionIndex, onClose }) => {
+}>(({ exerciseId, questionIndex, isOpen, onClose }) => {
   const dispatch = useDispatch();
   const currentUser = useContext(UserContext);
 
@@ -60,5 +61,5 @@ export const ExercisePlayer = React.memo<{
     return <AttemptMessage icon={<CircularProgress />} title="ロード中です" onClose={onClose} />;
   }
 
-  return <AttemptManager exercise={exercise} onFinish={onFinish} onClose={onClose} />;
+  return <AttemptManager exercise={exercise} onFinish={onFinish} isOpen={isOpen} onClose={onClose} />;
 });

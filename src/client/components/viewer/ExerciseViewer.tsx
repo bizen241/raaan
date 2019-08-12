@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, Typography } from "@material-ui/core";
+import { Box, Button, Typography } from "@material-ui/core";
 import { Edit, PlayArrow, Public } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
@@ -81,9 +81,7 @@ export const ExerciseViewer = createEntityViewer<Exercise>(
             </Button>
           </Box>
         ) : null}
-        <Dialog fullScreen open={isExercisePreviewerOpen} onClose={onToggleExercisePreviewer}>
-          <ExercisePlayer exerciseId={exerciseId} onClose={onToggleExercisePreviewer} />
-        </Dialog>
+        <ExercisePlayer exerciseId={exerciseId} isOpen={isExercisePreviewerOpen} onClose={onToggleExercisePreviewer} />
       </Box>
     );
   })
