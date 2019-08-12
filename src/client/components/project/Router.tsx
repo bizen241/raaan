@@ -10,6 +10,7 @@ import { ExercisePage } from "../pages/ExercisePage";
 import { ExercisesPage } from "../pages/ExercisesPage";
 import { HomePage } from "../pages/HomePage";
 import { NotFoundPage } from "../pages/NotFoundPage";
+import { SessionsPage } from "../pages/SessionsPage";
 import { SubmissionHistoryPage } from "../pages/SubmissionHistoryPage";
 import { UserExercisesPage } from "../pages/UserExercisesPage";
 
@@ -36,6 +37,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/exercises/:id/edit" component={EditExercisePage} />
         <Route exact={true} path="/config" component={ConfigPage} />
         <Route exact={true} path="/account" component={AccountPage} />
+        <Route exact={true} path="/sessions" component={SessionsPage} />
         <Route exact={true} path="/app" component={AppPage} />
         <Route component={NotFoundPage} />
       </Switch>
