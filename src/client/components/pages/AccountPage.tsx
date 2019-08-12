@@ -1,8 +1,10 @@
-import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, Typography } from "@material-ui/core";
-import { AccountCircle, Delete, Warning } from "@material-ui/icons";
+import { Avatar, Box, Button, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
+import { AccountCircle } from "@material-ui/icons";
 import * as React from "react";
-import { useContext } from "react";
-import { UserSessionList } from "../list/search/UserSessionList";
+import { useCallback, useContext, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import { DeleteAccountDialog } from "../dialogs/DeleteAccountDialog";
+import { LogoutDialog } from "../dialogs/LogoutDialog";
 import { UserContext } from "../project/Context";
 import { Message } from "../project/Message";
 import { useStyles } from "../ui/styles";
@@ -10,9 +12,13 @@ import { UserAccountViewer } from "../viewer/UserAccountViewer";
 import { Page } from "./Page";
 
 const AccountPage = React.memo(() => {
+  const classes = useStyles();
   const currentUser = useContext(UserContext);
 
-  const classes = useStyles();
+  const [isLogoutDialogOpen, toggleLogoutDialog] = useState(false);
+  const [isDeleteAccountDialogOpen, toggleDeleteAccountDialog] = useState(false);
+  const onToggleLogoutDialog = useCallback(() => toggleLogoutDialog(s => !s), []);
+  const onToggleDeleteAccountDialog = useCallback(() => toggleDeleteAccountDialog(s => !s), []);
 
   if (currentUser.permission !== "Guest") {
     return (
@@ -32,58 +38,25 @@ const AccountPage = React.memo(() => {
             </CardContent>
           </Card>
         </Box>
-        <Box pb={1}>
-          <UserSessionList
-            title="セッション一覧"
-            initialSearchParams={{
-              userId: currentUser.id
-            }}
-          />
+        <Box display="flex" flexDirection="column" pb={1}>
+          <Button className={classes.largeButton} variant="contained" component={RouterLink} to="/sessions">
+            <Typography>セッション一覧</Typography>
+          </Button>
         </Box>
-        <Box pb={1}>
-          <Card>
-            <CardHeader
-              avatar={
-                <Avatar className={classes.cardAvatar}>
-                  <Delete />
-                </Avatar>
-              }
-              title={
-                <Typography>
-                  <Message id="logout" />
-                </Typography>
-              }
-            />
-            <CardContent>
-              <Typography>すべての下書きがブラウザから削除されます。</Typography>
-            </CardContent>
-            <CardActions>
-              <Button className={classes.largeButton} color="primary" component="a" href="/logout">
-                <Typography>
-                  <Message id="logout" />
-                </Typography>
-              </Button>
-            </CardActions>
-          </Card>
+        <Box display="flex" flexDirection="column" pb={1}>
+          <Button className={classes.largeButton} variant="contained" onClick={onToggleLogoutDialog}>
+            <Typography color="error">
+              <Message id="logout" />
+            </Typography>
+          </Button>
         </Box>
-        <Card>
-          <CardHeader
-            avatar={
-              <Avatar className={classes.cardAvatar}>
-                <Warning />
-              </Avatar>
-            }
-            title={<Typography>アカウント削除</Typography>}
-          />
-          <CardContent>
-            <Typography>すべての情報がサーバーから削除されます。</Typography>
-          </CardContent>
-          <CardActions>
-            <Button className={classes.largeButton} color="primary" component="a" href="/logout">
-              <Typography>アカウントを削除</Typography>
-            </Button>
-          </CardActions>
-        </Card>
+        <Box display="flex" flexDirection="column" pb={1}>
+          <Button className={classes.largeButton} variant="contained" onClick={onToggleDeleteAccountDialog}>
+            <Typography color="error">アカウントを削除</Typography>
+          </Button>
+        </Box>
+        <LogoutDialog isOpen={isLogoutDialogOpen} onClose={onToggleLogoutDialog} />
+        <DeleteAccountDialog isOpen={isDeleteAccountDialogOpen} onClose={onToggleDeleteAccountDialog} />
       </Page>
     );
   } else {

@@ -45,7 +45,7 @@ export const ExerciseSummaryViewer = createEntityViewer<ExerciseSummary>(
           }
           subheader={
             <Box display="flex">
-              {exerciseSummary.tags.map(tag => (
+              {exerciseSummary.tags.split(/\s/).map(tag => (
                 <Box key={tag} pr={1} pb={1}>
                   <Chip label={tag} clickable component={RouterLink} to={`/tags/${tag}`} />
                 </Box>
