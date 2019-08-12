@@ -1,10 +1,9 @@
-import { Box, MenuItem } from "@material-ui/core";
+import { Box, Card, CardContent, NativeSelect, OutlinedInput, Typography } from "@material-ui/core";
 import * as React from "react";
 import { useCallback } from "react";
 import { createEntityEditor } from ".";
 import { Lang, Theme, UserConfig } from "../../../shared/api/entities";
 import { Message } from "../project/Message";
-import { Select } from "../ui/Select";
 
 const langNameToLabel: { [T in Lang]: string } = {
   default: "default",
@@ -33,36 +32,48 @@ export const UserConfigEditor = createEntityEditor<UserConfig>(
     );
 
     return (
-      <Box display="flex" flexDirection="column">
-        <Box display="flex" flexDirection="column" pb={1}>
-          <Select
-            id="lang"
-            label={<Message id="language" />}
-            value={buffer.lang || source.lang || "default"}
-            onChange={onUpdateLang}
-          >
-            {Object.entries(langNameToLabel).map(([name, label]) => (
-              <MenuItem key={name} value={name}>
-                {label}
-              </MenuItem>
-            ))}
-          </Select>
-        </Box>
-        <Box display="flex" flexDirection="column" py={1}>
-          <Select
-            id="theme"
-            label={<Message id="theme" />}
-            value={buffer.theme || source.theme || "default"}
-            onChange={onUpdateTheme}
-          >
-            {Object.entries(themeNameToLabel).map(([name, label]) => (
-              <MenuItem key={name} value={name}>
-                {label}
-              </MenuItem>
-            ))}
-          </Select>
-        </Box>
-      </Box>
+      <Card>
+        <CardContent>
+          <Box display="flex" flexDirection="column">
+            <Box display="flex" flexDirection="column" pb={1}>
+              <Box display="flex" flexDirection="column" component="label">
+                <Typography color="textSecondary">
+                  <Message id="language" />
+                </Typography>
+                <NativeSelect
+                  input={<OutlinedInput labelWidth={0} />}
+                  value={buffer.lang || source.lang || "default"}
+                  onChange={onUpdateLang}
+                >
+                  {Object.entries(langNameToLabel).map(([name, label]) => (
+                    <option key={name} value={name}>
+                      {label}
+                    </option>
+                  ))}
+                </NativeSelect>
+              </Box>
+            </Box>
+            <Box display="flex" flexDirection="column" pb={1}>
+              <Box display="flex" flexDirection="column" component="label">
+                <Typography color="textSecondary">
+                  <Message id="theme" />
+                </Typography>
+                <NativeSelect
+                  input={<OutlinedInput labelWidth={0} />}
+                  value={buffer.theme || source.theme || "default"}
+                  onChange={onUpdateTheme}
+                >
+                  {Object.entries(themeNameToLabel).map(([name, label]) => (
+                    <option key={name} value={name}>
+                      {label}
+                    </option>
+                  ))}
+                </NativeSelect>
+              </Box>
+            </Box>
+          </Box>
+        </CardContent>
+      </Card>
     );
   })
 );
