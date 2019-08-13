@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, Index, ManyToOne } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";
 
@@ -12,6 +12,7 @@ export class ExerciseTagEntity extends BaseEntityClass {
   exerciseSummary?: ExerciseSummaryEntity;
 
   @Column()
+  @Index()
   name: string;
 
   constructor(name: string) {
