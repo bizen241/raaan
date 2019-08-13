@@ -1,5 +1,4 @@
 import * as compression from "compression";
-import * as cors from "cors";
 import * as express from "express";
 import * as session from "express-session";
 import * as helmet from "helmet";
@@ -16,15 +15,6 @@ import SessionStore from "./session/store";
 
 export const createApp = (processEnv: ProcessEnv, app: express.Express = express()) => {
   app.use(helmet());
-
-  app.use(
-    cors({
-      origin: "https://terakoya.app",
-      methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
-      allowedHeaders: "X-Requested-With",
-      credentials: true
-    })
-  );
 
   app.use(
     session({
