@@ -23,5 +23,7 @@ export const prepareApi = (processEnv: ProcessEnv, app: Express) => {
     securityHandlers
   });
 
-  app.use("/api/docs/ui", swagger.serve, swagger.setup(null, { swaggerUrl: "/api/docs" }));
+  if (processEnv.serverHost === "localhost") {
+    app.use("/api/docs/ui", swagger.serve, swagger.setup(null, { swaggerUrl: "/api/docs" }));
+  }
 };
