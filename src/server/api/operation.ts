@@ -6,7 +6,6 @@ import { endpoints } from "../../shared/api/endpoint";
 import { EntityType, Permission } from "../../shared/api/entities";
 import { UserEntity } from "../database/entities";
 import { getGuestUser } from "../database/setup/guest";
-import { SaveParamsMapSchema } from "./request/schema/save";
 
 export interface PathParams {
   id: string;
@@ -43,28 +42,15 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
     });
   }
 
-  /*
   const requestBody: OpenAPIV3.ReferenceObject | undefined = hasBody
     ? {
         $ref: `#/components/requestBodies/${entityType}`
       }
     : undefined;
-  */
-  const saveParamsSchemaMap = SaveParamsMapSchema.properties as { [key: string]: OpenAPIV3.SchemaObject };
-
-  const requestBody: OpenAPIV3.RequestBodyObject | undefined = hasBody
-    ? {
-        content: {
-          "application/json": {
-            schema: saveParamsSchemaMap[entityType]
-          }
-        }
-      }
-    : undefined;
 
   const responses: OpenAPIV3.ResponsesObject = {
     200: {
-      $ref: `#/components/responses/${hasQuery ? "SearchResponse" : "EntityStore"}`
+      $ref: "#/components/responses/Response"
     },
     default: {
       $ref: "#/components/responses/Error"

@@ -1,9 +1,7 @@
 import { OpenAPIV3 } from "openapi-types";
 import { ProcessEnv } from "../env";
-// import { SaveParamsMapSchema } from "./schema/request/save";
+import { SaveParamsMapSchema } from "./request/schema/save";
 import { SearchParamsMapSchema } from "./request/schema/search";
-import { EntityStoreSchema } from "./schema/response/get";
-import { SearchResponseSchema } from "./schema/response/search";
 import { securitySchemes } from "./security";
 
 export const createApiDoc = (_: ProcessEnv): OpenAPIV3.Document => ({
@@ -24,7 +22,7 @@ export const createApiDoc = (_: ProcessEnv): OpenAPIV3.Document => ({
       ...pathParametersSchema,
       ...generateQueryParameterSchema()
     },
-    // requestBodies: generateRequestBodiesSchema(),
+    requestBodies: generateRequestBodiesSchema(),
     responses: responsesSchema,
     securitySchemes
   }
@@ -68,7 +66,6 @@ const generateQueryParameterSchema = () => {
   return queryParametersMap;
 };
 
-/*
 const generateRequestBodiesSchema = () => {
   const saveParamsSchemaMap = SaveParamsMapSchema.properties as { [key: string]: OpenAPIV3.SchemaObject };
   const requestBodies: { [key: string]: OpenAPIV3.RequestBodyObject } = {};
@@ -87,22 +84,15 @@ const generateRequestBodiesSchema = () => {
 
   return requestBodies;
 };
-*/
 
 const responsesSchema: OpenAPIV3.ComponentsObject["responses"] = {
-  EntityStore: {
-    description: "get",
+  Response: {
+    description: "response",
     content: {
       "application/json": {
-        schema: EntityStoreSchema as OpenAPIV3.SchemaObject
-      }
-    }
-  },
-  SearchResponse: {
-    description: "search",
-    content: {
-      "application/json": {
-        schema: SearchResponseSchema as OpenAPIV3.SchemaObject
+        schema: {
+          type: "object"
+        }
       }
     }
   },
