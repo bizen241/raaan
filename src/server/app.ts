@@ -2,6 +2,7 @@ import * as compression from "compression";
 import * as cors from "cors";
 import * as express from "express";
 import * as session from "express-session";
+import * as helmet from "helmet";
 import { join } from "path";
 import * as serveStatic from "serve-static";
 import * as uuid from "uuid/v4";
@@ -14,6 +15,8 @@ import { logoutRouter } from "./routes/logout";
 import SessionStore from "./session/store";
 
 export const createApp = (processEnv: ProcessEnv, app: express.Express = express()) => {
+  app.use(helmet());
+
   app.use(
     cors({
       origin: "https://terakoya.app",
