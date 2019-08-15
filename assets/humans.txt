@@ -1,0 +1,13 @@
+# Humans TXT
+
+## Developer
+
+Name: bizen241
+Location: Japan
+
+## Technology
+
+Language: TypeScript
+Frontend: React, Redux, Material-UI, webpack
+Backend: Node.js, Express, OpenAPI, TypeORM
+Software: VS Code
