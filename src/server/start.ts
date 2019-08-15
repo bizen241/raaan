@@ -4,20 +4,20 @@ import { createApp } from "./app";
 import { connectDatabase } from "./database";
 import { setGuestUser } from "./database/setup/guest";
 import { setOwnerUser } from "./database/setup/owner";
-import { ProcessEnv } from "./env";
+import { Env } from "./env";
 
-export const startServer = async (processEnv: ProcessEnv) => {
-  const database = await connectDatabase(processEnv);
+export const startServer = async (env: Env) => {
+  const database = await connectDatabase(env);
 
   await database.synchronize();
   await setGuestUser();
-  await setOwnerUser(processEnv);
+  await setOwnerUser(env);
 
   return new Promise<{ server: Server; database: Connection }>(resolve => {
-    const { serverPort } = processEnv;
+    const { port } = env.server;
 
-    const server = createApp(processEnv).listen(serverPort, () => {
-      console.log(`server: listening on port ${serverPort}`);
+    const server = createApp(env).listen(port, () => {
+      console.log(`server: listening on port ${port}`);
 
       resolve({ server, database });
     });

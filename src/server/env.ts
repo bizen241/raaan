@@ -1,65 +1,76 @@
 import * as dotenv from "dotenv";
-import { AuthProviderName, isAuthProviderName } from "../shared/auth";
-dotenv.config();
+import { resolve } from "path";
+import { isAuthProviderName } from "../shared/auth";
 
-export interface ProcessEnv {
-  serverHost: string;
-  serverPort: number;
-  databaseUrl: string;
-  sessionSecret: string;
-  ownerAccountProvider: AuthProviderName;
-  ownerAccountId: string;
-  ownerAccountName: string;
-  ownerAccountEmail: string;
-  githubClientId: string;
-  githubClientSecret: string;
-  reportTo: {
-    csp: string;
-    expectCt: string;
-  };
-}
+const { NODE_ENV } = process.env;
 
-export const getProcessEnv = (): ProcessEnv => {
-  const serverHost = getEnv("SERVER_HOST");
-  const serverPort = Number(getEnv("SERVER_PORT"));
-  const databaseUrl = getEnv("DATABASE_URL");
-  const sessionSecret = getEnv("SESSION_SECRET");
-  const ownerAccountProvider = getEnv("OWNER_ACCOUNT_PROVIDER");
-  const ownerAccountId = getEnv("OWNER_ACCOUNT_ID");
-  const ownerAccountName = getEnv("OWNER_ACCOUNT_NAME");
-  const ownerAccountEmail = getEnv("OWNER_ACCOUNT_EMAIL");
-  const githubClientId = getEnv("GITHUB_CLIENT_ID");
-  const githubClientSecret = getEnv("GITHUB_CLIENT_SECRET");
-
-  if (isNaN(serverPort)) {
-    throw new Error("SERVER_PORT is invalid");
-  }
-  if (!isAuthProviderName(ownerAccountProvider)) {
-    throw new Error("OWNER_ACCOUNT_PROVIDER is invalid");
-  }
+export const getEnv = () => {
+  dotenv.config({
+    path: NODE_ENV === "test" ? resolve(process.cwd(), ".env.test") : undefined
+  });
 
   return {
-    serverHost,
-    serverPort,
-    databaseUrl,
-    sessionSecret,
-    ownerAccountProvider,
-    ownerAccountId,
-    ownerAccountName,
-    ownerAccountEmail,
-    githubClientId,
-    githubClientSecret,
-    reportTo: {
-      csp: getEnv("CSP_REPORT_TO"),
-      expectCt: getEnv("EXPECT_CT_REPORT_TO")
+    server: {
+      host: getString("SERVER_HOST", "localhost"),
+      port: getNumber("SERVER_PORT", "3000")
+    },
+    database: {
+      host: getString("DATABASE_HOST", "localhost"),
+      port: getNumber("DATABASE_PORT", "5432"),
+      username: getString("DATABASE_USERNAME"),
+      password: getString("DATABASE_PASSWORD"),
+      name: getString("DATABASE_NAME")
+    },
+    session: {
+      secret: getString("SESSION_SECRET", "secret")
+    },
+    owner: {
+      provider: getProvider("OWNER_PROVIDER", "github"),
+      id: getString("OWNER_ID", "12345678"),
+      name: getString("OWNER_NAME", ""),
+      email: getString("OWNER_EMAIL", "owner@example.com")
+    },
+    github: {
+      clientId: getString("GITHUB_CLIENT_ID", "12345678901234567890"),
+      clientSecret: getString("GITHUB_CLIENT_SECRET", "1234567890123456789012345678901234567890")
+    },
+    report: {
+      csp: getString("REPORT_CSP", "https://example.com"),
+      expectCt: getString("REPORT_EXPECT_CT", "https://example.com")
     }
   };
 };
 
-const getEnv = (key: string) => {
+export type Env = ReturnType<typeof getEnv>;
+
+const getString = (key: string, fallback?: string) => {
   const value = process.env[key];
+
   if (value === undefined) {
-    throw new Error(`${key} is not defined`);
+    if (NODE_ENV === "test" && fallback !== undefined) {
+      return fallback;
+    } else {
+      throw new Error(`${key} is not defined`);
+    }
+  }
+
+  return value;
+};
+
+const getNumber = (key: string, fallback?: string) => {
+  const value = getString(key, fallback);
+  const numberValue = Number(value);
+  if (isNaN(numberValue)) {
+    throw new Error(`${key} is not a number`);
+  }
+
+  return numberValue;
+};
+
+const getProvider = (key: string, fallback?: string) => {
+  const value = getString(key, fallback);
+  if (!isAuthProviderName(value)) {
+    throw new Error(`${key} is invalid`);
   }
 
   return value;

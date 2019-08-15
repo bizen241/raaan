@@ -1,7 +1,7 @@
 import { strict as assert } from "assert";
 import { serialize } from "cookie";
 import { sign } from "cookie-signature";
-import { insertSession, insertUser, testProcessEnv, TestServer } from "../../__tests__/helpers";
+import { insertSession, insertUser, testEnv, TestServer } from "../../__tests__/helpers";
 
 const testServer = new TestServer();
 
@@ -18,7 +18,7 @@ test("GET /logout -> 200", async () => {
 
   const response = await testServer.fetch("/logout", {
     headers: {
-      Cookie: serialize("connect.sid", `s:${sign(session.sessionId, testProcessEnv.sessionSecret)}`)
+      Cookie: serialize("connect.sid", `s:${sign(session.sessionId, testEnv.session.secret)}`)
     }
   });
 

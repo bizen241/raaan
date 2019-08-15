@@ -1,12 +1,12 @@
 import { Connection } from "typeorm";
 import { connectDatabase } from "../../database";
-import { testProcessEnv } from "./env";
+import { testEnv } from "./env";
 
 export class TestDatabase {
   connection?: Connection;
 
   async connect() {
-    this.connection = await connectDatabase(testProcessEnv);
+    this.connection = await connectDatabase(testEnv);
 
     await this.connection.synchronize(true);
   }

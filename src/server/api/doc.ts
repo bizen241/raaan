@@ -1,10 +1,10 @@
 import { OpenAPIV3 } from "openapi-types";
-import { ProcessEnv } from "../env";
+import { Env } from "../env";
 import { SaveParamsMapSchema } from "./request/schema/save";
 import { SearchParamsMapSchema } from "./request/schema/search";
 import { securitySchemes } from "./security";
 
-export const createApiDoc = (_: ProcessEnv): OpenAPIV3.Document => ({
+export const createApiDoc = (_: Env): OpenAPIV3.Document => ({
   openapi: "3.0.2",
   info: {
     title: "Raan",

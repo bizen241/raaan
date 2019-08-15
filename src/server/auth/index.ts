@@ -3,11 +3,11 @@ import * as createError from "http-errors";
 import * as passport from "passport";
 import { getManager } from "typeorm";
 import { UserEntity } from "../database/entities";
-import { ProcessEnv } from "../env";
+import { Env } from "../env";
 import { createGitHubStrategy } from "./strategies/github";
 
-export const prepareAuth = (processEnv: ProcessEnv, app: Express) => {
-  passport.use("github", createGitHubStrategy(processEnv.githubClientId, processEnv.githubClientSecret));
+export const prepareAuth = (env: Env, app: Express) => {
+  passport.use("github", createGitHubStrategy(env.github.clientId, env.github.clientSecret));
 
   passport.serializeUser((user: UserEntity, done) => {
     done(null, user.id);

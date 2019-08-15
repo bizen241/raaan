@@ -1,9 +1,9 @@
 import { strict as assert } from "assert";
 import { connectDatabase } from "..";
-import { testProcessEnv } from "../../__tests__/helpers";
+import { testEnv } from "../../__tests__/helpers";
 
 test("connect", async () => {
-  const database = await connectDatabase(testProcessEnv);
+  const database = await connectDatabase(testEnv);
 
   assert(database.isConnected);
 

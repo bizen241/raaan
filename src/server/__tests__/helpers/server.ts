@@ -2,16 +2,16 @@ import { createServer, Server } from "http";
 import fetch, { RequestInit } from "node-fetch";
 import { createApp } from "../../app";
 import { TestDatabase } from "./database";
-import { testProcessEnv } from "./env";
+import { testEnv } from "./env";
 
-const { serverPort, serverHost } = testProcessEnv;
-const base = `http://${serverHost}:${serverPort}`;
+const { host, port } = testEnv.server;
+const base = `http://${host}:${port}`;
 
 export class TestServer {
   server: Server;
   db: TestDatabase;
 
-  constructor(app = createApp(testProcessEnv)) {
+  constructor(app = createApp(testEnv)) {
     this.server = createServer(app);
     this.db = new TestDatabase();
   }
@@ -38,7 +38,7 @@ export class TestServer {
 
   startServer() {
     return new Promise(resolve => {
-      this.server.listen(serverPort, serverHost, () => resolve());
+      this.server.listen(port, host, () => resolve());
     });
   }
 

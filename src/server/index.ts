@@ -1,6 +1,6 @@
-import { getProcessEnv } from "./env";
+import { getEnv } from "./env";
 import { startServer } from "./start";
 
-const processEnv = getProcessEnv();
+const env = getEnv();
 
-startServer(processEnv);
+startServer(env);

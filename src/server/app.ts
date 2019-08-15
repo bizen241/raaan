@@ -7,23 +7,23 @@ import * as serveStatic from "serve-static";
 import * as uuid from "uuid/v4";
 import { prepareApi } from "./api";
 import { prepareAuth } from "./auth";
-import { ProcessEnv } from "./env";
+import { Env } from "./env";
 import { authRouter } from "./routes/auth";
 import { fallbackRouter } from "./routes/fallback";
 import { logoutRouter } from "./routes/logout";
 import SessionStore from "./session/store";
 
-export const createApp = (processEnv: ProcessEnv, app: express.Express = express()) => {
+export const createApp = (env: Env, app: express.Express = express()) => {
   app.use(
     helmet({
       contentSecurityPolicy: {
         reportOnly: true,
         directives: {
-          reportTo: processEnv.reportTo.csp
+          reportTo: env.report.csp
         }
       },
       expectCt: {
-        reportUri: processEnv.reportTo.expectCt
+        reportUri: env.report.expectCt
       }
     })
   );
@@ -31,10 +31,10 @@ export const createApp = (processEnv: ProcessEnv, app: express.Express = express
   app.use(
     session({
       store: new SessionStore(),
-      secret: processEnv.sessionSecret,
+      secret: env.session.secret,
       cookie: {
         sameSite: "strict",
-        secure: processEnv.serverHost === "localhost" ? false : true
+        secure: env.server.host === "localhost" ? false : true
       },
       genid: () => uuid(),
       resave: false,
@@ -42,12 +42,12 @@ export const createApp = (processEnv: ProcessEnv, app: express.Express = express
     })
   );
 
-  prepareAuth(processEnv, app);
+  prepareAuth(env, app);
 
   app.use(compression());
   app.use(serveStatic(join(process.cwd(), "dist")));
 
-  prepareApi(processEnv, app);
+  prepareApi(env, app);
 
   app.use("/auth", authRouter);
   app.use("/logout", logoutRouter);

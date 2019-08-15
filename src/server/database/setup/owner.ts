@@ -1,19 +1,19 @@
 import { getManager } from "typeorm";
-import { ProcessEnv } from "../../env";
+import { Env } from "../../env";
 import { UserAccountEntity, UserConfigEntity, UserEntity, UserSummaryEntity } from "../entities";
 
-export const setOwnerUser = async (env: ProcessEnv) => {
+export const setOwnerUser = async (env: Env) => {
   const manager = getManager();
 
   const result = await manager.findOne(UserEntity, { permission: "Owner" });
 
   if (result === undefined) {
-    const { ownerAccountProvider, ownerAccountId, ownerAccountName, ownerAccountEmail } = env;
+    const { provider, id, email, name } = env.owner;
 
-    const ownerUserAccount = new UserAccountEntity(ownerAccountProvider, ownerAccountId, ownerAccountEmail);
+    const ownerUserAccount = new UserAccountEntity(provider, id, email);
     const ownerUserConfig = new UserConfigEntity();
     const ownerUserSummary = new UserSummaryEntity();
-    const ownerUser = new UserEntity(ownerUserAccount, ownerUserConfig, ownerUserSummary, ownerAccountName, "Owner");
+    const ownerUser = new UserEntity(ownerUserAccount, ownerUserConfig, ownerUserSummary, name, "Owner");
 
     await manager.save(ownerUser);
   }

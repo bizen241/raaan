@@ -2,10 +2,10 @@ import { strict as assert } from "assert";
 import { getManager } from "typeorm";
 import { UserEntity } from "../database/entities";
 import { startServer } from "../start";
-import { testProcessEnv } from "./helpers";
+import { testEnv } from "./helpers";
 
 test("start", async () => {
-  const { server, database } = await startServer(testProcessEnv);
+  const { server, database } = await startServer(testEnv);
 
   const guestUser = await getManager().findOne(UserEntity, { permission: "Guest" });
   assert.notEqual(guestUser, undefined);
