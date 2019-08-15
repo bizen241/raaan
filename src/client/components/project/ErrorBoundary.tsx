@@ -1,5 +1,7 @@
-import { Box, Button, Card, CardActions, CardContent, CardHeader } from "@material-ui/core";
+import { Avatar, Box, Button, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
+import { Error as ErrorIcon } from "@material-ui/icons";
 import * as React from "react";
+import { useStyles } from "../ui/styles";
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -24,36 +26,58 @@ export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
 
   render() {
     const { hasError, error = new Error() } = this.state;
-
     if (hasError) {
-      return (
-        <Box p={1}>
-          <Card>
-            <CardHeader title="エラーが発生しました" subheader={error.message} />
-            <CardContent>{error.stack}</CardContent>
-            <CardActions>
-              <Button
-                color="primary"
-                onClick={() => {
-                  location.reload();
-                }}
-              >
-                リロード
-              </Button>
-              <Button
-                onClick={() => {
-                  localStorage.clear();
-                  location.reload();
-                }}
-              >
-                すべて削除してリロード
-              </Button>
-            </CardActions>
-          </Card>
-        </Box>
-      );
-    } else {
-      return this.props.children;
+      return <ErrorViewer error={error} />;
     }
+
+    return this.props.children;
   }
 }
+
+const ErrorViewer: React.FunctionComponent<{ error: Error }> = ({ error }) => {
+  const classes = useStyles();
+
+  return (
+    <Box display="flex" flexDirection="column" alignItems="center" width="100%" position="absolute" top={0} left={0}>
+      <Box display="flex" flexDirection="column" width="100%" maxWidth="1000px">
+        <Box display="flex" flexDirection="column" p={1}>
+          <Box display="flex" flexDirection="column" pb={1}>
+            <Card>
+              <CardHeader
+                avatar={
+                  <Avatar className={classes.cardAvatar}>
+                    <ErrorIcon />
+                  </Avatar>
+                }
+                title={<Typography>エラーが発生しました</Typography>}
+                subheader={error.message}
+              />
+              <CardContent>{error.stack}</CardContent>
+            </Card>
+          </Box>
+          <Box display="flex" flexDirection="column" pb={1}>
+            <Button
+              className={classes.largeButton}
+              variant="contained"
+              onClick={() => {
+                location.reload();
+              }}
+            >
+              <Typography>リロード</Typography>
+            </Button>
+          </Box>
+          <Button
+            className={classes.largeButton}
+            variant="contained"
+            onClick={() => {
+              localStorage.clear();
+              location.reload();
+            }}
+          >
+            <Typography color="error">すべて削除してリロード</Typography>
+          </Button>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
