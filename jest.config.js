@@ -1,4 +1,9 @@
-module.exports = {
+// @ts-check
+
+/**
+ * @type jest.InitialOptions
+ */
+const initialOptions = {
   preset: "ts-jest",
   globals: {
     "ts-jest": {
@@ -14,3 +19,5 @@ module.exports = {
     "!**/__tests__/**"
   ]
 };
+
+module.exports = initialOptions;
