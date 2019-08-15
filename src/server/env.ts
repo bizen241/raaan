@@ -13,6 +13,10 @@ export interface ProcessEnv {
   ownerAccountEmail: string;
   githubClientId: string;
   githubClientSecret: string;
+  reportTo: {
+    csp: string;
+    expectCt: string;
+  };
 }
 
 export const getProcessEnv = (): ProcessEnv => {
@@ -44,7 +48,11 @@ export const getProcessEnv = (): ProcessEnv => {
     ownerAccountName,
     ownerAccountEmail,
     githubClientId,
-    githubClientSecret
+    githubClientSecret,
+    reportTo: {
+      csp: getEnv("CSP_REPORT_TO"),
+      expectCt: getEnv("EXPECT_CT_REPORT_TO")
+    }
   };
 };
 

@@ -14,7 +14,19 @@ import { logoutRouter } from "./routes/logout";
 import SessionStore from "./session/store";
 
 export const createApp = (processEnv: ProcessEnv, app: express.Express = express()) => {
-  app.use(helmet());
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        reportOnly: true,
+        directives: {
+          reportTo: processEnv.reportTo.csp
+        }
+      },
+      expectCt: {
+        reportUri: processEnv.reportTo.expectCt
+      }
+    })
+  );
 
   app.use(
     session({
