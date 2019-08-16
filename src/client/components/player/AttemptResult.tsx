@@ -19,7 +19,7 @@ export const AttemptResult: React.FunctionComponent<{
   const classes = useStyles();
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+    <Box display="flex" flex={1} justifyContent="center" alignItems="center">
       <Box display="flex" flexDirection="column">
         <span className={classes.key}>スコア</span>
         <span className={classes.value}>{score}</span>

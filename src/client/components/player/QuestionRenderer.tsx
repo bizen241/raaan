@@ -40,7 +40,7 @@ export const QuestionRenderer = React.memo<{
   const classes = useStyles();
 
   return (
-    <Box display="flex" flexDirection="column" flex={1} height="100%" style={{ overflow: "hidden" }}>
+    <Box display="flex" flexDirection="column" flex={1} style={{ overflow: "hidden" }}>
       <Box className={classes.typedLinesOuter} fontSize="3vmax" color="text.disabled">
         <div className={classes.typedLinesInner}>
           {rubyLines.slice(0, currentLineIndex).map((rubyLine, index) => (

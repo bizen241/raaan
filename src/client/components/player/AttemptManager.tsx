@@ -1,12 +1,12 @@
-import { AppBar, CircularProgress, DialogContent, IconButton, Toolbar } from "@material-ui/core";
-import { Close, Error } from "@material-ui/icons";
+import { CircularProgress } from "@material-ui/core";
+import { Error } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { Exercise } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { compileQuestions } from "../../../shared/exercise/compiler";
 import { Attempt, createPlan, QuestionResult } from "../../domain/exercise/attempt";
-import { createDialog } from "../dialogs";
+import { createDialog, DialogContent, DialogHeader } from "../dialogs";
 import { AttemptMessage } from "./AttemptMessage";
 import { AttemptResult } from "./AttemptResult";
 import { QuestionPlayer } from "./QuestionPlayer";
@@ -50,14 +50,8 @@ export const AttemptManager = createDialog<{
 
     return (
       <>
-        <AppBar position="relative">
-          <Toolbar variant="dense">
-            <IconButton edge="start" color="inherit" onClick={onClose}>
-              <Close />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <DialogContent>
+        <DialogHeader maxWidth="2000px" onClose={onClose} />
+        <DialogContent maxWidth="2000px">
           {isFinished ? (
             <AttemptResult attempt={attempt} results={results} />
           ) : (
