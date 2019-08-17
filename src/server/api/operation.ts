@@ -6,6 +6,8 @@ import { endpoints } from "../../shared/api/endpoint";
 import { EntityType, Permission } from "../../shared/api/entities";
 import { UserEntity } from "../database/entities";
 import { getGuestUser } from "../database/setup/guest";
+import { SaveParamsMapSchema } from "./request/schema/save";
+import { SearchParamsMapSchema } from "./request/schema/search";
 
 export interface PathParams {
   id: string;
@@ -21,30 +23,51 @@ interface OperationDocument {
   hasBody?: boolean;
 }
 
+const searchParamsSchemaMap = SearchParamsMapSchema.properties as { [key: string]: OpenAPIV3.SchemaObject };
+const saveParamsSchemaMap = SaveParamsMapSchema.properties as { [key: string]: OpenAPIV3.SchemaObject };
+
 export const createOperationDoc = (document: OperationDocument): OpenAPIV3.OperationObject => {
   const { entityType, summary, permission, tag, hasId, hasQuery, hasBody } = document;
 
-  const parameters: OpenAPIV3.ReferenceObject[] = [
+  const parameters: OpenAPIV3.ParameterObject[] = [
     {
-      $ref: "#/components/parameters/CustomHeader"
+      in: "header",
+      name: "X-Requested-With",
+      schema: {
+        type: "string",
+        default: "Fetch"
+      },
+      required: true
     }
   ];
 
   if (hasId) {
     parameters.push({
-      $ref: "#/components/parameters/EntityId"
+      in: "path",
+      name: "id",
+      schema: {
+        type: "string",
+        format: "uuid"
+      }
     });
   }
 
   if (hasQuery) {
     parameters.push({
-      $ref: `#/components/parameters/${entityType}`
+      in: "query",
+      name: "query",
+      schema: searchParamsSchemaMap[entityType]
     });
   }
 
-  const requestBody: OpenAPIV3.ReferenceObject | undefined = hasBody
+  const requestBody: OpenAPIV3.RequestBodyObject | undefined = hasBody
     ? {
-        $ref: `#/components/requestBodies/${entityType}`
+        content: {
+          "application/json": {
+            schema: saveParamsSchemaMap[entityType]
+          }
+        },
+        required: true
       }
     : undefined;
 
