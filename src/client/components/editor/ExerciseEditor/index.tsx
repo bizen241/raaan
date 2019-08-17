@@ -66,7 +66,14 @@ export const ExerciseEditor = createEntityEditor<Exercise>(
             <Typography>プレビュー</Typography>
           </Button>
         </Box>
-        <ExercisePreviewer exercise={buffer} isOpen={isExercisePreviewerOpen} onClose={onToggleExercisePreviewer} />
+        <ExercisePreviewer
+          exercise={{
+            ...buffer,
+            ...source
+          }}
+          isOpen={isExercisePreviewerOpen}
+          onClose={onToggleExercisePreviewer}
+        />
       </Box>
     );
   })
