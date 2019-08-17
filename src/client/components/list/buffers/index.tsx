@@ -27,6 +27,7 @@ export interface BufferListProps {
 export interface BufferListItemProps<E extends EntityObject> {
   bufferId: string;
   buffer: SaveParams<E>;
+  source: Partial<E> | undefined;
 }
 
 export const createBufferList = <E extends EntityObject>(
@@ -35,8 +36,9 @@ export const createBufferList = <E extends EntityObject>(
 ) =>
   React.memo<BufferListProps>(({ title }) => {
     const dispatch = useDispatch();
-    const { bufferMap } = useSelector((state: RootState) => ({
-      bufferMap: state.buffers[entityType]
+    const { bufferMap, entityMap } = useSelector((state: RootState) => ({
+      bufferMap: state.buffers[entityType],
+      entityMap: state.cache.get[entityType] as { [key: string]: E | undefined }
     }));
 
     const [limit, setLimit] = useState(10);
@@ -63,7 +65,7 @@ export const createBufferList = <E extends EntityObject>(
             {bufferEntries.slice(offset, offset + limit).map(([bufferId, buffer]) => (
               <TableRow key={bufferId}>
                 <TableCell>
-                  <ListItem bufferId={bufferId} buffer={buffer} />
+                  <ListItem bufferId={bufferId} buffer={buffer} source={entityMap[bufferId]} />
                 </TableCell>
                 <TableCell padding="checkbox">
                   <IconButton onClick={() => dispatch(actions.buffers.delete(entityType, bufferId))}>
