@@ -38,7 +38,13 @@ interface EntityListParamsProps<E extends EntityObject> {
 }
 
 export const createEntityList = <E extends EntityObject>(
-  entityType: EntityType,
+  {
+    entityType,
+    itemHeight = 53
+  }: {
+    entityType: EntityType;
+    itemHeight?: number;
+  },
   ItemComponent: React.ComponentType<EntityListItemProps<E>>,
   ParamsComponent?: React.ComponentType<EntityListParamsProps<E>>
 ) =>
@@ -79,7 +85,7 @@ export const createEntityList = <E extends EntityObject>(
         <Table>
           <TableBody>
             {isLoading && (
-              <TableRow style={{ height: 49 * limit }}>
+              <TableRow style={{ height: itemHeight * limit }}>
                 <TableCell>
                   <Box display="flex" alignItems="center" justifyContent="center">
                     <CircularProgress />
@@ -89,7 +95,7 @@ export const createEntityList = <E extends EntityObject>(
             )}
             {!isLoading && entities.map(entity => entity && <ItemComponent key={entity.id} entity={entity as E} />)}
             {emptyRows && (
-              <TableRow style={{ height: 49 * emptyRows }}>
+              <TableRow style={{ height: itemHeight * emptyRows }}>
                 <TableCell colSpan={3} />
               </TableRow>
             )}

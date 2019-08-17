@@ -5,7 +5,7 @@ import { ExerciseSummary, SubmissionSummary } from "../../../../shared/api/entit
 import { useEntity } from "../../../hooks/entity";
 
 export const SubmissionSummaryList = createEntityList<SubmissionSummary>(
-  "SubmissionSummary",
+  { entityType: "SubmissionSummary" },
   React.memo(({ entity: submissionSummary }) => {
     const { entity: exerciseSummary } = useEntity<ExerciseSummary>(
       "ExerciseSummary",
