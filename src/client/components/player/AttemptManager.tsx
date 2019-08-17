@@ -1,5 +1,5 @@
-import { CircularProgress } from "@material-ui/core";
-import { Error } from "@material-ui/icons";
+import { Box, CircularProgress, IconButton } from "@material-ui/core";
+import { Error, Replay } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { Exercise } from "../../../shared/api/entities";
@@ -21,6 +21,7 @@ export const AttemptManager = createDialog<{
 
     const isFinished = attempt && attempt.plan.length === results.length;
     const onNext = useCallback((result: QuestionResult) => updateResults(s => [...s, result]), []);
+    const onReset = useCallback(() => updateResults([]), []);
 
     useEffect(() => {
       if (exercise !== undefined) {
@@ -50,7 +51,12 @@ export const AttemptManager = createDialog<{
 
     return (
       <>
-        <DialogHeader maxWidth="2000px" onClose={onClose} />
+        <DialogHeader maxWidth="2000px" onClose={onClose}>
+          <Box flex={1} />
+          <IconButton edge="end" color="inherit" onClick={onReset}>
+            <Replay />
+          </IconButton>
+        </DialogHeader>
         <DialogContent maxWidth="2000px">
           {isFinished ? (
             <AttemptResult attempt={attempt} results={results} />
