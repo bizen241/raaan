@@ -2,11 +2,12 @@ import { Box, Button, Typography } from "@material-ui/core";
 import { Edit, PlayArrow, Public } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { createEntityViewer } from ".";
 import { Exercise } from "../../../shared/api/entities";
-import { actions, RootState } from "../../reducers";
+import { RootState } from "../../reducers";
+import { PublishExerciseDialog } from "../dialogs/PublishExerciseDialog";
 import { ExercisePlayer } from "../player/ExercisePlayer";
 import { UserContext } from "../project/Context";
 import { useStyles } from "../ui/styles";
@@ -18,7 +19,6 @@ export const ExerciseViewer = createEntityViewer<Exercise>(
   React.memo(({ entity: exercise, entityId: exerciseId }) => {
     const classes = useStyles();
     const currentUser = useContext(UserContext);
-    const dispatch = useDispatch();
 
     const { buffer } = useSelector((state: RootState) => ({
       buffer: state.buffers.Exercise[exerciseId]
@@ -27,11 +27,8 @@ export const ExerciseViewer = createEntityViewer<Exercise>(
     const [isExercisePreviewerOpen, toggleExercisePreviewer] = useState(false);
     const onToggleExercisePreviewer = useCallback(() => toggleExercisePreviewer(s => !s), []);
 
-    const onPublish = useCallback(() => {
-      dispatch(actions.buffers.add("Exercise", exerciseId));
-      dispatch(actions.buffers.update<Exercise>("Exercise", exerciseId, { isPrivate: false }));
-      dispatch(actions.api.upload("Exercise", exerciseId));
-    }, []);
+    const [isPublishExerciseDialogOpen, togglePublishExerciseDialog] = useState(false);
+    const onTogglePublishExerciseDialog = useCallback(() => togglePublishExerciseDialog(s => !s), []);
 
     const isGuest = currentUser.permission === "Guest";
     const { isPrivate } = exercise;
@@ -74,7 +71,7 @@ export const ExerciseViewer = createEntityViewer<Exercise>(
               className={classes.largeButton}
               disabled={buffer !== undefined}
               variant="contained"
-              onClick={onPublish}
+              onClick={onTogglePublishExerciseDialog}
             >
               <Public className={classes.leftIcon} />
               <Typography>公開する</Typography>
@@ -82,6 +79,11 @@ export const ExerciseViewer = createEntityViewer<Exercise>(
           </Box>
         ) : null}
         <ExercisePlayer exerciseId={exerciseId} isOpen={isExercisePreviewerOpen} onClose={onToggleExercisePreviewer} />
+        <PublishExerciseDialog
+          exerciseId={exerciseId}
+          isOpen={isPublishExerciseDialogOpen}
+          onClose={onTogglePublishExerciseDialog}
+        />
       </Box>
     );
   })

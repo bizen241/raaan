@@ -4,6 +4,7 @@ import * as React from "react";
 import { useCallback, useRef, useState } from "react";
 import { Question } from "../../../../shared/api/entities";
 import { addRuby } from "../../../domain/exercise/ruby";
+import { DeleteQuestionDialog } from "../../dialogs/DeleteQuestionDialog";
 import { Menu } from "../../ui/Menu";
 import { useStyles } from "../../ui/styles";
 import { Highlighter } from "./Highlighter";
@@ -16,12 +17,15 @@ export const QuestionEditor = React.memo<{
   onDelete: (questionIndex: number) => void;
   onPreview: (questionIndex: number) => void;
 }>(({ question, questionIndex, onFocus, onUpdate, onDelete, onPreview }) => {
-  const textFieldRef = useRef<HTMLTextAreaElement>(null);
+  const classes = useStyles();
 
   const [isAddingRuby, toggleRubyState] = useState(false);
   const [isCompositing, toggleCompositionState] = useState(false);
 
-  const classes = useStyles();
+  const [isDeleteQuestionDialogOpen, toggleDeleteQuestionDialog] = useState(false);
+  const onToggleDeleteQuestionDialog = useCallback(() => toggleDeleteQuestionDialog(s => !s), []);
+
+  const textFieldRef = useRef<HTMLTextAreaElement>(null);
   const textFieldClasses = useTextFieldStyles({ isCompositing });
 
   const { value } = question;
@@ -59,7 +63,7 @@ export const QuestionEditor = React.memo<{
           <Menu>
             <MenuItem onClick={useCallback(() => onPreview(questionIndex), [questionIndex])}>プレビュー</MenuItem>
             <MenuItem onClick={useCallback(() => onAddRuby(), [])}>ルビ</MenuItem>
-            <MenuItem onClick={useCallback(() => onDelete(questionIndex), [questionIndex])}>削除</MenuItem>
+            <MenuItem onClick={onToggleDeleteQuestionDialog}>削除</MenuItem>
           </Menu>
         }
       />
@@ -90,6 +94,11 @@ export const QuestionEditor = React.memo<{
           />
         </Box>
       </CardContent>
+      <DeleteQuestionDialog
+        onDelete={useCallback(() => onDelete(questionIndex), [questionIndex])}
+        isOpen={isDeleteQuestionDialogOpen}
+        onClose={onToggleDeleteQuestionDialog}
+      />
     </Card>
   );
 });

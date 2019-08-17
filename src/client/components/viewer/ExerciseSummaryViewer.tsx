@@ -1,12 +1,14 @@
 import { Box, Card, CardContent, CardHeader, Chip, Divider, MenuItem, Typography } from "@material-ui/core";
 import { Delete, Lock } from "@material-ui/icons";
-import { useCallback, useContext } from "react";
 import * as React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useCallback, useContext, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { createEntityViewer } from ".";
-import { Exercise, ExerciseSummary } from "../../../shared/api/entities";
-import { actions, RootState } from "../../reducers";
+import { ExerciseSummary } from "../../../shared/api/entities";
+import { RootState } from "../../reducers";
+import { DeleteExerciseDialog } from "../dialogs/DeleteExerciseDialog";
+import { UnpublishExerciseDialog } from "../dialogs/UnpublishExerciseDialog";
 import { UserContext } from "../project/Context";
 import { Menu } from "../ui/Menu";
 import { useStyles } from "../ui/styles";
@@ -16,7 +18,6 @@ export const ExerciseSummaryViewer = createEntityViewer<ExerciseSummary>(
   React.memo(({ entity: exerciseSummary }) => {
     const classes = useStyles();
     const currentUser = useContext(UserContext);
-    const dispatch = useDispatch();
 
     const { exerciseId } = exerciseSummary;
 
@@ -25,12 +26,10 @@ export const ExerciseSummaryViewer = createEntityViewer<ExerciseSummary>(
       buffer: state.buffers.Exercise[exerciseId]
     }));
 
-    const onDelete = useCallback(() => dispatch(actions.api.delete("Exercise", exerciseId)), []);
-    const onUnpublish = useCallback(() => {
-      dispatch(actions.buffers.add("Exercise", exerciseId));
-      dispatch(actions.buffers.update<Exercise>("Exercise", exerciseId, { isPrivate: true }));
-      dispatch(actions.api.upload("Exercise", exerciseId));
-    }, []);
+    const [isUnpublishExerciseDialogOpen, toggleUnpublishExerciseDialog] = useState(false);
+    const [isDeleteExerciseDialogOpen, toggleDeleteExerciseDialog] = useState(false);
+    const onToggleUnpublishExerciseDialog = useCallback(() => toggleUnpublishExerciseDialog(s => !s), []);
+    const onToggleDeleteExerciseDialog = useCallback(() => toggleDeleteExerciseDialog(s => !s), []);
 
     const isAuthor = exerciseSummary.authorId === currentUser.id;
     const isPrivate = exercise && exercise.isPrivate;
@@ -55,13 +54,13 @@ export const ExerciseSummaryViewer = createEntityViewer<ExerciseSummary>(
           action={
             <Menu>
               {!isPrivate ? (
-                <MenuItem disabled={buffer !== undefined} onClick={onUnpublish}>
+                <MenuItem disabled={buffer !== undefined} onClick={onToggleUnpublishExerciseDialog}>
                   <Lock className={classes.leftIcon} />
                   非公開にする
                 </MenuItem>
               ) : null}
               {isAuthor && (
-                <MenuItem onClick={onDelete}>
+                <MenuItem onClick={onToggleDeleteExerciseDialog}>
                   <Delete className={classes.leftIcon} />
                   削除
                 </MenuItem>
@@ -87,6 +86,16 @@ export const ExerciseSummaryViewer = createEntityViewer<ExerciseSummary>(
             </Box>
           </Box>
         </CardContent>
+        <UnpublishExerciseDialog
+          exerciseId={exerciseId}
+          isOpen={isUnpublishExerciseDialogOpen}
+          onClose={onToggleUnpublishExerciseDialog}
+        />
+        <DeleteExerciseDialog
+          exerciseId={exerciseId}
+          isOpen={isDeleteExerciseDialogOpen}
+          onClose={onToggleDeleteExerciseDialog}
+        />
       </Card>
     );
   })
