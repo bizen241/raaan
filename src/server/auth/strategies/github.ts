@@ -10,8 +10,7 @@ export const createGitHubStrategy = (clientId: string, clientSecret: string) => 
       clientSecret,
       callbackURL: "/auth/github/callback",
       passReqToCallback: true,
-      state: true,
-      pkce: true
+      state: true
     },
     async (req, _, __, { id, username, emails = [] }, done: AuthStrategyCallback) => {
       try {
