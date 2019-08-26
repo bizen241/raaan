@@ -1,99 +1,53 @@
-import { Avatar, Box, Card, CardContent, CardHeader, MenuItem, TextField, Typography } from "@material-ui/core";
-import { makeStyles, Theme } from "@material-ui/core/styles";
+import { Avatar, Card, CardContent, CardHeader, MenuItem, Typography } from "@material-ui/core";
 import * as React from "react";
-import { useCallback, useRef, useState } from "react";
-import { Question } from "../../../../shared/api/entities";
-import { addRuby } from "../../../domain/exercise/ruby";
+import { useCallback, useState } from "react";
+import { Question, QuestionType } from "../../../../shared/api/entities";
 import { DeleteQuestionDialog } from "../../dialogs/DeleteQuestionDialog";
+import { QuestionPreviewer } from "../../player/QuestionPreviewer";
 import { Menu } from "../../ui/Menu";
 import { useStyles } from "../../ui/styles";
-import { Highlighter } from "./Highlighter";
+import { TraceQuestionEditor } from "./TraceQuestionEditor";
 
 export const QuestionEditor = React.memo<{
   questionIndex: number;
   question: Question;
-  onFocus: (questionIndex: number) => void;
   onUpdate: (questionIndex: number, question: Partial<Question>) => void;
   onDelete: (questionIndex: number) => void;
-  onPreview: (questionIndex: number) => void;
-}>(({ question, questionIndex, onFocus, onUpdate, onDelete, onPreview }) => {
+}>(({ question, questionIndex, onUpdate, onDelete }) => {
   const classes = useStyles();
 
-  const [isAddingRuby, toggleRubyState] = useState(false);
-  const [isCompositing, toggleCompositionState] = useState(false);
+  const [isQuestionPreviewerOpen, toggleQuestionPreviewer] = useState(false);
+  const onToggleQuestionPreviewer = useCallback(() => toggleQuestionPreviewer(s => !s), []);
 
   const [isDeleteQuestionDialogOpen, toggleDeleteQuestionDialog] = useState(false);
   const onToggleDeleteQuestionDialog = useCallback(() => toggleDeleteQuestionDialog(s => !s), []);
 
-  const textFieldRef = useRef<HTMLTextAreaElement>(null);
-  const textFieldClasses = useTextFieldStyles({ isCompositing });
-
-  const { value } = question;
-
-  const onAddRuby = useCallback(() => {
-    if (textFieldRef.current == null) {
-      return;
-    }
-
-    toggleRubyState(true);
-
-    addRuby(textFieldRef.current.value, result => {
-      if (textFieldRef.current !== null) {
-        onUpdate(questionIndex, {
-          value: result
-        });
-
-        textFieldRef.current.value = result;
-      }
-
-      toggleRubyState(false);
-    });
-  }, [questionIndex]);
+  const Editor = questionTypeToEditor[question.type];
 
   return (
-    <Card onFocus={useCallback(() => onFocus(questionIndex), [questionIndex])}>
+    <Card>
       <CardHeader
         avatar={
           <Avatar className={classes.cardAvatar}>
             <Typography color="textSecondary">{questionIndex.toString()}</Typography>
           </Avatar>
         }
-        // title={question.title}
         action={
           <Menu>
-            <MenuItem onClick={useCallback(() => onPreview(questionIndex), [questionIndex])}>プレビュー</MenuItem>
-            <MenuItem onClick={useCallback(() => onAddRuby(), [])}>ルビ</MenuItem>
+            <MenuItem onClick={onToggleQuestionPreviewer}>プレビュー</MenuItem>
             <MenuItem onClick={onToggleDeleteQuestionDialog}>削除</MenuItem>
           </Menu>
         }
       />
       <CardContent>
-        <Box display="flex" flexDirection="column" position="relative">
-          {!isCompositing ? <Highlighter value={value} /> : null}
-          <TextField
-            disabled={isAddingRuby}
-            variant="outlined"
-            multiline
-            className={textFieldClasses.textField}
-            InputProps={{
-              classes: {
-                inputMultiline: textFieldClasses.inputMultiline
-              }
-            }}
-            onCompositionStart={useCallback(() => toggleCompositionState(true), [])}
-            onCompositionEnd={useCallback(() => toggleCompositionState(false), [])}
-            inputRef={textFieldRef}
-            defaultValue={value}
-            onChange={useCallback(
-              (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                onUpdate(questionIndex, {
-                  value: e.target.value
-                }),
-              [questionIndex]
-            )}
-          />
-        </Box>
+        <Editor
+          question={question}
+          onUpdate={useCallback((updatedProps: Partial<Question>) => onUpdate(questionIndex, updatedProps), [
+            questionIndex
+          ])}
+        />
       </CardContent>
+      <QuestionPreviewer question={question} isOpen={isQuestionPreviewerOpen} onClose={onToggleQuestionPreviewer} />
       <DeleteQuestionDialog
         onDelete={useCallback(() => onDelete(questionIndex), [questionIndex])}
         isOpen={isDeleteQuestionDialogOpen}
@@ -103,14 +57,16 @@ export const QuestionEditor = React.memo<{
   );
 });
 
-const useTextFieldStyles = makeStyles<Theme, { isCompositing: boolean }>(theme => ({
-  textField: {
-    position: "relative",
-    zIndex: 2
-  },
-  inputMultiline: props => ({
-    backgroundColor: "transparent",
-    caretColor: theme.palette.type === "light" ? "black" : "white",
-    color: props.isCompositing ? "inherit" : "transparent"
-  })
-}));
+export interface QuestionEditorProps<Q extends Question> {
+  question: Q;
+  onUpdate: (updatedProps: Partial<Question>) => void;
+}
+
+const questionTypeToEditor: { [P in QuestionType]: React.ComponentType<QuestionEditorProps<any>> } = {
+  Fill: TraceQuestionEditor,
+  Flip: TraceQuestionEditor,
+  Input: TraceQuestionEditor,
+  Order: TraceQuestionEditor,
+  Select: TraceQuestionEditor,
+  Trace: TraceQuestionEditor
+};

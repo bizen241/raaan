@@ -2,11 +2,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import * as React from "react";
 import { rubyAnchorCharacter, rubySeparatorCharacter, rubyTerminatorCharacter } from "../../../../shared/exercise";
 
-const rubyRegExp = new RegExp(
-  `${rubyAnchorCharacter}([^${rubySeparatorCharacter}]+)${rubySeparatorCharacter}([^${rubyTerminatorCharacter}]+)${rubyTerminatorCharacter}`,
-  "g"
-);
-
 export const Highlighter = React.memo<{ value: string }>(({ value }) => {
   const classes = useHighlightStyles();
 
@@ -54,6 +49,11 @@ export const Highlighter = React.memo<{ value: string }>(({ value }) => {
 
   return <div className={classes.root}>{highlightedLines}</div>;
 });
+
+const rubyRegExp = new RegExp(
+  `${rubyAnchorCharacter}([^${rubySeparatorCharacter}]+)${rubySeparatorCharacter}([^${rubyTerminatorCharacter}]+)${rubyTerminatorCharacter}`,
+  "g"
+);
 
 const useHighlightStyles = makeStyles(() => ({
   root: {
