@@ -1,12 +1,12 @@
 import { Avatar, Card, CardContent, CardHeader, MenuItem, Typography } from "@material-ui/core";
 import * as React from "react";
 import { useCallback, useState } from "react";
-import { Question, QuestionType } from "../../../../shared/api/entities";
+import { Question } from "../../../../shared/api/entities";
 import { DeleteQuestionDialog } from "../../dialogs/DeleteQuestionDialog";
 import { QuestionPreviewer } from "../../player/QuestionPreviewer";
 import { Menu } from "../../ui/Menu";
 import { useStyles } from "../../ui/styles";
-import { TraceQuestionEditor } from "./TraceQuestionEditor";
+import { HighlightedTextField } from "./HighlightedTextField";
 
 export const QuestionEditor = React.memo<{
   questionIndex: number;
@@ -21,8 +21,6 @@ export const QuestionEditor = React.memo<{
 
   const [isDeleteQuestionDialogOpen, toggleDeleteQuestionDialog] = useState(false);
   const onToggleDeleteQuestionDialog = useCallback(() => toggleDeleteQuestionDialog(s => !s), []);
-
-  const Editor = questionTypeToEditor[question.type];
 
   return (
     <Card>
@@ -40,11 +38,9 @@ export const QuestionEditor = React.memo<{
         }
       />
       <CardContent>
-        <Editor
-          question={question}
-          onUpdate={useCallback((updatedProps: Partial<Question>) => onUpdate(questionIndex, updatedProps), [
-            questionIndex
-          ])}
+        <HighlightedTextField
+          value={question.value}
+          onChange={useCallback((value: string) => onUpdate(questionIndex, { value }), [questionIndex])}
         />
       </CardContent>
       <QuestionPreviewer question={question} isOpen={isQuestionPreviewerOpen} onClose={onToggleQuestionPreviewer} />
@@ -56,17 +52,3 @@ export const QuestionEditor = React.memo<{
     </Card>
   );
 });
-
-export interface QuestionEditorProps<Q extends Question> {
-  question: Q;
-  onUpdate: (updatedProps: Partial<Question>) => void;
-}
-
-const questionTypeToEditor: { [P in QuestionType]: React.ComponentType<QuestionEditorProps<any>> } = {
-  Fill: TraceQuestionEditor,
-  Flip: TraceQuestionEditor,
-  Input: TraceQuestionEditor,
-  Order: TraceQuestionEditor,
-  Select: TraceQuestionEditor,
-  Trace: TraceQuestionEditor
-};

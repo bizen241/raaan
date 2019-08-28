@@ -3,7 +3,6 @@ import { Add } from "@material-ui/icons";
 import { useCallback, useState } from "react";
 import * as React from "react";
 import { Question } from "../../../../shared/api/entities";
-import { InsertQuestionDialog } from "../../dialogs/InsertQuestionDialog";
 import { useStyles } from "../../ui/styles";
 import { QuestionEditor } from "./QuestionEditor";
 
@@ -15,14 +14,19 @@ export const QuestionsEditor = React.memo<{
 
   const [questions, updateQuestions] = useState(props.questions);
 
-  const [isInsertQuestionDialogOpen, toggleInsertQuestionDialog] = useState(false);
-  const onToggleInsertQuestionDialog = useCallback(() => toggleInsertQuestionDialog(s => !s), []);
-
-  const onInsertQuestion = useCallback((newQuestions: Question[], index: number) => {
+  const onInsertQuestion = useCallback((index: number) => {
     updateQuestions(previousQuestions => {
-      const nextQuestions = [
+      const id = questions.reduce((maxId, question) => Math.max(question.id, maxId), 0) + 1;
+
+      const nextQuestions: Question[] = [
         ...previousQuestions.slice(0, index),
-        ...newQuestions,
+        {
+          id,
+          lang: "ja",
+          format: "plain",
+          value: "",
+          comment: ""
+        },
         ...previousQuestions.slice(index + 1)
       ];
 
@@ -71,19 +75,12 @@ export const QuestionsEditor = React.memo<{
           className={classes.largeButton}
           variant="contained"
           color="primary"
-          onClick={onToggleInsertQuestionDialog}
+          onClick={useCallback(() => onInsertQuestion(questions.length - 1), [questions.length])}
         >
           <Add className={classes.leftIcon} />
           <Typography>問題を追加</Typography>
         </Button>
       </Box>
-      <InsertQuestionDialog
-        isOpen={isInsertQuestionDialogOpen}
-        onClose={onToggleInsertQuestionDialog}
-        questions={questions}
-        questionIndex={questions.length - 1}
-        onInsert={onInsertQuestion}
-      />
     </Box>
   );
 });
