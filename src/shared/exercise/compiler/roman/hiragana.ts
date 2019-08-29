@@ -1,11 +1,3 @@
-export const isHiragana = (char: string) => /[\u3041-\u3096]/.test(char);
-export const isKatakana = (char: string) => /[\u30a1-\u30f6]/.test(char);
-export const isKana = (char: string) => isHiragana(char) || isKatakana(char);
-
-export const isYoon = (source: string) => "きにひみりぎぢびぴ".includes(source[0]) && "ゃゅょ".includes(source[1]);
-export const isSokuon = (source: string) => source[0] === "っ";
-export const isHatuon = (source: string) => source[0] === "ん";
-
 export const singleHiraganaToRomans: { [key: string]: string[] } = {
   あ: ["a"],
   い: ["i"],

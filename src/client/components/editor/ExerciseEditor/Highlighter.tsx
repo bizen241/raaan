@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 import * as React from "react";
-import { rubyAnchorCharacter, rubySeparatorCharacter, rubyTerminatorCharacter } from "../../../../shared/exercise";
+import { rubyAnchor, rubySeparator, rubyTerminator } from "../../../../shared/exercise/ruby/characters";
 
 export const Highlighter = React.memo<{ value: string }>(({ value }) => {
   const classes = useHighlightStyles();
@@ -25,13 +25,13 @@ export const Highlighter = React.memo<{ value: string }>(({ value }) => {
 
       highlightedLine.push(
         <span key={start} style={{ color: "#999" }}>
-          {rubyAnchorCharacter}
+          {rubyAnchor}
         </span>,
         <span key={start + 1}>{matched[1]}</span>,
         <span key={start + 2} style={{ color: "#999" }}>
-          {rubySeparatorCharacter}
+          {rubySeparator}
           {matched[2]}
-          {rubyTerminatorCharacter}
+          {rubyTerminator}
         </span>
       );
 
@@ -51,7 +51,7 @@ export const Highlighter = React.memo<{ value: string }>(({ value }) => {
 });
 
 const rubyRegExp = new RegExp(
-  `${rubyAnchorCharacter}([^${rubySeparatorCharacter}]+)${rubySeparatorCharacter}([^${rubyTerminatorCharacter}]+)${rubyTerminatorCharacter}`,
+  `${rubyAnchor}([^${rubySeparator}]+)${rubySeparator}([^${rubyTerminator}]+)${rubyTerminator}`,
   "g"
 );
 

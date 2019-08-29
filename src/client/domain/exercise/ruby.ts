@@ -1,13 +1,13 @@
 import * as kuromoji from "kuromoji";
 import { IpadicFeatures, Tokenizer } from "kuromoji";
-import { rubyAnchorCharacter, rubySeparatorCharacter, rubyTerminatorCharacter } from "../../../shared/exercise";
-import { convertKatakanaToHiragana } from "../../../shared/exercise/compiler/convert";
+import { convertKatakanaToHiragana } from "../../../shared/exercise/compiler/roman/kana";
+import { rubyAnchor, rubySeparator, rubyTerminator } from "../../../shared/exercise/ruby/characters";
 
 export const addRuby = async (inputText: string, callback: (outputText: string) => void) => {
   const tokenizer = await getTokenizer();
 
   const outputText = inputText
-    .split(rubyAnchorCharacter)
+    .split(rubyAnchor)
     .map((sourceText, index) => {
       if (sourceText.length === 0) {
         return "";
@@ -16,7 +16,7 @@ export const addRuby = async (inputText: string, callback: (outputText: string) 
       const rubiedTextLength = getRubiedTextLength(sourceText);
       const hasRubiedText = index !== 0 && rubiedTextLength !== 0;
 
-      const rubiedText = hasRubiedText ? `${rubyAnchorCharacter}${sourceText.slice(0, rubiedTextLength + 1)}` : "";
+      const rubiedText = hasRubiedText ? `${rubyAnchor}${sourceText.slice(0, rubiedTextLength + 1)}` : "";
       const unrubiedText = hasRubiedText ? sourceText.slice(rubiedTextLength + 1) : sourceText;
 
       const tokens = tokenizer.tokenize(removeSpecialCharacters(unrubiedText));
@@ -48,17 +48,17 @@ const getTokenizer = () =>
 
 const removeSpecialCharacters = (inputText: string) =>
   inputText
-    .replace(rubyAnchorCharacter, "")
-    .replace(rubySeparatorCharacter, "")
-    .replace(rubyTerminatorCharacter, "");
+    .replace(rubyAnchor, "")
+    .replace(rubySeparator, "")
+    .replace(rubyTerminator, "");
 
 const getRubiedTextLength = (inputText: string) => {
-  const splitedByTerminatorTexts = inputText.split(rubyTerminatorCharacter);
+  const splitedByTerminatorTexts = inputText.split(rubyTerminator);
   if (splitedByTerminatorTexts.length === 1) {
     return 0;
   }
 
-  const splitedBySeparatorTexts = splitedByTerminatorTexts[0].split(rubySeparatorCharacter);
+  const splitedBySeparatorTexts = splitedByTerminatorTexts[0].split(rubySeparator);
   if (splitedBySeparatorTexts.length !== 2) {
     return 0;
   }
@@ -86,7 +86,7 @@ const createRubiedTextFromToken = (token: IpadicFeatures) => {
   const yomigana = reading.slice(0, yomiganaLength);
   const okurigana = reading.slice(yomiganaLength);
 
-  return `${rubyAnchorCharacter}${oyamoji}${rubySeparatorCharacter}${yomigana}${rubyTerminatorCharacter}${okurigana}`;
+  return `${rubyAnchor}${oyamoji}${rubySeparator}${yomigana}${rubyTerminator}${okurigana}`;
 };
 
 const getOkuriganaLength = (surfaceForm: string, reading: string) => {
