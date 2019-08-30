@@ -1,6 +1,6 @@
 import { IpadicFeatures } from "kuromoji";
 import { convertKatakanaToHiragana } from "../../../../shared/exercise/compiler/roman/kana";
-import { rubyAnchor, rubySeparator, rubyTerminator } from "../../../../shared/exercise/ruby/characters";
+import { rubySeparator, rubyTerminator } from "../../../../shared/exercise/ruby/characters";
 
 export const createRubiedTextFromTokens = (tokens: IpadicFeatures[]) =>
   tokens
@@ -24,7 +24,7 @@ export const createRubiedTextFromTokens = (tokens: IpadicFeatures[]) =>
       const yomigana = reading.slice(0, yomiganaLength);
       const okurigana = reading.slice(yomiganaLength);
 
-      return `${rubyAnchor}${oyamoji}${rubySeparator}${yomigana}${rubyTerminator}${okurigana}`;
+      return `${oyamoji}${rubySeparator}${yomigana}${rubyTerminator}${okurigana}`;
     })
     .join("");
 
