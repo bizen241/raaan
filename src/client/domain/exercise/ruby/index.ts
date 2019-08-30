@@ -3,6 +3,7 @@ import {
   annotationSeparator,
   annotationTerminator,
   annotationWithAnchor,
+  isKanjiOnly,
   rubyWithAnchorRegExp,
   rubyWithoutAnchorRegExp
 } from "../../../../shared/exercise/compiler/ruby";
@@ -45,5 +46,3 @@ const removeSpecialCharacters = (inputText: string) =>
     .replace(rubyAnchor, "")
     .replace(rubySeparator, "")
     .replace(rubyTerminator, "");
-
-const isKanjiOnly = (target: string) => /^[一-龠々ヶ]+$/.test(target);

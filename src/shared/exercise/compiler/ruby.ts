@@ -58,11 +58,17 @@ const compileToRubyChunks = (sourceChunk: string, isMasked: boolean) => {
   return rubyLine;
 };
 
+const kanjiRange = "一-龠々ヶ";
+const hiraganaRange = "ぁ-んー";
+
 export const rubyWithAnchorRegExp = new RegExp(
-  `${rubyAnchor}([一-龠々ヶ]+)${rubySeparator}(.+?)${rubyTerminator}`,
+  `${rubyAnchor}([${hiraganaRange}${kanjiRange}]+)${rubySeparator}([${hiraganaRange}]+)${rubyTerminator}`,
   "g"
 );
-export const rubyWithoutAnchorRegExp = new RegExp(`([一-龠々ヶ]+)${rubySeparator}(.+?)${rubyTerminator}`, "g");
+export const rubyWithoutAnchorRegExp = new RegExp(
+  `([${kanjiRange}]+)${rubySeparator}([${hiraganaRange}]+)${rubyTerminator}`,
+  "g"
+);
 
 export const annotationAnchor = "\ufff9";
 export const annotationSeparator = "\ufffa";
@@ -70,3 +76,7 @@ export const annotationTerminator = "\ufffb";
 
 export const annotationWithAnchor = `${annotationAnchor}$1${annotationSeparator}$2${annotationTerminator}`;
 export const annotationWithoutAnchor = `$1${annotationSeparator}$2${annotationTerminator}`;
+
+const kanjiRegExp = new RegExp(`^[${kanjiRange}]+$`);
+
+export const isKanjiOnly = (target: string) => kanjiRegExp.test(target);
