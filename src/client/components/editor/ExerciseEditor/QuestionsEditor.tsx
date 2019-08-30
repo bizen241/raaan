@@ -16,10 +16,10 @@ export const QuestionsEditor = React.memo<{
 
   const onInsertQuestion = useCallback((index: number) => {
     updateQuestions(previousQuestions => {
-      const id = questions.reduce((maxId, question) => Math.max(question.id, maxId), 0) + 1;
+      const id = previousQuestions.reduce((maxId, question) => Math.max(question.id, maxId), 0) + 1;
 
       const nextQuestions: Question[] = [
-        ...previousQuestions.slice(0, index),
+        ...previousQuestions.slice(0, index + 1),
         {
           id,
           lang: "ja",
