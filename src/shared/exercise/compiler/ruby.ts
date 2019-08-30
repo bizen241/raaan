@@ -30,41 +30,39 @@ const compileToRubyChunks = (sourceChunk: string, isMasked: boolean) => {
   const rubyLine: RubyLine = [];
 
   sourceChunk
-    .replace(withAnchorRegExp, replacedWithAnnotation)
-    .replace(withoutAnchorRegExp, replacedWithAnnotation)
+    .replace(withAnchorRegExp, replaceWithAnnotation)
+    .replace(withoutAnchorRegExp, replaceWithAnnotation)
     .split(annotationTerminator)
     .forEach(chunk => {
-      const [normal, rubied] = chunk.split(annotationAnchor);
+      const [unrubiedText, rubiedText] = chunk.split(annotationAnchor);
 
-      if (normal.length > 0) {
+      if (unrubiedText.length > 0) {
         rubyLine.push(
-          ...normal.split("").map(char => ({
+          ...unrubiedText.split("").map(char => ({
             kanji: char,
             isMasked
           }))
         );
       }
-      if (rubied !== undefined) {
-        const [kanji, ruby] = rubied.split(annotationSeparator);
+      if (rubiedText !== undefined) {
+        const [parentText, rubyText] = rubiedText.split(annotationSeparator);
 
-        if (kanji.length > 0 && ruby !== undefined) {
-          rubyLine.push({
-            kanji,
-            ruby,
-            isMasked
-          });
-        }
+        rubyLine.push({
+          kanji: parentText,
+          ruby: rubyText,
+          isMasked
+        });
       }
     });
 
   return rubyLine;
 };
 
-const withAnchorRegExp = new RegExp(`${rubyAnchor}([一-龠々ヶ]+)${rubySeparator}(.+?)${rubyTerminator}`, "g");
-const withoutAnchorRegExp = new RegExp(`([一-龠々ヶ]+)${rubySeparator}(.+?)${rubyTerminator}`, "g");
+export const withAnchorRegExp = new RegExp(`${rubyAnchor}([一-龠々ヶ]+)${rubySeparator}(.+?)${rubyTerminator}`, "g");
+export const withoutAnchorRegExp = new RegExp(`([一-龠々ヶ]+)${rubySeparator}(.+?)${rubyTerminator}`, "g");
 
-const annotationAnchor = "\ufff9";
-const annotationSeparator = "\ufffa";
-const annotationTerminator = "\ufffb";
+export const annotationAnchor = "\ufff9";
+export const annotationSeparator = "\ufffa";
+export const annotationTerminator = "\ufffb";
 
-const replacedWithAnnotation = `${annotationAnchor}$1${annotationSeparator}$2${annotationTerminator}`;
+export const replaceWithAnnotation = `${annotationAnchor}$1${annotationSeparator}$2${annotationTerminator}`;
