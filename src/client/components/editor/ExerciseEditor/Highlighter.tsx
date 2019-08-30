@@ -1,5 +1,14 @@
 import { makeStyles } from "@material-ui/core/styles";
 import * as React from "react";
+import {
+  annotationAnchor,
+  annotationSeparator,
+  annotationTerminator,
+  annotationWithAnchor,
+  annotationWithoutAnchor,
+  rubyWithAnchorRegExp,
+  rubyWithoutAnchorRegExp
+} from "../../../../shared/exercise/compiler/ruby";
 import { rubyAnchor, rubySeparator, rubyTerminator } from "../../../../shared/exercise/ruby/characters";
 
 export const Highlighter = React.memo<{ value: string }>(({ value }) => {
@@ -7,53 +16,50 @@ export const Highlighter = React.memo<{ value: string }>(({ value }) => {
 
   const highlightedLines: JSX.Element[][] = [];
 
-  value.split("\n").forEach(line => {
+  value.split("\n").forEach((sourceLine, lineNumber) => {
     const highlightedLine: JSX.Element[] = [];
 
-    let cursor = 0;
-    let matched: RegExpExecArray | null;
+    const splitedByTerminatorTexts = sourceLine
+      .replace(rubyWithAnchorRegExp, annotationWithAnchor)
+      .replace(rubyWithoutAnchorRegExp, annotationWithoutAnchor)
+      .split(annotationTerminator);
 
-    // tslint:disable-next-line: no-conditional-assignment
-    while ((matched = rubyRegExp.exec(line)) !== null) {
-      const start = matched.index;
-
-      if (cursor !== start) {
-        highlightedLine.push(<span key={cursor}>{line.slice(cursor, start)}</span>);
-
-        cursor = start;
-      }
-
-      highlightedLine.push(
-        <span key={start} style={{ color: "#999" }}>
-          {rubyAnchor}
-        </span>,
-        <span key={start + 1}>{matched[1]}</span>,
-        <span key={start + 2} style={{ color: "#999" }}>
-          {rubySeparator}
-          {matched[2]}
-          {rubyTerminator}
-        </span>
-      );
-
-      cursor += matched[0].length;
-    }
-
-    if (cursor === 0) {
-      highlightedLine.push(<span key={cursor}>{line + "\n"}</span>);
+    if (splitedByTerminatorTexts.length === 1) {
+      highlightedLine.push(<span key={lineNumber}>{sourceLine + "\n"}</span>);
     } else {
-      highlightedLine.push(<span key={cursor}>{line.slice(cursor) + "\n"}</span>);
+      splitedByTerminatorTexts.forEach((chunk, index) => {
+        const [intermediateText, rubyText] = chunk.split(annotationSeparator);
+        const [unrubiedText, parentText] = intermediateText.split(annotationAnchor);
+
+        if (unrubiedText.length > 0) {
+          highlightedLine.push(<span key={`${lineNumber}${index}`}>{unrubiedText}</span>);
+        }
+        if (parentText !== undefined) {
+          highlightedLine.push(
+            <span key={`${lineNumber}${index}a`} style={{ color: "#999" }}>
+              {rubyAnchor}
+            </span>,
+            <span key={`${lineNumber}${index}p`}>{parentText}</span>
+          );
+        }
+        if (rubyText !== undefined) {
+          highlightedLine.push(
+            <span key={`${lineNumber}${index}r`} style={{ color: "#999" }}>
+              {rubySeparator}
+              {rubyText}
+              {rubyTerminator}
+            </span>
+          );
+        }
+      });
     }
 
+    highlightedLine.push(<span key={`${lineNumber}n`}>{"\n"}</span>);
     highlightedLines.push(highlightedLine);
   });
 
   return <div className={classes.root}>{highlightedLines}</div>;
 });
-
-const rubyRegExp = new RegExp(
-  `${rubyAnchor}([^${rubySeparator}]+)${rubySeparator}([^${rubyTerminator}]+)${rubyTerminator}`,
-  "g"
-);
 
 const useHighlightStyles = makeStyles(() => ({
   root: {

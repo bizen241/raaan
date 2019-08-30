@@ -30,8 +30,8 @@ const compileToRubyChunks = (sourceChunk: string, isMasked: boolean) => {
   const rubyLine: RubyLine = [];
 
   sourceChunk
-    .replace(withAnchorRegExp, replaceWithAnnotation)
-    .replace(withoutAnchorRegExp, replaceWithAnnotation)
+    .replace(rubyWithAnchorRegExp, annotationWithAnchor)
+    .replace(rubyWithoutAnchorRegExp, annotationWithAnchor)
     .split(annotationTerminator)
     .forEach(chunk => {
       const [unrubiedText, rubiedText] = chunk.split(annotationAnchor);
@@ -58,11 +58,15 @@ const compileToRubyChunks = (sourceChunk: string, isMasked: boolean) => {
   return rubyLine;
 };
 
-export const withAnchorRegExp = new RegExp(`${rubyAnchor}([一-龠々ヶ]+)${rubySeparator}(.+?)${rubyTerminator}`, "g");
-export const withoutAnchorRegExp = new RegExp(`([一-龠々ヶ]+)${rubySeparator}(.+?)${rubyTerminator}`, "g");
+export const rubyWithAnchorRegExp = new RegExp(
+  `${rubyAnchor}([一-龠々ヶ]+)${rubySeparator}(.+?)${rubyTerminator}`,
+  "g"
+);
+export const rubyWithoutAnchorRegExp = new RegExp(`([一-龠々ヶ]+)${rubySeparator}(.+?)${rubyTerminator}`, "g");
 
 export const annotationAnchor = "\ufff9";
 export const annotationSeparator = "\ufffa";
 export const annotationTerminator = "\ufffb";
 
-export const replaceWithAnnotation = `${annotationAnchor}$1${annotationSeparator}$2${annotationTerminator}`;
+export const annotationWithAnchor = `${annotationAnchor}$1${annotationSeparator}$2${annotationTerminator}`;
+export const annotationWithoutAnchor = `$1${annotationSeparator}$2${annotationTerminator}`;

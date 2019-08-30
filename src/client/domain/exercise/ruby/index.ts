@@ -2,9 +2,9 @@ import {
   annotationAnchor,
   annotationSeparator,
   annotationTerminator,
-  replaceWithAnnotation,
-  withAnchorRegExp,
-  withoutAnchorRegExp
+  annotationWithAnchor,
+  rubyWithAnchorRegExp,
+  rubyWithoutAnchorRegExp
 } from "../../../../shared/exercise/compiler/ruby";
 import { rubyAnchor, rubySeparator, rubyTerminator } from "../../../../shared/exercise/ruby/characters";
 import { createRubiedTextFromTokens } from "./token";
@@ -14,8 +14,8 @@ export const addRuby = async (inputText: string, callback: (outputText: string) 
   const tokenizer = await getTokenizer();
 
   const outputText = inputText
-    .replace(withAnchorRegExp, replaceWithAnnotation)
-    .replace(withoutAnchorRegExp, replaceWithAnnotation)
+    .replace(rubyWithAnchorRegExp, annotationWithAnchor)
+    .replace(rubyWithoutAnchorRegExp, annotationWithAnchor)
     .split(annotationTerminator)
     .map(chunk => {
       const [unrubiedText, rubiedText] = chunk.split(annotationAnchor);
