@@ -8,6 +8,8 @@ export const QuestionRenderer = React.memo<{
   question: CompiledQuestion;
   state: QuestionPlayerState;
 }>(({ question, state }) => {
+  const classes = useStyles();
+
   const { roman: romanLines, ruby: rubyLines } = question;
   const { typedLines } = state;
 
@@ -37,72 +39,83 @@ export const QuestionRenderer = React.memo<{
   const currentRubyChunkIndex = isCurrentLineFinished ? currentRubyLine.length : currentRomanChunk.pointer;
   const currentRubyChunk = currentRubyLine[currentRubyChunkIndex];
 
-  const classes = useStyles();
-
   return (
-    <Box display="flex" flexDirection="column" flex={1} style={{ overflow: "hidden" }}>
-      <Box className={classes.typedLinesOuter} fontSize="3vmax" color="text.disabled">
+    <Box display="flex" flexDirection="column" flex={1} className={classes.wrapper}>
+      <div className={classes.typedLinesOuter}>
         <div className={classes.typedLinesInner}>
           {rubyLines.slice(0, currentLineIndex).map((rubyLine, index) => (
             <div key={index}>{rubyLine.map(({ kanji }) => kanji)}</div>
           ))}
         </div>
-      </Box>
-      <Box display="flex" flexDirection="column" fontSize="4vmax">
-        {isRoman ? (
-          <Box display="flex">
-            <Box className={classes.typedStringWrapper} color="text.disabled">
-              <span className={classes.typedString}>
-                {currentRubyLine.slice(0, currentRubyChunkIndex).map(({ kanji, ruby }, index) => (
-                  <ruby key={index}>
+      </div>
+      {isRoman && (
+        <Box display="flex" className={classes.currentRubyLine}>
+          <div className={classes.typedStringOuter}>
+            <span className={classes.typedStringInner}>
+              {currentRubyLine.slice(0, currentRubyChunkIndex).map(({ kanji, ruby }, index) => (
+                <ruby key={index}>
+                  {kanji}
+                  <rt>{ruby || ""}</rt>
+                </ruby>
+              ))}
+            </span>
+          </div>
+          {!isCurrentLineFinished && (
+            <>
+              <span>
+                <ruby className={currentRubyChunk.isMasked ? classes.mask : undefined}>
+                  {currentRubyChunk.kanji}
+                  <rt>{currentRubyChunk.ruby || ""}</rt>
+                </ruby>
+              </span>
+              <span className={classes.untypedString}>
+                {currentRubyLine.slice(currentRubyChunkIndex + 1).map(({ kanji, ruby, isMasked }, index) => (
+                  <ruby key={currentRubyChunkIndex + index} className={isMasked ? classes.mask : undefined}>
                     {kanji}
                     <rt>{ruby || ""}</rt>
                   </ruby>
                 ))}
               </span>
-            </Box>
-            {!isCurrentLineFinished ? (
-              <>
-                <span>
-                  <ruby key={currentRubyChunkIndex}>
-                    {currentRubyChunk.kanji}
-                    <rt>{currentRubyChunk.ruby || ""}</rt>
-                  </ruby>
-                </span>
-                <span className={classes.untypedString}>
-                  {currentRubyLine.slice(currentRubyChunkIndex + 1).map(({ kanji, ruby }, index) => (
-                    <ruby key={currentRubyChunkIndex + index}>
-                      {kanji}
-                      <rt>{ruby || ""}</rt>
-                    </ruby>
-                  ))}
-                </span>
-              </>
-            ) : null}
-          </Box>
-        ) : null}
-        <Box display="flex">
-          <Box className={classes.typedStringWrapper} color="text.disabled">
-            <span className={classes.typedString}>{typedLine.join("")}</span>
-          </Box>
-          <span>{currentCandidates[0].slice(currentCharIndex)}</span>
-          <span>{currentRomanLine.slice(currentRomanChunkIndex + 1).map(romanChunk => romanChunk.candidates[0])}</span>
+            </>
+          )}
         </Box>
+      )}
+      <Box display="flex" className={classes.currentRomanLine}>
+        <div className={classes.typedStringOuter}>
+          <span className={classes.typedStringInner}>{typedLine.join("")}</span>
+        </div>
+        <span>
+          <span className={currentRomanChunk.isMasked ? classes.mask : undefined}>
+            {currentCandidates[0].slice(currentCharIndex)}
+          </span>
+        </span>
+        <span className={classes.untypedString}>
+          {currentRomanLine.slice(currentRomanChunkIndex + 1).map(({ candidates, isMasked }, index) => (
+            <span key={currentRomanChunkIndex + index} className={isMasked ? classes.mask : undefined}>
+              {candidates[0]}
+            </span>
+          ))}
+        </span>
       </Box>
-      <Box fontSize="3vmax" color="text.disabled">
+      <div className={classes.untypedLines}>
         {rubyLines.slice(currentLineIndex + 1).map((rubyLine, index) => (
           <div key={currentLineIndex + 1 + index}>{rubyLine.map(({ kanji }) => kanji)}</div>
         ))}
-      </Box>
+      </div>
     </Box>
   );
 });
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
+  wrapper: {
+    overflow: "hidden"
+  },
   typedLinesOuter: {
     position: "relative",
-    minHeight: "50%",
-    overflow: "hidden"
+    minHeight: "40%",
+    overflow: "hidden",
+    fontSize: "3vmax",
+    color: theme.palette.text.disabled
   },
   typedLinesInner: {
     position: "absolute",
@@ -111,20 +124,40 @@ const useStyles = makeStyles(() => ({
     flex: 1,
     overflow: "hidden"
   },
-  typedStringWrapper: {
+  typedStringOuter: {
     flexShrink: 0,
     maxWidth: "50%",
-    overflow: "hidden"
+    overflow: "hidden",
+    color: theme.palette.text.disabled
   },
-  typedString: {
+  typedStringInner: {
     float: "right",
     overflow: "hidden",
-    whiteSpace: "pre",
-    height: "2em"
+    whiteSpace: "pre"
   },
   untypedString: {
     overflow: "hidden",
-    whiteSpace: "pre",
-    height: "2em"
+    whiteSpace: "pre"
+  },
+  untypedLines: {
+    fontSize: "3vmax",
+    color: theme.palette.text.disabled
+  },
+  currentRubyLine: {
+    height: "2em",
+    fontSize: "4vmax",
+    lineHeight: "2.5em"
+  },
+  currentRomanLine: {
+    fontSize: "4vmax",
+    lineHeight: "1.5em",
+    paddingBottom: "0.5em"
+  },
+  mask: {
+    color: "transparent",
+    backgroundColor: theme.palette.text.disabled,
+    borderBottomStyle: "solid",
+    borderBottomWidth: "3px",
+    borderBottomColor: theme.palette.text.primary
   }
 }));

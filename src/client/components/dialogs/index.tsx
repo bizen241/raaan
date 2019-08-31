@@ -43,13 +43,11 @@ export const DialogHeader: React.FunctionComponent<{
   );
 };
 
-export const DialogContent: React.FunctionComponent<{
-  maxWidth?: string;
-}> = ({ maxWidth = "1000px", children }) => {
+export const DialogContent: React.FunctionComponent = ({ children }) => {
   return (
     <MuiDialogContent>
       <Box display="flex" flexDirection="column" height="100%" alignItems="center">
-        <Box display="flex" flexDirection="column" flex={1} width="100%" maxWidth={maxWidth}>
+        <Box display="flex" flexDirection="column" flex={1} width="100%" maxWidth="1000px">
           {children}
         </Box>
       </Box>

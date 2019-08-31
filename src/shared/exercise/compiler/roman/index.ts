@@ -5,6 +5,7 @@ export interface RomanChunk {
   kana: string;
   pointer: number;
   candidates: string[];
+  isMasked: boolean;
 }
 
 export type RomanLine = RomanChunk[];
@@ -19,6 +20,9 @@ export const compileToRomanLine = (rubyLine: RubyLine) => {
   while (kanaLineCursor < kanaLine.length) {
     const { kana, candidates } = compileKana(kanaLine.slice(kanaLineCursor));
     const kanaLength = kana.length;
+
+    const pointer = rubyChunkCursor;
+    let isMasked = false;
 
     let kanaCursor = 0;
     while (kanaCursor < kanaLength) {
@@ -36,14 +40,19 @@ export const compileToRomanLine = (rubyLine: RubyLine) => {
       }
 
       kanaCursor += remainingRubyLength;
+
+      if (rubyChunk.isMasked) {
+        isMasked = true;
+      }
     }
 
     kanaLineCursor += kanaLength;
 
     romanLine.push({
       kana,
-      pointer: rubyChunkCursor,
-      candidates
+      pointer,
+      candidates,
+      isMasked
     });
   }
 
