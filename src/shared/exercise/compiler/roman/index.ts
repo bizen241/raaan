@@ -12,6 +12,7 @@ export type RomanLine = RomanChunk[];
 
 export const compileToRomanLine = (rubyLine: RubyLine) => {
   const romanLine: RomanLine = [];
+
   const kanaLine = rubyLine.reduce((kana, chunk) => `${kana}${chunk.ruby || chunk.kanji}`, "");
 
   let rubyChunkCursor = 0;
@@ -29,10 +30,14 @@ export const compileToRomanLine = (rubyLine: RubyLine) => {
       const rubyChunk = rubyLine[rubyChunkCursor];
       const ruby = rubyChunk.ruby || rubyChunk.kanji;
 
+      if (rubyChunk.isMasked) {
+        isMasked = true;
+      }
+
       const remainingRubyLength = ruby.length - rubyCursor;
       const remainingKanaLength = kanaLength - kanaCursor;
 
-      if (remainingRubyLength < remainingKanaLength) {
+      if (remainingRubyLength <= remainingKanaLength) {
         rubyChunkCursor += 1;
         rubyCursor = 0;
       } else {
@@ -40,10 +45,6 @@ export const compileToRomanLine = (rubyLine: RubyLine) => {
       }
 
       kanaCursor += remainingRubyLength;
-
-      if (rubyChunk.isMasked) {
-        isMasked = true;
-      }
     }
 
     kanaLineCursor += kanaLength;
