@@ -2,6 +2,7 @@ import { AppBar, Box, Dialog, DialogContent as MuiDialogContent, IconButton, Sli
 import { TransitionProps } from "@material-ui/core/transitions/transition";
 import { Close } from "@material-ui/icons";
 import * as React from "react";
+import { useCallback, useState } from "react";
 
 interface DialogProps {
   isOpen: boolean;
@@ -53,4 +54,11 @@ export const DialogContent: React.FunctionComponent = ({ children }) => {
       </Box>
     </MuiDialogContent>
   );
+};
+
+export const useDialog = () => {
+  const [isDialogOpen, toggleDialog] = useState(false);
+  const onToggleDialog = useCallback(() => toggleDialog(s => !s), []);
+
+  return [isDialogOpen, onToggleDialog] as const;
 };

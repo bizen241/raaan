@@ -2,22 +2,20 @@ import {
   Avatar,
   Card,
   CardHeader,
-  IconButton,
   Table,
   TableBody,
-  TableCell,
   TableFooter,
   TablePagination,
   TableRow,
   Typography
 } from "@material-ui/core";
-import { Delete, List } from "@material-ui/icons";
+import { List } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { EntityObject, EntityType } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
-import { actions, RootState } from "../../../reducers";
+import { RootState } from "../../../reducers";
 import { useStyles } from "../../ui/styles";
 
 export interface BufferListProps {
@@ -35,7 +33,8 @@ export const createBufferList = <E extends EntityObject>(
   ListItem: React.ComponentType<BufferListItemProps<E>>
 ) =>
   React.memo<BufferListProps>(({ title }) => {
-    const dispatch = useDispatch();
+    const classes = useStyles();
+
     const { bufferMap, entityMap } = useSelector((state: RootState) => ({
       bufferMap: state.buffers[entityType],
       entityMap: state.cache.get[entityType] as { [key: string]: E | undefined }
@@ -44,11 +43,8 @@ export const createBufferList = <E extends EntityObject>(
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(0);
 
-    const offset = limit * page;
-
     const bufferEntries = Object.entries(bufferMap);
-
-    const classes = useStyles();
+    const offset = limit * page;
 
     return (
       <Card>
@@ -63,16 +59,7 @@ export const createBufferList = <E extends EntityObject>(
         <Table>
           <TableBody>
             {bufferEntries.slice(offset, offset + limit).map(([bufferId, buffer]) => (
-              <TableRow key={bufferId}>
-                <TableCell>
-                  <ListItem bufferId={bufferId} buffer={buffer} source={entityMap[bufferId]} />
-                </TableCell>
-                <TableCell padding="checkbox">
-                  <IconButton onClick={() => dispatch(actions.buffers.delete(entityType, bufferId))}>
-                    <Delete />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
+              <ListItem key={bufferId} bufferId={bufferId} buffer={buffer} source={entityMap[bufferId]} />
             ))}
           </TableBody>
           <TableFooter>

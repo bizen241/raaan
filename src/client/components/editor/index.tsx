@@ -65,7 +65,7 @@ export const createEntityEditor = <E extends EntityObject>(
       if (isLocalOnly(bufferId)) {
         return (
           <Card>
-            <CardHeader avatar={<Error />} title="バッファが見つかりませんでした" />
+            <CardHeader avatar={<Error />} title="バッファが削除されました" />
           </Card>
         );
       } else {
