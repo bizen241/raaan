@@ -43,8 +43,8 @@ export const QuestionRenderer = React.memo<{
     <Box display="flex" flexDirection="column" flex={1} className={classes.wrapper}>
       <div className={classes.typedLinesOuter}>
         <div className={classes.typedLinesInner}>
-          {rubyLines.slice(0, currentLineIndex).map((rubyLine, index) => (
-            <div key={index}>{rubyLine.map(({ kanji }) => kanji)}</div>
+          {rubyLines.slice(0, currentLineIndex).map((rubyLine, lineIndex) => (
+            <div key={lineIndex}>{rubyLine.map(({ kanji }) => kanji)}</div>
           ))}
         </div>
       </div>
@@ -52,8 +52,8 @@ export const QuestionRenderer = React.memo<{
         <Box display="flex" className={classes.currentRubyLine}>
           <div className={classes.typedStringOuter}>
             <span className={classes.typedStringInner}>
-              {currentRubyLine.slice(0, currentRubyChunkIndex).map(({ kanji, ruby }, index) => (
-                <ruby key={index}>
+              {currentRubyLine.slice(0, currentRubyChunkIndex).map(({ kanji, ruby }, chunkIndex) => (
+                <ruby key={chunkIndex}>
                   {kanji}
                   <rt>{ruby || ""}</rt>
                 </ruby>
@@ -69,8 +69,8 @@ export const QuestionRenderer = React.memo<{
                 </ruby>
               </span>
               <span className={classes.untypedString}>
-                {currentRubyLine.slice(currentRubyChunkIndex + 1).map(({ kanji, ruby, isMasked }, index) => (
-                  <ruby key={currentRubyChunkIndex + index} className={isMasked ? classes.mask : undefined}>
+                {currentRubyLine.slice(currentRubyChunkIndex + 1).map(({ kanji, ruby, isMasked }, chunkIndex) => (
+                  <ruby key={currentRubyChunkIndex + chunkIndex} className={isMasked ? classes.mask : undefined}>
                     {kanji}
                     <rt>{ruby || ""}</rt>
                   </ruby>
@@ -90,16 +90,22 @@ export const QuestionRenderer = React.memo<{
           </span>
         </span>
         <span className={classes.untypedString}>
-          {currentRomanLine.slice(currentRomanChunkIndex + 1).map(({ candidates, isMasked }, index) => (
-            <span key={currentRomanChunkIndex + index} className={isMasked ? classes.mask : undefined}>
+          {currentRomanLine.slice(currentRomanChunkIndex + 1).map(({ candidates, isMasked }, chunkIndex) => (
+            <span key={currentRomanChunkIndex + chunkIndex} className={isMasked ? classes.mask : undefined}>
               {candidates[0]}
             </span>
           ))}
         </span>
       </Box>
       <div className={classes.untypedLines}>
-        {rubyLines.slice(currentLineIndex + 1).map((rubyLine, index) => (
-          <div key={currentLineIndex + 1 + index}>{rubyLine.map(({ kanji }) => kanji)}</div>
+        {rubyLines.slice(currentLineIndex + 1).map((rubyLine, lineIndex) => (
+          <div key={currentLineIndex + 1 + lineIndex}>
+            {rubyLine.map(({ kanji, isMasked }, chunkIndex) => (
+              <span key={chunkIndex} className={isMasked ? classes.mask : undefined}>
+                {kanji}
+              </span>
+            ))}
+          </div>
         ))}
       </div>
     </Box>
