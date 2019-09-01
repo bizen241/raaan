@@ -52,9 +52,10 @@ export const Highlighter = React.memo<{ value: string }>(({ value }) => {
           );
         }
       });
+
+      highlightedLine.push(<span key={`${lineNumber}n`}>{"\n"}</span>);
     }
 
-    highlightedLine.push(<span key={`${lineNumber}n`}>{"\n"}</span>);
     highlightedLines.push(highlightedLine);
   });
 
