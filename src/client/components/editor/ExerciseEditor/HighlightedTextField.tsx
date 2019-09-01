@@ -1,6 +1,7 @@
-import { Box, Button, makeStyles, TextField, Theme } from "@material-ui/core";
+import { Box, Button, ButtonGroup, makeStyles, TextField, Theme } from "@material-ui/core";
 import * as React from "react";
 import { useCallback, useRef, useState } from "react";
+import { maskAnchor, maskTerminator } from "../../../../shared/exercise/mask/characters";
 import { addRuby } from "../../../domain/exercise/ruby";
 import { Highlighter } from "./Highlighter";
 
@@ -31,10 +32,33 @@ export const HighlightedTextField = React.memo<{
       toggleRubyState(false);
     });
   }, []);
+  const onAddMask = useCallback(() => {
+    const textField = textFieldRef.current;
+    if (textField == null) {
+      return;
+    }
+
+    const { selectionStart, selectionEnd } = textField;
+
+    const prevValue = textField.value;
+    const nextValue = `${prevValue.slice(0, selectionStart)}${maskAnchor}${prevValue.slice(
+      selectionStart,
+      selectionEnd
+    )}${maskTerminator}${prevValue.slice(selectionEnd)}`;
+
+    onChange(nextValue);
+
+    textField.value = nextValue;
+  }, []);
 
   return (
     <Box>
-      <Button onClick={onAddRuby}>振り仮名</Button>
+      <Box pb={1}>
+        <ButtonGroup fullWidth>
+          <Button onClick={onAddRuby}>振り仮名</Button>
+          <Button onClick={onAddMask}>空欄</Button>
+        </ButtonGroup>
+      </Box>
       <Box display="flex" flexDirection="column" position="relative">
         {!isCompositing ? <Highlighter value={value} /> : null}
         <TextField
