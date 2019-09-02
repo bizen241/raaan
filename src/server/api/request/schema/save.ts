@@ -9,10 +9,10 @@ export const SaveParamsMapSchema: Definition = {
     Exercise: {
       type: "object",
       properties: {
-        title: { type: "string" },
         authorId: { format: "uuid", type: "string" },
         summaryId: { format: "uuid", type: "string" },
         lang: { type: "string" },
+        title: { type: "string" },
         tags: { type: "array", items: { type: "string" } },
         description: { type: "string" },
         rubric: { type: "string" },
@@ -22,100 +22,166 @@ export const SaveParamsMapSchema: Definition = {
           items: {
             type: "object",
             properties: {
-              format: { enum: ["code", "math", "plain"], type: "string" },
+              id: { type: "number" },
               lang: { type: "string" },
+              format: { type: "string" },
               value: { type: "string" },
               comment: { type: "string" }
             }
           }
         },
         isPrivate: { type: "boolean" },
-        isLocked: { type: "boolean" }
+        isLocked: { type: "boolean" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
+      }
+    },
+    ExerciseReport: {
+      type: "object",
+      properties: {
+        targetId: { format: "uuid", type: "string" },
+        reporterId: { format: "uuid", type: "string" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
       }
     },
     ExerciseSummary: {
       type: "object",
       properties: {
-        title: { type: "string" },
         authorId: { format: "uuid", type: "string" },
-        lang: { type: "string" },
-        tags: { type: "array", items: { type: "string" } },
-        description: { type: "string" },
         exerciseId: { format: "uuid", type: "string" },
-        submitCount: { type: "number" }
+        lang: { type: "string" },
+        title: { type: "string" },
+        tags: { type: "string" },
+        description: { type: "string" },
+        upvoteCount: { type: "number" },
+        submitCount: { type: "number" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
       }
     },
-    ExerciseTag: { type: "object", properties: { name: { type: "string" } } },
+    ExerciseTag: {
+      type: "object",
+      properties: {
+        name: { type: "string" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
+      }
+    },
+    ExerciseVote: {
+      type: "object",
+      properties: {
+        targetId: { format: "uuid", type: "string" },
+        voterId: { format: "uuid", type: "string" },
+        isUp: { type: "boolean" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
+      }
+    },
     Submission: {
       type: "object",
       properties: {
-        time: { type: "number" },
+        submitterId: { format: "uuid", type: "string" },
         exerciseId: { format: "uuid", type: "string" },
-        userId: { format: "uuid", type: "string" },
-        typeCount: { type: "number" },
-        accuracy: { type: "number" }
+        typeCount: { minimum: 1, type: "number" },
+        time: { minimum: 1, type: "number" },
+        accuracy: { minimum: 0, maximum: 100, type: "number" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
       }
     },
     SubmissionSummary: {
       type: "object",
       properties: {
+        submitterId: { format: "uuid", type: "string" },
         exerciseId: { format: "uuid", type: "string" },
-        submitCount: { type: "number" },
-        userId: { format: "uuid", type: "string" },
         exerciseSummaryId: { format: "uuid", type: "string" },
         latest: {
           type: "object",
           properties: { typeCount: { type: "number" }, time: { type: "number" }, accuracy: { type: "number" } }
         },
-        best: {
-          type: "object",
-          properties: { typeCount: { type: "number" }, time: { type: "number" }, accuracy: { type: "number" } }
-        }
+        submitCount: { type: "number" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
       }
     },
     User: {
       type: "object",
       properties: {
         name: { type: "string" },
-        summaryId: { format: "uuid", type: "string" },
         permission: { enum: ["Admin", "Guest", "Owner", "Read", "Write"], type: "string" },
         accountId: { format: "uuid", type: "string" },
-        configId: { format: "uuid", type: "string" }
+        configId: { format: "uuid", type: "string" },
+        summaryId: { format: "uuid", type: "string" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
       }
     },
     UserAccount: {
       type: "object",
       properties: {
-        accountId: { type: "string" },
         provider: { type: "string", enum: ["github"] },
-        email: { type: "string" }
+        accountId: { type: "string" },
+        email: { type: "string" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
       }
     },
     UserConfig: {
       type: "object",
       properties: {
         lang: { enum: ["default", "en", "ja", "system"], type: "string" },
-        theme: { enum: ["dark", "default", "light", "system"], type: "string" }
+        theme: { enum: ["dark", "default", "light", "system"], type: "string" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
       }
     },
     UserSession: {
       type: "object",
       properties: {
-        browser: { type: "string" },
         userId: { format: "uuid", type: "string" },
         accessCount: { type: "number" },
         deviceType: { type: "string" },
         deviceName: { type: "string" },
         os: { type: "string" },
-        isCurrent: { type: "boolean" }
+        browser: { type: "string" },
+        isCurrent: { type: "boolean" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
       }
     },
     UserSummary: {
       type: "object",
       properties: {
-        submitCount: { type: "number" },
         userId: { format: "uuid", type: "string" },
-        typeCount: { type: "number" }
+        submitCount: { type: "number" },
+        typeCount: { type: "number" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
       }
     }
   }
