@@ -23,7 +23,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     .leftJoinAndSelect("submissionSummary.submitter", "submitter")
     .leftJoinAndSelect("submissionSummary.exercise", "exercise")
     .leftJoinAndSelect("submissionSummary.latest", "latest")
-    .leftJoinAndSelect("submissionSummary.best", "best")
     .leftJoinAndSelect("exercise.summary", "summary")
     .take(limit)
     .skip(offset);

@@ -11,6 +11,5 @@ export interface SubmissionSummary extends BaseEntityObject {
   exerciseId: UUID;
   exerciseSummaryId: UUID;
   latest: AttemptResult;
-  best: AttemptResult;
   submitCount: number;
 }

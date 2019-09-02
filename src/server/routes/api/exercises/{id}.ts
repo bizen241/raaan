@@ -3,7 +3,7 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { Exercise } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
-import { getTypeCountFromQuestions } from "../../../../shared/exercise";
+import { getMinMaxTypeCount } from "../../../../shared/exercise";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
 import { hasPermission } from "../../../api/security";
@@ -69,7 +69,7 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
     if (params.questions !== undefined) {
       exercise.questions = params.questions;
 
-      const { maxTypeCount, minTypeCount } = getTypeCountFromQuestions(params.questions);
+      const { maxTypeCount, minTypeCount } = getMinMaxTypeCount(params.questions);
 
       exercise.summary.maxTypeCount = maxTypeCount;
       exercise.summary.minTypeCount = minTypeCount;

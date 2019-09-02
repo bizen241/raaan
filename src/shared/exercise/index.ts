@@ -1,11 +1,7 @@
 import { Question } from "../api/entities";
-import { AttemptResult } from "../api/entities";
 import { compileQuestions } from "./compiler";
 
-export const getScore = ({ typeCount, time, accuracy }: AttemptResult) =>
-  Math.floor((typeCount / (time / 1000)) * 60 * accuracy);
-
-export const getTypeCountFromQuestions = (questions: Question[] = []) => {
+export const getMinMaxTypeCount = (questions: Question[] = []) => {
   const compiledQuestions = compileQuestions(questions);
 
   let maxTypeCount = 0;

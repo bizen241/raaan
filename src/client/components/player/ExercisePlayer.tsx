@@ -1,13 +1,12 @@
 import { CircularProgress } from "@material-ui/core";
-import { useCallback, useContext, useEffect, useMemo } from "react";
 import * as React from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Exercise, Submission, SubmissionSummary } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
-import { SearchParams } from "../../../shared/api/request/search";
-import { stringifySearchParams } from "../../api/request/search";
 import { QuestionResult, summarizeResults } from "../../domain/exercise/attempt";
 import { useEntity } from "../../hooks/entity";
+import { useSearch } from "../../hooks/search";
 import { actions, RootState } from "../../reducers";
 import { UserContext } from "../project/Context";
 import { AttemptManager } from "./AttemptManager";
@@ -15,31 +14,33 @@ import { AttemptMessage } from "./AttemptMessage";
 
 export const ExercisePlayer = React.memo<{
   exerciseId: string;
-  questionIndex?: number;
   isOpen: boolean;
   onClose: () => void;
-}>(({ exerciseId, questionIndex, isOpen, onClose }) => {
+}>(({ exerciseId, isOpen, onClose }) => {
   const dispatch = useDispatch();
   const currentUser = useContext(UserContext);
 
+  const [submissionSummary, setSubmissionSummary] = useState<SubmissionSummary | undefined>();
+
   const submissionId = useMemo(() => Date.now().toString(), []);
 
-  const searchParams: SearchParams<SubmissionSummary> = {
-    submitterId: currentUser.id,
-    exerciseId,
-    limit: 1,
-    offset: 0
-  };
-  const searchQuery = stringifySearchParams(searchParams, true);
+  const { entities: submissionSummaries, onReload: onReloadSubmissionSummaries } = useSearch<SubmissionSummary>(
+    "SubmissionSummary",
+    {
+      submitterId: currentUser.id,
+      exerciseId,
+      limit: 1,
+      offset: 0
+    }
+  );
 
   const { entity: exercise } = useEntity<Exercise>("Exercise", exerciseId);
-  const { submissionStatus, submissionSummaries } = useSelector((state: RootState) => ({
-    submissionStatus: state.api.upload.Submission[submissionId],
-    submissionSummaries: state.cache.search.SubmissionSummary[searchQuery]
-  }));
+  const submissionStatus = useSelector((state: RootState) => state.api.upload.Submission[submissionId]);
 
-  const onFinish = useCallback((results: QuestionResult[]) => {
-    if (questionIndex === undefined) {
+  const onFinish = useCallback(
+    (results: QuestionResult[]) => {
+      setSubmissionSummary(submissionSummaries[0]);
+
       const submission: SaveParams<Submission> = {
         exerciseId,
         ...summarizeResults(results)
@@ -48,12 +49,13 @@ export const ExercisePlayer = React.memo<{
       dispatch(actions.buffers.add("Submission", submissionId));
       dispatch(actions.buffers.update("Submission", submissionId, submission));
       dispatch(actions.api.upload("Submission", submissionId));
-    }
-  }, []);
+    },
+    [submissionSummaries]
+  );
 
   useEffect(() => {
-    if (submissionStatus === 200 && (submissionSummaries === undefined || submissionSummaries.count === 0)) {
-      dispatch(actions.api.search("SubmissionSummary", searchParams));
+    if (submissionStatus === 200 && submissionSummaries.length === 0) {
+      onReloadSubmissionSummaries();
     }
   }, [submissionStatus]);
 
@@ -61,5 +63,13 @@ export const ExercisePlayer = React.memo<{
     return <AttemptMessage icon={<CircularProgress />} title="ロード中です" onClose={onClose} />;
   }
 
-  return <AttemptManager exercise={exercise} onFinish={onFinish} isOpen={isOpen} onClose={onClose} />;
+  return (
+    <AttemptManager
+      exercise={exercise}
+      submissionSummary={submissionSummary}
+      onFinish={onFinish}
+      isOpen={isOpen}
+      onClose={onClose}
+    />
+  );
 });

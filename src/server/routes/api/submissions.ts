@@ -3,7 +3,6 @@ import * as createError from "http-errors";
 import { EntityManager, getManager } from "typeorm";
 import { Submission } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
-import { getScore } from "../../../shared/exercise";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
 import {
@@ -30,6 +29,10 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
     }
     if (exercise.summary === undefined) {
       return next(createError(500));
+    }
+
+    if (typeCount > exercise.summary.maxTypeCount) {
+      return next(createError(400));
     }
 
     const submission = await manager.save(new SubmissionEntity(currentUser, exercise, typeCount, time, accuracy));
@@ -63,30 +66,20 @@ const saveSubmissionSummary = async (
       submitter: currentUser,
       exercise
     },
-    { relations: ["latest", "best"] }
+    { relations: ["latest"] }
   );
 
-  const {} = submission;
-
   if (submissionSummary !== undefined) {
-    const { latest, best } = submissionSummary;
+    const { latest: latest } = submissionSummary;
+    if (latest === undefined) {
+      throw new Error("submissionSummary.latest is not defined");
+    }
 
     submissionSummary.latest = submission;
     submissionSummary.submitCount += 1;
 
-    const shouldBestSubmissionUpdate = getScore(submission) > getScore(best);
-
-    if (shouldBestSubmissionUpdate) {
-      submissionSummary.best = submission;
-    }
-
     await manager.save(submissionSummary);
-
-    if (shouldBestSubmissionUpdate) {
-      await manager.remove([latest, best]);
-    } else if (latest.id !== best.id) {
-      await manager.remove(latest);
-    }
+    await manager.remove(latest);
 
     return submissionSummary;
   } else {

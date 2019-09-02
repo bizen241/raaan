@@ -26,17 +26,9 @@ export class SubmissionSummaryEntity extends BaseEntityClass {
     cascade: true
   })
   @JoinColumn()
-  latest: SubmissionEntity;
+  latest?: SubmissionEntity;
   @RelationId((submissionSummary: SubmissionSummaryEntity) => submissionSummary.latest)
   latestId!: string;
-
-  @OneToOne(() => SubmissionEntity, {
-    cascade: true
-  })
-  @JoinColumn()
-  best: SubmissionEntity;
-  @RelationId((submissionSummary: SubmissionSummaryEntity) => submissionSummary.best)
-  bestId!: string;
 
   @Column()
   submitCount: number = 1;
@@ -47,6 +39,5 @@ export class SubmissionSummaryEntity extends BaseEntityClass {
     this.submitter = submitter;
     this.exercise = exercise;
     this.latest = submission;
-    this.best = submission;
   }
 }

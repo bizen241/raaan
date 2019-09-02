@@ -49,7 +49,14 @@ export const SubmissionSummaryViewer = React.memo<{
             <Box display="flex" flexDirection="column" mb={1}>
               <Typography color="textSecondary">最初の提出</Typography>
               <Typography variant="h5" component="span">
-                {submissionSummary.createdAt}
+                {new Date(submissionSummary.createdAt).toLocaleString()}
+              </Typography>
+              <Divider />
+            </Box>
+            <Box display="flex" flexDirection="column" mb={1}>
+              <Typography color="textSecondary">直近の提出</Typography>
+              <Typography variant="h5" component="span">
+                {new Date(submissionSummary.updatedAt).toLocaleString()}
               </Typography>
               <Divider />
             </Box>

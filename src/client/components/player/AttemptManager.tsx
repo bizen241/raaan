@@ -3,20 +3,21 @@ import { Error, Replay } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
 import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
-import { Exercise } from "../../../shared/api/entities";
+import { Exercise, SubmissionSummary } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { compileQuestions } from "../../../shared/exercise/compiler";
 import { Attempt, createPlan, QuestionResult } from "../../domain/exercise/attempt";
 import { createDialog, DialogHeader } from "../dialogs";
 import { AttemptMessage } from "./AttemptMessage";
-import { AttemptResult } from "./AttemptResult";
+import { AttemptResultViewer } from "./AttemptResult";
 import { QuestionPlayer } from "./QuestionPlayer";
 
 export const AttemptManager = createDialog<{
   exercise: SaveParams<Exercise>;
+  submissionSummary?: SubmissionSummary;
   onFinish?: (results: QuestionResult[]) => void;
 }>(
-  React.memo(({ exercise, onFinish, onClose }) => {
+  React.memo(({ exercise, submissionSummary, onFinish, onClose }) => {
     const classes = useStyles();
 
     const [attempt, setAttempt] = useState<Attempt>();
@@ -63,7 +64,7 @@ export const AttemptManager = createDialog<{
         <Box className={classes.outer} display="flex" flexDirection="column" alignItems="center" px={2} py={1}>
           <Box className={classes.inner} display="flex" flexDirection="column" maxWidth="2000px">
             {isFinished ? (
-              <AttemptResult attempt={attempt} results={results} />
+              <AttemptResultViewer attempt={attempt} results={results} submissionSummary={submissionSummary} />
             ) : (
               <QuestionPlayer key={results.length} question={currentQuestion} onFinish={onNext} />
             )}
