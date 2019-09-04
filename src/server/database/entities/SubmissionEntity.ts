@@ -1,4 +1,5 @@
 import { Column, Entity, ManyToOne, RelationId } from "typeorm";
+import { AttemptResult } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { UserEntity } from "./UserEntity";
@@ -22,21 +23,28 @@ export class SubmissionEntity extends BaseEntityClass {
   exerciseId!: string;
 
   @Column()
-  typeCount: number;
+  typeCount!: number;
 
   @Column()
-  time: number;
+  time!: number;
 
   @Column()
-  accuracy: number;
+  accuracy!: number;
 
-  constructor(submitter: UserEntity, exercise: ExerciseEntity, typeCount: number, time: number, accuracy: number) {
+  @Column("timestamp without time zone")
+  finishedAt!: Date;
+
+  constructor(submitter: UserEntity, exercise: ExerciseEntity, result: AttemptResult) {
     super();
 
     this.submitter = submitter;
     this.exercise = exercise;
-    this.typeCount = typeCount;
-    this.time = time;
-    this.accuracy = accuracy;
+
+    if (result !== undefined) {
+      this.typeCount = result.typeCount;
+      this.time = result.time;
+      this.accuracy = result.accuracy;
+      this.finishedAt = new Date(result.finishedAt);
+    }
   }
 }

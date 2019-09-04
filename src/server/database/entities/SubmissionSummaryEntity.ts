@@ -31,7 +31,10 @@ export class SubmissionSummaryEntity extends BaseEntityClass {
   latestId!: string;
 
   @Column()
-  submitCount: number = 1;
+  submitCount: number = 0;
+
+  @Column()
+  typeCount: number = 0;
 
   constructor(submitter: UserEntity, exercise: ExerciseEntity, submission: SubmissionEntity) {
     super();

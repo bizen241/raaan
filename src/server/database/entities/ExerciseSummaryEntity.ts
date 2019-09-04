@@ -33,7 +33,10 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
   upvoteCount: number = 0;
 
   @Column()
-  submitCount: number = 0;
+  submittedCount: number = 0;
+
+  @Column()
+  typedCount: number = 0;
 
   constructor(maxTypeCount: number, minTypeCount: number, tags?: ExerciseTagEntity[]) {
     super();

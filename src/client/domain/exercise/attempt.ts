@@ -1,4 +1,4 @@
-import { Question } from "../../../shared/api/entities";
+import { AttemptResult, Question } from "../../../shared/api/entities";
 import { CompiledQuestion } from "../../../shared/exercise/compiler";
 
 export interface Attempt {
@@ -30,7 +30,7 @@ export const createPlan = (items: Question[]) => {
   return plan;
 };
 
-export const summarizeResults = (results: QuestionResult[]) => {
+export const summarizeResults = (results: QuestionResult[]): AttemptResult => {
   const time = results.reduce((totalTime, result) => totalTime + result.totalTime, 1);
 
   const typeCount = results.reduce(
@@ -44,6 +44,7 @@ export const summarizeResults = (results: QuestionResult[]) => {
   return {
     time,
     typeCount,
-    accuracy
+    accuracy,
+    finishedAt: new Date().getTime()
   };
 };

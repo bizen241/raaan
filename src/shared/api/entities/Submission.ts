@@ -16,4 +16,5 @@ export interface Submission extends BaseEntityObject {
    * @maximum 100
    */
   accuracy: number;
+  finishedAt: number;
 }

@@ -1,4 +1,5 @@
 import { Exercise } from "./Exercise";
+import { ExerciseDiary } from "./ExerciseDiary";
 import { ExerciseReport } from "./ExerciseReport";
 import { ExerciseSummary } from "./ExerciseSummary";
 import { ExerciseTag } from "./ExerciseTag";
@@ -8,10 +9,12 @@ import { SubmissionSummary } from "./SubmissionSummary";
 import { User } from "./User";
 import { UserAccount } from "./UserAccount";
 import { UserConfig } from "./UserConfig";
+import { UserDiary } from "./UserDiary";
 import { UserSession } from "./UserSession";
 import { UserSummary } from "./UserSummary";
 
 export * from "./Exercise";
+export * from "./ExerciseDiary";
 export * from "./ExerciseReport";
 export * from "./ExerciseSummary";
 export * from "./ExerciseTag";
@@ -21,25 +24,13 @@ export * from "./SubmissionSummary";
 export * from "./User";
 export * from "./UserAccount";
 export * from "./UserConfig";
+export * from "./UserDiary";
 export * from "./UserSession";
 export * from "./UserSummary";
 
-export type EntityType =
-  | "Exercise"
-  | "ExerciseReport"
-  | "ExerciseSummary"
-  | "ExerciseTag"
-  | "ExerciseVote"
-  | "Submission"
-  | "SubmissionSummary"
-  | "User"
-  | "UserAccount"
-  | "UserConfig"
-  | "UserSession"
-  | "UserSummary";
-
 export type EntityObject =
   | Exercise
+  | ExerciseDiary
   | ExerciseReport
   | ExerciseSummary
   | ExerciseTag
@@ -49,11 +40,13 @@ export type EntityObject =
   | User
   | UserAccount
   | UserConfig
+  | UserDiary
   | UserSession
   | UserSummary;
 
 export type EntityTypeToEntity = {
   Exercise: Exercise;
+  ExerciseDiary: ExerciseDiary;
   ExerciseReport: ExerciseReport;
   ExerciseSummary: ExerciseSummary;
   ExerciseTag: ExerciseTag;
@@ -63,15 +56,19 @@ export type EntityTypeToEntity = {
   User: User;
   UserAccount: UserAccount;
   UserConfig: UserConfig;
+  UserDiary: UserDiary;
   UserSession: UserSession;
   UserSummary: UserSummary;
 };
 
-type EntityTypeToObject = { [P in keyof EntityTypeToEntity]: object };
+export type EntityType = keyof EntityTypeToEntity;
+
+type EntityTypeToObject = { [P in EntityType]: object };
 
 export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
   const entityTypeToObject: EntityTypeToObject = {
     Exercise: {},
+    ExerciseDiary: {},
     ExerciseReport: {},
     ExerciseSummary: {},
     ExerciseTag: {},
@@ -81,6 +78,7 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     User: {},
     UserAccount: {},
     UserConfig: {},
+    UserDiary: {},
     UserSession: {},
     UserSummary: {}
   };

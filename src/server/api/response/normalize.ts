@@ -3,6 +3,7 @@ import { BaseEntityObject } from "../../../shared/api/entities/BaseEntityObject"
 import { EntityStore } from "../../../shared/api/response/get";
 import {
   Entity,
+  ExerciseDiaryEntity,
   ExerciseEntity,
   ExerciseReportEntity,
   ExerciseSummaryEntity,
@@ -17,6 +18,7 @@ import {
 } from "../../database/entities";
 import { BaseEntityClass } from "../../database/entities/BaseEntityClass";
 import { ExerciseVoteEntity } from "../../database/entities/ExerciseVoteEntity";
+import { UserDiaryEntity } from "../../database/entities/UserDiaryEntity";
 
 export interface RequestContext {
   sessionId?: string;
@@ -48,9 +50,9 @@ const normalizeEntity = (context: RequestContext, store: EntityStore, entity: En
 
 const base = ({ id, createdAt, updatedAt }: BaseEntityClass): BaseEntityObject => ({
   id,
-  createdAt: createdAt.valueOf(),
-  updatedAt: updatedAt.valueOf(),
-  fetchedAt: new Date().valueOf()
+  createdAt: createdAt.getTime(),
+  updatedAt: updatedAt.getTime(),
+  fetchedAt: new Date().getTime()
 });
 
 type Normalizer<E> = (context: RequestContext, store: EntityStore, entity: E) => void;
@@ -92,6 +94,17 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) =
   normalizeEntity(context, store, summary);
 };
 
+const normalizeExerciseDiary: Normalizer<ExerciseDiaryEntity> = (_, store, entity) => {
+  const { id, date, submittedCount, typedCount } = entity;
+
+  store.ExerciseDiary[id] = {
+    ...base(entity),
+    date: date.getTime(),
+    submittedCount,
+    typedCount
+  };
+};
+
 const normalizeExerciseReport: Normalizer<ExerciseReportEntity> = (_, store, entity) => {
   const { id, targetId, reporterId } = entity;
 
@@ -103,7 +116,7 @@ const normalizeExerciseReport: Normalizer<ExerciseReportEntity> = (_, store, ent
 };
 
 const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (context, store, entity) => {
-  const { id, exercise, exerciseId, tags = [], upvoteCount, submitCount } = entity;
+  const { id, exercise, exerciseId, tags = [], upvoteCount, submittedCount: submitCount } = entity;
   if (exercise === undefined) {
     return;
   }
@@ -146,7 +159,7 @@ const normalizeExerciseVote: Normalizer<ExerciseVoteEntity> = (_, store, entity)
 };
 
 const normalizeSubmission: Normalizer<SubmissionEntity> = (_, store, entity) => {
-  const { id, submitterId, exerciseId, typeCount, time, accuracy } = entity;
+  const { id, submitterId, exerciseId, typeCount, time, accuracy, finishedAt } = entity;
 
   store.Submission[id] = {
     ...base(entity),
@@ -154,12 +167,13 @@ const normalizeSubmission: Normalizer<SubmissionEntity> = (_, store, entity) => 
     exerciseId,
     typeCount,
     time,
-    accuracy
+    accuracy,
+    finishedAt: finishedAt.getTime()
   };
 };
 
 const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context, store, entity) => {
-  const { id, submitterId, exerciseId, exercise, latest, submitCount } = entity;
+  const { id, submitterId, exerciseId, exercise, latest, submitCount, typeCount } = entity;
   if (exercise === undefined || exercise.summary === undefined || latest === undefined) {
     return;
   }
@@ -172,9 +186,11 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context
     latest: {
       typeCount: latest.typeCount,
       time: latest.time,
-      accuracy: latest.accuracy
+      accuracy: latest.accuracy,
+      finishedAt: latest.finishedAt.getTime()
     },
-    submitCount
+    submitCount,
+    typeCount
   };
 
   normalizeEntity(context, store, exercise.summary);
@@ -220,6 +236,21 @@ const normalizeUserConfig: Normalizer<UserConfigEntity> = (_, store, entity) => 
   };
 };
 
+const normalizeUserDiary: Normalizer<UserDiaryEntity> = (_, store, entity) => {
+  const { id, date, submitCount, typeCount, submittedCount, typedCount, createCount, editCount } = entity;
+
+  store.UserDiary[id] = {
+    ...base(entity),
+    date: date.getTime(),
+    submitCount,
+    typeCount,
+    submittedCount,
+    typedCount,
+    createCount,
+    editCount
+  };
+};
+
 const normalizeUserSession: Normalizer<UserSessionEntity> = (context, store, entity) => {
   const { id, user, userId, accessCount, deviceType, deviceName, os, browser } = entity;
 
@@ -250,6 +281,7 @@ const normalizeUserSummary: Normalizer<UserSummaryEntity> = (_, store, entity) =
 
 const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Exercise: normalizeExercise,
+  ExerciseDiary: normalizeExerciseDiary,
   ExerciseReport: normalizeExerciseReport,
   ExerciseSummary: normalizeExerciseSummary,
   ExerciseTag: normalizeExerciseTag,
@@ -259,6 +291,7 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   User: normalizeUser,
   UserAccount: normalizeUserAccount,
   UserConfig: normalizeUserConfig,
+  UserDiary: normalizeUserDiary,
   UserSession: normalizeUserSession,
   UserSummary: normalizeUserSummary
 };

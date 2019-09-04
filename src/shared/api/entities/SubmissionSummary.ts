@@ -4,6 +4,7 @@ export interface AttemptResult {
   typeCount: number;
   time: number;
   accuracy: number;
+  finishedAt: number;
 }
 
 export interface SubmissionSummary extends BaseEntityObject {
@@ -12,4 +13,5 @@ export interface SubmissionSummary extends BaseEntityObject {
   exerciseSummaryId: UUID;
   latest: AttemptResult;
   submitCount: number;
+  typeCount: number;
 }

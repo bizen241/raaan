@@ -2,6 +2,7 @@ import {
   EntityObject,
   EntityType,
   Exercise,
+  ExerciseDiary,
   ExerciseReport,
   ExerciseSummary,
   ExerciseTag,
@@ -14,6 +15,7 @@ import {
   User,
   UserAccount,
   UserConfig,
+  UserDiary,
   UserSession,
   UserSummary
 } from "../../../../shared/api/entities";
@@ -47,6 +49,15 @@ const parseExercise: Parser<Exercise> = query => {
 
   return {
     authorId,
+    ...page(query)
+  };
+};
+
+const parseExerciseDiary: Parser<ExerciseDiary> = query => {
+  const { exerciseId } = query;
+
+  return {
+    exerciseId,
     ...page(query)
   };
 };
@@ -137,6 +148,15 @@ const parseUserConfig: Parser<UserConfig> = query => {
   };
 };
 
+const parseUserDiary: Parser<UserDiary> = query => {
+  const { userId } = query;
+
+  return {
+    userId,
+    ...page(query)
+  };
+};
+
 const parseUserSession: Parser<UserSession> = query => {
   const { userId } = query;
 
@@ -157,6 +177,7 @@ const parseUserSummary: Parser<UserSummary> = query => {
 
 const parsers: { [T in EntityType]: Parser<any> } = {
   Exercise: parseExercise,
+  ExerciseDiary: parseExerciseDiary,
   ExerciseReport: parseExerciseReport,
   ExerciseSummary: parseExerciseSummary,
   ExerciseTag: parseExerciseTag,
@@ -166,6 +187,7 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   User: parseUser,
   UserAccount: parseUserAccount,
   UserConfig: parseUserConfig,
+  UserDiary: parseUserDiary,
   UserSession: parseUserSession,
   UserSummary: parseUserSummary
 };
