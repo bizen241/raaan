@@ -3,6 +3,7 @@ import { AccountCircle, Edit, History, Keyboard } from "@material-ui/icons";
 import { useContext } from "react";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { UserDiaryGraph } from "../graphs/UserDiaryGraph";
 import { UserContext } from "../project/Context";
 import { useStyles } from "../ui/styles";
 import { UserSummaryViewer } from "../viewer/UserSummaryViewer";
@@ -51,6 +52,11 @@ export const HomePage = React.memo(() => {
       {!isGuest && (
         <Box pb={1}>
           <UserSummaryViewer entityId={currentUser.summaryId} />
+        </Box>
+      )}
+      {!isGuest && (
+        <Box pb={1}>
+          <UserDiaryGraph />
         </Box>
       )}
       {!isGuest && (
