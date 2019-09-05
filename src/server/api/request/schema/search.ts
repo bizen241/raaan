@@ -43,6 +43,24 @@ export const SearchParamsMapSchema: Definition = {
         }
       ]
     },
+    ExerciseDiary: {
+      allOf: [
+        { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } },
+        {
+          type: "object",
+          properties: {
+            exerciseId: { format: "uuid", type: "string" },
+            date: { type: "number" },
+            submittedCount: { type: "number" },
+            typedCount: { type: "number" },
+            id: { format: "uuid", type: "string" },
+            createdAt: { type: "number" },
+            updatedAt: { type: "number" },
+            fetchedAt: { type: "number" }
+          }
+        }
+      ]
+    },
     ExerciseReport: {
       allOf: [
         { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } },
@@ -124,6 +142,7 @@ export const SearchParamsMapSchema: Definition = {
             typeCount: { minimum: 1, type: "number" },
             time: { minimum: 1, type: "number" },
             accuracy: { minimum: 0, maximum: 100, type: "number" },
+            finishedAt: { type: "number" },
             id: { format: "uuid", type: "string" },
             createdAt: { type: "number" },
             updatedAt: { type: "number" },
@@ -143,9 +162,15 @@ export const SearchParamsMapSchema: Definition = {
             exerciseSummaryId: { format: "uuid", type: "string" },
             latest: {
               type: "object",
-              properties: { typeCount: { type: "number" }, time: { type: "number" }, accuracy: { type: "number" } }
+              properties: {
+                typeCount: { type: "number" },
+                time: { type: "number" },
+                accuracy: { type: "number" },
+                finishedAt: { type: "number" }
+              }
             },
             submitCount: { type: "number" },
+            typeCount: { type: "number" },
             id: { format: "uuid", type: "string" },
             createdAt: { type: "number" },
             updatedAt: { type: "number" },
@@ -198,6 +223,28 @@ export const SearchParamsMapSchema: Definition = {
           properties: {
             lang: { enum: ["default", "en", "ja", "system"], type: "string" },
             theme: { enum: ["dark", "default", "light", "system"], type: "string" },
+            id: { format: "uuid", type: "string" },
+            createdAt: { type: "number" },
+            updatedAt: { type: "number" },
+            fetchedAt: { type: "number" }
+          }
+        }
+      ]
+    },
+    UserDiary: {
+      allOf: [
+        { type: "object", properties: { limit: { type: "number" }, offset: { type: "number" } } },
+        {
+          type: "object",
+          properties: {
+            userId: { format: "uuid", type: "string" },
+            date: { type: "string" },
+            submitCount: { type: "number" },
+            typeCount: { type: "number" },
+            submittedCount: { type: "number" },
+            typedCount: { type: "number" },
+            createCount: { type: "number" },
+            editCount: { type: "number" },
             id: { format: "uuid", type: "string" },
             createdAt: { type: "number" },
             updatedAt: { type: "number" },

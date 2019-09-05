@@ -38,6 +38,19 @@ export const SaveParamsMapSchema: Definition = {
         fetchedAt: { type: "number" }
       }
     },
+    ExerciseDiary: {
+      type: "object",
+      properties: {
+        exerciseId: { format: "uuid", type: "string" },
+        date: { type: "number" },
+        submittedCount: { type: "number" },
+        typedCount: { type: "number" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
+      }
+    },
     ExerciseReport: {
       type: "object",
       properties: {
@@ -96,6 +109,7 @@ export const SaveParamsMapSchema: Definition = {
         typeCount: { minimum: 1, type: "number" },
         time: { minimum: 1, type: "number" },
         accuracy: { minimum: 0, maximum: 100, type: "number" },
+        finishedAt: { type: "number" },
         id: { format: "uuid", type: "string" },
         createdAt: { type: "number" },
         updatedAt: { type: "number" },
@@ -110,9 +124,15 @@ export const SaveParamsMapSchema: Definition = {
         exerciseSummaryId: { format: "uuid", type: "string" },
         latest: {
           type: "object",
-          properties: { typeCount: { type: "number" }, time: { type: "number" }, accuracy: { type: "number" } }
+          properties: {
+            typeCount: { type: "number" },
+            time: { type: "number" },
+            accuracy: { type: "number" },
+            finishedAt: { type: "number" }
+          }
         },
         submitCount: { type: "number" },
+        typeCount: { type: "number" },
         id: { format: "uuid", type: "string" },
         createdAt: { type: "number" },
         updatedAt: { type: "number" },
@@ -150,6 +170,23 @@ export const SaveParamsMapSchema: Definition = {
       properties: {
         lang: { enum: ["default", "en", "ja", "system"], type: "string" },
         theme: { enum: ["dark", "default", "light", "system"], type: "string" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
+      }
+    },
+    UserDiary: {
+      type: "object",
+      properties: {
+        userId: { format: "uuid", type: "string" },
+        date: { type: "string" },
+        submitCount: { type: "number" },
+        typeCount: { type: "number" },
+        submittedCount: { type: "number" },
+        typedCount: { type: "number" },
+        createCount: { type: "number" },
+        editCount: { type: "number" },
         id: { format: "uuid", type: "string" },
         createdAt: { type: "number" },
         updatedAt: { type: "number" },
