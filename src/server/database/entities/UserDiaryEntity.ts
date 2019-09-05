@@ -14,7 +14,7 @@ export class UserDiaryEntity extends BaseEntityClass {
   userId!: string;
 
   @Column("date")
-  date: Date;
+  date: string;
 
   @Column()
   submitCount: number = 0;
@@ -38,6 +38,6 @@ export class UserDiaryEntity extends BaseEntityClass {
     super();
 
     this.user = user;
-    this.date = date;
+    this.date = date && `${date.getUTCFullYear()}-${date.getUTCMonth()}-${date.getUTCDate()}`;
   }
 }

@@ -2,7 +2,7 @@ import { BaseEntityObject, UUID } from "./BaseEntityObject";
 
 export interface UserDiary extends BaseEntityObject {
   userId?: UUID;
-  date: number;
+  date: string;
   submitCount: number;
   typeCount: number;
   submittedCount: number;

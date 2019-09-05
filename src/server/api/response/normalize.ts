@@ -241,7 +241,7 @@ const normalizeUserDiary: Normalizer<UserDiaryEntity> = (_, store, entity) => {
 
   store.UserDiary[id] = {
     ...base(entity),
-    date: date.getTime(),
+    date,
     submitCount,
     typeCount,
     submittedCount,
