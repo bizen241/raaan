@@ -33,7 +33,7 @@ export const useSearch = <E extends EntityObject>(entityType: EntityType, initia
     const entityIds = searchResult.ids;
     const lastIndex = Math.min(offset + limit, searchResult.count - 1);
 
-    for (let index = offset; index <= lastIndex; index++) {
+    for (let index = offset; index < lastIndex; index++) {
       const entityId = entityIds[index];
       if (entityId === undefined) {
         return undefined;
@@ -48,7 +48,7 @@ export const useSearch = <E extends EntityObject>(entityType: EntityType, initia
     }
 
     return entities;
-  }, [searchResult, entityMap]);
+  }, [searchParams, searchResult, entityMap]);
 
   useEffect(() => {
     if (searchResult === undefined || selectedEntities === undefined) {
@@ -62,7 +62,7 @@ export const useSearch = <E extends EntityObject>(entityType: EntityType, initia
     count: searchResult !== undefined ? searchResult.count : 0,
     entities: selectedEntities || [],
     params: searchParams,
-    status: searchStatus,
+    status: searchStatus || selectedEntities !== undefined ? 200 : 102,
     onReload: useCallback(() => dispatch(actions.api.search(entityType, searchParams)), [searchParams]),
     onChange: useCallback((params: SearchParams<E>) => setSearchParams(s => ({ ...s, ...params })), [])
   };
