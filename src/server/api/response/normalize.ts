@@ -99,7 +99,7 @@ const normalizeExerciseDiary: Normalizer<ExerciseDiaryEntity> = (_, store, entit
 
   store.ExerciseDiary[id] = {
     ...base(entity),
-    date: date.getTime(),
+    date,
     submittedCount,
     typedCount
   };
@@ -159,7 +159,7 @@ const normalizeExerciseVote: Normalizer<ExerciseVoteEntity> = (_, store, entity)
 };
 
 const normalizeSubmission: Normalizer<SubmissionEntity> = (_, store, entity) => {
-  const { id, submitterId, exerciseId, typeCount, time, accuracy, finishedAt } = entity;
+  const { id, submitterId, exerciseId, typeCount, time, accuracy } = entity;
 
   store.Submission[id] = {
     ...base(entity),
@@ -167,8 +167,7 @@ const normalizeSubmission: Normalizer<SubmissionEntity> = (_, store, entity) => 
     exerciseId,
     typeCount,
     time,
-    accuracy,
-    finishedAt: finishedAt.getTime()
+    accuracy
   };
 };
 
@@ -186,8 +185,7 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context
     latest: {
       typeCount: latest.typeCount,
       time: latest.time,
-      accuracy: latest.accuracy,
-      finishedAt: latest.finishedAt.getTime()
+      accuracy: latest.accuracy
     },
     submitCount,
     typeCount

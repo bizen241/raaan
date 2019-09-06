@@ -34,10 +34,10 @@ export class UserDiaryEntity extends BaseEntityClass {
   @Column()
   editCount: number = 0;
 
-  constructor(user: UserEntity, date: Date) {
+  constructor(user: UserEntity, date: string) {
     super();
 
     this.user = user;
-    this.date = date && `${date.getUTCFullYear()}-${date.getUTCMonth()}-${date.getUTCDate()}`;
+    this.date = date;
   }
 }

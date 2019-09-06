@@ -17,14 +17,8 @@ import {
 } from "../../database/entities";
 
 export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { exerciseId, typeCount, time, accuracy, finishedAt }: SaveParams<Submission> = req.body;
-  if (
-    exerciseId === undefined ||
-    typeCount === undefined ||
-    time === undefined ||
-    accuracy === undefined ||
-    finishedAt === undefined
-  ) {
+  const { exerciseId, typeCount, time, accuracy }: SaveParams<Submission> = req.body;
+  if (exerciseId === undefined || typeCount === undefined || time === undefined || accuracy === undefined) {
     return next(createError(400));
   }
 
@@ -42,28 +36,26 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
     if (typeCount > exercise.summary.maxTypeCount) {
       return next(createError(400));
     }
-    if (finishedAt < currentUser.createdAt.getTime() || finishedAt > Date.now()) {
-      return next(createError(400));
-    }
 
     const submission = await manager.save(
       new SubmissionEntity(currentUser, exercise, {
         typeCount,
         time,
-        accuracy,
-        finishedAt
+        accuracy
       })
     );
+    const submittedAt = submission.createdAt;
+    const submittedDate = `${submittedAt.getFullYear()}-${submittedAt.getMonth() + 1}-${submittedAt.getDate()}`;
+
     const submissionSummary = await saveSubmissionSummary(manager, currentUser, exercise, submission);
     const userSummary = await saveUserSummary(manager, currentUser, typeCount);
-    const userDiary = await saveUserDiary(manager, currentUser, typeCount, finishedAt);
+    const userDiary = await saveUserDiary(manager, currentUser, typeCount, submittedDate);
     const exerciseSummary = await saveExerciseSummary(manager, exercise.summary, typeCount);
-    const exerciseDiary = await saveExerciseDiary(manager, exercise, typeCount, finishedAt);
+    const exerciseDiary = await saveExerciseDiary(manager, exercise, typeCount, submittedDate);
     if (exercise.authorId !== currentUser.id) {
-      await saveAuthorDiary(manager, exercise.author, typeCount, finishedAt);
+      await saveAuthorDiary(manager, exercise.author, typeCount, submittedDate);
     }
 
-    // TODO: delete
     submissionSummary.exercise = exercise;
     exerciseSummary.exercise = exercise;
 
@@ -137,17 +129,15 @@ const saveUserDiary = async (
   manager: EntityManager,
   currentUser: UserEntity,
   typeCount: number,
-  finishedAt: number
+  submittedDate: string
 ) => {
-  const date = new Date(finishedAt);
-
   const userDiary = await manager.findOne(UserDiaryEntity, {
     userId: currentUser.id,
-    date
+    date: submittedDate
   });
 
   if (userDiary === undefined) {
-    const newUserDiary = new UserDiaryEntity(currentUser, date);
+    const newUserDiary = new UserDiaryEntity(currentUser, submittedDate);
 
     newUserDiary.submitCount += 1;
     newUserDiary.typeCount += typeCount;
@@ -186,17 +176,15 @@ const saveExerciseDiary = async (
   manager: EntityManager,
   exercise: ExerciseEntity,
   typeCount: number,
-  finishedAt: number
+  submittedDate: string
 ) => {
-  const date = new Date(finishedAt);
-
   const exerciseDiary = await manager.findOne(ExerciseDiaryEntity, {
     exerciseId: exercise.id,
-    date
+    date: submittedDate
   });
 
   if (exerciseDiary === undefined) {
-    const newExerciseDiary = new ExerciseDiaryEntity(exercise, date);
+    const newExerciseDiary = new ExerciseDiaryEntity(exercise, submittedDate);
 
     newExerciseDiary.submittedCount += 1;
     newExerciseDiary.typedCount += typeCount;
@@ -214,16 +202,19 @@ const saveExerciseDiary = async (
   }
 };
 
-const saveAuthorDiary = async (manager: EntityManager, author: UserEntity, typeCount: number, finishedAt: number) => {
-  const date = new Date(finishedAt);
-
+const saveAuthorDiary = async (
+  manager: EntityManager,
+  author: UserEntity,
+  typeCount: number,
+  submittedDate: string
+) => {
   const userDiary = await manager.findOne(UserDiaryEntity, {
     userId: author.id,
-    date
+    date: submittedDate
   });
 
   if (userDiary === undefined) {
-    const newUserDiary = new UserDiaryEntity(author, date);
+    const newUserDiary = new UserDiaryEntity(author, submittedDate);
 
     newUserDiary.submittedCount += 1;
     newUserDiary.typedCount += typeCount;

@@ -44,7 +44,6 @@ export const summarizeResults = (results: QuestionResult[]): AttemptResult => {
   return {
     time,
     typeCount,
-    accuracy,
-    finishedAt: new Date().getTime()
+    accuracy
   };
 };

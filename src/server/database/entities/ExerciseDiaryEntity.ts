@@ -14,7 +14,7 @@ export class ExerciseDiaryEntity extends BaseEntityClass {
   exerciseId!: string;
 
   @Column("date")
-  date: Date;
+  date: string;
 
   @Column()
   submittedCount: number = 0;
@@ -22,7 +22,7 @@ export class ExerciseDiaryEntity extends BaseEntityClass {
   @Column()
   typedCount: number = 0;
 
-  constructor(exercise: ExerciseEntity, date: Date) {
+  constructor(exercise: ExerciseEntity, date: string) {
     super();
 
     this.exercise = exercise;

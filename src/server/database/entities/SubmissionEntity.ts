@@ -31,9 +31,6 @@ export class SubmissionEntity extends BaseEntityClass {
   @Column()
   accuracy!: number;
 
-  @Column("timestamp without time zone")
-  finishedAt!: Date;
-
   constructor(submitter: UserEntity, exercise: ExerciseEntity, result: AttemptResult) {
     super();
 
@@ -44,7 +41,6 @@ export class SubmissionEntity extends BaseEntityClass {
       this.typeCount = result.typeCount;
       this.time = result.time;
       this.accuracy = result.accuracy;
-      this.finishedAt = new Date(result.finishedAt);
     }
   }
 }

@@ -31,9 +31,9 @@ export const useSearch = <E extends EntityObject>(entityType: EntityType, initia
 
     const entities: Array<E | undefined> = [];
     const entityIds = searchResult.ids;
-    const lastIndex = Math.min(offset + limit, searchResult.count - 1);
+    const entityCount = Math.min(offset + limit, searchResult.count);
 
-    for (let index = offset; index < lastIndex; index++) {
+    for (let index = offset; index < entityCount; index++) {
       const entityId = entityIds[index];
       if (entityId === undefined) {
         return undefined;
