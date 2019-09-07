@@ -4,6 +4,8 @@ import { ExerciseEntity } from "./ExerciseEntity";
 import { ExerciseReportEntity } from "./ExerciseReportEntity";
 import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";
 import { ExerciseTagEntity } from "./ExerciseTagEntity";
+import { PlaylistEntity } from "./PlaylistEntity";
+import { PlaylistItemEntity } from "./PlaylistItemEntity";
 import { SubmissionEntity } from "./SubmissionEntity";
 import { SubmissionSummaryEntity } from "./SubmissionSummaryEntity";
 import { UserAccountEntity } from "./UserAccountEntity";
@@ -18,6 +20,8 @@ export * from "./ExerciseEntity";
 export * from "./ExerciseReportEntity";
 export * from "./ExerciseSummaryEntity";
 export * from "./ExerciseTagEntity";
+export * from "./PlaylistEntity";
+export * from "./PlaylistItemEntity";
 export * from "./SubmissionEntity";
 export * from "./SubmissionSummaryEntity";
 export * from "./UserAccountEntity";
@@ -33,6 +37,8 @@ export type Entity =
   | ExerciseReportEntity
   | ExerciseSummaryEntity
   | ExerciseTagEntity
+  | PlaylistEntity
+  | PlaylistItemEntity
   | SubmissionEntity
   | SubmissionSummaryEntity
   | UserAccountEntity
@@ -48,6 +54,8 @@ export const entities = [
   ExerciseReportEntity,
   ExerciseSummaryEntity,
   ExerciseTagEntity,
+  PlaylistEntity,
+  PlaylistItemEntity,
   SubmissionEntity,
   SubmissionSummaryEntity,
   UserAccountEntity,
