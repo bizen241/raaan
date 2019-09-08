@@ -10,7 +10,7 @@ import { hasPermission } from "../../../api/security";
 import { ExerciseEntity, ExerciseTagEntity } from "../../../database/entities";
 import { normalizeTags } from "../../../exercise";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
+export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { id: exerciseId }: PathParams = req.params;
 
   const exercise = await getManager().findOne(ExerciseEntity, exerciseId, {
@@ -18,6 +18,10 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   });
   if (exercise === undefined) {
     return next(createError(404));
+  }
+
+  if (exercise.isPrivate && exercise.authorId !== currentUser.id) {
+    return next(createError(403));
   }
 
   responseFindResult(req, res, exercise);
