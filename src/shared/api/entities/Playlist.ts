@@ -6,4 +6,5 @@ export interface Playlist extends BaseEntityObject {
   tags: string[];
   description: string;
   isPrivate: boolean;
+  isLocked: boolean;
 }

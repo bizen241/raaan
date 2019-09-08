@@ -35,6 +35,9 @@ export class PlaylistEntity extends BaseEntityClass {
   @Column()
   isPrivate: boolean = true;
 
+  @Column()
+  isLocked: boolean = false;
+
   constructor(author: UserEntity, summary: PlaylistSummaryEntity, params: SaveParams<Playlist>) {
     super();
 
