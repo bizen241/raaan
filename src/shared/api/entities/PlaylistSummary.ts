@@ -4,7 +4,7 @@ export interface PlaylistSummary extends BaseEntityObject {
   authorId: UUID;
   playlistId: UUID;
   title: string;
-  tags: string[];
+  tags: string;
   description: string;
   itemCount: number;
 }
