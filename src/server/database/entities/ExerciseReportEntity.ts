@@ -10,14 +10,14 @@ export class ExerciseReportEntity extends BaseEntityClass {
     onDelete: "CASCADE"
   })
   target?: ExerciseEntity;
-  @RelationId((exerciseVote: ExerciseReportEntity) => exerciseVote.target)
+  @RelationId((exerciseReport: ExerciseReportEntity) => exerciseReport.target)
   targetId!: string;
 
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
   reporter?: UserEntity;
-  @RelationId((exerciseVote: ExerciseReportEntity) => exerciseVote.reporter)
+  @RelationId((exerciseReport: ExerciseReportEntity) => exerciseReport.reporter)
   reporterId!: string;
 
   constructor(reporter: UserEntity, target: ExerciseEntity) {

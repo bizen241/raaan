@@ -7,6 +7,7 @@ import { ExerciseVote } from "./ExerciseVote";
 import { Playlist } from "./Playlist";
 import { PlaylistBookmark } from "./PlaylistBookmark";
 import { PlaylistItem } from "./PlaylistItem";
+import { PlaylistReport } from "./PlaylistReport";
 import { PlaylistSummary } from "./PlaylistSummary";
 import { PlaylistTag } from "./PlaylistTag";
 import { Submission } from "./Submission";
@@ -15,6 +16,7 @@ import { User } from "./User";
 import { UserAccount } from "./UserAccount";
 import { UserConfig } from "./UserConfig";
 import { UserDiary } from "./UserDiary";
+import { UserReport } from "./UserReport";
 import { UserSession } from "./UserSession";
 import { UserSummary } from "./UserSummary";
 
@@ -27,6 +29,7 @@ export * from "./ExerciseVote";
 export * from "./Playlist";
 export * from "./PlaylistBookmark";
 export * from "./PlaylistItem";
+export * from "./PlaylistReport";
 export * from "./PlaylistSummary";
 export * from "./PlaylistTag";
 export * from "./Submission";
@@ -35,6 +38,7 @@ export * from "./User";
 export * from "./UserAccount";
 export * from "./UserConfig";
 export * from "./UserDiary";
+export * from "./UserReport";
 export * from "./UserSession";
 export * from "./UserSummary";
 
@@ -48,6 +52,7 @@ export type EntityObject =
   | Playlist
   | PlaylistBookmark
   | PlaylistItem
+  | PlaylistReport
   | PlaylistSummary
   | PlaylistTag
   | Submission
@@ -56,6 +61,7 @@ export type EntityObject =
   | UserAccount
   | UserConfig
   | UserDiary
+  | UserReport
   | UserSession
   | UserSummary;
 
@@ -69,6 +75,7 @@ export type EntityTypeToEntity = {
   Playlist: Playlist;
   PlaylistBookmark: PlaylistBookmark;
   PlaylistItem: PlaylistItem;
+  PlaylistReport: PlaylistReport;
   PlaylistSummary: PlaylistSummary;
   PlaylistTag: PlaylistTag;
   Submission: Submission;
@@ -77,6 +84,7 @@ export type EntityTypeToEntity = {
   UserAccount: UserAccount;
   UserConfig: UserConfig;
   UserDiary: UserDiary;
+  UserReport: UserReport;
   UserSession: UserSession;
   UserSummary: UserSummary;
 };
@@ -96,6 +104,7 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     Playlist: {},
     PlaylistBookmark: {},
     PlaylistItem: {},
+    PlaylistReport: {},
     PlaylistSummary: {},
     PlaylistTag: {},
     Submission: {},
@@ -104,6 +113,7 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     UserAccount: {},
     UserConfig: {},
     UserDiary: {},
+    UserReport: {},
     UserSession: {},
     UserSummary: {}
   };

@@ -7,6 +7,7 @@ import { ExerciseTagEntity } from "./ExerciseTagEntity";
 import { PlaylistBookmarkEntity } from "./PlaylistBookmarkEntity";
 import { PlaylistEntity } from "./PlaylistEntity";
 import { PlaylistItemEntity } from "./PlaylistItemEntity";
+import { PlaylistReportEntity } from "./PlaylistReportEntity";
 import { PlaylistSummaryEntity } from "./PlaylistSummaryEntity";
 import { PlaylistTagEntity } from "./PlaylistTagEntity";
 import { SubmissionEntity } from "./SubmissionEntity";
@@ -26,6 +27,7 @@ export * from "./ExerciseTagEntity";
 export * from "./PlaylistBookmarkEntity";
 export * from "./PlaylistEntity";
 export * from "./PlaylistItemEntity";
+export * from "./PlaylistReportEntity";
 export * from "./PlaylistSummaryEntity";
 export * from "./PlaylistTagEntity";
 export * from "./SubmissionEntity";
@@ -46,6 +48,7 @@ export type Entity =
   | PlaylistBookmarkEntity
   | PlaylistEntity
   | PlaylistItemEntity
+  | PlaylistReportEntity
   | PlaylistSummaryEntity
   | PlaylistTagEntity
   | SubmissionEntity
@@ -66,6 +69,7 @@ export const entities = [
   PlaylistBookmarkEntity,
   PlaylistEntity,
   PlaylistItemEntity,
+  PlaylistReportEntity,
   PlaylistSummaryEntity,
   PlaylistTagEntity,
   SubmissionEntity,
