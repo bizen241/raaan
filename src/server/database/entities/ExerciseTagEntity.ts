@@ -2,11 +2,11 @@ import { Column, Entity, Index, ManyToOne } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";
 
-@Entity("exercise_tags")
+@Entity("exercise-tags")
 export class ExerciseTagEntity extends BaseEntityClass {
   type: "ExerciseTag" = "ExerciseTag";
 
-  @ManyToOne(() => ExerciseSummaryEntity, exercise => exercise.tags, {
+  @ManyToOne(() => ExerciseSummaryEntity, exerciseSummary => exerciseSummary.tags, {
     onDelete: "CASCADE"
   })
   exerciseSummary?: ExerciseSummaryEntity;
