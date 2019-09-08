@@ -35,14 +35,8 @@ export class ExerciseEntity extends BaseEntityClass {
   @Column()
   description: string = "";
 
-  @Column()
-  rubric: string = "";
-
   @Column("json")
   questions: Question[] = [];
-
-  @Column()
-  comment: string = "";
 
   @Column()
   isLinear: boolean = false;
@@ -64,8 +58,6 @@ export class ExerciseEntity extends BaseEntityClass {
       this.title = params.title || "";
       this.tags = params.tags || [];
       this.description = params.description || "";
-      this.rubric = params.rubric || "";
-      this.comment = params.comment || "";
       this.questions = params.questions || [];
     }
   }

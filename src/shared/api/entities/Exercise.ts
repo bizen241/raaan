@@ -7,8 +7,6 @@ export interface Exercise extends BaseEntityObject {
   title: string;
   tags: string[];
   description: string;
-  rubric: string;
-  comment: string;
   questions: Question[];
   isPrivate: boolean;
   isLocked: boolean;
