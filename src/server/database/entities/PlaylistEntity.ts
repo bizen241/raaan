@@ -1,5 +1,8 @@
-import { Column, Entity, ManyToOne, RelationId } from "typeorm";
+import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
+import { Playlist } from "../../../shared/api/entities";
+import { SaveParams } from "../../../shared/api/request/save";
 import { BaseEntityClass } from "./BaseEntityClass";
+import { PlaylistSummaryEntity } from "./PlaylistSummaryEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity("playlists")
@@ -13,20 +16,35 @@ export class PlaylistEntity extends BaseEntityClass {
   @RelationId((playlist: PlaylistEntity) => playlist.author)
   authorId!: string;
 
-  @Column()
-  title: string;
+  @OneToOne(() => PlaylistSummaryEntity, playlistSummary => playlistSummary.playlist, {
+    cascade: ["insert"]
+  })
+  summary?: PlaylistSummaryEntity;
+  @RelationId((playlist: PlaylistEntity) => playlist.summary)
+  summaryId!: string;
 
   @Column()
-  description: string;
+  title: string = "";
+
+  @Column("json")
+  tags: string[] = [];
+
+  @Column()
+  description: string = "";
 
   @Column()
   isPrivate: boolean = true;
 
-  constructor(author: UserEntity, title: string, description: string) {
+  constructor(author: UserEntity, summary: PlaylistSummaryEntity, params: SaveParams<Playlist>) {
     super();
 
     this.author = author;
-    this.title = title;
-    this.description = description;
+    this.summary = summary;
+
+    if (params !== undefined) {
+      this.title = params.title || "";
+      this.tags = params.tags || [];
+      this.description = params.description || "";
+    }
   }
 }
