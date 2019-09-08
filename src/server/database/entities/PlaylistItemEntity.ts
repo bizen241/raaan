@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, RelationId } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { PlaylistEntity } from "./PlaylistEntity";
@@ -21,18 +21,22 @@ export class PlaylistItemEntity extends BaseEntityClass {
   @RelationId((playlistItem: PlaylistItemEntity) => playlistItem.exercise)
   exerciseId!: string;
 
-  @Column()
-  index: number;
+  @OneToOne(() => PlaylistItemEntity, {
+    onDelete: "SET NULL"
+  })
+  @JoinColumn()
+  next?: PlaylistItemEntity;
+  @RelationId((playlistItem: PlaylistItemEntity) => playlistItem.next)
+  nextId!: string;
 
   @Column()
   memo: string;
 
-  constructor(playlist: PlaylistEntity, exercise: ExerciseEntity, index: number, memo: string) {
+  constructor(playlist: PlaylistEntity, exercise: ExerciseEntity, memo: string) {
     super();
 
     this.playlist = playlist;
     this.exercise = exercise;
-    this.index = index;
     this.memo = memo;
   }
 }
