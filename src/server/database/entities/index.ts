@@ -4,6 +4,7 @@ import { ExerciseEntity } from "./ExerciseEntity";
 import { ExerciseReportEntity } from "./ExerciseReportEntity";
 import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";
 import { ExerciseTagEntity } from "./ExerciseTagEntity";
+import { ExerciseVoteEntity } from "./ExerciseVoteEntity";
 import { PlaylistBookmarkEntity } from "./PlaylistBookmarkEntity";
 import { PlaylistEntity } from "./PlaylistEntity";
 import { PlaylistItemEntity } from "./PlaylistItemEntity";
@@ -16,6 +17,7 @@ import { UserAccountEntity } from "./UserAccountEntity";
 import { UserConfigEntity } from "./UserConfigEntity";
 import { UserDiaryEntity } from "./UserDiaryEntity";
 import { UserEntity } from "./UserEntity";
+import { UserReportEntity } from "./UserReportEntity";
 import { UserSessionEntity } from "./UserSessionEntity";
 import { UserSummaryEntity } from "./UserSummaryEntity";
 
@@ -24,6 +26,7 @@ export * from "./ExerciseEntity";
 export * from "./ExerciseReportEntity";
 export * from "./ExerciseSummaryEntity";
 export * from "./ExerciseTagEntity";
+export * from "./ExerciseVoteEntity";
 export * from "./PlaylistBookmarkEntity";
 export * from "./PlaylistEntity";
 export * from "./PlaylistItemEntity";
@@ -36,6 +39,7 @@ export * from "./UserAccountEntity";
 export * from "./UserConfigEntity";
 export * from "./UserDiaryEntity";
 export * from "./UserEntity";
+export * from "./UserReportEntity";
 export * from "./UserSessionEntity";
 export * from "./UserSummaryEntity";
 
@@ -45,6 +49,7 @@ export type Entity =
   | ExerciseReportEntity
   | ExerciseSummaryEntity
   | ExerciseTagEntity
+  | ExerciseVoteEntity
   | PlaylistBookmarkEntity
   | PlaylistEntity
   | PlaylistItemEntity
@@ -57,6 +62,7 @@ export type Entity =
   | UserConfigEntity
   | UserDiaryEntity
   | UserEntity
+  | UserReportEntity
   | UserSessionEntity
   | UserSummaryEntity;
 
@@ -66,6 +72,7 @@ export const entities = [
   ExerciseReportEntity,
   ExerciseSummaryEntity,
   ExerciseTagEntity,
+  ExerciseVoteEntity,
   PlaylistBookmarkEntity,
   PlaylistEntity,
   PlaylistItemEntity,
@@ -78,6 +85,7 @@ export const entities = [
   UserConfigEntity,
   UserDiaryEntity,
   UserEntity,
+  UserReportEntity,
   UserSessionEntity,
   UserSummaryEntity
 ];

@@ -8,17 +8,24 @@ import {
   ExerciseReportEntity,
   ExerciseSummaryEntity,
   ExerciseTagEntity,
+  PlaylistBookmarkEntity,
+  PlaylistEntity,
+  PlaylistItemEntity,
+  PlaylistReportEntity,
+  PlaylistSummaryEntity,
+  PlaylistTagEntity,
   SubmissionEntity,
   SubmissionSummaryEntity,
   UserAccountEntity,
   UserConfigEntity,
+  UserDiaryEntity,
   UserEntity,
   UserSessionEntity,
   UserSummaryEntity
 } from "../../database/entities";
 import { BaseEntityClass } from "../../database/entities/BaseEntityClass";
 import { ExerciseVoteEntity } from "../../database/entities/ExerciseVoteEntity";
-import { UserDiaryEntity } from "../../database/entities/UserDiaryEntity";
+import { UserReportEntity } from "../../database/entities/UserReportEntity";
 
 export interface RequestContext {
   sessionId?: string;
@@ -68,8 +75,6 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) =
     title,
     tags,
     description,
-    rubric,
-    comment,
     questions,
     isLocked,
     isPrivate
@@ -83,8 +88,6 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) =
     title,
     tags,
     description,
-    rubric,
-    comment,
     questions,
     isLocked,
     isPrivate
@@ -155,6 +158,79 @@ const normalizeExerciseVote: Normalizer<ExerciseVoteEntity> = (_, store, entity)
     targetId,
     voterId,
     isUp
+  };
+};
+
+const normalizePlaylist: Normalizer<PlaylistEntity> = (_, store, entity) => {
+  const { id, authorId, title, tags, description, isPrivate, isLocked } = entity;
+
+  store.Playlist[id] = {
+    ...base(entity),
+    authorId,
+    title,
+    tags,
+    description,
+    isPrivate,
+    isLocked
+  };
+};
+
+const normalizePlaylistBookmark: Normalizer<PlaylistBookmarkEntity> = (_, store, entity) => {
+  const { id, playlistId, memo } = entity;
+
+  store.PlaylistBookmark[id] = {
+    ...base(entity),
+    playlistId,
+    memo
+  };
+};
+
+const normalizePlaylistItem: Normalizer<PlaylistItemEntity> = (_, store, entity) => {
+  const { id, exercise, nextId, memo } = entity;
+  if (exercise === undefined) {
+    return;
+  }
+
+  store.PlaylistItem[id] = {
+    ...base(entity),
+    exerciseSummaryId: exercise && exercise.summaryId,
+    nextId,
+    memo
+  };
+};
+
+const normalizePlaylistReport: Normalizer<PlaylistReportEntity> = (_, store, entity) => {
+  const { id, targetId, reporterId } = entity;
+
+  store.PlaylistReport[id] = {
+    ...base(entity),
+    targetId,
+    reporterId
+  };
+};
+
+const normalizePlaylistSummary: Normalizer<PlaylistSummaryEntity> = (_, store, entity) => {
+  const { id, playlist, playlistId, tags = [] } = entity;
+  if (playlist === undefined) {
+    return;
+  }
+  store.PlaylistSummary[id] = {
+    ...base(entity),
+    authorId: playlist.authorId,
+    playlistId,
+    title: playlist.title,
+    tags: tags.map(tag => tag.name).join(" "),
+    description: playlist.description,
+    itemCount: 0
+  };
+};
+
+const normalizePlaylistTag: Normalizer<PlaylistTagEntity> = (_, store, entity) => {
+  const { id, name } = entity;
+
+  store.PlaylistTag[id] = {
+    ...base(entity),
+    name
   };
 };
 
@@ -249,6 +325,16 @@ const normalizeUserDiary: Normalizer<UserDiaryEntity> = (_, store, entity) => {
   };
 };
 
+const normalizeUserReport: Normalizer<UserReportEntity> = (_, store, entity) => {
+  const { id, targetId, reporterId } = entity;
+
+  store.UserReport[id] = {
+    ...base(entity),
+    targetId,
+    reporterId
+  };
+};
+
 const normalizeUserSession: Normalizer<UserSessionEntity> = (context, store, entity) => {
   const { id, user, userId, accessCount, deviceType, deviceName, os, browser } = entity;
 
@@ -284,12 +370,19 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   ExerciseSummary: normalizeExerciseSummary,
   ExerciseTag: normalizeExerciseTag,
   ExerciseVote: normalizeExerciseVote,
+  Playlist: normalizePlaylist,
+  PlaylistBookmark: normalizePlaylistBookmark,
+  PlaylistItem: normalizePlaylistItem,
+  PlaylistReport: normalizePlaylistReport,
+  PlaylistSummary: normalizePlaylistSummary,
+  PlaylistTag: normalizePlaylistTag,
   Submission: normalizeSubmission,
   SubmissionSummary: normalizeSubmissionSummary,
   User: normalizeUser,
   UserAccount: normalizeUserAccount,
   UserConfig: normalizeUserConfig,
   UserDiary: normalizeUserDiary,
+  UserReport: normalizeUserReport,
   UserSession: normalizeUserSession,
   UserSummary: normalizeUserSummary
 };

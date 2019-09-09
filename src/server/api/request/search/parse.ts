@@ -9,6 +9,12 @@ import {
   ExerciseVote,
   Lang,
   Permission,
+  Playlist,
+  PlaylistBookmark,
+  PlaylistItem,
+  PlaylistReport,
+  PlaylistSummary,
+  PlaylistTag,
   Submission,
   SubmissionSummary,
   Theme,
@@ -16,6 +22,7 @@ import {
   UserAccount,
   UserConfig,
   UserDiary,
+  UserReport,
   UserSession,
   UserSummary
 } from "../../../../shared/api/entities";
@@ -67,7 +74,8 @@ const parseExerciseReport: Parser<ExerciseReport> = query => {
 
   return {
     targetId,
-    reporterId
+    reporterId,
+    ...page(query)
   };
 };
 
@@ -99,6 +107,42 @@ const parseExerciseVote: Parser<ExerciseVote> = query => {
   return {
     targetId,
     voterId
+  };
+};
+
+const parsePlaylist: Parser<Playlist> = query => {
+  return {
+    ...page(query)
+  };
+};
+
+const parsePlaylistBookmark: Parser<PlaylistBookmark> = query => {
+  return {
+    ...page(query)
+  };
+};
+
+const parsePlaylistItem: Parser<PlaylistItem> = query => {
+  return {
+    ...page(query)
+  };
+};
+
+const parsePlaylistReport: Parser<PlaylistReport> = query => {
+  return {
+    ...page(query)
+  };
+};
+
+const parsePlaylistSummary: Parser<PlaylistSummary> = query => {
+  return {
+    ...page(query)
+  };
+};
+
+const parsePlaylistTag: Parser<PlaylistTag> = query => {
+  return {
+    ...page(query)
   };
 };
 
@@ -157,6 +201,12 @@ const parseUserDiary: Parser<UserDiary> = query => {
   };
 };
 
+const parseUserReport: Parser<UserReport> = query => {
+  return {
+    ...page(query)
+  };
+};
+
 const parseUserSession: Parser<UserSession> = query => {
   const { userId } = query;
 
@@ -182,12 +232,19 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   ExerciseSummary: parseExerciseSummary,
   ExerciseTag: parseExerciseTag,
   ExerciseVote: parseExerciseVote,
+  Playlist: parsePlaylist,
+  PlaylistBookmark: parsePlaylistBookmark,
+  PlaylistItem: parsePlaylistItem,
+  PlaylistReport: parsePlaylistReport,
+  PlaylistSummary: parsePlaylistSummary,
+  PlaylistTag: parsePlaylistTag,
   Submission: parseSubmission,
   SubmissionSummary: parseSubmissionSummary,
   User: parseUser,
   UserAccount: parseUserAccount,
   UserConfig: parseUserConfig,
   UserDiary: parseUserDiary,
+  UserReport: parseUserReport,
   UserSession: parseUserSession,
   UserSummary: parseUserSummary
 };
