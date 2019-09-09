@@ -193,7 +193,7 @@ const normalizePlaylistItem: Normalizer<PlaylistItemEntity> = (_, store, entity)
 
   store.PlaylistItem[id] = {
     ...base(entity),
-    exerciseSummaryId: exercise && exercise.summaryId,
+    exerciseSummaryId: exercise != null ? exercise.summaryId : undefined,
     nextId,
     memo
   };
