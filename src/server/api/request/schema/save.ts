@@ -15,8 +15,6 @@ export const SaveParamsMapSchema: Definition = {
         title: { type: "string" },
         tags: { type: "array", items: { type: "string" } },
         description: { type: "string" },
-        rubric: { type: "string" },
-        comment: { type: "string" },
         questions: {
           type: "array",
           items: {
@@ -42,7 +40,7 @@ export const SaveParamsMapSchema: Definition = {
       type: "object",
       properties: {
         exerciseId: { format: "uuid", type: "string" },
-        date: { type: "number" },
+        date: { type: "string" },
         submittedCount: { type: "number" },
         typedCount: { type: "number" },
         id: { format: "uuid", type: "string" },
@@ -101,6 +99,83 @@ export const SaveParamsMapSchema: Definition = {
         fetchedAt: { type: "number" }
       }
     },
+    Playlist: {
+      type: "object",
+      properties: {
+        authorId: { format: "uuid", type: "string" },
+        title: { type: "string" },
+        tags: { type: "array", items: { type: "string" } },
+        description: { type: "string" },
+        isPrivate: { type: "boolean" },
+        isLocked: { type: "boolean" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
+      }
+    },
+    PlaylistBookmark: {
+      type: "object",
+      properties: {
+        userId: { format: "uuid", type: "string" },
+        playlistId: { format: "uuid", type: "string" },
+        memo: { type: "string" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
+      }
+    },
+    PlaylistItem: {
+      type: "object",
+      properties: {
+        playlistId: { format: "uuid", type: "string" },
+        exerciseId: { format: "uuid", type: "string" },
+        exerciseSummaryId: { format: "uuid", type: "string" },
+        nextId: { format: "uuid", type: "string" },
+        memo: { type: "string" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
+      }
+    },
+    PlaylistReport: {
+      type: "object",
+      properties: {
+        targetId: { format: "uuid", type: "string" },
+        reporterId: { format: "uuid", type: "string" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
+      }
+    },
+    PlaylistSummary: {
+      type: "object",
+      properties: {
+        authorId: { format: "uuid", type: "string" },
+        playlistId: { format: "uuid", type: "string" },
+        title: { type: "string" },
+        tags: { type: "string" },
+        description: { type: "string" },
+        itemCount: { type: "number" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
+      }
+    },
+    PlaylistTag: {
+      type: "object",
+      properties: {
+        name: { type: "string" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
+      }
+    },
     Submission: {
       type: "object",
       properties: {
@@ -109,7 +184,6 @@ export const SaveParamsMapSchema: Definition = {
         typeCount: { minimum: 1, type: "number" },
         time: { minimum: 1, type: "number" },
         accuracy: { minimum: 0, maximum: 100, type: "number" },
-        finishedAt: { type: "number" },
         id: { format: "uuid", type: "string" },
         createdAt: { type: "number" },
         updatedAt: { type: "number" },
@@ -124,12 +198,7 @@ export const SaveParamsMapSchema: Definition = {
         exerciseSummaryId: { format: "uuid", type: "string" },
         latest: {
           type: "object",
-          properties: {
-            typeCount: { type: "number" },
-            time: { type: "number" },
-            accuracy: { type: "number" },
-            finishedAt: { type: "number" }
-          }
+          properties: { typeCount: { type: "number" }, time: { type: "number" }, accuracy: { type: "number" } }
         },
         submitCount: { type: "number" },
         typeCount: { type: "number" },
@@ -187,6 +256,17 @@ export const SaveParamsMapSchema: Definition = {
         typedCount: { type: "number" },
         createCount: { type: "number" },
         editCount: { type: "number" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
+      }
+    },
+    UserReport: {
+      type: "object",
+      properties: {
+        targetId: { format: "uuid", type: "string" },
+        reporterId: { format: "uuid", type: "string" },
         id: { format: "uuid", type: "string" },
         createdAt: { type: "number" },
         updatedAt: { type: "number" },
