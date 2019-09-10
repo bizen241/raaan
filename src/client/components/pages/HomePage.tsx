@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from "@material-ui/core";
-import { AccountCircle, Edit, History, Keyboard } from "@material-ui/icons";
+import { AccountCircle, Edit, Keyboard } from "@material-ui/icons";
 import { useContext } from "react";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -57,14 +57,6 @@ export const HomePage = React.memo(() => {
       {!isGuest && (
         <Box pb={1}>
           <UserDiaryGraph />
-        </Box>
-      )}
-      {!isGuest && (
-        <Box display="flex" flexDirection="column" pb={1}>
-          <Button className={classes.largeButton} variant="contained" component={RouterLink} to={`/exercises/history`}>
-            <History className={classes.leftIcon} />
-            <Typography>履歴</Typography>
-          </Button>
         </Box>
       )}
     </Page>

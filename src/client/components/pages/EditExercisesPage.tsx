@@ -43,7 +43,7 @@ export const EditExercisesPage = React.memo(() => {
             to={`/users/${currentUser.id}/exercises`}
           >
             <Edit className={classes.leftIcon} />
-            <Typography>保存済み</Typography>
+            <Typography>下書き</Typography>
           </Button>
         </Box>
       )}
