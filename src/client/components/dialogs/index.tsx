@@ -1,4 +1,13 @@
-import { AppBar, Box, Dialog, DialogContent as MuiDialogContent, IconButton, Slide, Toolbar } from "@material-ui/core";
+import {
+  AppBar,
+  Box,
+  Dialog,
+  DialogContent as MuiDialogContent,
+  IconButton,
+  makeStyles,
+  Slide,
+  Toolbar
+} from "@material-ui/core";
 import { TransitionProps } from "@material-ui/core/transitions/transition";
 import { Close } from "@material-ui/icons";
 import * as React from "react";
@@ -13,12 +22,28 @@ export const createDialog = <P extends {}>(Content: React.ComponentType<P & Dial
   React.memo<P & DialogProps>(props => {
     const { isOpen, onClose } = props;
 
+    const classes = useStyles();
+
     return (
-      <Dialog fullScreen open={isOpen} onClose={onClose} TransitionComponent={Transition}>
+      <Dialog
+        classes={{
+          paper: classes.dialog
+        }}
+        fullScreen
+        open={isOpen}
+        onClose={onClose}
+        TransitionComponent={Transition}
+      >
         <Content {...props} />
       </Dialog>
     );
   });
+
+const useStyles = makeStyles(theme => ({
+  dialog: {
+    backgroundColor: theme.palette.background.default
+  }
+}));
 
 const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
   <Slide direction="up" ref={ref} {...props} />
@@ -56,7 +81,7 @@ export const DialogContent: React.FunctionComponent = ({ children }) => {
   );
 };
 
-export const useDialog = () => {
+export const useToggleState = () => {
   const [isDialogOpen, toggleDialog] = useState(false);
   const onToggleDialog = useCallback(() => toggleDialog(s => !s), []);
 

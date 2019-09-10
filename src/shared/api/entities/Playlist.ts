@@ -7,4 +7,5 @@ export interface Playlist extends BaseEntityObject {
   description: string;
   isPrivate: boolean;
   isLocked: boolean;
+  exerciseId?: UUID;
 }

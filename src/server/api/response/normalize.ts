@@ -214,6 +214,7 @@ const normalizePlaylistSummary: Normalizer<PlaylistSummaryEntity> = (_, store, e
   if (playlist === undefined) {
     return;
   }
+
   store.PlaylistSummary[id] = {
     ...base(entity),
     authorId: playlist.authorId,

@@ -106,7 +106,8 @@ const parseExerciseVote: Parser<ExerciseVote> = query => {
 
   return {
     targetId,
-    voterId
+    voterId,
+    ...page(query)
   };
 };
 
@@ -135,7 +136,10 @@ const parsePlaylistReport: Parser<PlaylistReport> = query => {
 };
 
 const parsePlaylistSummary: Parser<PlaylistSummary> = query => {
+  const { authorId } = query;
+
   return {
+    authorId,
     ...page(query)
   };
 };
@@ -153,10 +157,10 @@ const parseSubmission: Parser<Submission> = query => {
 };
 
 const parseSubmissionSummary: Parser<SubmissionSummary> = query => {
-  const { submitterId: userId, exerciseId } = query;
+  const { submitterId, exerciseId } = query;
 
   return {
-    submitterId: userId,
+    submitterId,
     exerciseId,
     ...page(query)
   };

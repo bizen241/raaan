@@ -37,7 +37,7 @@ interface EntityListParamsProps<E extends EntityObject> {
   onChange: (params: SearchParams<E>) => void;
 }
 
-export const createEntityList = <E extends EntityObject>(
+export const createEntityList = <E extends EntityObject, P extends {} = {}>(
   {
     entityType,
     itemHeight = 53
@@ -45,10 +45,10 @@ export const createEntityList = <E extends EntityObject>(
     entityType: EntityType;
     itemHeight?: number;
   },
-  ItemComponent: React.ComponentType<EntityListItemProps<E>>,
+  ItemComponent: React.ComponentType<EntityListItemProps<E> & P>,
   ParamsComponent?: React.ComponentType<EntityListParamsProps<E>>
 ) =>
-  React.memo<EntityListProps<E>>(({ title, initialSearchParams = {} }) => {
+  React.memo<EntityListProps<E> & P>(({ title, initialSearchParams = {}, children, ...props }) => {
     const classes = useStyles();
 
     const { entities, params, status, limit, offset, count, onReload, onChange } = useSearch<E>(
@@ -93,7 +93,8 @@ export const createEntityList = <E extends EntityObject>(
                 </TableCell>
               </TableRow>
             )}
-            {!isLoading && entities.map(entity => entity && <ItemComponent key={entity.id} entity={entity as E} />)}
+            {!isLoading &&
+              entities.map(entity => entity && <ItemComponent key={entity.id} entity={entity as E} {...props as P} />)}
             {emptyRows && (
               <TableRow style={{ height: itemHeight * emptyRows }}>
                 <TableCell colSpan={3} />

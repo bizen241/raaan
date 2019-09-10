@@ -5,7 +5,7 @@ import { PlaylistTagEntity } from "./PlaylistTagEntity";
 
 @Entity("playlist-summaries")
 export class PlaylistSummaryEntity extends BaseEntityClass {
-  type: "Playlist" = "Playlist";
+  type: "PlaylistSummary" = "PlaylistSummary";
 
   @OneToOne(() => PlaylistEntity, playlist => playlist.summary, {
     onDelete: "CASCADE"

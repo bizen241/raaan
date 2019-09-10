@@ -4,13 +4,13 @@ import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createBufferList } from ".";
 import { Exercise } from "../../../../shared/api/entities";
-import { useDialog } from "../../dialogs";
+import { useToggleState } from "../../dialogs";
 import { DeleteExerciseBufferDialog } from "../../dialogs/DeleteExerciseBufferDialog";
 
 export const ExerciseBufferList = createBufferList<Exercise>(
   "Exercise",
   React.memo(({ bufferId, buffer, source = {} }) => {
-    const [isDeleteDialogOpen, onToggleDeleteDialog] = useDialog();
+    const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
     return (
       <TableRow>

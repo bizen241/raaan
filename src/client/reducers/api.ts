@@ -2,6 +2,7 @@ import { LOCATION_CHANGE } from "connected-react-router";
 import { Reducer } from "redux";
 import { Actions } from ".";
 import { createEntityTypeToObject, EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
+import { SaveParams } from "../../shared/api/request/save";
 import { SearchParams } from "../../shared/api/request/search";
 import * as api from "../api/client";
 import { stringifySearchParams } from "../api/request/search";
@@ -53,20 +54,28 @@ const searchEntity = <E extends EntityObject>(
 
 export const isLocalOnly = (id: string) => !isNaN(Number(id));
 
-const uploadEntity = (type: EntityType, id: string): AsyncAction => async (dispatch, getState) => {
+const uploadEntity = <E extends EntityObject>(
+  type: EntityType,
+  id: string,
+  params?: SaveParams<E>
+): AsyncAction => async (dispatch, getState) => {
   const buffer = getState().buffers[type][id];
-  if (buffer === undefined) {
+  const target = params || buffer;
+  if (target === undefined) {
     return;
   }
 
   dispatch(apiSyncActions.update("upload", type, id, 102));
 
   try {
-    const result = isLocalOnly(id) ? await api.createEntity(type, buffer) : await api.updateEntity(type, id, buffer);
+    const result = isLocalOnly(id) ? await api.createEntity(type, target) : await api.updateEntity(type, id, target);
 
     dispatch(cacheActions.get(result));
     dispatch(apiSyncActions.update("upload", type, id, 200));
-    dispatch(buffersActions.delete(type, id));
+
+    if (params === undefined && buffer !== undefined) {
+      dispatch(buffersActions.delete(type, id));
+    }
   } catch (e) {
     dispatch(apiSyncActions.update("upload", type, id, 404));
   }
