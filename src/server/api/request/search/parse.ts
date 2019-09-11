@@ -124,7 +124,11 @@ const parsePlaylistBookmark: Parser<PlaylistBookmark> = query => {
 };
 
 const parsePlaylistItem: Parser<PlaylistItem> = query => {
+  const { playlistId, exerciseId } = query;
+
   return {
+    playlistId,
+    exerciseId,
     ...page(query)
   };
 };
