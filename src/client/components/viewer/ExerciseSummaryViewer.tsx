@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, CardHeader, Chip, Divider, MenuItem, Typography } from "@material-ui/core";
-import { Delete, Lock } from "@material-ui/icons";
+import { Delete, Edit, Lock, Public } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -7,6 +7,7 @@ import { createEntityViewer } from ".";
 import { ExerciseSummary } from "../../../shared/api/entities";
 import { useToggleState } from "../dialogs";
 import { DeleteExerciseDialog } from "../dialogs/DeleteExerciseDialog";
+import { PublishExerciseDialog } from "../dialogs/PublishExerciseDialog";
 import { UnpublishExerciseDialog } from "../dialogs/UnpublishExerciseDialog";
 import { UserContext } from "../project/Context";
 import { Menu } from "../ui/Menu";
@@ -20,6 +21,7 @@ export const ExerciseSummaryViewer = createEntityViewer<ExerciseSummary>(
 
     const { exerciseId } = exerciseSummary;
 
+    const [isPublishExerciseDialogOpen, onTogglePublishExerciseDialog] = useToggleState();
     const [isUnpublishExerciseDialogOpen, onToggleUnpublishExerciseDialog] = useToggleState();
     const [isDeleteExerciseDialogOpen, onToggleDeleteExerciseDialog] = useToggleState();
 
@@ -47,6 +49,18 @@ export const ExerciseSummaryViewer = createEntityViewer<ExerciseSummary>(
           }
           action={
             <Menu>
+              {isAuthor && (
+                <MenuItem component={RouterLink} to={`/exercises/${exerciseId}/edit`}>
+                  <Edit className={classes.leftIcon} />
+                  編集する
+                </MenuItem>
+              )}
+              {exerciseSummary.isPrivate ? (
+                <MenuItem onClick={onTogglePublishExerciseDialog}>
+                  <Public className={classes.leftIcon} />
+                  公開する
+                </MenuItem>
+              ) : null}
               {!exerciseSummary.isPrivate ? (
                 <MenuItem onClick={onToggleUnpublishExerciseDialog}>
                   <Lock className={classes.leftIcon} />
@@ -80,6 +94,11 @@ export const ExerciseSummaryViewer = createEntityViewer<ExerciseSummary>(
             </Box>
           </Box>
         </CardContent>
+        <PublishExerciseDialog
+          exerciseId={exerciseId}
+          isOpen={isPublishExerciseDialogOpen}
+          onClose={onTogglePublishExerciseDialog}
+        />
         <UnpublishExerciseDialog
           exerciseId={exerciseId}
           isOpen={isUnpublishExerciseDialogOpen}

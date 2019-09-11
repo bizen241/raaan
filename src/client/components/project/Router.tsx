@@ -15,6 +15,7 @@ import { PlaylistsPage } from "../pages/PlaylistsPage";
 import { SessionsPage } from "../pages/SessionsPage";
 import { SubmissionHistoryPage } from "../pages/SubmissionHistoryPage";
 import { UserExercisesPage } from "../pages/UserExercisesPage";
+import { UserPage } from "../pages/UserPage";
 import { UserPlaylistsPage } from "../pages/UserPlaylistsPage";
 
 export type PageProps = RouteComponentProps<{ id: string; name: string }>;
@@ -31,6 +32,7 @@ export const Router = React.memo(() => {
     <Suspense fallback={<div>Loading...</div>}>
       <Switch location={location}>
         <Route exact={true} path="/" component={HomePage} />
+        <Route exact={true} path="/users/:id" component={UserPage} />
         <Route exact={true} path="/users/:id/exercises" component={UserExercisesPage} />
         <Route exact={true} path="/users/:id/playlists" component={UserPlaylistsPage} />
         <Route exact={true} path="/exercises" component={ExercisesPage} />

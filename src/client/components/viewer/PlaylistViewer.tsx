@@ -1,15 +1,31 @@
-import { Box, Card, CardContent } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Card,
+  IconButton,
+  Link,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Typography
+} from "@material-ui/core";
+import { PlayArrow } from "@material-ui/icons";
 import * as React from "react";
 import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { createEntityViewer } from ".";
-import { Playlist, PlaylistItem } from "../../../shared/api/entities";
+import { ExerciseSummary, Playlist, PlaylistItem } from "../../../shared/api/entities";
 import { sortPlaylistItems } from "../../domain/playlist";
 import { useSearch } from "../../hooks/search";
+import { useStyles } from "../ui/styles";
 import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 
 export const PlaylistViewer = createEntityViewer<Playlist>(
   "Playlist",
   React.memo(({ entity: playlist, entityId: playlistId }) => {
+    const classes = useStyles();
+
     const { entities: playlistItems } = useSearch<PlaylistItem>("PlaylistItem", {
       playlistId
     });
@@ -19,13 +35,48 @@ export const PlaylistViewer = createEntityViewer<Playlist>(
     return (
       <Box display="flex" flexDirection="column">
         <Box display="flex" flexDirection="column" pb={1}>
+          <Button className={classes.largeButton} variant="contained" color="primary">
+            <PlayArrow className={classes.leftIcon} />
+            <Typography>始める</Typography>
+          </Button>
+        </Box>
+        <Box display="flex" flexDirection="column" pb={1}>
           <PlaylistSummaryViewer entityId={playlist.summaryId} />
         </Box>
         <Card>
-          <CardContent>
-            <pre>{JSON.stringify(sortedPlaylistItems, undefined, "  ")}</pre>
-          </CardContent>
+          <Table>
+            <TableBody>
+              {sortedPlaylistItems.map(({ id: playlistItemId, exerciseSummaryId, memo }) => (
+                <TableRow key={playlistItemId}>
+                  <TableCell>
+                    <Box display="flex" flexDirection="column">
+                      {exerciseSummaryId && <ExerciseTitleViewer entityId={exerciseSummaryId} />}
+                      <Typography>{memo}</Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell padding="checkbox">
+                    <IconButton>
+                      <PlayArrow />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </Card>
+      </Box>
+    );
+  })
+);
+
+const ExerciseTitleViewer = createEntityViewer<ExerciseSummary>(
+  "ExerciseSummary",
+  React.memo(({ entity: exerciseSummary }) => {
+    return (
+      <Box>
+        <Link color="textPrimary" component={RouterLink} to={`/exercises/${exerciseSummary.exerciseId}`}>
+          <Typography>{exerciseSummary.title}</Typography>
+        </Link>
       </Box>
     );
   })

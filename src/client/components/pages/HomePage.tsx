@@ -34,7 +34,7 @@ export const HomePage = React.memo(() => {
           to="/exercises"
         >
           <Keyboard className={classes.leftIcon} />
-          <Typography>遊ぶ</Typography>
+          <Typography>クイズを探す</Typography>
         </Button>
       </Box>
       <Box display="flex" flexDirection="column" pb={1}>
@@ -46,9 +46,23 @@ export const HomePage = React.memo(() => {
           to="/exercises/edit"
         >
           <Edit className={classes.leftIcon} />
-          <Typography>作る</Typography>
+          <Typography>クイズを作る</Typography>
         </Button>
       </Box>
+      {!isGuest && (
+        <Box display="flex" flexDirection="column" pb={1}>
+          <Button
+            className={classes.largeButton}
+            variant="contained"
+            color="secondary"
+            component={RouterLink}
+            to={`/users/${currentUser.id}`}
+          >
+            <AccountCircle className={classes.leftIcon} />
+            <Typography>マイページ</Typography>
+          </Button>
+        </Box>
+      )}
       {!isGuest && (
         <Box pb={1}>
           <UserSummaryViewer entityId={currentUser.summaryId} />

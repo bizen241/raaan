@@ -27,11 +27,11 @@ export const EditExercisesPage = React.memo(() => {
   const isGuest = currentUser.permission === "Guest";
 
   return (
-    <Page title="作る">
+    <Page title="クイズを作る">
       <Box display="flex" flexDirection="column" pb={1}>
         <Button className={classes.largeButton} variant="contained" color="primary" onClick={onCreate}>
           <Add className={classes.leftIcon} />
-          <Typography>新規作成</Typography>
+          <Typography>新しいクイズ</Typography>
         </Button>
       </Box>
       {!isGuest && (

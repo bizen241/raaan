@@ -7,7 +7,7 @@ export const PlaylistPage = React.memo<PageProps>(props => {
   const exerciseId = props.match.params.id;
 
   return (
-    <Page title="問題集の詳細">
+    <Page title="プレイリストの詳細">
       <PlaylistViewer entityId={exerciseId} />
     </Page>
   );
