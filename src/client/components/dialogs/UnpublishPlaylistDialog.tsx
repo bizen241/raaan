@@ -6,16 +6,16 @@ import { createDialog, DialogContent, DialogHeader } from ".";
 import { actions } from "../../reducers";
 import { useStyles } from "../ui/styles";
 
-export const UnpublishExerciseDialog = createDialog<{
-  exerciseId: string;
+export const UnpublishPlaylistDialog = createDialog<{
+  playlistId: string;
 }>(
-  React.memo(({ exerciseId, onClose }) => {
+  React.memo(({ playlistId, onClose }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
     const onUnpublish = () => {
       dispatch(
-        actions.api.upload("Exercise", exerciseId, {
+        actions.api.upload("Playlist", playlistId, {
           isPrivate: true
         })
       );
@@ -26,16 +26,16 @@ export const UnpublishExerciseDialog = createDialog<{
     return (
       <>
         <DialogHeader onClose={onClose}>
-          <Typography>問題集の公開を終了</Typography>
+          <Typography>プレイリストの公開を終了</Typography>
         </DialogHeader>
         <DialogContent>
           <Box display="flex" alignItems="center" flex={1} pb={1}>
             <Warning className={classes.leftIcon} />
-            <Typography>問題集が非公開に設定されます。</Typography>
+            <Typography>プレイリストが非公開に設定されます。</Typography>
           </Box>
           <Box display="flex" flexDirection="column" pb={1}>
             <Button className={classes.largeButton} variant="contained" onClick={onUnpublish}>
-              <Typography color="error">問題集の公開を終了</Typography>
+              <Typography color="error">プレイリストの公開を終了</Typography>
             </Button>
           </Box>
           <Box display="flex" flexDirection="column" pb={1}>

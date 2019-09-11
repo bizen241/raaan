@@ -1,12 +1,11 @@
 import { Box, Card, CardContent, CardHeader, Chip, Divider, MenuItem, Typography } from "@material-ui/core";
 import { Delete, Lock } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useContext, useState } from "react";
-import { useSelector } from "react-redux";
+import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createEntityViewer } from ".";
 import { ExerciseSummary } from "../../../shared/api/entities";
-import { RootState } from "../../reducers";
+import { useToggleState } from "../dialogs";
 import { DeleteExerciseDialog } from "../dialogs/DeleteExerciseDialog";
 import { UnpublishExerciseDialog } from "../dialogs/UnpublishExerciseDialog";
 import { UserContext } from "../project/Context";
@@ -21,18 +20,10 @@ export const ExerciseSummaryViewer = createEntityViewer<ExerciseSummary>(
 
     const { exerciseId } = exerciseSummary;
 
-    const { exercise, buffer } = useSelector((state: RootState) => ({
-      exercise: state.cache.get.Exercise[exerciseId],
-      buffer: state.buffers.Exercise[exerciseId]
-    }));
-
-    const [isUnpublishExerciseDialogOpen, toggleUnpublishExerciseDialog] = useState(false);
-    const [isDeleteExerciseDialogOpen, toggleDeleteExerciseDialog] = useState(false);
-    const onToggleUnpublishExerciseDialog = useCallback(() => toggleUnpublishExerciseDialog(s => !s), []);
-    const onToggleDeleteExerciseDialog = useCallback(() => toggleDeleteExerciseDialog(s => !s), []);
+    const [isUnpublishExerciseDialogOpen, onToggleUnpublishExerciseDialog] = useToggleState();
+    const [isDeleteExerciseDialogOpen, onToggleDeleteExerciseDialog] = useToggleState();
 
     const isAuthor = exerciseSummary.authorId === currentUser.id;
-    const isPrivate = exercise && exercise.isPrivate;
 
     return (
       <Card>
@@ -44,17 +35,20 @@ export const ExerciseSummaryViewer = createEntityViewer<ExerciseSummary>(
           }
           subheader={
             <Box display="flex">
-              {exerciseSummary.tags.split(/\s/).map(tag => (
-                <Box key={tag} pr={1} pb={1}>
-                  <Chip label={tag} clickable component={RouterLink} to={`/tags/${tag}`} />
-                </Box>
-              ))}
+              {exerciseSummary.tags.split(/\s/).map(
+                tag =>
+                  tag && (
+                    <Box key={tag} pr={1} pb={1}>
+                      <Chip label={tag} clickable component={RouterLink} to={`/tags/${tag}`} />
+                    </Box>
+                  )
+              )}
             </Box>
           }
           action={
             <Menu>
-              {!isPrivate ? (
-                <MenuItem disabled={buffer !== undefined} onClick={onToggleUnpublishExerciseDialog}>
+              {!exerciseSummary.isPrivate ? (
+                <MenuItem onClick={onToggleUnpublishExerciseDialog}>
                   <Lock className={classes.leftIcon} />
                   非公開にする
                 </MenuItem>

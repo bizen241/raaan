@@ -124,7 +124,7 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (context, st
     return;
   }
 
-  const { author, authorId, lang, title, description } = exercise;
+  const { author, authorId, lang, title, description, isPrivate } = exercise;
 
   store.ExerciseSummary[id] = {
     ...base(entity),
@@ -135,7 +135,8 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (context, st
     tags: tags.map(tag => tag.name).join(" "),
     description,
     upvoteCount,
-    submitCount
+    submitCount,
+    isPrivate
   };
 
   normalizeEntity(context, store, author);
@@ -162,14 +163,16 @@ const normalizeExerciseVote: Normalizer<ExerciseVoteEntity> = (_, store, entity)
 };
 
 const normalizePlaylist: Normalizer<PlaylistEntity> = (_, store, entity) => {
-  const { id, authorId, title, tags, description, isPrivate, isLocked } = entity;
+  const { id, authorId, summaryId, title, tags, description, orderBy, isPrivate, isLocked } = entity;
 
   store.Playlist[id] = {
     ...base(entity),
     authorId,
+    summaryId,
     title,
     tags,
     description,
+    orderBy,
     isPrivate,
     isLocked
   };
@@ -210,19 +213,22 @@ const normalizePlaylistReport: Normalizer<PlaylistReportEntity> = (_, store, ent
 };
 
 const normalizePlaylistSummary: Normalizer<PlaylistSummaryEntity> = (_, store, entity) => {
-  const { id, playlist, playlistId, tags = [] } = entity;
+  const { id, playlist, playlistId, tags = [], itemCount } = entity;
   if (playlist === undefined) {
     return;
   }
 
+  const { authorId, title, description, isPrivate } = playlist;
+
   store.PlaylistSummary[id] = {
     ...base(entity),
-    authorId: playlist.authorId,
+    authorId,
     playlistId,
-    title: playlist.title,
+    title,
     tags: tags.map(tag => tag.name).join(" "),
-    description: playlist.description,
-    itemCount: 0
+    description,
+    itemCount,
+    isPrivate
   };
 };
 

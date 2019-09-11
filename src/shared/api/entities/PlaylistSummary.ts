@@ -7,4 +7,5 @@ export interface PlaylistSummary extends BaseEntityObject {
   tags: string;
   description: string;
   itemCount: number;
+  isPrivate: boolean;
 }

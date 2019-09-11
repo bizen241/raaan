@@ -8,7 +8,7 @@ import { Playlist } from "../../../shared/api/entities";
 import { useEntity } from "../../hooks/entity";
 import { actions } from "../../reducers";
 import { generateBufferId } from "../../reducers/buffers";
-import { PlaylistSummarySelectList } from "../list/search/PlaylistSummarySelectList";
+import { ExerciseContext, PlaylistSummarySelectList } from "../list/search/PlaylistSummarySelectList";
 import { UserContext } from "../project/Context";
 import { useStyles } from "../ui/styles";
 
@@ -55,13 +55,14 @@ export const PlaylistDialog = createDialog<{
                 </Button>
               </Box>
               <Box display="flex" flexDirection="column" pb={1}>
-                <PlaylistSummarySelectList
-                  title="プレイリスト一覧"
-                  initialSearchParams={{
-                    authorId: currentUser.id
-                  }}
-                  exerciseId={exerciseId}
-                />
+                <ExerciseContext.Provider value={exerciseId}>
+                  <PlaylistSummarySelectList
+                    title="プレイリスト一覧"
+                    initialSearchParams={{
+                      authorId: currentUser.id
+                    }}
+                  />
+                </ExerciseContext.Provider>
               </Box>
             </>
           ) : (

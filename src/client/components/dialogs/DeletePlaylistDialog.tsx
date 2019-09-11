@@ -6,36 +6,31 @@ import { createDialog, DialogContent, DialogHeader } from ".";
 import { actions } from "../../reducers";
 import { useStyles } from "../ui/styles";
 
-export const UnpublishExerciseDialog = createDialog<{
-  exerciseId: string;
+export const DeletePlaylistDialog = createDialog<{
+  playlistId: string;
 }>(
-  React.memo(({ exerciseId, onClose }) => {
+  React.memo(({ playlistId, onClose }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const onUnpublish = () => {
-      dispatch(
-        actions.api.upload("Exercise", exerciseId, {
-          isPrivate: true
-        })
-      );
-
+    const onDelete = () => {
+      dispatch(actions.api.delete("Playlist", playlistId));
       onClose();
     };
 
     return (
       <>
         <DialogHeader onClose={onClose}>
-          <Typography>問題集の公開を終了</Typography>
+          <Typography>プレイリストの削除</Typography>
         </DialogHeader>
         <DialogContent>
           <Box display="flex" alignItems="center" flex={1} pb={1}>
             <Warning className={classes.leftIcon} />
-            <Typography>問題集が非公開に設定されます。</Typography>
+            <Typography>プレイリストがサーバーから削除されます。</Typography>
           </Box>
           <Box display="flex" flexDirection="column" pb={1}>
-            <Button className={classes.largeButton} variant="contained" onClick={onUnpublish}>
-              <Typography color="error">問題集の公開を終了</Typography>
+            <Button className={classes.largeButton} variant="contained" onClick={onDelete}>
+              <Typography color="error">プレイリストを削除</Typography>
             </Button>
           </Box>
           <Box display="flex" flexDirection="column" pb={1}>

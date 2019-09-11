@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
-import { Playlist } from "../../../shared/api/entities";
+import { OrderBy, Playlist } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { PlaylistSummaryEntity } from "./PlaylistSummaryEntity";
@@ -31,6 +31,9 @@ export class PlaylistEntity extends BaseEntityClass {
 
   @Column()
   description: string = "";
+
+  @Column()
+  orderBy: OrderBy = "manual_bottom";
 
   @Column()
   isPrivate: boolean = true;

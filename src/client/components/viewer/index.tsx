@@ -8,11 +8,11 @@ import { RootState } from "../../reducers";
 import { apiActions } from "../../reducers/api";
 import { useStyles } from "../ui/styles";
 
-export interface EntityViewerContainerProps {
+interface EntityViewerContainerProps {
   entityId: string;
 }
 
-export interface EntityViewerRendererProps<E extends EntityObject> {
+interface EntityViewerRendererProps<E extends EntityObject> {
   entityId: string;
   entity: E;
 }

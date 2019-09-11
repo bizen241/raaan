@@ -29,7 +29,7 @@ export const useSearch = <E extends EntityObject>(entityType: EntityType, initia
       return undefined;
     }
 
-    const entities: Array<E | undefined> = [];
+    const entities: E[] = [];
     const entityIds = searchResult.ids;
     const entityCount = Math.min(offset + limit, searchResult.count);
 
