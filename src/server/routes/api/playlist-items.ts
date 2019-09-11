@@ -26,7 +26,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
       return next(createError(400));
     }
 
-    const isAuthor = playlist.authorId !== currentUser.id;
+    const isAuthor = playlist.authorId === currentUser.id;
     if (playlist.isPrivate && !isAuthor) {
       return next(createError(403));
     }
