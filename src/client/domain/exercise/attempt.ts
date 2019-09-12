@@ -1,9 +1,10 @@
 import { AttemptResult, Question } from "../../../shared/api/entities";
-import { CompiledQuestion } from "../../../shared/exercise/compiler";
+import { CompiledQuestion, compileQuestions } from "../../../shared/exercise/compiler";
 
 export interface Attempt {
   questions: CompiledQuestion[];
   plan: number[];
+  results: QuestionResult[];
 }
 
 export interface Typo {
@@ -18,8 +19,14 @@ export interface QuestionResult {
   typedLines: string[][];
 }
 
-export const createPlan = (items: Question[]) => {
-  const plan = [...Array(items.length).keys()];
+export const createAttempt = (questions: Question[]): Attempt => ({
+  questions: compileQuestions(questions),
+  plan: createPlan(questions),
+  results: []
+});
+
+export const createPlan = (questions: Question[]) => {
+  const plan = [...Array(questions.length).keys()];
 
   for (let i = plan.length - 1; i >= 0; i--) {
     const random = Math.floor(Math.random() * (i + 1));

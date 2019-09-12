@@ -2,13 +2,12 @@ import { Box, Divider, makeStyles } from "@material-ui/core";
 import { TrendingDown, TrendingFlat, TrendingUp } from "@material-ui/icons";
 import * as React from "react";
 import { AttemptResult, SubmissionSummary } from "../../../shared/api/entities";
-import { Attempt, QuestionResult, summarizeResults } from "../../domain/exercise/attempt";
+import { Attempt, summarizeResults } from "../../domain/exercise/attempt";
 
 export const AttemptResultViewer: React.FunctionComponent<{
   attempt: Attempt;
-  results: QuestionResult[];
   submissionSummary: SubmissionSummary | undefined;
-}> = ({ results, submissionSummary }) => {
+}> = ({ attempt: { results }, submissionSummary }) => {
   const classes = useStyles();
 
   const attemptResult = summarizeResults(results);

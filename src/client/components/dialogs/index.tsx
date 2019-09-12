@@ -13,7 +13,7 @@ import { Close } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useState } from "react";
 
-interface DialogProps {
+export interface DialogProps {
   isOpen: boolean;
   onClose: () => void;
 }

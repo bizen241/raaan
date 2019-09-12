@@ -5,8 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
 import { Exercise, SubmissionSummary } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
-import { compileQuestions } from "../../../shared/exercise/compiler";
-import { Attempt, createPlan, QuestionResult } from "../../domain/exercise/attempt";
+import { Attempt, createAttempt, QuestionResult } from "../../domain/exercise/attempt";
 import { createDialog, DialogHeader } from "../dialogs";
 import { AttemptMessage } from "./AttemptMessage";
 import { AttemptResultViewer } from "./AttemptResult";
@@ -15,31 +14,44 @@ import { QuestionPlayer } from "./QuestionPlayer";
 export const AttemptManager = createDialog<{
   exercise: SaveParams<Exercise>;
   submissionSummary?: SubmissionSummary;
+  onNext?: () => void;
   onFinish?: (results: QuestionResult[]) => void;
 }>(
   React.memo(({ exercise, submissionSummary, onFinish, onClose }) => {
     const classes = useStyles();
 
-    const [attempt, setAttempt] = useState<Attempt>();
-    const [results, updateResults] = useState<QuestionResult[]>([]);
+    const [attempt, updateAttempt] = useState<Attempt>();
+    const isFinished = attempt && attempt.plan.length === attempt.results.length;
 
-    const isFinished = attempt && attempt.plan.length === results.length;
-    const onNext = useCallback((result: QuestionResult) => updateResults(s => [...s, result]), []);
-    const onReset = useCallback(() => updateResults([]), []);
+    const onNext = useCallback(
+      (result: QuestionResult) =>
+        updateAttempt(
+          s =>
+            s && {
+              ...s,
+              results: [...s.results, result]
+            }
+        ),
+      []
+    );
+    const onReset = useCallback(
+      () =>
+        updateAttempt(
+          s =>
+            s && {
+              ...s,
+              results: []
+            }
+        ),
+      []
+    );
 
     useEffect(() => {
-      if (exercise !== undefined) {
-        const rawQuestions = exercise.questions || [];
-
-        setAttempt({
-          questions: compileQuestions(rawQuestions),
-          plan: createPlan(rawQuestions)
-        });
-      }
+      updateAttempt(createAttempt(exercise.questions || []));
     }, [exercise]);
     useEffect(() => {
-      if (isFinished && onFinish !== undefined) {
-        onFinish(results);
+      if (isFinished && onFinish !== undefined && attempt !== undefined) {
+        onFinish(attempt.results);
       }
     }, [isFinished]);
 
@@ -50,7 +62,7 @@ export const AttemptManager = createDialog<{
       return <AttemptMessage icon={<Error />} title="空の問題集です" onClose={onClose} />;
     }
 
-    const currentQuestionIndex = attempt.plan[results.length];
+    const currentQuestionIndex = attempt.plan[attempt.results.length];
     const currentQuestion = attempt.questions[currentQuestionIndex];
 
     return (
@@ -58,15 +70,15 @@ export const AttemptManager = createDialog<{
         <DialogHeader maxWidth="2000px" onClose={onClose}>
           <Box flex={1} />
           <IconButton edge="end" color="inherit" onClick={onReset}>
-            <Replay />
+            <Replay onClick={onReset} />
           </IconButton>
         </DialogHeader>
         <Box className={classes.outer} display="flex" flexDirection="column" alignItems="center" px={2} py={1}>
-          <Box className={classes.inner} display="flex" flexDirection="column" maxWidth="2000px">
+          <Box className={classes.inner} display="flex" flexDirection="column">
             {isFinished ? (
-              <AttemptResultViewer attempt={attempt} results={results} submissionSummary={submissionSummary} />
+              <AttemptResultViewer attempt={attempt} submissionSummary={submissionSummary} />
             ) : (
-              <QuestionPlayer key={results.length} question={currentQuestion} onFinish={onNext} />
+              <QuestionPlayer key={attempt.results.length} question={currentQuestion} onFinish={onNext} />
             )}
           </Box>
         </Box>

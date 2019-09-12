@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EntityObject, EntityType } from "../../shared/api/entities";
 import { actions, RootState } from "../reducers";
+import { isLocalOnly } from "../reducers/api";
 
 export const useEntity = <E extends EntityObject>(entityType: EntityType, entityId: string) => {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ export const useEntity = <E extends EntityObject>(entityType: EntityType, entity
   }));
 
   useEffect(() => {
-    if (entity === undefined) {
+    if (entity === undefined && !isLocalOnly(entityId)) {
       dispatch(actions.api.get(entityType, entityId));
     }
   }, []);

@@ -1,63 +1,40 @@
 import { CircularProgress } from "@material-ui/core";
 import * as React from "react";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Exercise, Submission, SubmissionSummary } from "../../../shared/api/entities";
-import { SaveParams } from "../../../shared/api/request/save";
+import { EntityMap } from "../../../shared/api/response/get";
 import { QuestionResult, summarizeResults } from "../../domain/exercise/attempt";
 import { useEntity } from "../../hooks/entity";
-import { useSearch } from "../../hooks/search";
 import { actions, RootState } from "../../reducers";
+import { DialogProps } from "../dialogs";
 import { UserContext } from "../project/Context";
 import { AttemptManager } from "./AttemptManager";
 import { AttemptMessage } from "./AttemptMessage";
 
-export const ExercisePlayer = React.memo<{
-  exerciseId: string;
-  isOpen: boolean;
-  onClose: () => void;
-}>(({ exerciseId, isOpen, onClose }) => {
+export const ExercisePlayer = React.memo<
+  {
+    exerciseId: string;
+    onNext?: () => void;
+  } & DialogProps
+>(({ exerciseId, onNext, isOpen, onClose }) => {
   const dispatch = useDispatch();
   const currentUser = useContext(UserContext);
 
-  const [submissionSummary, setSubmissionSummary] = useState<SubmissionSummary | undefined>();
-
-  const submissionId = useMemo(() => Date.now().toString(), []);
-
-  const { entities: submissionSummaries, onReload: onReloadSubmissionSummaries } = useSearch<SubmissionSummary>(
-    "SubmissionSummary",
-    {
-      submitterId: currentUser.id,
-      exerciseId,
-      limit: 1,
-      offset: 0
-    }
-  );
-
   const { entity: exercise } = useEntity<Exercise>("Exercise", exerciseId);
-  const submissionStatus = useSelector((state: RootState) => state.api.upload.Submission[submissionId]);
+  const submissionSummary = useSubmissionSummary(currentUser.id, exerciseId);
 
-  const onFinish = useCallback(
-    (results: QuestionResult[]) => {
-      setSubmissionSummary(submissionSummaries[0]);
+  const onFinish = useCallback((results: QuestionResult[]) => {
+    const submissionId = Date.now().toString();
 
-      const submission: SaveParams<Submission> = {
+    dispatch(
+      actions.buffers.add<Submission>("Submission", submissionId, {
         exerciseId,
         ...summarizeResults(results)
-      };
-
-      dispatch(actions.buffers.add("Submission", submissionId));
-      dispatch(actions.buffers.update("Submission", submissionId, submission));
-      dispatch(actions.api.upload("Submission", submissionId));
-    },
-    [submissionSummaries]
-  );
-
-  useEffect(() => {
-    if (submissionStatus === 200 && submissionSummaries.length === 0) {
-      onReloadSubmissionSummaries();
-    }
-  }, [submissionStatus]);
+      })
+    );
+    dispatch(actions.api.upload("Submission", submissionId));
+  }, []);
 
   if (exercise === undefined) {
     return <AttemptMessage icon={<CircularProgress />} title="ロード中です" onClose={onClose} />;
@@ -67,9 +44,29 @@ export const ExercisePlayer = React.memo<{
     <AttemptManager
       exercise={exercise}
       submissionSummary={submissionSummary}
+      onNext={onNext}
       onFinish={onFinish}
       isOpen={isOpen}
       onClose={onClose}
     />
   );
 });
+
+const useSubmissionSummary = (submitterId: string, exerciseId: string) => {
+  const submissionSummaries = useSelector((state: RootState) => state.cache.get.SubmissionSummary);
+  const submissionSummary = useMemo(() => findSubmissionSummary(submissionSummaries, submitterId, exerciseId), [
+    submissionSummaries
+  ]);
+
+  return submissionSummary;
+};
+
+const findSubmissionSummary = (
+  submissionSummaries: EntityMap<SubmissionSummary>,
+  submitterId: string,
+  exerciseId: string
+) =>
+  Object.values(submissionSummaries).find(
+    submissionSummary =>
+      submissionSummary && submissionSummary.submitterId === submitterId && submissionSummary.exerciseId === exerciseId
+  );

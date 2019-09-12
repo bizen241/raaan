@@ -12,10 +12,11 @@ export enum BuffersActionType {
 }
 
 export const buffersActions = {
-  add: (type: EntityType, id: string) =>
+  add: <E extends EntityObject>(type: EntityType, id: string, params?: SaveParams<E>) =>
     createAction(BuffersActionType.Add, {
       type,
-      id
+      id,
+      params
     }),
   update: <E extends EntityObject>(type: EntityType, id: string, params: SaveParams<E>) =>
     createAction(BuffersActionType.Update, {
@@ -53,13 +54,14 @@ export const initialBuffersState: BuffersState = {
 export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBuffersState, action) => {
   switch (action.type) {
     case BuffersActionType.Add: {
-      const { type, id } = action.payload;
+      const { type, id, params = {} } = action.payload;
 
       return {
         ...state,
         [type]: {
           ...state[type],
           [id]: {
+            ...params,
             createdAt: Date.now(),
             updatedAt: Date.now()
           }

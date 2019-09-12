@@ -1,6 +1,6 @@
 import { EntityObject, EntityTypeToEntity } from "../entities";
 
-interface EntityMap<E extends EntityObject> {
+export interface EntityMap<E extends EntityObject> {
   [id: string]: E | undefined;
 }
 

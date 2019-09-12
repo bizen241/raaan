@@ -18,8 +18,6 @@ export const QuestionPlayer: React.FunctionComponent<{
   question: CompiledQuestion;
   onFinish: (result: QuestionResult) => void;
 }> = ({ question, onFinish }) => {
-  const isEmptyQuestion = question.roman[0].length === 0;
-
   const [state, setState] = useState<QuestionPlayerState>({
     typedLines: [[""]],
     typos: [],
@@ -29,22 +27,23 @@ export const QuestionPlayer: React.FunctionComponent<{
     isSuspended: true,
     isFinished: false
   });
-
   const { typedLines, typos, totalTime, startedAt, isSuspended, isFinished } = state;
 
   useEffect(() => {
-    if (!isSuspended) {
-      const suspend = () => {
-        setState({
-          ...state,
-          isSuspended: true,
-          totalTime: totalTime + (Date.now() - startedAt)
-        });
-      };
-
-      const timeoutId = setTimeout(suspend, 3000);
-      return clearTimeout(timeoutId);
+    if (isSuspended) {
+      return;
     }
+
+    const suspend = () => {
+      setState({
+        ...state,
+        isSuspended: true,
+        totalTime: totalTime + (Date.now() - startedAt)
+      });
+    };
+
+    const timeoutId = setTimeout(suspend, 3000);
+    return () => clearTimeout(timeoutId);
   }, [state]);
   useEffect(() => {
     if (isFinished) {
@@ -65,6 +64,7 @@ export const QuestionPlayer: React.FunctionComponent<{
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [isFinished]);
 
+  const isEmptyQuestion = question.roman[0].length === 0;
   if (isEmptyQuestion) {
     return null;
   }
