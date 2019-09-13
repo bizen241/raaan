@@ -1,6 +1,5 @@
 import { Box, CircularProgress, IconButton } from "@material-ui/core";
-import { Error, Replay } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/styles";
+import { Error, Settings } from "@material-ui/icons";
 import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
 import { Exercise, SubmissionSummary } from "../../../shared/api/entities";
@@ -14,16 +13,15 @@ import { QuestionPlayer } from "./QuestionPlayer";
 export const AttemptManager = createDialog<{
   exercise: SaveParams<Exercise>;
   submissionSummary?: SubmissionSummary;
+  hasNext?: boolean;
   onNext?: () => void;
   onFinish?: (results: QuestionResult[]) => void;
 }>(
-  React.memo(({ exercise, submissionSummary, onFinish, onClose }) => {
-    const classes = useStyles();
-
+  React.memo(({ exercise, submissionSummary, hasNext, onNext, onFinish, onClose }) => {
     const [attempt, updateAttempt] = useState<Attempt>();
     const isFinished = attempt && attempt.plan.length === attempt.results.length;
 
-    const onNext = useCallback(
+    const onFinishQuestion = useCallback(
       (result: QuestionResult) =>
         updateAttempt(
           s =>
@@ -34,7 +32,7 @@ export const AttemptManager = createDialog<{
         ),
       []
     );
-    const onReset = useCallback(
+    const onReplayExercise = useCallback(
       () =>
         updateAttempt(
           s =>
@@ -45,6 +43,7 @@ export const AttemptManager = createDialog<{
         ),
       []
     );
+    const onFinishExercise = useCallback(() => (hasNext ? onNext && onNext() : onClose()), [hasNext]);
 
     useEffect(() => {
       updateAttempt(createAttempt(exercise.questions || []));
@@ -69,33 +68,22 @@ export const AttemptManager = createDialog<{
       <>
         <DialogHeader maxWidth="2000px" onClose={onClose}>
           <Box flex={1} />
-          <IconButton edge="end" color="inherit" onClick={onReset}>
-            <Replay onClick={onReset} />
+          <IconButton edge="end" color="inherit">
+            <Settings />
           </IconButton>
         </DialogHeader>
-        <Box className={classes.outer} display="flex" flexDirection="column" alignItems="center" px={2} py={1}>
-          <Box className={classes.inner} display="flex" flexDirection="column">
-            {isFinished ? (
-              <AttemptResultViewer attempt={attempt} submissionSummary={submissionSummary} />
-            ) : (
-              <QuestionPlayer key={attempt.results.length} question={currentQuestion} onFinish={onNext} />
-            )}
-          </Box>
-        </Box>
+        {isFinished ? (
+          <AttemptResultViewer
+            attempt={attempt}
+            submissionSummary={submissionSummary}
+            hasNext={hasNext}
+            onReplay={onReplayExercise}
+            onFinish={onFinishExercise}
+          />
+        ) : (
+          <QuestionPlayer key={attempt.results.length} question={currentQuestion} onFinish={onFinishQuestion} />
+        )}
       </>
     );
   })
 );
-
-const useStyles = makeStyles(() => ({
-  outer: {
-    height: "100%",
-    overflowY: "hidden"
-  },
-  inner: {
-    height: "100%",
-    width: "100%",
-    maxWidth: "2000px",
-    overflowY: "hidden"
-  }
-}));

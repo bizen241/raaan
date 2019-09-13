@@ -188,7 +188,7 @@ const normalizePlaylistBookmark: Normalizer<PlaylistBookmarkEntity> = (_, store,
   };
 };
 
-const normalizePlaylistItem: Normalizer<PlaylistItemEntity> = (_, store, entity) => {
+const normalizePlaylistItem: Normalizer<PlaylistItemEntity> = (context, store, entity) => {
   const { id, exercise, nextId, memo } = entity;
   if (exercise === undefined) {
     return;
@@ -196,10 +196,17 @@ const normalizePlaylistItem: Normalizer<PlaylistItemEntity> = (_, store, entity)
 
   store.PlaylistItem[id] = {
     ...base(entity),
+    exerciseId: exercise != null ? exercise.id : undefined,
     exerciseSummaryId: exercise != null ? exercise.summaryId : undefined,
     nextId,
     memo
   };
+
+  if (exercise != null && exercise.summary !== undefined) {
+    exercise.summary.exercise = exercise;
+
+    normalizeEntity(context, store, exercise.summary);
+  }
 };
 
 const normalizePlaylistReport: Normalizer<PlaylistReportEntity> = (_, store, entity) => {

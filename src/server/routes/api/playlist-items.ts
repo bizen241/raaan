@@ -17,6 +17,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     .createQueryBuilder(PlaylistItemEntity, "playlistItem")
     .leftJoinAndSelect("playlistItem.playlist", "playlist")
     .leftJoinAndSelect("playlistItem.exercise", "exercise")
+    .leftJoinAndSelect("exercise.summary", "summary")
     .take(limit)
     .skip(offset);
 
@@ -39,9 +40,9 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     query.andWhere("exercise.id = :exerciseId", { exerciseId });
   }
 
-  const [exerciseSummaries, count] = await query.getManyAndCount();
+  const [playlistItems, count] = await query.getManyAndCount();
 
-  responseSearchResult(req, res, exerciseSummaries, count);
+  responseSearchResult(req, res, playlistItems, count);
 });
 
 GET.apiDoc = createOperationDoc({

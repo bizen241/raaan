@@ -1,15 +1,34 @@
 import * as React from "react";
-import { DialogProps } from "../dialogs";
-import { ExercisePlayer } from "./ExercisePlayer";
+import { useState } from "react";
+import { PlaylistItem } from "../../../shared/api/entities";
+import { createDialog } from "../dialogs";
+import { ExerciseManager } from "./ExerciseManager";
 
-export const PlaylistPlayer = React.memo<
-  {
-    exerciseIds: string[];
-  } & DialogProps
->(({ exerciseIds, isOpen, onClose }) => {
-  const onNext = () => {
-    console.log("next");
-  };
+export const PlaylistPlayer = createDialog<{
+  playlistItems: PlaylistItem[];
+}>(
+  React.memo(({ playlistItems, isOpen, onClose }) => {
+    const [cursor, setCursor] = useState(0);
+    const [exerciseIds] = useState(() => {
+      const ids: string[] = [];
 
-  return <ExercisePlayer exerciseId={exerciseIds[0]} onNext={onNext} isOpen={isOpen} onClose={onClose} />;
-});
+      playlistItems.forEach(({ exerciseId }) => exerciseId && ids.push(exerciseId));
+
+      return ids;
+    });
+
+    const onNext = () => {
+      setCursor(s => s + 1);
+    };
+
+    return (
+      <ExerciseManager
+        exerciseId={exerciseIds[cursor]}
+        hasNext={true}
+        onNext={onNext}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
+    );
+  })
+);

@@ -40,80 +40,94 @@ export const QuestionRenderer = React.memo<{
   const currentRubyChunk = currentRubyLine[currentRubyChunkIndex];
 
   return (
-    <Box display="flex" flexDirection="column" flex={1} className={classes.wrapper}>
-      <div className={classes.typedLinesOuter}>
-        <div className={classes.typedLinesInner}>
-          {rubyLines.slice(0, currentLineIndex).map((rubyLine, lineIndex) => (
-            <div key={lineIndex}>{rubyLine.map(({ kanji }) => kanji)}</div>
-          ))}
-        </div>
-      </div>
-      {isRoman && (
-        <Box display="flex" className={classes.currentRubyLine}>
-          <div className={classes.typedStringOuter}>
-            <span className={classes.typedStringInner}>
-              {currentRubyLine.slice(0, currentRubyChunkIndex).map(({ kanji, ruby }, chunkIndex) => (
-                <ruby key={chunkIndex}>
-                  {kanji}
-                  <rt>{ruby || ""}</rt>
-                </ruby>
+    <Box className={classes.outerWrapper} display="flex" flexDirection="column" alignItems="center" px={2} py={1}>
+      <Box className={classes.middleWrapper} display="flex" flexDirection="column">
+        <Box display="flex" flexDirection="column" flex={1} className={classes.innerWrapper}>
+          <div className={classes.typedLinesOuter}>
+            <div className={classes.typedLinesInner}>
+              {rubyLines.slice(0, currentLineIndex).map((rubyLine, lineIndex) => (
+                <div key={lineIndex}>{rubyLine.map(({ kanji }) => kanji)}</div>
+              ))}
+            </div>
+          </div>
+          {isRoman && (
+            <Box display="flex" className={classes.currentRubyLine}>
+              <div className={classes.typedStringOuter}>
+                <span className={classes.typedStringInner}>
+                  {currentRubyLine.slice(0, currentRubyChunkIndex).map(({ kanji, ruby }, chunkIndex) => (
+                    <ruby key={chunkIndex}>
+                      {kanji}
+                      <rt>{ruby || ""}</rt>
+                    </ruby>
+                  ))}
+                </span>
+              </div>
+              {!isCurrentLineFinished && (
+                <>
+                  <span>
+                    <ruby className={currentRubyChunk.isMasked ? classes.mask : undefined}>
+                      {currentRubyChunk.kanji}
+                      <rt>{currentRubyChunk.ruby || ""}</rt>
+                    </ruby>
+                  </span>
+                  <span className={classes.untypedString}>
+                    {currentRubyLine.slice(currentRubyChunkIndex + 1).map(({ kanji, ruby, isMasked }, chunkIndex) => (
+                      <ruby key={currentRubyChunkIndex + chunkIndex} className={isMasked ? classes.mask : undefined}>
+                        {kanji}
+                        <rt>{ruby || ""}</rt>
+                      </ruby>
+                    ))}
+                  </span>
+                </>
+              )}
+            </Box>
+          )}
+          <Box display="flex" className={classes.currentRomanLine}>
+            <div className={classes.typedStringOuter}>
+              <span className={classes.typedStringInner}>{typedLine.join("")}</span>
+            </div>
+            <span>
+              <span className={currentRomanChunk.isMasked ? classes.mask : undefined}>
+                {currentCandidates[0].slice(currentCharIndex)}
+              </span>
+            </span>
+            <span className={classes.untypedString}>
+              {currentRomanLine.slice(currentRomanChunkIndex + 1).map(({ candidates, isMasked }, chunkIndex) => (
+                <span key={currentRomanChunkIndex + chunkIndex} className={isMasked ? classes.mask : undefined}>
+                  {candidates[0]}
+                </span>
               ))}
             </span>
-          </div>
-          {!isCurrentLineFinished && (
-            <>
-              <span>
-                <ruby className={currentRubyChunk.isMasked ? classes.mask : undefined}>
-                  {currentRubyChunk.kanji}
-                  <rt>{currentRubyChunk.ruby || ""}</rt>
-                </ruby>
-              </span>
-              <span className={classes.untypedString}>
-                {currentRubyLine.slice(currentRubyChunkIndex + 1).map(({ kanji, ruby, isMasked }, chunkIndex) => (
-                  <ruby key={currentRubyChunkIndex + chunkIndex} className={isMasked ? classes.mask : undefined}>
+          </Box>
+          <div className={classes.untypedLines}>
+            {rubyLines.slice(currentLineIndex + 1).map((rubyLine, lineIndex) => (
+              <div key={currentLineIndex + 1 + lineIndex}>
+                {rubyLine.map(({ kanji, isMasked }, chunkIndex) => (
+                  <span key={chunkIndex} className={isMasked ? classes.mask : undefined}>
                     {kanji}
-                    <rt>{ruby || ""}</rt>
-                  </ruby>
+                  </span>
                 ))}
-              </span>
-            </>
-          )}
-        </Box>
-      )}
-      <Box display="flex" className={classes.currentRomanLine}>
-        <div className={classes.typedStringOuter}>
-          <span className={classes.typedStringInner}>{typedLine.join("")}</span>
-        </div>
-        <span>
-          <span className={currentRomanChunk.isMasked ? classes.mask : undefined}>
-            {currentCandidates[0].slice(currentCharIndex)}
-          </span>
-        </span>
-        <span className={classes.untypedString}>
-          {currentRomanLine.slice(currentRomanChunkIndex + 1).map(({ candidates, isMasked }, chunkIndex) => (
-            <span key={currentRomanChunkIndex + chunkIndex} className={isMasked ? classes.mask : undefined}>
-              {candidates[0]}
-            </span>
-          ))}
-        </span>
-      </Box>
-      <div className={classes.untypedLines}>
-        {rubyLines.slice(currentLineIndex + 1).map((rubyLine, lineIndex) => (
-          <div key={currentLineIndex + 1 + lineIndex}>
-            {rubyLine.map(({ kanji, isMasked }, chunkIndex) => (
-              <span key={chunkIndex} className={isMasked ? classes.mask : undefined}>
-                {kanji}
-              </span>
+              </div>
             ))}
           </div>
-        ))}
-      </div>
+        </Box>
+      </Box>
     </Box>
   );
 });
 
 const useStyles = makeStyles(theme => ({
-  wrapper: {
+  outerWrapper: {
+    height: "100%",
+    overflowY: "hidden"
+  },
+  middleWrapper: {
+    height: "100%",
+    width: "100%",
+    maxWidth: "2000px",
+    overflowY: "hidden"
+  },
+  innerWrapper: {
     overflow: "hidden"
   },
   typedLinesOuter: {

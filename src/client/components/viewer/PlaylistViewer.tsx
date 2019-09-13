@@ -18,6 +18,8 @@ import { createEntityViewer } from ".";
 import { ExerciseSummary, Playlist, PlaylistItem } from "../../../shared/api/entities";
 import { sortPlaylistItems } from "../../domain/playlist";
 import { useSearch } from "../../hooks/search";
+import { useToggleState } from "../dialogs";
+import { PlaylistPlayer } from "../player/PlaylistPlayer";
 import { useStyles } from "../ui/styles";
 import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 
@@ -31,11 +33,12 @@ export const PlaylistViewer = createEntityViewer<Playlist>(
     });
 
     const [sortedPlaylistItems] = useState(sortPlaylistItems(playlistItems, playlist.orderBy));
+    const [isPlaylistPlayerOpen, onTogglePlaylistPlayer] = useToggleState();
 
     return (
       <Box display="flex" flexDirection="column">
         <Box display="flex" flexDirection="column" pb={1}>
-          <Button className={classes.largeButton} variant="contained" color="primary">
+          <Button className={classes.largeButton} variant="contained" color="primary" onClick={onTogglePlaylistPlayer}>
             <PlayArrow className={classes.leftIcon} />
             <Typography>始める</Typography>
           </Button>
@@ -64,6 +67,11 @@ export const PlaylistViewer = createEntityViewer<Playlist>(
             </TableBody>
           </Table>
         </Card>
+        <PlaylistPlayer
+          playlistItems={sortedPlaylistItems}
+          isOpen={isPlaylistPlayerOpen}
+          onClose={onTogglePlaylistPlayer}
+        />
       </Box>
     );
   })
