@@ -7,7 +7,7 @@ import { AttemptManager } from "./AttemptManager";
 export const ExercisePreviewer = createDialog<{
   exercise: SaveParams<Exercise>;
 }>(
-  React.memo(({ exercise, isOpen, onClose }) => {
-    return <AttemptManager exercise={exercise} isOpen={isOpen} onClose={onClose} />;
+  React.memo(({ exercise, onClose }) => {
+    return <AttemptManager exercise={exercise} onClose={onClose} />;
   })
 );

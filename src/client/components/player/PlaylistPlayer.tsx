@@ -1,10 +1,10 @@
 import * as React from "react";
 import { useState } from "react";
 import { PlaylistItem } from "../../../shared/api/entities";
-import { createDialog } from "../dialogs";
 import { ExerciseManager } from "./ExerciseManager";
+import { createPlayerDialog } from "./PlayerDialog";
 
-export const PlaylistPlayer = createDialog<{
+export const PlaylistPlayer = createPlayerDialog<{
   playlistItems: PlaylistItem[];
 }>(
   React.memo(({ playlistItems, isOpen, onClose }) => {
