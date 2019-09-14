@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useState } from "react";
-import { PlaylistItem } from "../../../shared/api/entities";
-import { ExerciseManager } from "./ExerciseManager";
-import { createPlayerDialog } from "./PlayerDialog";
+import { PlaylistItem } from "../../../../shared/api/entities";
+import { ExerciseManager } from "../managers/ExerciseManager";
+import { createPlayerDialog } from "./enhancer";
 
 export const PlaylistPlayer = createPlayerDialog<{
   playlistItems: PlaylistItem[];

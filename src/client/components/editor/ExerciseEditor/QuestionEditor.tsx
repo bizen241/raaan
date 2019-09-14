@@ -3,7 +3,7 @@ import * as React from "react";
 import { useCallback, useState } from "react";
 import { Question } from "../../../../shared/api/entities";
 import { DeleteQuestionDialog } from "../../dialogs/DeleteQuestionDialog";
-import { QuestionPreviewer } from "../../player/QuestionPreviewer";
+import { QuestionPreviewer } from "../../player/dialogs/QuestionPreviewer";
 import { Menu } from "../../ui/Menu";
 import { useStyles } from "../../ui/styles";
 import { HighlightedTextField } from "./HighlightedTextField";

@@ -19,7 +19,7 @@ import { ExerciseSummary, Playlist, PlaylistItem } from "../../../shared/api/ent
 import { sortPlaylistItems } from "../../domain/playlist";
 import { useSearch } from "../../hooks/search";
 import { useToggleState } from "../dialogs";
-import { PlaylistPlayer } from "../player/PlaylistPlayer";
+import { PlaylistPlayer } from "../player/dialogs/PlaylistPlayer";
 import { useStyles } from "../ui/styles";
 import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 

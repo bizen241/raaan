@@ -19,10 +19,10 @@ import {
   TrendingUp
 } from "@material-ui/icons";
 import * as React from "react";
-import { AttemptResult, SubmissionSummary } from "../../../shared/api/entities";
-import { Attempt, summarizeResults } from "../../domain/exercise/attempt";
-import { DialogContent } from "../dialogs";
-import { useStyles } from "../ui/styles";
+import { AttemptResult, SubmissionSummary } from "../../../../shared/api/entities";
+import { Attempt, summarizeResults } from "../../../domain/exercise/attempt";
+import { DialogContent } from "../../dialogs";
+import { useStyles } from "../../ui/styles";
 
 export const AttemptResultViewer: React.FunctionComponent<{
   attempt: Attempt;

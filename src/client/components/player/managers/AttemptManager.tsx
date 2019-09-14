@@ -2,12 +2,12 @@ import { CircularProgress } from "@material-ui/core";
 import { Error } from "@material-ui/icons";
 import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
-import { Exercise, SubmissionSummary } from "../../../shared/api/entities";
-import { SaveParams } from "../../../shared/api/request/save";
-import { Attempt, createAttempt, QuestionResult } from "../../domain/exercise/attempt";
-import { AttemptMessage } from "./AttemptMessage";
-import { AttemptResultViewer } from "./AttemptResult";
-import { QuestionPlayer } from "./QuestionPlayer";
+import { Exercise, SubmissionSummary } from "../../../../shared/api/entities";
+import { SaveParams } from "../../../../shared/api/request/save";
+import { Attempt, createAttempt, QuestionResult } from "../../../domain/exercise/attempt";
+import { AttemptMessage } from "../renderers/AttemptMessage";
+import { AttemptResultViewer } from "../renderers/ResultSummary";
+import { QuestionPlayer } from "./QuestionManager";
 
 export const AttemptManager = React.memo<{
   exercise: SaveParams<Exercise>;

@@ -1,13 +1,13 @@
 import { useCallback, useContext, useMemo, useState } from "react";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Exercise, Submission, SubmissionSummary } from "../../../shared/api/entities";
-import { SaveParams } from "../../../shared/api/request/save";
-import { EntityMap } from "../../../shared/api/response/get";
-import { QuestionResult, summarizeResults } from "../../domain/exercise/attempt";
-import { actions, RootState } from "../../reducers";
-import { DialogProps } from "../dialogs";
-import { UserContext } from "../project/Context";
+import { Exercise, Submission, SubmissionSummary } from "../../../../shared/api/entities";
+import { SaveParams } from "../../../../shared/api/request/save";
+import { EntityMap } from "../../../../shared/api/response/get";
+import { QuestionResult, summarizeResults } from "../../../domain/exercise/attempt";
+import { actions, RootState } from "../../../reducers";
+import { DialogProps } from "../../dialogs";
+import { UserContext } from "../../project/Context";
 import { AttemptManager } from "./AttemptManager";
 
 export const SubmissionManager = React.memo<

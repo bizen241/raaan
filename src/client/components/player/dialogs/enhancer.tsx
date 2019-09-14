@@ -1,7 +1,7 @@
 import { Box, IconButton } from "@material-ui/core";
 import { Settings } from "@material-ui/icons";
 import * as React from "react";
-import { createDialog, DialogHeader, DialogProps, useToggleState } from "../dialogs";
+import { createDialog, DialogHeader, DialogProps, useToggleState } from "../../dialogs";
 
 export const createPlayerDialog = <P extends {}>(Content: React.ComponentType<P & DialogProps>) =>
   createDialog<P>(

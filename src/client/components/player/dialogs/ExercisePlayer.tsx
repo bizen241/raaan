@@ -1,6 +1,6 @@
 import * as React from "react";
-import { createDialog } from "../dialogs";
-import { ExerciseManager } from "./ExerciseManager";
+import { createDialog } from "../../dialogs";
+import { ExerciseManager } from "../managers/ExerciseManager";
 
 export const ExercisePlayer = createDialog<{
   exerciseId: string;

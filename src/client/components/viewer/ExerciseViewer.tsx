@@ -6,7 +6,7 @@ import { createEntityViewer } from ".";
 import { Exercise } from "../../../shared/api/entities";
 import { useToggleState } from "../dialogs";
 import { PlaylistDialog } from "../dialogs/PlaylistDialog";
-import { ExercisePlayer } from "../player/ExercisePlayer";
+import { ExercisePlayer } from "../player/dialogs/ExercisePlayer";
 import { UserContext } from "../project/Context";
 import { useStyles } from "../ui/styles";
 import { ExerciseSummaryViewer } from "./ExerciseSummaryViewer";

@@ -4,7 +4,7 @@ import * as React from "react";
 import { useCallback, useState } from "react";
 import { createEntityEditor } from "../";
 import { Exercise, Question } from "../../../../shared/api/entities";
-import { ExercisePreviewer } from "../../player/ExercisePreviewer";
+import { ExercisePreviewer } from "../../player/dialogs/ExercisePreviewer";
 import { useStyles } from "../../ui/styles";
 import { QuestionsEditor } from "./QuestionsEditor";
 
