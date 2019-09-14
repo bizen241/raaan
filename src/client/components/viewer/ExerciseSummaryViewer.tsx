@@ -14,7 +14,7 @@ import { Menu } from "../ui/Menu";
 import { useStyles } from "../ui/styles";
 
 export const ExerciseSummaryViewer = createEntityViewer<ExerciseSummary>(
-  "ExerciseSummary",
+  { entityType: "ExerciseSummary" },
   React.memo(({ entity: exerciseSummary }) => {
     const classes = useStyles();
     const currentUser = useContext(UserContext);

@@ -1,11 +1,8 @@
 import { Avatar, Card, CardHeader, CircularProgress } from "@material-ui/core";
 import { Done, Error } from "@material-ui/icons";
 import * as React from "react";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { EntityObject, EntityType } from "../../../shared/api/entities";
-import { RootState } from "../../reducers";
-import { apiActions } from "../../reducers/api";
+import { useEntity } from "../../hooks/entity";
 import { useStyles } from "../ui/styles";
 
 interface EntityViewerContainerProps {
@@ -17,24 +14,18 @@ interface EntityViewerRendererProps<E extends EntityObject> {
   entity: E;
 }
 
-export const createEntityViewer = <E extends EntityObject>(
-  entityType: EntityType,
-  Renderer: React.ComponentType<EntityViewerRendererProps<E>>
+export const createEntityViewer = <E extends EntityObject, P extends {} = {}>(
+  {
+    entityType
+  }: {
+    entityType: EntityType;
+  },
+  Renderer: React.ComponentType<EntityViewerRendererProps<E> & P>
 ) =>
-  React.memo<EntityViewerContainerProps>(({ entityId }) => {
+  React.memo<EntityViewerContainerProps & P>(({ entityId, ...props }) => {
     const classes = useStyles();
-    const dispatch = useDispatch();
-    const { entity, getStatus, deleteStatus } = useSelector((state: RootState) => ({
-      entity: state.cache.get[entityType][entityId],
-      getStatus: state.api.get[entityType][entityId],
-      deleteStatus: state.api.delete[entityType][entityId]
-    }));
 
-    useEffect(() => {
-      if (entity === undefined) {
-        dispatch(apiActions.get(entityType, entityId));
-      }
-    }, []);
+    const { entity, getStatus, deleteStatus } = useEntity(entityType, entityId);
 
     if (getStatus === 404) {
       return (
@@ -97,5 +88,5 @@ export const createEntityViewer = <E extends EntityObject>(
       );
     }
 
-    return <Renderer entityId={entityId} entity={entity as E} />;
+    return <Renderer entityId={entityId} entity={entity as E} {...props as P} />;
   });

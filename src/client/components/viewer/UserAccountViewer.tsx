@@ -4,7 +4,7 @@ import { createEntityViewer } from ".";
 import { UserAccount } from "../../../shared/api/entities";
 
 export const UserAccountViewer = createEntityViewer<UserAccount>(
-  "UserAccount",
+  { entityType: "UserAccount" },
   React.memo(({ entity: userAccount }) => {
     return (
       <Box display="flex" flexDirection="column">

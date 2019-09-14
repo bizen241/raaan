@@ -24,7 +24,7 @@ import { useStyles } from "../ui/styles";
 import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 
 export const PlaylistViewer = createEntityViewer<Playlist>(
-  "Playlist",
+  { entityType: "Playlist" },
   React.memo(({ entity: playlist, entityId: playlistId }) => {
     const classes = useStyles();
 
@@ -78,7 +78,7 @@ export const PlaylistViewer = createEntityViewer<Playlist>(
 );
 
 const ExerciseTitleViewer = createEntityViewer<ExerciseSummary>(
-  "ExerciseSummary",
+  { entityType: "ExerciseSummary" },
   React.memo(({ entity: exerciseSummary }) => {
     return (
       <Box>

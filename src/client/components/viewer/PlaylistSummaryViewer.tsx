@@ -13,7 +13,7 @@ import { Menu } from "../ui/Menu";
 import { useStyles } from "../ui/styles";
 
 export const PlaylistSummaryViewer = createEntityViewer<PlaylistSummary>(
-  "PlaylistSummary",
+  { entityType: "PlaylistSummary" },
   React.memo(({ entity: playlistSummary }) => {
     const classes = useStyles();
     const currentUser = useContext(UserContext);

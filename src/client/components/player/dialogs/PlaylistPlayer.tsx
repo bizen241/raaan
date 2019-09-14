@@ -1,13 +1,13 @@
 import * as React from "react";
 import { useState } from "react";
 import { PlaylistItem } from "../../../../shared/api/entities";
-import { ExerciseManager } from "../managers/ExerciseManager";
-import { createPlayerDialog } from "./enhancer";
+import { SubmissionManager } from "../managers/SubmissionManager";
+import { createPlayerDialog } from "./PlayerDialog";
 
 export const PlaylistPlayer = createPlayerDialog<{
   playlistItems: PlaylistItem[];
 }>(
-  React.memo(({ playlistItems, isOpen, onClose }) => {
+  React.memo(({ playlistItems, onClose }) => {
     const [cursor, setCursor] = useState(0);
     const [exerciseIds] = useState(() => {
       const ids: string[] = [];
@@ -21,14 +21,6 @@ export const PlaylistPlayer = createPlayerDialog<{
       setCursor(s => s + 1);
     };
 
-    return (
-      <ExerciseManager
-        exerciseId={exerciseIds[cursor]}
-        hasNext={true}
-        onNext={onNext}
-        isOpen={isOpen}
-        onClose={onClose}
-      />
-    );
+    return <SubmissionManager entityId={exerciseIds[cursor]} hasNext={true} onNext={onNext} onClose={onClose} />;
   })
 );

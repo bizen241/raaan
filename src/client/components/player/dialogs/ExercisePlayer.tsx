@@ -1,11 +1,11 @@
 import * as React from "react";
-import { createDialog } from "../../dialogs";
-import { ExerciseManager } from "../managers/ExerciseManager";
+import { SubmissionManager } from "../managers/SubmissionManager";
+import { createPlayerDialog } from "./PlayerDialog";
 
-export const ExercisePlayer = createDialog<{
+export const ExercisePlayer = createPlayerDialog<{
   exerciseId: string;
 }>(
-  React.memo(({ exerciseId, isOpen, onClose }) => {
-    return <ExerciseManager exerciseId={exerciseId} isOpen={isOpen} onClose={onClose} />;
+  React.memo(({ exerciseId, onClose }) => {
+    return <SubmissionManager entityId={exerciseId} onClose={onClose} />;
   })
 );

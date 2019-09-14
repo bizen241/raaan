@@ -1,13 +1,13 @@
 import * as React from "react";
 import { useMemo } from "react";
 import { Question } from "../../../../shared/api/entities";
-import { createDialog } from "../../dialogs";
 import { AttemptManager } from "../managers/AttemptManager";
+import { createPlayerDialog } from "./PlayerDialog";
 
-export const QuestionPreviewer = createDialog<{
+export const QuestionPreviewer = createPlayerDialog<{
   question: Question;
 }>(
-  React.memo(({ question, isOpen, onClose }) => {
+  React.memo(({ question, onClose }) => {
     const exercise = useMemo(
       () => ({
         questions: [question]
@@ -15,6 +15,6 @@ export const QuestionPreviewer = createDialog<{
       [question]
     );
 
-    return <AttemptManager exercise={exercise} isOpen={isOpen} onClose={onClose} />;
+    return <AttemptManager exercise={exercise} onClose={onClose} />;
   })
 );

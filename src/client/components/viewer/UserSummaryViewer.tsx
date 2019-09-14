@@ -6,7 +6,7 @@ import { UserSummary } from "../../../shared/api/entities";
 import { useStyles } from "../ui/styles";
 
 export const UserSummaryViewer = createEntityViewer<UserSummary>(
-  "UserSummary",
+  { entityType: "UserSummary" },
   React.memo(({ entity: userSummary }) => {
     const classes = useStyles();
 

@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Exercise } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
-import { createDialog } from "../../dialogs";
 import { AttemptManager } from "../managers/AttemptManager";
+import { createPlayerDialog } from "./PlayerDialog";
 
-export const ExercisePreviewer = createDialog<{
+export const ExercisePreviewer = createPlayerDialog<{
   exercise: SaveParams<Exercise>;
 }>(
   React.memo(({ exercise, onClose }) => {

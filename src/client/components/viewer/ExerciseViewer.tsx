@@ -13,7 +13,7 @@ import { ExerciseSummaryViewer } from "./ExerciseSummaryViewer";
 import { SubmissionSummaryViewer } from "./SubmissionSummaryViewer";
 
 export const ExerciseViewer = createEntityViewer<Exercise>(
-  "Exercise",
+  { entityType: "Exercise" },
   React.memo(({ entity: exercise, entityId: exerciseId }) => {
     const classes = useStyles();
     const currentUser = useContext(UserContext);

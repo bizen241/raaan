@@ -14,7 +14,7 @@ export interface QuestionPlayerState {
   isFinished: boolean;
 }
 
-export const QuestionPlayer: React.FunctionComponent<{
+export const QuestionManager: React.FunctionComponent<{
   question: CompiledQuestion;
   onFinish: (result: QuestionResult) => void;
 }> = ({ question, onFinish }) => {

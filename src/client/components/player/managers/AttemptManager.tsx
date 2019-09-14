@@ -7,7 +7,7 @@ import { SaveParams } from "../../../../shared/api/request/save";
 import { Attempt, createAttempt, QuestionResult } from "../../../domain/exercise/attempt";
 import { AttemptMessage } from "../renderers/AttemptMessage";
 import { AttemptResultViewer } from "../renderers/ResultSummary";
-import { QuestionPlayer } from "./QuestionManager";
+import { QuestionManager } from "./QuestionManager";
 
 export const AttemptManager = React.memo<{
   exercise: SaveParams<Exercise>;
@@ -72,6 +72,6 @@ export const AttemptManager = React.memo<{
       onFinish={onFinishExercise}
     />
   ) : (
-    <QuestionPlayer key={attempt.results.length} question={currentQuestion} onFinish={onFinishQuestion} />
+    <QuestionManager key={attempt.results.length} question={currentQuestion} onFinish={onFinishQuestion} />
   );
 });

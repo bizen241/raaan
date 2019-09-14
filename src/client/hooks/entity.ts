@@ -17,7 +17,7 @@ export const useEntity = <E extends EntityObject>(entityType: EntityType, entity
     if (entity === undefined && !isLocalOnly(entityId)) {
       dispatch(actions.api.get(entityType, entityId));
     }
-  }, []);
+  }, [entityId]);
 
   return {
     entity: entity as E | undefined,
