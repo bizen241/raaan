@@ -39,7 +39,7 @@ export const SubmissionManager = createEntityViewer<
         );
         dispatch(actions.api.upload("Submission", submissionId));
       },
-      [submissionSummary]
+      [exerciseId, submissionSummary]
     );
 
     return (
@@ -58,6 +58,7 @@ export const SubmissionManager = createEntityViewer<
 const useSubmissionSummary = (submitterId: string, exerciseId: string) => {
   const submissionSummaries = useSelector((state: RootState) => state.cache.get.SubmissionSummary);
   const submissionSummary = useMemo(() => findSubmissionSummary(submissionSummaries, submitterId, exerciseId), [
+    exerciseId,
     submissionSummaries
   ]);
 
