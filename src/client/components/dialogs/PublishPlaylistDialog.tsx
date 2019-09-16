@@ -6,16 +6,16 @@ import { createDialog, DialogContent, DialogHeader } from ".";
 import { actions } from "../../reducers";
 import { useStyles } from "../ui/styles";
 
-export const PublishExerciseDialog = createDialog<{
-  exerciseId: string;
+export const PublishPlaylistDialog = createDialog<{
+  playlistId: string;
 }>(
-  React.memo(({ exerciseId, onClose }) => {
+  React.memo(({ playlistId, onClose }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
     const onUnpublish = () => {
       dispatch(
-        actions.api.upload("Exercise", exerciseId, {
+        actions.api.upload("Playlist", playlistId, {
           isPrivate: false
         })
       );
@@ -26,16 +26,16 @@ export const PublishExerciseDialog = createDialog<{
     return (
       <>
         <DialogHeader onClose={onClose}>
-          <Typography>問題集を公開</Typography>
+          <Typography>プレイリストを公開</Typography>
         </DialogHeader>
         <DialogContent>
           <Box display="flex" alignItems="center" flex={1} pb={1}>
             <Warning className={classes.leftIcon} />
-            <Typography>問題集が公開されます。</Typography>
+            <Typography>プレイリストが公開されます。</Typography>
           </Box>
           <Box display="flex" flexDirection="column" pb={1}>
             <Button className={classes.largeButton} variant="contained" onClick={onUnpublish}>
-              <Typography color="error">問題集を公開</Typography>
+              <Typography color="error">プレイリストを公開</Typography>
             </Button>
           </Box>
           <Box display="flex" flexDirection="column" pb={1}>

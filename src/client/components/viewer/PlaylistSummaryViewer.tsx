@@ -1,5 +1,5 @@
 import { Box, Card, CardHeader, Chip, MenuItem, Typography } from "@material-ui/core";
-import { Delete, Lock } from "@material-ui/icons";
+import { Delete, Edit, Lock, Public } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -7,6 +7,7 @@ import { createEntityViewer } from ".";
 import { PlaylistSummary } from "../../../shared/api/entities";
 import { useToggleState } from "../dialogs";
 import { DeletePlaylistDialog } from "../dialogs/DeletePlaylistDialog";
+import { PublishPlaylistDialog } from "../dialogs/PublishPlaylistDialog";
 import { UnpublishPlaylistDialog } from "../dialogs/UnpublishPlaylistDialog";
 import { UserContext } from "../project/Context";
 import { Menu } from "../ui/Menu";
@@ -20,6 +21,7 @@ export const PlaylistSummaryViewer = createEntityViewer<PlaylistSummary>(
 
     const { playlistId } = playlistSummary;
 
+    const [isPublishPlaylistDialogOpen, onTogglePublishPlaylistDialog] = useToggleState();
     const [isUnpublishPlaylistDialogOpen, onToggleUnpublishPlaylistDialog] = useToggleState();
     const [isDeletePlaylistDialogOpen, onToggleDeletePlaylistDialog] = useToggleState();
 
@@ -47,6 +49,18 @@ export const PlaylistSummaryViewer = createEntityViewer<PlaylistSummary>(
           }
           action={
             <Menu>
+              {isAuthor && (
+                <MenuItem component={RouterLink} to={`/playlists/${playlistId}/edit`}>
+                  <Edit className={classes.leftIcon} />
+                  編集する
+                </MenuItem>
+              )}
+              {playlistSummary.isPrivate ? (
+                <MenuItem onClick={onTogglePublishPlaylistDialog}>
+                  <Public className={classes.leftIcon} />
+                  公開する
+                </MenuItem>
+              ) : null}
               {!playlistSummary.isPrivate ? (
                 <MenuItem onClick={onToggleUnpublishPlaylistDialog}>
                   <Lock className={classes.leftIcon} />
@@ -61,6 +75,11 @@ export const PlaylistSummaryViewer = createEntityViewer<PlaylistSummary>(
               )}
             </Menu>
           }
+        />
+        <PublishPlaylistDialog
+          playlistId={playlistId}
+          isOpen={isPublishPlaylistDialogOpen}
+          onClose={onTogglePublishPlaylistDialog}
         />
         <UnpublishPlaylistDialog
           playlistId={playlistId}

@@ -80,7 +80,7 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
   const manager = getManager();
 
   const playlistItem = await manager.findOne(PlaylistItemEntity, playlistItemId, {
-    relations: ["playlist", "playlist.author"]
+    relations: ["playlist", "playlist.author", "next"]
   });
   if (playlistItem === undefined) {
     return next(createError(404));
@@ -94,9 +94,24 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
     return next(createError(403));
   }
 
+  const updatedItems: PlaylistItemEntity[] = [];
+
+  const prevItem = await manager.findOne(PlaylistItemEntity, {
+    next: {
+      id: playlistItemId
+    }
+  });
+  if (prevItem !== undefined) {
+    prevItem.next = playlistItem.next;
+
+    await manager.save(prevItem);
+
+    updatedItems.push(prevItem);
+  }
+
   await manager.remove(playlistItem);
 
-  responseFindResult(req, res);
+  responseFindResult(req, res, ...updatedItems);
 });
 
 DELETE.apiDoc = createOperationDoc({

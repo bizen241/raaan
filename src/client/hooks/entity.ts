@@ -14,7 +14,7 @@ export const useEntity = <E extends EntityObject>(entityType: EntityType, entity
   }));
 
   useEffect(() => {
-    if (entity === undefined && !isLocalOnly(entityId)) {
+    if (entity === undefined && status.deleteStatus !== 200 && !isLocalOnly(entityId)) {
       dispatch(actions.api.get(entityType, entityId));
     }
   }, [entityId]);

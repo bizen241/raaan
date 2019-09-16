@@ -4,7 +4,7 @@ import { combineReducers } from "redux";
 import { ApiActions, apiActions, apiReducer, ApiState } from "./api";
 import { AppActions, appActions, appReducer, AppState } from "./app";
 import { BuffersActions, buffersActions, buffersReducer, BuffersState } from "./buffers";
-import { CacheActions, cacheReducer, CacheState } from "./cache";
+import { CacheActions, cacheActions, cacheReducer, CacheState } from "./cache";
 
 export interface RootState {
   api: ApiState;
@@ -28,5 +28,6 @@ export type Actions = ApiActions | AppActions | BuffersActions | CacheActions | 
 export const actions = {
   api: apiActions,
   app: appActions,
-  buffers: buffersActions
+  buffers: buffersActions,
+  cache: cacheActions
 };

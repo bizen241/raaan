@@ -6,6 +6,7 @@ import { RootState } from "../../reducers";
 import AccountPage from "../pages/AccountPage";
 import AppPage from "../pages/AppPage";
 import { EditExercisesPage } from "../pages/EditExercisesPage";
+import EditPlaylistPage from "../pages/EditPlaylistPage";
 import { ExercisePage } from "../pages/ExercisePage";
 import { ExercisesPage } from "../pages/ExercisesPage";
 import { HomePage } from "../pages/HomePage";
@@ -42,6 +43,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/exercises/:id/edit" component={EditExercisePage} />
         <Route exact={true} path="/playlists" component={PlaylistsPage} />
         <Route exact={true} path="/playlists/:id" component={PlaylistPage} />
+        <Route exact={true} path="/playlists/:id/edit" component={EditPlaylistPage} />
         <Route exact={true} path="/config" component={ConfigPage} />
         <Route exact={true} path="/account" component={AccountPage} />
         <Route exact={true} path="/sessions" component={SessionsPage} />
