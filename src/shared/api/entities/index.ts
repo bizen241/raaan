@@ -1,5 +1,6 @@
 import { Exercise } from "./Exercise";
 import { ExerciseDiary } from "./ExerciseDiary";
+import { ExerciseDraft } from "./ExerciseDraft";
 import { ExerciseReport } from "./ExerciseReport";
 import { ExerciseSummary } from "./ExerciseSummary";
 import { ExerciseTag } from "./ExerciseTag";
@@ -20,8 +21,10 @@ import { UserReport } from "./UserReport";
 import { UserSession } from "./UserSession";
 import { UserSummary } from "./UserSummary";
 
+export * from "./BaseExerciseObject";
 export * from "./Exercise";
 export * from "./ExerciseDiary";
+export * from "./ExerciseDraft";
 export * from "./ExerciseReport";
 export * from "./ExerciseSummary";
 export * from "./ExerciseTag";
@@ -45,6 +48,7 @@ export * from "./UserSummary";
 export type EntityObject =
   | Exercise
   | ExerciseDiary
+  | ExerciseDraft
   | ExerciseReport
   | ExerciseSummary
   | ExerciseTag
@@ -68,6 +72,7 @@ export type EntityObject =
 export type EntityTypeToEntity = {
   Exercise: Exercise;
   ExerciseDiary: ExerciseDiary;
+  ExerciseDraft: ExerciseDraft;
   ExerciseReport: ExerciseReport;
   ExerciseSummary: ExerciseSummary;
   ExerciseTag: ExerciseTag;
@@ -97,6 +102,7 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
   const entityTypeToObject: EntityTypeToObject = {
     Exercise: {},
     ExerciseDiary: {},
+    ExerciseDraft: {},
     ExerciseReport: {},
     ExerciseSummary: {},
     ExerciseTag: {},

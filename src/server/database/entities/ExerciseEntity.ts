@@ -1,12 +1,13 @@
 import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
-import { Exercise, Question } from "../../../shared/api/entities";
+import { Exercise } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
-import { BaseEntityClass } from "./BaseEntityClass";
+import { BaseExerciseClass } from "./BaseExerciseClass";
+import { ExerciseDraftEntity } from "./ExerciseDraftEntity";
 import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity("exercises")
-export class ExerciseEntity extends BaseEntityClass {
+export class ExerciseEntity extends BaseExerciseClass {
   type: "Exercise" = "Exercise";
 
   @ManyToOne(() => UserEntity, {
@@ -23,42 +24,19 @@ export class ExerciseEntity extends BaseEntityClass {
   @RelationId((exercise: ExerciseEntity) => exercise.summary)
   summaryId!: string;
 
-  @Column()
-  lang: string = "en";
+  @OneToOne(() => ExerciseDraftEntity, exerciseDraft => exerciseDraft.exercise, {
+    cascade: ["insert"]
+  })
+  draft?: ExerciseDraftEntity;
+  @RelationId((exercise: ExerciseEntity) => exercise.draft)
+  draftId!: string;
 
   @Column()
-  title: string = "";
-
-  @Column("json")
-  tags: string[] = [];
-
-  @Column()
-  description: string = "";
-
-  @Column("json")
-  questions: Question[] = [];
-
-  @Column()
-  isLinear: boolean = false;
+  isDraft: boolean = true;
 
   @Column()
   isPrivate: boolean = true;
 
   @Column()
   isLocked: boolean = false;
-
-  constructor(author: UserEntity, summary: ExerciseSummaryEntity, params?: SaveParams<Exercise>) {
-    super();
-
-    this.author = author;
-    this.summary = summary;
-
-    if (params !== undefined) {
-      this.lang = params.lang || "en";
-      this.title = params.title || "";
-      this.tags = params.tags || [];
-      this.description = params.description || "";
-      this.questions = params.questions || [];
-    }
-  }
 }

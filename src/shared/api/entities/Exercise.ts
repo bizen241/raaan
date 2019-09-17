@@ -1,23 +1,9 @@
-import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { UUID } from "./BaseEntityObject";
+import { BaseExerciseObject } from "./BaseExerciseObject";
 
-export interface Exercise extends BaseEntityObject {
+export interface Exercise extends BaseExerciseObject {
   authorId: UUID;
   summaryId: UUID;
-  lang: string;
-  title: string;
-  tags: string[];
-  description: string;
-  questions: Question[];
   isPrivate: boolean;
   isLocked: boolean;
 }
-
-export interface Question {
-  id: number;
-  lang: string;
-  format: string;
-  value: string;
-  comment: string;
-}
-
-export type NavigationMode = "sequential" | "random";

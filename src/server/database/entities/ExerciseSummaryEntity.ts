@@ -24,10 +24,10 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
   tagsIndex?: ExerciseTagEntity[];
 
   @Column()
-  maxTypeCount: number;
+  maxTypeCount!: number;
 
   @Column()
-  minTypeCount: number;
+  minTypeCount!: number;
 
   @Column()
   upvoteCount: number = 0;
@@ -37,15 +37,4 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
 
   @Column()
   typedCount: number = 0;
-
-  constructor(maxTypeCount: number, minTypeCount: number, tags?: ExerciseTagEntity[]) {
-    super();
-
-    this.maxTypeCount = maxTypeCount;
-    this.minTypeCount = minTypeCount;
-
-    if (tags !== undefined) {
-      this.tags = tags;
-    }
-  }
 }
