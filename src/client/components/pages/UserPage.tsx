@@ -5,8 +5,8 @@ import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { UserContext } from "../project/Context";
 import { PageProps } from "../project/Router";
+import { Page } from "../ui/Page";
 import { useStyles } from "../ui/styles";
-import { Page } from "./Page";
 
 export const UserPage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;

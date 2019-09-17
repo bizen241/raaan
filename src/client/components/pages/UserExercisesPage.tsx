@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { ExerciseSummaryList } from "../list/search/ExerciseSummaryList";
 import { UserContext } from "../project/Context";
 import { PageProps } from "../project/Router";
-import { Page } from "./Page";
+import { Page } from "../ui/Page";
 
 export const UserExercisesPage = React.memo<PageProps>(({ match }) => {
   const userId = match.params.id;

@@ -4,8 +4,8 @@ import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { PlaylistSummaryList } from "../list/search/PlaylistSummaryList";
 import { PageProps } from "../project/Router";
+import { Page } from "../ui/Page";
 import { useStyles } from "../ui/styles";
-import { Page } from "./Page";
 
 export const PlaylistsPage = React.memo<PageProps>(() => {
   const classes = useStyles();

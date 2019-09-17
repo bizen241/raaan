@@ -1,7 +1,7 @@
 import { Card, CardHeader } from "@material-ui/core";
 import { Error } from "@material-ui/icons";
 import * as React from "react";
-import { Page } from "./Page";
+import { Page } from "../ui/Page";
 
 export const NotFoundPage = React.memo(() => {
   return (

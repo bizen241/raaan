@@ -1,7 +1,7 @@
 import * as React from "react";
 import { PageProps } from "../project/Router";
+import { Page } from "../ui/Page";
 import { PlaylistViewer } from "../viewer/PlaylistViewer";
-import { Page } from "./Page";
 
 export const PlaylistPage = React.memo<PageProps>(props => {
   const exerciseId = props.match.params.id;

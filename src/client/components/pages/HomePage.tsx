@@ -5,9 +5,9 @@ import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { UserDiaryGraph } from "../graphs/UserDiaryGraph";
 import { UserContext } from "../project/Context";
+import { Page } from "../ui/Page";
 import { useStyles } from "../ui/styles";
 import { UserSummaryViewer } from "../viewer/UserSummaryViewer";
-import { Page } from "./Page";
 
 export const HomePage = React.memo(() => {
   const classes = useStyles();

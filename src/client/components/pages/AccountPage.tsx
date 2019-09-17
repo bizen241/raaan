@@ -7,9 +7,9 @@ import { DeleteAccountDialog } from "../dialogs/DeleteAccountDialog";
 import { LogoutDialog } from "../dialogs/LogoutDialog";
 import { UserContext } from "../project/Context";
 import { Message } from "../project/Message";
+import { Page } from "../ui/Page";
 import { useStyles } from "../ui/styles";
 import { UserAccountViewer } from "../viewer/UserAccountViewer";
-import { Page } from "./Page";
 
 const AccountPage = React.memo(() => {
   const classes = useStyles();

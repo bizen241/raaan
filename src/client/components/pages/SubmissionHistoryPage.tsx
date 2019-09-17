@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { SubmissionSummaryList } from "../list/search/SubmissionSummaryList";
 import { UserContext } from "../project/Context";
 import { PageProps } from "../project/Router";
-import { Page } from "./Page";
+import { Page } from "../ui/Page";
 
 export const SubmissionHistoryPage = React.memo<PageProps>(() => {
   const currentUser = useContext(UserContext);

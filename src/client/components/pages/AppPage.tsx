@@ -4,8 +4,8 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../reducers";
 import { Message } from "../project/Message";
+import { Page } from "../ui/Page";
 import { useStyles } from "../ui/styles";
-import { Page } from "./Page";
 
 const AppPage = React.memo(() => {
   const classes = useStyles();
