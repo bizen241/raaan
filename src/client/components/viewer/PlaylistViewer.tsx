@@ -14,16 +14,16 @@ import { PlayArrow, Shuffle } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useMemo, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { createEntityViewer } from ".";
 import { ExerciseSummary, Playlist, PlaylistItem } from "../../../shared/api/entities";
 import { randomizePlaylistItems, sortPlaylistItems } from "../../domain/playlist";
+import { withEntity } from "../../enhancers/entity";
 import { useSearch } from "../../hooks/search";
 import { useToggleState } from "../dialogs";
 import { PlaylistPlayer } from "../player/dialogs/PlaylistPlayer";
 import { useStyles } from "../ui/styles";
 import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 
-export const PlaylistViewer = createEntityViewer<Playlist>(
+export const PlaylistViewer = withEntity<Playlist>(
   { entityType: "Playlist" },
   React.memo(({ entity: playlist, entityId: playlistId }) => {
     const classes = useStyles();
@@ -123,8 +123,7 @@ const PlaylistItemViewer = React.memo<{
   );
 });
 
-const ExerciseTitleViewer = createEntityViewer<ExerciseSummary>(
-  { entityType: "ExerciseSummary" },
+const ExerciseTitleViewer = withEntity<ExerciseSummary>({ entityType: "ExerciseSummary" })(
   React.memo(({ entity: exerciseSummary }) => {
     return (
       <Box>

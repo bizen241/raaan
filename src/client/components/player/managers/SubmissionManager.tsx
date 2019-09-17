@@ -4,20 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { Exercise, Submission, SubmissionSummary } from "../../../../shared/api/entities";
 import { EntityMap } from "../../../../shared/api/response/get";
 import { QuestionResult, summarizeResults } from "../../../domain/exercise/attempt";
+import { withEntity } from "../../../enhancers/entity";
 import { actions, RootState } from "../../../reducers";
 import { UserContext } from "../../project/Context";
-import { createEntityViewer } from "../../viewer";
 import { AttemptManager } from "./AttemptManager";
 
-export const SubmissionManager = createEntityViewer<
-  Exercise,
-  {
-    hasNext?: boolean;
-    onNext?: () => void;
-    onClose: () => void;
-  }
->(
-  { entityType: "Exercise" },
+interface Props {
+  hasNext?: boolean;
+  onNext?: () => void;
+  onClose: () => void;
+}
+
+export const SubmissionManager = withEntity<Exercise, Props>({ entityType: "Exercise" })(
   React.memo(({ entityId: exerciseId, entity: exercise, hasNext, onNext, onClose }) => {
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);

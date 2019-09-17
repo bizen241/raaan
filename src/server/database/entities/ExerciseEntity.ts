@@ -1,6 +1,4 @@
 import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
-import { Exercise } from "../../../shared/api/entities";
-import { SaveParams } from "../../../shared/api/request/save";
 import { BaseExerciseClass } from "./BaseExerciseClass";
 import { ExerciseDraftEntity } from "./ExerciseDraftEntity";
 import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";

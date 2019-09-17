@@ -1,12 +1,11 @@
 import { Avatar, Box, Card, CardContent, CardHeader, Divider, Typography } from "@material-ui/core";
 import { Person } from "@material-ui/icons";
 import * as React from "react";
-import { createEntityViewer } from ".";
 import { UserSummary } from "../../../shared/api/entities";
+import { withEntity } from "../../enhancers/entity";
 import { useStyles } from "../ui/styles";
 
-export const UserSummaryViewer = createEntityViewer<UserSummary>(
-  { entityType: "UserSummary" },
+export const UserSummaryViewer = withEntity<UserSummary>({ entityType: "UserSummary" })(
   React.memo(({ entity: userSummary }) => {
     const classes = useStyles();
 

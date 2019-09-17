@@ -1,44 +1,30 @@
-import { Box, Button, Card, CardHeader, CircularProgress, Typography } from "@material-ui/core";
-import { CloudUpload, Done, Error } from "@material-ui/icons";
+import { Typography } from "@material-ui/core";
 import * as React from "react";
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EntityObject, EntityType } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { useEntity } from "../../hooks/entity";
 import { actions, RootState } from "../../reducers";
 import { isLocalOnly } from "../../reducers/api";
-import { UserContext } from "../project/Context";
-import { useStyles } from "../ui/styles";
 
-interface EntityEditorProps {
-  bufferId: string;
-}
-
-interface EntityEditorRendererProps<E extends EntityObject> {
+interface Props<E extends EntityObject> {
   bufferId: string;
   buffer: SaveParams<E>;
   source: Partial<E> | undefined;
   onChange: (params: SaveParams<E>) => void;
+  onUpload: () => void;
 }
 
-export const createEntityEditor = <E extends EntityObject>(
+export const withBuffer = <E extends EntityObject>(
   entityType: EntityType,
-  RendererComponent: React.ComponentType<EntityEditorRendererProps<E>>
+  BaseComponent: React.ComponentType<Props<E>>
 ) =>
-  React.memo<EntityEditorProps>(({ bufferId }) => {
-    const currentUser = useContext(UserContext);
-    const classes = useStyles();
+  React.memo<{ bufferId: string }>(({ bufferId }) => {
     const dispatch = useDispatch();
 
     const { entity, uploadStatus } = useEntity<E>(entityType, bufferId);
     const buffer = useSelector((state: RootState) => state.buffers[entityType][bufferId] as SaveParams<E> | undefined);
-
-    useEffect(() => {
-      if (buffer === undefined && entity !== undefined && !isLocalOnly(bufferId)) {
-        dispatch(actions.buffers.add(entityType, bufferId));
-      }
-    }, []);
 
     const onChange = useCallback(
       (params: SaveParams<E>) => dispatch(actions.buffers.update(entityType, bufferId, params)),
@@ -47,53 +33,25 @@ export const createEntityEditor = <E extends EntityObject>(
     const onUpload = useCallback(() => dispatch(actions.api.upload(entityType, bufferId)), []);
 
     if (uploadStatus === 102) {
-      return (
-        <Card>
-          <CardHeader avatar={<CircularProgress />} title="アップロード中です" />
-        </Card>
-      );
+      return <Typography>アップロード中です</Typography>;
     }
     if (uploadStatus === 200) {
-      return (
-        <Card>
-          <CardHeader avatar={<Done />} title="アップロードが完了しました" />
-        </Card>
-      );
+      return <Typography>アップロードが完了しました</Typography>;
     }
 
     if (buffer === undefined) {
       if (isLocalOnly(bufferId)) {
-        return (
-          <Card>
-            <CardHeader avatar={<Error />} title="バッファが削除されました" />
-          </Card>
-        );
+        return <Typography>バッファが削除されました</Typography>;
       } else {
-        return (
-          <Card>
-            <CardHeader avatar={<CircularProgress />} title="ロード中です" />
-          </Card>
-        );
+        return <Typography>ロード中です</Typography>;
       }
     }
 
-    const isGuest = currentUser.permission === "Guest";
+    if (entity === undefined && !isLocalOnly(bufferId)) {
+      return null;
+    }
 
     return (
-      <Box display="flex" flexDirection="column">
-        <Box display="flex" flexDirection="column" pb={1}>
-          <Button
-            className={classes.largeButton}
-            variant="contained"
-            size="large"
-            disabled={isGuest}
-            onClick={onUpload}
-          >
-            <CloudUpload className={classes.leftIcon} />
-            <Typography>アップロード</Typography>
-          </Button>
-        </Box>
-        <RendererComponent bufferId={bufferId} buffer={buffer} source={entity} onChange={onChange} />
-      </Box>
+      <BaseComponent bufferId={bufferId} buffer={buffer} source={entity} onChange={onChange} onUpload={onUpload} />
     );
   });

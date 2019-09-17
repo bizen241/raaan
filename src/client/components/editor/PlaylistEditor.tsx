@@ -15,13 +15,12 @@ import * as React from "react";
 import { useMemo } from "react";
 import { ExerciseSummary, Playlist, PlaylistItem } from "../../../shared/api/entities";
 import { sortPlaylistItems } from "../../domain/playlist";
+import { withEntity } from "../../enhancers/entity";
 import { useSearch } from "../../hooks/search";
 import { useToggleState } from "../dialogs";
 import { DeletePlaylistItemDialog } from "../dialogs/DeletePlaylistItemDialog";
-import { createEntityViewer } from "../viewer";
 
-export const PlaylistEditor = createEntityViewer<Playlist>(
-  { entityType: "Playlist" },
+export const PlaylistEditor = withEntity<Playlist>({ entityType: "Playlist" })(
   React.memo(({ entityId: playlistId, entity: playlist }) => {
     const { entities: playlistItems } = useSearch<PlaylistItem>("PlaylistItem", {
       playlistId
@@ -103,8 +102,7 @@ const PlaylistItemEditor = React.memo<{
   );
 });
 
-const ExerciseTitleViewer = createEntityViewer<ExerciseSummary>(
-  { entityType: "ExerciseSummary" },
+const ExerciseTitleViewer = withEntity<ExerciseSummary>({ entityType: "ExerciseSummary" })(
   React.memo(({ entity: exerciseSummary }) => {
     return (
       <Box>

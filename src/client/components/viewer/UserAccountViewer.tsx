@@ -1,10 +1,9 @@
 import { Box, Divider, Typography } from "@material-ui/core";
 import * as React from "react";
-import { createEntityViewer } from ".";
 import { UserAccount } from "../../../shared/api/entities";
+import { withEntity } from "../../enhancers/entity";
 
-export const UserAccountViewer = createEntityViewer<UserAccount>(
-  { entityType: "UserAccount" },
+export const UserAccountViewer = withEntity<UserAccount>({ entityType: "UserAccount" })(
   React.memo(({ entity: userAccount }) => {
     return (
       <Box display="flex" flexDirection="column">

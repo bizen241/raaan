@@ -3,8 +3,8 @@ import { Delete, Edit, Lock, Public } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { createEntityViewer } from ".";
 import { ExerciseSummary } from "../../../shared/api/entities";
+import { withEntity } from "../../enhancers/entity";
 import { useToggleState } from "../dialogs";
 import { DeleteExerciseDialog } from "../dialogs/DeleteExerciseDialog";
 import { PublishExerciseDialog } from "../dialogs/PublishExerciseDialog";
@@ -13,8 +13,7 @@ import { UserContext } from "../project/Context";
 import { Menu } from "../ui/Menu";
 import { useStyles } from "../ui/styles";
 
-export const ExerciseSummaryViewer = createEntityViewer<ExerciseSummary>(
-  { entityType: "ExerciseSummary" },
+export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "ExerciseSummary" })(
   React.memo(({ entity: exerciseSummary }) => {
     const classes = useStyles();
     const currentUser = useContext(UserContext);

@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, NativeSelect, OutlinedInput, Typography } from "@material-ui/core";
 import * as React from "react";
 import { useCallback } from "react";
-import { createEntityEditor } from ".";
+import { withBuffer } from ".";
 import { Lang, Theme, UserConfig } from "../../../shared/api/entities";
 import { Message } from "../project/Message";
 
@@ -19,9 +19,9 @@ const themeNameToLabel: { [T in Theme]: string } = {
   light: "light"
 };
 
-export const UserConfigEditor = createEntityEditor<UserConfig>(
+export const UserConfigEditor = withBuffer<UserConfig>(
   "UserConfig",
-  React.memo(({ buffer, source = {}, onChange }) => {
+  React.memo(({ buffer = {}, source = {}, onChange }) => {
     const onUpdateLang = useCallback(
       (e: React.ChangeEvent<{ value: unknown }>) => onChange({ lang: e.target.value as Lang }),
       []

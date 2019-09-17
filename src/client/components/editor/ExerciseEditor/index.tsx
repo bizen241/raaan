@@ -2,15 +2,15 @@ import { Box, Button, Card, CardContent, TextField, Typography } from "@material
 import { PlayArrow } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useState } from "react";
-import { createEntityEditor } from "../";
+import { withBuffer } from "../";
 import { Exercise, Question } from "../../../../shared/api/entities";
 import { ExercisePreviewer } from "../../player/dialogs/ExercisePreviewer";
 import { useStyles } from "../../ui/styles";
 import { QuestionsEditor } from "./QuestionsEditor";
 
-export const ExerciseEditor = createEntityEditor<Exercise>(
+export const ExerciseEditor = withBuffer<Exercise>(
   "Exercise",
-  React.memo(({ buffer, source = {}, onChange }) => {
+  React.memo(({ buffer = {}, source = {}, onChange }) => {
     const classes = useStyles();
 
     const [isExercisePreviewerOpen, toggleExercisePreviewer] = useState(false);

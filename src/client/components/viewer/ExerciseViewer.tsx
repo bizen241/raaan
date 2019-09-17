@@ -2,8 +2,8 @@ import { Box, Button, Typography } from "@material-ui/core";
 import { PlayArrow, PlaylistAdd } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
-import { createEntityViewer } from ".";
 import { Exercise } from "../../../shared/api/entities";
+import { withEntity } from "../../enhancers/entity";
 import { useToggleState } from "../dialogs";
 import { PlaylistDialog } from "../dialogs/PlaylistDialog";
 import { ExercisePlayer } from "../player/dialogs/ExercisePlayer";
@@ -12,8 +12,7 @@ import { useStyles } from "../ui/styles";
 import { ExerciseSummaryViewer } from "./ExerciseSummaryViewer";
 import { SubmissionSummaryViewer } from "./SubmissionSummaryViewer";
 
-export const ExerciseViewer = createEntityViewer<Exercise>(
-  { entityType: "Exercise" },
+export const ExerciseViewer = withEntity<Exercise>({ entityType: "Exercise" })(
   React.memo(({ entity: exercise, entityId: exerciseId }) => {
     const classes = useStyles();
     const currentUser = useContext(UserContext);
