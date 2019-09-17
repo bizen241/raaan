@@ -4,7 +4,7 @@ import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createBufferList } from ".";
 import { Exercise } from "../../../../shared/api/entities";
-import { useToggleState } from "../../dialogs";
+import { useToggleState } from "../../../hooks/toggle";
 import { DeleteExerciseBufferDialog } from "../../dialogs/DeleteExerciseBufferDialog";
 
 export const ExerciseBufferList = createBufferList<Exercise>(

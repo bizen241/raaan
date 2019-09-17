@@ -1,8 +1,8 @@
 import { Box, Card, CardContent, NativeSelect, OutlinedInput, Typography } from "@material-ui/core";
 import * as React from "react";
 import { useCallback } from "react";
-import { withBuffer } from ".";
 import { Lang, Theme, UserConfig } from "../../../shared/api/entities";
+import { withBuffer } from "../../enhancers/withBuffer";
 import { Message } from "../project/Message";
 
 const langNameToLabel: { [T in Lang]: string } = {

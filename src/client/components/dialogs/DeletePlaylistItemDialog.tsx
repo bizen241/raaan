@@ -3,11 +3,12 @@ import { Warning } from "@material-ui/icons";
 import * as React from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { createDialog, DialogContent, DialogHeader } from ".";
 import { createEntityTypeToObject, PlaylistItem } from "../../../shared/api/entities";
+import { createDialog } from "../../enhancers/createDialog";
 import { useEntity } from "../../hooks/entity";
 import { useSearch } from "../../hooks/search";
 import { actions } from "../../reducers";
+import { DialogContent, DialogHeader } from "../ui/Dialog";
 import { useStyles } from "../ui/styles";
 
 export const DeletePlaylistItemDialog = createDialog<{

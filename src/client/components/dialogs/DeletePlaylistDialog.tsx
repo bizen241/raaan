@@ -2,8 +2,9 @@ import { Box, Button, Typography } from "@material-ui/core";
 import { Warning } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { createDialog, DialogContent, DialogHeader } from ".";
+import { createDialog } from "../../enhancers/createDialog";
 import { actions } from "../../reducers";
+import { DialogContent, DialogHeader } from "../ui/Dialog";
 import { useStyles } from "../ui/styles";
 
 export const DeletePlaylistDialog = createDialog<{

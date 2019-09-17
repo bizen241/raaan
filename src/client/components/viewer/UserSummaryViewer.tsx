@@ -2,7 +2,7 @@ import { Avatar, Box, Card, CardContent, CardHeader, Divider, Typography } from 
 import { Person } from "@material-ui/icons";
 import * as React from "react";
 import { UserSummary } from "../../../shared/api/entities";
-import { withEntity } from "../../enhancers/entity";
+import { withEntity } from "../../enhancers/withEntity";
 import { useStyles } from "../ui/styles";
 
 export const UserSummaryViewer = withEntity<UserSummary>({ entityType: "UserSummary" })(

@@ -15,9 +15,9 @@ import * as React from "react";
 import { useMemo } from "react";
 import { ExerciseSummary, Playlist, PlaylistItem } from "../../../shared/api/entities";
 import { sortPlaylistItems } from "../../domain/playlist";
-import { withEntity } from "../../enhancers/entity";
+import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/search";
-import { useToggleState } from "../dialogs";
+import { useToggleState } from "../../hooks/toggle";
 import { DeletePlaylistItemDialog } from "../dialogs/DeletePlaylistItemDialog";
 
 export const PlaylistEditor = withEntity<Playlist>({ entityType: "Playlist" })(

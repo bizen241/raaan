@@ -16,15 +16,14 @@ import { useCallback, useMemo, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { ExerciseSummary, Playlist, PlaylistItem } from "../../../shared/api/entities";
 import { randomizePlaylistItems, sortPlaylistItems } from "../../domain/playlist";
-import { withEntity } from "../../enhancers/entity";
+import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/search";
-import { useToggleState } from "../dialogs";
+import { useToggleState } from "../../hooks/toggle";
 import { PlaylistPlayer } from "../player/dialogs/PlaylistPlayer";
 import { useStyles } from "../ui/styles";
 import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 
-export const PlaylistViewer = withEntity<Playlist>(
-  { entityType: "Playlist" },
+export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
   React.memo(({ entity: playlist, entityId: playlistId }) => {
     const classes = useStyles();
 
@@ -104,7 +103,7 @@ const PlaylistItemViewer = React.memo<{
   playlistItem: PlaylistItem;
   onPlay: (index: number) => void;
 }>(({ index, playlistItem, onPlay }) => {
-  const { id: playlistItemId, exerciseSummaryId, memo } = playlistItem;
+  const { exerciseSummaryId, memo } = playlistItem;
 
   return (
     <TableRow>

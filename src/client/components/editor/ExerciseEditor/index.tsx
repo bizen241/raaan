@@ -2,8 +2,8 @@ import { Box, Button, Card, CardContent, TextField, Typography } from "@material
 import { PlayArrow } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useState } from "react";
-import { withBuffer } from "../";
 import { Exercise, Question } from "../../../../shared/api/entities";
+import { withBuffer } from "../../../enhancers/withBuffer";
 import { ExercisePreviewer } from "../../player/dialogs/ExercisePreviewer";
 import { useStyles } from "../../ui/styles";
 import { QuestionsEditor } from "./QuestionsEditor";

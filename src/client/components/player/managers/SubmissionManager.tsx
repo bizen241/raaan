@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Exercise, Submission, SubmissionSummary } from "../../../../shared/api/entities";
 import { EntityMap } from "../../../../shared/api/response/get";
 import { QuestionResult, summarizeResults } from "../../../domain/exercise/attempt";
-import { withEntity } from "../../../enhancers/entity";
+import { withEntity } from "../../../enhancers/withEntity";
 import { actions, RootState } from "../../../reducers";
 import { UserContext } from "../../project/Context";
 import { AttemptManager } from "./AttemptManager";

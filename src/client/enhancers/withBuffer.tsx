@@ -2,15 +2,15 @@ import { Typography } from "@material-ui/core";
 import * as React from "react";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { EntityObject, EntityType } from "../../../shared/api/entities";
-import { SaveParams } from "../../../shared/api/request/save";
-import { useEntity } from "../../hooks/entity";
-import { actions, RootState } from "../../reducers";
-import { isLocalOnly } from "../../reducers/api";
+import { EntityObject, EntityType } from "../../shared/api/entities";
+import { SaveParams } from "../../shared/api/request/save";
+import { useEntity } from "../hooks/entity";
+import { actions, RootState } from "../reducers";
+import { isLocalOnly } from "../reducers/api";
 
 interface Props<E extends EntityObject> {
   bufferId: string;
-  buffer: SaveParams<E>;
+  buffer: SaveParams<E> | undefined;
   source: Partial<E> | undefined;
   onChange: (params: SaveParams<E>) => void;
   onUpload: () => void;
@@ -38,17 +38,11 @@ export const withBuffer = <E extends EntityObject>(
     if (uploadStatus === 200) {
       return <Typography>アップロードが完了しました</Typography>;
     }
-
-    if (buffer === undefined) {
-      if (isLocalOnly(bufferId)) {
-        return <Typography>バッファが削除されました</Typography>;
-      } else {
-        return <Typography>ロード中です</Typography>;
-      }
+    if (buffer === undefined && isLocalOnly(bufferId)) {
+      return <Typography>バッファが削除されました</Typography>;
     }
-
     if (entity === undefined && !isLocalOnly(bufferId)) {
-      return null;
+      return <Typography>ロード中です</Typography>;
     }
 
     return (

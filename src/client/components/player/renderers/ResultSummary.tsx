@@ -21,7 +21,7 @@ import {
 import * as React from "react";
 import { AttemptResult, SubmissionSummary } from "../../../../shared/api/entities";
 import { Attempt, summarizeResults } from "../../../domain/exercise/attempt";
-import { DialogContent } from "../../dialogs";
+import { DialogContent } from "../../ui/Dialog";
 import { useStyles } from "../../ui/styles";
 
 export const AttemptResultViewer: React.FunctionComponent<{
