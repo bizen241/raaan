@@ -3,8 +3,8 @@ import { Computer, Delete, Smartphone } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
-import { createEntityList } from ".";
 import { UserSession } from "../../../../shared/api/entities";
+import { createEntityList } from "../../../enhancers/createEntityList";
 import { actions } from "../../../reducers";
 import { UserContext } from "../../project/Context";
 

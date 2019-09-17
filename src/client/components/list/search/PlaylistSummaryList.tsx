@@ -3,8 +3,8 @@ import { Edit } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { createEntityList } from ".";
 import { PlaylistSummary } from "../../../../shared/api/entities";
+import { createEntityList } from "../../../enhancers/createEntityList";
 import { UserContext } from "../../project/Context";
 
 export const PlaylistSummaryList = createEntityList<PlaylistSummary>(

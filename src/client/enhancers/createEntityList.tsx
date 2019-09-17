@@ -18,10 +18,10 @@ import {
 import { List, Refresh } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
-import { EntityObject, EntityType } from "../../../../shared/api/entities";
-import { SearchParams } from "../../../../shared/api/request/search";
-import { useSearch } from "../../../hooks/search";
-import { useStyles } from "../../ui/styles";
+import { EntityObject, EntityType } from "../../shared/api/entities";
+import { SearchParams } from "../../shared/api/request/search";
+import { useStyles } from "../components/ui/styles";
+import { useSearch } from "../hooks/search";
 
 interface EntityListProps<E extends EntityObject> {
   title?: React.ReactNode;

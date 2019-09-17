@@ -14,9 +14,9 @@ import { Edit, Search } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { createEntityList } from ".";
 import { ExerciseSummary } from "../../../../shared/api/entities";
 import { SearchParams } from "../../../../shared/api/request/search";
+import { createEntityList } from "../../../enhancers/createEntityList";
 import { UserContext } from "../../project/Context";
 
 export const ExerciseSummaryList = createEntityList<ExerciseSummary>(

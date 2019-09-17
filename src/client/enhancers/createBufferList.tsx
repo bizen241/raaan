@@ -13,10 +13,10 @@ import { List } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
-import { EntityObject, EntityType } from "../../../../shared/api/entities";
-import { SaveParams } from "../../../../shared/api/request/save";
-import { RootState } from "../../../reducers";
-import { useStyles } from "../../ui/styles";
+import { EntityObject, EntityType } from "../../shared/api/entities";
+import { SaveParams } from "../../shared/api/request/save";
+import { RootState } from "../reducers";
+import { useStyles } from "../components/ui/styles";
 
 export interface BufferListProps {
   title?: React.ReactNode;
