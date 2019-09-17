@@ -2,11 +2,11 @@ import { Box, TableCell, TableRow } from "@material-ui/core";
 import * as React from "react";
 import { createContext, useCallback, useContext, useMemo } from "react";
 import { useDispatch } from "react-redux";
-import { PlaylistItem, PlaylistSummary } from "../../../../shared/api/entities";
-import { createEntityList } from "../../../enhancers/createEntityList";
-import { useEntity } from "../../../hooks/entity";
-import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { PlaylistItem, PlaylistSummary } from "../../../shared/api/entities";
+import { createEntityList } from "../../enhancers/createEntityList";
+import { useEntity } from "../../hooks/entity";
+import { actions } from "../../reducers";
+import { generateBufferId } from "../../reducers/buffers";
 
 export const ExerciseContext = createContext<string | undefined>(undefined);
 

@@ -2,7 +2,7 @@ import { Box, Button, Typography } from "@material-ui/core";
 import { PlaylistPlay } from "@material-ui/icons";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { ExerciseSummaryList } from "../list/search/ExerciseSummaryList";
+import { ExerciseSummaryList } from "../list/ExerciseSummaryList";
 import { PageProps } from "../project/Router";
 import { Page } from "../ui/Page";
 import { useStyles } from "../ui/styles";

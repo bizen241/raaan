@@ -1,7 +1,7 @@
 import { Box } from "@material-ui/core";
 import * as React from "react";
 import { useContext } from "react";
-import { PlaylistSummaryList } from "../list/search/PlaylistSummaryList";
+import { PlaylistSummaryList } from "../list/PlaylistSummaryList";
 import { UserContext } from "../project/Context";
 import { PageProps } from "../project/Router";
 import { Page } from "../ui/Page";

@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { actions } from "../../reducers";
 import { generateBufferId } from "../../reducers/buffers";
-import { ExerciseBufferList } from "../list/buffers/ExerciseBufferList";
+import { ExerciseBufferList } from "../list/ExerciseBufferList";
 import { UserContext } from "../project/Context";
 import { Page } from "../ui/Page";
 import { useStyles } from "../ui/styles";

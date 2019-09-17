@@ -3,10 +3,10 @@ import { Computer, Delete, Smartphone } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
-import { UserSession } from "../../../../shared/api/entities";
-import { createEntityList } from "../../../enhancers/createEntityList";
-import { actions } from "../../../reducers";
-import { UserContext } from "../../project/Context";
+import { UserSession } from "../../../shared/api/entities";
+import { createEntityList } from "../../enhancers/createEntityList";
+import { actions } from "../../reducers";
+import { UserContext } from "../project/Context";
 
 export const UserSessionList = createEntityList<UserSession>(
   { entityType: "UserSession", itemHeight: 77 },

@@ -9,7 +9,7 @@ import { useEntity } from "../../hooks/entity";
 import { useToggleState } from "../../hooks/toggle";
 import { actions } from "../../reducers";
 import { generateBufferId } from "../../reducers/buffers";
-import { ExerciseContext, PlaylistSummarySelectList } from "../list/search/PlaylistSummarySelectList";
+import { ExerciseContext, PlaylistSummarySelectList } from "../list/PlaylistSummarySelectList";
 import { UserContext } from "../project/Context";
 import { DialogContent, DialogHeader } from "../ui/Dialog";
 import { useStyles } from "../ui/styles";
