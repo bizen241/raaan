@@ -143,12 +143,13 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (context, st
     return;
   }
 
-  const { author, authorId, lang, title, description, isPrivate } = exercise;
+  const { author, authorId, draftId, lang, title, description, isPrivate } = exercise;
 
   store.ExerciseSummary[id] = {
     ...base(entity),
     authorId,
     exerciseId,
+    draftId,
     lang,
     title,
     tags: tags.map(tag => tag.name).join(" "),

@@ -22,7 +22,7 @@ import { UserPlaylistsPage } from "../pages/UserPlaylistsPage";
 export type PageProps = RouteComponentProps<{ id: string; name: string }>;
 
 const ConfigPage = React.lazy(() => import("../pages/ConfigPage"));
-const EditExercisePage = React.lazy(() => import("../pages/EditExercisePage"));
+const EditExerciseDraftPage = React.lazy(() => import("../pages/EditExercisePage"));
 
 export const Router = React.memo(() => {
   const { location } = useSelector((state: RootState) => ({
@@ -40,7 +40,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/exercises/history" component={SubmissionHistoryPage} />
         <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
         <Route exact={true} path="/exercises/:id" component={ExercisePage} />
-        <Route exact={true} path="/exercises/:id/edit" component={EditExercisePage} />
+        <Route exact={true} path="/exercise-drafts/:id/edit" component={EditExerciseDraftPage} />
         <Route exact={true} path="/playlists" component={PlaylistsPage} />
         <Route exact={true} path="/playlists/:id" component={PlaylistPage} />
         <Route exact={true} path="/playlists/:id/edit" component={EditPlaylistPage} />

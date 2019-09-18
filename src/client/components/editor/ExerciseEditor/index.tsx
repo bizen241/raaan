@@ -1,20 +1,25 @@
 import { Box, Button, Card, CardContent, TextField, Typography } from "@material-ui/core";
-import { PlayArrow } from "@material-ui/icons";
+import { CloudUpload, PlayArrow } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useState } from "react";
-import { Exercise, Question } from "../../../../shared/api/entities";
+import { ExerciseDraft, Question } from "../../../../shared/api/entities";
 import { withBuffer } from "../../../enhancers/withBuffer";
 import { ExercisePreviewer } from "../../player/dialogs/ExercisePreviewer";
 import { useStyles } from "../../ui/styles";
 import { QuestionsEditor } from "./QuestionsEditor";
 
-export const ExerciseEditor = withBuffer<Exercise>(
-  "Exercise",
-  React.memo(({ buffer = {}, source = {}, onChange }) => {
+export const ExerciseDraftEditor = withBuffer<ExerciseDraft>(
+  "ExerciseDraft",
+  React.memo(({ buffer = {}, source = {}, onChange, onUpload }) => {
     const classes = useStyles();
 
     const [isExercisePreviewerOpen, toggleExercisePreviewer] = useState(false);
     const onToggleExercisePreviewer = useCallback(() => toggleExercisePreviewer(s => !s), []);
+
+    const onUploadAsDraft = useCallback(() => {
+      onChange({ isMerged: false });
+      onUpload();
+    }, []);
 
     const onUpdateTitle = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => onChange({ title: e.target.value }),
@@ -28,6 +33,12 @@ export const ExerciseEditor = withBuffer<Exercise>(
 
     return (
       <Box display="flex" flexDirection="column" flex={1}>
+        <Box display="flex" flexDirection="column" pb={1}>
+          <Button className={classes.largeButton} variant="contained" onClick={onUploadAsDraft}>
+            <CloudUpload className={classes.leftIcon} />
+            <Typography>下書き保存</Typography>
+          </Button>
+        </Box>
         <Card>
           <CardContent>
             <Box display="flex" flexDirection="column" pb={1}>
@@ -40,7 +51,7 @@ export const ExerciseEditor = withBuffer<Exercise>(
                 />
               </Box>
             </Box>
-            <Box display="flex" flexDirection="column">
+            <Box display="flex" flexDirection="column" pb={1}>
               <Box display="flex" flexDirection="column" component="label">
                 <Typography color="textSecondary">タグ</Typography>
                 <TextField
@@ -52,7 +63,7 @@ export const ExerciseEditor = withBuffer<Exercise>(
             </Box>
           </CardContent>
         </Card>
-        <Box display="flex" flexDirection="column" py={1}>
+        <Box display="flex" flexDirection="column" pb={1}>
           <QuestionsEditor questions={buffer.questions || source.questions || []} onChange={onUpdateQuestions} />
         </Box>
         <Box display="flex" flexDirection="column" pb={1}>

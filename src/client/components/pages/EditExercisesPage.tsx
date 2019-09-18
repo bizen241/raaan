@@ -20,8 +20,8 @@ export const EditExercisesPage = React.memo(() => {
   const onCreate = useCallback(() => {
     const bufferId = generateBufferId();
 
-    dispatch(actions.buffers.add("Exercise", bufferId));
-    dispatch(push(`/exercises/${bufferId}/edit`));
+    dispatch(actions.buffers.add("ExerciseDraft", bufferId));
+    dispatch(push(`/exercise-drafts/${bufferId}/edit`));
   }, []);
 
   const isGuest = currentUser.permission === "Guest";

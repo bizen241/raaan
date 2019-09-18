@@ -1,16 +1,16 @@
 import * as React from "react";
-import { ExerciseEditor } from "../editor/ExerciseEditor";
+import { ExerciseDraftEditor } from "../editor/ExerciseEditor";
 import { PageProps } from "../project/Router";
 import { Page } from "../ui/Page";
 
-const EditExercisePage = React.memo<PageProps>(({ match }) => {
+const EditExerciseDraftPage = React.memo<PageProps>(({ match }) => {
   const bufferId = match.params.id;
 
   return (
     <Page>
-      <ExerciseEditor bufferId={bufferId} />
+      <ExerciseDraftEditor bufferId={bufferId} />
     </Page>
   );
 });
 
-export default EditExercisePage;
+export default EditExerciseDraftPage;
