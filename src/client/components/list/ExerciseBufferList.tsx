@@ -7,8 +7,7 @@ import { createBufferList } from "../../enhancers/createBufferList";
 import { useToggleState } from "../../hooks/toggle";
 import { DeleteExerciseBufferDialog } from "../dialogs/DeleteExerciseBufferDialog";
 
-export const ExerciseBufferList = createBufferList<Exercise>(
-  "Exercise",
+export const ExerciseBufferList = createBufferList<Exercise>({ entityType: "Exercise" })(
   React.memo(({ bufferId, buffer, source = {} }) => {
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 

@@ -23,6 +23,11 @@ import { SearchParams } from "../../shared/api/request/search";
 import { useStyles } from "../components/ui/styles";
 import { useSearch } from "../hooks/search";
 
+interface EntityListParams {
+  entityType: EntityType;
+  itemHeight?: number;
+}
+
 interface EntityListProps<E extends EntityObject> {
   title?: React.ReactNode;
   initialSearchParams?: SearchParams<E>;
@@ -37,14 +42,7 @@ interface EntityListParamsProps<E extends EntityObject> {
   onChange: (params: SearchParams<E>) => void;
 }
 
-export const createEntityList = <E extends EntityObject>(
-  {
-    entityType,
-    itemHeight = 53
-  }: {
-    entityType: EntityType;
-    itemHeight?: number;
-  },
+export const createEntityList = <E extends EntityObject>({ entityType, itemHeight = 53 }: EntityListParams) => (
   ItemComponent: React.ComponentType<EntityListItemProps<E>>,
   ParamsComponent?: React.ComponentType<EntityListParamsProps<E>>
 ) =>

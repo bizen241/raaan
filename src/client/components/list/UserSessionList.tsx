@@ -8,8 +8,7 @@ import { createEntityList } from "../../enhancers/createEntityList";
 import { actions } from "../../reducers";
 import { UserContext } from "../project/Context";
 
-export const UserSessionList = createEntityList<UserSession>(
-  { entityType: "UserSession", itemHeight: 77 },
+export const UserSessionList = createEntityList<UserSession>({ entityType: "UserSession", itemHeight: 77 })(
   React.memo(({ entity: userSession }) => {
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);

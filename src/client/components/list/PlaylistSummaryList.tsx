@@ -7,8 +7,7 @@ import { PlaylistSummary } from "../../../shared/api/entities";
 import { createEntityList } from "../../enhancers/createEntityList";
 import { UserContext } from "../project/Context";
 
-export const PlaylistSummaryList = createEntityList<PlaylistSummary>(
-  { entityType: "PlaylistSummary" },
+export const PlaylistSummaryList = createEntityList<PlaylistSummary>({ entityType: "PlaylistSummary" })(
   React.memo(({ entity: playlistSummary }) => {
     const currentUser = useContext(UserContext);
 

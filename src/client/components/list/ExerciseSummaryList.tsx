@@ -19,8 +19,7 @@ import { SearchParams } from "../../../shared/api/request/search";
 import { createEntityList } from "../../enhancers/createEntityList";
 import { UserContext } from "../project/Context";
 
-export const ExerciseSummaryList = createEntityList<ExerciseSummary>(
-  { entityType: "ExerciseSummary" },
+export const ExerciseSummaryList = createEntityList<ExerciseSummary>({ entityType: "ExerciseSummary" })(
   React.memo(({ entity: exerciseSummary }) => {
     const currentUser = useContext(UserContext);
 

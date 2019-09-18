@@ -10,8 +10,7 @@ import { generateBufferId } from "../../reducers/buffers";
 
 export const ExerciseContext = createContext<string | undefined>(undefined);
 
-export const PlaylistSummarySelectList = createEntityList<PlaylistSummary>(
-  { entityType: "PlaylistSummary" },
+export const PlaylistSummarySelectList = createEntityList<PlaylistSummary>({ entityType: "PlaylistSummary" })(
   React.memo(({ entity: { playlistId, title } }) => {
     const dispatch = useDispatch();
     const exerciseId = useContext(ExerciseContext);

@@ -18,18 +18,21 @@ import { SaveParams } from "../../shared/api/request/save";
 import { useStyles } from "../components/ui/styles";
 import { RootState } from "../reducers";
 
-export interface BufferListProps {
+interface BufferListParams {
+  entityType: EntityType;
+}
+
+interface BufferListProps {
   title?: React.ReactNode;
 }
 
-export interface BufferListItemProps<E extends EntityObject> {
+interface BufferListItemProps<E extends EntityObject> {
   bufferId: string;
   buffer: SaveParams<E>;
   source: Partial<E> | undefined;
 }
 
-export const createBufferList = <E extends EntityObject>(
-  entityType: EntityType,
+export const createBufferList = <E extends EntityObject>({ entityType }: BufferListParams) => (
   ListItem: React.ComponentType<BufferListItemProps<E>>
 ) =>
   React.memo<BufferListProps>(({ title }) => {
