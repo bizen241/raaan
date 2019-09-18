@@ -20,7 +20,7 @@ export abstract class BaseExerciseClass extends BaseEntityClass {
   questions!: Question[];
 
   @Column()
-  isLinear: boolean = false;
+  isRandom!: boolean;
 
   constructor(params?: SaveParams<Exercise>) {
     super();
@@ -31,6 +31,7 @@ export abstract class BaseExerciseClass extends BaseEntityClass {
       this.tags = params.tags || [];
       this.description = params.description || "";
       this.questions = params.questions || [];
+      this.isRandom = params.isRandom || true;
     }
   }
 }

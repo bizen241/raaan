@@ -3,6 +3,7 @@ import {
   EntityType,
   Exercise,
   ExerciseDiary,
+  ExerciseDraft,
   ExerciseReport,
   ExerciseSummary,
   ExerciseTag,
@@ -61,6 +62,15 @@ const parseExercise: Parser<Exercise> = query => {
 };
 
 const parseExerciseDiary: Parser<ExerciseDiary> = query => {
+  const { exerciseId } = query;
+
+  return {
+    exerciseId,
+    ...page(query)
+  };
+};
+
+const parseExerciseDraft: Parser<ExerciseDraft> = query => {
   const { exerciseId } = query;
 
   return {
@@ -236,6 +246,7 @@ const parseUserSummary: Parser<UserSummary> = query => {
 const parsers: { [T in EntityType]: Parser<any> } = {
   Exercise: parseExercise,
   ExerciseDiary: parseExerciseDiary,
+  ExerciseDraft: parseExerciseDraft,
   ExerciseReport: parseExerciseReport,
   ExerciseSummary: parseExerciseSummary,
   ExerciseTag: parseExerciseTag,

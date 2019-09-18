@@ -1,4 +1,6 @@
-export interface BaseExerciseObject {
+import { BaseEntityObject } from "./BaseEntityObject";
+
+export interface BaseExerciseObject extends BaseEntityObject {
   lang: string;
   title: string;
   tags: string[];

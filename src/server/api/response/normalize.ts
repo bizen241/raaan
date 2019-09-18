@@ -4,6 +4,7 @@ import { EntityStore } from "../../../shared/api/response/get";
 import {
   Entity,
   ExerciseDiaryEntity,
+  ExerciseDraftEntity,
   ExerciseEntity,
   ExerciseReportEntity,
   ExerciseSummaryEntity,
@@ -76,6 +77,7 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) =
     tags,
     description,
     questions,
+    isRandom,
     isLocked,
     isPrivate
   } = entity;
@@ -89,6 +91,7 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) =
     tags,
     description,
     questions,
+    isRandom,
     isLocked,
     isPrivate
   };
@@ -105,6 +108,22 @@ const normalizeExerciseDiary: Normalizer<ExerciseDiaryEntity> = (_, store, entit
     date,
     submittedCount,
     typedCount
+  };
+};
+
+const normalizeExerciseDraft: Normalizer<ExerciseDraftEntity> = (_, store, entity) => {
+  const { id, exerciseId, lang, title, tags, description, questions, isRandom, isMerged } = entity;
+
+  store.ExerciseDraft[id] = {
+    ...base(entity),
+    exerciseId,
+    lang,
+    title,
+    tags,
+    description,
+    questions,
+    isRandom,
+    isMerged
   };
 };
 
@@ -380,6 +399,7 @@ const normalizeUserSummary: Normalizer<UserSummaryEntity> = (_, store, entity) =
 const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Exercise: normalizeExercise,
   ExerciseDiary: normalizeExerciseDiary,
+  ExerciseDraft: normalizeExerciseDraft,
   ExerciseReport: normalizeExerciseReport,
   ExerciseSummary: normalizeExerciseSummary,
   ExerciseTag: normalizeExerciseTag,
