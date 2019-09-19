@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from "@material-ui/core";
 import { Warning } from "@material-ui/icons";
-import { push } from "connected-react-router";
+import { replace } from "connected-react-router";
 import * as React from "react";
 import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -49,7 +49,7 @@ const UploadExerciseDraftDialogContent = React.memo<{
     if (uploadStatus === 200 && uploadResponse !== undefined) {
       const exerciseId = Object.keys(uploadResponse.Exercise)[0];
 
-      dispatch(push(`/exercises/${exerciseId}`));
+      dispatch(replace(`/exercises/${exerciseId}`));
     }
   }, [uploadStatus]);
 
