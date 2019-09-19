@@ -4,6 +4,7 @@ import { Actions } from ".";
 import { createEntityTypeToObject, EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { SaveParams } from "../../shared/api/request/save";
 import { SearchParams } from "../../shared/api/request/search";
+import { EntityStore } from "../../shared/api/response/get";
 import * as api from "../api/client";
 import { stringifySearchParams } from "../api/request/search";
 import { ActionUnion, AsyncAction, createAction } from "./action";
@@ -17,8 +18,13 @@ export enum ApiActionType {
 type Key<E extends EntityObject> = string | SearchParams<E>;
 
 export const apiSyncActions = {
-  update: <E extends EntityObject>(method: keyof ApiState, type: EntityType, key: Key<E>, code: number) =>
-    createAction(ApiActionType.Update, { method, type, key, code })
+  update: <E extends EntityObject>(
+    method: keyof ApiState,
+    type: EntityType,
+    key: Key<E>,
+    code: number,
+    response?: EntityStore
+  ) => createAction(ApiActionType.Update, { method, type, key, code, response })
 };
 
 export type ApiActions = ActionUnion<typeof apiSyncActions>;
@@ -27,10 +33,10 @@ const getEntity = (type: EntityType, id: string): AsyncAction => async dispatch 
   dispatch(apiSyncActions.update("get", type, id, 102));
 
   try {
-    const result = await api.getEntity(type, id);
+    const response = await api.getEntity(type, id);
 
-    dispatch(cacheActions.get(result));
-    dispatch(apiSyncActions.update("get", type, id, 200));
+    dispatch(cacheActions.get(response));
+    dispatch(apiSyncActions.update("get", type, id, 200, response));
   } catch (e) {
     dispatch(apiSyncActions.update("get", type, id, 404));
   }
@@ -43,10 +49,10 @@ const searchEntity = <E extends EntityObject>(
   dispatch(apiSyncActions.update("search", type, params, 102));
 
   try {
-    const result = await api.searchEntity(type, params);
+    const response = await api.searchEntity(type, params);
 
-    dispatch(cacheActions.search(type, params, result));
-    dispatch(apiSyncActions.update("search", type, params, 200));
+    dispatch(cacheActions.search(type, params, response));
+    dispatch(apiSyncActions.update("search", type, params, 200, response.entities));
   } catch (e) {
     dispatch(apiSyncActions.update("search", type, params, 404));
   }
@@ -68,10 +74,10 @@ const uploadEntity = <E extends EntityObject>(
   dispatch(apiSyncActions.update("upload", type, id, 102));
 
   try {
-    const result = isLocalOnly(id) ? await api.createEntity(type, target) : await api.updateEntity(type, id, target);
+    const response = isLocalOnly(id) ? await api.createEntity(type, target) : await api.updateEntity(type, id, target);
 
-    dispatch(cacheActions.get(result));
-    dispatch(apiSyncActions.update("upload", type, id, 200));
+    dispatch(cacheActions.get(response));
+    dispatch(apiSyncActions.update("upload", type, id, 200, response));
 
     if (params === undefined && buffer !== undefined) {
       dispatch(buffersActions.delete(type, id));
@@ -85,11 +91,11 @@ const deleteEntity = (type: EntityType, id: string): AsyncAction => async dispat
   dispatch(apiSyncActions.update("delete", type, id, 102));
 
   try {
-    const result = await api.deleteEntity(type, id);
+    const response = await api.deleteEntity(type, id);
 
-    dispatch(cacheActions.get(result));
+    dispatch(cacheActions.get(response));
     dispatch(buffersActions.delete(type, id));
-    dispatch(apiSyncActions.update("delete", type, id, 200));
+    dispatch(apiSyncActions.update("delete", type, id, 200, response));
   } catch (e) {
     dispatch(apiSyncActions.update("delete", type, id, 404));
   }
@@ -103,17 +109,22 @@ export const apiActions = {
   delete: deleteEntity
 };
 
-type ResponseCodeMap = {
+type StatusMap = {
   [P in keyof EntityTypeToEntity]: {
-    [key: string]: number | undefined;
+    [key: string]:
+      | {
+          code: number;
+          response?: EntityStore;
+        }
+      | undefined;
   }
 };
 
 export type ApiState = {
-  get: ResponseCodeMap;
-  search: ResponseCodeMap;
-  upload: ResponseCodeMap;
-  delete: ResponseCodeMap;
+  get: StatusMap;
+  search: StatusMap;
+  upload: StatusMap;
+  delete: StatusMap;
 };
 
 export const initialApiState: ApiState = {
@@ -126,7 +137,7 @@ export const initialApiState: ApiState = {
 export const apiReducer: Reducer<ApiState, Actions> = (state = initialApiState, action) => {
   switch (action.type) {
     case ApiActionType.Update: {
-      const { method, type, key, code } = action.payload;
+      const { method, type, key, code, response } = action.payload;
 
       const keyString = typeof key === "string" ? key : stringifySearchParams(key);
 
@@ -136,7 +147,10 @@ export const apiReducer: Reducer<ApiState, Actions> = (state = initialApiState, 
           ...state[method],
           [type]: {
             ...state[method][type],
-            [keyString]: code
+            [keyString]: {
+              code,
+              response
+            }
           }
         }
       };

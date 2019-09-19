@@ -2,12 +2,12 @@ import { Box, IconButton, Link, TableCell, TableRow } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Exercise } from "../../../shared/api/entities";
+import { ExerciseDraft } from "../../../shared/api/entities";
 import { createBufferList } from "../../enhancers/createBufferList";
 import { useToggleState } from "../../hooks/toggle";
-import { DeleteExerciseBufferDialog } from "../dialogs/DeleteExerciseBufferDialog";
+import { DeleteExerciseDraftBufferDialog } from "../dialogs/DeleteExerciseBufferDialog";
 
-export const ExerciseBufferList = createBufferList<Exercise>({ entityType: "Exercise" })(
+export const ExerciseDraftBufferList = createBufferList<ExerciseDraft>({ entityType: "ExerciseDraft" })(
   React.memo(({ bufferId, buffer, source = {} }) => {
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
@@ -15,7 +15,7 @@ export const ExerciseBufferList = createBufferList<Exercise>({ entityType: "Exer
       <TableRow>
         <TableCell>
           <Box display="flex" flexDirection="column">
-            <Link color="textPrimary" component={RouterLink} to={`/exercises/${bufferId}/edit`}>
+            <Link color="textPrimary" component={RouterLink} to={`/exercise-drafts/${bufferId}/edit`}>
               {buffer.title || source.title || "無題"}
             </Link>
           </Box>
@@ -25,7 +25,11 @@ export const ExerciseBufferList = createBufferList<Exercise>({ entityType: "Exer
             <Delete />
           </IconButton>
         </TableCell>
-        <DeleteExerciseBufferDialog bufferId={bufferId} isOpen={isDeleteDialogOpen} onClose={onToggleDeleteDialog} />
+        <DeleteExerciseDraftBufferDialog
+          bufferId={bufferId}
+          isOpen={isDeleteDialogOpen}
+          onClose={onToggleDeleteDialog}
+        />
       </TableRow>
     );
   })

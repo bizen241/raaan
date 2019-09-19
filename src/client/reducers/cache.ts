@@ -14,15 +14,15 @@ export enum CacheActionType {
 }
 
 export const cacheActions = {
-  get: (result: EntityStore) =>
+  get: (response: EntityStore) =>
     createAction(CacheActionType.Get, {
-      result
+      response
     }),
-  search: <E extends EntityObject>(type: EntityType, params: SearchParams<E>, result: SearchResponse) =>
+  search: <E extends EntityObject>(type: EntityType, params: SearchParams<E>, response: SearchResponse) =>
     createAction(CacheActionType.Search, {
       type,
       params,
-      result
+      response
     }),
   purge: (type: EntityType, id: string) =>
     createAction(CacheActionType.Purge, {
@@ -54,19 +54,19 @@ export const initialCacheState: CacheState = {
 export const cacheReducer: Reducer<CacheState, CacheActions> = (state = initialCacheState, action) => {
   switch (action.type) {
     case CacheActionType.Get: {
-      const { result } = action.payload;
+      const { response } = action.payload;
 
       return {
         ...state,
-        get: mergeEntityTypeToObject(state.get, result)
+        get: mergeEntityTypeToObject(state.get, response)
       };
     }
     case CacheActionType.Search: {
-      const { type, params, result } = action.payload;
+      const { type, params, response } = action.payload;
 
       return {
-        get: mergeEntityTypeToObject(state.get, result.entities),
-        search: mergeSearchResultStore(state.search, type, params, result)
+        get: mergeEntityTypeToObject(state.get, response.entities),
+        search: mergeSearchResultStore(state.search, type, params, response)
       };
     }
     case CacheActionType.Purge: {

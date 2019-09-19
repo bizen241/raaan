@@ -70,10 +70,10 @@ export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBu
     }
     case BuffersActionType.Update: {
       const { type, id, params } = action.payload;
-      const buffer = state[type][id];
-      if (buffer === undefined) {
-        return state;
-      }
+      const buffer = state[type][id] || {
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      };
 
       return {
         ...state,

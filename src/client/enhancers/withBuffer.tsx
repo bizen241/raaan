@@ -13,7 +13,6 @@ interface Props<E extends EntityObject> {
   buffer: SaveParams<E> | undefined;
   source: Partial<E> | undefined;
   onChange: (params: SaveParams<E>) => void;
-  onUpload: () => void;
 }
 
 export const withBuffer = <E extends EntityObject>(
@@ -23,29 +22,17 @@ export const withBuffer = <E extends EntityObject>(
   React.memo<{ bufferId: string }>(({ bufferId }) => {
     const dispatch = useDispatch();
 
-    const { entity, uploadStatus } = useEntity<E>(entityType, bufferId);
+    const { entity, getStatus } = useEntity<E>(entityType, bufferId);
     const buffer = useSelector((state: RootState) => state.buffers[entityType][bufferId] as SaveParams<E> | undefined);
 
     const onChange = useCallback(
       (params: SaveParams<E>) => dispatch(actions.buffers.update(entityType, bufferId, params)),
       []
     );
-    const onUpload = useCallback(() => dispatch(actions.api.upload(entityType, bufferId)), []);
 
-    if (uploadStatus === 102) {
-      return <Typography>アップロード中です</Typography>;
-    }
-    if (uploadStatus === 200) {
-      return <Typography>アップロードが完了しました</Typography>;
-    }
-    if (buffer === undefined && isLocalOnly(bufferId)) {
-      return <Typography>バッファが削除されました</Typography>;
-    }
-    if (entity === undefined && !isLocalOnly(bufferId)) {
+    if (entity === undefined && !isLocalOnly(bufferId) && getStatus === 102) {
       return <Typography>ロード中です</Typography>;
     }
 
-    return (
-      <BaseComponent bufferId={bufferId} buffer={buffer} source={entity} onChange={onChange} onUpload={onUpload} />
-    );
+    return <BaseComponent bufferId={bufferId} buffer={buffer} source={entity} onChange={onChange} />;
   });

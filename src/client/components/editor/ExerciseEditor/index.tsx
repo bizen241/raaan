@@ -1,25 +1,26 @@
 import { Box, Button, Card, CardContent, TextField, Typography } from "@material-ui/core";
 import { CloudUpload, PlayArrow } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useState } from "react";
+import { useCallback, useContext } from "react";
 import { ExerciseDraft, Question } from "../../../../shared/api/entities";
 import { withBuffer } from "../../../enhancers/withBuffer";
+import { useToggleState } from "../../../hooks/toggle";
+import { UploadExerciseDraftDialog } from "../../dialogs/UploadExerciseDraftDialog";
 import { ExercisePreviewer } from "../../player/dialogs/ExercisePreviewer";
+import { UserContext } from "../../project/Context";
 import { useStyles } from "../../ui/styles";
 import { QuestionsEditor } from "./QuestionsEditor";
 
 export const ExerciseDraftEditor = withBuffer<ExerciseDraft>(
   "ExerciseDraft",
-  React.memo(({ buffer = {}, source = {}, onChange, onUpload }) => {
+  React.memo(props => {
+    const { bufferId, buffer = {}, source = {}, onChange } = props;
+
     const classes = useStyles();
+    const currentUser = useContext(UserContext);
 
-    const [isExercisePreviewerOpen, toggleExercisePreviewer] = useState(false);
-    const onToggleExercisePreviewer = useCallback(() => toggleExercisePreviewer(s => !s), []);
-
-    const onUploadAsDraft = useCallback(() => {
-      onChange({ isMerged: false });
-      onUpload();
-    }, []);
+    const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
+    const [isExercisePreviewerOpen, onToggleExercisePreviewer] = useToggleState();
 
     const onUpdateTitle = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => onChange({ title: e.target.value }),
@@ -31,12 +32,19 @@ export const ExerciseDraftEditor = withBuffer<ExerciseDraft>(
     );
     const onUpdateQuestions = useCallback((questions: Question[]) => onChange({ questions }), []);
 
+    const canUpload = props.buffer !== undefined && currentUser.permission !== "Guest";
+
     return (
       <Box display="flex" flexDirection="column" flex={1}>
         <Box display="flex" flexDirection="column" pb={1}>
-          <Button className={classes.largeButton} variant="contained" onClick={onUploadAsDraft}>
+          <Button
+            className={classes.largeButton}
+            variant="contained"
+            disabled={!canUpload}
+            onClick={onToggleUploadDialog}
+          >
             <CloudUpload className={classes.leftIcon} />
-            <Typography>下書き保存</Typography>
+            <Typography>アップロード</Typography>
           </Button>
         </Box>
         <Card>
@@ -77,6 +85,11 @@ export const ExerciseDraftEditor = withBuffer<ExerciseDraft>(
             <Typography>プレビュー</Typography>
           </Button>
         </Box>
+        <UploadExerciseDraftDialog
+          exerciseDraftId={bufferId}
+          isOpen={isUploadDialogOpen}
+          onClose={onToggleUploadDialog}
+        />
         <ExercisePreviewer
           exercise={{
             ...buffer,

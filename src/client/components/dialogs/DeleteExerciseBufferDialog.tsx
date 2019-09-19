@@ -7,7 +7,7 @@ import { actions } from "../../reducers";
 import { DialogContent, DialogHeader } from "../ui/Dialog";
 import { useStyles } from "../ui/styles";
 
-export const DeleteExerciseBufferDialog = createDialog<{
+export const DeleteExerciseDraftBufferDialog = createDialog<{
   bufferId: string;
 }>(
   React.memo(({ bufferId, onClose }) => {
@@ -15,7 +15,7 @@ export const DeleteExerciseBufferDialog = createDialog<{
     const dispatch = useDispatch();
 
     const onDelete = () => {
-      dispatch(actions.buffers.delete("Exercise", bufferId));
+      dispatch(actions.buffers.delete("ExerciseDraft", bufferId));
       onClose();
     };
 

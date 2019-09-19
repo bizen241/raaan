@@ -5,9 +5,8 @@ import * as React from "react";
 import { useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
-import { actions } from "../../reducers";
 import { generateBufferId } from "../../reducers/buffers";
-import { ExerciseBufferList } from "../list/ExerciseBufferList";
+import { ExerciseDraftBufferList } from "../list/ExerciseBufferList";
 import { UserContext } from "../project/Context";
 import { Page } from "../ui/Page";
 import { useStyles } from "../ui/styles";
@@ -20,7 +19,6 @@ export const EditExercisesPage = React.memo(() => {
   const onCreate = useCallback(() => {
     const bufferId = generateBufferId();
 
-    dispatch(actions.buffers.add("ExerciseDraft", bufferId));
     dispatch(push(`/exercise-drafts/${bufferId}/edit`));
   }, []);
 
@@ -48,7 +46,7 @@ export const EditExercisesPage = React.memo(() => {
         </Box>
       )}
       <Box display="flex" flexDirection="column" pb={1}>
-        <ExerciseBufferList title="編集中" />
+        <ExerciseDraftBufferList title="編集中" />
       </Box>
     </Page>
   );

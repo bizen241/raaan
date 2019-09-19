@@ -11,6 +11,8 @@ export const SaveParamsMapSchema: Definition = {
       properties: {
         authorId: { format: "uuid", type: "string" },
         summaryId: { format: "uuid", type: "string" },
+        isPrivate: { type: "boolean" },
+        isLocked: { type: "boolean" },
         lang: { type: "string" },
         title: { type: "string" },
         tags: { type: "array", items: { type: "string" } },
@@ -28,8 +30,7 @@ export const SaveParamsMapSchema: Definition = {
             }
           }
         },
-        isPrivate: { type: "boolean" },
-        isLocked: { type: "boolean" },
+        isRandom: { type: "boolean" },
         id: { format: "uuid", type: "string" },
         createdAt: { type: "number" },
         updatedAt: { type: "number" },
@@ -43,6 +44,35 @@ export const SaveParamsMapSchema: Definition = {
         date: { type: "string" },
         submittedCount: { type: "number" },
         typedCount: { type: "number" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
+      }
+    },
+    ExerciseDraft: {
+      type: "object",
+      properties: {
+        exerciseId: { format: "uuid", type: "string" },
+        isMerged: { type: "boolean" },
+        lang: { type: "string" },
+        title: { type: "string" },
+        tags: { type: "array", items: { type: "string" } },
+        description: { type: "string" },
+        questions: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              id: { type: "number" },
+              lang: { type: "string" },
+              format: { type: "string" },
+              value: { type: "string" },
+              comment: { type: "string" }
+            }
+          }
+        },
+        isRandom: { type: "boolean" },
         id: { format: "uuid", type: "string" },
         createdAt: { type: "number" },
         updatedAt: { type: "number" },
@@ -65,12 +95,14 @@ export const SaveParamsMapSchema: Definition = {
       properties: {
         authorId: { format: "uuid", type: "string" },
         exerciseId: { format: "uuid", type: "string" },
+        draftId: { format: "uuid", type: "string" },
         lang: { type: "string" },
         title: { type: "string" },
         tags: { type: "string" },
         description: { type: "string" },
         upvoteCount: { type: "number" },
         submitCount: { type: "number" },
+        isPrivate: { type: "boolean" },
         id: { format: "uuid", type: "string" },
         createdAt: { type: "number" },
         updatedAt: { type: "number" },
@@ -103,11 +135,25 @@ export const SaveParamsMapSchema: Definition = {
       type: "object",
       properties: {
         authorId: { format: "uuid", type: "string" },
+        summaryId: { format: "uuid", type: "string" },
         title: { type: "string" },
         tags: { type: "array", items: { type: "string" } },
         description: { type: "string" },
+        orderBy: {
+          enum: [
+            "date_added_asc",
+            "date_added_desc",
+            "date_published_asc",
+            "date_published_desc",
+            "manual_bottom",
+            "manual_top",
+            "submit_count_desc"
+          ],
+          type: "string"
+        },
         isPrivate: { type: "boolean" },
         isLocked: { type: "boolean" },
+        exerciseId: { format: "uuid", type: "string" },
         id: { format: "uuid", type: "string" },
         createdAt: { type: "number" },
         updatedAt: { type: "number" },
@@ -160,6 +206,7 @@ export const SaveParamsMapSchema: Definition = {
         tags: { type: "string" },
         description: { type: "string" },
         itemCount: { type: "number" },
+        isPrivate: { type: "boolean" },
         id: { format: "uuid", type: "string" },
         createdAt: { type: "number" },
         updatedAt: { type: "number" },
