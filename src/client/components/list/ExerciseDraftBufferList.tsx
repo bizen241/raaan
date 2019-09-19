@@ -5,7 +5,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { ExerciseDraft } from "../../../shared/api/entities";
 import { createBufferList } from "../../enhancers/createBufferList";
 import { useToggleState } from "../../hooks/toggle";
-import { DeleteExerciseDraftBufferDialog } from "../dialogs/DeleteExerciseBufferDialog";
+import { DeleteExerciseDraftBufferDialog } from "../dialogs/DeleteExerciseDraftBufferDialog";
 
 export const ExerciseDraftBufferList = createBufferList<ExerciseDraft>({ entityType: "ExerciseDraft" })(
   React.memo(({ bufferId, buffer, source = {} }) => {

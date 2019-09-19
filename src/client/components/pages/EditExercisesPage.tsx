@@ -6,7 +6,7 @@ import { useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { generateBufferId } from "../../reducers/buffers";
-import { ExerciseDraftBufferList } from "../list/ExerciseBufferList";
+import { ExerciseDraftBufferList } from "../list/ExerciseDraftBufferList";
 import { UserContext } from "../project/Context";
 import { Page } from "../ui/Page";
 import { useStyles } from "../ui/styles";
