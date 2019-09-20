@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Paper, Tab, Tabs, Typography } from "@material-ui/core";
-import { AccountCircle, Edit, Keyboard, PlaylistPlay } from "@material-ui/icons";
+import { AccountCircle, Edit } from "@material-ui/icons";
 import * as React from "react";
 import { useContext, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -56,8 +56,8 @@ export const HomePage = React.memo(() => {
       <Box display="flex" flexDirection="column" pb={1}>
         <Paper>
           <Tabs value={tab} variant="fullWidth" indicatorColor="primary" onChange={(_, value) => setTab(value)}>
-            <Tab value="exercises" icon={<Keyboard />} label={<Typography>クイズ</Typography>} />
-            <Tab value="playlists" icon={<PlaylistPlay />} label={<Typography>プレイリスト</Typography>} />
+            <Tab value="exercises" label={<Typography>クイズ</Typography>} />
+            <Tab value="playlists" label={<Typography>プレイリスト</Typography>} />
           </Tabs>
           <Divider />
           {tab === "exercises" ? <ExerciseSummaryList elevation={0} /> : <PlaylistSummaryList elevation={0} />}

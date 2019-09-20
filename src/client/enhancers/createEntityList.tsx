@@ -12,8 +12,7 @@ import {
   TableCell,
   TableFooter,
   TablePagination,
-  TableRow,
-  Typography
+  TableRow
 } from "@material-ui/core";
 import { List, Refresh } from "@material-ui/icons";
 import * as React from "react";
@@ -40,6 +39,7 @@ interface EntityListItemProps<E extends EntityObject> {
 
 interface EntityListParamsProps<E extends EntityObject> {
   params: SearchParams<E>;
+  onReload: () => void;
   onChange: (params: SearchParams<E>) => void;
 }
 
@@ -47,7 +47,7 @@ export const createEntityList = <E extends EntityObject>({ entityType, itemHeigh
   ItemComponent: React.ComponentType<EntityListItemProps<E>>,
   ParamsComponent?: React.ComponentType<EntityListParamsProps<E>>
 ) =>
-  React.memo<EntityListProps<E>>(({ title, elevation, initialSearchParams = {} }) => {
+  React.memo<EntityListProps<E>>(({ elevation, initialSearchParams = {} }) => {
     const classes = useStyles();
 
     const { entities, params, status, limit, offset, count, onReload, onChange } = useSearch<E>(
@@ -60,23 +60,23 @@ export const createEntityList = <E extends EntityObject>({ entityType, itemHeigh
 
     return (
       <Card elevation={elevation}>
-        <CardHeader
-          avatar={
-            <Avatar className={classes.cardAvatar}>
-              <List />
-            </Avatar>
-          }
-          title={<Typography>{title || "検索結果"}</Typography>}
-          action={
-            <IconButton onClick={onReload}>
-              <Refresh />
-            </IconButton>
-          }
-        />
-        {ParamsComponent && (
+        {ParamsComponent === undefined ? (
+          <CardHeader
+            avatar={
+              <Avatar className={classes.cardAvatar}>
+                <List />
+              </Avatar>
+            }
+            action={
+              <IconButton onClick={onReload}>
+                <Refresh />
+              </IconButton>
+            }
+          />
+        ) : (
           <CardContent>
             <Box display="flex" flexDirection="column">
-              <ParamsComponent params={params} onChange={onChange} />
+              <ParamsComponent params={params} onReload={onReload} onChange={onChange} />
             </Box>
           </CardContent>
         )}
