@@ -8,11 +8,9 @@ import AppPage from "../pages/AppPage";
 import { EditExercisesPage } from "../pages/EditExercisesPage";
 import EditPlaylistPage from "../pages/EditPlaylistPage";
 import { ExercisePage } from "../pages/ExercisePage";
-import { ExercisesPage } from "../pages/ExercisesPage";
 import { HomePage } from "../pages/HomePage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { PlaylistPage } from "../pages/PlaylistPage";
-import { PlaylistsPage } from "../pages/PlaylistsPage";
 import { SessionsPage } from "../pages/SessionsPage";
 import { SubmissionHistoryPage } from "../pages/SubmissionHistoryPage";
 import { UserExercisesPage } from "../pages/UserExercisesPage";
@@ -36,12 +34,10 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/users/:id" component={UserPage} />
         <Route exact={true} path="/users/:id/exercises" component={UserExercisesPage} />
         <Route exact={true} path="/users/:id/playlists" component={UserPlaylistsPage} />
-        <Route exact={true} path="/exercises" component={ExercisesPage} />
         <Route exact={true} path="/exercises/history" component={SubmissionHistoryPage} />
         <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
         <Route exact={true} path="/exercises/:id" component={ExercisePage} />
         <Route exact={true} path="/exercise-drafts/:id/edit" component={EditExerciseDraftPage} />
-        <Route exact={true} path="/playlists" component={PlaylistsPage} />
         <Route exact={true} path="/playlists/:id" component={PlaylistPage} />
         <Route exact={true} path="/playlists/:id/edit" component={EditPlaylistPage} />
         <Route exact={true} path="/config" component={ConfigPage} />
