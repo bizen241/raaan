@@ -3,10 +3,12 @@ import { History, Keyboard, PlaylistPlay } from "@material-ui/icons";
 import { useContext } from "react";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { UserDiaryGraph } from "../graphs/UserDiaryGraph";
 import { UserContext } from "../project/Context";
 import { PageProps } from "../project/Router";
 import { Page } from "../ui/Page";
 import { useStyles } from "../ui/styles";
+import { UserSummaryViewer } from "../viewer/UserSummaryViewer";
 
 export const UserPage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;
@@ -41,6 +43,12 @@ export const UserPage = React.memo<PageProps>(props => {
           <PlaylistPlay className={classes.leftIcon} />
           <Typography>プレイリスト</Typography>
         </Button>
+      </Box>
+      <Box pb={1}>
+        <UserSummaryViewer entityId={currentUser.summaryId} />
+      </Box>
+      <Box pb={1}>
+        <UserDiaryGraph />
       </Box>
       {isOwn && (
         <Box display="flex" flexDirection="column" pb={1}>

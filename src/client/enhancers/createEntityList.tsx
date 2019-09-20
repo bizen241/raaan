@@ -30,6 +30,7 @@ interface EntityListParams {
 
 interface EntityListProps<E extends EntityObject> {
   title?: React.ReactNode;
+  elevation?: number;
   initialSearchParams?: SearchParams<E>;
 }
 
@@ -46,7 +47,7 @@ export const createEntityList = <E extends EntityObject>({ entityType, itemHeigh
   ItemComponent: React.ComponentType<EntityListItemProps<E>>,
   ParamsComponent?: React.ComponentType<EntityListParamsProps<E>>
 ) =>
-  React.memo<EntityListProps<E>>(({ title, initialSearchParams = {} }) => {
+  React.memo<EntityListProps<E>>(({ title, elevation, initialSearchParams = {} }) => {
     const classes = useStyles();
 
     const { entities, params, status, limit, offset, count, onReload, onChange } = useSearch<E>(
@@ -58,7 +59,7 @@ export const createEntityList = <E extends EntityObject>({ entityType, itemHeigh
     const emptyRows = !isLoading && limit - entities.length;
 
     return (
-      <Card>
+      <Card elevation={elevation}>
         <CardHeader
           avatar={
             <Avatar className={classes.cardAvatar}>
