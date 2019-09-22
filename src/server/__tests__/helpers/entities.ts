@@ -2,6 +2,7 @@ import { getManager } from "typeorm";
 import * as uuid from "uuid/v4";
 import { Permission } from "../../../shared/api/entities";
 import {
+  ExerciseDraftEntity,
   ExerciseEntity,
   ExerciseSummaryEntity,
   UserAccountEntity,
@@ -51,11 +52,16 @@ export const insertExercise = async (user: UserEntity) => {
   const exerciseSummary = new ExerciseSummaryEntity();
   exerciseSummary.maxTypeCount = 0;
   exerciseSummary.minTypeCount = 0;
-  await manager.save(exerciseSummary);
+  exerciseSummary.tags = [];
+
+  const exerciseDraft = new ExerciseDraftEntity({});
+  exerciseDraft.isMerged = true;
 
   const exercise = new ExerciseEntity({});
   exercise.author = user;
   exercise.summary = exerciseSummary;
+  exercise.draft = exerciseDraft;
+  exercise.isDraft = false;
   await manager.save(exercise);
 
   return { exercise, exerciseSummary };
