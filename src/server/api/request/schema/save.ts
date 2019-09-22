@@ -55,6 +55,7 @@ export const SaveParamsMapSchema: Definition = {
       properties: {
         exerciseId: { format: "uuid", type: "string" },
         isMerged: { type: "boolean" },
+        isPrivate: { type: "boolean" },
         lang: { type: "string" },
         title: { type: "string" },
         tags: { type: "array", items: { type: "string" } },
@@ -217,6 +218,44 @@ export const SaveParamsMapSchema: Definition = {
       type: "object",
       properties: {
         name: { type: "string" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
+      }
+    },
+    Revision: {
+      type: "object",
+      properties: {
+        summaryId: { format: "uuid", type: "string" },
+        lang: { type: "string" },
+        title: { type: "string" },
+        tags: { type: "array", items: { type: "string" } },
+        description: { type: "string" },
+        questions: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              id: { type: "number" },
+              lang: { type: "string" },
+              format: { type: "string" },
+              value: { type: "string" },
+              comment: { type: "string" }
+            }
+          }
+        },
+        isRandom: { type: "boolean" },
+        id: { format: "uuid", type: "string" },
+        createdAt: { type: "number" },
+        updatedAt: { type: "number" },
+        fetchedAt: { type: "number" }
+      }
+    },
+    RevisionSummary: {
+      type: "object",
+      properties: {
+        revisionId: { format: "uuid", type: "string" },
         id: { format: "uuid", type: "string" },
         createdAt: { type: "number" },
         updatedAt: { type: "number" },
