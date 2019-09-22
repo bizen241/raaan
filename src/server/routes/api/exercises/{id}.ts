@@ -3,12 +3,10 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { Exercise } from "../../../../shared/api/entities";
 import { SaveParams } from "../../../../shared/api/request/save";
-import { getMinMaxTypeCount } from "../../../../shared/exercise";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
 import { hasPermission } from "../../../api/security";
-import { ExerciseEntity, ExerciseTagEntity } from "../../../database/entities";
-import { normalizeTags } from "../../../exercise";
+import { ExerciseEntity } from "../../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { id: exerciseId }: PathParams = req.params;
@@ -56,28 +54,6 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
   }
 
   if (isAuthor) {
-    if (params.title !== undefined) {
-      exercise.title = params.title;
-    }
-    if (params.tags !== undefined) {
-      await manager.remove(exercise.summary.tags);
-
-      const tags: ExerciseTagEntity[] = [];
-      normalizeTags(params.tags).forEach(async tagName => {
-        tags.push(new ExerciseTagEntity(tagName));
-      });
-
-      exercise.tags = params.tags;
-      exercise.summary.tags = tags;
-    }
-    if (params.questions !== undefined) {
-      exercise.questions = params.questions;
-
-      const { maxTypeCount, minTypeCount } = getMinMaxTypeCount(params.questions);
-
-      exercise.summary.maxTypeCount = maxTypeCount;
-      exercise.summary.minTypeCount = minTypeCount;
-    }
     if (params.isPrivate !== undefined) {
       if (!exercise.isLocked) {
         exercise.isPrivate = params.isPrivate;

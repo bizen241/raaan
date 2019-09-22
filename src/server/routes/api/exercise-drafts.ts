@@ -9,7 +9,7 @@ import { ExerciseDraftEntity, ExerciseEntity, ExerciseSummaryEntity, ExerciseTag
 import { normalizeTags } from "../../exercise";
 
 export const POST: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
-  const { isMerged = true, ...params }: SaveParams<ExerciseDraft> = req.body;
+  const { isMerged = true, isPrivate = true, ...params }: SaveParams<ExerciseDraft> = req.body;
 
   await getManager().transaction(async manager => {
     const { maxTypeCount, minTypeCount } = getMinMaxTypeCount(params.questions);
@@ -34,6 +34,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, _, current
     exercise.summary = exerciseSummary;
     exercise.draft = exerciseDraft;
     exercise.isDraft = !isMerged;
+    exercise.isPrivate = isPrivate;
     await manager.save(exercise);
 
     exerciseSummary.exercise = exercise;
