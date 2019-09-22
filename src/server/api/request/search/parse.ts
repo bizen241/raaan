@@ -16,6 +16,8 @@ import {
   PlaylistReport,
   PlaylistSummary,
   PlaylistTag,
+  Revision,
+  RevisionSummary,
   Submission,
   SubmissionSummary,
   Theme,
@@ -164,6 +166,18 @@ const parsePlaylistTag: Parser<PlaylistTag> = query => {
   };
 };
 
+const parseRevision: Parser<Revision> = query => {
+  return {
+    ...page(query)
+  };
+};
+
+const parseRevisionSummary: Parser<RevisionSummary> = query => {
+  return {
+    ...page(query)
+  };
+};
+
 const parseSubmission: Parser<Submission> = query => {
   return {
     ...page(query)
@@ -257,6 +271,8 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   PlaylistReport: parsePlaylistReport,
   PlaylistSummary: parsePlaylistSummary,
   PlaylistTag: parsePlaylistTag,
+  Revision: parseRevision,
+  RevisionSummary: parseRevisionSummary,
   Submission: parseSubmission,
   SubmissionSummary: parseSubmissionSummary,
   User: parseUser,

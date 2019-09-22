@@ -6,16 +6,27 @@ import { SaveParams } from "../../../../shared/api/request/save";
 import { getMinMaxTypeCount } from "../../../../shared/exercise";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
-import { ExerciseEntity, ExerciseTagEntity } from "../../../database/entities";
+import {
+  ExerciseDraftEntity,
+  ExerciseEntity,
+  ExerciseTagEntity,
+  RevisionEntity,
+  RevisionSummaryEntity
+} from "../../../database/entities";
 import { normalizeTags } from "../../../exercise";
 
 export const PATCH: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { id: exerciseId }: PathParams = req.params;
+  const { id: exerciseDraftId }: PathParams = req.params;
   const params: SaveParams<ExerciseDraft> = req.body;
 
   const manager = getManager();
 
-  const exercise = await manager.findOne(ExerciseEntity, exerciseId, {
+  const exerciseDraft = await manager.findOne(ExerciseDraftEntity, exerciseDraftId);
+  if (exerciseDraft === undefined) {
+    return next(createError(404));
+  }
+
+  const exercise = await manager.findOne(ExerciseEntity, exerciseDraft.exerciseId, {
     relations: ["author", "summary", "summary.tags", "draft"]
   });
   if (exercise === undefined) {
@@ -41,6 +52,34 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
   }
 
   if (params.isMerged) {
+    if (!exercise.isDraft) {
+      const revisions = await manager.find(RevisionEntity, {
+        where: {
+          exercise: {
+            id: exercise.id
+          }
+        },
+        order: {
+          createdAt: "DESC"
+        }
+      });
+
+      if (revisions.length > 4) {
+        await manager.remove(revisions[0]);
+      }
+
+      const revisionSummary = new RevisionSummaryEntity();
+
+      const revision = new RevisionEntity({
+        title: exercise.title,
+        tags: exercise.tags,
+        questions: exercise.questions
+      });
+      revision.exercise = exercise;
+      revision.summary = revisionSummary;
+      await manager.save(revision);
+    }
+
     const tags: ExerciseTagEntity[] = [];
     normalizeTags(params.tags).forEach(async tagName => {
       tags.push(new ExerciseTagEntity(tagName));

@@ -14,6 +14,8 @@ export const endpoints: { [P in EntityType]: string } = {
   PlaylistReport: "playlist-reports",
   PlaylistSummary: "playlist-summaries",
   PlaylistTag: "playlist-tags",
+  Revision: "revisions",
+  RevisionSummary: "revision-summaries",
   Submission: "submissions",
   SubmissionSummary: "submission-summaries",
   User: "users",

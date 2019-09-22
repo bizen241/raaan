@@ -15,6 +15,8 @@ import {
   PlaylistReportEntity,
   PlaylistSummaryEntity,
   PlaylistTagEntity,
+  RevisionEntity,
+  RevisionSummaryEntity,
   SubmissionEntity,
   SubmissionSummaryEntity,
   UserAccountEntity,
@@ -268,6 +270,30 @@ const normalizePlaylistTag: Normalizer<PlaylistTagEntity> = (_, store, entity) =
   };
 };
 
+const normalizeRevision: Normalizer<RevisionEntity> = (_, store, entity) => {
+  const { id, summaryId, lang, title, tags, description, questions, isRandom } = entity;
+
+  store.Revision[id] = {
+    ...base(entity),
+    summaryId,
+    lang,
+    title,
+    tags,
+    description,
+    questions,
+    isRandom
+  };
+};
+
+const normalizeRevisionSummary: Normalizer<RevisionSummaryEntity> = (_, store, entity) => {
+  const { id, revisionId } = entity;
+
+  store.RevisionSummary[id] = {
+    ...base(entity),
+    revisionId
+  };
+};
+
 const normalizeSubmission: Normalizer<SubmissionEntity> = (_, store, entity) => {
   const { id, submitterId, exerciseId, typeCount, time, accuracy } = entity;
 
@@ -411,6 +437,8 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   PlaylistReport: normalizePlaylistReport,
   PlaylistSummary: normalizePlaylistSummary,
   PlaylistTag: normalizePlaylistTag,
+  Revision: normalizeRevision,
+  RevisionSummary: normalizeRevisionSummary,
   Submission: normalizeSubmission,
   SubmissionSummary: normalizeSubmissionSummary,
   User: normalizeUser,

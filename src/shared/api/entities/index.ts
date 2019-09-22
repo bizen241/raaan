@@ -11,6 +11,8 @@ import { PlaylistItem } from "./PlaylistItem";
 import { PlaylistReport } from "./PlaylistReport";
 import { PlaylistSummary } from "./PlaylistSummary";
 import { PlaylistTag } from "./PlaylistTag";
+import { Revision } from "./Revision";
+import { RevisionSummary } from "./RevisionSummary";
 import { Submission } from "./Submission";
 import { SubmissionSummary } from "./SubmissionSummary";
 import { User } from "./User";
@@ -35,6 +37,8 @@ export * from "./PlaylistItem";
 export * from "./PlaylistReport";
 export * from "./PlaylistSummary";
 export * from "./PlaylistTag";
+export * from "./Revision";
+export * from "./RevisionSummary";
 export * from "./Submission";
 export * from "./SubmissionSummary";
 export * from "./User";
@@ -59,6 +63,8 @@ export type EntityObject =
   | PlaylistReport
   | PlaylistSummary
   | PlaylistTag
+  | Revision
+  | RevisionSummary
   | Submission
   | SubmissionSummary
   | User
@@ -83,6 +89,8 @@ export type EntityTypeToEntity = {
   PlaylistReport: PlaylistReport;
   PlaylistSummary: PlaylistSummary;
   PlaylistTag: PlaylistTag;
+  Revision: Revision;
+  RevisionSummary: RevisionSummary;
   Submission: Submission;
   SubmissionSummary: SubmissionSummary;
   User: User;
@@ -113,6 +121,8 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     PlaylistReport: {},
     PlaylistSummary: {},
     PlaylistTag: {},
+    Revision: {},
+    RevisionSummary: {},
     Submission: {},
     SubmissionSummary: {},
     User: {},
