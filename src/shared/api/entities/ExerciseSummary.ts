@@ -11,4 +11,5 @@ export interface ExerciseSummary extends BaseEntityObject {
   upvoteCount: number;
   submitCount: number;
   isPrivate: boolean;
+  order?: string;
 }

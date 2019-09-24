@@ -1,25 +1,14 @@
-import {
-  Box,
-  Collapse,
-  IconButton,
-  InputAdornment,
-  Link,
-  NativeSelect,
-  OutlinedInput,
-  TableCell,
-  TableRow,
-  TextField,
-  Typography
-} from "@material-ui/core";
-import { Edit, Refresh, Search, Tune } from "@material-ui/icons";
+import { Box, Collapse, IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Edit, Refresh, Tune } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { ExerciseSummary } from "../../../shared/api/entities";
 import { SearchParams } from "../../../shared/api/request/search";
 import { createEntityList } from "../../enhancers/createEntityList";
 import { useToggleState } from "../../hooks/toggle";
 import { UserContext } from "../project/Context";
+import { Column, Row, Search, Select } from "../ui";
 
 export const ExerciseSummaryList = createEntityList<ExerciseSummary>({ entityType: "ExerciseSummary" })(
   React.memo(({ entity: exerciseSummary }) => {
@@ -45,24 +34,14 @@ export const ExerciseSummaryList = createEntityList<ExerciseSummary>({ entityTyp
     );
   }),
   React.memo(({ params, onReload, onChange }) => {
-    const [searchText, setSearchText] = useState("");
-    const [searchTarget, setSearchTarget] = useState<keyof SearchParams<ExerciseSummary>>(
-      params.tags !== undefined ? "tags" : "title"
-    );
-
     const [isSearchConditionOpen, onToggleSearchCondition] = useToggleState();
+    const [searchText, setSearchText] = useState("");
 
-    useEffect(() => {
-      const currentSearchText = params[searchTarget];
-
-      if (typeof currentSearchText === "string") {
-        setSearchText(currentSearchText);
-      }
-    }, [params]);
+    const searchTarget = getSearchTarget(params);
 
     return (
       <>
-        <Box display="flex" pb={1}>
+        <Row pb={1}>
           <IconButton onClick={onReload}>
             <Refresh />
           </IconButton>
@@ -70,79 +49,53 @@ export const ExerciseSummaryList = createEntityList<ExerciseSummary>({ entityTyp
           <IconButton onClick={onToggleSearchCondition}>
             <Tune />
           </IconButton>
-        </Box>
+        </Row>
         <Collapse in={isSearchConditionOpen} timeout="auto" unmountOnExit>
-          <Box display="flex" flexDirection="column">
-            <Box display="flex" flexDirection="column" pb={1}>
-              <Box display="flex" flexDirection="column" component="label">
-                <Typography color="textSecondary">検索対象</Typography>
-                <NativeSelect
-                  input={<OutlinedInput labelWidth={0} />}
-                  value={searchTarget}
-                  onChange={e => {
-                    const next = e.target.value as keyof SearchParams<ExerciseSummary>;
-
-                    setSearchTarget(prev => {
-                      onChange({
-                        [prev]: undefined,
-                        [next]: params[prev]
-                      });
-
-                      return next;
-                    });
-                  }}
-                >
-                  <option key="title" value="title">
-                    題名
-                  </option>
-                  <option key="tags" value="tags">
-                    タグ
-                  </option>
-                </NativeSelect>
-              </Box>
-            </Box>
-            <Box display="flex" flexDirection="column" pb={1}>
-              <Box display="flex" flexDirection="column" component="label">
-                <Typography color="textSecondary">並び順</Typography>
-                <NativeSelect input={<OutlinedInput labelWidth={0} />} defaultValue="title">
-                  <option key="title" value="title">
-                    更新が新しい順
-                  </option>
-                  <option key="tags" value="tags">
-                    更新が古い順
-                  </option>
-                </NativeSelect>
-              </Box>
-            </Box>
-          </Box>
+          <Column>
+            <Column pb={1}>
+              <Select label="並び順" defaultValue="title" onChange={e => onChange({ order: e.target.value })}>
+                <option key="title" value="title">
+                  更新が新しい順
+                </option>
+                <option key="tags" value="tags">
+                  更新が古い順
+                </option>
+              </Select>
+            </Column>
+            <Column pb={1}>
+              <Select
+                label="検索対象"
+                defaultValue={searchTarget}
+                onChange={e =>
+                  onChange({
+                    [searchTarget]: undefined,
+                    [e.target.value]: searchText
+                  })
+                }
+              >
+                <option key="title" value="title">
+                  タイトル
+                </option>
+                <option key="tags" value="tags">
+                  タグ
+                </option>
+              </Select>
+            </Column>
+          </Column>
         </Collapse>
-        <Box display="flex" flexDirection="column" pb={1}>
-          <Box display="flex" flexDirection="column" component="label">
-            <Typography color="textSecondary">キーワード</Typography>
-            <TextField
-              variant="outlined"
-              value={searchText}
-              onChange={useCallback((e: React.ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value), [])}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      edge="end"
-                      onClick={() =>
-                        onChange({
-                          [searchTarget]: searchText
-                        })
-                      }
-                    >
-                      <Search />
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }}
-            />
-          </Box>
-        </Box>
+        <Column pb={1}>
+          <Search
+            label="キーワード"
+            defaultValue={searchText}
+            onChange={e => setSearchText(e.target.value)}
+            onSearch={() => onChange({ [searchTarget]: searchText })}
+          />
+        </Column>
       </>
     );
   })
 );
+
+type SearchTarget = "title" | "tags";
+
+const getSearchTarget = (params: SearchParams<ExerciseSummary>): SearchTarget => (params.title ? "title" : "tags");
