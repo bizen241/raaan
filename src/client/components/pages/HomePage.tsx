@@ -1,5 +1,5 @@
-import { Button, Typography } from "@material-ui/core";
-import { AccountCircle, Edit, Search } from "@material-ui/icons";
+import { Avatar, Button, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
+import { AccountCircle, Edit, Search, Timeline } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -58,7 +58,19 @@ export const HomePage = React.memo(() => {
       </Column>
       {!isGuest && (
         <Column pb={1}>
-          <UserDiaryGraph />
+          <Card>
+            <CardHeader
+              avatar={
+                <Avatar className={classes.cardAvatar}>
+                  <Timeline />
+                </Avatar>
+              }
+              title={<Typography>活動記録</Typography>}
+            />
+            <CardContent>
+              <UserDiaryGraph entityId={currentUser.id} />
+            </CardContent>
+          </Card>
         </Column>
       )}
     </Page>
