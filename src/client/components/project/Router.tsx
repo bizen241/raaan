@@ -10,6 +10,7 @@ import { EditExercisesPage } from "../pages/EditExercisesPage";
 import EditPlaylistPage from "../pages/EditPlaylistPage";
 import { ExercisePage } from "../pages/ExercisePage";
 import { HomePage } from "../pages/HomePage";
+import { LoadingPage } from "../pages/LoadingPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { PlaylistPage } from "../pages/PlaylistPage";
 import { SessionsPage } from "../pages/SessionsPage";
@@ -28,7 +29,7 @@ export const Router = React.memo(() => {
   }));
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingPage />}>
       <Switch location={location}>
         <Route exact={true} path="/" component={HomePage} />
         <Route exact={true} path="/users/:id" component={UserPage} />
