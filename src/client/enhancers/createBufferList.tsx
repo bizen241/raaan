@@ -1,21 +1,9 @@
-import {
-  Avatar,
-  Card,
-  CardHeader,
-  Table,
-  TableBody,
-  TableFooter,
-  TablePagination,
-  TableRow,
-  Typography
-} from "@material-ui/core";
-import { List } from "@material-ui/icons";
+import { Card, Table, TableBody, TableCell, TableFooter, TablePagination, TableRow } from "@material-ui/core";
 import * as React from "react";
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { EntityObject, EntityType } from "../../shared/api/entities";
 import { SaveParams } from "../../shared/api/request/save";
-import { useStyles } from "../components/ui/styles";
 import { RootState } from "../reducers";
 
 interface BufferListParams {
@@ -24,6 +12,7 @@ interface BufferListParams {
 
 interface BufferListProps {
   title?: React.ReactNode;
+  elevation?: number;
 }
 
 interface BufferListItemProps<E extends EntityObject> {
@@ -35,9 +24,7 @@ interface BufferListItemProps<E extends EntityObject> {
 export const createBufferList = <E extends EntityObject>({ entityType }: BufferListParams) => (
   ListItem: React.ComponentType<BufferListItemProps<E>>
 ) =>
-  React.memo<BufferListProps>(({ title }) => {
-    const classes = useStyles();
-
+  React.memo<BufferListProps>(({ elevation }) => {
     const { bufferMap, entityMap } = useSelector((state: RootState) => ({
       bufferMap: state.buffers[entityType],
       entityMap: state.cache.get[entityType] as { [key: string]: E | undefined }
@@ -48,22 +35,20 @@ export const createBufferList = <E extends EntityObject>({ entityType }: BufferL
 
     const bufferEntries = Object.entries(bufferMap);
     const offset = limit * page;
+    const emptyRows = limit - bufferEntries.length;
 
     return (
-      <Card>
-        <CardHeader
-          avatar={
-            <Avatar className={classes.cardAvatar}>
-              <List />
-            </Avatar>
-          }
-          title={<Typography>{title || "編集中"}</Typography>}
-        />
+      <Card elevation={elevation}>
         <Table>
           <TableBody>
             {bufferEntries.slice(offset, offset + limit).map(([bufferId, buffer]) => (
               <ListItem key={bufferId} bufferId={bufferId} buffer={buffer} source={entityMap[bufferId]} />
             ))}
+            {emptyRows && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={3} />
+              </TableRow>
+            )}
           </TableBody>
           <TableFooter>
             <TableRow>
