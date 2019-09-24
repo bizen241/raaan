@@ -29,7 +29,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, _, current
     const exerciseDraft = new ExerciseDraftEntity(params);
     exerciseDraft.isMerged = isMerged;
 
-    const exercise = new ExerciseEntity(params);
+    const exercise = new ExerciseEntity(isMerged ? params : {});
     exercise.author = currentUser;
     exercise.summary = exerciseSummary;
     exercise.draft = exerciseDraft;
