@@ -1,14 +1,12 @@
-import { Box, Button, Typography } from "@material-ui/core";
-import { History, Keyboard, PlaylistPlay } from "@material-ui/icons";
+import { Button, Typography } from "@material-ui/core";
+import { Group, History, Keyboard, Timeline } from "@material-ui/icons";
 import { useContext } from "react";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { UserDiaryGraph } from "../graphs/UserDiaryGraph";
 import { UserContext } from "../project/Context";
 import { PageProps } from "../project/Router";
-import { Page } from "../ui/Page";
+import { Column, Page } from "../ui";
 import { useStyles } from "../ui/styles";
-import { UserSummaryViewer } from "../viewer/UserSummaryViewer";
 
 export const UserPage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;
@@ -20,43 +18,41 @@ export const UserPage = React.memo<PageProps>(props => {
 
   return (
     <Page title={isOwn ? "マイページ" : "ユーザーページ"}>
-      <Box display="flex" flexDirection="column" pb={1}>
+      <Column pb={1}>
         <Button
           className={classes.largeButton}
           variant="contained"
           color="primary"
           component={RouterLink}
-          to={`/users/${userId}/exercises`}
+          to={`/users/${userId}/contents`}
         >
           <Keyboard className={classes.leftIcon} />
-          <Typography>クイズ</Typography>
+          <Typography>自分のコンテンツ</Typography>
         </Button>
-      </Box>
-      <Box display="flex" flexDirection="column" pb={1}>
-        <Button
-          className={classes.largeButton}
-          variant="contained"
-          color="primary"
-          component={RouterLink}
-          to={`/users/${userId}/playlists`}
-        >
-          <PlaylistPlay className={classes.leftIcon} />
-          <Typography>プレイリスト</Typography>
-        </Button>
-      </Box>
-      <Box pb={1}>
-        <UserSummaryViewer entityId={currentUser.summaryId} />
-      </Box>
-      <Box pb={1}>
-        <UserDiaryGraph />
-      </Box>
+      </Column>
       {isOwn && (
-        <Box display="flex" flexDirection="column" pb={1}>
+        <Column pb={1}>
+          <Button className={classes.largeButton} variant="contained" component={RouterLink} to={`/exercises/history`}>
+            <Timeline className={classes.leftIcon} />
+            <Typography>記録</Typography>
+          </Button>
+        </Column>
+      )}
+      {isOwn && (
+        <Column pb={1}>
           <Button className={classes.largeButton} variant="contained" component={RouterLink} to={`/exercises/history`}>
             <History className={classes.leftIcon} />
-            <Typography>提出履歴</Typography>
+            <Typography>復習</Typography>
           </Button>
-        </Box>
+        </Column>
+      )}
+      {isOwn && (
+        <Column pb={1}>
+          <Button className={classes.largeButton} variant="contained" component={RouterLink} to={`/exercises/history`}>
+            <Group className={classes.leftIcon} />
+            <Typography>グループ</Typography>
+          </Button>
+        </Column>
       )}
     </Page>
   );

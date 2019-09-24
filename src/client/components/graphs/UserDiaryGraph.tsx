@@ -1,14 +1,17 @@
-import { Box, Card, CardContent, makeStyles } from "@material-ui/core";
+import { Avatar, Box, Card, CardContent, CardHeader, makeStyles, Typography } from "@material-ui/core";
+import { Timeline } from "@material-ui/icons";
 import * as React from "react";
 import { useContext, useEffect, useState } from "react";
 import { UserDiary } from "../../../shared/api/entities";
 import { useSearch } from "../../hooks/search";
 import { UserContext } from "../project/Context";
+import { useStyles } from "../ui/styles";
 
 type DateToUserDiary = { [date: string]: UserDiary | undefined };
 
 export const UserDiaryGraph = () => {
   const classes = useStyles();
+  const heatMapClasses = useHeatMapStyles();
   const currentUser = useContext(UserContext);
 
   const [userDiaries, setUserDiaries] = useState<DateToUserDiary>({});
@@ -48,11 +51,19 @@ export const UserDiaryGraph = () => {
 
   return (
     <Card>
+      <CardHeader
+        avatar={
+          <Avatar className={classes.cardAvatar}>
+            <Timeline />
+          </Avatar>
+        }
+        title={<Typography>活動記録</Typography>}
+      />
       <CardContent>
         <Box display="flex" justifyContent="center">
           <Box display="flex" style={{ overflowX: "auto" }} dir="rtl">
             <Box display="flex" dir="ltr" padding="2px">
-              <svg className={classes.heatMapContainer} width={937} height={127}>
+              <svg width={937} height={127}>
                 {year.map((_, weekIndex) => (
                   <g key={weekIndex} transform={`translate(${weekIndex * 18 + 1}, 1)`}>
                     {week.map((__, dateIndex) => {
@@ -62,7 +73,9 @@ export const UserDiaryGraph = () => {
                       return (
                         <rect
                           key={dateIndex}
-                          className={diary !== undefined ? classes.heatMapBusyItem : classes.heatMapBlankItem}
+                          className={
+                            diary !== undefined ? heatMapClasses.heatMapBusyItem : heatMapClasses.heatMapBlankItem
+                          }
                           width={17}
                           height={17}
                           x={0}
@@ -84,14 +97,11 @@ export const UserDiaryGraph = () => {
 const year = [...new Array(52).keys()];
 const week = [...new Array(7).keys()];
 
-const useStyles = makeStyles(theme => ({
-  heatMapContainer: {
-    backgroundColor: theme.palette.background.default
-  },
+const useHeatMapStyles = makeStyles(theme => ({
   heatMapBlankItem: {
-    fill: theme.palette.background.paper
+    fill: theme.palette.type === "light" ? theme.palette.grey[200] : theme.palette.grey[800]
   },
   heatMapBusyItem: {
-    fill: theme.palette.primary.dark
+    fill: theme.palette.primary.main
   }
 }));
