@@ -6,7 +6,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { PlaylistSummary } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { createEntityList } from "../../enhancers/createEntityList";
-import { useToggleState } from "../../hooks/toggle";
+import { useToggleState } from "../../hooks/useToggleState";
 import { UserContext } from "../project/Context";
 import { Column, Row, Search, Select } from "../ui";
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useMemo, useState } from "react";
 import { PlaylistItem } from "../../../../shared/api/entities";
-import { useEntity } from "../../../hooks/entity";
+import { useEntity } from "../../../hooks/useEntity";
 import { SubmissionManager } from "../managers/SubmissionManager";
 import { createPlayerDialog } from "./PlayerDialog";
 

@@ -4,7 +4,7 @@ import * as React from "react";
 import { useCallback, useContext } from "react";
 import { ExerciseDraft, Question } from "../../../../shared/api/entities";
 import { withBuffer } from "../../../enhancers/withBuffer";
-import { useToggleState } from "../../../hooks/toggle";
+import { useToggleState } from "../../../hooks/useToggleState";
 import { UploadExerciseDraftDialog } from "../../dialogs/UploadExerciseDraftDialog";
 import { ExercisePreviewer } from "../../player/dialogs/ExercisePreviewer";
 import { UserContext } from "../../project/Context";

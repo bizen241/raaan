@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { ExerciseSummary } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
-import { useToggleState } from "../../hooks/toggle";
+import { useToggleState } from "../../hooks/useToggleState";
 import { DeleteExerciseDialog } from "../dialogs/DeleteExerciseDialog";
 import { PublishExerciseDialog } from "../dialogs/PublishExerciseDialog";
 import { UnpublishExerciseDialog } from "../dialogs/UnpublishExerciseDialog";

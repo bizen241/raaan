@@ -4,7 +4,7 @@ import * as React from "react";
 import { useMemo } from "react";
 import { SubmissionSummary } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
-import { useSearch } from "../../hooks/search";
+import { useSearch } from "../../hooks/useSearch";
 import { useStyles } from "../ui/styles";
 
 export const SubmissionSummaryViewer = React.memo<{

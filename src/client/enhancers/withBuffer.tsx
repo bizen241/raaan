@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EntityObject, EntityType } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
-import { useEntity } from "../hooks/entity";
+import { useEntity } from "../hooks/useEntity";
 import { actions, RootState } from "../reducers";
 import { isLocalOnly } from "../reducers/api";
 

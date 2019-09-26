@@ -4,7 +4,7 @@ import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { ExerciseDraft } from "../../../shared/api/entities";
 import { createBufferList } from "../../enhancers/createBufferList";
-import { useToggleState } from "../../hooks/toggle";
+import { useToggleState } from "../../hooks/useToggleState";
 import { DeleteExerciseDraftBufferDialog } from "../dialogs/DeleteExerciseDraftBufferDialog";
 
 export const ExerciseDraftBufferList = createBufferList<ExerciseDraft>({ entityType: "ExerciseDraft" })(

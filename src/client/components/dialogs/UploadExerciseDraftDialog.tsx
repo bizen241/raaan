@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ExerciseDraft } from "../../../shared/api/entities";
 import { createDialog } from "../../enhancers/createDialog";
-import { useEntity } from "../../hooks/entity";
+import { useEntity } from "../../hooks/useEntity";
 import { actions } from "../../reducers";
 import { isLocalOnly } from "../../reducers/api";
 import { UserContext } from "../project/Context";

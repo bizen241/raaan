@@ -3,7 +3,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { User, UserDiary } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
-import { useSearch } from "../../hooks/search";
+import { useSearch } from "../../hooks/useSearch";
 import { Row } from "../ui";
 
 type DateToUserDiary = { [date: string]: UserDiary | undefined };

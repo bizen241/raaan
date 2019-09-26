@@ -20,7 +20,7 @@ import { useCallback } from "react";
 import { EntityObject, EntityType } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { useStyles } from "../components/ui/styles";
-import { useSearch } from "../hooks/search";
+import { useSearch } from "../hooks/useSearch";
 
 interface EntityListParams {
   entityType: EntityType;

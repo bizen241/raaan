@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { EntityObject, EntityType } from "../../shared/api/entities";
-import { useEntity } from "../hooks/entity";
+import { useEntity } from "../hooks/useEntity";
 
 interface Params {
   entityType: EntityType;

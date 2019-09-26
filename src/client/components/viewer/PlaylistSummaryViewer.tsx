@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { PlaylistSummary } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
-import { useToggleState } from "../../hooks/toggle";
+import { useToggleState } from "../../hooks/useToggleState";
 import { DeletePlaylistDialog } from "../dialogs/DeletePlaylistDialog";
 import { PublishPlaylistDialog } from "../dialogs/PublishPlaylistDialog";
 import { UnpublishPlaylistDialog } from "../dialogs/UnpublishPlaylistDialog";

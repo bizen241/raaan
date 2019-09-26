@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { PlaylistItem, PlaylistSummary } from "../../../shared/api/entities";
 import { createEntityList } from "../../enhancers/createEntityList";
-import { useEntity } from "../../hooks/entity";
+import { useEntity } from "../../hooks/useEntity";
 import { actions } from "../../reducers";
 import { generateBufferId } from "../../reducers/buffers";
 
