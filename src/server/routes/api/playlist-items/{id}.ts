@@ -2,14 +2,14 @@ import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { PlaylistItem } from "../../../../shared/api/entities";
-import { SaveParams } from "../../../../shared/api/request/save";
+import { Params } from "../../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
 import { PlaylistItemEntity } from "../../../database/entities";
 
 export const PATCH: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { id: playlistItemId }: PathParams = req.params;
-  const params: SaveParams<PlaylistItem> = req.body;
+  const params: Params<PlaylistItem> = req.body;
 
   getManager().transaction(async manager => {
     const playlistItem = await manager.findOne(PlaylistItemEntity, playlistItemId, {

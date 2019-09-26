@@ -2,7 +2,7 @@ import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
 import { getManager, IsNull } from "typeorm";
 import { PlaylistItem } from "../../../shared/api/entities";
-import { SaveParams } from "../../../shared/api/request/save";
+import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { parseQuery } from "../../api/request/search/parse";
 import { responseFindResult, responseSearchResult } from "../../api/response";
@@ -53,7 +53,7 @@ GET.apiDoc = createOperationDoc({
 });
 
 export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { playlistId, exerciseId, memo = "" }: SaveParams<PlaylistItem> = req.body;
+  const { playlistId, exerciseId, memo = "" }: Params<PlaylistItem> = req.body;
   if (playlistId === undefined || exerciseId === undefined) {
     return next(createError(400));
   }

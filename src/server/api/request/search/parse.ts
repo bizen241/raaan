@@ -29,12 +29,13 @@ import {
   UserSession,
   UserSummary
 } from "../../../../shared/api/entities";
+import { Params } from "../../../../shared/api/request/params";
 import { AuthProviderName } from "../../../../shared/auth";
 
-export type SearchQuery<E extends EntityObject> = { [P in keyof Partial<E>]?: string };
+export type SearchQuery<E extends EntityObject> = { [P in keyof Params<E>]?: string };
 
 export const parseQuery = <E extends EntityObject>(type: EntityType, query: SearchQuery<E>) =>
-  parsers[type](query) as Partial<E>;
+  parsers[type](query) as Params<E>;
 
 /*
 const bool = (value: string | undefined) => {
@@ -52,7 +53,7 @@ const page = <E extends EntityObject>(query: SearchQuery<E>) => ({
   searchOrder: query.searchOrder as "ASC" | "DESC"
 });
 
-type Parser<E extends EntityObject> = (query: SearchQuery<E>) => Partial<E>;
+type Parser<E extends EntityObject> = (query: SearchQuery<E>) => Params<E>;
 
 const parseExercise: Parser<Exercise> = query => {
   const { authorId } = query;

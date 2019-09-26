@@ -2,7 +2,7 @@ import { LOCATION_CHANGE } from "connected-react-router";
 import { Reducer } from "redux";
 import { Actions } from ".";
 import { createEntityTypeToObject, EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
-import { SaveParams } from "../../shared/api/request/save";
+import { Params } from "../../shared/api/request/params";
 import { EntityStore } from "../../shared/api/response/get";
 import * as api from "../api/client";
 import { stringifyParams } from "../api/request/search";
@@ -18,7 +18,7 @@ export const apiSyncActions = {
   update: <E extends EntityObject>(
     method: keyof ApiState,
     type: EntityType,
-    key: string | Partial<E>,
+    key: string | Params<E>,
     code: number,
     response?: EntityStore
   ) => createAction(ApiActionType.Update, { method, type, key, code, response })
@@ -39,7 +39,7 @@ const getEntity = (type: EntityType, id: string): AsyncAction => async dispatch 
   }
 };
 
-const searchEntity = <E extends EntityObject>(type: EntityType, params: Partial<E>): AsyncAction => async dispatch => {
+const searchEntity = <E extends EntityObject>(type: EntityType, params: Params<E>): AsyncAction => async dispatch => {
   dispatch(apiSyncActions.update<E>("search", type, params, 102));
 
   try {
@@ -54,11 +54,10 @@ const searchEntity = <E extends EntityObject>(type: EntityType, params: Partial<
 
 export const isLocalOnly = (id: string) => !isNaN(Number(id));
 
-const uploadEntity = <E extends EntityObject>(
-  type: EntityType,
-  id: string,
-  params?: SaveParams<E>
-): AsyncAction => async (dispatch, getState) => {
+const uploadEntity = <E extends EntityObject>(type: EntityType, id: string, params?: Params<E>): AsyncAction => async (
+  dispatch,
+  getState
+) => {
   const buffer = getState().buffers[type][id];
   const target = params || buffer;
   if (target === undefined) {

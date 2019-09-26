@@ -3,7 +3,7 @@ import * as React from "react";
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { EntityObject, EntityType } from "../../shared/api/entities";
-import { SaveParams } from "../../shared/api/request/save";
+import { Params } from "../../shared/api/request/params";
 import { RootState } from "../reducers";
 
 interface BufferListParams {
@@ -17,8 +17,8 @@ interface BufferListProps {
 
 interface BufferListItemProps<E extends EntityObject> {
   bufferId: string;
-  buffer: SaveParams<E>;
-  source: Partial<E> | undefined;
+  buffer: Params<E>;
+  source: E | undefined;
 }
 
 export const createBufferList = <E extends EntityObject>({ entityType }: BufferListParams) => (

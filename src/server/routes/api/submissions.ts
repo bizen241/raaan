@@ -2,7 +2,7 @@ import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
 import { EntityManager, getManager } from "typeorm";
 import { Submission } from "../../../shared/api/entities";
-import { SaveParams } from "../../../shared/api/request/save";
+import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
 import {
@@ -17,7 +17,7 @@ import {
 } from "../../database/entities";
 
 export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { exerciseId, typeCount, time, accuracy }: SaveParams<Submission> = req.body;
+  const { exerciseId, typeCount, time, accuracy }: Params<Submission> = req.body;
   if (exerciseId === undefined || typeCount === undefined || time === undefined || accuracy === undefined) {
     return next(createError(400));
   }

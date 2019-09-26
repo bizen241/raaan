@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
 import { OrderBy, Playlist } from "../../../shared/api/entities";
-import { SaveParams } from "../../../shared/api/request/save";
+import { Params } from "../../../shared/api/request/params";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { PlaylistSummaryEntity } from "./PlaylistSummaryEntity";
 import { UserEntity } from "./UserEntity";
@@ -41,7 +41,7 @@ export class PlaylistEntity extends BaseEntityClass {
   @Column()
   isLocked: boolean = false;
 
-  constructor(author: UserEntity, summary: PlaylistSummaryEntity, params: SaveParams<Playlist>) {
+  constructor(author: UserEntity, summary: PlaylistSummaryEntity, params: Params<Playlist>) {
     super();
 
     this.author = author;

@@ -1,3 +1,5 @@
-import { EntityTypeToEntity } from "../entities";
+import { EntityObject, EntityTypeToEntity } from "../entities";
 
-export type EntityTypeToParams = { [P in keyof EntityTypeToEntity]: Partial<EntityTypeToEntity[P]> };
+export type Params<E extends EntityObject> = Partial<E>;
+
+export type EntityTypeToParams = { [P in keyof EntityTypeToEntity]: Params<EntityTypeToEntity[P]> };

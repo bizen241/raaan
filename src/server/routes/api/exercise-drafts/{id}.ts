@@ -2,7 +2,7 @@ import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { ExerciseDraft } from "../../../../shared/api/entities";
-import { SaveParams } from "../../../../shared/api/request/save";
+import { Params } from "../../../../shared/api/request/params";
 import { getMinMaxTypeCount } from "../../../../shared/exercise";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
@@ -17,7 +17,7 @@ import { normalizeTags } from "../../../exercise";
 
 export const PATCH: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { id: exerciseDraftId }: PathParams = req.params;
-  const params: SaveParams<ExerciseDraft> = req.body;
+  const params: Params<ExerciseDraft> = req.body;
 
   const manager = getManager();
 

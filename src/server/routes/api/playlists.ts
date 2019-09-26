@@ -2,7 +2,7 @@ import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { Playlist } from "../../../shared/api/entities";
-import { SaveParams } from "../../../shared/api/request/save";
+import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
 import {
@@ -15,7 +15,7 @@ import {
 import { normalizeTags } from "../../exercise";
 
 export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const params: SaveParams<Playlist> = req.body;
+  const params: Params<Playlist> = req.body;
 
   await getManager().transaction(async manager => {
     const tags: PlaylistTagEntity[] = [];

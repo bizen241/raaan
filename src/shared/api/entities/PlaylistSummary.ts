@@ -8,4 +8,5 @@ export interface PlaylistSummary extends BaseEntityObject {
   description: string;
   itemCount: number;
   isPrivate: boolean;
+  searchSort?: "createdAt";
 }

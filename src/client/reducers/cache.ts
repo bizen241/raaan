@@ -1,5 +1,6 @@
 import { Reducer } from "redux";
 import { createEntityTypeToObject, EntityObject, EntityType, mergeEntityTypeToObject } from "../../shared/api/entities";
+import { Params } from "../../shared/api/request/params";
 import { EntityStore } from "../../shared/api/response/get";
 import { SearchResponse } from "../../shared/api/response/search";
 import { mergeSearchResultStore, SearchResultStore } from "../api/response/search";
@@ -17,7 +18,7 @@ export const cacheActions = {
     createAction(CacheActionType.Get, {
       response
     }),
-  search: <E extends EntityObject>(type: EntityType, params: Partial<E>, response: SearchResponse) =>
+  search: <E extends EntityObject>(type: EntityType, params: Params<E>, response: SearchResponse) =>
     createAction(CacheActionType.Search, {
       type,
       params,

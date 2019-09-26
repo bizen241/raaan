@@ -1,7 +1,7 @@
 import { OperationFunction } from "express-openapi";
 import { getManager } from "typeorm";
 import { ExerciseDraft } from "../../../shared/api/entities";
-import { SaveParams } from "../../../shared/api/request/save";
+import { Params } from "../../../shared/api/request/params";
 import { getMinMaxTypeCount } from "../../../shared/exercise";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
@@ -9,7 +9,7 @@ import { ExerciseDraftEntity, ExerciseEntity, ExerciseSummaryEntity, ExerciseTag
 import { normalizeTags } from "../../exercise";
 
 export const POST: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
-  const { isMerged = true, isPrivate = true, ...params }: SaveParams<ExerciseDraft> = req.body;
+  const { isMerged = true, isPrivate = true, ...params }: Params<ExerciseDraft> = req.body;
 
   await getManager().transaction(async manager => {
     const { maxTypeCount, minTypeCount } = getMinMaxTypeCount(params.questions);

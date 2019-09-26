@@ -2,7 +2,7 @@ import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { Playlist } from "../../../../shared/api/entities";
-import { SaveParams } from "../../../../shared/api/request/save";
+import { Params } from "../../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
 import { hasPermission } from "../../../api/security";
@@ -36,7 +36,7 @@ GET.apiDoc = createOperationDoc({
 
 export const PATCH: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { id: playlistId }: PathParams = req.params;
-  const params: SaveParams<Playlist> = req.body;
+  const params: Params<Playlist> = req.body;
 
   await getManager().transaction(async manager => {
     const playlist = await manager.findOne(PlaylistEntity, playlistId, {

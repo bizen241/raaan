@@ -8,7 +8,7 @@ import { useToggleState } from "../../hooks/toggle";
 import { DeleteExerciseDraftBufferDialog } from "../dialogs/DeleteExerciseDraftBufferDialog";
 
 export const ExerciseDraftBufferList = createBufferList<ExerciseDraft>({ entityType: "ExerciseDraft" })(
-  React.memo(({ bufferId, buffer, source = {} }) => {
+  React.memo(({ bufferId, buffer, source }) => {
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
     return (
@@ -16,7 +16,7 @@ export const ExerciseDraftBufferList = createBufferList<ExerciseDraft>({ entityT
         <TableCell>
           <Box display="flex" flexDirection="column">
             <Link color="textPrimary" component={RouterLink} to={`/exercise-drafts/${bufferId}/edit`}>
-              {buffer.title || source.title || "無題"}
+              {buffer.title || (source && source.title) || "無題"}
             </Link>
           </Box>
         </TableCell>

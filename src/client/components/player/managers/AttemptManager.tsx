@@ -3,14 +3,14 @@ import { Error } from "@material-ui/icons";
 import { useCallback, useEffect, useState } from "react";
 import * as React from "react";
 import { Exercise, SubmissionSummary } from "../../../../shared/api/entities";
-import { SaveParams } from "../../../../shared/api/request/save";
+import { Params } from "../../../../shared/api/request/params";
 import { Attempt, createAttempt, QuestionResult } from "../../../domain/exercise/attempt";
 import { AttemptMessage } from "../renderers/AttemptMessage";
 import { AttemptResultViewer } from "../renderers/ResultSummary";
 import { QuestionManager } from "./QuestionManager";
 
 export const AttemptManager = React.memo<{
-  exercise: SaveParams<Exercise>;
+  exercise: Params<Exercise>;
   submissionSummary?: SubmissionSummary;
   hasNext?: boolean;
   onNext?: () => void;

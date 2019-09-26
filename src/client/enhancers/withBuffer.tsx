@@ -3,16 +3,16 @@ import * as React from "react";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EntityObject, EntityType } from "../../shared/api/entities";
-import { SaveParams } from "../../shared/api/request/save";
+import { Params } from "../../shared/api/request/params";
 import { useEntity } from "../hooks/entity";
 import { actions, RootState } from "../reducers";
 import { isLocalOnly } from "../reducers/api";
 
 interface Props<E extends EntityObject> {
   bufferId: string;
-  buffer: SaveParams<E> | undefined;
-  source: Partial<E> | undefined;
-  onChange: (params: SaveParams<E>) => void;
+  buffer: Params<E> | undefined;
+  source: Params<E> | undefined;
+  onChange: (params: Params<E>) => void;
 }
 
 export const withBuffer = <E extends EntityObject>(
@@ -23,10 +23,10 @@ export const withBuffer = <E extends EntityObject>(
     const dispatch = useDispatch();
 
     const { entity, getStatus } = useEntity<E>(entityType, bufferId);
-    const buffer = useSelector((state: RootState) => state.buffers[entityType][bufferId] as SaveParams<E> | undefined);
+    const buffer = useSelector((state: RootState) => state.buffers[entityType][bufferId] as Params<E> | undefined);
 
     const onChange = useCallback(
-      (params: SaveParams<E>) => dispatch(actions.buffers.update(entityType, bufferId, params)),
+      (params: Params<E>) => dispatch(actions.buffers.update(entityType, bufferId, params)),
       []
     );
 

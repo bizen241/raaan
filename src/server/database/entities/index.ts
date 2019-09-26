@@ -1,4 +1,3 @@
-import { EntityManager } from "typeorm";
 import { ExerciseDiaryEntity } from "./ExerciseDiaryEntity";
 import { ExerciseDraftEntity } from "./ExerciseDraftEntity";
 import { ExerciseEntity } from "./ExerciseEntity";
@@ -101,5 +100,3 @@ export const entities = [
   UserSessionEntity,
   UserSummaryEntity
 ];
-
-export type EntityCreator<E extends Entity> = (manager: EntityManager, params: Partial<E>) => Promise<E>;

@@ -18,6 +18,7 @@ import { List, Refresh } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
 import { EntityObject, EntityType } from "../../shared/api/entities";
+import { Params } from "../../shared/api/request/params";
 import { useStyles } from "../components/ui/styles";
 import { useSearch } from "../hooks/search";
 
@@ -29,7 +30,7 @@ interface EntityListParams {
 interface EntityListProps<E extends EntityObject> {
   title?: React.ReactNode;
   elevation?: number;
-  initialParams: Partial<E>;
+  initialParams: Params<E>;
 }
 
 interface EntityListItemProps<E extends EntityObject> {
@@ -37,9 +38,9 @@ interface EntityListItemProps<E extends EntityObject> {
 }
 
 interface EntityListParamsProps<E extends EntityObject> {
-  params: Partial<E>;
+  params: Params<E>;
   onReload: () => void;
-  onChange: (params: Partial<E>) => void;
+  onChange: (params: Params<E>) => void;
 }
 
 export const createEntityList = <E extends EntityObject>({ entityType, itemHeight = 53 }: EntityListParams) => (
@@ -106,14 +107,14 @@ export const createEntityList = <E extends EntityObject>({ entityType, itemHeigh
                   (_, page) =>
                     onChange({
                       searchOffset: page * limit
-                    } as Partial<E>),
+                    } as Params<E>),
                   [limit]
                 )}
                 onChangeRowsPerPage={useCallback(
                   (e: React.ChangeEvent<HTMLInputElement>) =>
                     onChange({
                       searchLimit: parseInt(e.target.value, 10)
-                    } as Partial<E>),
+                    } as Params<E>),
                   []
                 )}
               />

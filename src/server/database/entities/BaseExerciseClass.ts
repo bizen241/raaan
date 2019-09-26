@@ -1,6 +1,6 @@
 import { Column } from "typeorm";
 import { Exercise, Question } from "../../../shared/api/entities";
-import { SaveParams } from "../../../shared/api/request/save";
+import { Params } from "../../../shared/api/request/params";
 import { BaseEntityClass } from "./BaseEntityClass";
 
 export abstract class BaseExerciseClass extends BaseEntityClass {
@@ -22,7 +22,7 @@ export abstract class BaseExerciseClass extends BaseEntityClass {
   @Column()
   isRandom!: boolean;
 
-  constructor(params?: SaveParams<Exercise>) {
+  constructor(params?: Params<Exercise>) {
     super();
 
     if (params !== undefined) {

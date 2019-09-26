@@ -1,8 +1,9 @@
-import { SaveParams } from "../../../shared/api/request/save";
+import { EntityObject } from "../../../shared/api/entities";
+import { Params } from "../../../shared/api/request/params";
 
 type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
-export const request = async <T>(method: Method, path: string, body?: SaveParams<any>) => {
+export const request = async <T>(method: Method, path: string, body?: Params<EntityObject>) => {
   const url = `${location.origin}/api/${path}`;
 
   const response = await fetch(url, {

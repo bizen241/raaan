@@ -1,7 +1,7 @@
 import { Reducer } from "redux";
 import { Actions } from ".";
 import { createEntityTypeToObject, EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
-import { SaveParams } from "../../shared/api/request/save";
+import { Params } from "../../shared/api/request/params";
 import { guestUserConfig } from "../components/project/Context";
 import { ActionUnion, createAction } from "./action";
 
@@ -12,13 +12,13 @@ export enum BuffersActionType {
 }
 
 export const buffersActions = {
-  add: <E extends EntityObject>(type: EntityType, id: string, params?: SaveParams<E>) =>
+  add: <E extends EntityObject>(type: EntityType, id: string, params?: Params<E>) =>
     createAction(BuffersActionType.Add, {
       type,
       id,
       params
     }),
-  update: <E extends EntityObject>(type: EntityType, id: string, params: SaveParams<E>) =>
+  update: <E extends EntityObject>(type: EntityType, id: string, params: Params<E>) =>
     createAction(BuffersActionType.Update, {
       type,
       id,
@@ -37,7 +37,7 @@ export const generateBufferId = () => Date.now().toString();
 
 export type BuffersState = {
   [P in keyof EntityTypeToEntity]: {
-    [id: string]: SaveParams<EntityTypeToEntity[P]> | undefined;
+    [id: string]: Params<EntityTypeToEntity[P]> | undefined;
   }
 };
 
