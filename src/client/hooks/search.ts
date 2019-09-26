@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EntityObject, EntityType } from "../../shared/api/entities";
-import { Params } from "../../shared/api/request/params";
+import { defaultSearchLimit, defaultSearchOffset, Params } from "../../shared/api/request/params";
 import { stringifyParams } from "../api/request/search";
 import { actions, RootState } from "../reducers";
 
@@ -9,7 +9,7 @@ export const useSearch = <E extends EntityObject>(entityType: EntityType, initia
   const dispatch = useDispatch();
 
   const [params, setParams] = useState<Params<E>>(initialParams);
-  const { searchLimit = 100, searchOffset = 0 } = params;
+  const { searchLimit = defaultSearchLimit, searchOffset = defaultSearchOffset } = params;
 
   const { statusMap, resultMap, entityMap } = useSelector((state: RootState) => ({
     statusMap: state.api.search[entityType],

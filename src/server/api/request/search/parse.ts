@@ -29,7 +29,7 @@ import {
   UserSession,
   UserSummary
 } from "../../../../shared/api/entities";
-import { Params } from "../../../../shared/api/request/params";
+import { defaultSearchLimit, defaultSearchOffset, Params } from "../../../../shared/api/request/params";
 import { AuthProviderName } from "../../../../shared/auth";
 
 export type SearchQuery<E extends EntityObject> = { [P in keyof Params<E>]?: string };
@@ -47,9 +47,9 @@ const bool = (value: string | undefined) => {
 };
 */
 
-const page = <E extends EntityObject>(query: SearchQuery<E>) => ({
-  searchLimit: Number(query.searchLimit),
-  searchOffset: Number(query.searchOffset),
+const base = <E extends EntityObject>(query: SearchQuery<E>) => ({
+  searchLimit: Number(query.searchLimit) || defaultSearchLimit,
+  searchOffset: Number(query.searchOffset) || defaultSearchOffset,
   searchOrder: query.searchOrder as "ASC" | "DESC"
 });
 
@@ -59,8 +59,8 @@ const parseExercise: Parser<Exercise> = query => {
   const { authorId } = query;
 
   return {
-    authorId,
-    ...page(query)
+    ...base(query),
+    authorId
   };
 };
 
@@ -68,8 +68,8 @@ const parseExerciseDiary: Parser<ExerciseDiary> = query => {
   const { exerciseId } = query;
 
   return {
-    exerciseId,
-    ...page(query)
+    ...base(query),
+    exerciseId
   };
 };
 
@@ -77,8 +77,8 @@ const parseExerciseDraft: Parser<ExerciseDraft> = query => {
   const { exerciseId } = query;
 
   return {
-    exerciseId,
-    ...page(query)
+    ...base(query),
+    exerciseId
   };
 };
 
@@ -86,9 +86,9 @@ const parseExerciseReport: Parser<ExerciseReport> = query => {
   const { targetId, reporterId } = query;
 
   return {
+    ...base(query),
     targetId,
-    reporterId,
-    ...page(query)
+    reporterId
   };
 };
 
@@ -96,20 +96,20 @@ const parseExerciseSummary: Parser<ExerciseSummary> = query => {
   const { authorId, lang, title, tags, description, searchSort } = query;
 
   return {
+    ...base(query),
     authorId,
     lang,
     title,
     tags,
     description,
-    searchSort: searchSort as ExerciseSummary["searchSort"],
-    ...page(query)
+    searchSort: searchSort as ExerciseSummary["searchSort"]
   };
 };
 
 const parseExerciseTag: Parser<ExerciseTag> = query => {
   return {
-    name,
-    ...page(query)
+    ...base(query),
+    name
   };
 };
 
@@ -117,21 +117,21 @@ const parseExerciseVote: Parser<ExerciseVote> = query => {
   const { targetId, voterId } = query;
 
   return {
+    ...base(query),
     targetId,
-    voterId,
-    ...page(query)
+    voterId
   };
 };
 
 const parsePlaylist: Parser<Playlist> = query => {
   return {
-    ...page(query)
+    ...base(query)
   };
 };
 
 const parsePlaylistBookmark: Parser<PlaylistBookmark> = query => {
   return {
-    ...page(query)
+    ...base(query)
   };
 };
 
@@ -139,15 +139,15 @@ const parsePlaylistItem: Parser<PlaylistItem> = query => {
   const { playlistId, exerciseId } = query;
 
   return {
+    ...base(query),
     playlistId,
-    exerciseId,
-    ...page(query)
+    exerciseId
   };
 };
 
 const parsePlaylistReport: Parser<PlaylistReport> = query => {
   return {
-    ...page(query)
+    ...base(query)
   };
 };
 
@@ -155,32 +155,32 @@ const parsePlaylistSummary: Parser<PlaylistSummary> = query => {
   const { authorId } = query;
 
   return {
-    authorId,
-    ...page(query)
+    ...base(query),
+    authorId
   };
 };
 
 const parsePlaylistTag: Parser<PlaylistTag> = query => {
   return {
-    ...page(query)
+    ...base(query)
   };
 };
 
 const parseRevision: Parser<Revision> = query => {
   return {
-    ...page(query)
+    ...base(query)
   };
 };
 
 const parseRevisionSummary: Parser<RevisionSummary> = query => {
   return {
-    ...page(query)
+    ...base(query)
   };
 };
 
 const parseSubmission: Parser<Submission> = query => {
   return {
-    ...page(query)
+    ...base(query)
   };
 };
 
@@ -188,9 +188,9 @@ const parseSubmissionSummary: Parser<SubmissionSummary> = query => {
   const { submitterId, exerciseId } = query;
 
   return {
+    ...base(query),
     submitterId,
-    exerciseId,
-    ...page(query)
+    exerciseId
   };
 };
 
@@ -198,9 +198,9 @@ const parseUser: Parser<User> = query => {
   const { name, permission } = query;
 
   return {
+    ...base(query),
     name,
-    permission: permission as Permission,
-    ...page(query)
+    permission: permission as Permission
   };
 };
 
@@ -208,9 +208,9 @@ const parseUserAccount: Parser<UserAccount> = query => {
   const { provider, accountId } = query;
 
   return {
+    ...base(query),
     provider: provider as AuthProviderName,
-    accountId,
-    ...page(query)
+    accountId
   };
 };
 
@@ -218,9 +218,9 @@ const parseUserConfig: Parser<UserConfig> = query => {
   const { lang, theme } = query;
 
   return {
+    ...base(query),
     lang: lang as Lang | undefined,
-    theme: theme as Theme | undefined,
-    ...page(query)
+    theme: theme as Theme | undefined
   };
 };
 
@@ -228,14 +228,14 @@ const parseUserDiary: Parser<UserDiary> = query => {
   const { userId } = query;
 
   return {
-    userId,
-    ...page(query)
+    ...base(query),
+    userId
   };
 };
 
 const parseUserReport: Parser<UserReport> = query => {
   return {
-    ...page(query)
+    ...base(query)
   };
 };
 
@@ -243,8 +243,8 @@ const parseUserSession: Parser<UserSession> = query => {
   const { userId } = query;
 
   return {
-    userId,
-    ...page(query)
+    ...base(query),
+    userId
   };
 };
 
@@ -252,8 +252,8 @@ const parseUserSummary: Parser<UserSummary> = query => {
   const { userId } = query;
 
   return {
-    userId,
-    ...page(query)
+    ...base(query),
+    userId
   };
 };
 
