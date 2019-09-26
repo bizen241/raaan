@@ -8,7 +8,7 @@ const ConfigPage = React.memo(() => {
   const currentUser = useContext(UserContext);
 
   return (
-    <Page>
+    <Page title="設定">
       <UserConfigEditor bufferId={currentUser.configId} />
     </Page>
   );

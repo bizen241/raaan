@@ -15,7 +15,7 @@ const AppPage = React.memo(() => {
   }));
 
   return (
-    <Page>
+    <Page title="アプリについて">
       <Box display="flex" flexDirection="column" pb={1}>
         <Card>
           <CardHeader

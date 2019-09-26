@@ -7,7 +7,7 @@ const EditExerciseDraftPage = React.memo<PageProps>(({ match }) => {
   const bufferId = match.params.id;
 
   return (
-    <Page>
+    <Page title="クイズを編集中">
       <ExerciseDraftEditor bufferId={bufferId} />
     </Page>
   );
