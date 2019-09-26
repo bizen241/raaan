@@ -52,7 +52,11 @@ export const ExerciseSummaryList = createEntityList<ExerciseSummary>({ entityTyp
         <Collapse in={isSearchConditionOpen} timeout="auto" unmountOnExit>
           <Column>
             <Column pb={1}>
-              <Select label="並び順" defaultValue="title" onChange={e => onChange({ order: e.target.value })}>
+              <Select
+                label="並び順"
+                defaultValue="title"
+                onChange={e => onChange({ searchSort: e.target.value as ExerciseSummary["searchSort"] })}
+              >
                 <option key="title" value="title">
                   更新が新しい順
                 </option>

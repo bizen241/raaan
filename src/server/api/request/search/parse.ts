@@ -49,7 +49,6 @@ const bool = (value: string | undefined) => {
 const page = <E extends EntityObject>(query: SearchQuery<E>) => ({
   searchLimit: Number(query.searchLimit),
   searchOffset: Number(query.searchOffset),
-  searchSort: query.searchSort as E["searchSort"],
   searchOrder: query.searchOrder as "ASC" | "DESC"
 });
 
@@ -93,7 +92,7 @@ const parseExerciseReport: Parser<ExerciseReport> = query => {
 };
 
 const parseExerciseSummary: Parser<ExerciseSummary> = query => {
-  const { authorId, lang, title, tags, description } = query;
+  const { authorId, lang, title, tags, description, searchSort } = query;
 
   return {
     authorId,
@@ -101,13 +100,12 @@ const parseExerciseSummary: Parser<ExerciseSummary> = query => {
     title,
     tags,
     description,
+    searchSort: searchSort as ExerciseSummary["searchSort"],
     ...page(query)
   };
 };
 
 const parseExerciseTag: Parser<ExerciseTag> = query => {
-  const { name } = query;
-
   return {
     name,
     ...page(query)

@@ -141,11 +141,11 @@ const normalizeExerciseReport: Normalizer<ExerciseReportEntity> = (_, store, ent
 
 const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (context, store, entity) => {
   const { id, exercise, exerciseId, tags = [], upvoteCount, submittedCount: submitCount } = entity;
-  if (exercise === undefined) {
+  if (exercise === undefined || exercise.draft === undefined) {
     return;
   }
 
-  const { author, authorId, draftId, lang, title, description, isPrivate } = exercise;
+  const { author, authorId, draftId, lang, title, description, isDraft, isPrivate } = exercise;
 
   store.ExerciseSummary[id] = {
     ...base(entity),
@@ -158,6 +158,8 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (context, st
     description,
     upvoteCount,
     submitCount,
+    isDraft,
+    isEditing: !exercise.draft.isMerged,
     isPrivate
   };
 

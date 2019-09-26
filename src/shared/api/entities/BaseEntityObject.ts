@@ -10,6 +10,5 @@ export interface BaseEntityObject {
   fetchedAt: number;
   searchLimit?: number;
   searchOffset?: number;
-  searchSort?: string;
   searchOrder?: "ASC" | "DESC";
 }

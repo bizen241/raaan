@@ -41,7 +41,17 @@ export const EditExercisesPage = React.memo(() => {
             {!isGuest && <Tab value="drafts" label={<Typography>下書き</Typography>} />}
           </Tabs>
           <Divider />
-          {tab === "buffers" ? <ExerciseDraftBufferList elevation={0} /> : <ExerciseSummaryList elevation={0} />}
+          {tab === "buffers" ? (
+            <ExerciseDraftBufferList elevation={0} />
+          ) : (
+            <ExerciseSummaryList
+              elevation={0}
+              initialParams={{
+                authorId: currentUser.id,
+                isEditing: true
+              }}
+            />
+          )}
         </Paper>
       </Column>
     </Page>
