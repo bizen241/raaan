@@ -18,7 +18,6 @@ import { List, Refresh } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
 import { EntityObject, EntityType } from "../../shared/api/entities";
-import { SearchParams } from "../../shared/api/request/search";
 import { useStyles } from "../components/ui/styles";
 import { useSearch } from "../hooks/search";
 
@@ -30,7 +29,7 @@ interface EntityListParams {
 interface EntityListProps<E extends EntityObject> {
   title?: React.ReactNode;
   elevation?: number;
-  initialSearchParams?: SearchParams<E>;
+  initialParams: Partial<E>;
 }
 
 interface EntityListItemProps<E extends EntityObject> {
@@ -38,22 +37,19 @@ interface EntityListItemProps<E extends EntityObject> {
 }
 
 interface EntityListParamsProps<E extends EntityObject> {
-  params: SearchParams<E>;
+  params: Partial<E>;
   onReload: () => void;
-  onChange: (params: SearchParams<E>) => void;
+  onChange: (params: Partial<E>) => void;
 }
 
 export const createEntityList = <E extends EntityObject>({ entityType, itemHeight = 53 }: EntityListParams) => (
   ItemComponent: React.ComponentType<EntityListItemProps<E>>,
   ParamsComponent?: React.ComponentType<EntityListParamsProps<E>>
 ) =>
-  React.memo<EntityListProps<E>>(({ elevation, initialSearchParams = {} }) => {
+  React.memo<EntityListProps<E>>(({ elevation, initialParams }) => {
     const classes = useStyles();
 
-    const { entities, params, status, limit, offset, count, onReload, onChange } = useSearch<E>(
-      entityType,
-      initialSearchParams
-    );
+    const { entities, params, status, limit, offset, count, onReload, onChange } = useSearch(entityType, initialParams);
 
     const isLoading = status !== undefined && status !== 200;
     const emptyRows = !isLoading && limit - entities.length;
@@ -109,15 +105,15 @@ export const createEntityList = <E extends EntityObject>({ entityType, itemHeigh
                 onChangePage={useCallback(
                   (_, page) =>
                     onChange({
-                      offset: page * limit
-                    } as SearchParams<E>),
+                      searchOffset: page * limit
+                    } as Partial<E>),
                   [limit]
                 )}
                 onChangeRowsPerPage={useCallback(
                   (e: React.ChangeEvent<HTMLInputElement>) =>
                     onChange({
-                      limit: parseInt(e.target.value, 10)
-                    } as SearchParams<E>),
+                      searchLimit: parseInt(e.target.value, 10)
+                    } as Partial<E>),
                   []
                 )}
               />

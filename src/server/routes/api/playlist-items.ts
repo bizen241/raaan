@@ -4,12 +4,12 @@ import { getManager, IsNull } from "typeorm";
 import { PlaylistItem } from "../../../shared/api/entities";
 import { SaveParams } from "../../../shared/api/request/save";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseSearchParams } from "../../api/request/search/parse";
+import { parseQuery } from "../../api/request/search/parse";
 import { responseFindResult, responseSearchResult } from "../../api/response";
 import { ExerciseEntity, PlaylistEntity, PlaylistItemEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { playlistId, exerciseId, limit, offset } = parseSearchParams<PlaylistItem>("PlaylistItem", req.query);
+  const { playlistId, exerciseId, searchLimit, searchOffset } = parseQuery<PlaylistItem>("PlaylistItem", req.query);
 
   const manager = getManager();
 
@@ -18,8 +18,8 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     .leftJoinAndSelect("playlistItem.playlist", "playlist")
     .leftJoinAndSelect("playlistItem.exercise", "exercise")
     .leftJoinAndSelect("exercise.summary", "summary")
-    .take(limit)
-    .skip(offset);
+    .take(searchLimit)
+    .skip(searchOffset);
 
   if (playlistId !== undefined) {
     const playlist = await manager.findOne(PlaylistEntity, playlistId);

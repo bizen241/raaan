@@ -60,7 +60,7 @@ export const PlaylistDialog = createDialog<{
                 <ExerciseContext.Provider value={exerciseId}>
                   <PlaylistSummarySelectList
                     title="プレイリスト一覧"
-                    initialSearchParams={{
+                    initialParams={{
                       authorId: currentUser.id
                     }}
                   />

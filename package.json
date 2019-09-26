@@ -6,7 +6,7 @@
   "main": "out/server/index.js",
   "scripts": {
     "start": "node out/server/index.js",
-    "build": "run-s build:client build:server",
+    "build": "run-s build:schema build:client build:server",
     "build:schema": "node scripts/schema.js",
     "build:client": "rimraf dist && cross-env NODE_ENV=production webpack",
     "build:server": "rimraf out && tsc --project config/tsconfig.server.json",

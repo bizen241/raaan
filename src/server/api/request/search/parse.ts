@@ -29,13 +29,12 @@ import {
   UserSession,
   UserSummary
 } from "../../../../shared/api/entities";
-import { SearchParams } from "../../../../shared/api/request/search";
 import { AuthProviderName } from "../../../../shared/auth";
 
-export type SearchQuery<E extends EntityObject> = { [P in keyof SearchParams<E>]?: string };
+export type SearchQuery<E extends EntityObject> = { [P in keyof Partial<E>]?: string };
 
-export const parseSearchParams = <E extends EntityObject>(type: EntityType, query: SearchQuery<E>) =>
-  parsers[type](query) as SearchParams<E>;
+export const parseQuery = <E extends EntityObject>(type: EntityType, query: SearchQuery<E>) =>
+  parsers[type](query) as Partial<E>;
 
 /*
 const bool = (value: string | undefined) => {
@@ -48,11 +47,13 @@ const bool = (value: string | undefined) => {
 */
 
 const page = <E extends EntityObject>(query: SearchQuery<E>) => ({
-  limit: (query.limit && Number(query.limit)) || 10,
-  offset: (query.offset && Number(query.offset)) || 0
+  searchLimit: Number(query.searchLimit),
+  searchOffset: Number(query.searchOffset),
+  searchSort: query.searchSort as E["searchSort"],
+  searchOrder: query.searchOrder as "ASC" | "DESC"
 });
 
-type Parser<E extends EntityObject> = (query: SearchQuery<E>) => SearchParams<E>;
+type Parser<E extends EntityObject> = (query: SearchQuery<E>) => Partial<E>;
 
 const parseExercise: Parser<Exercise> = query => {
   const { authorId } = query;

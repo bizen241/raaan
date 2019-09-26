@@ -10,6 +10,8 @@ export interface ExerciseSummary extends BaseEntityObject {
   description: string;
   upvoteCount: number;
   submitCount: number;
+  isDraft: boolean;
+  isEditing: boolean;
   isPrivate: boolean;
-  order?: string;
+  searchSort?: "createdAt";
 }

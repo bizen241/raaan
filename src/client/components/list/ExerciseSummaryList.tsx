@@ -4,7 +4,6 @@ import * as React from "react";
 import { useContext, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { ExerciseSummary } from "../../../shared/api/entities";
-import { SearchParams } from "../../../shared/api/request/search";
 import { createEntityList } from "../../enhancers/createEntityList";
 import { useToggleState } from "../../hooks/toggle";
 import { UserContext } from "../project/Context";
@@ -98,4 +97,5 @@ export const ExerciseSummaryList = createEntityList<ExerciseSummary>({ entityTyp
 
 type SearchTarget = "title" | "tags";
 
-const getSearchTarget = (params: SearchParams<ExerciseSummary>): SearchTarget => (params.title ? "title" : "tags");
+const getSearchTarget = (params: Partial<ExerciseSummary>): SearchTarget =>
+  params.title !== undefined ? "title" : "tags";

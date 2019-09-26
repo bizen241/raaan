@@ -1,13 +1,9 @@
 import { EntityObject } from "../../../shared/api/entities";
-import { SearchParams } from "../../../shared/api/request/search";
 
-export const stringifySearchParams = <E extends EntityObject>(
-  params: SearchParams<E>,
-  excludePaginationParams?: boolean
-) => {
+export const stringifyParams = <E extends EntityObject>(params: Partial<E>, excludePaginationParams?: boolean) => {
   const urlSearchParams = new URLSearchParams();
 
-  const keys = Object.keys(params) as Array<keyof SearchParams<E>>;
+  const keys = Object.keys(params) as Array<keyof Partial<E>>;
 
   keys.forEach(key => {
     const value = params[key];
@@ -15,7 +11,7 @@ export const stringifySearchParams = <E extends EntityObject>(
       return;
     }
 
-    if (excludePaginationParams && (key === "limit" || key === "offset")) {
+    if (excludePaginationParams && (key === "searchLimit" || key === "searchOffset")) {
       return;
     }
 

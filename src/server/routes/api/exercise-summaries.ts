@@ -2,20 +2,20 @@ import { OperationFunction } from "express-openapi";
 import { getManager } from "typeorm";
 import { ExerciseSummary } from "../../../shared/api/entities";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseSearchParams } from "../../api/request/search/parse";
+import { parseQuery } from "../../api/request/search/parse";
 import { responseSearchResult } from "../../api/response";
 import { ExerciseSummaryEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
-  const { authorId, tags, limit, offset } = parseSearchParams<ExerciseSummary>("ExerciseSummary", req.query);
+  const { authorId, tags, searchLimit, searchOffset } = parseQuery<ExerciseSummary>("ExerciseSummary", req.query);
 
   const query = await getManager()
     .createQueryBuilder(ExerciseSummaryEntity, "exerciseSummary")
     .leftJoinAndSelect("exerciseSummary.exercise", "exercise")
     .leftJoinAndSelect("exerciseSummary.tags", "tags")
     .leftJoinAndSelect("exercise.author", "author")
-    .take(limit)
-    .skip(offset);
+    .take(searchLimit)
+    .skip(searchOffset);
 
   if (authorId !== undefined) {
     query.andWhere("author.id = :authorId", { authorId });

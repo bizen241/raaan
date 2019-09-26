@@ -1,7 +1,6 @@
 import { EntityObject, EntityType } from "../../../shared/api/entities";
-import { SearchParams } from "../../../shared/api/request/search";
 import { SearchResponse } from "../../../shared/api/response/search";
-import { stringifySearchParams } from "../request/search";
+import { stringifyParams } from "../request/search";
 
 type IdMap = {
   [index: string]: string | undefined;
@@ -63,10 +62,10 @@ const mergeIds = (target: SearchResult, response: SearchResponse, offset: number
 export const mergeSearchResultStore = <E extends EntityObject>(
   store: SearchResultStore,
   entityType: EntityType,
-  params: SearchParams<E>,
+  params: Partial<E>,
   response: SearchResponse
 ): SearchResultStore => {
-  const searchQueryString = stringifySearchParams(params, true);
+  const searchQueryString = stringifyParams(params, true);
   const searchResultMap = store[entityType];
 
   const target = searchResultMap[searchQueryString] || {
@@ -75,12 +74,14 @@ export const mergeSearchResultStore = <E extends EntityObject>(
     fetchedAt: Date.now()
   };
 
+  const { searchOffset = 0 } = params;
+
   return {
     ...store,
     [entityType]: {
       ...searchResultMap,
       [searchQueryString]: {
-        ids: mergeIds(target, response, params.offset || 0),
+        ids: mergeIds(target, response, searchOffset),
         count: response.count,
         fetchedAt: Date.now()
       }

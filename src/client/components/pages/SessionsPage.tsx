@@ -11,7 +11,7 @@ export const SessionsPage = () => {
     <Page>
       <UserSessionList
         title="セッション一覧"
-        initialSearchParams={{
+        initialParams={{
           userId: currentUser.id
         }}
       />

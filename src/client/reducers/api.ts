@@ -3,25 +3,22 @@ import { Reducer } from "redux";
 import { Actions } from ".";
 import { createEntityTypeToObject, EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { SaveParams } from "../../shared/api/request/save";
-import { SearchParams } from "../../shared/api/request/search";
 import { EntityStore } from "../../shared/api/response/get";
 import * as api from "../api/client";
-import { stringifySearchParams } from "../api/request/search";
+import { stringifyParams } from "../api/request/search";
 import { ActionUnion, AsyncAction, createAction } from "./action";
 import { buffersActions } from "./buffers";
 import { cacheActions } from "./cache";
 
 export enum ApiActionType {
-  Update = "api/Update"
+  Update = "api/update"
 }
-
-type Key<E extends EntityObject> = string | SearchParams<E>;
 
 export const apiSyncActions = {
   update: <E extends EntityObject>(
     method: keyof ApiState,
     type: EntityType,
-    key: Key<E>,
+    key: string | Partial<E>,
     code: number,
     response?: EntityStore
   ) => createAction(ApiActionType.Update, { method, type, key, code, response })
@@ -42,11 +39,8 @@ const getEntity = (type: EntityType, id: string): AsyncAction => async dispatch 
   }
 };
 
-const searchEntity = <E extends EntityObject>(
-  type: EntityType,
-  params: SearchParams<E>
-): AsyncAction => async dispatch => {
-  dispatch(apiSyncActions.update("search", type, params, 102));
+const searchEntity = <E extends EntityObject>(type: EntityType, params: Partial<E>): AsyncAction => async dispatch => {
+  dispatch(apiSyncActions.update<E>("search", type, params, 102));
 
   try {
     const response = await api.searchEntity(type, params);
@@ -139,7 +133,7 @@ export const apiReducer: Reducer<ApiState, Actions> = (state = initialApiState, 
     case ApiActionType.Update: {
       const { method, type, key, code, response } = action.payload;
 
-      const keyString = typeof key === "string" ? key : stringifySearchParams(key);
+      const keyString = typeof key === "string" ? key : stringifyParams<EntityObject>(key);
 
       return {
         ...state,

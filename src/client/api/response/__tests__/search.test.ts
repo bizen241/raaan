@@ -20,8 +20,8 @@ test("merge SearchResultStore", () => {
     searchResultStore,
     entityType,
     {
-      limit: 10,
-      offset: 0
+      searchLimit: 10,
+      searchOffset: 0
     },
     {
       ids: [],

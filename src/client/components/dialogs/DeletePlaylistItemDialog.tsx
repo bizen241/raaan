@@ -33,7 +33,7 @@ export const DeletePlaylistItemDialog = createDialog<{
       }
 
       dispatch(
-        actions.cache.search<PlaylistItem>(
+        actions.cache.search(
           "PlaylistItem",
           {
             playlistId

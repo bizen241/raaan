@@ -15,8 +15,8 @@ export const UserDiaryGraph = withEntity<User>({ entityType: "User" })(({ entity
 
   const { entities, count, params, status, onChange } = useSearch<UserDiary>("UserDiary", {
     userId,
-    limit: 100,
-    offset: 0
+    searchLimit: 100,
+    searchOffset: 0
   });
 
   const firstDate =
@@ -41,7 +41,7 @@ export const UserDiaryGraph = withEntity<User>({ entityType: "User" })(({ entity
     const lastEntity = entities[entities.length - 1];
     if (Object.keys(userDiaries).length < count && lastEntity && new Date(lastEntity.date).getTime() > firstDate) {
       onChange({
-        offset: (params.offset || 0) + 100
+        searchOffset: (params.searchOffset || 0) + 100
       });
     }
   }, [entities]);

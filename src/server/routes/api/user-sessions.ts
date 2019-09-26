@@ -3,12 +3,12 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { UserSession } from "../../../shared/api/entities";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseSearchParams } from "../../api/request/search/parse";
+import { parseQuery } from "../../api/request/search/parse";
 import { responseSearchResult } from "../../api/response";
 import { UserSessionEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { userId, limit, offset } = parseSearchParams<UserSession>("UserSession", req.query);
+  const { userId, searchLimit, searchOffset } = parseQuery<UserSession>("UserSession", req.query);
 
   const isOwnSessions = userId === currentUser.id;
   if (!isOwnSessions) {
@@ -18,8 +18,8 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
   const query = await getManager()
     .createQueryBuilder(UserSessionEntity, "userSession")
     .leftJoinAndSelect("userSession.user", "user")
-    .take(limit)
-    .skip(offset);
+    .take(searchLimit)
+    .skip(searchOffset);
 
   if (userId !== undefined) {
     query.andWhere("user.id = :userId", { userId });

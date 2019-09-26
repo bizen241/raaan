@@ -3,7 +3,6 @@ import { Person } from "@material-ui/icons";
 import * as React from "react";
 import { useMemo } from "react";
 import { SubmissionSummary } from "../../../shared/api/entities";
-import { SearchParams } from "../../../shared/api/request/search";
 import { useSearch } from "../../hooks/search";
 import { useStyles } from "../ui/styles";
 
@@ -13,7 +12,7 @@ export const SubmissionSummaryViewer = React.memo<{
 }>(({ submitterId, exerciseId }) => {
   const classes = useStyles();
 
-  const searchParams: SearchParams<SubmissionSummary> = useMemo(
+  const initialParams: Partial<SubmissionSummary> = useMemo(
     () => ({
       submitterId,
       exerciseId,
@@ -23,7 +22,7 @@ export const SubmissionSummaryViewer = React.memo<{
     []
   );
 
-  const { entities } = useSearch<SubmissionSummary>("SubmissionSummary", searchParams);
+  const { entities } = useSearch<SubmissionSummary>("SubmissionSummary", initialParams);
   const submissionSummary = entities[0];
 
   return (

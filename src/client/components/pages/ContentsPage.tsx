@@ -16,7 +16,25 @@ export const ContentsPage = React.memo(() => {
           <Tab value="playlists" label={<Typography>プレイリスト</Typography>} />
         </Tabs>
         <Divider />
-        {tab === "exercises" ? <ExerciseSummaryList elevation={0} /> : <PlaylistSummaryList elevation={0} />}
+        {tab === "exercises" ? (
+          <ExerciseSummaryList
+            elevation={0}
+            initialParams={{
+              searchLimit: 10,
+              searchOffset: 0,
+              searchSort: "createdAt",
+              searchOrder: "DESC"
+            }}
+          />
+        ) : (
+          <PlaylistSummaryList
+            elevation={0}
+            initialParams={{
+              searchLimit: 10,
+              searchOffset: 0
+            }}
+          />
+        )}
       </Paper>
     </Page>
   );

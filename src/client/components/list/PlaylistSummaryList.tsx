@@ -4,7 +4,6 @@ import * as React from "react";
 import { useContext, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { PlaylistSummary } from "../../../shared/api/entities";
-import { SearchParams } from "../../../shared/api/request/search";
 import { createEntityList } from "../../enhancers/createEntityList";
 import { useToggleState } from "../../hooks/toggle";
 import { UserContext } from "../project/Context";
@@ -53,7 +52,7 @@ export const PlaylistSummaryList = createEntityList<PlaylistSummary>({ entityTyp
         <Collapse in={isSearchConditionOpen} timeout="auto" unmountOnExit>
           <Column>
             <Column pb={1}>
-              <Select label="並び順" defaultValue="title" onChange={e => onChange({ order: e.target.value })}>
+              <Select label="並び順" defaultValue="title" onChange={e => onChange({ searchSort: e.target.value })}>
                 <option key="title" value="title">
                   更新が新しい順
                 </option>
@@ -98,4 +97,5 @@ export const PlaylistSummaryList = createEntityList<PlaylistSummary>({ entityTyp
 
 type SearchTarget = "title" | "tags";
 
-const getSearchTarget = (params: SearchParams<PlaylistSummary>): SearchTarget => (params.title ? "title" : "tags");
+const getSearchTarget = (params: Partial<PlaylistSummary>): SearchTarget =>
+  params.title !== undefined ? "title" : "tags";

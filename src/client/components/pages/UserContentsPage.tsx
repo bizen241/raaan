@@ -18,7 +18,7 @@ export const UserContentsPage = React.memo<PageProps>(({ match }) => {
   const currentUser = useContext(UserContext);
 
   const [tab, setTab] = useState<"exercises" | "playlists">("exercises");
-  const initialSearchParams = useMemo(() => ({ authorId: userId }), []);
+  const initialParams = useMemo(() => ({ authorId: userId }), []);
 
   const isOwn = userId === currentUser.id;
 
@@ -40,9 +40,9 @@ export const UserContentsPage = React.memo<PageProps>(({ match }) => {
           </Tabs>
           <Divider />
           {tab === "exercises" ? (
-            <ExerciseSummaryList initialSearchParams={initialSearchParams} elevation={0} />
+            <ExerciseSummaryList initialParams={initialParams} elevation={0} />
           ) : (
-            <PlaylistSummaryList initialSearchParams={initialSearchParams} elevation={0} />
+            <PlaylistSummaryList initialParams={initialParams} elevation={0} />
           )}
         </Paper>
       </Column>

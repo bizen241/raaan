@@ -3,12 +3,12 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { SubmissionSummary } from "../../../shared/api/entities";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseSearchParams } from "../../api/request/search/parse";
+import { parseQuery } from "../../api/request/search/parse";
 import { responseSearchResult } from "../../api/response";
 import { SubmissionSummaryEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { submitterId, exerciseId, limit, offset } = parseSearchParams<SubmissionSummary>(
+  const { submitterId, exerciseId, searchLimit, searchOffset } = parseQuery<SubmissionSummary>(
     "SubmissionSummary",
     req.query
   );
@@ -24,8 +24,8 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     .leftJoinAndSelect("submissionSummary.exercise", "exercise")
     .leftJoinAndSelect("submissionSummary.latest", "latest")
     .leftJoinAndSelect("exercise.summary", "summary")
-    .take(limit)
-    .skip(offset);
+    .take(searchLimit)
+    .skip(searchOffset);
 
   if (submitterId !== undefined) {
     query.andWhere("submitter.id = :submitterId", { submitterId });

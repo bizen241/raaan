@@ -3,12 +3,12 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { UserDiary } from "../../../shared/api/entities";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseSearchParams } from "../../api/request/search/parse";
+import { parseQuery } from "../../api/request/search/parse";
 import { responseSearchResult } from "../../api/response";
 import { UserDiaryEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { userId, limit, offset } = parseSearchParams<UserDiary>("UserDiary", req.query);
+  const { userId, searchLimit, searchOffset } = parseQuery<UserDiary>("UserDiary", req.query);
 
   const isOwnDiaries = userId === currentUser.id;
   if (!isOwnDiaries) {
@@ -19,8 +19,8 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     .createQueryBuilder(UserDiaryEntity, "userDiary")
     .leftJoinAndSelect("userDiary.user", "user")
     .orderBy("userDiary.date", "DESC")
-    .take(limit)
-    .skip(offset);
+    .take(searchLimit)
+    .skip(searchOffset);
 
   if (userId !== undefined) {
     query.andWhere("user.id = :userId", { userId });

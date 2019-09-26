@@ -9,3 +9,5 @@
 /out
 
 /coverage
+
+/src/server/api/request/schema.ts

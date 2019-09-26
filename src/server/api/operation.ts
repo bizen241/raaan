@@ -6,8 +6,7 @@ import { endpoints } from "../../shared/api/endpoint";
 import { EntityType, Permission } from "../../shared/api/entities";
 import { UserEntity } from "../database/entities";
 import { getGuestUser } from "../database/setup/guest";
-import { SaveParamsMapSchema } from "./request/schema/save";
-import { SearchParamsMapSchema } from "./request/schema/search";
+import { entityTypeToParamsSchema } from "./request/schema";
 
 export interface PathParams {
   id: string;
@@ -22,9 +21,6 @@ interface OperationDocument {
   hasQuery?: boolean;
   hasBody?: boolean;
 }
-
-const searchParamsSchemaMap = SearchParamsMapSchema.properties as { [key: string]: OpenAPIV3.SchemaObject };
-const saveParamsSchemaMap = SaveParamsMapSchema.properties as { [key: string]: OpenAPIV3.SchemaObject };
 
 export const createOperationDoc = (document: OperationDocument): OpenAPIV3.OperationObject => {
   const { entityType, summary, permission, tag, hasId, hasQuery, hasBody } = document;
@@ -56,7 +52,7 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
     parameters.push({
       in: "query",
       name: "query",
-      schema: searchParamsSchemaMap[entityType]
+      schema: entityTypeToParamsSchema[entityType]
     });
   }
 
@@ -64,7 +60,7 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
     ? {
         content: {
           "application/json": {
-            schema: saveParamsSchemaMap[entityType]
+            schema: entityTypeToParamsSchema[entityType]
           }
         },
         required: true
