@@ -8,7 +8,6 @@ import {
   ExerciseSummary,
   ExerciseTag,
   ExerciseVote,
-  Lang,
   Permission,
   Playlist,
   PlaylistBookmark,
@@ -20,7 +19,6 @@ import {
   RevisionSummary,
   Submission,
   SubmissionSummary,
-  Theme,
   User,
   UserAccount,
   UserConfig,
@@ -37,7 +35,6 @@ export type SearchQuery<E extends EntityObject> = { [P in keyof Params<E>]?: str
 export const parseQuery = <E extends EntityObject>(type: EntityType, query: SearchQuery<E>) =>
   parsers[type](query) as Params<E>;
 
-/*
 const bool = (value: string | undefined) => {
   if (value === undefined) {
     return undefined;
@@ -45,7 +42,6 @@ const bool = (value: string | undefined) => {
 
   return value === "true" ? true : false;
 };
-*/
 
 const base = <E extends EntityObject>(query: SearchQuery<E>) => ({
   searchLimit: Number(query.searchLimit) || defaultSearchLimit,
@@ -93,7 +89,7 @@ const parseExerciseReport: Parser<ExerciseReport> = query => {
 };
 
 const parseExerciseSummary: Parser<ExerciseSummary> = query => {
-  const { authorId, lang, title, tags, description, searchSort } = query;
+  const { authorId, lang, title, tags, description, isEditing, searchSort } = query;
 
   return {
     ...base(query),
@@ -102,6 +98,7 @@ const parseExerciseSummary: Parser<ExerciseSummary> = query => {
     title,
     tags,
     description,
+    isEditing: bool(isEditing),
     searchSort: searchSort as ExerciseSummary["searchSort"]
   };
 };
@@ -215,12 +212,8 @@ const parseUserAccount: Parser<UserAccount> = query => {
 };
 
 const parseUserConfig: Parser<UserConfig> = query => {
-  const { lang, theme } = query;
-
   return {
-    ...base(query),
-    lang: lang as Lang | undefined,
-    theme: theme as Theme | undefined
+    ...base(query)
   };
 };
 

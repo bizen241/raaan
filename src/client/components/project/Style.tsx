@@ -4,36 +4,37 @@ import teal from "@material-ui/core/colors/teal";
 import { createMuiTheme, makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
 import * as React from "react";
 import { useContext, useEffect, useState } from "react";
-import { ConfigContext } from "./Context";
+import { SettingsContext } from "./Context";
 
 export const Style = React.memo<{ children: React.ReactNode }>(({ children }) => {
-  const { theme = "default" } = useContext(ConfigContext);
+  const settings = useContext(SettingsContext);
+  const colorScheme = settings["ui.colorScheme"];
 
-  const [themeName, setThemeName] = useState<"light" | "dark">("light");
+  const [isDarkMode, setMode] = useState(false);
 
   useEffect(() => {
-    if (theme !== "default" && theme !== "system" && theme !== undefined) {
-      return setThemeName(theme);
+    if (colorScheme !== "system") {
+      return setMode(colorScheme === "dark");
     }
 
     const handler = ({ matches }: MediaQueryListEvent) => {
-      setThemeName(matches ? "dark" : "light");
+      setMode(matches);
     };
 
     const mediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
     mediaQueryList.addListener(handler);
 
-    setThemeName(mediaQueryList.matches ? "dark" : "light");
+    setMode(mediaQueryList.matches);
 
     return () => mediaQueryList.removeListener(handler);
-  }, [theme]);
+  }, [colorScheme]);
 
   const muiTheme = createMuiTheme({
     palette: {
-      type: themeName,
+      type: isDarkMode ? "dark" : "light",
       background: {
-        default: themeName === "light" ? "#f5f5f5" : "#121212",
-        paper: themeName === "light" ? "#fff" : "#1e1e1e"
+        default: isDarkMode ? "#121212" : "#f5f5f5",
+        paper: isDarkMode ? "#1e1e1e" : "#fff"
       },
       primary: teal,
       secondary: blueGrey

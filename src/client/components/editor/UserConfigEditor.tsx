@@ -1,24 +1,21 @@
 import { Card, CardContent } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useContext } from "react";
-import { Lang, Theme, UserConfig } from "../../../shared/api/entities";
+import { useCallback, useContext, useState } from "react";
+import { UserConfig, UserSettings } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadUserConfigDialog } from "../dialogs/UploadUserConfigDialog";
-import { UserContext } from "../project/Context";
+import { defaultSettings, UserContext } from "../project/Context";
 import { Message } from "../project/Message";
 import { Button, Column, Select } from "../ui";
 
-const langNameToLabel: { [T in Lang]: string } = {
-  default: "default",
-  system: "system",
+const langToLabel: { [T in UserSettings["ui.lang"]]: string } = {
   en: "en",
   ja: "ja"
 };
 
-const themeNameToLabel: { [T in Theme]: string } = {
-  default: "default",
+const colorSchemeToLabel: { [T in UserSettings["ui.colorScheme"]]: string } = {
   system: "system",
   dark: "dark",
   light: "light"
@@ -32,14 +29,21 @@ export const UserConfigEditor = withBuffer<UserConfig>(
     const currentUser = useContext(UserContext);
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
-    const onUpdateLang = useCallback(
-      (e: React.ChangeEvent<{ value: unknown }>) => onChange({ lang: e.target.value as Lang }),
-      []
-    );
-    const onUpdateTheme = useCallback(
-      (e: React.ChangeEvent<{ value: unknown }>) => onChange({ theme: e.target.value as Theme }),
-      []
-    );
+    const [settings, setSettings] = useState(buffer.settings || source.settings || {});
+
+    const onChangeSettings = useCallback((key: string, value: string) => {
+      setSettings(previousSettings => {
+        const nextSettings = {
+          ...previousSettings,
+          [key]: value
+        };
+
+        onChange({
+          settings: nextSettings
+        });
+        return nextSettings;
+      });
+    }, []);
 
     const canUpload = props.buffer !== undefined && currentUser.permission !== "Guest";
 
@@ -52,31 +56,33 @@ export const UserConfigEditor = withBuffer<UserConfig>(
           <CardContent>
             <Column>
               <Column pb={1}>
-                <Select
+                <SelectValue
                   label={<Message id="language" />}
-                  defaultValue={buffer.lang || source.lang || "default"}
-                  onChange={onUpdateLang}
+                  name="ui.lang"
+                  settings={settings}
+                  onChange={onChangeSettings}
                 >
-                  {Object.entries(langNameToLabel).map(([name, label]) => (
-                    <option key={name} value={name}>
+                  {Object.entries(langToLabel).map(([key, label]) => (
+                    <option key={key} value={key}>
                       {label}
                     </option>
                   ))}
-                </Select>
+                </SelectValue>
               </Column>
             </Column>
             <Column pb={1}>
-              <Select
+              <SelectValue
                 label={<Message id="theme" />}
-                defaultValue={buffer.theme || source.theme || "default"}
-                onChange={onUpdateTheme}
+                name="ui.colorScheme"
+                settings={settings}
+                onChange={onChangeSettings}
               >
-                {Object.entries(themeNameToLabel).map(([name, label]) => (
-                  <option key={name} value={name}>
+                {Object.entries(colorSchemeToLabel).map(([key, label]) => (
+                  <option key={key} value={key}>
                     {label}
                   </option>
                 ))}
-              </Select>
+              </SelectValue>
             </Column>
           </CardContent>
         </Card>
@@ -85,3 +91,19 @@ export const UserConfigEditor = withBuffer<UserConfig>(
     );
   })
 );
+
+export const SelectValue = React.memo<{
+  label: React.ReactNode;
+  name: keyof UserSettings;
+  settings: Partial<UserSettings>;
+  children: React.ReactNode;
+  onChange: (name: keyof UserSettings, value: string) => void;
+}>(({ label, name, settings, onChange, children }) => (
+  <Select
+    label={label}
+    defaultValue={settings[name] || defaultSettings[name]}
+    onChange={e => onChange(name, e.target.value)}
+  >
+    {children}
+  </Select>
+));

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createContext, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { Lang, LangName, User, UserConfig } from "../../../shared/api/entities";
+import { Lang, User, UserConfig, UserSettings } from "../../../shared/api/entities";
 import { RootState } from "../../reducers";
 
 const guestUserId = Date.now().toString();
@@ -20,23 +20,25 @@ export const guestUser: User = {
 };
 export const guestUserConfig: UserConfig = {
   id: guestUserConfigId,
-  lang: "default",
-  theme: "default",
+  settings: {},
   createdAt: 0,
   updatedAt: 0,
   fetchedAt: 0
 };
 
+export const defaultSettings: UserSettings = {
+  "ui.lang": navigator.language.slice(0, 2) as Lang,
+  "ui.colorScheme": "system"
+};
+
 export const UserContext = createContext<User>(guestUser);
-export const ConfigContext = createContext<UserConfig>(guestUserConfig);
-export const LangContext = createContext<LangName>("ja");
+export const SettingsContext = createContext<UserSettings>(defaultSettings);
 
 export const Context = React.memo<{
   children: React.ReactNode;
 }>(({ children }) => {
-  const { user, userBuffer, userConfig, userConfigBuffer } = useSelector(({ app, cache, buffers }: RootState) => ({
+  const { user, userConfig, userConfigBuffer } = useSelector(({ app, cache, buffers }: RootState) => ({
     user: cache.get.User[app.user.id],
-    userBuffer: buffers.User[app.user.id],
     userConfig: cache.get.UserConfig[app.user.configId],
     userConfigBuffer: buffers.UserConfig[app.user.configId]
   }));
@@ -44,31 +46,17 @@ export const Context = React.memo<{
     throw new Error("ユーザーの取得に失敗しました");
   }
 
-  const mergedUser = useMemo<User>(
-    () => ({
-      ...user,
-      ...userBuffer
-    }),
-    [user, userBuffer]
-  );
-  const mergedUserConfig = useMemo<UserConfig>(
-    () => ({
-      ...userConfig,
-      ...userConfigBuffer
+  const userSettings = useMemo(
+    (): UserSettings => ({
+      ...defaultSettings,
+      ...((userConfigBuffer && userConfigBuffer.settings) || userConfig.settings)
     }),
     [userConfig, userConfigBuffer]
   );
 
-  const lang = getLang(mergedUserConfig.lang);
-
   return (
-    <UserContext.Provider value={mergedUser}>
-      <ConfigContext.Provider value={mergedUserConfig}>
-        <LangContext.Provider value={lang}>{children}</LangContext.Provider>
-      </ConfigContext.Provider>
+    <UserContext.Provider value={user}>
+      <SettingsContext.Provider value={userSettings}>{children}</SettingsContext.Provider>
     </UserContext.Provider>
   );
 });
-
-const getLang = (lang: Lang | undefined) =>
-  lang === "default" || lang === "system" || lang === undefined ? (navigator.language.slice(0, 2) as LangName) : lang;

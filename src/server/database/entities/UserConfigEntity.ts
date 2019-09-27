@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
-import { Lang, Theme } from "../../../shared/api/entities";
+import { UserSettings } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
@@ -15,9 +15,6 @@ export class UserConfigEntity extends BaseEntityClass {
   @RelationId((config: UserConfigEntity) => config.user)
   userId!: string;
 
-  @Column()
-  lang: Lang = "default";
-
-  @Column()
-  theme: Theme = "default";
+  @Column("json")
+  settings: Partial<UserSettings> = {};
 }

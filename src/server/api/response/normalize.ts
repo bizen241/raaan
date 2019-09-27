@@ -363,12 +363,11 @@ const normalizeUserAccount: Normalizer<UserAccountEntity> = (context, store, ent
 };
 
 const normalizeUserConfig: Normalizer<UserConfigEntity> = (_, store, entity) => {
-  const { id, lang, theme } = entity;
+  const { id, settings } = entity;
 
   store.UserConfig[id] = {
     ...base(entity),
-    lang,
-    theme
+    settings
   };
 };
 

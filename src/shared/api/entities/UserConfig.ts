@@ -1,12 +1,12 @@
 import { BaseEntityObject } from "./BaseEntityObject";
 
-export type LangName = "en" | "ja";
-export type Lang = "default" | "system" | LangName;
-
-export type ThemeName = "dark" | "light";
-export type Theme = "default" | "system" | ThemeName;
-
 export interface UserConfig extends BaseEntityObject {
-  lang: Lang;
-  theme: Theme;
+  settings: Partial<UserSettings>;
 }
+
+export interface UserSettings {
+  "ui.lang": Lang;
+  "ui.colorScheme": "system" | "dark" | "light";
+}
+
+export type Lang = "en" | "ja";
