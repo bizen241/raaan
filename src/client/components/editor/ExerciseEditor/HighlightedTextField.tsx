@@ -3,6 +3,7 @@ import * as React from "react";
 import { useCallback, useRef, useState } from "react";
 import { maskAnchor, maskTerminator } from "../../../../shared/exercise/mask/characters";
 import { addRuby } from "../../../domain/exercise/ruby";
+import { Column } from "../../ui";
 import { Highlighter } from "./Highlighter";
 
 export const HighlightedTextField = React.memo<{
@@ -59,7 +60,7 @@ export const HighlightedTextField = React.memo<{
           <Button onClick={onAddMask}>空欄</Button>
         </ButtonGroup>
       </Box>
-      <Box display="flex" flexDirection="column" position="relative">
+      <Column position="relative">
         {!isCompositing ? <Highlighter value={value} /> : null}
         <TextField
           disabled={isAddingRuby}
@@ -77,7 +78,7 @@ export const HighlightedTextField = React.memo<{
           defaultValue={value}
           onChange={useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => onChange(e.target.value), [])}
         />
-      </Box>
+      </Column>
     </Box>
   );
 });

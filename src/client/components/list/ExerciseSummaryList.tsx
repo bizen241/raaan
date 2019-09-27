@@ -17,11 +17,11 @@ export const ExerciseSummaryList = createEntityList<ExerciseSummary>({ entityTyp
     return (
       <TableRow>
         <TableCell>
-          <Box display="flex" flexDirection="column">
+          <Column>
             <Link color="textPrimary" component={RouterLink} to={`/exercises/${exerciseSummary.exerciseId}`}>
               <Typography>{exerciseSummary.title || "無題"}</Typography>
             </Link>
-          </Box>
+          </Column>
         </TableCell>
         {exerciseSummary.authorId === currentUser.id ? (
           <TableCell padding="checkbox">

@@ -20,6 +20,7 @@ import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
 import { PlaylistPlayer } from "../player/dialogs/PlaylistPlayer";
+import { Column } from "../ui";
 import { useStyles } from "../ui/styles";
 import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 
@@ -52,8 +53,8 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
     }, [sortedPlaylistItems]);
 
     return (
-      <Box display="flex" flexDirection="column">
-        <Box display="flex" flexDirection="column" pb={1}>
+      <Column>
+        <Column pb={1}>
           <Button
             className={classes.largeButton}
             variant="contained"
@@ -64,16 +65,16 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
             <PlayArrow className={classes.leftIcon} />
             <Typography>始める</Typography>
           </Button>
-        </Box>
-        <Box display="flex" flexDirection="column" pb={1}>
+        </Column>
+        <Column pb={1}>
           <Button className={classes.largeButton} variant="contained" disabled={count === 0} onClick={onRandomPlay}>
             <Shuffle className={classes.leftIcon} />
             <Typography>ランダム</Typography>
           </Button>
-        </Box>
-        <Box display="flex" flexDirection="column" pb={1}>
+        </Column>
+        <Column pb={1}>
           <PlaylistSummaryViewer entityId={playlist.summaryId} />
-        </Box>
+        </Column>
         <Card>
           <Table>
             <TableBody>
@@ -93,7 +94,7 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
           isOpen={isPlaylistPlayerOpen}
           onClose={onTogglePlaylistPlayer}
         />
-      </Box>
+      </Column>
     );
   })
 );
@@ -108,10 +109,10 @@ const PlaylistItemViewer = React.memo<{
   return (
     <TableRow>
       <TableCell>
-        <Box display="flex" flexDirection="column">
+        <Column>
           {exerciseSummaryId && <ExerciseTitleViewer entityId={exerciseSummaryId} />}
           <Typography>{memo}</Typography>
-        </Box>
+        </Column>
       </TableCell>
       <TableCell padding="checkbox">
         <IconButton onClick={useCallback(() => onPlay(index), [index])}>

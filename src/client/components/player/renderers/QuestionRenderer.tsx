@@ -1,7 +1,8 @@
-import { Box, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import * as React from "react";
 import { useMemo } from "react";
 import { CompiledQuestion } from "../../../../shared/exercise/compiler";
+import { Column, Row } from "../../ui";
 import { QuestionPlayerState } from "../managers/QuestionManager";
 
 export const QuestionRenderer = React.memo<{
@@ -40,9 +41,9 @@ export const QuestionRenderer = React.memo<{
   const currentRubyChunk = currentRubyLine[currentRubyChunkIndex];
 
   return (
-    <Box className={classes.outerWrapper} display="flex" flexDirection="column" alignItems="center" px={2} py={1}>
-      <Box className={classes.middleWrapper} display="flex" flexDirection="column">
-        <Box display="flex" flexDirection="column" flex={1} className={classes.innerWrapper}>
+    <Column className={classes.outerWrapper} alignItems="center" px={2} py={1}>
+      <Column className={classes.middleWrapper}>
+        <Column flex={1} className={classes.innerWrapper}>
           <div className={classes.typedLinesOuter}>
             <div className={classes.typedLinesInner}>
               {rubyLines.slice(0, currentLineIndex).map((rubyLine, lineIndex) => (
@@ -51,7 +52,7 @@ export const QuestionRenderer = React.memo<{
             </div>
           </div>
           {isRoman && (
-            <Box display="flex" className={classes.currentRubyLine}>
+            <Row className={classes.currentRubyLine}>
               <div className={classes.typedStringOuter}>
                 <span className={classes.typedStringInner}>
                   {currentRubyLine.slice(0, currentRubyChunkIndex).map(({ kanji, ruby }, chunkIndex) => (
@@ -80,9 +81,9 @@ export const QuestionRenderer = React.memo<{
                   </span>
                 </>
               )}
-            </Box>
+            </Row>
           )}
-          <Box display="flex" className={classes.currentRomanLine}>
+          <Row className={classes.currentRomanLine}>
             <div className={classes.typedStringOuter}>
               <span className={classes.typedStringInner}>{typedLine.join("")}</span>
             </div>
@@ -98,7 +99,7 @@ export const QuestionRenderer = React.memo<{
                 </span>
               ))}
             </span>
-          </Box>
+          </Row>
           <div className={classes.untypedLines}>
             {rubyLines.slice(currentLineIndex + 1).map((rubyLine, lineIndex) => (
               <div key={currentLineIndex + 1 + lineIndex}>
@@ -110,9 +111,9 @@ export const QuestionRenderer = React.memo<{
               </div>
             ))}
           </div>
-        </Box>
-      </Box>
-    </Box>
+        </Column>
+      </Column>
+    </Column>
   );
 });
 

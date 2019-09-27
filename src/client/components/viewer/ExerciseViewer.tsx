@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import { PlayArrow, PlaylistAdd } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
@@ -8,6 +8,7 @@ import { useToggleState } from "../../hooks/useToggleState";
 import { PlaylistDialog } from "../dialogs/PlaylistDialog";
 import { ExercisePlayer } from "../player/dialogs/ExercisePlayer";
 import { UserContext } from "../project/Context";
+import { Column } from "../ui";
 import { useStyles } from "../ui/styles";
 import { ExerciseSummaryViewer } from "./ExerciseSummaryViewer";
 import { SubmissionSummaryViewer } from "./SubmissionSummaryViewer";
@@ -23,32 +24,32 @@ export const ExerciseViewer = withEntity<Exercise>({ entityType: "Exercise" })(
     const isGuest = currentUser.permission === "Guest";
 
     return (
-      <Box display="flex" flexDirection="column">
-        <Box display="flex" flexDirection="column" pb={1}>
+      <Column>
+        <Column pb={1}>
           <Button className={classes.largeButton} variant="contained" color="primary" onClick={onToggleExercisePlayer}>
             <PlayArrow className={classes.leftIcon} />
             <Typography>始める</Typography>
           </Button>
-        </Box>
+        </Column>
         {!isGuest && (
-          <Box display="flex" flexDirection="column" pb={1}>
+          <Column pb={1}>
             <Button className={classes.largeButton} variant="contained" onClick={onTogglePlaylistDialog}>
               <PlaylistAdd className={classes.leftIcon} />
               <Typography>プレイリストに追加</Typography>
             </Button>
-          </Box>
+          </Column>
         )}
-        <Box display="flex" flexDirection="column" pb={1}>
+        <Column pb={1}>
           <ExerciseSummaryViewer entityId={exercise.summaryId} />
-        </Box>
+        </Column>
         {!isGuest && (
-          <Box display="flex" flexDirection="column" pb={1}>
+          <Column pb={1}>
             <SubmissionSummaryViewer submitterId={currentUser.id} exerciseId={exerciseId} />
-          </Box>
+          </Column>
         )}
         <ExercisePlayer exerciseId={exerciseId} isOpen={isExercisePlayerOpen} onClose={onToggleExercisePlayer} />
         <PlaylistDialog exerciseId={exerciseId} isOpen={isPlaylistDialogOpen} onClose={onTogglePlaylistDialog} />
-      </Box>
+      </Column>
     );
   })
 );

@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Box,
   Card,
   CardContent,
   CardHeader,
@@ -19,6 +18,7 @@ import * as React from "react";
 import { useCallback } from "react";
 import { EntityObject, EntityType } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
+import { Column, Row } from "../components/ui";
 import { useStyles } from "../components/ui/styles";
 import { useSearch } from "../hooks/useSearch";
 
@@ -72,9 +72,9 @@ export const createEntityList = <E extends EntityObject>({ entityType, itemHeigh
           />
         ) : (
           <CardContent>
-            <Box display="flex" flexDirection="column">
+            <Column>
               <ParamsComponent params={params} onReload={onReload} onChange={onChange} />
-            </Box>
+            </Column>
           </CardContent>
         )}
         <Divider />
@@ -83,9 +83,9 @@ export const createEntityList = <E extends EntityObject>({ entityType, itemHeigh
             {isLoading && (
               <TableRow style={{ height: itemHeight * limit }}>
                 <TableCell>
-                  <Box display="flex" alignItems="center" justifyContent="center">
+                  <Row alignItems="center" justifyContent="center">
                     <CircularProgress />
-                  </Box>
+                  </Row>
                 </TableCell>
               </TableRow>
             )}

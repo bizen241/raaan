@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from "@material-ui/core";
+import { Button, TextField, Typography } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useMemo, useState } from "react";
@@ -11,7 +11,7 @@ import { actions } from "../../reducers";
 import { generateBufferId } from "../../reducers/buffers";
 import { ExerciseContext, PlaylistSummarySelectList } from "../list/PlaylistSummarySelectList";
 import { UserContext } from "../project/Context";
-import { DialogContent, DialogHeader } from "../ui/Dialog";
+import { Column, DialogContent, DialogHeader, Row } from "../ui";
 import { useStyles } from "../ui/styles";
 
 export const PlaylistDialog = createDialog<{
@@ -50,13 +50,13 @@ export const PlaylistDialog = createDialog<{
         <DialogContent>
           {!isPlaylistEditorOpen ? (
             <>
-              <Box display="flex" flexDirection="column" pb={1}>
+              <Column pb={1}>
                 <Button className={classes.largeButton} variant="contained" onClick={onTogglePlaylistEditor}>
                   <Add className={classes.leftIcon} />
                   <Typography>新規作成</Typography>
                 </Button>
-              </Box>
-              <Box display="flex" flexDirection="column" pb={1}>
+              </Column>
+              <Column pb={1}>
                 <ExerciseContext.Provider value={exerciseId}>
                   <PlaylistSummarySelectList
                     title="プレイリスト一覧"
@@ -65,26 +65,26 @@ export const PlaylistDialog = createDialog<{
                     }}
                   />
                 </ExerciseContext.Provider>
-              </Box>
+              </Column>
             </>
           ) : (
             <>
-              <Box display="flex" flexDirection="column" pb={1}>
-                <Box display="flex" flexDirection="column" component="label">
+              <Column pb={1}>
+                <Column component="label">
                   <Typography color="textSecondary">題名</Typography>
                   <TextField variant="outlined" defaultValue={"新しいプレイリスト"} onChange={onUpdateTitle} />
-                </Box>
-              </Box>
-              <Box display="flex" flexDirection="column" pb={1}>
+                </Column>
+              </Column>
+              <Column pb={1}>
                 <Button className={classes.largeButton} variant="contained" onClick={onUploadPlaylist}>
                   <Typography>プレイリストを作成</Typography>
                 </Button>
-              </Box>
-              <Box display="flex" flexDirection="column" pb={1}>
+              </Column>
+              <Column pb={1}>
                 <Button className={classes.largeButton} variant="contained" onClick={onTogglePlaylistEditor}>
                   <Typography color="error">キャンセル</Typography>
                 </Button>
-              </Box>
+              </Column>
             </>
           )}
         </DialogContent>

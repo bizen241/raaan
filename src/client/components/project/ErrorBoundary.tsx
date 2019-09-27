@@ -1,6 +1,7 @@
-import { Avatar, Box, Button, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
+import { Avatar, Button, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
 import { Error as ErrorIcon } from "@material-ui/icons";
 import * as React from "react";
+import { Column } from "../ui";
 import { useStyles } from "../ui/styles";
 
 interface ErrorBoundaryState {
@@ -38,10 +39,10 @@ const ErrorViewer: React.FunctionComponent<{ error: Error }> = ({ error }) => {
   const classes = useStyles();
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" width="100%" position="absolute" top={0} left={0}>
-      <Box display="flex" flexDirection="column" width="100%" maxWidth="1000px">
-        <Box display="flex" flexDirection="column" p={1}>
-          <Box display="flex" flexDirection="column" pb={1}>
+    <Column alignItems="center" width="100%" position="absolute" top={0} left={0}>
+      <Column width="100%" maxWidth="1000px">
+        <Column p={1}>
+          <Column pb={1}>
             <Card>
               <CardHeader
                 avatar={
@@ -54,8 +55,8 @@ const ErrorViewer: React.FunctionComponent<{ error: Error }> = ({ error }) => {
               />
               <CardContent>{error.stack}</CardContent>
             </Card>
-          </Box>
-          <Box display="flex" flexDirection="column" pb={1}>
+          </Column>
+          <Column pb={1}>
             <Button
               className={classes.largeButton}
               variant="contained"
@@ -65,7 +66,7 @@ const ErrorViewer: React.FunctionComponent<{ error: Error }> = ({ error }) => {
             >
               <Typography>リロード</Typography>
             </Button>
-          </Box>
+          </Column>
           <Button
             className={classes.largeButton}
             variant="contained"
@@ -76,8 +77,8 @@ const ErrorViewer: React.FunctionComponent<{ error: Error }> = ({ error }) => {
           >
             <Typography color="error">すべて削除してリロード</Typography>
           </Button>
-        </Box>
-      </Box>
-    </Box>
+        </Column>
+      </Column>
+    </Column>
   );
 };

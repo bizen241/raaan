@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import { Warning } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import * as React from "react";
@@ -10,7 +10,7 @@ import { useEntity } from "../../hooks/useEntity";
 import { actions } from "../../reducers";
 import { isLocalOnly } from "../../reducers/api";
 import { UserContext } from "../project/Context";
-import { DialogContent, DialogHeader } from "../ui/Dialog";
+import { Column, DialogContent, DialogHeader, Row } from "../ui";
 import { useStyles } from "../ui/styles";
 
 export const UploadExerciseDraftDialog = createDialog<{
@@ -26,11 +26,11 @@ export const UploadExerciseDraftDialog = createDialog<{
         </DialogHeader>
         <DialogContent>
           <UploadExerciseDraftDialogContent exerciseDraftId={exerciseDraftId} />
-          <Box display="flex" flexDirection="column" pb={1}>
+          <Column pb={1}>
             <Button className={classes.largeButton} variant="contained" onClick={onClose}>
               <Typography>キャンセル</Typography>
             </Button>
-          </Box>
+          </Column>
         </DialogContent>
       </>
     );
@@ -67,12 +67,12 @@ const UploadExerciseDraftDialogContent = React.memo<{
   if (uploadConfig === undefined) {
     return (
       <>
-        <Box display="flex" alignItems="center" flex={1} pb={1}>
+        <Row alignItems="center" flex={1} pb={1}>
           <Warning className={classes.leftIcon} />
           <Typography>アップロードの設定を選択して下さい。</Typography>
-        </Box>
+        </Row>
         {isLocalOnly(exerciseDraftId) && currentUser.permission !== "Read" && (
-          <Box display="flex" flexDirection="column" pb={1}>
+          <Column pb={1}>
             <Button
               className={classes.largeButton}
               variant="contained"
@@ -81,10 +81,10 @@ const UploadExerciseDraftDialogContent = React.memo<{
             >
               <Typography>公開</Typography>
             </Button>
-          </Box>
+          </Column>
         )}
         {isLocalOnly(exerciseDraftId) && (
-          <Box display="flex" flexDirection="column" pb={1}>
+          <Column pb={1}>
             <Button
               className={classes.largeButton}
               variant="contained"
@@ -93,10 +93,10 @@ const UploadExerciseDraftDialogContent = React.memo<{
             >
               <Typography>非公開</Typography>
             </Button>
-          </Box>
+          </Column>
         )}
         {!isLocalOnly(exerciseDraftId) && (
-          <Box display="flex" flexDirection="column" pb={1}>
+          <Column pb={1}>
             <Button
               className={classes.largeButton}
               variant="contained"
@@ -105,9 +105,9 @@ const UploadExerciseDraftDialogContent = React.memo<{
             >
               <Typography>更新</Typography>
             </Button>
-          </Box>
+          </Column>
         )}
-        <Box display="flex" flexDirection="column" pb={1}>
+        <Column pb={1}>
           <Button
             className={classes.largeButton}
             variant="contained"
@@ -116,13 +116,13 @@ const UploadExerciseDraftDialogContent = React.memo<{
           >
             <Typography>下書き</Typography>
           </Button>
-        </Box>
+        </Column>
       </>
     );
   } else {
     return (
       <>
-        <Box display="flex" alignItems="center" flex={1} pb={1}>
+        <Row alignItems="center" flex={1} pb={1}>
           {uploadConfig === "public" && (
             <>
               <Warning className={classes.leftIcon} />
@@ -147,12 +147,12 @@ const UploadExerciseDraftDialogContent = React.memo<{
               <Typography>クイズが下書きとして保存されます。</Typography>
             </>
           )}
-        </Box>
-        <Box display="flex" flexDirection="column" pb={1}>
+        </Row>
+        <Column pb={1}>
           <Button className={classes.largeButton} variant="contained" color="primary" onClick={onUpload}>
             <Typography>アップロード</Typography>
           </Button>
-        </Box>
+        </Column>
       </>
     );
   }

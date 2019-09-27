@@ -19,6 +19,7 @@ import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeletePlaylistItemDialog } from "../dialogs/DeletePlaylistItemDialog";
+import { Column, Row } from "../ui";
 
 export const PlaylistEditor = withEntity<Playlist>({ entityType: "Playlist" })(
   React.memo(({ entityId: playlistId, entity: playlist }) => {
@@ -29,34 +30,34 @@ export const PlaylistEditor = withEntity<Playlist>({ entityType: "Playlist" })(
 
     return (
       <Box>
-        <Box display="flex" flexDirection="column" pb={1}>
+        <Column pb={1}>
           <Card>
             <CardContent>
-              <Box display="flex" flexDirection="column" pb={1}>
+              <Column pb={1}>
                 <Typography color="textSecondary">題名</Typography>
-                <Box display="flex" alignItems="center">
+                <Row alignItems="center">
                   <Typography>{playlist.title || "タイトルです"}</Typography>
                   <Box flex={1} />
                   <IconButton size="small">
                     <Edit />
                   </IconButton>
-                </Box>
+                </Row>
                 <Divider />
-              </Box>
-              <Box display="flex" flexDirection="column">
+              </Column>
+              <Column>
                 <Typography color="textSecondary">説明</Typography>
-                <Box display="flex" alignItems="center">
+                <Row alignItems="center">
                   <Typography>{playlist.description || "セツメイです"}</Typography>
                   <Box flex={1} />
                   <IconButton size="small">
                     <Edit />
                   </IconButton>
-                </Box>
+                </Row>
                 <Divider />
-              </Box>
+              </Column>
             </CardContent>
           </Card>
-        </Box>
+        </Column>
         <Card>
           <Table>
             <TableBody>
@@ -82,10 +83,10 @@ const PlaylistItemEditor = React.memo<{
   return (
     <TableRow>
       <TableCell>
-        <Box display="flex" flexDirection="column">
+        <Column>
           {exerciseSummaryId && <ExerciseTitleViewer entityId={exerciseSummaryId} />}
           <Typography>{memo}</Typography>
-        </Box>
+        </Column>
       </TableCell>
       <TableCell padding="checkbox">
         <IconButton onClick={onToggleDeletePlaylistItemDialog}>

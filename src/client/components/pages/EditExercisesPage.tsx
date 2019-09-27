@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Paper, Tab, Tabs, Typography } from "@material-ui/core";
+import { Button, Divider, Paper, Tab, Tabs, Typography } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import * as React from "react";
@@ -28,12 +28,12 @@ export const EditExercisesPage = React.memo(() => {
 
   return (
     <Page title="クイズを作る">
-      <Box display="flex" flexDirection="column" pb={1}>
+      <Column pb={1}>
         <Button className={classes.largeButton} variant="contained" color="primary" onClick={onCreate}>
           <Add className={classes.leftIcon} />
           <Typography>新しいクイズ</Typography>
         </Button>
-      </Box>
+      </Column>
       <Column pb={1}>
         <Paper>
           <Tabs value={tab} variant="fullWidth" indicatorColor="primary" onChange={(_, value) => setTab(value)}>

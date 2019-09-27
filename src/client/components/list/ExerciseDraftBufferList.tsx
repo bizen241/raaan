@@ -1,4 +1,4 @@
-import { Box, IconButton, Link, TableCell, TableRow } from "@material-ui/core";
+import { IconButton, Link, TableCell, TableRow } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -6,6 +6,7 @@ import { ExerciseDraft } from "../../../shared/api/entities";
 import { createBufferList } from "../../enhancers/createBufferList";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeleteExerciseDraftBufferDialog } from "../dialogs/DeleteExerciseDraftBufferDialog";
+import { Column } from "../ui";
 
 export const ExerciseDraftBufferList = createBufferList<ExerciseDraft>({ entityType: "ExerciseDraft" })(
   React.memo(({ bufferId, buffer, source }) => {
@@ -14,11 +15,11 @@ export const ExerciseDraftBufferList = createBufferList<ExerciseDraft>({ entityT
     return (
       <TableRow>
         <TableCell>
-          <Box display="flex" flexDirection="column">
+          <Column>
             <Link color="textPrimary" component={RouterLink} to={`/exercise-drafts/${bufferId}/edit`}>
               {buffer.title || (source && source.title) || "無題"}
             </Link>
-          </Box>
+          </Column>
         </TableCell>
         <TableCell padding="checkbox">
           <IconButton onClick={onToggleDeleteDialog}>

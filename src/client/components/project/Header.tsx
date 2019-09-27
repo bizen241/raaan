@@ -6,7 +6,7 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../reducers";
-import { Menu } from "../ui/Menu";
+import { Column, Menu } from "../ui";
 import { useStyles } from "../ui/styles";
 import { Message } from "./Message";
 
@@ -20,8 +20,8 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
 
   return (
     <AppBar position="static" color="default">
-      <Box display="flex" flexDirection="column" alignItems="center">
-        <Box display="flex" flexDirection="column" width="100%" maxWidth="1000px" px={1}>
+      <Column alignItems="center">
+        <Column width="100%" maxWidth="1000px" px={1}>
           <Toolbar variant="dense" disableGutters>
             <IconButton onClick={useCallback(() => dispatch(goBack()), [])}>
               <ArrowBack />
@@ -59,8 +59,8 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
               ) : null}
             </Menu>
           </Toolbar>
-        </Box>
-      </Box>
+        </Column>
+      </Column>
     </AppBar>
   );
 });

@@ -1,8 +1,9 @@
-import { Box, Button, Typography } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { useCallback, useState } from "react";
 import * as React from "react";
 import { Question } from "../../../../shared/api/entities";
+import { Column } from "../../ui";
 import { useStyles } from "../../ui/styles";
 import { QuestionEditor } from "./QuestionEditor";
 
@@ -59,18 +60,18 @@ export const QuestionsEditor = React.memo<{
   }, []);
 
   return (
-    <Box display="flex" flexDirection="column">
+    <Column>
       {questions.map((question, index) => (
-        <Box key={question.id} display="flex" flexDirection="column" pb={1}>
+        <Column key={question.id} pb={1}>
           <QuestionEditor
             questionIndex={index}
             question={question}
             onUpdate={onUpdateQuestion}
             onDelete={onDeleteQuestion}
           />
-        </Box>
+        </Column>
       ))}
-      <Box display="flex" flexDirection="column">
+      <Column>
         <Button
           className={classes.largeButton}
           variant="contained"
@@ -80,7 +81,7 @@ export const QuestionsEditor = React.memo<{
           <Add className={classes.leftIcon} />
           <Typography>問題を追加</Typography>
         </Button>
-      </Box>
-    </Box>
+      </Column>
+    </Column>
   );
 });

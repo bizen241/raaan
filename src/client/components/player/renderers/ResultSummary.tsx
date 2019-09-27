@@ -21,7 +21,7 @@ import {
 import * as React from "react";
 import { AttemptResult, SubmissionSummary } from "../../../../shared/api/entities";
 import { Attempt, summarizeResults } from "../../../domain/exercise/attempt";
-import { DialogContent } from "../../ui/Dialog";
+import { Column, DialogContent, Row } from "../../ui";
 import { useStyles } from "../../ui/styles";
 
 export const AttemptResultViewer: React.FunctionComponent<{
@@ -42,8 +42,8 @@ export const AttemptResultViewer: React.FunctionComponent<{
 
   return (
     <DialogContent>
-      <Box display="flex" flexDirection="column" flex={1} justifyContent="center">
-        <Box display="flex" flexDirection="column" pb={1}>
+      <Column flex={1} justifyContent="center">
+        <Column pb={1}>
           <Card>
             <CardHeader
               avatar={
@@ -59,29 +59,29 @@ export const AttemptResultViewer: React.FunctionComponent<{
               }
             />
             <CardContent>
-              <Box display="flex" flex={1} justifyContent="center" alignItems="center">
+              <Row flex={1} justifyContent="center" alignItems="center">
                 {SpeedDiffIcon && <SpeedDiffIcon className={speedClasses.icon} />}
                 <Box>
                   <span className={speedClasses.speed}>{speed.toFixed(0)}</span>
                   <span className={speedClasses.unit}>打/分</span>
                 </Box>
-              </Box>
+              </Row>
             </CardContent>
           </Card>
-        </Box>
-        <Box display="flex" flexDirection="column" pb={1}>
+        </Column>
+        <Column pb={1}>
           <Button className={classes.largeButton} variant="contained" onClick={onReplay}>
             <Replay className={classes.leftIcon} />
             <Typography>もう一度</Typography>
           </Button>
-        </Box>
-        <Box display="flex" flexDirection="column" pb={1}>
+        </Column>
+        <Column pb={1}>
           <Button className={classes.largeButton} variant="contained" color="primary" onClick={onFinish}>
             <ArrowForward className={classes.leftIcon} />
             <Typography>{hasNext ? "次へ" : "終了"}</Typography>
           </Button>
-        </Box>
-      </Box>
+        </Column>
+      </Column>
     </DialogContent>
   );
 };

@@ -7,6 +7,7 @@ import { UserSession } from "../../../shared/api/entities";
 import { createEntityList } from "../../enhancers/createEntityList";
 import { actions } from "../../reducers";
 import { UserContext } from "../project/Context";
+import { Column } from "../ui";
 
 export const UserSessionList = createEntityList<UserSession>({ entityType: "UserSession", itemHeight: 77 })(
   React.memo(({ entity: userSession }) => {
@@ -19,11 +20,11 @@ export const UserSessionList = createEntityList<UserSession>({ entityType: "User
           <Box pl={2}>{userSession.deviceType === "desktop" ? <Computer /> : <Smartphone />}</Box>
         </TableCell>
         <TableCell>
-          <Box display="flex" flexDirection="column">
+          <Column>
             <Typography>{userSession.deviceName}</Typography>
             <Typography>{userSession.os}</Typography>
             <Typography>{userSession.browser}</Typography>
-          </Box>
+          </Column>
         </TableCell>
         <TableCell padding="checkbox">
           {userSession.userId === currentUser.id && !userSession.isCurrent ? (

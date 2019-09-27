@@ -10,7 +10,7 @@ import { DeletePlaylistDialog } from "../dialogs/DeletePlaylistDialog";
 import { PublishPlaylistDialog } from "../dialogs/PublishPlaylistDialog";
 import { UnpublishPlaylistDialog } from "../dialogs/UnpublishPlaylistDialog";
 import { UserContext } from "../project/Context";
-import { Menu } from "../ui/Menu";
+import { Menu, Row } from "../ui";
 import { useStyles } from "../ui/styles";
 
 export const PlaylistSummaryViewer = withEntity<PlaylistSummary>({ entityType: "PlaylistSummary" })(
@@ -35,7 +35,7 @@ export const PlaylistSummaryViewer = withEntity<PlaylistSummary>({ entityType: "
             </Typography>
           }
           subheader={
-            <Box display="flex">
+            <Row>
               {playlistSummary.tags.split(/\s/).map(
                 tag =>
                   tag && (
@@ -44,7 +44,7 @@ export const PlaylistSummaryViewer = withEntity<PlaylistSummary>({ entityType: "
                     </Box>
                   )
               )}
-            </Box>
+            </Row>
           }
           action={
             <Menu>

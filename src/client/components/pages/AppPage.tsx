@@ -1,10 +1,10 @@
-import { Avatar, Box, Button, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
+import { Avatar, Button, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
 import { Done, NotificationImportant, Sync } from "@material-ui/icons";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../reducers";
 import { Message } from "../project/Message";
-import { Page } from "../ui/Page";
+import { Column, Page, Row } from "../ui";
 import { useStyles } from "../ui/styles";
 
 const AppPage = React.memo(() => {
@@ -16,7 +16,7 @@ const AppPage = React.memo(() => {
 
   return (
     <Page title="アプリについて">
-      <Box display="flex" flexDirection="column" pb={1}>
+      <Column pb={1}>
         <Card>
           <CardHeader
             avatar={
@@ -29,19 +29,19 @@ const AppPage = React.memo(() => {
           />
           <CardContent>
             {hasUpdate ? (
-              <Box display="flex">
+              <Row>
                 <NotificationImportant className={classes.leftIcon} />
                 <Typography>更新があります</Typography>
-              </Box>
+              </Row>
             ) : (
-              <Box display="flex">
+              <Row>
                 <Done className={classes.leftIcon} />
                 <Typography>最新版です</Typography>
-              </Box>
+              </Row>
             )}
           </CardContent>
         </Card>
-      </Box>
+      </Column>
       {hasUpdate && (
         <Button className={classes.largeButton} variant="contained" onClick={() => location.reload()}>
           <Typography>

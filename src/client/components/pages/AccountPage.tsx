@@ -7,7 +7,7 @@ import { DeleteAccountDialog } from "../dialogs/DeleteAccountDialog";
 import { LogoutDialog } from "../dialogs/LogoutDialog";
 import { UserContext } from "../project/Context";
 import { Message } from "../project/Message";
-import { Page } from "../ui/Page";
+import { Column, Page } from "../ui";
 import { useStyles } from "../ui/styles";
 import { UserAccountViewer } from "../viewer/UserAccountViewer";
 
@@ -38,23 +38,23 @@ const AccountPage = React.memo(() => {
             </CardContent>
           </Card>
         </Box>
-        <Box display="flex" flexDirection="column" pb={1}>
+        <Column pb={1}>
           <Button className={classes.largeButton} variant="contained" component={RouterLink} to="/sessions">
             <Typography>セッション一覧</Typography>
           </Button>
-        </Box>
-        <Box display="flex" flexDirection="column" pb={1}>
+        </Column>
+        <Column pb={1}>
           <Button className={classes.largeButton} variant="contained" onClick={onToggleLogoutDialog}>
             <Typography color="error">
               <Message id="logout" />
             </Typography>
           </Button>
-        </Box>
-        <Box display="flex" flexDirection="column" pb={1}>
+        </Column>
+        <Column pb={1}>
           <Button className={classes.largeButton} variant="contained" onClick={onToggleDeleteAccountDialog}>
             <Typography color="error">アカウントを削除</Typography>
           </Button>
-        </Box>
+        </Column>
         <LogoutDialog isOpen={isLogoutDialogOpen} onClose={onToggleLogoutDialog} />
         <DeleteAccountDialog isOpen={isDeleteAccountDialogOpen} onClose={onToggleDeleteAccountDialog} />
       </Page>

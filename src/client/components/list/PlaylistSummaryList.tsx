@@ -17,11 +17,11 @@ export const PlaylistSummaryList = createEntityList<PlaylistSummary>({ entityTyp
     return (
       <TableRow>
         <TableCell>
-          <Box display="flex" flexDirection="column">
+          <Column>
             <Link color="textPrimary" component={RouterLink} to={`/playlists/${playlistSummary.playlistId}`}>
               <Typography>{playlistSummary.title || "無題"}</Typography>
             </Link>
-          </Box>
+          </Column>
         </TableCell>
         {playlistSummary.authorId === currentUser.id ? (
           <TableCell padding="checkbox">

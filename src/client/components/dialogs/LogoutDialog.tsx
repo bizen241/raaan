@@ -1,9 +1,9 @@
-import { Box, Button, Typography } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import { Warning } from "@material-ui/icons";
 import * as React from "react";
 import { createDialog } from "../../enhancers/createDialog";
 import { Message } from "../project/Message";
-import { DialogContent, DialogHeader } from "../ui/Dialog";
+import { Column, DialogContent, DialogHeader, Row } from "../ui";
 import { useStyles } from "../ui/styles";
 
 export const LogoutDialog = createDialog<{}>(
@@ -18,22 +18,22 @@ export const LogoutDialog = createDialog<{}>(
           </Typography>
         </DialogHeader>
         <DialogContent>
-          <Box display="flex" alignItems="center" flex={1} pb={1}>
+          <Row alignItems="center" flex={1} pb={1}>
             <Warning className={classes.leftIcon} />
             <Typography>すべての下書きがブラウザから削除されます。</Typography>
-          </Box>
-          <Box display="flex" flexDirection="column" pb={1}>
+          </Row>
+          <Column pb={1}>
             <Button className={classes.largeButton} variant="contained" component="a" href="/logout">
               <Typography color="error">
                 <Message id="logout" />
               </Typography>
             </Button>
-          </Box>
-          <Box display="flex" flexDirection="column" pb={1}>
+          </Column>
+          <Column pb={1}>
             <Button className={classes.largeButton} variant="contained" onClick={onClose}>
               <Typography>キャンセル</Typography>
             </Button>
-          </Box>
+          </Column>
         </DialogContent>
       </>
     );

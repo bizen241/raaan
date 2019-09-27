@@ -1,4 +1,4 @@
-import { Box, TableCell, TableRow } from "@material-ui/core";
+import { TableCell, TableRow } from "@material-ui/core";
 import * as React from "react";
 import { createContext, useCallback, useContext, useMemo } from "react";
 import { useDispatch } from "react-redux";
@@ -7,6 +7,7 @@ import { createEntityList } from "../../enhancers/createEntityList";
 import { useEntity } from "../../hooks/useEntity";
 import { actions } from "../../reducers";
 import { generateBufferId } from "../../reducers/buffers";
+import { Column } from "../ui";
 
 export const ExerciseContext = createContext<string | undefined>(undefined);
 
@@ -35,9 +36,7 @@ export const PlaylistSummarySelectList = createEntityList<PlaylistSummary>({ ent
     return (
       <TableRow hover onClick={onClick}>
         <TableCell>
-          <Box display="flex" flexDirection="column">
-            {uploadStatus || title || "無題"}
-          </Box>
+          <Column>{uploadStatus || title || "無題"}</Column>
         </TableCell>
       </TableRow>
     );

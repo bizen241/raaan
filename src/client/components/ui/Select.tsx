@@ -1,5 +1,6 @@
-import { Box, NativeSelect, OutlinedInput, Typography } from "@material-ui/core";
+import { NativeSelect, OutlinedInput, Typography } from "@material-ui/core";
 import * as React from "react";
+import { Column } from "./Column";
 
 export const Select = React.memo<{
   label: React.ReactNode;
@@ -7,10 +8,10 @@ export const Select = React.memo<{
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   children: React.ReactNode;
 }>(({ label, defaultValue, onChange, children }) => (
-  <Box display="flex" flexDirection="column" component="label">
+  <Column component="label">
     <Typography color="textSecondary">{label}</Typography>
     <NativeSelect input={<OutlinedInput labelWidth={0} />} defaultValue={defaultValue} onChange={onChange}>
       {children}
     </NativeSelect>
-  </Box>
+  </Column>
 ));

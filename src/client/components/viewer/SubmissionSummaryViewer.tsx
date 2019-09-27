@@ -1,10 +1,11 @@
-import { Avatar, Box, Card, CardContent, CardHeader, Divider, Typography } from "@material-ui/core";
+import { Avatar, Card, CardContent, CardHeader, Divider, Typography } from "@material-ui/core";
 import { Person } from "@material-ui/icons";
 import * as React from "react";
 import { useMemo } from "react";
 import { SubmissionSummary } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { useSearch } from "../../hooks/useSearch";
+import { Column } from "../ui";
 import { useStyles } from "../ui/styles";
 
 export const SubmissionSummaryViewer = React.memo<{
@@ -38,29 +39,29 @@ export const SubmissionSummaryViewer = React.memo<{
       />
       <CardContent>
         {submissionSummary !== undefined ? (
-          <Box display="flex" flexDirection="column">
-            <Box display="flex" flexDirection="column" mb={1}>
+          <Column>
+            <Column mb={1}>
               <Typography color="textSecondary">提出回数</Typography>
               <Typography variant="h5" component="span">
                 {submissionSummary.submitCount}
               </Typography>
               <Divider />
-            </Box>
-            <Box display="flex" flexDirection="column" mb={1}>
+            </Column>
+            <Column mb={1}>
               <Typography color="textSecondary">最初の提出</Typography>
               <Typography variant="h5" component="span">
                 {new Date(submissionSummary.createdAt).toLocaleString()}
               </Typography>
               <Divider />
-            </Box>
-            <Box display="flex" flexDirection="column" mb={1}>
+            </Column>
+            <Column mb={1}>
               <Typography color="textSecondary">直近の提出</Typography>
               <Typography variant="h5" component="span">
                 {new Date(submissionSummary.updatedAt).toLocaleString()}
               </Typography>
               <Divider />
-            </Box>
-          </Box>
+            </Column>
+          </Column>
         ) : (
           <Typography>まだ提出していません</Typography>
         )}

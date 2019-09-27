@@ -1,10 +1,10 @@
-import { Box, Button, Typography } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import { Warning } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../enhancers/createDialog";
 import { actions } from "../../reducers";
-import { DialogContent, DialogHeader } from "../ui/Dialog";
+import { Column, DialogContent, DialogHeader, Row } from "../ui";
 import { useStyles } from "../ui/styles";
 
 export const DeleteExerciseDialog = createDialog<{
@@ -25,20 +25,20 @@ export const DeleteExerciseDialog = createDialog<{
           <Typography>問題集の削除</Typography>
         </DialogHeader>
         <DialogContent>
-          <Box display="flex" alignItems="center" flex={1} pb={1}>
+          <Row alignItems="center" flex={1} pb={1}>
             <Warning className={classes.leftIcon} />
             <Typography>問題集がサーバーから削除されます。</Typography>
-          </Box>
-          <Box display="flex" flexDirection="column" pb={1}>
+          </Row>
+          <Column pb={1}>
             <Button className={classes.largeButton} variant="contained" onClick={onDelete}>
               <Typography color="error">問題集を削除</Typography>
             </Button>
-          </Box>
-          <Box display="flex" flexDirection="column" pb={1}>
+          </Column>
+          <Column pb={1}>
             <Button className={classes.largeButton} variant="contained" onClick={onClose}>
               <Typography>キャンセル</Typography>
             </Button>
-          </Box>
+          </Column>
         </DialogContent>
       </>
     );

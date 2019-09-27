@@ -1,6 +1,7 @@
-import { AppBar, Box, DialogContent as MuiDialogContent, IconButton, Toolbar } from "@material-ui/core";
+import { AppBar, DialogContent as MuiDialogContent, IconButton, Toolbar } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import * as React from "react";
+import { Column } from "./Column";
 
 export const DialogHeader: React.FunctionComponent<{
   maxWidth?: string;
@@ -8,16 +9,16 @@ export const DialogHeader: React.FunctionComponent<{
 }> = ({ maxWidth = "1000px", onClose, children }) => {
   return (
     <AppBar position="relative">
-      <Box display="flex" flexDirection="column" height="100%" alignItems="center">
-        <Box display="flex" flexDirection="column" flex={1} width="100%" maxWidth={maxWidth}>
+      <Column height="100%" alignItems="center">
+        <Column flex={1} width="100%" maxWidth={maxWidth}>
           <Toolbar variant="dense">
             <IconButton edge="start" color="inherit" onClick={onClose}>
               <Close />
             </IconButton>
             {children}
           </Toolbar>
-        </Box>
-      </Box>
+        </Column>
+      </Column>
     </AppBar>
   );
 };
@@ -25,11 +26,11 @@ export const DialogHeader: React.FunctionComponent<{
 export const DialogContent: React.FunctionComponent = ({ children }) => {
   return (
     <MuiDialogContent>
-      <Box display="flex" flexDirection="column" height="100%" alignItems="center">
-        <Box display="flex" flexDirection="column" flex={1} width="100%" maxWidth="1000px">
+      <Column height="100%" alignItems="center">
+        <Column flex={1} width="100%" maxWidth="1000px">
           {children}
-        </Box>
-      </Box>
+        </Column>
+      </Column>
     </MuiDialogContent>
   );
 };

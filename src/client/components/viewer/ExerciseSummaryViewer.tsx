@@ -10,7 +10,7 @@ import { DeleteExerciseDialog } from "../dialogs/DeleteExerciseDialog";
 import { PublishExerciseDialog } from "../dialogs/PublishExerciseDialog";
 import { UnpublishExerciseDialog } from "../dialogs/UnpublishExerciseDialog";
 import { UserContext } from "../project/Context";
-import { Menu } from "../ui/Menu";
+import { Column, Menu, Row } from "../ui";
 import { useStyles } from "../ui/styles";
 
 export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "ExerciseSummary" })(
@@ -35,7 +35,7 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
             </Typography>
           }
           subheader={
-            <Box display="flex">
+            <Row>
               {exerciseSummary.tags.split(/\s/).map(
                 tag =>
                   tag && (
@@ -44,7 +44,7 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
                     </Box>
                   )
               )}
-            </Box>
+            </Row>
           }
           action={
             <Menu>
@@ -76,22 +76,22 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
           }
         />
         <CardContent>
-          <Box display="flex" flexDirection="column">
-            <Box display="flex" flexDirection="column" mb={1}>
+          <Column>
+            <Column mb={1}>
               <Typography color="textSecondary">提出回数</Typography>
               <Typography variant="h5" component="span">
                 {exerciseSummary.submitCount}
               </Typography>
               <Divider />
-            </Box>
-            <Box display="flex" flexDirection="column" mb={1}>
+            </Column>
+            <Column mb={1}>
               <Typography color="textSecondary">評価</Typography>
               <Typography variant="h5" component="span">
                 {exerciseSummary.upvoteCount}
               </Typography>
               <Divider />
-            </Box>
-          </Box>
+            </Column>
+          </Column>
         </CardContent>
         <PublishExerciseDialog
           exerciseId={exerciseId}
