@@ -1,9 +1,14 @@
-import { Box, Card, CardContent, NativeSelect, OutlinedInput, Typography } from "@material-ui/core";
+import { Card, CardContent } from "@material-ui/core";
+import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import { Lang, Theme, UserConfig } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
+import { useToggleState } from "../../hooks/useToggleState";
+import { UploadUserConfigDialog } from "../dialogs/UploadUserConfigDialog";
+import { UserContext } from "../project/Context";
 import { Message } from "../project/Message";
+import { Button, Column, Select } from "../ui";
 
 const langNameToLabel: { [T in Lang]: string } = {
   default: "default",
@@ -21,7 +26,12 @@ const themeNameToLabel: { [T in Theme]: string } = {
 
 export const UserConfigEditor = withBuffer<UserConfig>(
   "UserConfig",
-  React.memo(({ buffer = {}, source = {}, onChange }) => {
+  React.memo(props => {
+    const { bufferId, buffer = {}, source = {}, onChange } = props;
+
+    const currentUser = useContext(UserContext);
+    const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
+
     const onUpdateLang = useCallback(
       (e: React.ChangeEvent<{ value: unknown }>) => onChange({ lang: e.target.value as Lang }),
       []
@@ -31,18 +41,20 @@ export const UserConfigEditor = withBuffer<UserConfig>(
       []
     );
 
+    const canUpload = props.buffer !== undefined && currentUser.permission !== "Guest";
+
     return (
-      <Card>
-        <CardContent>
-          <Box display="flex" flexDirection="column">
-            <Box display="flex" flexDirection="column" pb={1}>
-              <Box display="flex" flexDirection="column" component="label">
-                <Typography color="textSecondary">
-                  <Message id="language" />
-                </Typography>
-                <NativeSelect
-                  input={<OutlinedInput labelWidth={0} />}
-                  value={buffer.lang || source.lang || "default"}
+      <Column>
+        <Column pb={1}>
+          <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
+        </Column>
+        <Card>
+          <CardContent>
+            <Column>
+              <Column pb={1}>
+                <Select
+                  label={<Message id="language" />}
+                  defaultValue={buffer.lang || source.lang || "default"}
                   onChange={onUpdateLang}
                 >
                   {Object.entries(langNameToLabel).map(([name, label]) => (
@@ -50,30 +62,26 @@ export const UserConfigEditor = withBuffer<UserConfig>(
                       {label}
                     </option>
                   ))}
-                </NativeSelect>
-              </Box>
-            </Box>
-            <Box display="flex" flexDirection="column" pb={1}>
-              <Box display="flex" flexDirection="column" component="label">
-                <Typography color="textSecondary">
-                  <Message id="theme" />
-                </Typography>
-                <NativeSelect
-                  input={<OutlinedInput labelWidth={0} />}
-                  value={buffer.theme || source.theme || "default"}
-                  onChange={onUpdateTheme}
-                >
-                  {Object.entries(themeNameToLabel).map(([name, label]) => (
-                    <option key={name} value={name}>
-                      {label}
-                    </option>
-                  ))}
-                </NativeSelect>
-              </Box>
-            </Box>
-          </Box>
-        </CardContent>
-      </Card>
+                </Select>
+              </Column>
+            </Column>
+            <Column pb={1}>
+              <Select
+                label={<Message id="theme" />}
+                defaultValue={buffer.theme || source.theme || "default"}
+                onChange={onUpdateTheme}
+              >
+                {Object.entries(themeNameToLabel).map(([name, label]) => (
+                  <option key={name} value={name}>
+                    {label}
+                  </option>
+                ))}
+              </Select>
+            </Column>
+          </CardContent>
+        </Card>
+        <UploadUserConfigDialog userConfigId={bufferId} isOpen={isUploadDialogOpen} onClose={onToggleUploadDialog} />
+      </Column>
     );
   })
 );

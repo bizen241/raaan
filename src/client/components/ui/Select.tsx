@@ -2,7 +2,7 @@ import { Box, NativeSelect, OutlinedInput, Typography } from "@material-ui/core"
 import * as React from "react";
 
 export const Select = React.memo<{
-  label: string;
+  label: React.ReactNode;
   defaultValue: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   children: React.ReactNode;
