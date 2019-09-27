@@ -8,6 +8,7 @@ import { useToggleState } from "../../../hooks/useToggleState";
 import { UploadExerciseDraftDialog } from "../../dialogs/UploadExerciseDraftDialog";
 import { ExercisePreviewer } from "../../player/dialogs/ExercisePreviewer";
 import { UserContext } from "../../project/Context";
+import { Column } from "../../ui";
 import { useStyles } from "../../ui/styles";
 import { QuestionsEditor } from "./QuestionsEditor";
 
@@ -35,8 +36,8 @@ export const ExerciseDraftEditor = withBuffer<ExerciseDraft>(
     const canUpload = props.buffer !== undefined && currentUser.permission !== "Guest";
 
     return (
-      <Box display="flex" flexDirection="column" flex={1}>
-        <Box display="flex" flexDirection="column" pb={1}>
+      <Column flex={1}>
+        <Column pb={1}>
           <Button
             className={classes.largeButton}
             variant="contained"
@@ -46,35 +47,37 @@ export const ExerciseDraftEditor = withBuffer<ExerciseDraft>(
             <CloudUpload className={classes.leftIcon} />
             <Typography>アップロード</Typography>
           </Button>
-        </Box>
-        <Card>
-          <CardContent>
-            <Box display="flex" flexDirection="column" pb={1}>
-              <Box display="flex" flexDirection="column" component="label">
-                <Typography color="textSecondary">題名</Typography>
-                <TextField
-                  variant="outlined"
-                  defaultValue={buffer.title || source.title || ""}
-                  onChange={onUpdateTitle}
-                />
-              </Box>
-            </Box>
-            <Box display="flex" flexDirection="column" pb={1}>
-              <Box display="flex" flexDirection="column" component="label">
-                <Typography color="textSecondary">タグ</Typography>
-                <TextField
-                  variant="outlined"
-                  defaultValue={(buffer.tags || source.tags || []).join(" ")}
-                  onChange={onUpdateTags}
-                />
-              </Box>
-            </Box>
-          </CardContent>
-        </Card>
-        <Box display="flex" flexDirection="column" pb={1}>
+        </Column>
+        <Column pb={1}>
+          <Card>
+            <CardContent>
+              <Column pb={1}>
+                <Column component="label">
+                  <Typography color="textSecondary">題名</Typography>
+                  <TextField
+                    variant="outlined"
+                    defaultValue={buffer.title || source.title || ""}
+                    onChange={onUpdateTitle}
+                  />
+                </Column>
+              </Column>
+              <Column>
+                <Column component="label">
+                  <Typography color="textSecondary">タグ</Typography>
+                  <TextField
+                    variant="outlined"
+                    defaultValue={(buffer.tags || source.tags || []).join(" ")}
+                    onChange={onUpdateTags}
+                  />
+                </Column>
+              </Column>
+            </CardContent>
+          </Card>
+        </Column>
+        <Column pb={1}>
           <QuestionsEditor questions={buffer.questions || source.questions || []} onChange={onUpdateQuestions} />
-        </Box>
-        <Box display="flex" flexDirection="column" pb={1}>
+        </Column>
+        <Column pb={1}>
           <Button
             className={classes.largeButton}
             variant="contained"
@@ -84,7 +87,7 @@ export const ExerciseDraftEditor = withBuffer<ExerciseDraft>(
             <PlayArrow className={classes.leftIcon} />
             <Typography>プレビュー</Typography>
           </Button>
-        </Box>
+        </Column>
         <UploadExerciseDraftDialog
           exerciseDraftId={bufferId}
           isOpen={isUploadDialogOpen}
@@ -98,7 +101,7 @@ export const ExerciseDraftEditor = withBuffer<ExerciseDraft>(
           isOpen={isExercisePreviewerOpen}
           onClose={onToggleExercisePreviewer}
         />
-      </Box>
+      </Column>
     );
   })
 );

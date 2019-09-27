@@ -9,17 +9,17 @@ export const UserAccountViewer = withEntity<UserAccount>({ entityType: "UserAcco
       <Box display="flex" flexDirection="column">
         <Box display="flex" flexDirection="column" mb={1}>
           <Typography color="textSecondary">プロバイダ</Typography>
-          <Typography>{userAccount.provider}</Typography>
+          <Typography variant="h5">{userAccount.provider}</Typography>
           <Divider />
         </Box>
         <Box display="flex" flexDirection="column" mb={1}>
           <Typography color="textSecondary">ID</Typography>
-          <Typography>{userAccount.accountId}</Typography>
+          <Typography variant="h5">{userAccount.accountId}</Typography>
           <Divider />
         </Box>
         <Box display="flex" flexDirection="column" mb={1}>
           <Typography color="textSecondary">メールアドレス</Typography>
-          <Typography>{userAccount.email}</Typography>
+          <Typography variant="h5">{userAccount.email}</Typography>
           <Divider />
         </Box>
       </Box>
