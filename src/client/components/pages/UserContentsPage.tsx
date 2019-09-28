@@ -2,7 +2,6 @@ import { Divider, Paper, Tab, Tabs, Typography } from "@material-ui/core";
 import { Bookmarks } from "@material-ui/icons";
 import { useContext, useMemo, useState } from "react";
 import * as React from "react";
-import { Link as RouterLink } from "react-router-dom";
 import { ExerciseSummaryList } from "../list/ExerciseSummaryList";
 import { PlaylistSummaryList } from "../list/PlaylistSummaryList";
 import { UserContext } from "../project/Context";
@@ -24,7 +23,7 @@ export const UserContentsPage = React.memo<PageProps>(({ match }) => {
     <Page title={userId === currentUser.id ? "自分のコンテンツ" : "ユーザーのコンテンツ"}>
       {isOwn && (
         <Column pb={1}>
-          <Button icon={<Bookmarks />} label="ブックマーク" component={RouterLink} to={`/bookmarks`} />
+          <Button icon={<Bookmarks />} label="ブックマーク" to={`/bookmarks`} />
         </Column>
       )}
       <Column pb={1}>

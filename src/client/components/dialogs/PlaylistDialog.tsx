@@ -12,7 +12,6 @@ import { generateBufferId } from "../../reducers/buffers";
 import { ExerciseContext, PlaylistSummarySelectList } from "../list/PlaylistSummarySelectList";
 import { UserContext } from "../project/Context";
 import { Button, Column, DialogContent, DialogHeader } from "../ui";
-import { useStyles } from "../ui/styles";
 
 export const PlaylistDialog = createDialog<{
   exerciseId: string;

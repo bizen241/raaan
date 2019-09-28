@@ -1,7 +1,6 @@
 import { Group, History, Keyboard, Timeline } from "@material-ui/icons";
 import { useContext } from "react";
 import * as React from "react";
-import { Link as RouterLink } from "react-router-dom";
 import { User } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { UserContext } from "../project/Context";
