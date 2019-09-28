@@ -1,40 +1,19 @@
+import ky from "ky";
 import { EntityObject } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 
-type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+type Method = "get" | "post" | "put" | "patch" | "delete";
 
 export const request = async <T>(method: Method, path: string, body?: Params<EntityObject>) => {
-  const url = `${location.origin}/api/${path}`;
-
-  const response = await fetch(url, {
+  const response = (await ky(path, {
     method,
-    body: body && JSON.stringify(body),
+    prefixUrl: `${location.origin}/api`,
     credentials: "include",
     headers: {
-      "Content-Type": "application/json",
       "X-Requested-With": "Fetch"
-    }
-  }).catch(() => {
-    throw new Error();
-  });
+    },
+    json: body
+  }).json()) as T;
 
-  if (!response.ok) {
-    throw new FetchError(response.status);
-  }
-
-  const json = await response.json().catch(() => {
-    throw new Error();
-  });
-
-  return json as T;
+  return response;
 };
-
-export class FetchError extends Error {
-  code: number;
-
-  constructor(code: number) {
-    super();
-
-    this.code = code;
-  }
-}

@@ -1,4 +1,5 @@
 import { LOCATION_CHANGE } from "connected-react-router";
+import { HTTPError } from "ky";
 import { Reducer } from "redux";
 import { Actions } from ".";
 import {
@@ -41,7 +42,9 @@ const getEntity = (type: EntityType, id: string): AsyncAction => async dispatch 
     dispatch(cacheActions.get(response));
     dispatch(apiSyncActions.update("get", type, id, 200, response));
   } catch (e) {
-    dispatch(apiSyncActions.update("get", type, id, 404));
+    const code = e instanceof HTTPError ? e.response.status : 500;
+
+    dispatch(apiSyncActions.update("get", type, id, code));
   }
 };
 
@@ -54,7 +57,9 @@ const searchEntity = <E extends EntityObject>(type: EntityType, params: Params<E
     dispatch(cacheActions.search(type, params, response));
     dispatch(apiSyncActions.update("search", type, params, 200, response.entities));
   } catch (e) {
-    dispatch(apiSyncActions.update("search", type, params, 404));
+    const code = e instanceof HTTPError ? e.response.status : 500;
+
+    dispatch(apiSyncActions.update("search", type, params, code));
   }
 };
 
@@ -82,7 +87,9 @@ const uploadEntity = <E extends EntityObject>(type: EntityType, id: string, para
       dispatch(buffersActions.delete(type, id));
     }
   } catch (e) {
-    dispatch(apiSyncActions.update("upload", type, id, 404));
+    const code = e instanceof HTTPError ? e.response.status : 500;
+
+    dispatch(apiSyncActions.update("upload", type, id, code));
   }
 };
 
@@ -96,7 +103,9 @@ const deleteEntity = (type: EntityType, id: string): AsyncAction => async dispat
     dispatch(buffersActions.delete(type, id));
     dispatch(apiSyncActions.update("delete", type, id, 200, response));
   } catch (e) {
-    dispatch(apiSyncActions.update("delete", type, id, 404));
+    const code = e instanceof HTTPError ? e.response.status : 500;
+
+    dispatch(apiSyncActions.update("delete", type, id, code));
   }
 };
 
