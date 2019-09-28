@@ -21,7 +21,7 @@ export const endpoints: { [P in EntityType]: string } = {
   User: "users",
   UserDiary: "user-diaries",
   UserAccount: "user-accounts",
-  UserConfig: "user-config",
+  UserConfig: "user-configs",
   UserReport: "user-reports",
   UserSession: "user-sessions",
   UserSummary: "user-summaries"
