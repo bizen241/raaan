@@ -1,15 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  IconButton,
-  Link,
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  Typography
-} from "@material-ui/core";
+import { Box, Card, IconButton, Link, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
 import { PlayArrow, Shuffle } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useMemo, useState } from "react";
@@ -20,14 +9,11 @@ import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
 import { PlaylistPlayer } from "../player/dialogs/PlaylistPlayer";
-import { Column } from "../ui";
-import { useStyles } from "../ui/styles";
+import { Button, Column } from "../ui";
 import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 
 export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
   React.memo(({ entity: playlist, entityId: playlistId }) => {
-    const classes = useStyles();
-
     const [isPlaylistPlayerOpen, onTogglePlaylistPlayer] = useToggleState();
     const [requestedPlaylistItems, requestPlaylistItems] = useState<PlaylistItem[]>([]);
 
@@ -55,22 +41,10 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
     return (
       <Column>
         <Column pb={1}>
-          <Button
-            className={classes.largeButton}
-            variant="contained"
-            color="primary"
-            disabled={count === 0}
-            onClick={onPlay}
-          >
-            <PlayArrow className={classes.leftIcon} />
-            <Typography>始める</Typography>
-          </Button>
+          <Button color="primary" icon={<PlayArrow />} label="始める" disabled={count === 0} onClick={onPlay} />
         </Column>
         <Column pb={1}>
-          <Button className={classes.largeButton} variant="contained" disabled={count === 0} onClick={onRandomPlay}>
-            <Shuffle className={classes.leftIcon} />
-            <Typography>ランダム</Typography>
-          </Button>
+          <Button icon={<Shuffle />} label="ランダム" disabled={count === 0} onClick={onRandomPlay} />
         </Column>
         <Column pb={1}>
           <PlaylistSummaryViewer entityId={playlist.summaryId} />

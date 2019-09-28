@@ -1,4 +1,4 @@
-import { Button, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { Warning } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import * as React from "react";
@@ -10,15 +10,13 @@ import { useEntity } from "../../hooks/useEntity";
 import { actions } from "../../reducers";
 import { isLocalOnly } from "../../reducers/api";
 import { UserContext } from "../project/Context";
-import { Column, DialogContent, DialogHeader, Row } from "../ui";
+import { Button, Column, DialogContent, DialogHeader, Row } from "../ui";
 import { useStyles } from "../ui/styles";
 
 export const UploadExerciseDraftDialog = createDialog<{
   exerciseDraftId: string;
 }>(
   React.memo(({ exerciseDraftId, onClose }) => {
-    const classes = useStyles();
-
     return (
       <>
         <DialogHeader onClose={onClose}>
@@ -27,9 +25,7 @@ export const UploadExerciseDraftDialog = createDialog<{
         <DialogContent>
           <UploadExerciseDraftDialogContent exerciseDraftId={exerciseDraftId} />
           <Column pb={1}>
-            <Button className={classes.largeButton} variant="contained" onClick={onClose}>
-              <Typography>キャンセル</Typography>
-            </Button>
+            <Button label="キャンセル" onClick={onClose} />
           </Column>
         </DialogContent>
       </>
@@ -73,49 +69,21 @@ const UploadExerciseDraftDialogContent = React.memo<{
         </Row>
         {isLocalOnly(exerciseDraftId) && currentUser.permission !== "Read" && (
           <Column pb={1}>
-            <Button
-              className={classes.largeButton}
-              variant="contained"
-              color="primary"
-              onClick={() => setUploadConfig("public")}
-            >
-              <Typography>公開</Typography>
-            </Button>
+            <Button label="公開" color="primary" onClick={() => setUploadConfig("public")} />
           </Column>
         )}
         {isLocalOnly(exerciseDraftId) && (
           <Column pb={1}>
-            <Button
-              className={classes.largeButton}
-              variant="contained"
-              color="secondary"
-              onClick={() => setUploadConfig("private")}
-            >
-              <Typography>非公開</Typography>
-            </Button>
+            <Button label="非公開" color="secondary" onClick={() => setUploadConfig("private")} />
           </Column>
         )}
         {!isLocalOnly(exerciseDraftId) && (
           <Column pb={1}>
-            <Button
-              className={classes.largeButton}
-              variant="contained"
-              color="primary"
-              onClick={() => setUploadConfig("update")}
-            >
-              <Typography>更新</Typography>
-            </Button>
+            <Button label="更新" color="primary" onClick={() => setUploadConfig("update")} />
           </Column>
         )}
         <Column pb={1}>
-          <Button
-            className={classes.largeButton}
-            variant="contained"
-            color="secondary"
-            onClick={() => setUploadConfig("draft")}
-          >
-            <Typography>下書き</Typography>
-          </Button>
+          <Button label="下書き" color="secondary" onClick={() => setUploadConfig("draft")} />
         </Column>
       </>
     );
@@ -149,9 +117,7 @@ const UploadExerciseDraftDialogContent = React.memo<{
           )}
         </Row>
         <Column pb={1}>
-          <Button className={classes.largeButton} variant="contained" color="primary" onClick={onUpload}>
-            <Typography>アップロード</Typography>
-          </Button>
+          <Button color="primary" label="アップロード" onClick={onUpload} />
         </Column>
       </>
     );

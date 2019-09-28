@@ -2,18 +2,32 @@ import { Button as MuiButton, makeStyles, Typography } from "@material-ui/core";
 import { ButtonProps } from "@material-ui/core/Button";
 import { TypographyProps } from "@material-ui/core/Typography";
 import * as React from "react";
+import { Link } from "react-router-dom";
 
-export const Button = React.memo<
-  {
-    icon?: React.ReactNode;
-    label: React.ReactNode;
-    labelColor?: TypographyProps["color"];
-  } & ButtonProps
->(({ icon, label, labelColor, ...props }) => {
+export const Button = React.memo<{
+  color?: ButtonProps["color"];
+  icon?: React.ReactNode;
+  label: React.ReactNode;
+  labelColor?: TypographyProps["color"];
+  disabled?: boolean;
+  href?: string;
+  to?: string;
+  onClick?: () => void;
+}>(({ icon, label, labelColor, href, to, ...props }) => {
   const buttonClasses = useButtonStyles();
 
+  const linkProps =
+    to !== undefined
+      ? {
+          to,
+          component: Link
+        }
+      : {
+          href
+        };
+
   return (
-    <MuiButton className={buttonClasses.button} variant="contained" {...props}>
+    <MuiButton className={buttonClasses.button} variant="contained" {...props} {...linkProps}>
       {icon && icon}
       <Typography className={icon !== undefined ? buttonClasses.label : undefined} color={labelColor}>
         {label}

@@ -1,4 +1,3 @@
-import { Button, Typography } from "@material-ui/core";
 import { Group, History, Keyboard, Timeline } from "@material-ui/icons";
 import { useContext } from "react";
 import * as React from "react";
@@ -7,8 +6,7 @@ import { User } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { UserContext } from "../project/Context";
 import { PageProps } from "../project/Router";
-import { Column, Page } from "../ui";
-import { useStyles } from "../ui/styles";
+import { Button, Column, Page } from "../ui";
 import { UserSummaryViewer } from "../viewer/UserSummaryViewer";
 
 export const UserPage = React.memo<PageProps>(props => {
@@ -26,7 +24,6 @@ export const UserPage = React.memo<PageProps>(props => {
 });
 
 const UserPageContent = withEntity<User, {}>({ entityType: "User" })(({ entityId: userId, entity: user }) => {
-  const classes = useStyles();
   const currentUser = useContext(UserContext);
 
   const isOwn = userId === currentUser.id;
@@ -34,39 +31,21 @@ const UserPageContent = withEntity<User, {}>({ entityType: "User" })(({ entityId
   return (
     <>
       <Column pb={1}>
-        <Button
-          className={classes.largeButton}
-          variant="contained"
-          color="primary"
-          component={RouterLink}
-          to={`/users/${userId}/contents`}
-        >
-          <Keyboard className={classes.leftIcon} />
-          <Typography>自分のコンテンツ</Typography>
-        </Button>
+        <Button icon={<Keyboard />} label="自分のコンテンツ" color="primary" to={`/users/${userId}/contents`} />
       </Column>
       {isOwn && (
         <Column pb={1}>
-          <Button className={classes.largeButton} variant="contained" component={RouterLink} to={`/exercises/history`}>
-            <Timeline className={classes.leftIcon} />
-            <Typography>記録</Typography>
-          </Button>
+          <Button icon={<Timeline />} label="記録" to={`/exercises/history`} />
         </Column>
       )}
       {isOwn && (
         <Column pb={1}>
-          <Button className={classes.largeButton} variant="contained" component={RouterLink} to={`/exercises/history`}>
-            <History className={classes.leftIcon} />
-            <Typography>復習</Typography>
-          </Button>
+          <Button icon={<History />} label="復習" to={`/exercises/history`} />
         </Column>
       )}
       {isOwn && (
         <Column pb={1}>
-          <Button className={classes.largeButton} variant="contained" component={RouterLink} to={`/exercises/history`}>
-            <Group className={classes.leftIcon} />
-            <Typography>グループ</Typography>
-          </Button>
+          <Button icon={<Group />} label="グループ" to={`/exercises/history`} />
         </Column>
       )}
       <Column pb={1}>

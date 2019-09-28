@@ -1,4 +1,4 @@
-import { Button, Divider, Paper, Tab, Tabs, Typography } from "@material-ui/core";
+import { Divider, Paper, Tab, Tabs, Typography } from "@material-ui/core";
 import { Bookmarks } from "@material-ui/icons";
 import { useContext, useMemo, useState } from "react";
 import * as React from "react";
@@ -7,14 +7,12 @@ import { ExerciseSummaryList } from "../list/ExerciseSummaryList";
 import { PlaylistSummaryList } from "../list/PlaylistSummaryList";
 import { UserContext } from "../project/Context";
 import { PageProps } from "../project/Router";
-import { Column } from "../ui";
+import { Button, Column } from "../ui";
 import { Page } from "../ui/Page";
-import { useStyles } from "../ui/styles";
 
 export const UserContentsPage = React.memo<PageProps>(({ match }) => {
   const userId = match.params.id;
 
-  const classes = useStyles();
   const currentUser = useContext(UserContext);
 
   const [tab, setTab] = useState<"exercises" | "playlists">("exercises");
@@ -26,10 +24,7 @@ export const UserContentsPage = React.memo<PageProps>(({ match }) => {
     <Page title={userId === currentUser.id ? "自分のコンテンツ" : "ユーザーのコンテンツ"}>
       {isOwn && (
         <Column pb={1}>
-          <Button className={classes.largeButton} variant="contained" component={RouterLink} to={`/bookmarks`}>
-            <Bookmarks className={classes.leftIcon} />
-            <Typography>ブックマーク</Typography>
-          </Button>
+          <Button icon={<Bookmarks />} label="ブックマーク" component={RouterLink} to={`/bookmarks`} />
         </Column>
       )}
       <Column pb={1}>

@@ -1,4 +1,3 @@
-import { Button, Typography } from "@material-ui/core";
 import { PlayArrow, PlaylistAdd } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
@@ -8,14 +7,12 @@ import { useToggleState } from "../../hooks/useToggleState";
 import { PlaylistDialog } from "../dialogs/PlaylistDialog";
 import { ExercisePlayer } from "../player/dialogs/ExercisePlayer";
 import { UserContext } from "../project/Context";
-import { Column } from "../ui";
-import { useStyles } from "../ui/styles";
+import { Button, Column } from "../ui";
 import { ExerciseSummaryViewer } from "./ExerciseSummaryViewer";
 import { SubmissionSummaryViewer } from "./SubmissionSummaryViewer";
 
 export const ExerciseViewer = withEntity<Exercise>({ entityType: "Exercise" })(
   React.memo(({ entity: exercise, entityId: exerciseId }) => {
-    const classes = useStyles();
     const currentUser = useContext(UserContext);
 
     const [isExercisePlayerOpen, onToggleExercisePlayer] = useToggleState();
@@ -26,17 +23,11 @@ export const ExerciseViewer = withEntity<Exercise>({ entityType: "Exercise" })(
     return (
       <Column>
         <Column pb={1}>
-          <Button className={classes.largeButton} variant="contained" color="primary" onClick={onToggleExercisePlayer}>
-            <PlayArrow className={classes.leftIcon} />
-            <Typography>始める</Typography>
-          </Button>
+          <Button color="primary" icon={<PlayArrow />} label="始める" onClick={onToggleExercisePlayer} />
         </Column>
         {!isGuest && (
           <Column pb={1}>
-            <Button className={classes.largeButton} variant="contained" onClick={onTogglePlaylistDialog}>
-              <PlaylistAdd className={classes.leftIcon} />
-              <Typography>プレイリストに追加</Typography>
-            </Button>
+            <Button icon={<PlaylistAdd />} label="プレイリストに追加" onClick={onTogglePlaylistDialog} />
           </Column>
         )}
         <Column pb={1}>

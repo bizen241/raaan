@@ -4,10 +4,6 @@ export const useStyles = makeStyles(theme => ({
   leftIcon: {
     marginRight: theme.spacing(1)
   },
-  largeButton: {
-    paddingTop: "12px",
-    paddingBottom: "12px"
-  },
   cardAvatar: {
     color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.paper

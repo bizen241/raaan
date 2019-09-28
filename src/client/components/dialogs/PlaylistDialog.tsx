@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from "@material-ui/core";
+import { TextField, Typography } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useMemo, useState } from "react";
@@ -11,14 +11,13 @@ import { actions } from "../../reducers";
 import { generateBufferId } from "../../reducers/buffers";
 import { ExerciseContext, PlaylistSummarySelectList } from "../list/PlaylistSummarySelectList";
 import { UserContext } from "../project/Context";
-import { Column, DialogContent, DialogHeader, Row } from "../ui";
+import { Button, Column, DialogContent, DialogHeader } from "../ui";
 import { useStyles } from "../ui/styles";
 
 export const PlaylistDialog = createDialog<{
   exerciseId: string;
 }>(
   React.memo(({ exerciseId, onClose }) => {
-    const classes = useStyles();
     const currentUser = useContext(UserContext);
     const dispatch = useDispatch();
 
@@ -51,10 +50,7 @@ export const PlaylistDialog = createDialog<{
           {!isPlaylistEditorOpen ? (
             <>
               <Column pb={1}>
-                <Button className={classes.largeButton} variant="contained" onClick={onTogglePlaylistEditor}>
-                  <Add className={classes.leftIcon} />
-                  <Typography>新規作成</Typography>
-                </Button>
+                <Button icon={<Add />} label="新規作成" onClick={onTogglePlaylistEditor} />
               </Column>
               <Column pb={1}>
                 <ExerciseContext.Provider value={exerciseId}>
@@ -76,14 +72,10 @@ export const PlaylistDialog = createDialog<{
                 </Column>
               </Column>
               <Column pb={1}>
-                <Button className={classes.largeButton} variant="contained" onClick={onUploadPlaylist}>
-                  <Typography>プレイリストを作成</Typography>
-                </Button>
+                <Button label="プレイリストを作成" onClick={onUploadPlaylist} />
               </Column>
               <Column pb={1}>
-                <Button className={classes.largeButton} variant="contained" onClick={onTogglePlaylistEditor}>
-                  <Typography color="error">キャンセル</Typography>
-                </Button>
+                <Button label="キャンセル" onClick={onTogglePlaylistEditor} />
               </Column>
             </>
           )}

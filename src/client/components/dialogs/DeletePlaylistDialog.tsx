@@ -1,10 +1,10 @@
-import { Button, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { Warning } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../enhancers/createDialog";
 import { actions } from "../../reducers";
-import { Column, DialogContent, DialogHeader, Row } from "../ui";
+import { Button, Column, DialogContent, DialogHeader, Row } from "../ui";
 import { useStyles } from "../ui/styles";
 
 export const DeletePlaylistDialog = createDialog<{
@@ -30,14 +30,10 @@ export const DeletePlaylistDialog = createDialog<{
             <Typography>プレイリストがサーバーから削除されます。</Typography>
           </Row>
           <Column pb={1}>
-            <Button className={classes.largeButton} variant="contained" onClick={onDelete}>
-              <Typography color="error">プレイリストを削除</Typography>
-            </Button>
+            <Button label="プレイリストを削除" labelColor="error" onClick={onDelete} />
           </Column>
           <Column pb={1}>
-            <Button className={classes.largeButton} variant="contained" onClick={onClose}>
-              <Typography>キャンセル</Typography>
-            </Button>
+            <Button label="キャンセル" onClick={onClose} />
           </Column>
         </DialogContent>
       </>

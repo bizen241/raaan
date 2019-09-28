@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, TextField, Typography } from "@material-ui/core";
+import { Card, CardContent, TextField, Typography } from "@material-ui/core";
 import { CloudUpload, PlayArrow } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext } from "react";
@@ -8,8 +8,7 @@ import { useToggleState } from "../../../hooks/useToggleState";
 import { UploadExerciseDraftDialog } from "../../dialogs/UploadExerciseDraftDialog";
 import { ExercisePreviewer } from "../../player/dialogs/ExercisePreviewer";
 import { UserContext } from "../../project/Context";
-import { Column } from "../../ui";
-import { useStyles } from "../../ui/styles";
+import { Button, Column } from "../../ui";
 import { QuestionsEditor } from "./QuestionsEditor";
 
 export const ExerciseDraftEditor = withBuffer<ExerciseDraft>(
@@ -17,7 +16,6 @@ export const ExerciseDraftEditor = withBuffer<ExerciseDraft>(
   React.memo(props => {
     const { bufferId, buffer = {}, source = {}, onChange } = props;
 
-    const classes = useStyles();
     const currentUser = useContext(UserContext);
 
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
@@ -38,15 +36,7 @@ export const ExerciseDraftEditor = withBuffer<ExerciseDraft>(
     return (
       <Column flex={1}>
         <Column pb={1}>
-          <Button
-            className={classes.largeButton}
-            variant="contained"
-            disabled={!canUpload}
-            onClick={onToggleUploadDialog}
-          >
-            <CloudUpload className={classes.leftIcon} />
-            <Typography>アップロード</Typography>
-          </Button>
+          <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
         </Column>
         <Column pb={1}>
           <Card>
@@ -78,15 +68,7 @@ export const ExerciseDraftEditor = withBuffer<ExerciseDraft>(
           <QuestionsEditor questions={buffer.questions || source.questions || []} onChange={onUpdateQuestions} />
         </Column>
         <Column pb={1}>
-          <Button
-            className={classes.largeButton}
-            variant="contained"
-            color="secondary"
-            onClick={onToggleExercisePreviewer}
-          >
-            <PlayArrow className={classes.leftIcon} />
-            <Typography>プレビュー</Typography>
-          </Button>
+          <Button color="secondary" icon={<PlayArrow />} label="プレビュー" onClick={onToggleExercisePreviewer} />
         </Column>
         <UploadExerciseDraftDialog
           exerciseDraftId={bufferId}

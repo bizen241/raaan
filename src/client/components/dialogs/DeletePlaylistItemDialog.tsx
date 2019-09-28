@@ -1,4 +1,4 @@
-import { Button, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { Warning } from "@material-ui/icons";
 import * as React from "react";
 import { useEffect } from "react";
@@ -8,7 +8,7 @@ import { createDialog } from "../../enhancers/createDialog";
 import { useEntity } from "../../hooks/useEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { actions } from "../../reducers";
-import { Column, DialogContent, DialogHeader, Row } from "../ui";
+import { Button, Column, DialogContent, DialogHeader, Row } from "../ui";
 import { useStyles } from "../ui/styles";
 
 export const DeletePlaylistItemDialog = createDialog<{
@@ -61,14 +61,10 @@ export const DeletePlaylistItemDialog = createDialog<{
             <Typography>プレイリストのアイテムがサーバーから削除されます。</Typography>
           </Row>
           <Column pb={1}>
-            <Button className={classes.largeButton} variant="contained" onClick={onDelete}>
-              <Typography color="error">プレイリストのアイテムを削除</Typography>
-            </Button>
+            <Button label="プレイリストのアイテムを削除" labelColor="error" onClick={onDelete} />
           </Column>
           <Column pb={1}>
-            <Button className={classes.largeButton} variant="contained" onClick={onClose}>
-              <Typography>キャンセル</Typography>
-            </Button>
+            <Button label="キャンセル" onClick={onClose} />
           </Column>
         </DialogContent>
       </>

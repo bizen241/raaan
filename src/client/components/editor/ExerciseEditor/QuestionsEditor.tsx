@@ -1,18 +1,14 @@
-import { Button, Typography } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { useCallback, useState } from "react";
 import * as React from "react";
 import { Question } from "../../../../shared/api/entities";
-import { Column } from "../../ui";
-import { useStyles } from "../../ui/styles";
+import { Button, Column } from "../../ui";
 import { QuestionEditor } from "./QuestionEditor";
 
 export const QuestionsEditor = React.memo<{
   questions: Question[];
   onChange: (questions: Question[]) => void;
 }>(({ onChange, ...props }) => {
-  const classes = useStyles();
-
   const [questions, updateQuestions] = useState(props.questions);
 
   const onInsertQuestion = useCallback((index: number) => {
@@ -73,14 +69,11 @@ export const QuestionsEditor = React.memo<{
       ))}
       <Column>
         <Button
-          className={classes.largeButton}
-          variant="contained"
           color="primary"
+          icon={<Add />}
+          label="問題を追加"
           onClick={useCallback(() => onInsertQuestion(questions.length - 1), [questions.length])}
-        >
-          <Add className={classes.leftIcon} />
-          <Typography>問題を追加</Typography>
-        </Button>
+        />
       </Column>
     </Column>
   );

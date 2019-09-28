@@ -1,10 +1,10 @@
-import { Avatar, Button, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
+import { Avatar, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
 import { Done, NotificationImportant, Sync } from "@material-ui/icons";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../reducers";
 import { Message } from "../project/Message";
-import { Column, Page, Row } from "../ui";
+import { Button, Column, Page, Row } from "../ui";
 import { useStyles } from "../ui/styles";
 
 const AppPage = React.memo(() => {
@@ -42,13 +42,7 @@ const AppPage = React.memo(() => {
           </CardContent>
         </Card>
       </Column>
-      {hasUpdate && (
-        <Button className={classes.largeButton} variant="contained" onClick={() => location.reload()}>
-          <Typography>
-            <Message id="update" />
-          </Typography>
-        </Button>
-      )}
+      {hasUpdate && <Button label={<Message id="update" />} onClick={() => location.reload()} />}
     </Page>
   );
 });

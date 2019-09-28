@@ -1,14 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  IconButton,
-  makeStyles,
-  Typography
-} from "@material-ui/core";
+import { Avatar, Box, Card, CardContent, CardHeader, IconButton, makeStyles, Typography } from "@material-ui/core";
 import {
   ArrowForward,
   InsertChart,
@@ -21,7 +11,7 @@ import {
 import * as React from "react";
 import { AttemptResult, SubmissionSummary } from "../../../../shared/api/entities";
 import { Attempt, summarizeResults } from "../../../domain/exercise/attempt";
-import { Column, DialogContent, Row } from "../../ui";
+import { Button, Column, DialogContent, Row } from "../../ui";
 import { useStyles } from "../../ui/styles";
 
 export const AttemptResultViewer: React.FunctionComponent<{
@@ -70,16 +60,10 @@ export const AttemptResultViewer: React.FunctionComponent<{
           </Card>
         </Column>
         <Column pb={1}>
-          <Button className={classes.largeButton} variant="contained" onClick={onReplay}>
-            <Replay className={classes.leftIcon} />
-            <Typography>もう一度</Typography>
-          </Button>
+          <Button icon={<Replay />} label="もう一度" onClick={onReplay} />
         </Column>
         <Column pb={1}>
-          <Button className={classes.largeButton} variant="contained" color="primary" onClick={onFinish}>
-            <ArrowForward className={classes.leftIcon} />
-            <Typography>{hasNext ? "次へ" : "終了"}</Typography>
-          </Button>
+          <Button color="primary" icon={<ArrowForward />} label={hasNext ? "次へ" : "終了"} onClick={onFinish} />
         </Column>
       </Column>
     </DialogContent>

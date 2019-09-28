@@ -1,4 +1,4 @@
-import { Button, Divider, Paper, Tab, Tabs, Typography } from "@material-ui/core";
+import { Divider, Paper, Tab, Tabs, Typography } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import * as React from "react";
@@ -8,11 +8,9 @@ import { generateBufferId } from "../../reducers/buffers";
 import { ExerciseDraftBufferList } from "../list/ExerciseDraftBufferList";
 import { ExerciseSummaryList } from "../list/ExerciseSummaryList";
 import { UserContext } from "../project/Context";
-import { Column, Page } from "../ui";
-import { useStyles } from "../ui/styles";
+import { Button, Column, Page } from "../ui";
 
 export const EditExercisesPage = React.memo(() => {
-  const classes = useStyles();
   const currentUser = useContext(UserContext);
   const dispatch = useDispatch();
 
@@ -29,10 +27,7 @@ export const EditExercisesPage = React.memo(() => {
   return (
     <Page title="クイズを作る">
       <Column pb={1}>
-        <Button className={classes.largeButton} variant="contained" color="primary" onClick={onCreate}>
-          <Add className={classes.leftIcon} />
-          <Typography>新しいクイズ</Typography>
-        </Button>
+        <Button icon={<Add />} label="新しいクイズ" color="primary" onClick={onCreate} />
       </Column>
       <Column pb={1}>
         <Paper>

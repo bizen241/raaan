@@ -1,7 +1,7 @@
-import { Avatar, Button, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
+import { Avatar, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
 import { Error as ErrorIcon } from "@material-ui/icons";
 import * as React from "react";
-import { Column } from "../ui";
+import { Button, Column } from "../ui";
 import { useStyles } from "../ui/styles";
 
 interface ErrorBoundaryState {
@@ -58,25 +58,20 @@ const ErrorViewer: React.FunctionComponent<{ error: Error }> = ({ error }) => {
           </Column>
           <Column pb={1}>
             <Button
-              className={classes.largeButton}
-              variant="contained"
+              label="リロード"
               onClick={() => {
                 location.reload();
               }}
-            >
-              <Typography>リロード</Typography>
-            </Button>
+            />
           </Column>
           <Button
-            className={classes.largeButton}
-            variant="contained"
+            label="すべて削除してリロード"
+            labelColor="error"
             onClick={() => {
               localStorage.clear();
               location.reload();
             }}
-          >
-            <Typography color="error">すべて削除してリロード</Typography>
-          </Button>
+          />
         </Column>
       </Column>
     </Column>

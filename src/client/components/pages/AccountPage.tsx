@@ -1,13 +1,12 @@
-import { Avatar, Box, Button, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
+import { Avatar, Box, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
 import { DeleteAccountDialog } from "../dialogs/DeleteAccountDialog";
 import { LogoutDialog } from "../dialogs/LogoutDialog";
 import { UserContext } from "../project/Context";
 import { Message } from "../project/Message";
-import { Column, Page } from "../ui";
+import { Button, Column, Page } from "../ui";
 import { useStyles } from "../ui/styles";
 import { UserAccountViewer } from "../viewer/UserAccountViewer";
 
@@ -39,21 +38,13 @@ const AccountPage = React.memo(() => {
           </Card>
         </Box>
         <Column pb={1}>
-          <Button className={classes.largeButton} variant="contained" component={RouterLink} to="/sessions">
-            <Typography>セッション一覧</Typography>
-          </Button>
+          <Button label="セッション一覧" to="/sessions" />
         </Column>
         <Column pb={1}>
-          <Button className={classes.largeButton} variant="contained" onClick={onToggleLogoutDialog}>
-            <Typography color="error">
-              <Message id="logout" />
-            </Typography>
-          </Button>
+          <Button label={<Message id="logout" />} labelColor="error" onClick={onToggleLogoutDialog} />
         </Column>
         <Column pb={1}>
-          <Button className={classes.largeButton} variant="contained" onClick={onToggleDeleteAccountDialog}>
-            <Typography color="error">アカウントを削除</Typography>
-          </Button>
+          <Button label="アカウントを削除" labelColor="error" onClick={onToggleDeleteAccountDialog} />
         </Column>
         <LogoutDialog isOpen={isLogoutDialogOpen} onClose={onToggleLogoutDialog} />
         <DeleteAccountDialog isOpen={isDeleteAccountDialogOpen} onClose={onToggleDeleteAccountDialog} />
@@ -62,9 +53,7 @@ const AccountPage = React.memo(() => {
   } else {
     return (
       <Page title="アカウント">
-        <Button className={classes.largeButton} variant="contained" component="a" href="/auth/github">
-          <Typography>GitHubアカウントでログイン</Typography>
-        </Button>
+        <Button label="GitHubアカウントでログイン" href="/auth/github" />
       </Page>
     );
   }
