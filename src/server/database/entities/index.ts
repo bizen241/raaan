@@ -1,3 +1,4 @@
+import { EntityType } from "../../../shared/api/entities";
 import { ExerciseDiaryEntity } from "./ExerciseDiaryEntity";
 import { ExerciseDraftEntity } from "./ExerciseDraftEntity";
 import { ExerciseEntity } from "./ExerciseEntity";
@@ -74,29 +75,29 @@ export type Entity =
   | UserSessionEntity
   | UserSummaryEntity;
 
-export const entities = [
-  ExerciseDiaryEntity,
-  ExerciseDraftEntity,
-  ExerciseEntity,
-  ExerciseReportEntity,
-  ExerciseSummaryEntity,
-  ExerciseTagEntity,
-  ExerciseVoteEntity,
-  PlaylistBookmarkEntity,
-  PlaylistEntity,
-  PlaylistItemEntity,
-  PlaylistReportEntity,
-  PlaylistSummaryEntity,
-  PlaylistTagEntity,
-  RevisionEntity,
-  RevisionSummaryEntity,
-  SubmissionEntity,
-  SubmissionSummaryEntity,
-  UserAccountEntity,
-  UserConfigEntity,
-  UserDiaryEntity,
-  UserEntity,
-  UserReportEntity,
-  UserSessionEntity,
-  UserSummaryEntity
-];
+export const entities = Object.values({
+  Exercise: ExerciseEntity,
+  ExerciseDiary: ExerciseDiaryEntity,
+  ExerciseDraft: ExerciseDraftEntity,
+  ExerciseReport: ExerciseReportEntity,
+  ExerciseSummary: ExerciseSummaryEntity,
+  ExerciseTag: ExerciseTagEntity,
+  ExerciseVote: ExerciseVoteEntity,
+  Playlist: PlaylistEntity,
+  PlaylistBookmark: PlaylistBookmarkEntity,
+  PlaylistItem: PlaylistItemEntity,
+  PlaylistReport: PlaylistReportEntity,
+  PlaylistSummary: PlaylistSummaryEntity,
+  PlaylistTag: PlaylistTagEntity,
+  Revision: RevisionEntity,
+  RevisionSummary: RevisionSummaryEntity,
+  Submission: SubmissionEntity,
+  SubmissionSummary: SubmissionSummaryEntity,
+  User: UserEntity,
+  UserAccount: UserAccountEntity,
+  UserConfig: UserConfigEntity,
+  UserDiary: UserDiaryEntity,
+  UserReport: UserReportEntity,
+  UserSession: UserSessionEntity,
+  UserSummary: UserSummaryEntity
+} as { [P in EntityType]: Function });
