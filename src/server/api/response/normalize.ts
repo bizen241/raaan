@@ -34,14 +34,22 @@ export interface RequestContext {
   sessionId?: string;
 }
 
-export const normalizeEntities = (context: RequestContext, entities: Entity[]): EntityStore => {
+export const normalizeEntities = (context: RequestContext, entities: Entity[]) => {
   const store: EntityStore = createEntityTypeToObject();
 
   entities.forEach(entity => {
     normalizeEntity(context, store, entity);
   });
 
-  return store;
+  (Object.keys(store) as EntityType[]).forEach(entityType => {
+    const count = Object.values(store[entityType]).length;
+
+    if (count === 0) {
+      delete store[entityType];
+    }
+  });
+
+  return store as Partial<EntityStore>;
 };
 
 const normalizeEntity = (context: RequestContext, store: EntityStore, entity: Entity | undefined) => {

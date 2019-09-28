@@ -7,23 +7,23 @@ import { stringifyParams } from "../request/search";
 import { request } from "./request";
 
 export const getCurrentUser = () => {
-  return request<EntityStore>("GET", "user");
+  return request<Partial<EntityStore>>("GET", "user");
 };
 
 export const getEntity = (entityType: EntityType, entityId: string) => {
-  return request<EntityStore>("GET", `${endpoints[entityType]}/${entityId}`);
+  return request<Partial<EntityStore>>("GET", `${endpoints[entityType]}/${entityId}`);
 };
 
 export const createEntity = <E extends EntityObject>(entityType: EntityType, params: Params<E>) => {
-  return request<EntityStore>("POST", endpoints[entityType], params);
+  return request<Partial<EntityStore>>("POST", endpoints[entityType], params);
 };
 
 export const updateEntity = <E extends EntityObject>(entityType: EntityType, id: string, params: Params<E>) => {
-  return request<EntityStore>("PATCH", `${endpoints[entityType]}/${id}`, params);
+  return request<Partial<EntityStore>>("PATCH", `${endpoints[entityType]}/${id}`, params);
 };
 
 export const deleteEntity = (entityType: EntityType, entityId: string) => {
-  return request<EntityStore>("DELETE", `${endpoints[entityType]}/${entityId}`);
+  return request<Partial<EntityStore>>("DELETE", `${endpoints[entityType]}/${entityId}`);
 };
 
 export const searchEntity = <E extends EntityObject>(entityType: EntityType, params: Params<E>) => {

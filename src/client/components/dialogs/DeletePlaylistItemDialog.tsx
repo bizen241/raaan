@@ -3,7 +3,7 @@ import { Warning } from "@material-ui/icons";
 import * as React from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { createEntityTypeToObject, PlaylistItem } from "../../../shared/api/entities";
+import { PlaylistItem } from "../../../shared/api/entities";
 import { createDialog } from "../../enhancers/createDialog";
 import { useEntity } from "../../hooks/useEntity";
 import { useSearch } from "../../hooks/useSearch";
@@ -40,7 +40,7 @@ export const DeletePlaylistItemDialog = createDialog<{
           },
           {
             ids: [...entities.map(playlistItem => playlistItem.id).filter(id => id !== playlistItemId)],
-            entities: createEntityTypeToObject(),
+            entities: {},
             count: count - 1
           }
         )

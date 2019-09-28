@@ -38,7 +38,7 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
 
   try {
     const result = await getCurrentUser();
-    const currentUser = Object.values(result.User)[0];
+    const currentUser = result.User && Object.values(result.User)[0];
 
     if (currentUser === undefined) {
       throw new Error();

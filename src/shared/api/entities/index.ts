@@ -137,7 +137,10 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
   return entityTypeToObject as T;
 };
 
-export const mergeEntityTypeToObject = <T extends EntityTypeToObject>(target: Partial<T>, source: Partial<T>): T => {
+export const mergeEntityTypeToObject = <T extends EntityTypeToObject>(
+  target: Partial<T>,
+  source: Partial<T> = {}
+): T => {
   const merged: T = createEntityTypeToObject();
 
   (Object.keys(merged) as EntityType[]).forEach(entityType => {

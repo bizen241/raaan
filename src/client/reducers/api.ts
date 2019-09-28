@@ -1,7 +1,13 @@
 import { LOCATION_CHANGE } from "connected-react-router";
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { createEntityTypeToObject, EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
+import {
+  createEntityTypeToObject,
+  EntityObject,
+  EntityType,
+  EntityTypeToEntity,
+  mergeEntityTypeToObject
+} from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { EntityStore } from "../../shared/api/response/get";
 import * as api from "../api/client";
@@ -20,7 +26,7 @@ export const apiSyncActions = {
     type: EntityType,
     key: string | Params<E>,
     code: number,
-    response?: EntityStore
+    response?: Partial<EntityStore>
   ) => createAction(ApiActionType.Update, { method, type, key, code, response })
 };
 
@@ -142,7 +148,7 @@ export const apiReducer: Reducer<ApiState, Actions> = (state = initialApiState, 
             ...state[method][type],
             [keyString]: {
               code,
-              response
+              response: response && mergeEntityTypeToObject(response)
             }
           }
         }

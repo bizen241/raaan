@@ -14,7 +14,7 @@ export enum CacheActionType {
 }
 
 export const cacheActions = {
-  get: (response: EntityStore) =>
+  get: (response: Partial<EntityStore>) =>
     createAction(CacheActionType.Get, {
       response
     }),

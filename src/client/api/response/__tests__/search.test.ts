@@ -26,7 +26,7 @@ test("merge SearchResultStore", () => {
     {
       ids: [],
       count: 0,
-      entities: createEntityTypeToObject()
+      entities: {}
     }
   );
 

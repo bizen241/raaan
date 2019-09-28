@@ -2,6 +2,6 @@ import { EntityStore } from "./get";
 
 export interface SearchResponse {
   ids: string[];
-  entities: EntityStore;
+  entities: Partial<EntityStore>;
   count: number;
 }
