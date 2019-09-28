@@ -29,34 +29,26 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
             <Typography component="span">{title}</Typography>
             <Box flex={1} />
             <Menu>
-              {pathname !== "/config" ? (
-                <MenuItem component={Link} to="/config">
-                  <Settings className={classes.leftIcon} />
-                  <Typography>
-                    <Message id="settings" />
-                  </Typography>
-                </MenuItem>
-              ) : null}
-              {pathname !== "/" ? (
-                <MenuItem component={Link} to="/">
-                  <Home className={classes.leftIcon} />
-                  <Typography>ホーム</Typography>
-                </MenuItem>
-              ) : null}
-              {pathname !== "/account" ? (
-                <MenuItem component={Link} to="/account">
-                  <AccountCircle className={classes.leftIcon} />
-                  <Typography>
-                    <Message id="account" />
-                  </Typography>
-                </MenuItem>
-              ) : null}
-              {pathname !== "/app" ? (
-                <MenuItem component={Link} to="/app">
-                  <Info className={classes.leftIcon} />
-                  アプリについて
-                </MenuItem>
-              ) : null}
+              <MenuItem disabled={pathname === "/config"} component={Link} to="/config">
+                <Settings className={classes.leftIcon} />
+                <Typography>
+                  <Message id="settings" />
+                </Typography>
+              </MenuItem>
+              <MenuItem disabled={pathname === "/"} component={Link} to="/">
+                <Home className={classes.leftIcon} />
+                <Typography>ホーム</Typography>
+              </MenuItem>
+              <MenuItem disabled={pathname === "/account"} component={Link} to="/account">
+                <AccountCircle className={classes.leftIcon} />
+                <Typography>
+                  <Message id="account" />
+                </Typography>
+              </MenuItem>
+              <MenuItem disabled={pathname === "/app"} component={Link} to="/app">
+                <Info className={classes.leftIcon} />
+                アプリについて
+              </MenuItem>
             </Menu>
           </Toolbar>
         </Column>
