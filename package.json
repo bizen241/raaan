@@ -47,6 +47,7 @@
     "http-errors": "1.7.2",
     "kuromoji": "0.1.2",
     "ky": "0.14.0",
+    "mysql": "2.17.1",
     "node-fetch": "2.3.0",
     "passport": "0.4.0",
     "passport-github": "1.1.0",
