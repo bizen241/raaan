@@ -1,9 +1,9 @@
 import { push } from "connected-react-router";
+import { HTTPError } from "ky";
 import { Reducer } from "redux";
 import { Actions } from ".";
 import { User } from "../../shared/api/entities";
 import { getCurrentUser } from "../api/client";
-import { FetchError } from "../api/client/request";
 import { guestUser } from "../components/project/Context";
 import { install } from "../install";
 import { ActionUnion, AsyncAction, createAction } from "./action";
@@ -51,7 +51,7 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
     dispatch(cacheActions.get(result));
     dispatch(appSyncActions.ready(currentUser));
   } catch (e) {
-    if (e instanceof FetchError && e.code === 403) {
+    if (e instanceof HTTPError && e.response.status === 403) {
       if (isLocalOnly(previousUser.id)) {
         dispatch(appSyncActions.ready(previousUser));
       } else {
