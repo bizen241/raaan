@@ -33,7 +33,7 @@ export const createApp = (env: Env, app: express.Express = express()) => {
       store: new SessionStore(),
       secret: env.session.secret,
       cookie: {
-        sameSite: "strict",
+        sameSite: "Lax",
         secure: env.server.host === "localhost" ? false : true
       },
       genid: () => uuid(),
