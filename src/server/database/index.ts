@@ -7,7 +7,7 @@ export const connectDatabase = (env: Env) => {
   const { host, port, username, password, name: database } = env.database;
 
   return createConnection({
-    type: "postgres",
+    type: "mysql",
     host,
     port,
     username,
