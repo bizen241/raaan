@@ -3,14 +3,12 @@ import { ExerciseDiary } from "./ExerciseDiary";
 import { ExerciseDraft } from "./ExerciseDraft";
 import { ExerciseReport } from "./ExerciseReport";
 import { ExerciseSummary } from "./ExerciseSummary";
-import { ExerciseTag } from "./ExerciseTag";
 import { ExerciseVote } from "./ExerciseVote";
 import { Playlist } from "./Playlist";
 import { PlaylistBookmark } from "./PlaylistBookmark";
 import { PlaylistItem } from "./PlaylistItem";
 import { PlaylistReport } from "./PlaylistReport";
 import { PlaylistSummary } from "./PlaylistSummary";
-import { PlaylistTag } from "./PlaylistTag";
 import { Revision } from "./Revision";
 import { RevisionSummary } from "./RevisionSummary";
 import { Submission } from "./Submission";
@@ -31,14 +29,12 @@ export * from "./ExerciseDiary";
 export * from "./ExerciseDraft";
 export * from "./ExerciseReport";
 export * from "./ExerciseSummary";
-export * from "./ExerciseTag";
 export * from "./ExerciseVote";
 export * from "./Playlist";
 export * from "./PlaylistBookmark";
 export * from "./PlaylistItem";
 export * from "./PlaylistReport";
 export * from "./PlaylistSummary";
-export * from "./PlaylistTag";
 export * from "./Revision";
 export * from "./RevisionSummary";
 export * from "./Submission";
@@ -59,14 +55,12 @@ export type EntityObject =
   | ExerciseDraft
   | ExerciseReport
   | ExerciseSummary
-  | ExerciseTag
   | ExerciseVote
   | Playlist
   | PlaylistBookmark
   | PlaylistItem
   | PlaylistReport
   | PlaylistSummary
-  | PlaylistTag
   | Revision
   | RevisionSummary
   | Submission
@@ -87,14 +81,12 @@ export type EntityTypeToEntity = {
   ExerciseDraft: ExerciseDraft;
   ExerciseReport: ExerciseReport;
   ExerciseSummary: ExerciseSummary;
-  ExerciseTag: ExerciseTag;
   ExerciseVote: ExerciseVote;
   Playlist: Playlist;
   PlaylistBookmark: PlaylistBookmark;
   PlaylistItem: PlaylistItem;
   PlaylistReport: PlaylistReport;
   PlaylistSummary: PlaylistSummary;
-  PlaylistTag: PlaylistTag;
   Revision: Revision;
   RevisionSummary: RevisionSummary;
   Submission: Submission;
@@ -121,14 +113,12 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     ExerciseDraft: {},
     ExerciseReport: {},
     ExerciseSummary: {},
-    ExerciseTag: {},
     ExerciseVote: {},
     Playlist: {},
     PlaylistBookmark: {},
     PlaylistItem: {},
     PlaylistReport: {},
     PlaylistSummary: {},
-    PlaylistTag: {},
     Revision: {},
     RevisionSummary: {},
     Submission: {},

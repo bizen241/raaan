@@ -6,7 +6,6 @@ import {
   ExerciseDraft,
   ExerciseReport,
   ExerciseSummary,
-  ExerciseTag,
   ExerciseVote,
   Permission,
   Playlist,
@@ -14,7 +13,6 @@ import {
   PlaylistItem,
   PlaylistReport,
   PlaylistSummary,
-  PlaylistTag,
   Revision,
   RevisionSummary,
   Submission,
@@ -105,13 +103,6 @@ const parseExerciseSummary: Parser<ExerciseSummary> = query => {
   };
 };
 
-const parseExerciseTag: Parser<ExerciseTag> = query => {
-  return {
-    ...base(query),
-    name
-  };
-};
-
 const parseExerciseVote: Parser<ExerciseVote> = query => {
   const { targetId, voterId } = query;
 
@@ -156,12 +147,6 @@ const parsePlaylistSummary: Parser<PlaylistSummary> = query => {
   return {
     ...base(query),
     authorId
-  };
-};
-
-const parsePlaylistTag: Parser<PlaylistTag> = query => {
-  return {
-    ...base(query)
   };
 };
 
@@ -270,14 +255,12 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   ExerciseDraft: parseExerciseDraft,
   ExerciseReport: parseExerciseReport,
   ExerciseSummary: parseExerciseSummary,
-  ExerciseTag: parseExerciseTag,
   ExerciseVote: parseExerciseVote,
   Playlist: parsePlaylist,
   PlaylistBookmark: parsePlaylistBookmark,
   PlaylistItem: parsePlaylistItem,
   PlaylistReport: parsePlaylistReport,
   PlaylistSummary: parsePlaylistSummary,
-  PlaylistTag: parsePlaylistTag,
   Revision: parseRevision,
   RevisionSummary: parseRevisionSummary,
   Submission: parseSubmission,

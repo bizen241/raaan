@@ -8,13 +8,11 @@ import {
   ExerciseEntity,
   ExerciseReportEntity,
   ExerciseSummaryEntity,
-  ExerciseTagEntity,
   PlaylistBookmarkEntity,
   PlaylistEntity,
   PlaylistItemEntity,
   PlaylistReportEntity,
   PlaylistSummaryEntity,
-  PlaylistTagEntity,
   RevisionEntity,
   RevisionSummaryEntity,
   SubmissionEntity,
@@ -176,15 +174,6 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (context, st
   normalizeEntity(context, store, author);
 };
 
-const normalizeExerciseTag: Normalizer<ExerciseTagEntity> = (_, store, entity) => {
-  const { id, name } = entity;
-
-  store.ExerciseTag[id] = {
-    ...base(entity),
-    name
-  };
-};
-
 const normalizeExerciseVote: Normalizer<ExerciseVoteEntity> = (_, store, entity) => {
   const { id, targetId, voterId, isUp } = entity;
 
@@ -270,15 +259,6 @@ const normalizePlaylistSummary: Normalizer<PlaylistSummaryEntity> = (_, store, e
     description,
     itemCount,
     isPrivate
-  };
-};
-
-const normalizePlaylistTag: Normalizer<PlaylistTagEntity> = (_, store, entity) => {
-  const { id, name } = entity;
-
-  store.PlaylistTag[id] = {
-    ...base(entity),
-    name
   };
 };
 
@@ -467,14 +447,12 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   ExerciseDraft: normalizeExerciseDraft,
   ExerciseReport: normalizeExerciseReport,
   ExerciseSummary: normalizeExerciseSummary,
-  ExerciseTag: normalizeExerciseTag,
   ExerciseVote: normalizeExerciseVote,
   Playlist: normalizePlaylist,
   PlaylistBookmark: normalizePlaylistBookmark,
   PlaylistItem: normalizePlaylistItem,
   PlaylistReport: normalizePlaylistReport,
   PlaylistSummary: normalizePlaylistSummary,
-  PlaylistTag: normalizePlaylistTag,
   Revision: normalizeRevision,
   RevisionSummary: normalizeRevisionSummary,
   Submission: normalizeSubmission,
