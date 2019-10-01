@@ -6,24 +6,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_USER: mysql
-          MYSQL_PASSWORD: mysql
-          MYSQL_DATABASE: test
-        ports:
-          - 3306
-        options: --health-cmd "mysqladmin ping -h 127.0.0.1" --health-interval 10s --health-timeout 5s --health-retries 5
-
     strategy:
       matrix:
         node-version: [12.x]
 
     steps:
       - uses: actions/checkout@v1
+      - name: Init Database
+        run: |
+          mysql -u root -h 127.0.0.1 -p root -e 'CREATE DATABASE IF NOT EXISTS test;'
       - name: Run tests with ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -36,6 +27,6 @@ jobs:
           yarn test:ci
         env:
           NODE_ENV: test
-          DATABASE_USERNAME: mysql
-          DATABASE_PASSWORD: mysql
+          DATABASE_USERNAME: root
+          DATABASE_PASSWORD: root
           DATABASE_NAME: test
