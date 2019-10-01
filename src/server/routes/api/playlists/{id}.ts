@@ -6,8 +6,8 @@ import { Params } from "../../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
 import { hasPermission } from "../../../api/security";
-import { PlaylistEntity, PlaylistTagEntity } from "../../../database/entities";
-import { normalizeTags } from "../../../exercise";
+import { PlaylistEntity } from "../../../database/entities";
+// import { normalizeTags } from "../../../exercise";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { id: playlistId }: PathParams = req.params;
@@ -58,17 +58,6 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
     if (isAuthor) {
       if (params.title !== undefined) {
         playlist.title = params.title;
-      }
-      if (params.tags !== undefined) {
-        await manager.remove(playlist.summary.tags);
-
-        const tags: PlaylistTagEntity[] = [];
-        normalizeTags(params.tags).forEach(async tagName => {
-          tags.push(new PlaylistTagEntity(tagName));
-        });
-
-        playlist.tags = params.tags;
-        playlist.summary.tags = tags;
       }
       if (params.description !== undefined) {
         playlist.description = params.description;

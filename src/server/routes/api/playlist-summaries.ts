@@ -21,7 +21,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, _, currentU
     query.andWhere("author.id = :authorId", { authorId });
   }
   if (tags !== undefined) {
-    query.innerJoinAndSelect("playlistSummary.tagsIndex", "tagsIndex", "tagsIndex.name IN (:...tags)", {
+    query.innerJoinAndSelect("playlistSummary.tags", "searchTags", "searchTags.name IN (:...tags)", {
       tags: tags.split(/\s/)
     });
   }

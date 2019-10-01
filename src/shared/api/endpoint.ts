@@ -18,6 +18,8 @@ export const endpoints: { [P in EntityType]: string } = {
   RevisionSummary: "revision-summaries",
   Submission: "submissions",
   SubmissionSummary: "submission-summaries",
+  Tag: "tags",
+  TagSummary: "tag-summaries",
   User: "users",
   UserDiary: "user-diaries",
   UserAccount: "user-accounts",

@@ -16,6 +16,8 @@ import { RevisionEntity } from "./RevisionEntity";
 import { RevisionSummaryEntity } from "./RevisionSummaryEntity";
 import { SubmissionEntity } from "./SubmissionEntity";
 import { SubmissionSummaryEntity } from "./SubmissionSummaryEntity";
+import { TagEntity } from "./TagEntity";
+import { TagSummaryEntity } from "./TagSummaryEntity";
 import { UserAccountEntity } from "./UserAccountEntity";
 import { UserConfigEntity } from "./UserConfigEntity";
 import { UserDiaryEntity } from "./UserDiaryEntity";
@@ -41,6 +43,8 @@ export * from "./RevisionEntity";
 export * from "./RevisionSummaryEntity";
 export * from "./SubmissionEntity";
 export * from "./SubmissionSummaryEntity";
+export * from "./TagEntity";
+export * from "./TagSummaryEntity";
 export * from "./UserAccountEntity";
 export * from "./UserConfigEntity";
 export * from "./UserDiaryEntity";
@@ -67,6 +71,8 @@ export type Entity =
   | RevisionSummaryEntity
   | SubmissionEntity
   | SubmissionSummaryEntity
+  | TagEntity
+  | TagSummaryEntity
   | UserAccountEntity
   | UserConfigEntity
   | UserDiaryEntity
@@ -93,6 +99,8 @@ export const entities = Object.values({
   RevisionSummary: RevisionSummaryEntity,
   Submission: SubmissionEntity,
   SubmissionSummary: SubmissionSummaryEntity,
+  Tag: TagEntity,
+  TagSummary: TagSummaryEntity,
   User: UserEntity,
   UserAccount: UserAccountEntity,
   UserConfig: UserConfigEntity,

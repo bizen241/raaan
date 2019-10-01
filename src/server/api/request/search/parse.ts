@@ -19,6 +19,8 @@ import {
   RevisionSummary,
   Submission,
   SubmissionSummary,
+  Tag,
+  TagSummary,
   User,
   UserAccount,
   UserConfig,
@@ -191,6 +193,18 @@ const parseSubmissionSummary: Parser<SubmissionSummary> = query => {
   };
 };
 
+const parseTag: Parser<Tag> = query => {
+  return {
+    ...base(query)
+  };
+};
+
+const parseTagSummary: Parser<TagSummary> = query => {
+  return {
+    ...base(query)
+  };
+};
+
 const parseUser: Parser<User> = query => {
   const { name, permission } = query;
 
@@ -268,6 +282,8 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   RevisionSummary: parseRevisionSummary,
   Submission: parseSubmission,
   SubmissionSummary: parseSubmissionSummary,
+  Tag: parseTag,
+  TagSummary: parseTagSummary,
   User: parseUser,
   UserAccount: parseUserAccount,
   UserConfig: parseUserConfig,

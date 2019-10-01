@@ -1,7 +1,7 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, RelationId } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { PlaylistEntity } from "./PlaylistEntity";
-import { PlaylistTagEntity } from "./PlaylistTagEntity";
+import { TagEntity } from "./TagEntity";
 
 @Entity("playlist-summaries")
 export class PlaylistSummaryEntity extends BaseEntityClass {
@@ -15,22 +15,14 @@ export class PlaylistSummaryEntity extends BaseEntityClass {
   @RelationId((playlistSummary: PlaylistSummaryEntity) => playlistSummary.playlist)
   playlistId!: string;
 
-  @OneToMany(() => PlaylistTagEntity, playlistTag => playlistTag.playlistSummary, {
+  @ManyToMany(() => TagEntity, {
     cascade: ["insert"]
   })
-  tags?: PlaylistTagEntity[];
-
-  @OneToMany(() => PlaylistTagEntity, playlistTag => playlistTag.playlistSummary)
-  tagsIndex?: PlaylistTagEntity[];
+  @JoinTable({
+    name: "playlists_tags"
+  })
+  tags?: TagEntity[];
 
   @Column()
   itemCount: number = 0;
-
-  constructor(tags?: PlaylistTagEntity[]) {
-    super();
-
-    if (tags !== undefined) {
-      this.tags = tags;
-    }
-  }
 }

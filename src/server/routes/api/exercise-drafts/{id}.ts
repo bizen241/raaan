@@ -6,14 +6,8 @@ import { Params } from "../../../../shared/api/request/params";
 import { getMinMaxTypeCount } from "../../../../shared/exercise";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
-import {
-  ExerciseDraftEntity,
-  ExerciseEntity,
-  ExerciseTagEntity,
-  RevisionEntity,
-  RevisionSummaryEntity
-} from "../../../database/entities";
-import { normalizeTags } from "../../../exercise";
+import { ExerciseDraftEntity, ExerciseEntity, RevisionEntity, RevisionSummaryEntity } from "../../../database/entities";
+// import { normalizeTags } from "../../../exercise";
 
 export const PATCH: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { id: exerciseDraftId }: PathParams = req.params;
@@ -80,11 +74,6 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
       await manager.save(revision);
     }
 
-    const tags: ExerciseTagEntity[] = [];
-    normalizeTags(params.tags).forEach(async tagName => {
-      tags.push(new ExerciseTagEntity(tagName));
-    });
-
     const { maxTypeCount, minTypeCount } = getMinMaxTypeCount(params.questions);
 
     exercise.title = exercise.draft.title;
@@ -92,7 +81,6 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
     exercise.questions = exercise.draft.questions;
     exercise.isDraft = false;
 
-    exercise.summary.tags = tags;
     exercise.summary.maxTypeCount = maxTypeCount;
     exercise.summary.minTypeCount = minTypeCount;
 

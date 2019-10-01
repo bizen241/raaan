@@ -19,6 +19,8 @@ import {
   RevisionSummaryEntity,
   SubmissionEntity,
   SubmissionSummaryEntity,
+  TagEntity,
+  TagSummaryEntity,
   UserAccountEntity,
   UserConfigEntity,
   UserDiaryEntity,
@@ -340,6 +342,33 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context
   normalizeEntity(context, store, exercise.summary);
 };
 
+const normalizeTag: Normalizer<TagEntity> = (_, store, entity) => {
+  const { id, summaryId, name, description } = entity;
+
+  store.Tag[id] = {
+    ...base(entity),
+    summaryId,
+    name,
+    description
+  };
+};
+
+const normalizeTagSummary: Normalizer<TagSummaryEntity> = (_, store, entity) => {
+  const { id, tag, tagId, exerciseCount, playlistCount } = entity;
+  if (tag === undefined) {
+    return;
+  }
+
+  store.TagSummary[id] = {
+    ...base(entity),
+    tagId,
+    name: tag.name,
+    description: tag.description.slice(0, 100),
+    exerciseCount,
+    playlistCount
+  };
+};
+
 const normalizeUser: Normalizer<UserEntity> = (context, store, entity) => {
   const { id, account, accountId, config, configId, summary, summaryId, name, permission } = entity;
 
@@ -450,6 +479,8 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   RevisionSummary: normalizeRevisionSummary,
   Submission: normalizeSubmission,
   SubmissionSummary: normalizeSubmissionSummary,
+  Tag: normalizeTag,
+  TagSummary: normalizeTagSummary,
   User: normalizeUser,
   UserAccount: normalizeUserAccount,
   UserConfig: normalizeUserConfig,

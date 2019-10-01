@@ -1,7 +1,7 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, RelationId } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
-import { ExerciseTagEntity } from "./ExerciseTagEntity";
+import { TagEntity } from "./TagEntity";
 
 @Entity("exercise-summaries")
 export class ExerciseSummaryEntity extends BaseEntityClass {
@@ -15,13 +15,13 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
   @RelationId((exerciseSummary: ExerciseSummaryEntity) => exerciseSummary.exercise)
   exerciseId!: string;
 
-  @OneToMany(() => ExerciseTagEntity, exerciseTag => exerciseTag.exerciseSummary, {
+  @ManyToMany(() => TagEntity, {
     cascade: ["insert"]
   })
-  tags?: ExerciseTagEntity[];
-
-  @OneToMany(() => ExerciseTagEntity, exerciseTag => exerciseTag.exerciseSummary)
-  tagsIndex?: ExerciseTagEntity[];
+  @JoinTable({
+    name: "exercises_tags"
+  })
+  tags?: TagEntity[];
 
   @Column()
   maxTypeCount!: number;
