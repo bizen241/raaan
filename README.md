@@ -1,8 +1,6 @@
 # Raan
 
-[![CircleCI](https://circleci.com/gh/bizen241/raan.svg?style=svg)](https://circleci.com/gh/bizen241/raan)
-
-[![Coverage Status](https://coveralls.io/repos/github/bizen241/raan/badge.svg?branch=master)](https://coveralls.io/github/bizen241/raan?branch=master)
+![GitHub Actions status](https://github.com/bizen241/raan/workflows/Main/badge.svg)(https://github.com/bizen241/raan)
 
 Raan is a learning management system.
 

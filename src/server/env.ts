@@ -16,7 +16,7 @@ export const getEnv = () => {
     },
     database: {
       host: getString("DATABASE_HOST", "localhost"),
-      port: getNumber("DATABASE_PORT", "5432"),
+      port: getNumber("DATABASE_PORT", "3306"),
       username: getString("DATABASE_USERNAME"),
       password: getString("DATABASE_PASSWORD"),
       name: getString("DATABASE_NAME")

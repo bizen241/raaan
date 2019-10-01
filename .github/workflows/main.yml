@@ -1,0 +1,40 @@
+name: Main
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_USER: mysql
+          MYSQL_PASSWORD: mysql
+          MYSQL_DATABASE: test
+        ports:
+          - 3306
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run tests with ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+        node-version: ${{ matrix.node-version }}
+      - name: npm install, build, and test
+        run: |
+          yarn install
+          yarn build
+          yarn lint
+          yarn test:ci
+        env:
+          NODE_ENV: test
+          DATABASE_USERNAME: mysql
+          DATABASE_PASSWORD: mysql
+          DATABASE_NAME: test
