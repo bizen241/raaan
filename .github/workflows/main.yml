@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Init Database
         run: |
-          mysql -u root -h 127.0.0.1 -p root -e 'CREATE DATABASE IF NOT EXISTS test;'
+          mysql --host=127.0.0.1 --user=root --password=root --execute 'CREATE DATABASE IF NOT EXISTS test;'
       - name: Run tests with ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
