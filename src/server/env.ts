@@ -1,4 +1,5 @@
 import * as dotenv from "dotenv";
+import * as getenv from "getenv";
 import { resolve } from "path";
 import { isAuthProviderName } from "../shared/auth";
 
@@ -9,66 +10,46 @@ export const getEnv = () => {
     path: NODE_ENV === "test" ? resolve(process.cwd(), ".env.test") : undefined
   });
 
+  if (NODE_ENV !== "test") {
+    getenv.disableFallbacks();
+  }
+
   return {
     server: {
-      host: getString("SERVER_HOST", "localhost"),
-      port: getNumber("SERVER_PORT", "3000")
+      host: getenv("SERVER_HOST", "localhost"),
+      port: getenv.int("SERVER_PORT", 3000)
     },
     database: {
-      host: getString("DATABASE_HOST", "127.0.0.1"),
-      port: getNumber("DATABASE_PORT", "3306"),
-      username: getString("DATABASE_USERNAME"),
-      password: getString("DATABASE_PASSWORD"),
-      name: getString("DATABASE_NAME")
+      host: getenv("DATABASE_HOST", "127.0.0.1"),
+      port: getenv.int("DATABASE_PORT", 3306),
+      username: getenv("DATABASE_USERNAME"),
+      password: getenv("DATABASE_PASSWORD"),
+      name: getenv("DATABASE_NAME")
     },
     session: {
-      secret: getString("SESSION_SECRET", "secret")
+      secret: getenv("SESSION_SECRET", "secret")
     },
     owner: {
       provider: getProvider("OWNER_PROVIDER", "github"),
-      id: getString("OWNER_ID", "12345678"),
-      name: getString("OWNER_NAME", ""),
-      email: getString("OWNER_EMAIL", "owner@example.com")
+      id: getenv("OWNER_ID", "owner_id"),
+      name: getenv("OWNER_NAME", "owner_name"),
+      email: getenv("OWNER_EMAIL", "owner@example.com")
     },
     github: {
-      clientId: getString("GITHUB_CLIENT_ID", "12345678901234567890"),
-      clientSecret: getString("GITHUB_CLIENT_SECRET", "1234567890123456789012345678901234567890")
+      clientId: getenv("GITHUB_CLIENT_ID", "github_client_id"),
+      clientSecret: getenv("GITHUB_CLIENT_SECRET", "github_client_secret")
     },
     report: {
-      csp: getString("REPORT_CSP", "https://example.com"),
-      expectCt: getString("REPORT_EXPECT_CT", "https://example.com")
+      csp: getenv("REPORT_CSP", "https://example.com"),
+      expectCt: getenv("REPORT_EXPECT_CT", "https://example.com")
     }
   };
 };
 
 export type Env = ReturnType<typeof getEnv>;
 
-const getString = (key: string, fallback?: string) => {
-  const value = process.env[key];
-
-  if (value === undefined) {
-    if (NODE_ENV === "test" && fallback !== undefined) {
-      return fallback;
-    } else {
-      throw new Error(`${key} is not defined`);
-    }
-  }
-
-  return value;
-};
-
-const getNumber = (key: string, fallback?: string) => {
-  const value = getString(key, fallback);
-  const numberValue = Number(value);
-  if (isNaN(numberValue)) {
-    throw new Error(`${key} is not a number`);
-  }
-
-  return numberValue;
-};
-
 const getProvider = (key: string, fallback?: string) => {
-  const value = getString(key, fallback);
+  const value = getenv(key, fallback);
   if (!isAuthProviderName(value)) {
     throw new Error(`${key} is invalid`);
   }
