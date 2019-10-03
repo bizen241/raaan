@@ -11,13 +11,8 @@ const initialOptions = {
     }
   },
   testMatch: ["**/__tests__/**.test.{ts, tsx}"],
-  collectCoverageFrom: [
-    "src/**/*.{ts,tsx}",
-    "!src/client/index.ts",
-    "!src/server/index.ts",
-    "!src/typings/**",
-    "!**/__tests__/**"
-  ]
+  coverageReporters: ["text", "lcov"],
+  collectCoverageFrom: ["src/**/*.{ts,tsx}", "!**/__tests__/**"]
 };
 
 module.exports = initialOptions;
