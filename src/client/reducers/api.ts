@@ -69,7 +69,7 @@ const uploadEntity = <E extends EntityObject>(type: EntityType, id: string, para
   dispatch,
   getState
 ) => {
-  const buffer = getState().buffers[type][id];
+  const buffer = getState().buffers[type][id] as Partial<E> | undefined;
   const target = params || buffer;
   if (target === undefined) {
     return;

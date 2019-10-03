@@ -70,7 +70,7 @@ test("DELETE /api/exercises/{id} -> 200", async () => {
   assert.equal(res._getStatusCode(), 200);
 
   const data = JSON.parse(res._getData()) as EntityStore;
-  assert.equal(data.Exercise[exercise.id], undefined);
+  assert.equal(data.Exercise, undefined);
 
   const removedExercise = await getManager().findOne(ExerciseEntity, exercise.id);
   assert.equal(removedExercise, undefined);
