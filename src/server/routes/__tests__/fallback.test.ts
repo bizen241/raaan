@@ -1,17 +1,12 @@
 import { strict as assert } from "assert";
-import { TestServer } from "../../__tests__/helpers";
+import { request, reset, start, stop } from "../../__tests__/helpers";
 
-const testServer = new TestServer();
-
-beforeAll(async () => {
-  await testServer.start();
-});
-afterAll(async () => {
-  await testServer.stop();
-});
+beforeAll(async () => start());
+beforeEach(async () => reset());
+afterAll(async () => stop());
 
 test("GET /", async () => {
-  const response = await testServer.fetch("/");
+  const response = await request("/");
 
   assert.equal(response.status, 200);
 
@@ -20,7 +15,7 @@ test("GET /", async () => {
 });
 
 test("GET /config", async () => {
-  const response = await testServer.fetch("/config");
+  const response = await request("/config");
 
   assert.equal(response.status, 200);
 

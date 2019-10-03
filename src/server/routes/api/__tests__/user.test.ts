@@ -1,20 +1,11 @@
 import { strict as assert } from "assert";
 import { EntityStore } from "../../../../shared/api/response/get";
-import { createHttpMocks, TestDatabase } from "../../../__tests__/helpers";
+import { close, connect, createHttpMocks, reset } from "../../../__tests__/helpers";
 import { DELETE, GET } from "../user";
 
-const testDatabase = new TestDatabase();
-
-beforeAll(async () => {
-  await testDatabase.connect();
-});
-afterAll(async () => {
-  await testDatabase.close();
-});
-
-beforeEach(async () => {
-  await testDatabase.reset();
-});
+beforeAll(async () => connect());
+beforeEach(async () => reset());
+afterAll(async () => close());
 
 test("GET /api/user -> 200", async () => {
   const { req, res, next, user, account, config } = await createHttpMocks("Read");

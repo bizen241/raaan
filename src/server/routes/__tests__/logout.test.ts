@@ -1,16 +1,11 @@
 import { strict as assert } from "assert";
 import { serialize } from "cookie";
 import { sign } from "cookie-signature";
-import { insertSession, insertUser, testEnv, TestServer } from "../../__tests__/helpers";
+import { insertSession, insertUser, reset, start, stop, testEnv } from "../../__tests__/helpers";
 
-const testServer = new TestServer();
-
-beforeAll(async () => {
-  await testServer.start();
-});
-afterAll(async () => {
-  await testServer.stop();
-});
+beforeAll(async () => start());
+beforeEach(async () => reset());
+afterAll(async () => stop());
 
 test("GET /logout -> 200", async () => {
   const { user } = await insertUser("Write");

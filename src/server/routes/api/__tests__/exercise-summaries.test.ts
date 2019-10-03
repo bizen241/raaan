@@ -1,20 +1,11 @@
 import { strict as assert } from "assert";
 import { SearchResponse } from "../../../../shared/api/response/search";
-import { createHttpMocks, insertExercise, TestDatabase } from "../../../__tests__/helpers";
+import { close, connect, createHttpMocks, insertExercise, reset } from "../../../__tests__/helpers";
 import { GET } from "../exercise-summaries";
 
-const testDatabase = new TestDatabase();
-
-beforeAll(async () => {
-  await testDatabase.connect();
-});
-afterAll(async () => {
-  await testDatabase.close();
-});
-
-beforeEach(async () => {
-  await testDatabase.reset();
-});
+beforeAll(async () => connect());
+beforeEach(async () => reset());
+afterAll(async () => close());
 
 test("GET /api/exercise-summaries", async () => {
   const { req, res, next, user } = await createHttpMocks("Guest");

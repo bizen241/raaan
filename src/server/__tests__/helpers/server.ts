@@ -1,50 +1,32 @@
-import { createServer, Server } from "http";
+import { createServer } from "http";
 import fetch, { RequestInit } from "node-fetch";
 import { createApp } from "../../app";
-import { TestDatabase } from "./database";
+import { close, connect } from "./database";
 import { testEnv } from "./env";
 
 const { host, port } = testEnv.server;
 const base = `http://${host}:${port}`;
 
-export class TestServer {
-  server: Server;
-  db: TestDatabase;
+const server = createServer(createApp(testEnv));
 
-  constructor(app = createApp(testEnv)) {
-    this.server = createServer(app);
-    this.db = new TestDatabase();
-  }
+export const start = async () => {
+  await connect();
 
-  fetch(path: string, init?: RequestInit) {
-    const url = new URL(path, base);
+  return new Promise(resolve => {
+    server.listen(port, host, () => resolve());
+  });
+};
 
-    return fetch(url.toString(), init);
-  }
+export const stop = async () => {
+  await close();
 
-  async start() {
-    await this.startServer();
-    await this.db.connect();
-  }
+  return new Promise(resolve => {
+    server.close(() => resolve());
+  });
+};
 
-  async reset() {
-    await this.db.reset();
-  }
+export const request = (path: string, init?: RequestInit) => {
+  const url = new URL(path, base);
 
-  async stop() {
-    await this.stopServer();
-    await this.db.close();
-  }
-
-  startServer() {
-    return new Promise(resolve => {
-      this.server.listen(port, host, () => resolve());
-    });
-  }
-
-  stopServer() {
-    return new Promise(resolve => {
-      this.server.close(() => resolve());
-    });
-  }
-}
+  return fetch(url.toString(), init);
+};

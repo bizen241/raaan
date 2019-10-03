@@ -1,22 +1,15 @@
 import { strict as assert } from "assert";
 import { getManager } from "typeorm";
 import { EntityStore } from "../../../../../shared/api/response/get";
-import { createHttpMocks, TestDatabase } from "../../../../__tests__/helpers";
+import { close, connect, createHttpMocks, reset } from "../../../../__tests__/helpers";
 import { PathParams } from "../../../../api/operation";
 import { GET } from "../{id}";
 
-const testDatabase = new TestDatabase();
+jest.setTimeout(100000);
 
-beforeAll(async () => {
-  await testDatabase.connect();
-});
-afterAll(async () => {
-  await testDatabase.close();
-});
-
-beforeEach(async () => {
-  await testDatabase.reset();
-});
+beforeAll(async () => connect());
+beforeEach(async () => reset());
+afterAll(async () => close());
 
 test("GET /api/users/{id} -> 200", async () => {
   const { req, res, next, user } = await createHttpMocks("Read");

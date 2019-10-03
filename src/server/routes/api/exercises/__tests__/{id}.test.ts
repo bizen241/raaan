@@ -2,23 +2,14 @@ import { strict as assert } from "assert";
 import { getManager } from "typeorm";
 import * as uuid from "uuid";
 import { EntityStore } from "../../../../../shared/api/response/get";
-import { createHttpMocks, hasSecurity, insertExercise, TestDatabase } from "../../../../__tests__/helpers";
+import { close, connect, createHttpMocks, hasSecurity, insertExercise, reset } from "../../../../__tests__/helpers";
 import { PathParams } from "../../../../api/operation";
 import { ExerciseEntity } from "../../../../database/entities";
 import { DELETE, GET, PATCH } from "../{id}";
 
-const testDatabase = new TestDatabase();
-
-beforeAll(async () => {
-  await testDatabase.connect();
-});
-afterAll(async () => {
-  await testDatabase.close();
-});
-
-beforeEach(async () => {
-  await testDatabase.reset();
-});
+beforeAll(async () => connect());
+beforeEach(async () => reset());
+afterAll(async () => close());
 
 test("GET /api/exercises/{id} -> 404", async () => {
   const { req, res, next } = await createHttpMocks("Guest");

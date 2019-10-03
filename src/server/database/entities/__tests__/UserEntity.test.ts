@@ -1,18 +1,13 @@
 import { strict as assert } from "assert";
 import { getManager } from "typeorm";
-import { insertUser, TestDatabase } from "../../../__tests__/helpers";
+import { close, connect, insertUser, reset } from "../../../__tests__/helpers";
 import { UserAccountEntity } from "../UserAccountEntity";
 import { UserConfigEntity } from "../UserConfigEntity";
 import { UserEntity } from "../UserEntity";
 
-const testDatabase = new TestDatabase();
-
-beforeAll(async () => {
-  await testDatabase.connect();
-});
-afterAll(async () => {
-  await testDatabase.close();
-});
+beforeAll(async () => connect());
+beforeEach(async () => reset());
+afterAll(async () => close());
 
 test("UserEntity", async () => {
   await insertUser("Write");

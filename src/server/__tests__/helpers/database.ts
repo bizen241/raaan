@@ -1,25 +1,30 @@
-import { Connection } from "typeorm";
-import { connectDatabase } from "../../database";
-import { testEnv } from "./env";
+import { ConnectionOptions, createConnection, getConnection, getManager } from "typeorm";
+import { entities, TagEntity, UserEntity } from "../../database/entities";
 
-export class TestDatabase {
-  connection?: Connection;
+export const connectionOptions: ConnectionOptions = {
+  type: "mysql",
+  host: "127.0.0.1",
+  port: 3306,
+  username: "root",
+  password: "mysql",
+  database: "raan_test",
+  entities
+};
 
-  async connect() {
-    this.connection = await connectDatabase(testEnv);
+export const connect = async () => {
+  const connection = await createConnection(connectionOptions);
+  await connection.synchronize();
+};
 
-    await this.connection.synchronize(true);
-  }
+export const reset = async () => {
+  const manager = getManager();
 
-  async reset() {
-    if (this.connection !== undefined) {
-      await this.connection.synchronize(true);
-    }
-  }
+  const users = await manager.find(UserEntity);
+  await manager.remove(users);
+  const tags = await manager.find(TagEntity);
+  await manager.remove(tags);
+};
 
-  async close() {
-    if (this.connection !== undefined) {
-      await this.connection.close();
-    }
-  }
-}
+export const close = async () => {
+  await getConnection().close();
+};

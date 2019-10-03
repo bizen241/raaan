@@ -3,7 +3,7 @@ import { Env } from "../env";
 import { entities } from "./entities";
 import { migrations } from "./migrations";
 
-export const connectDatabase = (env: Env) => {
+export const connect = (env: Env) => {
   const { host, port, username, password, name: database } = env.database;
 
   return createConnection({
