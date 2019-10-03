@@ -1,20 +1,19 @@
-import { ConnectionOptions, createConnection, getConnection, getManager } from "typeorm";
+import { createConnection, getConnection, getManager } from "typeorm";
 import { entities, TagEntity, UserEntity } from "../../database/entities";
-
-export const connectionOptions: ConnectionOptions = {
-  type: "mysql",
-  host: "127.0.0.1",
-  port: 3306,
-  username: "root",
-  password: "root",
-  database: "test",
-  entities
-};
+import { testEnv } from "./env";
 
 export const connect = async () => {
-  jest.setTimeout(60000);
+  const { host, port, username, password, name: database } = testEnv.database;
 
-  const connection = await createConnection(connectionOptions);
+  const connection = await createConnection({
+    type: "mysql",
+    host,
+    port,
+    username,
+    password,
+    database,
+    entities
+  });
   await connection.synchronize();
 };
 
