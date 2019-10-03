@@ -12,6 +12,8 @@ export const connectionOptions: ConnectionOptions = {
 };
 
 export const connect = async () => {
+  jest.setTimeout(60000);
+
   const connection = await createConnection(connectionOptions);
   await connection.synchronize();
 };
