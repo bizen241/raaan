@@ -1,7 +1,7 @@
 import { strict as assert } from "assert";
 import { serialize } from "cookie";
 import { sign } from "cookie-signature";
-import { insertSession, insertUser, reset, start, stop, testEnv } from "../../__tests__/helpers";
+import { insertSession, insertUser, request, reset, start, stop, testEnv } from "../../__tests__/helpers";
 
 beforeAll(async () => start());
 beforeEach(async () => reset());
@@ -11,7 +11,7 @@ test("GET /logout -> 200", async () => {
   const { user } = await insertUser("Write");
   const session = await insertSession(user);
 
-  const response = await testServer.fetch("/logout", {
+  const response = await request("/logout", {
     headers: {
       Cookie: serialize("connect.sid", `s:${sign(session.sessionId, testEnv.session.secret)}`)
     }
@@ -24,7 +24,7 @@ test("GET /logout -> 200", async () => {
 });
 
 test("GET /logout -> 403", async () => {
-  const response = await testServer.fetch("/logout");
+  const response = await request("/logout");
 
   assert.equal(response.status, 403);
 
