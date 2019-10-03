@@ -3,6 +3,8 @@ import { entities, TagEntity, UserEntity } from "../../database/entities";
 import { testEnv } from "./env";
 
 export const connect = async () => {
+  jest.setTimeout(60000);
+
   const { host, port, username, password, name: database } = testEnv.database;
 
   const connection = await createConnection({
