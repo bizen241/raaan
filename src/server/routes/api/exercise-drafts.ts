@@ -5,21 +5,23 @@ import { Params } from "../../../shared/api/request/params";
 import { getMinMaxTypeCount } from "../../../shared/exercise";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
-import { ExerciseDraftEntity, ExerciseEntity, ExerciseSummaryEntity } from "../../database/entities";
-// import { normalizeTags } from "../../exercise";
+import { ExerciseDraftEntity, ExerciseEntity, ExerciseSummaryEntity, getTags } from "../../database/entities";
 
 export const POST: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
   const { isMerged = true, isPrivate = true, ...params }: Params<ExerciseDraft> = req.body;
 
   await getManager().transaction(async manager => {
-    const { maxTypeCount, minTypeCount } = getMinMaxTypeCount(params.questions);
-
-    const exerciseSummary = new ExerciseSummaryEntity();
-    exerciseSummary.maxTypeCount = maxTypeCount;
-    exerciseSummary.minTypeCount = minTypeCount;
-
     const exerciseDraft = new ExerciseDraftEntity(params);
     exerciseDraft.isMerged = isMerged;
+
+    const exerciseSummary = new ExerciseSummaryEntity();
+    if (isMerged) {
+      const { maxTypeCount, minTypeCount } = getMinMaxTypeCount(params.questions);
+
+      exerciseSummary.maxTypeCount = maxTypeCount;
+      exerciseSummary.minTypeCount = minTypeCount;
+      exerciseSummary.tags = await getTags(exerciseSummary, params, manager);
+    }
 
     const exercise = new ExerciseEntity(isMerged ? params : {});
     exercise.author = currentUser;

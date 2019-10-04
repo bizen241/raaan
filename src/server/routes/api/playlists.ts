@@ -5,14 +5,21 @@ import { Playlist } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
-import { ExerciseEntity, PlaylistEntity, PlaylistItemEntity, PlaylistSummaryEntity } from "../../database/entities";
-// import { normalizeTags } from "../../exercise";
+import {
+  ExerciseEntity,
+  getTags,
+  PlaylistEntity,
+  PlaylistItemEntity,
+  PlaylistSummaryEntity
+} from "../../database/entities";
 
 export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const params: Params<Playlist> = req.body;
 
   await getManager().transaction(async manager => {
     const playlistSummary = new PlaylistSummaryEntity();
+    playlistSummary.tags = await getTags(playlistSummary, params, manager);
+
     const playlist = new PlaylistEntity(currentUser, playlistSummary, params);
 
     await manager.save(playlist);

@@ -6,8 +6,7 @@ import { Params } from "../../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
 import { hasPermission } from "../../../api/security";
-import { PlaylistEntity } from "../../../database/entities";
-// import { normalizeTags } from "../../../exercise";
+import { getTags, PlaylistEntity } from "../../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { id: playlistId }: PathParams = req.params;
@@ -58,6 +57,9 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
     if (isAuthor) {
       if (params.title !== undefined) {
         playlist.title = params.title;
+      }
+      if (params.tags !== undefined) {
+        playlist.summary.tags = await getTags(playlist.summary, params, manager);
       }
       if (params.description !== undefined) {
         playlist.description = params.description;

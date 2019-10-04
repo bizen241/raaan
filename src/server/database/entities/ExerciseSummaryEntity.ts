@@ -24,10 +24,10 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
   tags?: TagEntity[];
 
   @Column()
-  maxTypeCount!: number;
+  maxTypeCount: number = 0;
 
   @Column()
-  minTypeCount!: number;
+  minTypeCount: number = 0;
 
   @Column()
   upvoteCount: number = 0;

@@ -6,8 +6,13 @@ import { Params } from "../../../../shared/api/request/params";
 import { getMinMaxTypeCount } from "../../../../shared/exercise";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
-import { ExerciseDraftEntity, ExerciseEntity, RevisionEntity, RevisionSummaryEntity } from "../../../database/entities";
-// import { normalizeTags } from "../../../exercise";
+import {
+  ExerciseDraftEntity,
+  ExerciseEntity,
+  getTags,
+  RevisionEntity,
+  RevisionSummaryEntity
+} from "../../../database/entities";
 
 export const PATCH: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { id: exerciseDraftId }: PathParams = req.params;
@@ -83,6 +88,7 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
 
     exercise.summary.maxTypeCount = maxTypeCount;
     exercise.summary.minTypeCount = minTypeCount;
+    exercise.summary.tags = await getTags(exercise.summary, params, manager);
 
     exercise.draft.isMerged = true;
   }
