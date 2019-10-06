@@ -6,11 +6,13 @@ import {
   ExerciseDiaryEntity,
   ExerciseDraftEntity,
   ExerciseEntity,
+  ExerciseObjectionEntity,
   ExerciseReportEntity,
   ExerciseSummaryEntity,
   PlaylistBookmarkEntity,
   PlaylistEntity,
   PlaylistItemEntity,
+  PlaylistObjectionEntity,
   PlaylistReportEntity,
   PlaylistSummaryEntity,
   RevisionEntity,
@@ -23,6 +25,7 @@ import {
   UserConfigEntity,
   UserDiaryEntity,
   UserEntity,
+  UserObjectionEntity,
   UserSessionEntity,
   UserSummaryEntity
 } from "../../database/entities";
@@ -137,6 +140,17 @@ const normalizeExerciseDraft: Normalizer<ExerciseDraftEntity> = (_, store, entit
   };
 };
 
+const normalizeExerciseObjection: Normalizer<ExerciseObjectionEntity> = (_, store, entity) => {
+  const { id, target, comment, state } = entity;
+
+  store.ExerciseObjection[id] = {
+    ...base(entity),
+    exerciseSummaryId: target && target.summaryId,
+    comment,
+    state
+  };
+};
+
 const normalizeExerciseReport: Normalizer<ExerciseReportEntity> = (_, store, entity) => {
   const { id, reporterId, target, reason, comment, state } = entity;
 
@@ -233,6 +247,17 @@ const normalizePlaylistItem: Normalizer<PlaylistItemEntity> = (context, store, e
 
     normalizeEntity(context, store, exercise.summary);
   }
+};
+
+const normalizePlaylistObjection: Normalizer<PlaylistObjectionEntity> = (_, store, entity) => {
+  const { id, target, comment, state } = entity;
+
+  store.PlaylistObjection[id] = {
+    ...base(entity),
+    playlistSummaryId: target && target.summaryId,
+    comment,
+    state
+  };
 };
 
 const normalizePlaylistReport: Normalizer<PlaylistReportEntity> = (_, store, entity) => {
@@ -409,6 +434,17 @@ const normalizeUserDiary: Normalizer<UserDiaryEntity> = (_, store, entity) => {
   };
 };
 
+const normalizeUserObjection: Normalizer<UserObjectionEntity> = (_, store, entity) => {
+  const { id, target, comment, state } = entity;
+
+  store.UserObjection[id] = {
+    ...base(entity),
+    userSummaryId: target && target.summaryId,
+    comment,
+    state
+  };
+};
+
 const normalizeUserReport: Normalizer<UserReportEntity> = (_, store, entity) => {
   const { id, reporterId, target, reason, comment, state } = entity;
 
@@ -454,12 +490,14 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Exercise: normalizeExercise,
   ExerciseDiary: normalizeExerciseDiary,
   ExerciseDraft: normalizeExerciseDraft,
+  ExerciseObjection: normalizeExerciseObjection,
   ExerciseReport: normalizeExerciseReport,
   ExerciseSummary: normalizeExerciseSummary,
   ExerciseVote: normalizeExerciseVote,
   Playlist: normalizePlaylist,
   PlaylistBookmark: normalizePlaylistBookmark,
   PlaylistItem: normalizePlaylistItem,
+  PlaylistObjection: normalizePlaylistObjection,
   PlaylistReport: normalizePlaylistReport,
   PlaylistSummary: normalizePlaylistSummary,
   Revision: normalizeRevision,
@@ -472,6 +510,7 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   UserAccount: normalizeUserAccount,
   UserConfig: normalizeUserConfig,
   UserDiary: normalizeUserDiary,
+  UserObjection: normalizeUserObjection,
   UserReport: normalizeUserReport,
   UserSession: normalizeUserSession,
   UserSummary: normalizeUserSummary

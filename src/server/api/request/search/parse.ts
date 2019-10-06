@@ -4,6 +4,7 @@ import {
   Exercise,
   ExerciseDiary,
   ExerciseDraft,
+  ExerciseObjection,
   ExerciseReport,
   ExerciseSummary,
   ExerciseVote,
@@ -11,6 +12,7 @@ import {
   Playlist,
   PlaylistBookmark,
   PlaylistItem,
+  PlaylistObjection,
   PlaylistReport,
   PlaylistSummary,
   Revision,
@@ -23,6 +25,7 @@ import {
   UserAccount,
   UserConfig,
   UserDiary,
+  UserObjection,
   UserReport,
   UserSession,
   UserSummary
@@ -78,12 +81,17 @@ const parseExerciseDraft: Parser<ExerciseDraft> = query => {
   };
 };
 
+const parseExerciseObjection: Parser<ExerciseObjection> = query => {
+  return {
+    ...base(query)
+  };
+};
+
 const parseExerciseReport: Parser<ExerciseReport> = query => {
-  const { targetId, reporterId } = query;
+  const { reporterId } = query;
 
   return {
     ...base(query),
-    targetId,
     reporterId
   };
 };
@@ -132,6 +140,12 @@ const parsePlaylistItem: Parser<PlaylistItem> = query => {
     ...base(query),
     playlistId,
     exerciseId
+  };
+};
+
+const parsePlaylistObjection: Parser<PlaylistObjection> = query => {
+  return {
+    ...base(query)
   };
 };
 
@@ -225,6 +239,12 @@ const parseUserDiary: Parser<UserDiary> = query => {
   };
 };
 
+const parseUserObjection: Parser<UserObjection> = query => {
+  return {
+    ...base(query)
+  };
+};
+
 const parseUserReport: Parser<UserReport> = query => {
   return {
     ...base(query)
@@ -253,12 +273,14 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   Exercise: parseExercise,
   ExerciseDiary: parseExerciseDiary,
   ExerciseDraft: parseExerciseDraft,
+  ExerciseObjection: parseExerciseObjection,
   ExerciseReport: parseExerciseReport,
   ExerciseSummary: parseExerciseSummary,
   ExerciseVote: parseExerciseVote,
   Playlist: parsePlaylist,
   PlaylistBookmark: parsePlaylistBookmark,
   PlaylistItem: parsePlaylistItem,
+  PlaylistObjection: parsePlaylistObjection,
   PlaylistReport: parsePlaylistReport,
   PlaylistSummary: parsePlaylistSummary,
   Revision: parseRevision,
@@ -271,6 +293,7 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   UserAccount: parseUserAccount,
   UserConfig: parseUserConfig,
   UserDiary: parseUserDiary,
+  UserObjection: parseUserObjection,
   UserReport: parseUserReport,
   UserSession: parseUserSession,
   UserSummary: parseUserSummary

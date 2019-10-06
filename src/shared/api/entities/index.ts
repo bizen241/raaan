@@ -1,12 +1,14 @@
 import { Exercise } from "./Exercise";
 import { ExerciseDiary } from "./ExerciseDiary";
 import { ExerciseDraft } from "./ExerciseDraft";
+import { ExerciseObjection } from "./ExerciseObjection";
 import { ExerciseReport } from "./ExerciseReport";
 import { ExerciseSummary } from "./ExerciseSummary";
 import { ExerciseVote } from "./ExerciseVote";
 import { Playlist } from "./Playlist";
 import { PlaylistBookmark } from "./PlaylistBookmark";
 import { PlaylistItem } from "./PlaylistItem";
+import { PlaylistObjection } from "./PlaylistObjection";
 import { PlaylistReport } from "./PlaylistReport";
 import { PlaylistSummary } from "./PlaylistSummary";
 import { Revision } from "./Revision";
@@ -19,6 +21,7 @@ import { User } from "./User";
 import { UserAccount } from "./UserAccount";
 import { UserConfig } from "./UserConfig";
 import { UserDiary } from "./UserDiary";
+import { UserObjection } from "./UserObjection";
 import { UserReport } from "./UserReport";
 import { UserSession } from "./UserSession";
 import { UserSummary } from "./UserSummary";
@@ -27,12 +30,14 @@ export * from "./BaseExerciseObject";
 export * from "./Exercise";
 export * from "./ExerciseDiary";
 export * from "./ExerciseDraft";
+export * from "./ExerciseObjection";
 export * from "./ExerciseReport";
 export * from "./ExerciseSummary";
 export * from "./ExerciseVote";
 export * from "./Playlist";
 export * from "./PlaylistBookmark";
 export * from "./PlaylistItem";
+export * from "./PlaylistObjection";
 export * from "./PlaylistReport";
 export * from "./PlaylistSummary";
 export * from "./Revision";
@@ -45,6 +50,7 @@ export * from "./User";
 export * from "./UserAccount";
 export * from "./UserConfig";
 export * from "./UserDiary";
+export * from "./UserObjection";
 export * from "./UserReport";
 export * from "./UserSession";
 export * from "./UserSummary";
@@ -53,12 +59,14 @@ export type EntityObject =
   | Exercise
   | ExerciseDiary
   | ExerciseDraft
+  | ExerciseObjection
   | ExerciseReport
   | ExerciseSummary
   | ExerciseVote
   | Playlist
   | PlaylistBookmark
   | PlaylistItem
+  | PlaylistObjection
   | PlaylistReport
   | PlaylistSummary
   | Revision
@@ -71,6 +79,7 @@ export type EntityObject =
   | UserAccount
   | UserConfig
   | UserDiary
+  | UserObjection
   | UserReport
   | UserSession
   | UserSummary;
@@ -79,12 +88,14 @@ export type EntityTypeToEntity = {
   Exercise: Exercise;
   ExerciseDiary: ExerciseDiary;
   ExerciseDraft: ExerciseDraft;
+  ExerciseObjection: ExerciseObjection;
   ExerciseReport: ExerciseReport;
   ExerciseSummary: ExerciseSummary;
   ExerciseVote: ExerciseVote;
   Playlist: Playlist;
   PlaylistBookmark: PlaylistBookmark;
   PlaylistItem: PlaylistItem;
+  PlaylistObjection: PlaylistObjection;
   PlaylistReport: PlaylistReport;
   PlaylistSummary: PlaylistSummary;
   Revision: Revision;
@@ -97,6 +108,7 @@ export type EntityTypeToEntity = {
   UserAccount: UserAccount;
   UserConfig: UserConfig;
   UserDiary: UserDiary;
+  UserObjection: UserObjection;
   UserReport: UserReport;
   UserSession: UserSession;
   UserSummary: UserSummary;
@@ -111,12 +123,14 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     Exercise: {},
     ExerciseDiary: {},
     ExerciseDraft: {},
+    ExerciseObjection: {},
     ExerciseReport: {},
     ExerciseSummary: {},
     ExerciseVote: {},
     Playlist: {},
     PlaylistBookmark: {},
     PlaylistItem: {},
+    PlaylistObjection: {},
     PlaylistReport: {},
     PlaylistSummary: {},
     Revision: {},
@@ -129,6 +143,7 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     UserAccount: {},
     UserConfig: {},
     UserDiary: {},
+    UserObjection: {},
     UserReport: {},
     UserSession: {},
     UserSummary: {}
