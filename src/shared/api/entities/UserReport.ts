@@ -1,6 +1,6 @@
-import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { UUID } from "./BaseEntityObject";
+import { BaseReportObject } from "./BaseReportObject";
 
-export interface UserReport extends BaseEntityObject {
-  targetId: UUID;
-  reporterId: UUID;
+export interface UserReport extends BaseReportObject {
+  userSummaryId?: UUID;
 }

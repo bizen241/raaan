@@ -138,12 +138,15 @@ const normalizeExerciseDraft: Normalizer<ExerciseDraftEntity> = (_, store, entit
 };
 
 const normalizeExerciseReport: Normalizer<ExerciseReportEntity> = (_, store, entity) => {
-  const { id, targetId, reporterId } = entity;
+  const { id, reporterId, target, reason, comment, state } = entity;
 
   store.ExerciseReport[id] = {
     ...base(entity),
-    targetId,
-    reporterId
+    reporterId,
+    exerciseSummaryId: target && target.summaryId,
+    reason,
+    comment,
+    state
   };
 };
 
@@ -233,12 +236,15 @@ const normalizePlaylistItem: Normalizer<PlaylistItemEntity> = (context, store, e
 };
 
 const normalizePlaylistReport: Normalizer<PlaylistReportEntity> = (_, store, entity) => {
-  const { id, targetId, reporterId } = entity;
+  const { id, reporterId, target, reason, comment, state } = entity;
 
   store.PlaylistReport[id] = {
     ...base(entity),
-    targetId,
-    reporterId
+    reporterId,
+    playlistSummaryId: target && target.summaryId,
+    reason,
+    comment,
+    state
   };
 };
 
@@ -404,12 +410,15 @@ const normalizeUserDiary: Normalizer<UserDiaryEntity> = (_, store, entity) => {
 };
 
 const normalizeUserReport: Normalizer<UserReportEntity> = (_, store, entity) => {
-  const { id, targetId, reporterId } = entity;
+  const { id, reporterId, target, reason, comment, state } = entity;
 
   store.UserReport[id] = {
     ...base(entity),
-    targetId,
-    reporterId
+    reporterId,
+    userSummaryId: target && target.summaryId,
+    reason,
+    comment,
+    state
   };
 };
 

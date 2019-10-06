@@ -1,29 +1,19 @@
-import { Entity, ManyToOne, RelationId } from "typeorm";
+import { Entity, ManyToOne } from "typeorm";
 import { ExerciseEntity, UserEntity } from ".";
-import { BaseEntityClass } from "./BaseEntityClass";
+import { BaseReportClass } from "./BaseReportClass";
 
 @Entity("exercise-reports")
-export class ExerciseReportEntity extends BaseEntityClass {
+export class ExerciseReportEntity extends BaseReportClass<ExerciseEntity> {
   type: "ExerciseReport" = "ExerciseReport";
 
   @ManyToOne(() => ExerciseEntity, {
-    onDelete: "CASCADE"
+    onDelete: "SET NULL"
   })
   target?: ExerciseEntity;
-  @RelationId((exerciseReport: ExerciseReportEntity) => exerciseReport.target)
-  targetId!: string;
-
-  @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
-  })
-  reporter?: UserEntity;
-  @RelationId((exerciseReport: ExerciseReportEntity) => exerciseReport.reporter)
-  reporterId!: string;
 
   constructor(reporter: UserEntity, target: ExerciseEntity) {
-    super();
+    super(reporter);
 
     this.target = target;
-    this.reporter = reporter;
   }
 }
