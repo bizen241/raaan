@@ -22,11 +22,13 @@ import {
   Synonym,
   SynonymReport,
   Tag,
+  TagFollow,
   TagSummary,
   User,
   UserAccount,
   UserConfig,
   UserDiary,
+  UserFollow,
   UserObjection,
   UserReport,
   UserSession,
@@ -212,6 +214,12 @@ const parseTag: Parser<Tag> = query => {
   };
 };
 
+const parseTagFollow: Parser<TagFollow> = query => {
+  return {
+    ...base(query)
+  };
+};
+
 const parseTagSummary: Parser<TagSummary> = query => {
   return {
     ...base(query)
@@ -250,6 +258,12 @@ const parseUserDiary: Parser<UserDiary> = query => {
   return {
     ...base(query),
     userId
+  };
+};
+
+const parseUserFollow: Parser<UserFollow> = query => {
+  return {
+    ...base(query)
   };
 };
 
@@ -304,11 +318,13 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   Synonym: parseSynonym,
   SynonymReport: parseSynonymReport,
   Tag: parseTag,
+  TagFollow: parseTagFollow,
   TagSummary: parseTagSummary,
   User: parseUser,
   UserAccount: parseUserAccount,
   UserConfig: parseUserConfig,
   UserDiary: parseUserDiary,
+  UserFollow: parseUserFollow,
   UserObjection: parseUserObjection,
   UserReport: parseUserReport,
   UserSession: parseUserSession,

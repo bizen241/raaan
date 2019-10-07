@@ -18,11 +18,13 @@ import { SubmissionSummary } from "./SubmissionSummary";
 import { Synonym } from "./Synonym";
 import { SynonymReport } from "./SynonymReport";
 import { Tag } from "./Tag";
+import { TagFollow } from "./TagFollow";
 import { TagSummary } from "./TagSummary";
 import { User } from "./User";
 import { UserAccount } from "./UserAccount";
 import { UserConfig } from "./UserConfig";
 import { UserDiary } from "./UserDiary";
+import { UserFollow } from "./UserFollow";
 import { UserObjection } from "./UserObjection";
 import { UserReport } from "./UserReport";
 import { UserSession } from "./UserSession";
@@ -49,11 +51,13 @@ export * from "./SubmissionSummary";
 export * from "./Synonym";
 export * from "./SynonymReport";
 export * from "./Tag";
+export * from "./TagFollow";
 export * from "./TagSummary";
 export * from "./User";
 export * from "./UserAccount";
 export * from "./UserConfig";
 export * from "./UserDiary";
+export * from "./UserFollow";
 export * from "./UserObjection";
 export * from "./UserReport";
 export * from "./UserSession";
@@ -80,11 +84,13 @@ export type EntityObject =
   | Synonym
   | SynonymReport
   | Tag
+  | TagFollow
   | TagSummary
   | User
   | UserAccount
   | UserConfig
   | UserDiary
+  | UserFollow
   | UserObjection
   | UserReport
   | UserSession
@@ -111,11 +117,13 @@ export type EntityTypeToEntity = {
   Synonym: Synonym;
   SynonymReport: SynonymReport;
   Tag: Tag;
+  TagFollow: TagFollow;
   TagSummary: TagSummary;
   User: User;
   UserAccount: UserAccount;
   UserConfig: UserConfig;
   UserDiary: UserDiary;
+  UserFollow: UserFollow;
   UserObjection: UserObjection;
   UserReport: UserReport;
   UserSession: UserSession;
@@ -148,11 +156,13 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     Synonym: {},
     SynonymReport: {},
     Tag: {},
+    TagFollow: {},
     TagSummary: {},
     User: {},
     UserAccount: {},
     UserConfig: {},
     UserDiary: {},
+    UserFollow: {},
     UserObjection: {},
     UserReport: {},
     UserSession: {},

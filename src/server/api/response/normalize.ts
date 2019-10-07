@@ -22,11 +22,13 @@ import {
   SynonymEntity,
   SynonymReportEntity,
   TagEntity,
+  TagFollowEntity,
   TagSummaryEntity,
   UserAccountEntity,
   UserConfigEntity,
   UserDiaryEntity,
   UserEntity,
+  UserFollowEntity,
   UserObjectionEntity,
   UserSessionEntity,
   UserSummaryEntity
@@ -391,6 +393,20 @@ const normalizeTag: Normalizer<TagEntity> = (_, store, entity) => {
   };
 };
 
+const normalizeTagFollow: Normalizer<TagFollowEntity> = (_, store, entity) => {
+  const { id, target, followerId, checkedAt } = entity;
+  if (target === undefined) {
+    return;
+  }
+
+  store.TagFollow[id] = {
+    ...base(entity),
+    tagSummaryId: target.summaryId,
+    followerId,
+    checkedAt: checkedAt.getTime()
+  };
+};
+
 const normalizeTagSummary: Normalizer<TagSummaryEntity> = (_, store, entity) => {
   const { id, tag, tagId, exerciseCount, playlistCount } = entity;
   if (tag === undefined) {
@@ -458,6 +474,20 @@ const normalizeUserDiary: Normalizer<UserDiaryEntity> = (_, store, entity) => {
     typedCount,
     createCount,
     editCount
+  };
+};
+
+const normalizeUserFollow: Normalizer<UserFollowEntity> = (_, store, entity) => {
+  const { id, target, followerId, checkedAt } = entity;
+  if (target === undefined) {
+    return;
+  }
+
+  store.UserFollow[id] = {
+    ...base(entity),
+    userSummaryId: target.summaryId,
+    followerId,
+    checkedAt: checkedAt.getTime()
   };
 };
 
@@ -534,11 +564,13 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Synonym: normalizeSynonym,
   SynonymReport: normalizeSynonymReport,
   Tag: normalizeTag,
+  TagFollow: normalizeTagFollow,
   TagSummary: normalizeTagSummary,
   User: normalizeUser,
   UserAccount: normalizeUserAccount,
   UserConfig: normalizeUserConfig,
   UserDiary: normalizeUserDiary,
+  UserFollow: normalizeUserFollow,
   UserObjection: normalizeUserObjection,
   UserReport: normalizeUserReport,
   UserSession: normalizeUserSession,

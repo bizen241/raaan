@@ -19,11 +19,13 @@ import { SubmissionSummaryEntity } from "./SubmissionSummaryEntity";
 import { SynonymEntity } from "./SynonymEntity";
 import { SynonymReportEntity } from "./SynonymReportEntity";
 import { TagEntity } from "./TagEntity";
+import { TagFollowEntity } from "./TagFollowEntity";
 import { TagSummaryEntity } from "./TagSummaryEntity";
 import { UserAccountEntity } from "./UserAccountEntity";
 import { UserConfigEntity } from "./UserConfigEntity";
 import { UserDiaryEntity } from "./UserDiaryEntity";
 import { UserEntity } from "./UserEntity";
+import { UserFollowEntity } from "./UserFollowEntity";
 import { UserObjectionEntity } from "./UserObjectionEntity";
 import { UserReportEntity } from "./UserReportEntity";
 import { UserSessionEntity } from "./UserSessionEntity";
@@ -49,11 +51,13 @@ export * from "./SubmissionSummaryEntity";
 export * from "./SynonymEntity";
 export * from "./SynonymReportEntity";
 export * from "./TagEntity";
+export * from "./TagFollowEntity";
 export * from "./TagSummaryEntity";
 export * from "./UserAccountEntity";
 export * from "./UserConfigEntity";
 export * from "./UserDiaryEntity";
 export * from "./UserEntity";
+export * from "./UserFollowEntity";
 export * from "./UserObjectionEntity";
 export * from "./UserReportEntity";
 export * from "./UserSessionEntity";
@@ -80,11 +84,13 @@ export type Entity =
   | SynonymEntity
   | SynonymReportEntity
   | TagEntity
+  | TagFollowEntity
   | TagSummaryEntity
   | UserAccountEntity
   | UserConfigEntity
   | UserDiaryEntity
   | UserEntity
+  | UserFollowEntity
   | UserObjectionEntity
   | UserReportEntity
   | UserSessionEntity
@@ -111,11 +117,13 @@ export const entities = Object.values({
   Synonym: SynonymEntity,
   SynonymReport: SynonymReportEntity,
   Tag: TagEntity,
+  TagFollow: TagFollowEntity,
   TagSummary: TagSummaryEntity,
   User: UserEntity,
   UserAccount: UserAccountEntity,
   UserConfig: UserConfigEntity,
   UserDiary: UserDiaryEntity,
+  UserFollow: UserFollowEntity,
   UserObjection: UserObjectionEntity,
   UserReport: UserReportEntity,
   UserSession: UserSessionEntity,
