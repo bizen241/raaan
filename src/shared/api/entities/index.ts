@@ -15,6 +15,8 @@ import { Revision } from "./Revision";
 import { RevisionSummary } from "./RevisionSummary";
 import { Submission } from "./Submission";
 import { SubmissionSummary } from "./SubmissionSummary";
+import { Synonym } from "./Synonym";
+import { SynonymReport } from "./SynonymReport";
 import { Tag } from "./Tag";
 import { TagSummary } from "./TagSummary";
 import { User } from "./User";
@@ -44,6 +46,8 @@ export * from "./Revision";
 export * from "./RevisionSummary";
 export * from "./Submission";
 export * from "./SubmissionSummary";
+export * from "./Synonym";
+export * from "./SynonymReport";
 export * from "./Tag";
 export * from "./TagSummary";
 export * from "./User";
@@ -73,6 +77,8 @@ export type EntityObject =
   | RevisionSummary
   | Submission
   | SubmissionSummary
+  | Synonym
+  | SynonymReport
   | Tag
   | TagSummary
   | User
@@ -102,6 +108,8 @@ export type EntityTypeToEntity = {
   RevisionSummary: RevisionSummary;
   Submission: Submission;
   SubmissionSummary: SubmissionSummary;
+  Synonym: Synonym;
+  SynonymReport: SynonymReport;
   Tag: Tag;
   TagSummary: TagSummary;
   User: User;
@@ -137,6 +145,8 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     RevisionSummary: {},
     Submission: {},
     SubmissionSummary: {},
+    Synonym: {},
+    SynonymReport: {},
     Tag: {},
     TagSummary: {},
     User: {},

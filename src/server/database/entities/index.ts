@@ -16,6 +16,8 @@ import { RevisionEntity } from "./RevisionEntity";
 import { RevisionSummaryEntity } from "./RevisionSummaryEntity";
 import { SubmissionEntity } from "./SubmissionEntity";
 import { SubmissionSummaryEntity } from "./SubmissionSummaryEntity";
+import { SynonymEntity } from "./SynonymEntity";
+import { SynonymReportEntity } from "./SynonymReportEntity";
 import { TagEntity } from "./TagEntity";
 import { TagSummaryEntity } from "./TagSummaryEntity";
 import { UserAccountEntity } from "./UserAccountEntity";
@@ -44,6 +46,8 @@ export * from "./RevisionEntity";
 export * from "./RevisionSummaryEntity";
 export * from "./SubmissionEntity";
 export * from "./SubmissionSummaryEntity";
+export * from "./SynonymEntity";
+export * from "./SynonymReportEntity";
 export * from "./TagEntity";
 export * from "./TagSummaryEntity";
 export * from "./UserAccountEntity";
@@ -73,6 +77,8 @@ export type Entity =
   | RevisionSummaryEntity
   | SubmissionEntity
   | SubmissionSummaryEntity
+  | SynonymEntity
+  | SynonymReportEntity
   | TagEntity
   | TagSummaryEntity
   | UserAccountEntity
@@ -102,6 +108,8 @@ export const entities = Object.values({
   RevisionSummary: RevisionSummaryEntity,
   Submission: SubmissionEntity,
   SubmissionSummary: SubmissionSummaryEntity,
+  Synonym: SynonymEntity,
+  SynonymReport: SynonymReportEntity,
   Tag: TagEntity,
   TagSummary: TagSummaryEntity,
   User: UserEntity,

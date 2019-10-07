@@ -19,6 +19,8 @@ import {
   RevisionSummaryEntity,
   SubmissionEntity,
   SubmissionSummaryEntity,
+  SynonymEntity,
+  SynonymReportEntity,
   TagEntity,
   TagSummaryEntity,
   UserAccountEntity,
@@ -353,6 +355,31 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context
   normalizeEntity(context, store, exercise.summary);
 };
 
+const normalizeSynonym: Normalizer<SynonymEntity> = (_, store, entity) => {
+  const { id, creatorId, name, target, state } = entity;
+
+  store.Synonym[id] = {
+    ...base(entity),
+    creatorId,
+    name,
+    target,
+    state
+  };
+};
+
+const normalizeSynonymReport: Normalizer<SynonymReportEntity> = (_, store, entity) => {
+  const { id, reporterId, target, reason, comment, state } = entity;
+
+  store.SynonymReport[id] = {
+    ...base(entity),
+    reporterId,
+    synonymId: target && target.id,
+    reason,
+    comment,
+    state
+  };
+};
+
 const normalizeTag: Normalizer<TagEntity> = (_, store, entity) => {
   const { id, summaryId, name, description } = entity;
 
@@ -504,6 +531,8 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   RevisionSummary: normalizeRevisionSummary,
   Submission: normalizeSubmission,
   SubmissionSummary: normalizeSubmissionSummary,
+  Synonym: normalizeSynonym,
+  SynonymReport: normalizeSynonymReport,
   Tag: normalizeTag,
   TagSummary: normalizeTagSummary,
   User: normalizeUser,
