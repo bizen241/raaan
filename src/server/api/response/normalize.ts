@@ -9,6 +9,10 @@ import {
   ExerciseObjectionEntity,
   ExerciseReportEntity,
   ExerciseSummaryEntity,
+  GroupEntity,
+  GroupExerciseEntity,
+  GroupMemberEntity,
+  GroupPlaylistEntity,
   PlaylistBookmarkEntity,
   PlaylistEntity,
   PlaylistItemEntity,
@@ -203,6 +207,53 @@ const normalizeExerciseVote: Normalizer<ExerciseVoteEntity> = (_, store, entity)
     targetId,
     voterId,
     isUp
+  };
+};
+
+const normalizeGroup: Normalizer<GroupEntity> = (_, store, entity) => {
+  const { id, name, description } = entity;
+
+  store.Group[id] = {
+    ...base(entity),
+    name,
+    description
+  };
+};
+
+const normalizeGroupExercise: Normalizer<GroupExerciseEntity> = (_, store, entity) => {
+  const { id, exercise } = entity;
+  if (exercise === undefined) {
+    return;
+  }
+
+  store.GroupExercise[id] = {
+    ...base(entity),
+    exerciseSummaryId: exercise.summaryId
+  };
+};
+
+const normalizeGroupMember: Normalizer<GroupMemberEntity> = (_, store, entity) => {
+  const { id, user, permission } = entity;
+  if (user === undefined) {
+    return;
+  }
+
+  store.GroupMember[id] = {
+    ...base(entity),
+    userSummaryId: user.summaryId,
+    permission
+  };
+};
+
+const normalizeGroupPlaylist: Normalizer<GroupPlaylistEntity> = (_, store, entity) => {
+  const { id, playlist } = entity;
+  if (playlist === undefined) {
+    return;
+  }
+
+  store.GroupPlaylist[id] = {
+    ...base(entity),
+    playlistSummaryId: playlist.summaryId
   };
 };
 
@@ -551,6 +602,10 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   ExerciseReport: normalizeExerciseReport,
   ExerciseSummary: normalizeExerciseSummary,
   ExerciseVote: normalizeExerciseVote,
+  Group: normalizeGroup,
+  GroupExercise: normalizeGroupExercise,
+  GroupMember: normalizeGroupMember,
+  GroupPlaylist: normalizeGroupPlaylist,
   Playlist: normalizePlaylist,
   PlaylistBookmark: normalizePlaylistBookmark,
   PlaylistItem: normalizePlaylistItem,

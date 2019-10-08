@@ -6,6 +6,10 @@ import { ExerciseObjectionEntity } from "./ExerciseObjectionEntity";
 import { ExerciseReportEntity } from "./ExerciseReportEntity";
 import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";
 import { ExerciseVoteEntity } from "./ExerciseVoteEntity";
+import { GroupEntity } from "./GroupEntity";
+import { GroupExerciseEntity } from "./GroupExerciseEntity";
+import { GroupMemberEntity } from "./GroupMemberEntity";
+import { GroupPlaylistEntity } from "./GroupPlaylistEntity";
 import { PlaylistBookmarkEntity } from "./PlaylistBookmarkEntity";
 import { PlaylistEntity } from "./PlaylistEntity";
 import { PlaylistItemEntity } from "./PlaylistItemEntity";
@@ -38,6 +42,10 @@ export * from "./ExerciseObjectionEntity";
 export * from "./ExerciseReportEntity";
 export * from "./ExerciseSummaryEntity";
 export * from "./ExerciseVoteEntity";
+export * from "./GroupEntity";
+export * from "./GroupExerciseEntity";
+export * from "./GroupMemberEntity";
+export * from "./GroupPlaylistEntity";
 export * from "./PlaylistBookmarkEntity";
 export * from "./PlaylistEntity";
 export * from "./PlaylistItemEntity";
@@ -71,6 +79,10 @@ export type Entity =
   | ExerciseReportEntity
   | ExerciseSummaryEntity
   | ExerciseVoteEntity
+  | GroupEntity
+  | GroupExerciseEntity
+  | GroupMemberEntity
+  | GroupPlaylistEntity
   | PlaylistBookmarkEntity
   | PlaylistEntity
   | PlaylistItemEntity
@@ -104,6 +116,10 @@ export const entities = Object.values({
   ExerciseReport: ExerciseReportEntity,
   ExerciseSummary: ExerciseSummaryEntity,
   ExerciseVote: ExerciseVoteEntity,
+  Group: GroupEntity,
+  GroupExercise: GroupExerciseEntity,
+  GroupMember: GroupMemberEntity,
+  GroupPlaylist: GroupPlaylistEntity,
   Playlist: PlaylistEntity,
   PlaylistBookmark: PlaylistBookmarkEntity,
   PlaylistItem: PlaylistItemEntity,

@@ -8,6 +8,10 @@ import {
   ExerciseReport,
   ExerciseSummary,
   ExerciseVote,
+  Group,
+  GroupExercise,
+  GroupMember,
+  GroupPlaylist,
   Permission,
   Playlist,
   PlaylistBookmark,
@@ -122,6 +126,30 @@ const parseExerciseVote: Parser<ExerciseVote> = query => {
     ...base(query),
     targetId,
     voterId
+  };
+};
+
+const parseGroup: Parser<Group> = query => {
+  return {
+    ...base(query)
+  };
+};
+
+const parseGroupExercise: Parser<GroupExercise> = query => {
+  return {
+    ...base(query)
+  };
+};
+
+const parseGroupMember: Parser<GroupMember> = query => {
+  return {
+    ...base(query)
+  };
+};
+
+const parseGroupPlaylist: Parser<GroupPlaylist> = query => {
+  return {
+    ...base(query)
   };
 };
 
@@ -305,6 +333,10 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   ExerciseReport: parseExerciseReport,
   ExerciseSummary: parseExerciseSummary,
   ExerciseVote: parseExerciseVote,
+  Group: parseGroup,
+  GroupExercise: parseGroupExercise,
+  GroupMember: parseGroupMember,
+  GroupPlaylist: parseGroupPlaylist,
   Playlist: parsePlaylist,
   PlaylistBookmark: parsePlaylistBookmark,
   PlaylistItem: parsePlaylistItem,
