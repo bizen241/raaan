@@ -6,7 +6,7 @@ import { UserEntity } from "../database/entities";
 import { Env } from "../env";
 import { createGitHubStrategy } from "./strategies/github";
 
-export const prepareAuth = (env: Env, app: Express) => {
+export const useAuth = (env: Env, app: Express) => {
   passport.use("github", createGitHubStrategy(env.github.clientId, env.github.clientSecret));
 
   passport.serializeUser((user: UserEntity, done) => {

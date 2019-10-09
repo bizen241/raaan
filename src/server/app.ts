@@ -1,18 +1,16 @@
 import * as compression from "compression";
 import * as express from "express";
-import * as session from "express-session";
 import * as helmet from "helmet";
 import { join } from "path";
 import * as serveStatic from "serve-static";
-import * as uuid from "uuid/v4";
-import { prepareApi } from "./api";
-import { prepareAuth } from "./auth";
+import { useApi } from "./api";
+import { useAuth } from "./auth";
 import { Env } from "./env";
 import { useLimiter } from "./limiter";
 import { authRouter } from "./routes/auth";
 import { fallbackRouter } from "./routes/fallback";
 import { logoutRouter } from "./routes/logout";
-import SessionStore from "./session/store";
+import { useSession } from "./session";
 
 export const createApp = (env: Env, app: express.Express = express()) => {
   app.use(
@@ -29,28 +27,14 @@ export const createApp = (env: Env, app: express.Express = express()) => {
     })
   );
 
-  app.use(
-    session({
-      store: new SessionStore(),
-      secret: env.session.secret,
-      cookie: {
-        sameSite: "Lax",
-        secure: env.server.host === "localhost" ? false : true
-      },
-      genid: () => uuid(),
-      resave: false,
-      saveUninitialized: false
-    })
-  );
-
-  prepareAuth(env, app);
+  useSession(env, app);
+  useAuth(env, app);
 
   app.use(compression());
   app.use(serveStatic(join(process.cwd(), "dist")));
 
   useLimiter(app);
-
-  prepareApi(env, app);
+  useApi(env, app);
 
   app.use("/auth", authRouter);
   app.use("/logout", logoutRouter);

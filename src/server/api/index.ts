@@ -7,7 +7,7 @@ import { Env } from "../env";
 import { createApiDoc } from "./doc";
 import { securityHandlers } from "./security";
 
-export const prepareApi = (env: Env, app: Express) => {
+export const useApi = (env: Env, app: Express) => {
   initialize({
     apiDoc: createApiDoc(env),
     app,
