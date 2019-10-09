@@ -1,6 +1,6 @@
 import { Store } from "express-rate-limit";
 import { getManager, LessThan } from "typeorm";
-import { RateLimitEntity } from "../server/database/entities/RateLimitEntity";
+import { RateLimitEntity } from "../database/entities/RateLimitEntity";
 
 export class RateLimitStore implements Store {
   clearExpiredTimeout?: NodeJS.Timeout;
