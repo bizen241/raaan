@@ -8,6 +8,7 @@ import * as uuid from "uuid/v4";
 import { prepareApi } from "./api";
 import { prepareAuth } from "./auth";
 import { Env } from "./env";
+import { useLimiter } from "./limiter";
 import { authRouter } from "./routes/auth";
 import { fallbackRouter } from "./routes/fallback";
 import { logoutRouter } from "./routes/logout";
@@ -46,6 +47,8 @@ export const createApp = (env: Env, app: express.Express = express()) => {
 
   app.use(compression());
   app.use(serveStatic(join(process.cwd(), "dist")));
+
+  useLimiter(app);
 
   prepareApi(env, app);
 

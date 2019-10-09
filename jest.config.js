@@ -10,6 +10,7 @@ const initialOptions = {
       tsConfig: "config/tsconfig.test.json"
     }
   },
+  testEnvironment: "node",
   testMatch: ["**/__tests__/**.test.{ts, tsx}"],
   coverageReporters: ["text", "lcov"],
   collectCoverageFrom: ["src/**/*.{ts,tsx}", "!**/__tests__/**"]

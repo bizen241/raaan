@@ -16,6 +16,7 @@ import { PlaylistItemEntity } from "./PlaylistItemEntity";
 import { PlaylistObjectionEntity } from "./PlaylistObjectionEntity";
 import { PlaylistReportEntity } from "./PlaylistReportEntity";
 import { PlaylistSummaryEntity } from "./PlaylistSummaryEntity";
+import { RateLimitEntity } from "./RateLimitEntity";
 import { RevisionEntity } from "./RevisionEntity";
 import { RevisionSummaryEntity } from "./RevisionSummaryEntity";
 import { SubmissionEntity } from "./SubmissionEntity";
@@ -108,40 +109,43 @@ export type Entity =
   | UserSessionEntity
   | UserSummaryEntity;
 
-export const entities = Object.values({
-  Exercise: ExerciseEntity,
-  ExerciseDiary: ExerciseDiaryEntity,
-  ExerciseDraft: ExerciseDraftEntity,
-  ExerciseObjection: ExerciseObjectionEntity,
-  ExerciseReport: ExerciseReportEntity,
-  ExerciseSummary: ExerciseSummaryEntity,
-  ExerciseVote: ExerciseVoteEntity,
-  Group: GroupEntity,
-  GroupExercise: GroupExerciseEntity,
-  GroupMember: GroupMemberEntity,
-  GroupPlaylist: GroupPlaylistEntity,
-  Playlist: PlaylistEntity,
-  PlaylistBookmark: PlaylistBookmarkEntity,
-  PlaylistItem: PlaylistItemEntity,
-  PlaylistObjection: PlaylistObjectionEntity,
-  PlaylistReport: PlaylistReportEntity,
-  PlaylistSummary: PlaylistSummaryEntity,
-  Revision: RevisionEntity,
-  RevisionSummary: RevisionSummaryEntity,
-  Submission: SubmissionEntity,
-  SubmissionSummary: SubmissionSummaryEntity,
-  Synonym: SynonymEntity,
-  SynonymReport: SynonymReportEntity,
-  Tag: TagEntity,
-  TagFollow: TagFollowEntity,
-  TagSummary: TagSummaryEntity,
-  User: UserEntity,
-  UserAccount: UserAccountEntity,
-  UserConfig: UserConfigEntity,
-  UserDiary: UserDiaryEntity,
-  UserFollow: UserFollowEntity,
-  UserObjection: UserObjectionEntity,
-  UserReport: UserReportEntity,
-  UserSession: UserSessionEntity,
-  UserSummary: UserSummaryEntity
-} as { [P in EntityType]: Function });
+export const entities = [
+  RateLimitEntity,
+  ...Object.values({
+    Exercise: ExerciseEntity,
+    ExerciseDiary: ExerciseDiaryEntity,
+    ExerciseDraft: ExerciseDraftEntity,
+    ExerciseObjection: ExerciseObjectionEntity,
+    ExerciseReport: ExerciseReportEntity,
+    ExerciseSummary: ExerciseSummaryEntity,
+    ExerciseVote: ExerciseVoteEntity,
+    Group: GroupEntity,
+    GroupExercise: GroupExerciseEntity,
+    GroupMember: GroupMemberEntity,
+    GroupPlaylist: GroupPlaylistEntity,
+    Playlist: PlaylistEntity,
+    PlaylistBookmark: PlaylistBookmarkEntity,
+    PlaylistItem: PlaylistItemEntity,
+    PlaylistObjection: PlaylistObjectionEntity,
+    PlaylistReport: PlaylistReportEntity,
+    PlaylistSummary: PlaylistSummaryEntity,
+    Revision: RevisionEntity,
+    RevisionSummary: RevisionSummaryEntity,
+    Submission: SubmissionEntity,
+    SubmissionSummary: SubmissionSummaryEntity,
+    Synonym: SynonymEntity,
+    SynonymReport: SynonymReportEntity,
+    Tag: TagEntity,
+    TagFollow: TagFollowEntity,
+    TagSummary: TagSummaryEntity,
+    User: UserEntity,
+    UserAccount: UserAccountEntity,
+    UserConfig: UserConfigEntity,
+    UserDiary: UserDiaryEntity,
+    UserFollow: UserFollowEntity,
+    UserObjection: UserObjectionEntity,
+    UserReport: UserReportEntity,
+    UserSession: UserSessionEntity,
+    UserSummary: UserSummaryEntity
+  } as { [P in EntityType]: Function })
+];
