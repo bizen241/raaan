@@ -17,7 +17,7 @@ export const HomePage = React.memo(() => {
     <Page title="ホーム">
       {isGuest && (
         <Column pb={1}>
-          <Button color="primary" icon={<AccountCircle />} label="ログイン" to="/account" />
+          <Button color="primary" icon={<AccountCircle />} label="ログイン" to="/user-account" />
         </Column>
       )}
       {!isGuest && (
@@ -26,10 +26,10 @@ export const HomePage = React.memo(() => {
         </Column>
       )}
       <Column pb={1}>
-        <Button icon={<Search />} label="クイズを探す" to="/search" />
+        <Button icon={<Search />} label="クイズを探す" to="/contents/search" />
       </Column>
       <Column pb={1}>
-        <Button icon={<Edit />} label="クイズを作る" to="/create" />
+        <Button icon={<Edit />} label="クイズを作る" to="/contents/create" />
       </Column>
       {!isGuest && (
         <Column pb={1}>

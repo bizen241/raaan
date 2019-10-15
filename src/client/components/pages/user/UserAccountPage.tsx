@@ -10,7 +10,7 @@ import { Button, Column, Page } from "../../ui";
 import { useStyles } from "../../ui/styles";
 import { UserAccountViewer } from "../../viewer/UserAccountViewer";
 
-export const AccountPage = React.memo(() => {
+export const UserAccountPage = React.memo(() => {
   const classes = useStyles();
   const currentUser = useContext(UserContext);
 
@@ -38,7 +38,7 @@ export const AccountPage = React.memo(() => {
           </Card>
         </Box>
         <Column pb={1}>
-          <Button label="セッション一覧" to="/security" />
+          <Button label="セッション一覧" to="/user-sessions" />
         </Column>
         <Column pb={1}>
           <Button label={<Message id="logout" />} labelColor="error" onClick={onToggleLogoutDialog} />

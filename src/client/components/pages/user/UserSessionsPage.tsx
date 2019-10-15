@@ -4,7 +4,7 @@ import { UserSessionList } from "../../list/UserSessionList";
 import { UserContext } from "../../project/Context";
 import { Page } from "../../ui/Page";
 
-export const SecurityPage = () => {
+export const UserSessionsPage = () => {
   const currentUser = useContext(UserContext);
 
   return (

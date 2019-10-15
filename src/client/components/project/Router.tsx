@@ -11,10 +11,10 @@ import { HomePage } from "../pages/HomePage";
 import { LoadingPage } from "../pages/LoadingPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { PlaylistPage } from "../pages/playlists/PlaylistPage";
-import { AccountPage } from "../pages/user/AccountPage";
-import { ConfigPage } from "../pages/user/ConfigPage";
-import { HistoryPage } from "../pages/user/HistoryPage";
-import { SecurityPage } from "../pages/user/SecurityPage";
+import { SubmissionsPage } from "../pages/submissions/SubmissionsPage";
+import { UserAccountPage } from "../pages/user/UserAccountPage";
+import { UserConfigPage } from "../pages/user/UserConfigPage";
+import { UserSessionsPage } from "../pages/user/UserSessionsPage";
 import { UserContentsPage } from "../pages/users/UserContentsPage";
 import { UserPage } from "../pages/users/UserPage";
 
@@ -34,13 +34,14 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/" component={HomePage} />
         <Route exact={true} path="/app" component={AppPage} />
 
+        <Route exact={true} path="/user-config" component={UserConfigPage} />
+        <Route exact={true} path="/user-account" component={UserAccountPage} />
+        <Route exact={true} path="/user-sessions" component={UserSessionsPage} />
+
+        <Route exact={true} path="/submissions" component={SubmissionsPage} />
+
         <Route exact={true} path="/contents/search" component={SearchPage} />
         <Route exact={true} path="/contents/create" component={CreatePage} />
-
-        <Route exact={true} path="/user/config" component={ConfigPage} />
-        <Route exact={true} path="/user/account" component={AccountPage} />
-        <Route exact={true} path="/user/sessions" component={SecurityPage} />
-        <Route exact={true} path="/user/history" component={HistoryPage} />
 
         <Route exact={true} path="/users/:id" component={UserPage} />
         <Route exact={true} path="/users/:id/contents" component={UserContentsPage} />

@@ -5,7 +5,7 @@ import { UserContext } from "../../project/Context";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui/Page";
 
-export const HistoryPage = React.memo<PageProps>(() => {
+export const SubmissionsPage = React.memo<PageProps>(() => {
   const currentUser = useContext(UserContext);
 
   return (

@@ -34,12 +34,12 @@ const UserPageContent = withEntity<User, {}>({ entityType: "User" })(({ entityId
       </Column>
       {isOwn && (
         <Column pb={1}>
-          <Button icon={<Timeline />} label="記録" to={`/stats`} />
+          <Button icon={<Timeline />} label="記録" to={`/statistics`} />
         </Column>
       )}
       {isOwn && (
         <Column pb={1}>
-          <Button icon={<History />} label="復習" to={`/history`} />
+          <Button icon={<History />} label="復習" to={`/submissions`} />
         </Column>
       )}
       {isOwn && (
