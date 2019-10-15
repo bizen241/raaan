@@ -10,7 +10,7 @@ import { ExerciseSummaryList } from "../list/ExerciseSummaryList";
 import { UserContext } from "../project/Context";
 import { Button, Column, Page } from "../ui";
 
-export const EditExercisesPage = React.memo(() => {
+export const CreatePage = React.memo(() => {
   const currentUser = useContext(UserContext);
   const dispatch = useDispatch();
 

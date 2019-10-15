@@ -1,8 +1,6 @@
 import {
-  Avatar,
   Card,
   CardContent,
-  CardHeader,
   CircularProgress,
   Divider,
   IconButton,
@@ -13,13 +11,12 @@ import {
   TablePagination,
   TableRow
 } from "@material-ui/core";
-import { List, Refresh } from "@material-ui/icons";
+import { Refresh } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
 import { EntityObject, EntityType } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { Column, Row } from "../components/ui";
-import { useStyles } from "../components/ui/styles";
 import { useSearch } from "../hooks/useSearch";
 
 interface EntityListParams {
@@ -48,8 +45,6 @@ export const createEntityList = <E extends EntityObject>({ entityType, itemHeigh
   ParamsComponent?: React.ComponentType<EntityListParamsProps<E>>
 ) =>
   React.memo<EntityListProps<E>>(({ elevation, initialParams }) => {
-    const classes = useStyles();
-
     const { entities, params, status, limit, offset, count, onReload, onChange } = useSearch(entityType, initialParams);
 
     const isLoading = status !== undefined && status !== 200;
@@ -57,26 +52,19 @@ export const createEntityList = <E extends EntityObject>({ entityType, itemHeigh
 
     return (
       <Card elevation={elevation}>
-        {ParamsComponent === undefined ? (
-          <CardHeader
-            avatar={
-              <Avatar className={classes.cardAvatar}>
-                <List />
-              </Avatar>
-            }
-            action={
-              <IconButton onClick={onReload}>
-                <Refresh />
-              </IconButton>
-            }
-          />
-        ) : (
-          <CardContent>
-            <Column>
+        <CardContent>
+          <Column>
+            {ParamsComponent === undefined ? (
+              <Row pb={1}>
+                <IconButton onClick={onReload}>
+                  <Refresh />
+                </IconButton>
+              </Row>
+            ) : (
               <ParamsComponent params={params} onReload={onReload} onChange={onChange} />
-            </Column>
-          </CardContent>
-        )}
+            )}
+          </Column>
+        </CardContent>
         <Divider />
         <Table>
           <TableBody>

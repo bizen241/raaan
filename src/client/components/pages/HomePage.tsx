@@ -26,10 +26,10 @@ export const HomePage = React.memo(() => {
         </Column>
       )}
       <Column pb={1}>
-        <Button icon={<Search />} label="クイズを探す" to="/contents" />
+        <Button icon={<Search />} label="クイズを探す" to="/search" />
       </Column>
       <Column pb={1}>
-        <Button icon={<Edit />} label="クイズを作る" to="/exercises/edit" />
+        <Button icon={<Edit />} label="クイズを作る" to="/create" />
       </Column>
       {!isGuest && (
         <Column pb={1}>

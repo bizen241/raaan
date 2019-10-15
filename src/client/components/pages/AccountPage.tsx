@@ -38,7 +38,7 @@ const AccountPage = React.memo(() => {
           </Card>
         </Box>
         <Column pb={1}>
-          <Button label="セッション一覧" to="/sessions" />
+          <Button label="セッション一覧" to="/security" />
         </Column>
         <Column pb={1}>
           <Button label={<Message id="logout" />} labelColor="error" onClick={onToggleLogoutDialog} />
