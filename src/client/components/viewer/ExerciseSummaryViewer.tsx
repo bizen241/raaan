@@ -18,7 +18,7 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
     const classes = useStyles();
     const currentUser = useContext(UserContext);
 
-    const { exerciseId, draftId } = exerciseSummary;
+    const { exerciseId } = exerciseSummary;
 
     const [isPublishExerciseDialogOpen, onTogglePublishExerciseDialog] = useToggleState();
     const [isUnpublishExerciseDialogOpen, onToggleUnpublishExerciseDialog] = useToggleState();
@@ -49,7 +49,7 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
           action={
             <Menu>
               {isAuthor && (
-                <MenuItem component={RouterLink} to={`/exercise-drafts/${draftId}/edit`}>
+                <MenuItem component={RouterLink} to={`/exercises/${exerciseId}/edit`}>
                   <Edit className={classes.leftIcon} />
                   編集する
                 </MenuItem>

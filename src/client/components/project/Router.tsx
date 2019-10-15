@@ -5,6 +5,7 @@ import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { RootState } from "../../reducers";
 import AccountPage from "../pages/AccountPage";
 import AppPage from "../pages/AppPage";
+import { ConfigPage } from "../pages/ConfigPage";
 import { CreatePage } from "../pages/CreatePage";
 import EditPlaylistPage from "../pages/EditPlaylistPage";
 import { ExercisePage } from "../pages/ExercisePage";
@@ -20,8 +21,7 @@ import { UserPage } from "../pages/UserPage";
 
 export type PageProps = RouteComponentProps<{ id: string; name: string }>;
 
-const ConfigPage = React.lazy(() => import("../pages/ConfigPage"));
-const EditExerciseDraftPage = React.lazy(() => import("../pages/EditExercisePage"));
+const EditExercisePage = React.lazy(() => import("../pages/EditExercisePage"));
 
 export const Router = React.memo(() => {
   const { location } = useSelector((state: RootState) => ({
@@ -42,7 +42,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/users/:id" component={UserPage} />
         <Route exact={true} path="/users/:id/contents" component={UserContentsPage} />
         <Route exact={true} path="/exercises/:id" component={ExercisePage} />
-        <Route exact={true} path="/exercise-drafts/:id/edit" component={EditExerciseDraftPage} />
+        <Route exact={true} path="/exercises/:id/edit" component={EditExercisePage} />
         <Route exact={true} path="/playlists/:id" component={PlaylistPage} />
         <Route exact={true} path="/playlists/:id/edit" component={EditPlaylistPage} />
         <Route component={NotFoundPage} />

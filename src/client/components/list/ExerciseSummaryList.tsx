@@ -25,7 +25,7 @@ export const ExerciseSummaryList = createEntityList<ExerciseSummary>({ entityTyp
         </TableCell>
         {exerciseSummary.authorId === currentUser.id ? (
           <TableCell padding="checkbox">
-            <IconButton component={RouterLink} to={`/exercise-drafts/${exerciseSummary.draftId}/edit`}>
+            <IconButton component={RouterLink} to={`/exercises/${exerciseSummary.exerciseId}/edit`}>
               <Edit />
             </IconButton>
           </TableCell>

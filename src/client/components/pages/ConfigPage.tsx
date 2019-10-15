@@ -4,7 +4,7 @@ import { UserConfigEditor } from "../editor/UserConfigEditor";
 import { UserContext } from "../project/Context";
 import { Page } from "../ui/Page";
 
-const ConfigPage = React.memo(() => {
+export const ConfigPage = React.memo(() => {
   const currentUser = useContext(UserContext);
 
   return (
@@ -13,5 +13,3 @@ const ConfigPage = React.memo(() => {
     </Page>
   );
 });
-
-export default ConfigPage;
