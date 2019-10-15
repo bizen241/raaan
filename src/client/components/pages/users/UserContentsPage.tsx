@@ -2,12 +2,12 @@ import { Divider, Paper, Tab, Tabs, Typography } from "@material-ui/core";
 import { Bookmarks } from "@material-ui/icons";
 import { useContext, useMemo, useState } from "react";
 import * as React from "react";
-import { ExerciseSummaryList } from "../list/ExerciseSummaryList";
-import { PlaylistSummaryList } from "../list/PlaylistSummaryList";
-import { UserContext } from "../project/Context";
-import { PageProps } from "../project/Router";
-import { Button, Column } from "../ui";
-import { Page } from "../ui/Page";
+import { ExerciseSummaryList } from "../../list/ExerciseSummaryList";
+import { PlaylistSummaryList } from "../../list/PlaylistSummaryList";
+import { UserContext } from "../../project/Context";
+import { PageProps } from "../../project/Router";
+import { Button, Column } from "../../ui";
+import { Page } from "../../ui/Page";
 
 export const UserContentsPage = React.memo<PageProps>(({ match }) => {
   const userId = match.params.id;

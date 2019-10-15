@@ -4,11 +4,11 @@ import { push } from "connected-react-router";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
 import { useDispatch } from "react-redux";
-import { generateBufferId } from "../../reducers/buffers";
-import { ExerciseDraftBufferList } from "../list/ExerciseDraftBufferList";
-import { ExerciseSummaryList } from "../list/ExerciseSummaryList";
-import { UserContext } from "../project/Context";
-import { Button, Column, Page } from "../ui";
+import { generateBufferId } from "../../../reducers/buffers";
+import { ExerciseDraftBufferList } from "../../list/ExerciseDraftBufferList";
+import { ExerciseSummaryList } from "../../list/ExerciseSummaryList";
+import { UserContext } from "../../project/Context";
+import { Button, Column, Page } from "../../ui";
 
 export const CreatePage = React.memo(() => {
   const currentUser = useContext(UserContext);

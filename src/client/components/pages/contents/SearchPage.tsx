@@ -1,9 +1,9 @@
 import { Divider, Paper, Tab, Tabs, Typography } from "@material-ui/core";
 import * as React from "react";
 import { useState } from "react";
-import { ExerciseSummaryList } from "../list/ExerciseSummaryList";
-import { PlaylistSummaryList } from "../list/PlaylistSummaryList";
-import { Page } from "../ui";
+import { ExerciseSummaryList } from "../../list/ExerciseSummaryList";
+import { PlaylistSummaryList } from "../../list/PlaylistSummaryList";
+import { Page } from "../../ui";
 
 export const SearchPage = React.memo(() => {
   const [tab, setTab] = useState<"exercises" | "playlists">("exercises");

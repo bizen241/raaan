@@ -2,13 +2,13 @@ import { Avatar, Box, Card, CardContent, CardHeader, Typography } from "@materia
 import { AccountCircle } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
-import { DeleteAccountDialog } from "../dialogs/DeleteAccountDialog";
-import { LogoutDialog } from "../dialogs/LogoutDialog";
-import { UserContext } from "../project/Context";
-import { Message } from "../project/Message";
-import { Button, Column, Page } from "../ui";
-import { useStyles } from "../ui/styles";
-import { UserAccountViewer } from "../viewer/UserAccountViewer";
+import { DeleteAccountDialog } from "../../dialogs/DeleteAccountDialog";
+import { LogoutDialog } from "../../dialogs/LogoutDialog";
+import { UserContext } from "../../project/Context";
+import { Message } from "../../project/Message";
+import { Button, Column, Page } from "../../ui";
+import { useStyles } from "../../ui/styles";
+import { UserAccountViewer } from "../../viewer/UserAccountViewer";
 
 const AccountPage = React.memo(() => {
   const classes = useStyles();

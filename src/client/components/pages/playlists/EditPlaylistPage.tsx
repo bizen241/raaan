@@ -1,7 +1,7 @@
 import * as React from "react";
-import { PlaylistEditor } from "../editor/PlaylistEditor";
-import { PageProps } from "../project/Router";
-import { Page } from "../ui/Page";
+import { PlaylistEditor } from "../../editor/PlaylistEditor";
+import { PageProps } from "../../project/Router";
+import { Page } from "../../ui/Page";
 
 const EditPlaylistPage = React.memo<PageProps>(({ match }) => {
   const playlistId = match.params.id;
