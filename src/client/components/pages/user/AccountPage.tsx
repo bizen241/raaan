@@ -10,7 +10,7 @@ import { Button, Column, Page } from "../../ui";
 import { useStyles } from "../../ui/styles";
 import { UserAccountViewer } from "../../viewer/UserAccountViewer";
 
-const AccountPage = React.memo(() => {
+export const AccountPage = React.memo(() => {
   const classes = useStyles();
   const currentUser = useContext(UserContext);
 
@@ -58,5 +58,3 @@ const AccountPage = React.memo(() => {
     );
   }
 });
-
-export default AccountPage;

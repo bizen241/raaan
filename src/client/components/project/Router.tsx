@@ -3,16 +3,15 @@ import { Suspense } from "react";
 import { useSelector } from "react-redux";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { RootState } from "../../reducers";
-import AppPage from "../pages/AppPage";
+import { AppPage } from "../pages/AppPage";
 import { CreatePage } from "../pages/contents/CreatePage";
 import { SearchPage } from "../pages/contents/SearchPage";
 import { ExercisePage } from "../pages/exercises/ExercisePage";
 import { HomePage } from "../pages/HomePage";
 import { LoadingPage } from "../pages/LoadingPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
-import EditPlaylistPage from "../pages/playlists/EditPlaylistPage";
 import { PlaylistPage } from "../pages/playlists/PlaylistPage";
-import AccountPage from "../pages/user/AccountPage";
+import { AccountPage } from "../pages/user/AccountPage";
 import { ConfigPage } from "../pages/user/ConfigPage";
 import { HistoryPage } from "../pages/user/HistoryPage";
 import { SecurityPage } from "../pages/user/SecurityPage";
@@ -22,6 +21,7 @@ import { UserPage } from "../pages/users/UserPage";
 export type PageProps = RouteComponentProps<{ id: string; name: string }>;
 
 const EditExercisePage = React.lazy(() => import("../pages/exercises/EditExercisePage"));
+const EditPlaylistPage = React.lazy(() => import("../pages/playlists/EditPlaylistPage"));
 
 export const Router = React.memo(() => {
   const { location } = useSelector((state: RootState) => ({

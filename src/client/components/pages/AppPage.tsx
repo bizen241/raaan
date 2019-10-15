@@ -7,7 +7,7 @@ import { Message } from "../project/Message";
 import { Button, Column, Page, Row } from "../ui";
 import { useStyles } from "../ui/styles";
 
-const AppPage = React.memo(() => {
+export const AppPage = React.memo(() => {
   const classes = useStyles();
 
   const { hasUpdate } = useSelector((state: RootState) => ({
@@ -46,5 +46,3 @@ const AppPage = React.memo(() => {
     </Page>
   );
 });
-
-export default AppPage;
