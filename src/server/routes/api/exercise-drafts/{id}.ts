@@ -14,6 +14,34 @@ import {
   RevisionSummaryEntity
 } from "../../../database/entities";
 
+export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
+  const { id: exerciseDraftId }: PathParams = req.params;
+
+  const exerciseDraft = await getManager().findOne(ExerciseDraftEntity, exerciseDraftId, {
+    relations: ["exercise"]
+  });
+  if (exerciseDraft === undefined) {
+    return next(createError(404));
+  }
+  if (exerciseDraft.exercise === undefined) {
+    return next(createError(500));
+  }
+
+  const isAuthor = exerciseDraft.exercise.authorId === currentUser.id;
+  if (!isAuthor) {
+    return next(createError(403));
+  }
+
+  responseFindResult(req, res, exerciseDraft);
+});
+
+GET.apiDoc = createOperationDoc({
+  entityType: "ExerciseDraft",
+  summary: "Get an draft of exercise",
+  permission: "Read",
+  hasId: true
+});
+
 export const PATCH: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { id: exerciseDraftId }: PathParams = req.params;
   const params: Params<ExerciseDraft> = req.body;
