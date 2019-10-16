@@ -28,7 +28,7 @@ export const Button = React.memo<{
 
   return (
     <MuiButton className={buttonClasses.button} variant="contained" {...props} {...linkProps}>
-      {icon && icon}
+      {icon}
       <Typography className={icon !== undefined ? buttonClasses.label : undefined} color={labelColor}>
         {label}
       </Typography>

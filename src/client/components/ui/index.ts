@@ -2,6 +2,7 @@ export * from "./Button";
 export * from "./Column";
 export * from "./Dialog";
 export * from "./Menu";
+export * from "./MenuItem";
 export * from "./Page";
 export * from "./Row";
 export * from "./Search";
