@@ -1,4 +1,15 @@
-import { Box, Card, IconButton, Link, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
+import {
+  Box,
+  Card,
+  IconButton,
+  Link,
+  MenuItem,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Typography
+} from "@material-ui/core";
 import { PlayArrow, Shuffle } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useMemo, useState } from "react";
@@ -8,8 +19,9 @@ import { randomizePlaylistItems, sortPlaylistItems } from "../../domain/playlist
 import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
+import { DeletePlaylistItemDialog } from "../dialogs/DeletePlaylistItemDialog";
 import { PlaylistPlayer } from "../player/dialogs/PlaylistPlayer";
-import { Button, Column } from "../ui";
+import { Button, Column, Menu } from "../ui";
 import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 
 export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
@@ -56,6 +68,7 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
                 <PlaylistItemViewer
                   key={playlistItem.id}
                   index={index}
+                  playlistId={playlistId}
                   playlistItem={playlistItem}
                   onPlay={onPartialPlay}
                 />
@@ -75,10 +88,13 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
 
 const PlaylistItemViewer = React.memo<{
   index: number;
+  playlistId: string;
   playlistItem: PlaylistItem;
   onPlay: (index: number) => void;
-}>(({ index, playlistItem, onPlay }) => {
+}>(({ index, playlistId, playlistItem, onPlay }) => {
   const { exerciseSummaryId, memo } = playlistItem;
+
+  const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
   return (
     <TableRow>
@@ -93,6 +109,20 @@ const PlaylistItemViewer = React.memo<{
           <PlayArrow />
         </IconButton>
       </TableCell>
+      <TableCell padding="checkbox">
+        <Menu>
+          <MenuItem onClick={onToggleDeleteDialog}>移動</MenuItem>
+        </Menu>
+        <Menu>
+          <MenuItem onClick={onToggleDeleteDialog}>削除</MenuItem>
+        </Menu>
+      </TableCell>
+      <DeletePlaylistItemDialog
+        playlistItemId={playlistItem.id}
+        playlistId={playlistId}
+        isOpen={isDeleteDialogOpen}
+        onClose={onToggleDeleteDialog}
+      />
     </TableRow>
   );
 });

@@ -1,7 +1,7 @@
 import { TextField, Typography } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Playlist } from "../../../shared/api/entities";
 import { createDialog } from "../../enhancers/createDialog";
@@ -38,7 +38,11 @@ export const PlaylistDialog = createDialog<{
       );
     };
 
-    console.log(uploadStatus);
+    useEffect(() => {
+      if (uploadStatus === 200) {
+        onClose();
+      }
+    }, [uploadStatus]);
 
     return (
       <>

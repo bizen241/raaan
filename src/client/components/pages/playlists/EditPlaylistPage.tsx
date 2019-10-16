@@ -8,7 +8,7 @@ const EditPlaylistPage = React.memo<PageProps>(({ match }) => {
 
   return (
     <Page>
-      <PlaylistEditor entityId={playlistId} />
+      <PlaylistEditor bufferId={playlistId} />
     </Page>
   );
 });

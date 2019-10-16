@@ -15,8 +15,7 @@ interface Props<E extends EntityObject> {
   onChange: (params: Params<E>) => void;
 }
 
-export const withBuffer = <E extends EntityObject>(
-  entityType: EntityType,
+export const withBuffer = <E extends EntityObject>(entityType: EntityType) => (
   BaseComponent: React.ComponentType<Props<E>>
 ) =>
   React.memo<{ bufferId: string }>(({ bufferId }) => {

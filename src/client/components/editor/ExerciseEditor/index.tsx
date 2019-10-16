@@ -11,8 +11,7 @@ import { UserContext } from "../../project/Context";
 import { Button, Column } from "../../ui";
 import { QuestionsEditor } from "./QuestionsEditor";
 
-export const ExerciseDraftEditor = withBuffer<ExerciseDraft>(
-  "ExerciseDraft",
+export const ExerciseDraftEditor = withBuffer<ExerciseDraft>("ExerciseDraft")(
   React.memo(props => {
     const { bufferId, buffer = {}, source = {}, onChange } = props;
 

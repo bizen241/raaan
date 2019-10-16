@@ -21,8 +21,7 @@ const colorSchemeToLabel: { [T in UserSettings["ui.colorScheme"]]: string } = {
   light: "light"
 };
 
-export const UserConfigEditor = withBuffer<UserConfig>(
-  "UserConfig",
+export const UserConfigEditor = withBuffer<UserConfig>("UserConfig")(
   React.memo(props => {
     const { bufferId, buffer = {}, source = {}, onChange } = props;
 
