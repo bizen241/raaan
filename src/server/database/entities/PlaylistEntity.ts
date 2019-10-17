@@ -33,7 +33,7 @@ export class PlaylistEntity extends BaseEntityClass {
   description: string = "";
 
   @Column()
-  orderBy: OrderBy = "manual_bottom";
+  orderBy: OrderBy = "manual-last";
 
   @Column()
   isPrivate: boolean = true;

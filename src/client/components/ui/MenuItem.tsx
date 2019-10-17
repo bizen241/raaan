@@ -34,7 +34,7 @@ export const MenuItem = React.memo<{
   );
 });
 
-export const useMenuItemStyles = makeStyles(() => ({
+const useMenuItemStyles = makeStyles(() => ({
   label: {
     minWidth: "100px",
     marginLeft: "8px"

@@ -1,27 +1,15 @@
-import {
-  Box,
-  Card,
-  IconButton,
-  Link,
-  MenuItem,
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  Typography
-} from "@material-ui/core";
-import { PlayArrow, Shuffle } from "@material-ui/icons";
+import { Card, CardContent, Divider, IconButton, Table, TableBody } from "@material-ui/core";
+import { PlayArrow, Refresh, Shuffle } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useMemo, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
-import { ExerciseSummary, Playlist, PlaylistItem } from "../../../shared/api/entities";
+import { Playlist, PlaylistItem } from "../../../shared/api/entities";
 import { randomizePlaylistItems, sortPlaylistItems } from "../../domain/playlist";
 import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
-import { DeletePlaylistItemDialog } from "../dialogs/DeletePlaylistItemDialog";
 import { PlaylistPlayer } from "../player/dialogs/PlaylistPlayer";
-import { Button, Column, Menu } from "../ui";
+import { Button, Column, Row } from "../ui";
+import { PlaylistItemViewer } from "./PlaylistItemViewer";
 import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 
 export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
@@ -29,7 +17,7 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
     const [isPlaylistPlayerOpen, onTogglePlaylistPlayer] = useToggleState();
     const [requestedPlaylistItems, requestPlaylistItems] = useState<PlaylistItem[]>([]);
 
-    const { entities: playlistItems, count } = useSearch<PlaylistItem>("PlaylistItem", {
+    const { entities: playlistItems, count, onReload } = useSearch<PlaylistItem>("PlaylistItem", {
       playlistId
     });
     const sortedPlaylistItems = useMemo(() => sortPlaylistItems(playlistItems, playlist.orderBy), [playlistItems]);
@@ -62,14 +50,26 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
           <PlaylistSummaryViewer entityId={playlist.summaryId} />
         </Column>
         <Card>
+          <CardContent>
+            <Column>
+              <Row>
+                <IconButton onClick={onReload}>
+                  <Refresh />
+                </IconButton>
+              </Row>
+            </Column>
+          </CardContent>
+          <Divider />
           <Table>
             <TableBody>
               {sortedPlaylistItems.map((playlistItem, index) => (
                 <PlaylistItemViewer
                   key={playlistItem.id}
                   index={index}
-                  playlistId={playlistId}
                   playlistItem={playlistItem}
+                  playlistId={playlistId}
+                  playlist={playlist}
+                  playlistItems={playlistItems}
                   onPlay={onPartialPlay}
                 />
               ))}
@@ -82,59 +82,6 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
           onClose={onTogglePlaylistPlayer}
         />
       </Column>
-    );
-  })
-);
-
-const PlaylistItemViewer = React.memo<{
-  index: number;
-  playlistId: string;
-  playlistItem: PlaylistItem;
-  onPlay: (index: number) => void;
-}>(({ index, playlistId, playlistItem, onPlay }) => {
-  const { exerciseSummaryId, memo } = playlistItem;
-
-  const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
-
-  return (
-    <TableRow>
-      <TableCell>
-        <Column>
-          {exerciseSummaryId && <ExerciseTitleViewer entityId={exerciseSummaryId} />}
-          <Typography>{memo}</Typography>
-        </Column>
-      </TableCell>
-      <TableCell padding="checkbox">
-        <IconButton onClick={useCallback(() => onPlay(index), [index])}>
-          <PlayArrow />
-        </IconButton>
-      </TableCell>
-      <TableCell padding="checkbox">
-        <Menu>
-          <MenuItem onClick={onToggleDeleteDialog}>移動</MenuItem>
-        </Menu>
-        <Menu>
-          <MenuItem onClick={onToggleDeleteDialog}>削除</MenuItem>
-        </Menu>
-      </TableCell>
-      <DeletePlaylistItemDialog
-        playlistItemId={playlistItem.id}
-        playlistId={playlistId}
-        isOpen={isDeleteDialogOpen}
-        onClose={onToggleDeleteDialog}
-      />
-    </TableRow>
-  );
-});
-
-const ExerciseTitleViewer = withEntity<ExerciseSummary>({ entityType: "ExerciseSummary" })(
-  React.memo(({ entity: exerciseSummary }) => {
-    return (
-      <Box>
-        <Link color="textPrimary" component={RouterLink} to={`/exercises/${exerciseSummary.exerciseId}`}>
-          <Typography>{exerciseSummary.title}</Typography>
-        </Link>
-      </Box>
     );
   })
 );

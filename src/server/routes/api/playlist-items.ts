@@ -1,6 +1,6 @@
 import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager, IsNull } from "typeorm";
+import { getManager } from "typeorm";
 import { PlaylistItem } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
@@ -74,16 +74,22 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
 
     const newPlaylistItem = new PlaylistItemEntity(playlist, exercise, memo);
 
-    await manager.save(newPlaylistItem);
-
-    const lastPlaylistItem = await manager.findOne(PlaylistItemEntity, {
-      next: IsNull()
+    const playlistItems = await manager.find(PlaylistItemEntity, {
+      playlist: {
+        id: playlistId
+      }
     });
 
-    if (lastPlaylistItem === undefined) {
+    await manager.save(newPlaylistItem);
+
+    if (playlistItems.length === 0) {
       return responseFindResult(req, res, newPlaylistItem);
     }
 
+    const lastPlaylistItem = playlistItems.find(playlistItem => playlistItem.nextId === undefined);
+    if (lastPlaylistItem === undefined) {
+      return next(createError(500));
+    }
     lastPlaylistItem.next = newPlaylistItem;
 
     await manager.save(lastPlaylistItem);

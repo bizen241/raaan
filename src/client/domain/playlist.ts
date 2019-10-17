@@ -2,13 +2,24 @@ import { OrderBy, PlaylistItem } from "../../shared/api/entities";
 
 export const sortPlaylistItems = (playlistItems: PlaylistItem[], orderBy: OrderBy) => {
   switch (orderBy) {
-    case "manual_top":
-    case "manual_bottom": {
-      const sortedPlaylistItems: PlaylistItem[] = playlistItems;
-
+    case "manual-last":
+    case "manual-first": {
       const last = playlistItems.find(item => item.nextId === undefined);
       if (last === undefined) {
         return playlistItems;
+      }
+
+      const sortedPlaylistItems = [last];
+
+      let current = last;
+      for (let i = 0; i < playlistItems.length - 1; i++) {
+        const prev = playlistItems.find(item => item.nextId === current.id);
+        if (prev === undefined) {
+          break;
+        }
+
+        current = prev;
+        sortedPlaylistItems.unshift(prev);
       }
 
       return sortedPlaylistItems;

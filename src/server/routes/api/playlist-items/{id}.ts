@@ -13,7 +13,7 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
 
   getManager().transaction(async manager => {
     const playlistItem = await manager.findOne(PlaylistItemEntity, playlistItemId, {
-      relations: ["playlist", "playlist.author", "next"]
+      relations: ["playlist", "next", "exercise"]
     });
     if (playlistItem === undefined) {
       return next(createError(404));
@@ -27,51 +27,76 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
       return next(createError(403));
     }
 
-    const updatedItems = [playlistItem];
-
     if (params.memo !== undefined) {
       playlistItem.memo = params.memo;
+
+      await manager.save(playlistItem);
+
+      return responseFindResult(req, res, playlistItem);
     }
-    if (params.nextId !== undefined) {
-      const nextItem = playlistItem.next;
 
-      if (params.nextId === playlistItemId) {
-        playlistItem.next = null;
-      } else {
-        const newNextItem = await manager.findOne(PlaylistItemEntity, params.nextId);
-        if (newNextItem === undefined) {
-          return next(createError(400));
-        }
+    const updatedItems: PlaylistItemEntity[] = [];
 
-        playlistItem.next = newNextItem;
+    const oldNextItem = playlistItem.next;
 
-        const newPrevItem = await manager.findOne(PlaylistItemEntity, {
-          next: {
-            id: params.nextId
-          }
-        });
+    playlistItem.next = null;
+    await manager.save(playlistItem);
 
-        if (newPrevItem !== undefined) {
-          newPrevItem.next = playlistItem;
-          updatedItems.push(newPrevItem);
-        }
-      }
-
-      const prevItem = await manager.findOne(PlaylistItemEntity, {
+    const oldPrevItem = await manager.findOne(PlaylistItemEntity, {
+      where: {
         next: {
           id: playlistItem.id
         }
-      });
+      },
+      relations: ["exercise"]
+    });
+    if (oldPrevItem !== undefined) {
+      oldPrevItem.next = oldNextItem;
 
-      if (prevItem !== undefined) {
-        prevItem.next = nextItem;
-        updatedItems.push(prevItem);
-      }
+      updatedItems.push(oldPrevItem);
+      await manager.save(oldPrevItem);
     }
 
-    await manager.save(updatedItems);
+    const newPrevItem = await manager.findOne(PlaylistItemEntity, {
+      where: {
+        next: {
+          id: params.nextId
+        }
+      },
+      relations: ["exercise"]
+    });
+    if (newPrevItem !== undefined) {
+      newPrevItem.next = playlistItem;
+
+      updatedItems.push(newPrevItem);
+      await manager.save(newPrevItem);
+    }
+
+    if (params.nextId === undefined) {
+      playlistItem.next = null;
+    } else {
+      const newNextItem = await manager.findOne(PlaylistItemEntity, params.nextId, {
+        relations: ["exercise"]
+      });
+      if (newNextItem === undefined) {
+        return next(createError(400));
+      }
+
+      playlistItem.next = newNextItem;
+    }
+
+    updatedItems.push(playlistItem);
+    await manager.save(playlistItem);
+
     return responseFindResult(req, res, ...updatedItems);
   });
+});
+
+PATCH.apiDoc = createOperationDoc({
+  entityType: "PlaylistItem",
+  summary: "Update a playlist item",
+  permission: "Read",
+  hasBody: true
 });
 
 export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {

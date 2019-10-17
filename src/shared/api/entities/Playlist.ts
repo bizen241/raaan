@@ -1,13 +1,14 @@
 import { BaseEntityObject, UUID } from "./BaseEntityObject";
 
 export type OrderBy =
-  | "manual_top"
-  | "manual_bottom"
-  | "date_published_desc"
-  | "date_published_asc"
-  | "date_added_desc"
-  | "date_added_asc"
-  | "submit_count_desc";
+  | "manual-first"
+  | "manual-last"
+  | "date-published-asc"
+  | "date-published-desc"
+  | "date-added-asc"
+  | "date-added-desc"
+  | "count-submitted-asc"
+  | "count-submitted-desc";
 
 export interface Playlist extends BaseEntityObject {
   authorId: UUID;
