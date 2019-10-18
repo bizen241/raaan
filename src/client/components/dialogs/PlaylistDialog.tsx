@@ -3,13 +3,14 @@ import { Add } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Playlist } from "../../../shared/api/entities";
+import { Playlist, PlaylistItem } from "../../../shared/api/entities";
 import { createDialog } from "../../enhancers/createDialog";
 import { useEntity } from "../../hooks/useEntity";
+import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
 import { actions } from "../../reducers";
 import { generateBufferId } from "../../reducers/buffers";
-import { ExerciseContext, PlaylistSummarySelectList } from "../list/PlaylistSummarySelectList";
+import { ExerciseContext, PlaylistItemsContext, PlaylistSummarySelectList } from "../list/PlaylistSummarySelectList";
 import { UserContext } from "../project/Context";
 import { Button, Column, DialogContent, DialogHeader } from "../ui";
 
@@ -25,6 +26,10 @@ export const PlaylistDialog = createDialog<{
     const [isPlaylistEditorOpen, onTogglePlaylistEditor] = useToggleState();
 
     const { uploadStatus } = useEntity<Playlist>("Playlist", bufferId);
+    const { entities: playlistItems } = useSearch<PlaylistItem>("PlaylistItem", {
+      authorId: currentUser.id,
+      exerciseId
+    });
 
     const onUpdateTitle = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
       setTitle(e.target.value);
@@ -57,12 +62,14 @@ export const PlaylistDialog = createDialog<{
               </Column>
               <Column pb={1}>
                 <ExerciseContext.Provider value={exerciseId}>
-                  <PlaylistSummarySelectList
-                    title="プレイリスト一覧"
-                    initialParams={{
-                      authorId: currentUser.id
-                    }}
-                  />
+                  <PlaylistItemsContext.Provider value={playlistItems}>
+                    <PlaylistSummarySelectList
+                      title="プレイリスト一覧"
+                      initialParams={{
+                        authorId: currentUser.id
+                      }}
+                    />
+                  </PlaylistItemsContext.Provider>
                 </ExerciseContext.Provider>
               </Column>
             </>

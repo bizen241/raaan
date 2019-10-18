@@ -9,7 +9,10 @@ import { responseFindResult, responseSearchResult } from "../../api/response";
 import { ExerciseEntity, PlaylistEntity, PlaylistItemEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { playlistId, exerciseId, searchLimit, searchOffset } = parseQuery<PlaylistItem>("PlaylistItem", req.query);
+  const { authorId, playlistId, exerciseId, searchLimit, searchOffset } = parseQuery<PlaylistItem>(
+    "PlaylistItem",
+    req.query
+  );
 
   const manager = getManager();
 
@@ -33,11 +36,16 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     }
 
     query.andWhere("playlist.id = :playlistId", { playlistId });
-  } else {
-    query.andWhere("playlist.isPrivate = false");
-  }
-  if (exerciseId !== undefined) {
+  } else if (exerciseId !== undefined) {
     query.andWhere("exercise.id = :exerciseId", { exerciseId });
+
+    if (authorId !== undefined && authorId === currentUser.id) {
+      query.andWhere("playlist.authorId = :authorId", { authorId });
+    } else {
+      query.andWhere("playlist.isPrivate = false");
+    }
+  } else {
+    return next(createError(400));
   }
 
   const [playlistItems, count] = await query.getManyAndCount();

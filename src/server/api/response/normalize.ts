@@ -285,7 +285,7 @@ const normalizePlaylistBookmark: Normalizer<PlaylistBookmarkEntity> = (_, store,
 };
 
 const normalizePlaylistItem: Normalizer<PlaylistItemEntity> = (context, store, entity) => {
-  const { id, exercise, nextId, memo } = entity;
+  const { id, playlistId, exercise, nextId, memo } = entity;
   if (exercise === undefined) {
     return;
   }
@@ -294,6 +294,7 @@ const normalizePlaylistItem: Normalizer<PlaylistItemEntity> = (context, store, e
     ...base(entity),
     exerciseId: exercise != null ? exercise.id : undefined,
     exerciseSummaryId: exercise != null ? exercise.summaryId : undefined,
+    playlistId,
     nextId,
     memo
   };

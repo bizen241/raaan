@@ -55,7 +55,7 @@ export const createEntityList = <E extends EntityObject>({ entityType, itemHeigh
         <CardContent>
           <Column>
             {ParamsComponent === undefined ? (
-              <Row pb={1}>
+              <Row>
                 <IconButton onClick={onReload}>
                   <Refresh />
                 </IconButton>
