@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, CardHeader, Chip, MenuItem, Typography } from "@material-ui/core";
-import { Delete, Edit, Lock, Public } from "@material-ui/icons";
+import { Delete, Edit, HowToVote, Lock, Public, ReportProblem } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -24,8 +24,7 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
     const [isUnpublishExerciseDialogOpen, onToggleUnpublishExerciseDialog] = useToggleState();
     const [isDeleteExerciseDialogOpen, onToggleDeleteExerciseDialog] = useToggleState();
 
-    // const isAuthor = exerciseSummary.authorId === currentUser.id;
-    const isAuthor = exerciseSummary.authorId !== currentUser.id;
+    const isAuthor = exerciseSummary.authorId === currentUser.id;
 
     return (
       <Card>
@@ -48,44 +47,40 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
             </Row>
           }
           action={
-            <Menu>
-              {isAuthor && (
+            isAuthor ? (
+              <Menu>
                 <MenuItem component={RouterLink} to={`/exercises/${exerciseId}/edit`}>
                   <Edit className={classes.leftIcon} />
                   編集する
                 </MenuItem>
-              )}
-              {exerciseSummary.isPrivate ? (
-                <MenuItem onClick={onTogglePublishExerciseDialog}>
-                  <Public className={classes.leftIcon} />
-                  公開する
-                </MenuItem>
-              ) : null}
-              {!exerciseSummary.isPrivate ? (
-                <MenuItem onClick={onToggleUnpublishExerciseDialog}>
-                  <Lock className={classes.leftIcon} />
-                  非公開にする
-                </MenuItem>
-              ) : null}
-              {!isAuthor ? (
-                <MenuItem onClick={onTogglePublishExerciseDialog}>
-                  <Public className={classes.leftIcon} />
-                  投票する
-                </MenuItem>
-              ) : null}
-              {!isAuthor ? (
-                <MenuItem onClick={onTogglePublishExerciseDialog}>
-                  <Public className={classes.leftIcon} />
-                  通報する
-                </MenuItem>
-              ) : null}
-              {isAuthor && (
+                {exerciseSummary.isPrivate ? (
+                  <MenuItem onClick={onTogglePublishExerciseDialog}>
+                    <Public className={classes.leftIcon} />
+                    公開する
+                  </MenuItem>
+                ) : (
+                  <MenuItem onClick={onToggleUnpublishExerciseDialog}>
+                    <Lock className={classes.leftIcon} />
+                    非公開にする
+                  </MenuItem>
+                )}
                 <MenuItem onClick={onToggleDeleteExerciseDialog}>
                   <Delete className={classes.leftIcon} />
-                  削除
+                  削除する
                 </MenuItem>
-              )}
-            </Menu>
+              </Menu>
+            ) : (
+              <Menu>
+                <MenuItem onClick={onTogglePublishExerciseDialog}>
+                  <HowToVote className={classes.leftIcon} />
+                  投票する
+                </MenuItem>
+                <MenuItem onClick={onTogglePublishExerciseDialog}>
+                  <ReportProblem className={classes.leftIcon} />
+                  通報する
+                </MenuItem>
+              </Menu>
+            )
           }
         />
         <CardContent>
