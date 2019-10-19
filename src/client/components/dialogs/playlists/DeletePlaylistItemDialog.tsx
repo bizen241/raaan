@@ -3,13 +3,13 @@ import { Warning } from "@material-ui/icons";
 import * as React from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { PlaylistItem } from "../../../shared/api/entities";
-import { createDialog } from "../../enhancers/createDialog";
-import { useEntity } from "../../hooks/useEntity";
-import { useSearch } from "../../hooks/useSearch";
-import { actions } from "../../reducers";
-import { Button, Column, DialogContent, DialogHeader, Row } from "../ui";
-import { useStyles } from "../ui/styles";
+import { PlaylistItem } from "../../../../shared/api/entities";
+import { createDialog } from "../../../enhancers/createDialog";
+import { useEntity } from "../../../hooks/useEntity";
+import { useSearch } from "../../../hooks/useSearch";
+import { actions } from "../../../reducers";
+import { Button, Column, DialogContent, DialogHeader, Row } from "../../ui";
+import { useStyles } from "../../ui/styles";
 
 export const DeletePlaylistItemDialog = createDialog<{
   playlistItemId: string;

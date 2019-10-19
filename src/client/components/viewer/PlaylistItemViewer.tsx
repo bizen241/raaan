@@ -6,8 +6,8 @@ import { Link as RouterLink } from "react-router-dom";
 import { ExerciseSummary, Playlist, PlaylistItem } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useToggleState } from "../../hooks/useToggleState";
-import { DeletePlaylistItemDialog } from "../dialogs/DeletePlaylistItemDialog";
-import { MovePlaylistItemDialog } from "../dialogs/MovePlaylistItemDialog";
+import { DeletePlaylistItemDialog } from "../dialogs/playlists/DeletePlaylistItemDialog";
+import { MovePlaylistItemDialog } from "../dialogs/playlists/MovePlaylistItemDialog";
 import { Column, Menu, MenuItem } from "../ui";
 
 export const PlaylistItemViewer = React.memo<{

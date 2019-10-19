@@ -4,14 +4,14 @@ import { replace } from "connected-react-router";
 import * as React from "react";
 import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { ExerciseDraft } from "../../../shared/api/entities";
-import { createDialog } from "../../enhancers/createDialog";
-import { useEntity } from "../../hooks/useEntity";
-import { actions } from "../../reducers";
-import { isLocalOnly } from "../../reducers/api";
-import { UserContext } from "../project/Context";
-import { Button, Column, DialogContent, DialogHeader, Row } from "../ui";
-import { useStyles } from "../ui/styles";
+import { ExerciseDraft } from "../../../../shared/api/entities";
+import { createDialog } from "../../../enhancers/createDialog";
+import { useEntity } from "../../../hooks/useEntity";
+import { actions } from "../../../reducers";
+import { isLocalOnly } from "../../../reducers/api";
+import { UserContext } from "../../project/Context";
+import { Button, Column, DialogContent, DialogHeader, Row } from "../../ui";
+import { useStyles } from "../../ui/styles";
 
 export const UploadExerciseDraftDialog = createDialog<{
   exerciseDraftId: string;

@@ -2,7 +2,7 @@ import { Avatar, Card, CardContent, CardHeader, MenuItem, Typography } from "@ma
 import * as React from "react";
 import { useCallback, useState } from "react";
 import { Question } from "../../../../shared/api/entities";
-import { DeleteQuestionDialog } from "../../dialogs/DeleteQuestionDialog";
+import { DeleteQuestionDialog } from "../../dialogs/exercises/DeleteQuestionDialog";
 import { QuestionPreviewer } from "../../player/dialogs/QuestionPreviewer";
 import { Menu } from "../../ui/Menu";
 import { useStyles } from "../../ui/styles";

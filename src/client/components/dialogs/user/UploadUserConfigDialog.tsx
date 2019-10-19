@@ -2,11 +2,11 @@ import { Typography } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { createDialog } from "../../enhancers/createDialog";
-import { actions } from "../../reducers";
-import { Button, Column, Row } from "../ui";
-import { DialogContent, DialogHeader } from "../ui/Dialog";
-import { useStyles } from "../ui/styles";
+import { createDialog } from "../../../enhancers/createDialog";
+import { actions } from "../../../reducers";
+import { Button, Column, Row } from "../../ui";
+import { DialogContent, DialogHeader } from "../../ui/Dialog";
+import { useStyles } from "../../ui/styles";
 
 export const UploadUserConfigDialog = createDialog<{
   userConfigId: string;

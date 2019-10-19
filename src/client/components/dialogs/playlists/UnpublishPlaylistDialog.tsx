@@ -2,22 +2,22 @@ import { Typography } from "@material-ui/core";
 import { Warning } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { createDialog } from "../../enhancers/createDialog";
-import { actions } from "../../reducers";
-import { Button, Column, DialogContent, DialogHeader, Row } from "../ui";
-import { useStyles } from "../ui/styles";
+import { createDialog } from "../../../enhancers/createDialog";
+import { actions } from "../../../reducers";
+import { Button, Column, DialogContent, DialogHeader, Row } from "../../ui";
+import { useStyles } from "../../ui/styles";
 
-export const PublishExerciseDialog = createDialog<{
-  exerciseId: string;
+export const UnpublishPlaylistDialog = createDialog<{
+  playlistId: string;
 }>(
-  React.memo(({ exerciseId, onClose }) => {
+  React.memo(({ playlistId, onClose }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
     const onUnpublish = () => {
       dispatch(
-        actions.api.upload("Exercise", exerciseId, {
-          isPrivate: false
+        actions.api.upload("Playlist", playlistId, {
+          isPrivate: true
         })
       );
 
@@ -27,15 +27,15 @@ export const PublishExerciseDialog = createDialog<{
     return (
       <>
         <DialogHeader onClose={onClose}>
-          <Typography>問題集を公開</Typography>
+          <Typography>プレイリストの公開を終了</Typography>
         </DialogHeader>
         <DialogContent>
           <Row alignItems="center" flex={1} pb={1}>
             <Warning className={classes.leftIcon} />
-            <Typography>問題集が公開されます。</Typography>
+            <Typography>プレイリストが非公開に設定されます。</Typography>
           </Row>
           <Column pb={1}>
-            <Button label="問題集を公開" labelColor="error" onClick={onUnpublish} />
+            <Button label="プレイリストの公開を終了" labelColor="error" onClick={onUnpublish} />
           </Column>
           <Column pb={1}>
             <Button label="キャンセル" onClick={onClose} />

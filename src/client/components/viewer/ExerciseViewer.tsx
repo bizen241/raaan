@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { Exercise } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useToggleState } from "../../hooks/useToggleState";
-import { PlaylistDialog } from "../dialogs/PlaylistDialog";
+import { PlaylistDialog } from "../dialogs/playlists/PlaylistDialog";
 import { ExercisePlayer } from "../player/dialogs/ExercisePlayer";
 import { UserContext } from "../project/Context";
 import { Button, Column } from "../ui";

@@ -3,12 +3,12 @@ import { ArrowForward } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { ExerciseSummary, Playlist, PlaylistItem } from "../../../shared/api/entities";
-import { sortPlaylistItems } from "../../domain/playlist";
-import { createDialog } from "../../enhancers/createDialog";
-import { withEntity } from "../../enhancers/withEntity";
-import { actions } from "../../reducers";
-import { Button, Column, DialogContent, DialogHeader, Row } from "../ui";
+import { ExerciseSummary, Playlist, PlaylistItem } from "../../../../shared/api/entities";
+import { sortPlaylistItems } from "../../../domain/playlist";
+import { createDialog } from "../../../enhancers/createDialog";
+import { withEntity } from "../../../enhancers/withEntity";
+import { actions } from "../../../reducers";
+import { Button, Column, DialogContent, DialogHeader, Row } from "../../ui";
 
 export const MovePlaylistItemDialog = createDialog<{
   playlistItemId: string;

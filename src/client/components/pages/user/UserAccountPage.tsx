@@ -2,8 +2,8 @@ import { Avatar, Box, Card, CardContent, CardHeader, Typography } from "@materia
 import { AccountCircle } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
-import { DeleteAccountDialog } from "../../dialogs/DeleteAccountDialog";
-import { LogoutDialog } from "../../dialogs/LogoutDialog";
+import { DeleteAccountDialog } from "../../dialogs/user/DeleteAccountDialog";
+import { LogoutDialog } from "../../dialogs/user/LogoutDialog";
 import { UserContext } from "../../project/Context";
 import { Message } from "../../project/Message";
 import { Button, Column, Page } from "../../ui";
