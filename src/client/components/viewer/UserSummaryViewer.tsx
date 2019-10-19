@@ -1,11 +1,11 @@
-import { Avatar, Card, CardContent, CardHeader, Divider, Typography } from "@material-ui/core";
+import { Avatar, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
 import { Person } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { UserSummary } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { UserContext } from "../project/Context";
-import { Column } from "../ui";
+import { Column, Property } from "../ui";
 import { useStyles } from "../ui/styles";
 
 export const UserSummaryViewer = withEntity<UserSummary>({ entityType: "UserSummary" })(
@@ -27,20 +27,8 @@ export const UserSummaryViewer = withEntity<UserSummary>({ entityType: "UserSumm
         />
         <CardContent>
           <Column>
-            <Column mb={1}>
-              <Typography color="textSecondary">提出回数</Typography>
-              <Typography variant="h5" component="span">
-                {userSummary.submitCount}
-              </Typography>
-              <Divider />
-            </Column>
-            <Column mb={1}>
-              <Typography color="textSecondary">打鍵回数</Typography>
-              <Typography variant="h5" component="span">
-                {userSummary.typeCount}
-              </Typography>
-              <Divider />
-            </Column>
+            <Property label="提出回数">{userSummary.submitCount}</Property>
+            <Property label="打鍵回数">{userSummary.typeCount}</Property>
           </Column>
         </CardContent>
       </Card>

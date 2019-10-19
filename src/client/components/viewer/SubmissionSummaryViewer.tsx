@@ -1,11 +1,11 @@
-import { Avatar, Card, CardContent, CardHeader, Divider, Typography } from "@material-ui/core";
-import { Person } from "@material-ui/icons";
+import { Avatar, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
+import { Assessment } from "@material-ui/icons";
 import * as React from "react";
 import { useMemo } from "react";
 import { SubmissionSummary } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { useSearch } from "../../hooks/useSearch";
-import { Column } from "../ui";
+import { Column, Property } from "../ui";
 import { useStyles } from "../ui/styles";
 
 export const SubmissionSummaryViewer = React.memo<{
@@ -33,34 +33,16 @@ export const SubmissionSummaryViewer = React.memo<{
         title={<Typography>自分の記録</Typography>}
         avatar={
           <Avatar className={classes.cardAvatar}>
-            <Person />
+            <Assessment />
           </Avatar>
         }
       />
       <CardContent>
         {submissionSummary !== undefined ? (
           <Column>
-            <Column mb={1}>
-              <Typography color="textSecondary">提出回数</Typography>
-              <Typography variant="h5" component="span">
-                {submissionSummary.submitCount}
-              </Typography>
-              <Divider />
-            </Column>
-            <Column mb={1}>
-              <Typography color="textSecondary">最初の提出</Typography>
-              <Typography variant="h5" component="span">
-                {new Date(submissionSummary.createdAt).toLocaleString()}
-              </Typography>
-              <Divider />
-            </Column>
-            <Column mb={1}>
-              <Typography color="textSecondary">直近の提出</Typography>
-              <Typography variant="h5" component="span">
-                {new Date(submissionSummary.updatedAt).toLocaleString()}
-              </Typography>
-              <Divider />
-            </Column>
+            <Property label="提出回数">{submissionSummary.submitCount}</Property>
+            <Property label="最初の提出">{new Date(submissionSummary.createdAt).toLocaleDateString()}</Property>
+            <Property label="直近の提出">{new Date(submissionSummary.updatedAt).toLocaleDateString()}</Property>
           </Column>
         ) : (
           <Typography>まだ提出していません</Typography>

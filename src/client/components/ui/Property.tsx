@@ -1,0 +1,18 @@
+import { Divider, Typography } from "@material-ui/core";
+import * as React from "react";
+import { Column } from "./Column";
+
+export const Property = React.memo<{
+  label: React.ReactNode;
+  children: React.ReactNode;
+}>(({ label, children }) => (
+  <Column mb={1}>
+    <Typography color="textSecondary">{label}</Typography>
+    <Column pl={1}>
+      <Typography variant="h5" component="span">
+        {children}
+      </Typography>
+    </Column>
+    <Divider />
+  </Column>
+));

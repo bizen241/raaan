@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardHeader, Chip, Divider, MenuItem, Typography } from "@material-ui/core";
+import { Box, Card, CardContent, CardHeader, Chip, MenuItem, Typography } from "@material-ui/core";
 import { Delete, Edit, Lock, Public } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
@@ -10,7 +10,7 @@ import { DeleteExerciseDialog } from "../dialogs/DeleteExerciseDialog";
 import { PublishExerciseDialog } from "../dialogs/PublishExerciseDialog";
 import { UnpublishExerciseDialog } from "../dialogs/UnpublishExerciseDialog";
 import { UserContext } from "../project/Context";
-import { Column, Menu, Row } from "../ui";
+import { Column, Menu, Property, Row } from "../ui";
 import { useStyles } from "../ui/styles";
 
 export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "ExerciseSummary" })(
@@ -24,7 +24,8 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
     const [isUnpublishExerciseDialogOpen, onToggleUnpublishExerciseDialog] = useToggleState();
     const [isDeleteExerciseDialogOpen, onToggleDeleteExerciseDialog] = useToggleState();
 
-    const isAuthor = exerciseSummary.authorId === currentUser.id;
+    // const isAuthor = exerciseSummary.authorId === currentUser.id;
+    const isAuthor = exerciseSummary.authorId !== currentUser.id;
 
     return (
       <Card>
@@ -66,6 +67,18 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
                   非公開にする
                 </MenuItem>
               ) : null}
+              {!isAuthor ? (
+                <MenuItem onClick={onTogglePublishExerciseDialog}>
+                  <Public className={classes.leftIcon} />
+                  投票する
+                </MenuItem>
+              ) : null}
+              {!isAuthor ? (
+                <MenuItem onClick={onTogglePublishExerciseDialog}>
+                  <Public className={classes.leftIcon} />
+                  通報する
+                </MenuItem>
+              ) : null}
               {isAuthor && (
                 <MenuItem onClick={onToggleDeleteExerciseDialog}>
                   <Delete className={classes.leftIcon} />
@@ -77,20 +90,8 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
         />
         <CardContent>
           <Column>
-            <Column mb={1}>
-              <Typography color="textSecondary">提出回数</Typography>
-              <Typography variant="h5" component="span">
-                {exerciseSummary.submitCount}
-              </Typography>
-              <Divider />
-            </Column>
-            <Column mb={1}>
-              <Typography color="textSecondary">評価</Typography>
-              <Typography variant="h5" component="span">
-                {exerciseSummary.upvoteCount}
-              </Typography>
-              <Divider />
-            </Column>
+            <Property label="提出回数">{exerciseSummary.submitCount}</Property>
+            <Property label="評価">{exerciseSummary.upvoteCount}</Property>
           </Column>
         </CardContent>
         <PublishExerciseDialog
