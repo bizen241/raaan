@@ -33,6 +33,9 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
   upvoteCount: number = 0;
 
   @Column()
+  downvoteCount: number = 0;
+
+  @Column()
   submittedCount: number = 0;
 
   @Column()

@@ -3,6 +3,7 @@ import { ButtonProps } from "@material-ui/core/Button";
 import { TypographyProps } from "@material-ui/core/Typography";
 import * as React from "react";
 import { Link } from "react-router-dom";
+import { Column } from "./Column";
 
 export const Button = React.memo<{
   color?: ButtonProps["color"];
@@ -27,12 +28,14 @@ export const Button = React.memo<{
         };
 
   return (
-    <MuiButton className={buttonClasses.button} variant="contained" {...props} {...linkProps}>
-      {icon}
-      <Typography className={icon !== undefined ? buttonClasses.label : undefined} color={labelColor}>
-        {label}
-      </Typography>
-    </MuiButton>
+    <Column pb={1}>
+      <MuiButton className={buttonClasses.button} variant="contained" {...props} {...linkProps}>
+        {icon}
+        <Typography className={icon !== undefined ? buttonClasses.label : undefined} color={labelColor}>
+          {label}
+        </Typography>
+      </MuiButton>
+    </Column>
   );
 });
 

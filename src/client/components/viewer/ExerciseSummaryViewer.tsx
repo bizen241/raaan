@@ -5,10 +5,12 @@ import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { ExerciseSummary } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
+import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeleteExerciseDialog } from "../dialogs/exercises/DeleteExerciseDialog";
 import { PublishExerciseDialog } from "../dialogs/exercises/PublishExerciseDialog";
 import { UnpublishExerciseDialog } from "../dialogs/exercises/UnpublishExerciseDialog";
+import { UploadExerciseVoteDialog } from "../dialogs/exercises/UploadExerciseVoteDialog";
 import { UserContext } from "../project/Context";
 import { Column, Menu, Property, Row } from "../ui";
 import { useStyles } from "../ui/styles";
@@ -23,8 +25,20 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
     const [isPublishExerciseDialogOpen, onTogglePublishExerciseDialog] = useToggleState();
     const [isUnpublishExerciseDialogOpen, onToggleUnpublishExerciseDialog] = useToggleState();
     const [isDeleteExerciseDialogOpen, onToggleDeleteExerciseDialog] = useToggleState();
+    const [isUploadVoteDialogOpen, onToggleUploadVoteDialog] = useToggleState();
 
-    const isAuthor = exerciseSummary.authorId === currentUser.id;
+    const { count: voteCount } = useSearch("ExerciseVote", {
+      voterId: currentUser.id,
+      targetId: exerciseId
+    });
+    const { count: reportCount } = useSearch("ExerciseReport", {
+      reporterId: currentUser.id,
+      targetId: exerciseId
+    });
+
+    const isAuthor = exerciseSummary.authorId !== currentUser.id;
+    const isVoted = voteCount === 1;
+    const isReported = reportCount === 1;
 
     return (
       <Card>
@@ -71,14 +85,28 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
               </Menu>
             ) : (
               <Menu>
-                <MenuItem onClick={onTogglePublishExerciseDialog}>
-                  <HowToVote className={classes.leftIcon} />
-                  投票する
-                </MenuItem>
-                <MenuItem onClick={onTogglePublishExerciseDialog}>
-                  <ReportProblem className={classes.leftIcon} />
-                  通報する
-                </MenuItem>
+                {!isVoted ? (
+                  <MenuItem onClick={onToggleUploadVoteDialog}>
+                    <HowToVote className={classes.leftIcon} />
+                    投票する
+                  </MenuItem>
+                ) : (
+                  <MenuItem onClick={onToggleUploadVoteDialog}>
+                    <HowToVote className={classes.leftIcon} />
+                    投票を取り消す
+                  </MenuItem>
+                )}
+                {!isReported ? (
+                  <MenuItem onClick={onToggleUploadVoteDialog}>
+                    <ReportProblem className={classes.leftIcon} />
+                    通報する
+                  </MenuItem>
+                ) : (
+                  <MenuItem onClick={onToggleUploadVoteDialog}>
+                    <ReportProblem className={classes.leftIcon} />
+                    通報を取り消す
+                  </MenuItem>
+                )}
               </Menu>
             )
           }
@@ -103,6 +131,11 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
           exerciseId={exerciseId}
           isOpen={isDeleteExerciseDialogOpen}
           onClose={onToggleDeleteExerciseDialog}
+        />
+        <UploadExerciseVoteDialog
+          exerciseId={exerciseId}
+          isOpen={isUploadVoteDialogOpen}
+          onClose={onToggleUploadVoteDialog}
         />
       </Card>
     );

@@ -22,14 +22,8 @@ export const ExerciseViewer = withEntity<Exercise>({ entityType: "Exercise" })(
 
     return (
       <Column>
-        <Column pb={1}>
-          <Button color="primary" icon={<PlayArrow />} label="始める" onClick={onToggleExercisePlayer} />
-        </Column>
-        {!isGuest && (
-          <Column pb={1}>
-            <Button icon={<PlaylistAdd />} label="プレイリストに追加" onClick={onTogglePlaylistDialog} />
-          </Column>
-        )}
+        <Button color="primary" icon={<PlayArrow />} label="始める" onClick={onToggleExercisePlayer} />
+        {!isGuest && <Button icon={<PlaylistAdd />} label="プレイリストに追加" onClick={onTogglePlaylistDialog} />}
         <Column pb={1}>
           <ExerciseSummaryViewer entityId={exercise.summaryId} />
         </Column>
