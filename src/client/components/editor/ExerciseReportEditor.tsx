@@ -1,12 +1,11 @@
 import { Card, CardContent, TextField, Typography } from "@material-ui/core";
-import { CloudUpload, Delete } from "@material-ui/icons";
+import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
 import { ExerciseReport } from "../../../shared/api/entities";
 import { ReportReason } from "../../../shared/api/entities/BaseReportObject";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
-import { DeleteExerciseReportDialog } from "../dialogs/reports/DeleteExerciseReportDialog";
 import { UploadExerciseReportDialog } from "../dialogs/reports/UploadExerciseReportDialog";
 import { Button, Column, Select } from "../ui";
 
@@ -18,13 +17,9 @@ const reasonToLabel: { [P in ReportReason]: string } = {
 
 export const ExerciseReportEditor = withBuffer<ExerciseReport>("ExerciseReport")(
   React.memo(props => {
-    const { bufferId, buffer, source = {}, onChange } = props;
-    if (buffer === undefined || buffer.targetId === undefined) {
-      return null;
-    }
+    const { bufferId, buffer = {}, source = {}, onChange } = props;
 
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
-    const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
     const onUpdateReason = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
       onChange({ reason: e.target.value as ReportReason });
@@ -33,18 +28,23 @@ export const ExerciseReportEditor = withBuffer<ExerciseReport>("ExerciseReport")
       onChange({ comment: e.target.value });
     }, []);
 
+    const targetId = source.targetId || buffer.targetId;
+    if (targetId === undefined) {
+      return null;
+    }
+
+    const canUpload = (props.source !== undefined && props.buffer !== undefined) || buffer.reason !== undefined;
+
     return (
       <Column>
-        <Button icon={<CloudUpload />} label="アップロード" onClick={onToggleUploadDialog} />
-        <Button icon={<Delete />} label="削除" onClick={onToggleDeleteDialog} />
+        <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
         <Card>
           <CardContent>
             <Column pb={1}>
-              <Select
-                label="理由"
-                defaultValue={buffer.reason || source.reason || Object.keys(reasonToLabel)[0]}
-                onChange={onUpdateReason}
-              >
+              <Select label="理由" defaultValue={buffer.reason || source.reason || ""} onChange={onUpdateReason}>
+                <option value="" disabled>
+                  選択してください
+                </option>
                 {Object.entries(reasonToLabel).map(([key, label]) => (
                   <option key={key} value={key}>
                     {label}
@@ -65,15 +65,9 @@ export const ExerciseReportEditor = withBuffer<ExerciseReport>("ExerciseReport")
         </Card>
         <UploadExerciseReportDialog
           reportId={bufferId}
-          targetId={buffer.targetId}
+          targetId={targetId}
           isOpen={isUploadDialogOpen}
           onClose={onToggleUploadDialog}
-        />
-        <DeleteExerciseReportDialog
-          reportId={bufferId}
-          targetId={buffer.targetId}
-          isOpen={isDeleteDialogOpen}
-          onClose={onToggleDeleteDialog}
         />
       </Column>
     );

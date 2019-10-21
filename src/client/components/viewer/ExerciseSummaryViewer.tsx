@@ -38,21 +38,25 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
       targetId: exerciseId
     });
     const { entities: reports } = useSearch<ExerciseReport>("ExerciseReport", {
-      reporterId: currentUser.id
+      reporterId: currentUser.id,
+      targetId: exerciseId
     });
     const reportBuffers = useSelector((state: RootState) => state.buffers.ExerciseReport);
 
     const vote = votes[0];
     const report = reports[0];
-    const reportBuffer = Object.values(reportBuffers).find(
-      buffer => buffer !== undefined && buffer.targetId === exerciseId
-    );
+    const reportId =
+      report !== undefined
+        ? report.id
+        : Object.keys(reportBuffers).find(bufferId => {
+            const buffer = reportBuffers[bufferId];
+
+            return buffer !== undefined && buffer.targetId === exerciseId;
+          });
 
     const isAuthor = exerciseSummary.authorId !== currentUser.id;
     const isVoted = vote !== undefined;
-    const isReported = report !== undefined || reportBuffer !== undefined;
-
-    const reportId = report !== undefined ? report.id : reportBuffer && reportBuffer.id;
+    const isReported = reportId !== undefined;
 
     return (
       <Card>

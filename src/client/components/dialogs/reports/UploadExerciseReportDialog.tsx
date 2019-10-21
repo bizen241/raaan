@@ -1,7 +1,8 @@
 import { Typography } from "@material-ui/core";
 import { ReportProblem, Warning } from "@material-ui/icons";
-import * as React from "react";
+import { replace } from "connected-react-router";
 import { useContext, useEffect } from "react";
+import * as React from "react";
 import { useDispatch } from "react-redux";
 import { ExerciseReport } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
@@ -39,7 +40,7 @@ export const UploadExerciseReportDialog = createDialog<{
           )
         );
 
-        onClose();
+        dispatch(replace(`/exercises/${targetId}`));
       }
     }, [uploadStatus]);
 

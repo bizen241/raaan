@@ -49,7 +49,6 @@ export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBu
     case BuffersActionType.Update: {
       const { type, id, params } = action.payload;
       const buffer = state[type][id] || {
-        id,
         createdAt: Date.now(),
         updatedAt: Date.now()
       };

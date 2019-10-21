@@ -96,11 +96,12 @@ const parseExerciseObjection: Parser<ExerciseObjection> = query => {
 };
 
 const parseExerciseReport: Parser<ExerciseReport> = query => {
-  const { reporterId } = query;
+  const { reporterId, targetId } = query;
 
   return {
     ...base(query),
-    reporterId
+    reporterId,
+    targetId
   };
 };
 

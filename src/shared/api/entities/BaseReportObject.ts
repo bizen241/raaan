@@ -2,7 +2,7 @@ import { BaseEntityObject, UUID } from "./BaseEntityObject";
 
 export interface BaseReportObject extends BaseEntityObject {
   reporterId: UUID;
-  targetId?: UUID;
+  targetId: UUID;
   reason: ReportReason;
   comment: string;
   state: ReportState;

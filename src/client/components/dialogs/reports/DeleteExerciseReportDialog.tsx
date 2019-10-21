@@ -8,6 +8,7 @@ import { ExerciseReport } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
+import { isLocalOnly } from "../../../reducers/api";
 import { UserContext } from "../../project/Context";
 import { Button, DialogActions, DialogHeader, DialogMessage } from "../../ui";
 
@@ -20,7 +21,12 @@ export const DeleteExerciseReportDialog = createDialog<{
     const currentUser = useContext(UserContext);
 
     const onDelete = () => {
-      dispatch(actions.api.delete("ExerciseReport", reportId));
+      if (isLocalOnly(reportId)) {
+        dispatch(actions.buffers.delete("ExerciseReport", reportId));
+        dispatch(replace(`/exercises/${targetId}`));
+      } else {
+        dispatch(actions.api.delete("ExerciseReport", reportId));
+      }
     };
     const { deleteStatus } = useEntity<ExerciseReport>("ExerciseReport", reportId);
     useEffect(() => {
