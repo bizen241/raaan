@@ -11,6 +11,7 @@ import { HomePage } from "../pages/HomePage";
 import { LoadingPage } from "../pages/LoadingPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { PlaylistPage } from "../pages/playlists/PlaylistPage";
+import { EditExerciseReportPage } from "../pages/reports/EditExerciseReportPage";
 import { SubmissionsPage } from "../pages/submissions/SubmissionsPage";
 import { UserAccountPage } from "../pages/user/UserAccountPage";
 import { UserConfigPage } from "../pages/user/UserConfigPage";
@@ -51,6 +52,9 @@ export const Router = React.memo(() => {
 
         <Route exact={true} path="/playlists/:id" component={PlaylistPage} />
         <Route exact={true} path="/playlists/:id/edit" component={EditPlaylistPage} />
+
+        <Route exact={true} path="/exercise-reports/:id/edit" component={EditExerciseReportPage} />
+
         <Route component={NotFoundPage} />
       </Switch>
     </Suspense>

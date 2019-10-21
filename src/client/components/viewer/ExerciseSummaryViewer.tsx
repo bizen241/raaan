@@ -2,16 +2,19 @@ import { Box, Card, CardContent, CardHeader, Chip, MenuItem, Typography } from "
 import { Delete, Edit, HowToVote, Lock, Public, ReportProblem } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
+import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { ExerciseReport, ExerciseSummary, ExerciseVote } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
+import { RootState } from "../../reducers";
 import { DeleteExerciseDialog } from "../dialogs/exercises/DeleteExerciseDialog";
 import { DeleteExerciseVoteDialog } from "../dialogs/exercises/DeleteExerciseVoteDialog";
 import { PublishExerciseDialog } from "../dialogs/exercises/PublishExerciseDialog";
 import { UnpublishExerciseDialog } from "../dialogs/exercises/UnpublishExerciseDialog";
 import { UploadExerciseVoteDialog } from "../dialogs/exercises/UploadExerciseVoteDialog";
+import { ConfirmExerciseReportDialog } from "../dialogs/reports/ConfirmExerciseReportDialog";
 import { UserContext } from "../project/Context";
 import { Column, Menu, Property, Row } from "../ui";
 import { useStyles } from "../ui/styles";
@@ -28,20 +31,28 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
     const [isDeleteExerciseDialogOpen, onToggleDeleteExerciseDialog] = useToggleState();
     const [isUploadVoteDialogOpen, onToggleUploadVoteDialog] = useToggleState();
     const [isDeleteVoteDialogOpen, onToggleDeleteVoteDialog] = useToggleState();
+    const [isConfirmReportDialogOpen, onToggleConfirmReportDialog] = useToggleState();
 
-    const { count: voteCount, entities: votes } = useSearch<ExerciseVote>("ExerciseVote", {
+    const { entities: votes } = useSearch<ExerciseVote>("ExerciseVote", {
       voterId: currentUser.id,
       targetId: exerciseId
     });
-    const { count: reportCount } = useSearch<ExerciseReport>("ExerciseReport", {
+    const { entities: reports } = useSearch<ExerciseReport>("ExerciseReport", {
       reporterId: currentUser.id
     });
+    const reportBuffers = useSelector((state: RootState) => state.buffers.ExerciseReport);
+
+    const vote = votes[0];
+    const report = reports[0];
+    const reportBuffer = Object.values(reportBuffers).find(
+      buffer => buffer !== undefined && buffer.targetId === exerciseId
+    );
 
     const isAuthor = exerciseSummary.authorId !== currentUser.id;
-    const isVoted = voteCount === 1;
-    const isReported = reportCount === 1;
+    const isVoted = vote !== undefined;
+    const isReported = report !== undefined || reportBuffer !== undefined;
 
-    const exerciseVote = votes[0];
+    const reportId = report !== undefined ? report.id : reportBuffer && reportBuffer.id;
 
     return (
       <Card>
@@ -100,14 +111,14 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
                   </MenuItem>
                 )}
                 {!isReported ? (
-                  <MenuItem onClick={onToggleUploadVoteDialog}>
+                  <MenuItem onClick={onToggleConfirmReportDialog}>
                     <ReportProblem className={classes.leftIcon} />
                     通報する
                   </MenuItem>
                 ) : (
-                  <MenuItem onClick={onToggleUploadVoteDialog}>
+                  <MenuItem component={RouterLink} to={`/exercise-reports/${reportId}/edit`}>
                     <ReportProblem className={classes.leftIcon} />
-                    通報を取り消す
+                    通報を編集する
                   </MenuItem>
                 )}
               </Menu>
@@ -140,14 +151,19 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
           isOpen={isUploadVoteDialogOpen}
           onClose={onToggleUploadVoteDialog}
         />
-        {exerciseVote && (
+        {vote && (
           <DeleteExerciseVoteDialog
             exerciseId={exerciseId}
-            exerciseVoteId={exerciseVote.id}
+            exerciseVoteId={vote.id}
             isOpen={isDeleteVoteDialogOpen}
             onClose={onToggleDeleteVoteDialog}
           />
         )}
+        <ConfirmExerciseReportDialog
+          targetId={exerciseId}
+          isOpen={isConfirmReportDialogOpen}
+          onClose={onToggleConfirmReportDialog}
+        />
       </Card>
     );
   })

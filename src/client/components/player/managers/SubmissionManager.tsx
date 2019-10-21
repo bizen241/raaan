@@ -30,7 +30,7 @@ export const SubmissionManager = withEntity<Exercise, Props>({ entityType: "Exer
         const submissionId = Date.now().toString();
 
         dispatch(
-          actions.buffers.add<Submission>("Submission", submissionId, {
+          actions.buffers.update<Submission>("Submission", submissionId, {
             exerciseId,
             ...summarizeResults(results)
           })
