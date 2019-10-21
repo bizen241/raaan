@@ -33,7 +33,7 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
 
     await manager.remove(exerciseVote);
 
-    responseFindResult(req, res);
+    responseFindResult(req, res, exerciseVote.target.summary);
   });
 });
 

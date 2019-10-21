@@ -121,12 +121,13 @@ const parseExerciseSummary: Parser<ExerciseSummary> = query => {
 };
 
 const parseExerciseVote: Parser<ExerciseVote> = query => {
-  const { targetId, voterId } = query;
+  const { targetId, voterId, isUp } = query;
 
   return {
     ...base(query),
     targetId,
-    voterId
+    voterId,
+    isUp: bool(isUp)
   };
 };
 

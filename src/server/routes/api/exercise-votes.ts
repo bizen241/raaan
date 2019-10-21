@@ -4,8 +4,44 @@ import { getManager } from "typeorm";
 import { ExerciseVote } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseFindResult } from "../../api/response";
+import { parseQuery } from "../../api/request/search/parse";
+import { responseFindResult, responseSearchResult } from "../../api/response";
 import { ExerciseEntity, ExerciseVoteEntity } from "../../database/entities";
+
+export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
+  const { voterId, targetId, isUp, searchLimit, searchOffset } = parseQuery<ExerciseVote>("ExerciseVote", req.query);
+
+  const isVoter = voterId === currentUser.id;
+  if (!isVoter) {
+    return next(createError(403));
+  }
+
+  const query = await getManager()
+    .createQueryBuilder(ExerciseVoteEntity, "exerciseVote")
+    .take(searchLimit)
+    .skip(searchOffset);
+
+  if (voterId !== undefined) {
+    query.andWhere("exerciseVote.voterId = :voterId", { voterId });
+  }
+  if (targetId !== undefined) {
+    query.andWhere("exerciseVote.targetId = :targetId", { targetId });
+  }
+  if (isUp !== undefined) {
+    query.andWhere("exerciseVote.isUp = :isUp", { isUp });
+  }
+
+  const [exerciseVotes, count] = await query.getManyAndCount();
+
+  responseSearchResult(req, res, exerciseVotes, count);
+});
+
+GET.apiDoc = createOperationDoc({
+  entityType: "ExerciseVote",
+  summary: "Search votes",
+  permission: "Read",
+  hasQuery: true
+});
 
 export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { targetId, isUp = true }: Params<ExerciseVote> = req.body;
@@ -31,7 +67,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
     }
     await manager.save(target.summary);
 
-    responseFindResult(req, res, exerciseVote);
+    responseFindResult(req, res, exerciseVote, target.summary);
   });
 });
 
