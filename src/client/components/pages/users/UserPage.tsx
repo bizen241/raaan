@@ -1,6 +1,6 @@
-import { Group, History, Keyboard, Timeline } from "@material-ui/icons";
-import { useContext } from "react";
+import { Bookmarks, Group, History, Keyboard, Timeline } from "@material-ui/icons";
 import * as React from "react";
+import { useContext } from "react";
 import { User } from "../../../../shared/api/entities";
 import { withEntity } from "../../../enhancers/withEntity";
 import { UserContext } from "../../project/Context";
@@ -29,27 +29,14 @@ const UserPageContent = withEntity<User, {}>({ entityType: "User" })(({ entityId
 
   return (
     <>
-      <Column pb={1}>
-        <Button icon={<Keyboard />} label="自分のコンテンツ" color="primary" to={`/users/${userId}/contents`} />
-      </Column>
-      {isOwn && (
-        <Column pb={1}>
-          <Button icon={<Timeline />} label="記録" to={`/statistics`} />
-        </Column>
-      )}
-      {isOwn && (
-        <Column pb={1}>
-          <Button icon={<History />} label="復習" to={`/submissions`} />
-        </Column>
-      )}
-      {isOwn && (
-        <Column pb={1}>
-          <Button icon={<Group />} label="グループ" to={`/groups`} />
-        </Column>
-      )}
+      <Button icon={<Keyboard />} label="自分のコンテンツ" color="primary" to={`/users/${userId}/contents`} />
       <Column pb={1}>
         <UserSummaryViewer entityId={user.summaryId} />
       </Column>
+      {isOwn && <Button icon={<History />} label="復習" to="/submissions" />}
+      {isOwn && <Button icon={<Timeline />} label="記録" to="/statistics" />}
+      {isOwn && <Button icon={<Bookmarks />} label="ブックマーク" to="/playlist-bookmarks" />}
+      {isOwn && <Button icon={<Group />} label="グループ" to="/groups" />}
     </>
   );
 });

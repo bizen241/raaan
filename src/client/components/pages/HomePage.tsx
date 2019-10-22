@@ -15,22 +15,13 @@ export const HomePage = React.memo(() => {
 
   return (
     <Page title="ホーム">
-      {isGuest && (
-        <Column pb={1}>
-          <Button color="primary" icon={<AccountCircle />} label="ログイン" to="/user-account" />
-        </Column>
+      {isGuest ? (
+        <Button color="primary" icon={<AccountCircle />} label="ログイン" to="/user-account" />
+      ) : (
+        <Button color="primary" icon={<AccountCircle />} label="マイページ" to={`/users/${currentUser.id}`} />
       )}
-      {!isGuest && (
-        <Column pb={1}>
-          <Button color="primary" icon={<AccountCircle />} label="マイページ" to={`/users/${currentUser.id}`} />
-        </Column>
-      )}
-      <Column pb={1}>
-        <Button icon={<Search />} label="クイズを探す" to="/contents/search" />
-      </Column>
-      <Column pb={1}>
-        <Button icon={<Edit />} label="クイズを作る" to="/contents/create" />
-      </Column>
+      <Button icon={<Search />} label="クイズを探す" to="/contents/search" />
+      <Button icon={<Edit />} label="クイズを作る" to="/contents/create" />
       {!isGuest && (
         <Column pb={1}>
           <Card>

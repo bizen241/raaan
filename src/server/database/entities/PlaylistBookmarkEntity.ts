@@ -22,13 +22,13 @@ export class PlaylistBookmarkEntity extends BaseEntityClass {
   playlistId!: string;
 
   @Column()
-  memo: string;
+  isPrivate: boolean;
 
-  constructor(user: UserEntity, playlist: PlaylistEntity, memo: string) {
+  constructor(user: UserEntity, playlist: PlaylistEntity, isPrivate: boolean) {
     super();
 
     this.user = user;
     this.playlist = playlist;
-    this.memo = memo;
+    this.isPrivate = isPrivate;
   }
 }

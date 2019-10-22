@@ -275,14 +275,20 @@ const normalizePlaylist: Normalizer<PlaylistEntity> = (_, store, entity) => {
   };
 };
 
-const normalizePlaylistBookmark: Normalizer<PlaylistBookmarkEntity> = (_, store, entity) => {
-  const { id, playlistId, memo } = entity;
+const normalizePlaylistBookmark: Normalizer<PlaylistBookmarkEntity> = (context, store, entity) => {
+  const { id, playlistId, playlist, isPrivate } = entity;
 
   store.PlaylistBookmark[id] = {
     ...base(entity),
     playlistId,
-    memo
+    isPrivate
   };
+
+  if (playlist !== undefined && playlist.summary !== undefined) {
+    playlist.summary.playlist = playlist;
+
+    normalizeEntity(context, store, playlist.summary);
+  }
 };
 
 const normalizePlaylistItem: Normalizer<PlaylistItemEntity> = (context, store, entity) => {

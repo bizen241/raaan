@@ -12,7 +12,7 @@ export const useEntity = <E extends EntityObject>(entityType: EntityType, entity
   const deleteStatus = useSelector((state: RootState) => state.api.delete[entityType][entityId]);
 
   useEffect(() => {
-    if (entity === undefined && !isLocalOnly(entityId)) {
+    if (entity === undefined && !isLocalOnly(entityId) && deleteStatus !== undefined) {
       dispatch(actions.api.get(entityType, entityId));
     }
   }, [entityId]);
