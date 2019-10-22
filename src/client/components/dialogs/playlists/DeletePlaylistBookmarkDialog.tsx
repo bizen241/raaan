@@ -1,42 +1,61 @@
 import { Typography } from "@material-ui/core";
 import { Warning } from "@material-ui/icons";
 import * as React from "react";
+import { useContext, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { PlaylistBookmark } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
+import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
-import { Button, Column, DialogContent, DialogHeader, Row } from "../../ui";
-import { useStyles } from "../../ui/styles";
+import { UserContext } from "../../project/Context";
+import { Button, DialogActions, DialogHeader, DialogMessage } from "../../ui";
 
 export const DeletePlaylistBookmarkDialog = createDialog<{
   playlistBookmarkId: string;
+  playlistId: string;
 }>(
-  React.memo(({ playlistBookmarkId, onClose }) => {
-    const classes = useStyles();
+  React.memo(({ playlistBookmarkId, playlistId, onClose }) => {
     const dispatch = useDispatch();
+    const currentUser = useContext(UserContext);
 
     const onDelete = () => {
       dispatch(actions.api.delete("PlaylistBookmark", playlistBookmarkId));
-
-      onClose();
     };
+    const { deleteStatus } = useEntity<PlaylistBookmark>("PlaylistBookmark", playlistBookmarkId);
+    useEffect(() => {
+      if (deleteStatus === 200) {
+        dispatch(
+          actions.cache.search<PlaylistBookmark>(
+            "PlaylistBookmark",
+            {
+              userId: currentUser.id,
+              playlistId
+            },
+            {
+              ids: [],
+              entities: {},
+              count: 0
+            }
+          )
+        );
+        dispatch(actions.cache.purge("PlaylistBookmark", playlistBookmarkId));
+
+        onClose();
+      }
+    }, [deleteStatus]);
 
     return (
       <>
         <DialogHeader onClose={onClose}>
           <Typography>ブックマークの削除</Typography>
         </DialogHeader>
-        <DialogContent>
-          <Row alignItems="center" flex={1} pb={1}>
-            <Warning className={classes.leftIcon} />
-            <Typography>ブックマークがサーバーから削除されます。</Typography>
-          </Row>
-          <Column pb={1}>
-            <Button label="ブックマークを削除" labelColor="error" onClick={onDelete} />
-          </Column>
-          <Column pb={1}>
-            <Button label="キャンセル" onClick={onClose} />
-          </Column>
-        </DialogContent>
+        <DialogMessage icon={<Warning />}>
+          <Typography>ブックマークがサーバーから削除されます。</Typography>
+        </DialogMessage>
+        <DialogActions>
+          <Button label="ブックマークを削除" labelColor="error" onClick={onDelete} />
+          <Button label="キャンセル" onClick={onClose} />
+        </DialogActions>
       </>
     );
   })

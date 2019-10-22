@@ -1,5 +1,5 @@
 import { Box, Card, CardHeader, Chip, MenuItem, Typography } from "@material-ui/core";
-import { Delete, Edit, Lock, Public } from "@material-ui/icons";
+import { Delete, Edit, HowToVote, Lock, Public } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -24,7 +24,7 @@ export const PlaylistSummaryViewer = withEntity<PlaylistSummary>({ entityType: "
     const [isUnpublishPlaylistDialogOpen, onToggleUnpublishPlaylistDialog] = useToggleState();
     const [isDeletePlaylistDialogOpen, onToggleDeletePlaylistDialog] = useToggleState();
 
-    const isAuthor = playlistSummary.authorId === currentUser.id;
+    const isAuthor = playlistSummary.authorId !== currentUser.id;
 
     return (
       <Card>
@@ -47,32 +47,41 @@ export const PlaylistSummaryViewer = withEntity<PlaylistSummary>({ entityType: "
             </Row>
           }
           action={
-            <Menu>
-              {isAuthor && (
-                <MenuItem component={RouterLink} to={`/playlists/${playlistId}/edit`}>
-                  <Edit className={classes.leftIcon} />
-                  編集する
+            isAuthor ? (
+              <Menu>
+                {isAuthor && (
+                  <MenuItem component={RouterLink} to={`/playlists/${playlistId}/edit`}>
+                    <Edit className={classes.leftIcon} />
+                    編集する
+                  </MenuItem>
+                )}
+                {playlistSummary.isPrivate ? (
+                  <MenuItem onClick={onTogglePublishPlaylistDialog}>
+                    <Public className={classes.leftIcon} />
+                    公開する
+                  </MenuItem>
+                ) : null}
+                {!playlistSummary.isPrivate ? (
+                  <MenuItem onClick={onToggleUnpublishPlaylistDialog}>
+                    <Lock className={classes.leftIcon} />
+                    非公開にする
+                  </MenuItem>
+                ) : null}
+                {isAuthor && (
+                  <MenuItem onClick={onToggleDeletePlaylistDialog}>
+                    <Delete className={classes.leftIcon} />
+                    削除
+                  </MenuItem>
+                )}
+              </Menu>
+            ) : (
+              <Menu>
+                <MenuItem>
+                  <HowToVote className={classes.leftIcon} />
+                  投票する
                 </MenuItem>
-              )}
-              {playlistSummary.isPrivate ? (
-                <MenuItem onClick={onTogglePublishPlaylistDialog}>
-                  <Public className={classes.leftIcon} />
-                  公開する
-                </MenuItem>
-              ) : null}
-              {!playlistSummary.isPrivate ? (
-                <MenuItem onClick={onToggleUnpublishPlaylistDialog}>
-                  <Lock className={classes.leftIcon} />
-                  非公開にする
-                </MenuItem>
-              ) : null}
-              {isAuthor && (
-                <MenuItem onClick={onToggleDeletePlaylistDialog}>
-                  <Delete className={classes.leftIcon} />
-                  削除
-                </MenuItem>
-              )}
-            </Menu>
+              </Menu>
+            )
           }
         />
         <PublishPlaylistDialog

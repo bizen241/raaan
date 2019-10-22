@@ -1,27 +1,39 @@
 import { Card, CardContent, Divider, IconButton, Table, TableBody } from "@material-ui/core";
-import { PlayArrow, Refresh, Shuffle } from "@material-ui/icons";
+import { Bookmark, PlayArrow, Refresh } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useMemo, useState } from "react";
-import { Playlist, PlaylistItem } from "../../../shared/api/entities";
-import { randomizePlaylistItems, sortPlaylistItems } from "../../domain/playlist";
+import { useCallback, useContext, useMemo, useState } from "react";
+import { Playlist, PlaylistBookmark, PlaylistItem } from "../../../shared/api/entities";
+import { sortPlaylistItems } from "../../domain/playlist";
 import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
+import { DeletePlaylistBookmarkDialog } from "../dialogs/playlists/DeletePlaylistBookmarkDialog";
+import { UploadPlaylistBookmarkDialog } from "../dialogs/playlists/UploadPlaylistBookmarkDialog";
 import { PlaylistPlayer } from "../player/dialogs/PlaylistPlayer";
+import { UserContext } from "../project/Context";
 import { Button, Column, Row } from "../ui";
 import { PlaylistItemViewer } from "./PlaylistItemViewer";
 import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 
 export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
   React.memo(({ entity: playlist, entityId: playlistId }) => {
+    const currentUser = useContext(UserContext);
+
+    const [isUploadPlaylistBookmarkDialogOpen, onToggleUploadPlaylistBookmarkDialog] = useToggleState();
+    const [isDeletePlaylistBookmarkDialogOpen, onToggleDeletePlaylistBookmarkDialog] = useToggleState();
+    const { entities: bookmarks } = useSearch<PlaylistBookmark>("PlaylistBookmark", {
+      userId: currentUser.id,
+      playlistId
+    });
+    const bookmark = bookmarks[0];
+    const isBookmarked = bookmark !== undefined;
+
     const [isPlaylistPlayerOpen, onTogglePlaylistPlayer] = useToggleState();
     const [requestedPlaylistItems, requestPlaylistItems] = useState<PlaylistItem[]>([]);
-
     const { entities: playlistItems, count, onReload } = useSearch<PlaylistItem>("PlaylistItem", {
       playlistId
     });
     const sortedPlaylistItems = useMemo(() => sortPlaylistItems(playlistItems, playlist.orderBy), [playlistItems]);
-
     const onPlay = useCallback(() => {
       requestPlaylistItems(sortedPlaylistItems);
       onTogglePlaylistPlayer();
@@ -33,19 +45,16 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
       },
       [sortedPlaylistItems]
     );
-    const onRandomPlay = useCallback(() => {
-      requestPlaylistItems(randomizePlaylistItems(sortedPlaylistItems));
-      onTogglePlaylistPlayer();
-    }, [sortedPlaylistItems]);
 
     return (
       <Column>
-        <Column pb={1}>
-          <Button color="primary" icon={<PlayArrow />} label="始める" disabled={count === 0} onClick={onPlay} />
-        </Column>
-        <Column pb={1}>
-          <Button icon={<Shuffle />} label="ランダム" disabled={count === 0} onClick={onRandomPlay} />
-        </Column>
+        <Button color="primary" icon={<PlayArrow />} label="始める" disabled={count === 0} onClick={onPlay} />
+        {!isBookmarked && (
+          <Button icon={<Bookmark />} label="ブックマークに追加" onClick={onToggleUploadPlaylistBookmarkDialog} />
+        )}
+        {isBookmarked && (
+          <Button icon={<Bookmark />} label="ブックマークを解除" onClick={onToggleDeletePlaylistBookmarkDialog} />
+        )}
         <Column pb={1}>
           <PlaylistSummaryViewer entityId={playlist.summaryId} />
         </Column>
@@ -76,6 +85,19 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
             </TableBody>
           </Table>
         </Card>
+        <UploadPlaylistBookmarkDialog
+          playlistId={playlistId}
+          isOpen={isUploadPlaylistBookmarkDialogOpen}
+          onClose={onToggleUploadPlaylistBookmarkDialog}
+        />
+        {bookmark && (
+          <DeletePlaylistBookmarkDialog
+            playlistBookmarkId={bookmark.id}
+            playlistId={playlistId}
+            isOpen={isDeletePlaylistBookmarkDialogOpen}
+            onClose={onToggleDeletePlaylistBookmarkDialog}
+          />
+        )}
         <PlaylistPlayer
           playlistItems={requestedPlaylistItems}
           isOpen={isPlaylistPlayerOpen}
