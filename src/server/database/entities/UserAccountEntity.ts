@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, RelationId, Unique } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, RelationId, Unique } from "typeorm";
 import { AuthProviderName } from "../../../shared/auth";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
@@ -8,7 +8,7 @@ import { UserEntity } from "./UserEntity";
 export class UserAccountEntity extends BaseEntityClass {
   type: "UserAccount" = "UserAccount";
 
-  @OneToOne(() => UserEntity, user => user.account, {
+  @ManyToOne(() => UserEntity, user => user.accounts, {
     onDelete: "CASCADE"
   })
   @JoinColumn()

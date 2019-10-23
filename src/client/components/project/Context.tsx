@@ -11,7 +11,6 @@ export const guestUser: User = {
   id: guestUserId,
   name: "",
   permission: "Guest",
-  accountId: "",
   configId: guestUserConfigId,
   summaryId: "",
   createdAt: 0,

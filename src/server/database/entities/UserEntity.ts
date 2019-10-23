@@ -1,4 +1,4 @@
-import { Column, Entity, OneToOne, RelationId } from "typeorm";
+import { Column, Entity, OneToMany, OneToOne, RelationId } from "typeorm";
 import { Permission } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserAccountEntity } from "./UserAccountEntity";
@@ -9,12 +9,10 @@ import { UserSummaryEntity } from "./UserSummaryEntity";
 export class UserEntity extends BaseEntityClass {
   type: "User" = "User";
 
-  @OneToOne(() => UserAccountEntity, userAccount => userAccount.user, {
+  @OneToMany(() => UserAccountEntity, userAccount => userAccount.user, {
     cascade: true
   })
-  account?: UserAccountEntity;
-  @RelationId((user: UserEntity) => user.account)
-  accountId!: string;
+  accounts?: UserAccountEntity[];
 
   @OneToOne(() => UserConfigEntity, userConfig => userConfig.user, {
     cascade: true
@@ -45,7 +43,9 @@ export class UserEntity extends BaseEntityClass {
   ) {
     super();
 
-    this.account = account;
+    if (account !== undefined) {
+      this.accounts = [account];
+    }
     this.config = config;
     this.summary = summary;
     this.name = name;

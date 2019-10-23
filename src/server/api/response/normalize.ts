@@ -486,18 +486,16 @@ const normalizeTagSummary: Normalizer<TagSummaryEntity> = (_, store, entity) => 
 };
 
 const normalizeUser: Normalizer<UserEntity> = (context, store, entity) => {
-  const { id, account, accountId, config, configId, summary, summaryId, name, permission } = entity;
+  const { id, config, configId, summary, summaryId, name, permission } = entity;
 
   store.User[id] = {
     ...base(entity),
     name,
     permission,
-    accountId,
     configId,
     summaryId
   };
 
-  normalizeEntity(context, store, account);
   normalizeEntity(context, store, config);
   normalizeEntity(context, store, summary);
 };
