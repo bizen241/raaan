@@ -15,8 +15,7 @@ export const DeleteExerciseDialog = createDialog<{
     const dispatch = useDispatch();
 
     const onDelete = () => {
-      dispatch(actions.api.delete("Exercise", exerciseId));
-      onClose();
+      dispatch(actions.api.delete("Exercise", exerciseId, onClose));
     };
 
     return (

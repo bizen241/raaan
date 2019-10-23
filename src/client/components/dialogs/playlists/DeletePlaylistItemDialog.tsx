@@ -1,54 +1,22 @@
 import { Typography } from "@material-ui/core";
 import { Warning } from "@material-ui/icons";
 import * as React from "react";
-import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { PlaylistItem } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
-import { useEntity } from "../../../hooks/useEntity";
-import { useSearch } from "../../../hooks/useSearch";
 import { actions } from "../../../reducers";
 import { Button, Column, DialogContent, DialogHeader, Row } from "../../ui";
 import { useStyles } from "../../ui/styles";
 
 export const DeletePlaylistItemDialog = createDialog<{
   playlistItemId: string;
-  playlistId: string;
 }>(
-  React.memo(({ playlistItemId, playlistId, onClose }) => {
+  React.memo(({ playlistItemId, onClose }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
     const onDelete = () => {
-      dispatch(actions.api.delete("PlaylistItem", playlistItemId));
+      dispatch(actions.api.delete("PlaylistItem", playlistItemId, onClose));
     };
-
-    const { deleteStatus } = useEntity<PlaylistItem>("PlaylistItem", playlistItemId);
-    const { entities, count } = useSearch<PlaylistItem>("PlaylistItem", {
-      playlistId
-    });
-    useEffect(() => {
-      if (deleteStatus !== 200) {
-        return;
-      }
-
-      dispatch(
-        actions.cache.search(
-          "PlaylistItem",
-          {
-            playlistId
-          },
-          {
-            ids: [...entities.map(playlistItem => playlistItem.id).filter(id => id !== playlistItemId)],
-            entities: {},
-            count: count - 1
-          }
-        )
-      );
-      dispatch(actions.cache.purge("PlaylistItem", playlistItemId));
-
-      onClose();
-    }, [deleteStatus]);
 
     return (
       <>

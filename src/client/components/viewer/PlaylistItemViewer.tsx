@@ -52,7 +52,6 @@ export const PlaylistItemViewer = React.memo<{
       />
       <DeletePlaylistItemDialog
         playlistItemId={playlistItem.id}
-        playlistId={playlistId}
         isOpen={isDeleteDialogOpen}
         onClose={onToggleDeleteDialog}
       />

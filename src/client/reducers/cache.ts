@@ -3,7 +3,7 @@ import { createEntityTypeToObject, EntityObject, EntityType, mergeEntityTypeToOb
 import { Params } from "../../shared/api/request/params";
 import { EntityStore } from "../../shared/api/response/get";
 import { SearchResponse } from "../../shared/api/response/search";
-import { mergeSearchResultStore, SearchResultStore } from "../api/response/search";
+import { IdMap, mergeSearchResultStore, SearchResultMap, SearchResultStore } from "../api/response/search";
 import { guestUser, guestUserConfig } from "../components/project/Context";
 import { ActionUnion, createAction } from "./action";
 
@@ -71,13 +71,50 @@ export const cacheReducer: Reducer<CacheState, CacheActions> = (state = initialC
     }
     case CacheActionType.Purge: {
       const { type, id } = action.payload;
-      const { [id]: deleted, ...cache } = state.get[type];
+
+      const get = { ...state.get[type] };
+      delete get[id];
+
+      const search: SearchResultMap = {};
+      Object.entries(state.search[type]).forEach(([key, result]) => {
+        if (result === undefined) {
+          return;
+        }
+
+        const targetIndex = Object.values(result.ids).indexOf(id);
+        if (targetIndex === -1) {
+          search[key] = result;
+        } else {
+          const ids: IdMap = {};
+          Object.entries(result.ids).forEach(([indexString, entityId]) => {
+            if (entityId === id) {
+              return;
+            }
+
+            const index = Number(indexString);
+            if (index > targetIndex) {
+              ids[index - 1] = entityId;
+            } else {
+              ids[index] = entityId;
+            }
+          });
+
+          search[key] = {
+            ...result,
+            ids,
+            count: result.count - 1
+          };
+        }
+      });
 
       return {
-        ...state,
         get: {
           ...state.get,
-          [type]: cache
+          [type]: get
+        },
+        search: {
+          ...state.search,
+          [type]: search
         }
       };
     }

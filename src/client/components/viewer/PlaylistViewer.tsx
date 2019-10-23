@@ -93,7 +93,6 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
         {bookmark && (
           <DeletePlaylistBookmarkDialog
             playlistBookmarkId={bookmark.id}
-            playlistId={playlistId}
             isOpen={isDeletePlaylistBookmarkDialogOpen}
             onClose={onToggleDeletePlaylistBookmarkDialog}
           />

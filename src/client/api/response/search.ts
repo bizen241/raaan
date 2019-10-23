@@ -3,7 +3,7 @@ import { Params } from "../../../shared/api/request/params";
 import { SearchResponse } from "../../../shared/api/response/search";
 import { stringifyParams } from "../request/search";
 
-type IdMap = {
+export type IdMap = {
   [index: string]: string | undefined;
 };
 
@@ -13,7 +13,7 @@ interface SearchResult {
   fetchedAt: number;
 }
 
-interface SearchResultMap {
+export interface SearchResultMap {
   [query: string]: SearchResult | undefined;
 }
 

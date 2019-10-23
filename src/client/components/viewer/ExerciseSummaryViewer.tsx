@@ -157,7 +157,6 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
         />
         {vote && (
           <DeleteExerciseVoteDialog
-            exerciseId={exerciseId}
             exerciseVoteId={vote.id}
             isOpen={isDeleteVoteDialogOpen}
             onClose={onToggleDeleteVoteDialog}

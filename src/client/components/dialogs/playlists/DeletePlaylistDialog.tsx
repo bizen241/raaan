@@ -15,8 +15,7 @@ export const DeletePlaylistDialog = createDialog<{
     const dispatch = useDispatch();
 
     const onDelete = () => {
-      dispatch(actions.api.delete("Playlist", playlistId));
-      onClose();
+      dispatch(actions.api.delete("Playlist", playlistId, onClose));
     };
 
     return (

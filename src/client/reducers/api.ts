@@ -93,7 +93,7 @@ const uploadEntity = <E extends EntityObject>(type: EntityType, id: string, para
   }
 };
 
-const deleteEntity = (type: EntityType, id: string): AsyncAction => async dispatch => {
+const deleteEntity = (type: EntityType, id: string, callback?: () => void): AsyncAction => async dispatch => {
   dispatch(apiSyncActions.update("delete", type, id, 102));
 
   try {
@@ -102,6 +102,12 @@ const deleteEntity = (type: EntityType, id: string): AsyncAction => async dispat
     dispatch(cacheActions.get(response));
     dispatch(buffersActions.delete(type, id));
     dispatch(apiSyncActions.update("delete", type, id, 200, response));
+
+    if (callback !== undefined) {
+      callback();
+    }
+
+    setTimeout(() => dispatch(cacheActions.purge(type, id)), 1000);
   } catch (e) {
     const code = e instanceof HTTPError ? e.response.status : 500;
 
