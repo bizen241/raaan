@@ -119,24 +119,27 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
     return next(createError(403));
   }
 
-  const updatedItems: PlaylistItemEntity[] = [];
+  const nextItem = playlistItem.next;
 
   const prevItem = await manager.findOne(PlaylistItemEntity, {
-    next: {
-      id: playlistItemId
-    }
+    where: {
+      next: {
+        id: playlistItemId
+      }
+    },
+    relations: ["exercise"]
   });
-  if (prevItem !== undefined) {
-    prevItem.next = playlistItem.next;
-
-    await manager.save(prevItem);
-
-    updatedItems.push(prevItem);
-  }
 
   await manager.remove(playlistItem);
 
-  responseFindResult(req, res, ...updatedItems);
+  if (prevItem !== undefined) {
+    prevItem.next = nextItem;
+    await manager.save(prevItem);
+
+    responseFindResult(req, res, prevItem);
+  } else {
+    responseFindResult(req, res);
+  }
 });
 
 DELETE.apiDoc = createOperationDoc({
