@@ -17,7 +17,6 @@ test("GET /api/user -> 200", async () => {
   const data = JSON.parse(res._getData()) as EntityStore;
   assert.notEqual(data.User[user.id], undefined);
   assert.notEqual(data.UserConfig[config.id], undefined);
-  assert.notEqual(data.UserAccount[account.id], undefined);
 });
 
 test("DELETE /api/user -> 200", async () => {
