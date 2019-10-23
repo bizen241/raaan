@@ -8,6 +8,7 @@ declare module "passport-github" {
     callbackURL: string;
     passReqToCallback: true;
     state: true;
+    scope: string;
   }
 
   export class Strategy extends passport.Strategy {
