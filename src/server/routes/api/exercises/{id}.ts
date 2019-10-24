@@ -12,7 +12,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
   const { id: exerciseId }: PathParams = req.params;
 
   const exercise = await getManager().findOne(ExerciseEntity, exerciseId, {
-    relations: ["author", "summary", "summary.tags"]
+    relations: ["author", "author.summary", "summary", "summary.tags"]
   });
   if (exercise === undefined) {
     return next(createError(404));

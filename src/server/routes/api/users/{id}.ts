@@ -8,7 +8,9 @@ import { UserEntity } from "../../../database/entities";
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
   const { id: userId }: PathParams = req.params;
 
-  const user = await getManager().findOne(UserEntity, userId);
+  const user = await getManager().findOne(UserEntity, userId, {
+    relations: ["summary"]
+  });
   if (user === undefined) {
     return next(createError(404));
   }
