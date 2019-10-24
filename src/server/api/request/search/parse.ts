@@ -293,8 +293,12 @@ const parseUserDiary: Parser<UserDiary> = query => {
 };
 
 const parseUserFollow: Parser<UserFollow> = query => {
+  const { followerId, targetId } = query;
+
   return {
-    ...base(query)
+    ...base(query),
+    followerId,
+    targetId
   };
 };
 
