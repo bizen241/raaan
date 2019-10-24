@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardHeader, Chip, MenuItem, Typography } from "@material-ui/core";
+import { Card, CardContent, CardHeader, Link, MenuItem, Typography } from "@material-ui/core";
 import { Delete, Edit, HowToVote, Lock, Public, ReportProblem } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
@@ -54,30 +54,14 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
             return buffer !== undefined && buffer.targetId === exerciseId;
           });
 
-    const isAuthor = exerciseSummary.authorId !== currentUser.id;
+    const isAuthor = exerciseSummary.authorId === currentUser.id;
     const isVoted = vote !== undefined;
     const isReported = reportId !== undefined;
 
     return (
       <Card>
         <CardHeader
-          title={
-            <Typography variant="h6" gutterBottom>
-              {exerciseSummary.title}
-            </Typography>
-          }
-          subheader={
-            <Row>
-              {exerciseSummary.tags.split(/\s/).map(
-                tag =>
-                  tag && (
-                    <Box key={tag} pr={1} pb={1}>
-                      <Chip label={tag} clickable component={RouterLink} to={`/tags/${tag}`} />
-                    </Box>
-                  )
-              )}
-            </Row>
-          }
+          title={<Typography>{exerciseSummary.title}</Typography>}
           action={
             isAuthor ? (
               <Menu>
@@ -133,6 +117,30 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
           <Column>
             <Property label="提出回数">{exerciseSummary.submitCount}</Property>
             <Property label="評価">{exerciseSummary.upvoteCount}</Property>
+            <Property label="タグ">
+              <Row>
+                {exerciseSummary.tags.split(/\s/).map(
+                  tag =>
+                    tag && (
+                      <Row key={tag} pr={1}>
+                        <Link underline="always" color="textPrimary" component={RouterLink} to={`/tags/${tag}`}>
+                          {tag}
+                        </Link>
+                      </Row>
+                    )
+                )}
+              </Row>
+            </Property>
+            <Property label="作者">
+              <Link
+                underline="always"
+                color="textPrimary"
+                component={RouterLink}
+                to={`/users/${exerciseSummary.authorId}`}
+              >
+                {exerciseSummary.authorName || "名無しさん"}
+              </Link>
+            </Property>
           </Column>
         </CardContent>
         <PublishExerciseDialog

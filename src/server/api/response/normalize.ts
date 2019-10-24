@@ -175,17 +175,21 @@ const normalizeExerciseReport: Normalizer<ExerciseReportEntity> = (_, store, ent
   };
 };
 
-const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (context, store, entity) => {
+const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (_, store, entity) => {
   const { id, exercise, exerciseId, tags = [], upvoteCount, submittedCount: submitCount } = entity;
   if (exercise === undefined || exercise.draft === undefined) {
     return;
   }
 
   const { author, authorId, lang, title, description, isDraft, isPrivate } = exercise;
+  if (author === undefined) {
+    return;
+  }
 
   store.ExerciseSummary[id] = {
     ...base(entity),
     authorId,
+    authorName: author.name,
     exerciseId,
     lang,
     title,
@@ -197,8 +201,6 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (context, st
     isEditing: !exercise.draft.isMerged,
     isPrivate
   };
-
-  normalizeEntity(context, store, author);
 };
 
 const normalizeExerciseVote: Normalizer<ExerciseVoteEntity> = (_, store, entity) => {
@@ -344,11 +346,15 @@ const normalizePlaylistSummary: Normalizer<PlaylistSummaryEntity> = (_, store, e
     return;
   }
 
-  const { authorId, title, description, isPrivate } = playlist;
+  const { author, authorId, title, description, isPrivate } = playlist;
+  if (author === undefined) {
+    return;
+  }
 
   store.PlaylistSummary[id] = {
     ...base(entity),
     authorId,
+    authorName: author.name,
     playlistId,
     title,
     tags: tags.map(tag => tag.name).join(" "),

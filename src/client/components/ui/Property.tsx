@@ -9,9 +9,7 @@ export const Property = React.memo<{
   <Column mb={1}>
     <Typography color="textSecondary">{label}</Typography>
     <Column pl={1}>
-      <Typography variant="h5" component="span">
-        {children}
-      </Typography>
+      <Typography component="div">{children}</Typography>
     </Column>
     <Divider />
   </Column>
