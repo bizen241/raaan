@@ -35,7 +35,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
 
 GET.apiDoc = createOperationDoc({
   entityType: "UserFollow",
-  summary: "Search votes",
+  summary: "Search follows",
   permission: "Read",
   hasQuery: true
 });
