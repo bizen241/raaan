@@ -18,6 +18,9 @@ export class UserSummaryEntity extends BaseEntityClass {
   submitCount: number = 0;
 
   @Column()
+  followerCount: number = 0;
+
+  @Column()
   typeCount: number = 0;
 
   constructor() {
