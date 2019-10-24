@@ -240,8 +240,11 @@ const parseSynonymReport: Parser<SynonymReport> = query => {
 };
 
 const parseTag: Parser<Tag> = query => {
+  const { name } = query;
+
   return {
-    ...base(query)
+    ...base(query),
+    name
   };
 };
 
