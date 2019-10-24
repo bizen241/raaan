@@ -14,6 +14,7 @@ import { PlaylistBookmarksPage } from "../pages/playlists/PlaylistBookmarksPage"
 import { PlaylistPage } from "../pages/playlists/PlaylistPage";
 import { EditExerciseReportPage } from "../pages/reports/EditExerciseReportPage";
 import { SubmissionsPage } from "../pages/submissions/SubmissionsPage";
+import { TagPage } from "../pages/tags/TagPage";
 import { UserAccountPage } from "../pages/user/UserAccountPage";
 import { UserConfigPage } from "../pages/user/UserConfigPage";
 import { UserSessionsPage } from "../pages/user/UserSessionsPage";
@@ -53,6 +54,8 @@ export const Router = React.memo(() => {
 
         <Route exact={true} path="/playlists/:id" component={PlaylistPage} />
         <Route exact={true} path="/playlists/:id/edit" component={EditPlaylistPage} />
+
+        <Route exact={true} path="/tags/:name" component={TagPage} />
 
         <Route exact={true} path="/playlist-bookmarks" component={PlaylistBookmarksPage} />
 
