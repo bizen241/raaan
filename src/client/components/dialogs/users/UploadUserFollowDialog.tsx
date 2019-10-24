@@ -2,12 +2,14 @@ import { Typography } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
 import { useEffect, useMemo } from "react";
 import * as React from "react";
+import { useContext } from "react";
 import { useDispatch } from "react-redux";
 import { UserFollow } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
+import { UserContext } from "../../project/Context";
 import { Button, DialogActions, DialogHeader, DialogMessage } from "../../ui";
 
 export const UploadUserFollowDialog = createDialog<{
@@ -15,11 +17,13 @@ export const UploadUserFollowDialog = createDialog<{
 }>(
   React.memo(({ targetId, onClose }) => {
     const dispatch = useDispatch();
+    const currentUser = useContext(UserContext);
 
     const bufferId = useMemo(() => generateBufferId(), []);
     const onUpload = () => {
       dispatch(
         actions.api.upload<UserFollow>("UserFollow", bufferId, {
+          followerId: currentUser.id,
           targetId
         })
       );
@@ -31,6 +35,7 @@ export const UploadUserFollowDialog = createDialog<{
           actions.cache.search<UserFollow>(
             "UserFollow",
             {
+              followerId: currentUser.id,
               targetId
             },
             {
