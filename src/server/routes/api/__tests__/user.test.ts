@@ -8,7 +8,7 @@ beforeEach(async () => reset());
 afterAll(async () => close());
 
 test("GET /api/user -> 200", async () => {
-  const { req, res, next, user, account, config } = await createHttpMocks("Read");
+  const { req, res, next, user, config } = await createHttpMocks("Read");
 
   await GET(req, res, next);
 
