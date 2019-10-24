@@ -249,8 +249,12 @@ const parseTag: Parser<Tag> = query => {
 };
 
 const parseTagFollow: Parser<TagFollow> = query => {
+  const { followerId, targetId } = query;
+
   return {
-    ...base(query)
+    ...base(query),
+    followerId,
+    targetId
   };
 };
 
