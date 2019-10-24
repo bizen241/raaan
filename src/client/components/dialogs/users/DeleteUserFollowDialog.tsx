@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import { Delete, HowToVote } from "@material-ui/icons";
+import { RemoveCircle } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
@@ -21,11 +21,16 @@ export const DeleteUserFollowDialog = createDialog<{
         <DialogHeader onClose={onClose}>
           <Typography>フォロー解除</Typography>
         </DialogHeader>
-        <DialogMessage icon={<HowToVote />}>
+        <DialogMessage icon={<RemoveCircle />}>
           <Typography>フォローを解除します。</Typography>
         </DialogMessage>
         <DialogActions>
-          <Button icon={<Delete color="error" />} label="フォローを解除する" labelColor="error" onClick={onDelete} />
+          <Button
+            icon={<RemoveCircle color="error" />}
+            label="フォローを解除する"
+            labelColor="error"
+            onClick={onDelete}
+          />
           <Button label="キャンセル" onClick={onClose} />
         </DialogActions>
       </>
