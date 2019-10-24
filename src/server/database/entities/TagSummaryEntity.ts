@@ -19,4 +19,7 @@ export class TagSummaryEntity extends BaseEntityClass {
 
   @Column()
   playlistCount: number = 0;
+
+  @Column()
+  followerCount: number = 0;
 }
