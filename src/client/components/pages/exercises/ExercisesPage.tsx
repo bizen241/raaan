@@ -5,7 +5,7 @@ import { ExerciseSummaryList } from "../../list/ExerciseSummaryList";
 import { PlaylistSummaryList } from "../../list/PlaylistSummaryList";
 import { Page } from "../../ui";
 
-export const SearchPage = React.memo(() => {
+export const ExercisesPage = React.memo(() => {
   const [tab, setTab] = useState<"exercises" | "playlists">("exercises");
 
   return (

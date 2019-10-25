@@ -20,8 +20,8 @@ export const HomePage = React.memo(() => {
       ) : (
         <Button color="primary" icon={<AccountCircle />} label="マイページ" to={`/users/${currentUser.id}`} />
       )}
-      <Button icon={<Search />} label="クイズを探す" to="/contents/search" />
-      <Button icon={<Edit />} label="クイズを作る" to="/contents/create" />
+      <Button icon={<Search />} label="クイズを探す" to="/exercises" />
+      <Button icon={<Edit />} label="クイズを作る" to="/exercises/edit" />
       {!isGuest && (
         <Column pb={1}>
           <Card>

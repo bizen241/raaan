@@ -4,9 +4,9 @@ import { useSelector } from "react-redux";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { RootState } from "../../reducers";
 import { AppPage } from "../pages/AppPage";
-import { CreatePage } from "../pages/contents/CreatePage";
-import { SearchPage } from "../pages/contents/SearchPage";
+import { EditExercisesPage } from "../pages/exercises/EditExercisesPage";
 import { ExercisePage } from "../pages/exercises/ExercisePage";
+import { ExercisesPage } from "../pages/exercises/ExercisesPage";
 import { HomePage } from "../pages/HomePage";
 import { LoadingPage } from "../pages/LoadingPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
@@ -43,12 +43,11 @@ export const Router = React.memo(() => {
 
         <Route exact={true} path="/submissions" component={SubmissionsPage} />
 
-        <Route exact={true} path="/contents/search" component={SearchPage} />
-        <Route exact={true} path="/contents/create" component={CreatePage} />
-
         <Route exact={true} path="/users/:id" component={UserPage} />
         <Route exact={true} path="/users/:id/contents" component={UserContentsPage} />
 
+        <Route exact={true} path="/exercises" component={ExercisesPage} />
+        <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
         <Route exact={true} path="/exercises/:id" component={ExercisePage} />
         <Route exact={true} path="/exercises/:id/edit" component={EditExercisePage} />
 

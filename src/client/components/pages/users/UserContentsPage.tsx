@@ -20,7 +20,7 @@ export const UserContentsPage = React.memo<PageProps>(({ match }) => {
     <Page title={userId === currentUser.id ? "自分のコンテンツ" : "ユーザーのコンテンツ"}>
       <Column pb={1}>
         <Paper>
-          <Tabs value={tab} variant="fullWidth" indicatorColor="primary" onChange={(_, value) => setTab(value)}>
+          <Tabs value={tab} variant="scrollable" indicatorColor="primary" onChange={(_, value) => setTab(value)}>
             <Tab value="exercises" label={<Typography>クイズ</Typography>} />
             <Tab value="playlists" label={<Typography>プレイリスト</Typography>} />
           </Tabs>
