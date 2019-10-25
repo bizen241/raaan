@@ -8,9 +8,8 @@ export const UserSessionsPage = () => {
   const currentUser = useContext(UserContext);
 
   return (
-    <Page>
+    <Page title="セッション一覧">
       <UserSessionList
-        title="セッション一覧"
         initialParams={{
           userId: currentUser.id
         }}

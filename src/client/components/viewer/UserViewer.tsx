@@ -38,7 +38,7 @@ export const UserViewer = withEntity<User, {}>({ entityType: "User" })(({ entity
       <Column pb={1}>
         <UserSummaryViewer entityId={user.summaryId} />
       </Column>
-      {isOwn && <Button icon={<Bookmarks />} label="ブックマーク" to="/playlist-bookmarks" />}
+      <Button icon={<Bookmarks />} label="ブックマーク" to={`/users/${userId}/playlist-bookmarks`} />
       {isOwn && <Button icon={<Group />} label="グループ" to="/groups" />}
       <UploadUserFollowDialog
         targetId={userId}
