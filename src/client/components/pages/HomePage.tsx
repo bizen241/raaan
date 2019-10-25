@@ -1,5 +1,5 @@
 import { Avatar, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
-import { AccountCircle, Edit, Search, Timeline } from "@material-ui/icons";
+import { AccountCircle, Edit, History, Search, Timeline } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { UserDiaryGraph } from "../graphs/UserDiaryGraph";
@@ -15,13 +15,8 @@ export const HomePage = React.memo(() => {
 
   return (
     <Page title="ホーム">
-      {isGuest ? (
-        <Button color="primary" icon={<AccountCircle />} label="ログイン" to="/user-account" />
-      ) : (
-        <Button color="primary" icon={<AccountCircle />} label="マイページ" to={`/users/${currentUser.id}`} />
-      )}
-      <Button icon={<Search />} label="クイズを探す" to="/exercises" />
-      <Button icon={<Edit />} label="クイズを作る" to="/exercises/edit" />
+      <Button color="primary" icon={<Search />} label="クイズを探す" to="/exercises" />
+      <Button color="primary" icon={<Edit />} label="クイズを作る" to="/exercises/edit" />
       {!isGuest && (
         <Column pb={1}>
           <Card>
@@ -39,6 +34,13 @@ export const HomePage = React.memo(() => {
           </Card>
         </Column>
       )}
+      {isGuest ? (
+        <Button icon={<AccountCircle />} label="ログイン" to="/user-account" />
+      ) : (
+        <Button icon={<AccountCircle />} label="マイページ" to={`/users/${currentUser.id}`} />
+      )}
+      {!isGuest && <Button icon={<History />} label="復習" to="/submissions" />}
+      {!isGuest && <Button icon={<Timeline />} label="記録" to="/statistics" />}
     </Page>
   );
 });
