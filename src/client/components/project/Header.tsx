@@ -29,7 +29,7 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
             <Typography component="span">{title}</Typography>
             <Box flex={1} />
             <Menu>
-              <MenuItem disabled={pathname === "/config"} component={Link} to="/user-config">
+              <MenuItem disabled={pathname === "/config"} component={Link} to="/user/user-config">
                 <Settings className={classes.leftIcon} />
                 <Typography>
                   <Message id="settings" />
@@ -39,7 +39,7 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
                 <Home className={classes.leftIcon} />
                 <Typography>ホーム</Typography>
               </MenuItem>
-              <MenuItem disabled={pathname === "/account"} component={Link} to="/user-account">
+              <MenuItem disabled={pathname === "/account"} component={Link} to="/user/user-accounts">
                 <AccountCircle className={classes.leftIcon} />
                 <Typography>
                   <Message id="account" />

@@ -61,9 +61,7 @@ export const ExerciseDraftEditor = withBuffer<ExerciseDraft>("ExerciseDraft")(
             </CardContent>
           </Card>
         </Column>
-        <Column pb={1}>
-          <QuestionsEditor questions={buffer.questions || source.questions || []} onChange={onUpdateQuestions} />
-        </Column>
+        <QuestionsEditor questions={buffer.questions || source.questions || []} onChange={onUpdateQuestions} />
         <Button color="secondary" icon={<PlayArrow />} label="プレビュー" onClick={onToggleExercisePreviewer} />
         <UploadExerciseDraftDialog
           exerciseDraftId={bufferId}

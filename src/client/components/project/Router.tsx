@@ -40,16 +40,22 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/" component={HomePage} />
         <Route exact={true} path="/app" component={AppPage} />
 
-        <Route exact={true} path="/user-config" component={UserConfigPage} />
-        <Route exact={true} path="/user-account" component={UserAccountPage} />
-        <Route exact={true} path="/user-sessions" component={UserSessionsPage} />
+        <Route exact={true} path="/user/user-config" component={UserConfigPage} />
+        <Route exact={true} path="/user/user-accounts" component={UserAccountPage} />
+        <Route exact={true} path="/user/user-sessions" component={UserSessionsPage} />
 
-        <Route exact={true} path="/submissions" component={SubmissionsPage} />
+        <Route exact={true} path="/user/submissions" component={SubmissionsPage} />
+        <Route exact={true} path="/user/exercise-drafts" component={ExerciseDraftsPage} />
+
+        <Route exact={true} path="/user/group-members" component={NotFoundPage} />
+        <Route exact={true} path="/user/group-exercises" component={NotFoundPage} />
+        <Route exact={true} path="/user/group-playlists" component={NotFoundPage} />
 
         <Route exact={true} path="/users/:id" component={UserPage} />
         <Route exact={true} path="/users/:id/exercises" component={UserExercisesPage} />
         <Route exact={true} path="/users/:id/playlists" component={UserPlaylistsPage} />
         <Route exact={true} path="/users/:id/playlist-bookmarks" component={UserPlaylistBookmarksPage} />
+        <Route exact={true} path="/users/:id/groups" component={NotFoundPage} />
 
         <Route exact={true} path="/exercises" component={ExercisesPage} />
         <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
@@ -66,8 +72,15 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/tags/:name" component={TagPage} />
         <Route exact={true} path="/tags/:name/edit" component={NotFoundPage} />
 
-        <Route exact={true} path="/exercise-drafts" component={ExerciseDraftsPage} />
+        <Route exact={true} path="/groups" component={NotFoundPage} />
+        <Route exact={true} path="/groups/:id" component={NotFoundPage} />
+        <Route exact={true} path="/groups/:id/group-members" component={NotFoundPage} />
+        <Route exact={true} path="/groups/:id/group-exercises" component={NotFoundPage} />
+        <Route exact={true} path="/groups/:id/group-playlists" component={NotFoundPage} />
 
+        <Route exact={true} path="/exercise-reports" component={NotFoundPage} />
+        <Route exact={true} path="/exercise-reports/edit" component={NotFoundPage} />
+        <Route exact={true} path="/exercise-reports/:id" component={NotFoundPage} />
         <Route exact={true} path="/exercise-reports/:id/edit" component={EditExerciseReportPage} />
 
         <Route component={NotFoundPage} />

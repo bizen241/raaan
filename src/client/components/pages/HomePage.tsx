@@ -39,8 +39,7 @@ export const HomePage = React.memo(() => {
       ) : (
         <Button icon={<AccountCircle />} label="マイページ" to={`/users/${currentUser.id}`} />
       )}
-      {!isGuest && <Button icon={<History />} label="復習" to="/submissions" />}
-      {!isGuest && <Button icon={<Timeline />} label="記録" to="/statistics" />}
+      {!isGuest && <Button icon={<History />} label="復習" to="/user/submissions" />}
     </Page>
   );
 });
