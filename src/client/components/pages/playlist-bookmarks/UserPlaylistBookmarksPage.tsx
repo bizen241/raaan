@@ -1,17 +1,16 @@
 import * as React from "react";
-import { useContext } from "react";
 import { PlaylistBookmarkList } from "../../list/PlaylistBookmarkList";
-import { UserContext } from "../../project/Context";
+import { PageProps } from "../../project/Router";
 import { Page } from "../../ui";
 
-export const PlaylistBookmarksPage = React.memo(() => {
-  const currentUser = useContext(UserContext);
+export const UserPlaylistBookmarksPage = React.memo<PageProps>(props => {
+  const userId = props.match.params.id;
 
   return (
     <Page title="ブックマーク">
       <PlaylistBookmarkList
         initialParams={{
-          userId: currentUser.id
+          userId
         }}
       />
     </Page>

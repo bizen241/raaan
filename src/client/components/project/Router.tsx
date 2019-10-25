@@ -7,18 +7,19 @@ import { AppPage } from "../pages/AppPage";
 import { EditExercisesPage } from "../pages/exercises/EditExercisesPage";
 import { ExercisePage } from "../pages/exercises/ExercisePage";
 import { ExercisesPage } from "../pages/exercises/ExercisesPage";
+import { UserExercisesPage } from "../pages/exercises/UserExercisesPage";
 import { HomePage } from "../pages/HomePage";
 import { LoadingPage } from "../pages/LoadingPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
-import { PlaylistBookmarksPage } from "../pages/playlists/PlaylistBookmarksPage";
+import { UserPlaylistBookmarksPage } from "../pages/playlist-bookmarks/UserPlaylistBookmarksPage";
 import { PlaylistPage } from "../pages/playlists/PlaylistPage";
+import { PlaylistsPage } from "../pages/playlists/PlaylistsPage";
 import { EditExerciseReportPage } from "../pages/reports/EditExerciseReportPage";
 import { SubmissionsPage } from "../pages/submissions/SubmissionsPage";
 import { TagPage } from "../pages/tags/TagPage";
 import { UserAccountPage } from "../pages/user/UserAccountPage";
 import { UserConfigPage } from "../pages/user/UserConfigPage";
 import { UserSessionsPage } from "../pages/user/UserSessionsPage";
-import { UserContentsPage } from "../pages/users/UserContentsPage";
 import { UserPage } from "../pages/users/UserPage";
 
 export type PageProps = RouteComponentProps<{ id: string; name: string }>;
@@ -44,19 +45,19 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/submissions" component={SubmissionsPage} />
 
         <Route exact={true} path="/users/:id" component={UserPage} />
-        <Route exact={true} path="/users/:id/contents" component={UserContentsPage} />
+        <Route exact={true} path="/users/:id/exercises" component={UserExercisesPage} />
+        <Route exact={true} path="/users/:id/playlist-bookmarks" component={UserPlaylistBookmarksPage} />
 
         <Route exact={true} path="/exercises" component={ExercisesPage} />
         <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
         <Route exact={true} path="/exercises/:id" component={ExercisePage} />
         <Route exact={true} path="/exercises/:id/edit" component={EditExercisePage} />
 
+        <Route exact={true} path="/playlists" component={PlaylistsPage} />
         <Route exact={true} path="/playlists/:id" component={PlaylistPage} />
         <Route exact={true} path="/playlists/:id/edit" component={EditPlaylistPage} />
 
         <Route exact={true} path="/tags/:name" component={TagPage} />
-
-        <Route exact={true} path="/playlist-bookmarks" component={PlaylistBookmarksPage} />
 
         <Route exact={true} path="/exercise-reports/:id/edit" component={EditExerciseReportPage} />
 

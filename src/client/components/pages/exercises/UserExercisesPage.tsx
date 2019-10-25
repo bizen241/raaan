@@ -8,7 +8,7 @@ import { PageProps } from "../../project/Router";
 import { Column } from "../../ui";
 import { Page } from "../../ui/Page";
 
-export const UserContentsPage = React.memo<PageProps>(({ match }) => {
+export const UserExercisesPage = React.memo<PageProps>(({ match }) => {
   const userId = match.params.id;
 
   const currentUser = useContext(UserContext);

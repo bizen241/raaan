@@ -1,41 +1,20 @@
-import { Divider, Paper, Tab, Tabs, Typography } from "@material-ui/core";
+import { PlaylistPlay } from "@material-ui/icons";
 import * as React from "react";
-import { useState } from "react";
 import { ExerciseSummaryList } from "../../list/ExerciseSummaryList";
-import { PlaylistSummaryList } from "../../list/PlaylistSummaryList";
-import { Page } from "../../ui";
+import { Button, Page } from "../../ui";
 
 export const ExercisesPage = React.memo(() => {
-  const [tab, setTab] = useState<"exercises" | "playlists">("exercises");
-
   return (
     <Page title="クイズを探す">
-      <Paper>
-        <Tabs value={tab} variant="fullWidth" indicatorColor="primary" onChange={(_, value) => setTab(value)}>
-          <Tab value="exercises" label={<Typography>クイズ</Typography>} />
-          <Tab value="playlists" label={<Typography>プレイリスト</Typography>} />
-        </Tabs>
-        <Divider />
-        {tab === "exercises" ? (
-          <ExerciseSummaryList
-            elevation={0}
-            initialParams={{
-              searchLimit: 10,
-              searchOffset: 0,
-              searchSort: "createdAt",
-              searchOrder: "DESC"
-            }}
-          />
-        ) : (
-          <PlaylistSummaryList
-            elevation={0}
-            initialParams={{
-              searchLimit: 10,
-              searchOffset: 0
-            }}
-          />
-        )}
-      </Paper>
+      <Button icon={<PlaylistPlay />} label="プレイリストを探す" to="/playlists" />
+      <ExerciseSummaryList
+        initialParams={{
+          searchLimit: 10,
+          searchOffset: 0,
+          searchSort: "createdAt",
+          searchOrder: "DESC"
+        }}
+      />
     </Page>
   );
 });
