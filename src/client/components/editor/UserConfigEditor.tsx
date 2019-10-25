@@ -48,9 +48,7 @@ export const UserConfigEditor = withBuffer<UserConfig>("UserConfig")(
 
     return (
       <Column>
-        <Column pb={1}>
-          <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
-        </Column>
+        <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
         <Card>
           <CardContent>
             <Column>

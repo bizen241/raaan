@@ -4,7 +4,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Column, DialogContent, DialogHeader, Row } from "../../ui";
+import { Button, DialogContent, DialogHeader, Row } from "../../ui";
 import { useStyles } from "../../ui/styles";
 
 export const UnpublishPlaylistDialog = createDialog<{
@@ -34,12 +34,8 @@ export const UnpublishPlaylistDialog = createDialog<{
             <Warning className={classes.leftIcon} />
             <Typography>プレイリストが非公開に設定されます。</Typography>
           </Row>
-          <Column pb={1}>
-            <Button label="プレイリストの公開を終了" labelColor="error" onClick={onUnpublish} />
-          </Column>
-          <Column pb={1}>
-            <Button label="キャンセル" onClick={onClose} />
-          </Column>
+          <Button label="プレイリストの公開を終了" labelColor="error" onClick={onUnpublish} />
+          <Button label="キャンセル" onClick={onClose} />
         </DialogContent>
       </>
     );

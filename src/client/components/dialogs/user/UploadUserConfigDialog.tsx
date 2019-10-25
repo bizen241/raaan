@@ -4,7 +4,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Column, Row } from "../../ui";
+import { Button, Row } from "../../ui";
 import { DialogContent, DialogHeader } from "../../ui/Dialog";
 import { useStyles } from "../../ui/styles";
 
@@ -30,12 +30,8 @@ export const UploadUserConfigDialog = createDialog<{
             <CloudUpload className={classes.leftIcon} />
             <Typography>設定をアップロードします。</Typography>
           </Row>
-          <Column pb={1}>
-            <Button label="アップロード" onClick={onUpload} />
-          </Column>
-          <Column pb={1}>
-            <Button label="キャンセル" onClick={onClose} />
-          </Column>
+          <Button label="アップロード" onClick={onUpload} />
+          <Button label="キャンセル" onClick={onClose} />
         </DialogContent>
       </>
     );

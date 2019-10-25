@@ -10,7 +10,7 @@ import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
 import { isLocalOnly } from "../../../reducers/api";
 import { UserContext } from "../../project/Context";
-import { Button, Column, DialogContent, DialogHeader, Row } from "../../ui";
+import { Button, DialogContent, DialogHeader, Row } from "../../ui";
 import { useStyles } from "../../ui/styles";
 
 export const UploadExerciseDraftDialog = createDialog<{
@@ -24,9 +24,7 @@ export const UploadExerciseDraftDialog = createDialog<{
         </DialogHeader>
         <DialogContent>
           <UploadExerciseDraftDialogContent exerciseDraftId={exerciseDraftId} />
-          <Column pb={1}>
-            <Button label="キャンセル" onClick={onClose} />
-          </Column>
+          <Button label="キャンセル" onClick={onClose} />
         </DialogContent>
       </>
     );
@@ -68,23 +66,15 @@ const UploadExerciseDraftDialogContent = React.memo<{
           <Typography>アップロードの設定を選択して下さい。</Typography>
         </Row>
         {isLocalOnly(exerciseDraftId) && currentUser.permission !== "Read" && (
-          <Column pb={1}>
-            <Button label="公開" color="primary" onClick={() => setUploadConfig("public")} />
-          </Column>
+          <Button label="公開" color="primary" onClick={() => setUploadConfig("public")} />
         )}
         {isLocalOnly(exerciseDraftId) && (
-          <Column pb={1}>
-            <Button label="非公開" color="secondary" onClick={() => setUploadConfig("private")} />
-          </Column>
+          <Button label="非公開" color="secondary" onClick={() => setUploadConfig("private")} />
         )}
         {!isLocalOnly(exerciseDraftId) && (
-          <Column pb={1}>
-            <Button label="更新" color="primary" onClick={() => setUploadConfig("update")} />
-          </Column>
+          <Button label="更新" color="primary" onClick={() => setUploadConfig("update")} />
         )}
-        <Column pb={1}>
-          <Button label="下書き" color="secondary" onClick={() => setUploadConfig("draft")} />
-        </Column>
+        <Button label="下書き" color="secondary" onClick={() => setUploadConfig("draft")} />
       </>
     );
   } else {
@@ -116,9 +106,7 @@ const UploadExerciseDraftDialogContent = React.memo<{
             </>
           )}
         </Row>
-        <Column pb={1}>
-          <Button color="primary" label="アップロード" onClick={onUpload} />
-        </Column>
+        <Button color="primary" label="アップロード" onClick={onUpload} />
       </>
     );
   }

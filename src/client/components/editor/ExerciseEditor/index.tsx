@@ -34,9 +34,7 @@ export const ExerciseDraftEditor = withBuffer<ExerciseDraft>("ExerciseDraft")(
 
     return (
       <Column flex={1}>
-        <Column pb={1}>
-          <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
-        </Column>
+        <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
         <Column pb={1}>
           <Card>
             <CardContent>
@@ -66,9 +64,7 @@ export const ExerciseDraftEditor = withBuffer<ExerciseDraft>("ExerciseDraft")(
         <Column pb={1}>
           <QuestionsEditor questions={buffer.questions || source.questions || []} onChange={onUpdateQuestions} />
         </Column>
-        <Column pb={1}>
-          <Button color="secondary" icon={<PlayArrow />} label="プレビュー" onClick={onToggleExercisePreviewer} />
-        </Column>
+        <Button color="secondary" icon={<PlayArrow />} label="プレビュー" onClick={onToggleExercisePreviewer} />
         <UploadExerciseDraftDialog
           exerciseDraftId={bufferId}
           isOpen={isUploadDialogOpen}

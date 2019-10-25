@@ -19,9 +19,7 @@ export const PlaylistEditor = withBuffer<Playlist>("Playlist")(
 
     return (
       <Box>
-        <Column pb={1}>
-          <Button icon={<CloudUpload />} label="アップロード" />
-        </Column>
+        <Button icon={<CloudUpload />} label="アップロード" />
         <Column pb={1}>
           <Card>
             <CardContent>

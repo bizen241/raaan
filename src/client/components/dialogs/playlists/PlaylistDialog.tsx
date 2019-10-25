@@ -57,9 +57,7 @@ export const PlaylistDialog = createDialog<{
         <DialogContent>
           {!isPlaylistEditorOpen ? (
             <>
-              <Column pb={1}>
-                <Button icon={<Add />} label="新規作成" onClick={onTogglePlaylistEditor} />
-              </Column>
+              <Button icon={<Add />} label="新規作成" onClick={onTogglePlaylistEditor} />
               <Column pb={1}>
                 <ExerciseContext.Provider value={exerciseId}>
                   <PlaylistItemsContext.Provider value={playlistItems}>
@@ -81,12 +79,8 @@ export const PlaylistDialog = createDialog<{
                   <TextField variant="outlined" defaultValue={"新しいプレイリスト"} onChange={onUpdateTitle} />
                 </Column>
               </Column>
-              <Column pb={1}>
-                <Button label="プレイリストを作成" onClick={onUploadPlaylist} />
-              </Column>
-              <Column pb={1}>
-                <Button label="キャンセル" onClick={onTogglePlaylistEditor} />
-              </Column>
+              <Button label="プレイリストを作成" onClick={onUploadPlaylist} />
+              <Button label="キャンセル" onClick={onTogglePlaylistEditor} />
             </>
           )}
         </DialogContent>

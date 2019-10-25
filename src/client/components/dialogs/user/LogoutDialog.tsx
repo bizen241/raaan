@@ -3,7 +3,7 @@ import { Warning } from "@material-ui/icons";
 import * as React from "react";
 import { createDialog } from "../../../enhancers/createDialog";
 import { Message } from "../../project/Message";
-import { Button, Column, DialogContent, DialogHeader, Row } from "../../ui";
+import { Button, DialogContent, DialogHeader, Row } from "../../ui";
 import { useStyles } from "../../ui/styles";
 
 export const LogoutDialog = createDialog<{}>(
@@ -22,12 +22,8 @@ export const LogoutDialog = createDialog<{}>(
             <Warning className={classes.leftIcon} />
             <Typography>すべての下書きがブラウザから削除されます。</Typography>
           </Row>
-          <Column pb={1}>
-            <Button label={<Message id="logout" />} labelColor="error" href="/logout" />
-          </Column>
-          <Column pb={1}>
-            <Button label="キャンセル" onClick={onClose} />
-          </Column>
+          <Button label={<Message id="logout" />} labelColor="error" href="/logout" />
+          <Button label="キャンセル" onClick={onClose} />
         </DialogContent>
       </>
     );

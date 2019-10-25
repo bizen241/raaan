@@ -4,7 +4,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Column, DialogContent, DialogHeader, Row } from "../../ui";
+import { Button, DialogContent, DialogHeader, Row } from "../../ui";
 import { useStyles } from "../../ui/styles";
 
 export const DeletePlaylistDialog = createDialog<{
@@ -28,12 +28,8 @@ export const DeletePlaylistDialog = createDialog<{
             <Warning className={classes.leftIcon} />
             <Typography>プレイリストがサーバーから削除されます。</Typography>
           </Row>
-          <Column pb={1}>
-            <Button label="プレイリストを削除" labelColor="error" onClick={onDelete} />
-          </Column>
-          <Column pb={1}>
-            <Button label="キャンセル" onClick={onClose} />
-          </Column>
+          <Button label="プレイリストを削除" labelColor="error" onClick={onDelete} />
+          <Button label="キャンセル" onClick={onClose} />
         </DialogContent>
       </>
     );

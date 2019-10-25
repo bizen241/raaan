@@ -59,12 +59,8 @@ export const AttemptResultViewer: React.FunctionComponent<{
             </CardContent>
           </Card>
         </Column>
-        <Column pb={1}>
-          <Button icon={<Replay />} label="もう一度" onClick={onReplay} />
-        </Column>
-        <Column pb={1}>
-          <Button color="primary" icon={<ArrowForward />} label={hasNext ? "次へ" : "終了"} onClick={onFinish} />
-        </Column>
+        <Button icon={<Replay />} label="もう一度" onClick={onReplay} />
+        <Button color="primary" icon={<ArrowForward />} label={hasNext ? "次へ" : "終了"} onClick={onFinish} />
       </Column>
     </DialogContent>
   );

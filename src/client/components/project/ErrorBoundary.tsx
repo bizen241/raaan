@@ -56,14 +56,12 @@ const ErrorViewer: React.FunctionComponent<{ error: Error }> = ({ error }) => {
               <CardContent>{error.stack}</CardContent>
             </Card>
           </Column>
-          <Column pb={1}>
-            <Button
-              label="リロード"
-              onClick={() => {
-                location.reload();
-              }}
-            />
-          </Column>
+          <Button
+            label="リロード"
+            onClick={() => {
+              location.reload();
+            }}
+          />
           <Button
             label="すべて削除してリロード"
             labelColor="error"

@@ -2,7 +2,7 @@ import { Typography } from "@material-ui/core";
 import { Warning } from "@material-ui/icons";
 import * as React from "react";
 import { createDialog } from "../../../enhancers/createDialog";
-import { Button, Column, DialogContent, DialogHeader, Row } from "../../ui";
+import { Button, DialogContent, DialogHeader, Row } from "../../ui";
 import { useStyles } from "../../ui/styles";
 
 export const DeleteQuestionDialog = createDialog<{
@@ -21,19 +21,15 @@ export const DeleteQuestionDialog = createDialog<{
             <Warning className={classes.leftIcon} />
             <Typography>問題が問題集から削除されます。</Typography>
           </Row>
-          <Column pb={1}>
-            <Button
-              label="問題を削除"
-              labelColor="error"
-              onClick={() => {
-                onDelete();
-                onClose();
-              }}
-            />
-          </Column>
-          <Column pb={1}>
-            <Button label="キャンセル" onClick={onClose} />
-          </Column>
+          <Button
+            label="問題を削除"
+            labelColor="error"
+            onClick={() => {
+              onDelete();
+              onClose();
+            }}
+          />
+          <Button label="キャンセル" onClick={onClose} />
         </DialogContent>
       </>
     );

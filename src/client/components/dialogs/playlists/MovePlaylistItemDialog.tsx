@@ -50,9 +50,7 @@ export const MovePlaylistItemDialog = createDialog<{
               </Table>
             </Card>
           </Column>
-          <Column pb={1}>
-            <Button label="キャンセル" onClick={onClose} />
-          </Column>
+          <Button label="キャンセル" onClick={onClose} />
         </DialogContent>
       </>
     );
