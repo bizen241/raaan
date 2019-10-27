@@ -4,14 +4,12 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, DialogContent, DialogHeader, Row } from "../../ui";
-import { useStyles } from "../../ui/styles";
+import { Button, Card, DialogContent2 } from "../../ui";
 
 export const PublishExerciseDialog = createDialog<{
   exerciseId: string;
 }>(
   React.memo(({ exerciseId, onClose }) => {
-    const classes = useStyles();
     const dispatch = useDispatch();
 
     const onUnpublish = () => {
@@ -25,19 +23,12 @@ export const PublishExerciseDialog = createDialog<{
     };
 
     return (
-      <>
-        <DialogHeader onClose={onClose}>
-          <Typography>問題集を公開</Typography>
-        </DialogHeader>
-        <DialogContent>
-          <Row alignItems="center" flex={1} pb={1}>
-            <Warning className={classes.leftIcon} />
-            <Typography>問題集が公開されます。</Typography>
-          </Row>
-          <Button label="問題集を公開" labelColor="error" onClick={onUnpublish} />
-          <Button label="キャンセル" onClick={onClose} />
-        </DialogContent>
-      </>
+      <DialogContent2 title="問題集を公開" onClose={onClose}>
+        <Card icon={<Warning />} title="問題集を公開">
+          <Typography>問題集が公開されます。</Typography>
+        </Card>
+        <Button label="問題集を公開する" onClick={onUnpublish} />
+      </DialogContent2>
     );
   })
 );

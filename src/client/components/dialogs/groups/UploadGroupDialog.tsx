@@ -1,18 +1,16 @@
-import { Typography } from "@material-ui/core";
+import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { createDialog } from "../../../enhancers/createDialog";
-import { DialogHeader } from "../../ui";
+import { Button, DialogContent2 } from "../../ui";
 
 export const UploadGroupDialog = createDialog<{
   groupId: string;
 }>(
   React.memo(({ onClose }) => {
     return (
-      <>
-        <DialogHeader onClose={onClose}>
-          <Typography>グループをアップロード</Typography>
-        </DialogHeader>
-      </>
+      <DialogContent2 title="グループをアップロード" onClose={onClose}>
+        <Button icon={<CloudUpload />} label="アップロード" />
+      </DialogContent2>
     );
   })
 );

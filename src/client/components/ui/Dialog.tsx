@@ -1,8 +1,9 @@
-import { AppBar, Card, CardContent, IconButton, Toolbar } from "@material-ui/core";
+import { AppBar, Avatar, Card, CardContent, CardHeader, IconButton, Toolbar, Typography } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import * as React from "react";
 import { Column } from "./Column";
 import { Row } from "./Row";
+import { useStyles } from "./styles";
 
 export const DialogHeader: React.FunctionComponent<{
   maxWidth?: string;
@@ -26,8 +27,8 @@ export const DialogHeader: React.FunctionComponent<{
 
 export const DialogContent: React.FunctionComponent = ({ children }) => {
   return (
-    <Column alignItems="center" flex={1}>
-      <Column flex={1} width="100%" maxWidth="1000px" p={1}>
+    <Column alignItems="center">
+      <Column width="100%" maxWidth="1000px" p={1}>
         {children}
       </Column>
     </Column>
@@ -37,14 +38,19 @@ export const DialogContent: React.FunctionComponent = ({ children }) => {
 export const DialogMessage: React.FunctionComponent<{
   icon: React.ReactNode;
 }> = ({ icon, children }) => {
+  const classes = useStyles();
+
   return (
     <DialogContent>
-      <Column flex={1}>
-        <Card style={{ height: "100%" }}>
-          <CardContent style={{ height: "100%" }}>
-            <Row alignItems="center" style={{ height: "100%" }}>
-              <Row pr={1}>{icon}</Row>
-              <Column flex={1}>{children}</Column>
+      <Column>
+        <Card>
+          <CardHeader
+            avatar={<Avatar className={classes.cardAvatar}>{icon}</Avatar>}
+            title={<Typography>投票する</Typography>}
+          />
+          <CardContent>
+            <Row alignItems="center">
+              <Column>{children}</Column>
             </Row>
           </CardContent>
         </Card>

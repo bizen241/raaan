@@ -65,10 +65,12 @@ const searchEntity = <E extends EntityObject>(type: EntityType, params: Params<E
 
 export const isLocalOnly = (id: string) => !isNaN(Number(id));
 
-const uploadEntity = <E extends EntityObject>(type: EntityType, id: string, params?: Params<E>): AsyncAction => async (
-  dispatch,
-  getState
-) => {
+const uploadEntity = <E extends EntityObject>(
+  type: EntityType,
+  id: string,
+  params?: Params<E>,
+  callback?: (response: EntityStore) => void
+): AsyncAction => async (dispatch, getState) => {
   const buffer = getState().buffers[type][id] as Partial<E> | undefined;
   const target = params || buffer;
   if (target === undefined) {
@@ -85,6 +87,10 @@ const uploadEntity = <E extends EntityObject>(type: EntityType, id: string, para
 
     if (params === undefined && buffer !== undefined) {
       dispatch(buffersActions.delete(type, id));
+    }
+
+    if (callback !== undefined) {
+      callback({ ...createEntityTypeToObject(), ...response });
     }
   } catch (e) {
     const code = e instanceof HTTPError ? e.response.status : 500;

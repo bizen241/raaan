@@ -4,7 +4,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, DialogActions, DialogHeader, DialogMessage } from "../../ui";
+import { Button, Card, DialogContent2 } from "../../ui";
 
 export const DeleteExerciseVoteDialog = createDialog<{
   exerciseVoteId: string;
@@ -17,18 +17,12 @@ export const DeleteExerciseVoteDialog = createDialog<{
     };
 
     return (
-      <>
-        <DialogHeader onClose={onClose}>
-          <Typography>投票の取り消し</Typography>
-        </DialogHeader>
-        <DialogMessage icon={<HowToVote />}>
+      <DialogContent2 title="投票の取り消し" onClose={onClose}>
+        <Card icon={<HowToVote />} title="投票の取り消し">
           <Typography>投票を取り消します。</Typography>
-        </DialogMessage>
-        <DialogActions>
-          <Button icon={<Delete color="error" />} label="投票を取り消す" labelColor="error" onClick={onDelete} />
-          <Button label="キャンセル" onClick={onClose} />
-        </DialogActions>
-      </>
+        </Card>
+        <Button icon={<Delete />} label="投票を取り消す" onClick={onDelete} />
+      </DialogContent2>
     );
   })
 );

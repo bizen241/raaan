@@ -1,113 +1,61 @@
-import { Typography } from "@material-ui/core";
-import { Warning } from "@material-ui/icons";
+import { CloudUpload } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import * as React from "react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
-import { ExerciseDraft } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
-import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
 import { isLocalOnly } from "../../../reducers/api";
 import { UserContext } from "../../project/Context";
-import { Button, DialogContent, DialogHeader, Row } from "../../ui";
-import { useStyles } from "../../ui/styles";
+import { Button, Card, DialogContent2, Select } from "../../ui";
+
+type UploadType = "public" | "private" | "update" | "draft";
 
 export const UploadExerciseDraftDialog = createDialog<{
   exerciseDraftId: string;
 }>(
   React.memo(({ exerciseDraftId, onClose }) => {
+    const dispatch = useDispatch();
+    const currentUser = useContext(UserContext);
+
+    const [uploadConfig, setUploadConfig] = useState<UploadType>(isLocalOnly(exerciseDraftId) ? "public" : "update");
+
+    const onUpload = () => {
+      dispatch(
+        actions.buffers.update("ExerciseDraft", exerciseDraftId, {
+          isMerged: uploadConfig === "draft" ? false : undefined,
+          isPrivate: uploadConfig === "public" ? false : undefined
+        })
+      );
+      dispatch(
+        actions.api.upload("ExerciseDraft", exerciseDraftId, undefined, uploadResponse => {
+          const exerciseId = Object.keys(uploadResponse.Exercise)[0];
+
+          dispatch(replace(`/exercises/${exerciseId}`));
+        })
+      );
+    };
+
+    const canUploadAsPublic = isLocalOnly(exerciseDraftId) && currentUser.permission !== "Read";
+    const canUploadAsPrivate = isLocalOnly(exerciseDraftId);
+    const canUpdate = !isLocalOnly(exerciseDraftId);
+
     return (
-      <>
-        <DialogHeader onClose={onClose}>
-          <Typography>問題集をアップロード</Typography>
-        </DialogHeader>
-        <DialogContent>
-          <UploadExerciseDraftDialogContent exerciseDraftId={exerciseDraftId} />
-          <Button label="キャンセル" onClick={onClose} />
-        </DialogContent>
-      </>
+      <DialogContent2 title="問題集をアップロード" onClose={onClose}>
+        <Card icon={<CloudUpload />} title="問題集をアップロード">
+          <Select
+            label="設定"
+            defaultValue={uploadConfig}
+            onChange={e => setUploadConfig(e.target.value as UploadType)}
+          >
+            {canUploadAsPublic && <option value="public">公開</option>}
+            {canUploadAsPrivate && <option value="private">非公開</option>}
+            {canUpdate && <option value="update">更新</option>}
+            <option value="draft">下書き</option>
+          </Select>
+        </Card>
+        <Button color="primary" label="アップロード" onClick={onUpload} />
+      </DialogContent2>
     );
   })
 );
-
-const UploadExerciseDraftDialogContent = React.memo<{
-  exerciseDraftId: string;
-}>(({ exerciseDraftId }) => {
-  const classes = useStyles();
-  const dispatch = useDispatch();
-  const currentUser = useContext(UserContext);
-
-  const { uploadStatus, uploadResponse } = useEntity<ExerciseDraft>("ExerciseDraft", exerciseDraftId);
-  useEffect(() => {
-    if (uploadStatus === 200 && uploadResponse !== undefined) {
-      const exerciseId = Object.keys(uploadResponse.Exercise)[0];
-
-      dispatch(replace(`/exercises/${exerciseId}`));
-    }
-  }, [uploadStatus]);
-
-  const [uploadConfig, setUploadConfig] = useState<"public" | "private" | "update" | "draft">();
-  const onUpload = () => {
-    dispatch(
-      actions.buffers.update("ExerciseDraft", exerciseDraftId, {
-        isMerged: uploadConfig === "draft" ? false : undefined,
-        isPrivate: uploadConfig === "public" ? false : undefined
-      })
-    );
-    dispatch(actions.api.upload("ExerciseDraft", exerciseDraftId));
-  };
-
-  if (uploadConfig === undefined) {
-    return (
-      <>
-        <Row alignItems="center" flex={1} pb={1}>
-          <Warning className={classes.leftIcon} />
-          <Typography>アップロードの設定を選択して下さい。</Typography>
-        </Row>
-        {isLocalOnly(exerciseDraftId) && currentUser.permission !== "Read" && (
-          <Button label="公開" color="primary" onClick={() => setUploadConfig("public")} />
-        )}
-        {isLocalOnly(exerciseDraftId) && (
-          <Button label="非公開" color="secondary" onClick={() => setUploadConfig("private")} />
-        )}
-        {!isLocalOnly(exerciseDraftId) && (
-          <Button label="更新" color="primary" onClick={() => setUploadConfig("update")} />
-        )}
-        <Button label="下書き" color="secondary" onClick={() => setUploadConfig("draft")} />
-      </>
-    );
-  } else {
-    return (
-      <>
-        <Row alignItems="center" flex={1} pb={1}>
-          {uploadConfig === "public" && (
-            <>
-              <Warning className={classes.leftIcon} />
-              <Typography>クイズが公開されます。</Typography>
-            </>
-          )}
-          {uploadConfig === "private" && (
-            <>
-              <Warning className={classes.leftIcon} />
-              <Typography>クイズが非公開で投稿されます。</Typography>
-            </>
-          )}
-          {uploadConfig === "update" && (
-            <>
-              <Warning className={classes.leftIcon} />
-              <Typography>クイズが更新されます。</Typography>
-            </>
-          )}
-          {uploadConfig === "draft" && (
-            <>
-              <Warning className={classes.leftIcon} />
-              <Typography>クイズが下書きとして保存されます。</Typography>
-            </>
-          )}
-        </Row>
-        <Button color="primary" label="アップロード" onClick={onUpload} />
-      </>
-    );
-  }
-});

@@ -1,4 +1,4 @@
-import { TextField, Typography } from "@material-ui/core";
+import { Card, CardContent, TextField, Typography } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
@@ -12,7 +12,7 @@ import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { ExerciseContext, PlaylistItemsContext, PlaylistSummarySelectList } from "../../list/PlaylistSummarySelectList";
 import { UserContext } from "../../project/Context";
-import { Button, Column, DialogContent, DialogHeader } from "../../ui";
+import { Button, Column, DialogActions, DialogContent, DialogHeader, DialogMessage } from "../../ui";
 
 export const PlaylistDialog = createDialog<{
   exerciseId: string;
@@ -54,36 +54,38 @@ export const PlaylistDialog = createDialog<{
         <DialogHeader onClose={onClose}>
           <Typography>プレイリストに追加</Typography>
         </DialogHeader>
-        <DialogContent>
-          {!isPlaylistEditorOpen ? (
-            <>
-              <Button icon={<Add />} label="新規作成" onClick={onTogglePlaylistEditor} />
-              <Column pb={1}>
-                <ExerciseContext.Provider value={exerciseId}>
-                  <PlaylistItemsContext.Provider value={playlistItems}>
-                    <PlaylistSummarySelectList
-                      title="プレイリスト一覧"
-                      initialParams={{
-                        authorId: currentUser.id
-                      }}
-                    />
-                  </PlaylistItemsContext.Provider>
-                </ExerciseContext.Provider>
-              </Column>
-            </>
-          ) : (
-            <>
-              <Column pb={1}>
-                <Column component="label">
-                  <Typography color="textSecondary">題名</Typography>
-                  <TextField variant="outlined" defaultValue={"新しいプレイリスト"} onChange={onUpdateTitle} />
-                </Column>
-              </Column>
-              <Button label="プレイリストを作成" onClick={onUploadPlaylist} />
-              <Button label="キャンセル" onClick={onTogglePlaylistEditor} />
-            </>
-          )}
-        </DialogContent>
+        {!isPlaylistEditorOpen ? (
+          <DialogContent>
+            <Button icon={<Add />} label="新規作成" onClick={onTogglePlaylistEditor} />
+            <Column pb={1}>
+              <ExerciseContext.Provider value={exerciseId}>
+                <PlaylistItemsContext.Provider value={playlistItems}>
+                  <PlaylistSummarySelectList
+                    title="プレイリスト一覧"
+                    initialParams={{
+                      authorId: currentUser.id
+                    }}
+                  />
+                </PlaylistItemsContext.Provider>
+              </ExerciseContext.Provider>
+            </Column>
+          </DialogContent>
+        ) : (
+          <DialogContent>
+            <Column pb={1}>
+              <Card>
+                <CardContent>
+                  <Column component="label">
+                    <Typography color="textSecondary">題名</Typography>
+                    <TextField variant="outlined" defaultValue={"新しいプレイリスト"} onChange={onUpdateTitle} />
+                  </Column>
+                </CardContent>
+              </Card>
+            </Column>
+            <Button label="プレイリストを作成" onClick={onUploadPlaylist} />
+            <Button label="キャンセル" onClick={onTogglePlaylistEditor} />
+          </DialogContent>
+        )}
       </>
     );
   })
