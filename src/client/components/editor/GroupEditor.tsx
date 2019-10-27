@@ -1,13 +1,19 @@
-import { Box, Card, CardContent, TextField, Typography } from "@material-ui/core";
+import { Card, CardContent, TextField, Typography } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
 import { Group } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
+import { useToggleState } from "../../hooks/useToggleState";
+import { UploadGroupDialog } from "../dialogs/groups/UploadGroupDialog";
 import { Button, Column } from "../ui";
 
 export const GroupEditor = withBuffer<Group>("Group")(
-  React.memo(({ buffer = {}, source = {}, onChange }) => {
+  React.memo(props => {
+    const { bufferId, buffer = {}, source = {}, onChange } = props;
+
+    const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
+
     const onUpdateName = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => onChange({ name: e.target.value }),
       []
@@ -17,9 +23,11 @@ export const GroupEditor = withBuffer<Group>("Group")(
       []
     );
 
+    const canUpload = props.buffer !== undefined;
+
     return (
-      <Box>
-        <Button icon={<CloudUpload />} label="アップロード" />
+      <Column>
+        <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
         <Column pb={1}>
           <Card>
             <CardContent>
@@ -38,7 +46,8 @@ export const GroupEditor = withBuffer<Group>("Group")(
             </CardContent>
           </Card>
         </Column>
-      </Box>
+        <UploadGroupDialog groupId={bufferId} isOpen={isUploadDialogOpen} onClose={onToggleUploadDialog} />
+      </Column>
     );
   })
 );
