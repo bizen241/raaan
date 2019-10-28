@@ -11,7 +11,7 @@ import {
 import * as React from "react";
 import { AttemptResult, SubmissionSummary } from "../../../../shared/api/entities";
 import { Attempt, summarizeResults } from "../../../domain/exercise/attempt";
-import { Button, Column, DialogContent, Row } from "../../ui";
+import { Button, Column, OldDialogContent, Row } from "../../ui";
 import { useStyles } from "../../ui/styles";
 
 export const AttemptResultViewer: React.FunctionComponent<{
@@ -31,7 +31,7 @@ export const AttemptResultViewer: React.FunctionComponent<{
   const SpeedDiffIcon = getDiffIcon(speedDiff);
 
   return (
-    <DialogContent>
+    <OldDialogContent>
       <Column flex={1} justifyContent="center">
         <Column pb={1}>
           <Card>
@@ -62,7 +62,7 @@ export const AttemptResultViewer: React.FunctionComponent<{
         <Button icon={<Replay />} label="もう一度" onClick={onReplay} />
         <Button color="primary" icon={<ArrowForward />} label={hasNext ? "次へ" : "終了"} onClick={onFinish} />
       </Column>
-    </DialogContent>
+    </OldDialogContent>
   );
 };
 

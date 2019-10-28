@@ -4,7 +4,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, DialogActions, DialogHeader, DialogMessage } from "../../ui";
+import { Button, Card, DialogContent } from "../../ui";
 
 export const DeleteUserFollowDialog = createDialog<{
   userFollowId: string;
@@ -17,23 +17,12 @@ export const DeleteUserFollowDialog = createDialog<{
     };
 
     return (
-      <>
-        <DialogHeader onClose={onClose}>
-          <Typography>フォロー解除</Typography>
-        </DialogHeader>
-        <DialogMessage icon={<RemoveCircle />}>
+      <DialogContent title="ユーザーをフォロー解除" onClose={onClose}>
+        <Card icon={<RemoveCircle />} title="ユーザーをフォロー解除">
           <Typography>フォローを解除します。</Typography>
-        </DialogMessage>
-        <DialogActions>
-          <Button
-            icon={<RemoveCircle color="error" />}
-            label="フォローを解除する"
-            labelColor="error"
-            onClick={onDelete}
-          />
-          <Button label="キャンセル" onClick={onClose} />
-        </DialogActions>
-      </>
+        </Card>
+        <Button icon={<RemoveCircle />} label="フォローを解除する" onClick={onDelete} />
+      </DialogContent>
     );
   })
 );

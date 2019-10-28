@@ -5,8 +5,8 @@ import { Button } from "./Button";
 import { Column } from "./Column";
 import { Row } from "./Row";
 
-export const DialogContent2: React.FunctionComponent<{
-  title: string;
+export const DialogContent: React.FunctionComponent<{
+  title: React.ReactNode;
   action?: React.ReactNode;
   wide?: boolean;
   onClose: () => void;

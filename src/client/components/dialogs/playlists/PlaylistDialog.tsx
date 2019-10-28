@@ -1,61 +1,56 @@
-import { Card, CardContent, TextField, Typography } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
+import { TextField, Typography } from "@material-ui/core";
+import { Add, CloudUpload, PlaylistPlay } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Playlist, PlaylistItem } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
-import { useEntity } from "../../../hooks/useEntity";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { ExerciseContext, PlaylistItemsContext, PlaylistSummarySelectList } from "../../list/PlaylistSummarySelectList";
 import { UserContext } from "../../project/Context";
-import { Button, Column, DialogActions, DialogContent, DialogHeader, DialogMessage } from "../../ui";
+import { Button, Card, Column, DialogContent } from "../../ui";
 
 export const PlaylistDialog = createDialog<{
   exerciseId: string;
 }>(
   React.memo(({ exerciseId, onClose }) => {
-    const currentUser = useContext(UserContext);
     const dispatch = useDispatch();
+    const currentUser = useContext(UserContext);
 
-    const bufferId = useMemo(() => generateBufferId(), []);
-    const [title, setTitle] = useState();
-    const [isPlaylistEditorOpen, onTogglePlaylistEditor] = useToggleState();
-
-    const { uploadStatus } = useEntity<Playlist>("Playlist", bufferId);
     const { entities: playlistItems } = useSearch<PlaylistItem>("PlaylistItem", {
       authorId: currentUser.id,
       exerciseId
     });
 
+    const [isPlaylistEditorOpen, onTogglePlaylistEditor] = useToggleState();
+    const [title, setTitle] = useState();
+
     const onUpdateTitle = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
       setTitle(e.target.value);
     }, []);
     const onUploadPlaylist = () => {
+      const bufferId = generateBufferId();
+
       dispatch(
-        actions.api.upload<Playlist>("Playlist", bufferId, {
-          title,
-          exerciseId
-        })
+        actions.api.upload<Playlist>(
+          "Playlist",
+          bufferId,
+          {
+            title,
+            exerciseId
+          },
+          onClose
+        )
       );
     };
 
-    useEffect(() => {
-      if (uploadStatus === 200) {
-        onClose();
-      }
-    }, [uploadStatus]);
-
     return (
-      <>
-        <DialogHeader onClose={onClose}>
-          <Typography>プレイリストに追加</Typography>
-        </DialogHeader>
+      <DialogContent title="プレイリストに追加" onClose={onClose}>
         {!isPlaylistEditorOpen ? (
-          <DialogContent>
+          <>
             <Button icon={<Add />} label="新規作成" onClick={onTogglePlaylistEditor} />
             <Column pb={1}>
               <ExerciseContext.Provider value={exerciseId}>
@@ -69,24 +64,19 @@ export const PlaylistDialog = createDialog<{
                 </PlaylistItemsContext.Provider>
               </ExerciseContext.Provider>
             </Column>
-          </DialogContent>
+          </>
         ) : (
-          <DialogContent>
-            <Column pb={1}>
-              <Card>
-                <CardContent>
-                  <Column component="label">
-                    <Typography color="textSecondary">題名</Typography>
-                    <TextField variant="outlined" defaultValue={"新しいプレイリスト"} onChange={onUpdateTitle} />
-                  </Column>
-                </CardContent>
-              </Card>
-            </Column>
-            <Button label="プレイリストを作成" onClick={onUploadPlaylist} />
-            <Button label="キャンセル" onClick={onTogglePlaylistEditor} />
-          </DialogContent>
+          <>
+            <Card icon={<PlaylistPlay />} title="プレイリストを作る">
+              <Column component="label">
+                <Typography color="textSecondary">題名</Typography>
+                <TextField variant="outlined" defaultValue={"新しいプレイリスト"} onChange={onUpdateTitle} />
+              </Column>
+            </Card>
+            <Button icon={<CloudUpload />} label="プレイリストをアップロード" onClick={onUploadPlaylist} />
+          </>
         )}
-      </>
+      </DialogContent>
     );
   })
 );

@@ -1,28 +1,18 @@
 import { Typography } from "@material-ui/core";
-import { Warning } from "@material-ui/icons";
+import { Delete, Warning } from "@material-ui/icons";
 import * as React from "react";
 import { createDialog } from "../../../enhancers/createDialog";
-import { Button, DialogContent, DialogHeader, Row } from "../../ui";
-import { useStyles } from "../../ui/styles";
+import { Button, Card, DialogContent } from "../../ui";
 
 export const DeleteAccountDialog = createDialog<{}>(
   React.memo(({ onClose }) => {
-    const classes = useStyles();
-
     return (
-      <>
-        <DialogHeader onClose={onClose}>
-          <Typography>アカウントを削除</Typography>
-        </DialogHeader>
-        <DialogContent>
-          <Row alignItems="center" flex={1} pb={1}>
-            <Warning className={classes.leftIcon} />
-            <Typography>すべての情報がサーバーから削除されます。</Typography>
-          </Row>
-          <Button label="アカウントを削除" labelColor="error" href="/logout" />
-          <Button label="キャンセル" onClick={onClose} />
-        </DialogContent>
-      </>
+      <DialogContent title="アカウントを削除" onClose={onClose}>
+        <Card icon={<Warning />} title="アカウントを削除">
+          <Typography>すべての情報がサーバーから削除されます。</Typography>
+        </Card>
+        <Button icon={<Delete color="error" />} label="アカウントを削除" labelColor="error" href="/logout" />
+      </DialogContent>
     );
   })
 );

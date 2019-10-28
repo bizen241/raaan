@@ -1,10 +1,10 @@
 import { Typography } from "@material-ui/core";
-import { Warning } from "@material-ui/icons";
+import { Delete, Warning } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, DialogActions, DialogHeader, DialogMessage } from "../../ui";
+import { Button, Card, DialogContent } from "../../ui";
 
 export const DeletePlaylistBookmarkDialog = createDialog<{
   playlistBookmarkId: string;
@@ -17,18 +17,12 @@ export const DeletePlaylistBookmarkDialog = createDialog<{
     };
 
     return (
-      <>
-        <DialogHeader onClose={onClose}>
-          <Typography>ブックマークの削除</Typography>
-        </DialogHeader>
-        <DialogMessage icon={<Warning />}>
+      <DialogContent title="ブックマークの削除" onClose={onClose}>
+        <Card icon={<Warning />} title="ブックマークの削除">
           <Typography>ブックマークがサーバーから削除されます。</Typography>
-        </DialogMessage>
-        <DialogActions>
-          <Button label="ブックマークを削除" labelColor="error" onClick={onDelete} />
-          <Button label="キャンセル" onClick={onClose} />
-        </DialogActions>
-      </>
+        </Card>
+        <Button icon={<Delete color="error" />} label="ブックマークを削除" labelColor="error" onClick={onDelete} />
+      </DialogContent>
     );
   })
 );

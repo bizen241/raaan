@@ -1,17 +1,15 @@
 import { Typography } from "@material-ui/core";
-import { Warning } from "@material-ui/icons";
+import { Delete, Warning } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, DialogContent, DialogHeader, Row } from "../../ui";
-import { useStyles } from "../../ui/styles";
+import { Button, Card, DialogContent } from "../../ui";
 
 export const DeletePlaylistDialog = createDialog<{
   playlistId: string;
 }>(
   React.memo(({ playlistId, onClose }) => {
-    const classes = useStyles();
     const dispatch = useDispatch();
 
     const onDelete = () => {
@@ -19,19 +17,12 @@ export const DeletePlaylistDialog = createDialog<{
     };
 
     return (
-      <>
-        <DialogHeader onClose={onClose}>
-          <Typography>プレイリストの削除</Typography>
-        </DialogHeader>
-        <DialogContent>
-          <Row alignItems="center" flex={1} pb={1}>
-            <Warning className={classes.leftIcon} />
-            <Typography>プレイリストがサーバーから削除されます。</Typography>
-          </Row>
-          <Button label="プレイリストを削除" labelColor="error" onClick={onDelete} />
-          <Button label="キャンセル" onClick={onClose} />
-        </DialogContent>
-      </>
+      <DialogContent title="プレイリストの削除" onClose={onClose}>
+        <Card icon={<Warning />} title="プレイリストの削除">
+          <Typography>プレイリストがサーバーから削除されます。</Typography>
+        </Card>
+        <Button icon={<Delete color="error" />} label="プレイリストを削除" labelColor="error" onClick={onDelete} />
+      </DialogContent>
     );
   })
 );

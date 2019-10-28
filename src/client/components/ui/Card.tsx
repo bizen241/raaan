@@ -4,9 +4,10 @@ import { Column } from "./Column";
 
 export const Card = React.memo<{
   icon: React.ReactNode;
-  title: string;
+  title: React.ReactNode;
+  padding?: boolean;
   children: React.ReactNode;
-}>(({ icon, title, children }) => {
+}>(({ icon, title, padding = true, children }) => {
   const cardClasses = useCardStyles();
 
   return (
@@ -16,9 +17,13 @@ export const Card = React.memo<{
           avatar={<Avatar className={cardClasses.avatar}>{icon}</Avatar>}
           title={<Typography>{title}</Typography>}
         />
-        <CardContent>
-          <Column>{children}</Column>
-        </CardContent>
+        {padding ? (
+          <CardContent>
+            <Column>{children}</Column>
+          </CardContent>
+        ) : (
+          children
+        )}
       </MuiCard>
     </Column>
   );

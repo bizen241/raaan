@@ -4,7 +4,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent2 } from "../../ui";
+import { Button, Card, DialogContent } from "../../ui";
 
 export const PublishExerciseDialog = createDialog<{
   exerciseId: string;
@@ -23,12 +23,12 @@ export const PublishExerciseDialog = createDialog<{
     };
 
     return (
-      <DialogContent2 title="問題集を公開" onClose={onClose}>
+      <DialogContent title="問題集を公開" onClose={onClose}>
         <Card icon={<Warning />} title="問題集を公開">
           <Typography>問題集が公開されます。</Typography>
         </Card>
         <Button label="問題集を公開する" onClick={onUnpublish} />
-      </DialogContent2>
+      </DialogContent>
     );
   })
 );

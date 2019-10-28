@@ -3,7 +3,7 @@ import { Settings } from "@material-ui/icons";
 import * as React from "react";
 import { createDialog, DialogProps } from "../../../enhancers/createDialog";
 import { useToggleState } from "../../../hooks/useToggleState";
-import { DialogHeader } from "../../ui/Dialog";
+import { OldDialogHeader } from "../../ui/Dialog";
 
 export const createPlayerDialog = <P extends {}>(Content: React.ComponentType<P & DialogProps>) =>
   createDialog<P>(
@@ -12,12 +12,12 @@ export const createPlayerDialog = <P extends {}>(Content: React.ComponentType<P 
 
       return (
         <>
-          <DialogHeader maxWidth="2000px" onClose={props.onClose}>
+          <OldDialogHeader maxWidth="2000px" onClose={props.onClose}>
             <Box flex={1} />
             <IconButton edge="end" color="inherit" onClick={onToggleConfigPanel}>
               <Settings />
             </IconButton>
-          </DialogHeader>
+          </OldDialogHeader>
           {isConfigPanelOpen ? <div>Config</div> : <Content {...props} />}
         </>
       );

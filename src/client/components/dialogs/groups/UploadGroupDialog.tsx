@@ -1,16 +1,36 @@
-import { CloudUpload } from "@material-ui/icons";
+import { Typography } from "@material-ui/core";
+import { CloudUpload, Group as GroupIcon } from "@material-ui/icons";
+import { replace } from "connected-react-router";
 import * as React from "react";
+import { useDispatch } from "react-redux";
+import { Group } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
-import { Button, DialogContent2 } from "../../ui";
+import { actions } from "../../../reducers";
+import { Button, Card, DialogContent } from "../../ui";
 
 export const UploadGroupDialog = createDialog<{
   groupId: string;
 }>(
-  React.memo(({ onClose }) => {
+  React.memo(({ groupId: bufferId, onClose }) => {
+    const dispatch = useDispatch();
+
+    const onUpload = () => {
+      dispatch(
+        actions.api.upload<Group>("Group", bufferId, undefined, uploadResponse => {
+          const groupId = Object.keys(uploadResponse.Group)[0];
+
+          dispatch(replace(`/groups/${groupId}`));
+        })
+      );
+    };
+
     return (
-      <DialogContent2 title="グループをアップロード" onClose={onClose}>
-        <Button icon={<CloudUpload />} label="アップロード" />
-      </DialogContent2>
+      <DialogContent title="グループをアップロード" onClose={onClose}>
+        <Card icon={<GroupIcon />} title="グループをアップロード">
+          <Typography>グループをアップロードします。</Typography>
+        </Card>
+        <Button icon={<CloudUpload />} label="アップロード" onClick={onUpload} />
+      </DialogContent>
     );
   })
 );

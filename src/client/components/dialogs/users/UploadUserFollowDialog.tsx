@@ -1,16 +1,14 @@
 import { Typography } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
-import { useEffect, useMemo } from "react";
 import * as React from "react";
 import { useContext } from "react";
 import { useDispatch } from "react-redux";
 import { UserFollow } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
-import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { UserContext } from "../../project/Context";
-import { Button, DialogActions, DialogHeader, DialogMessage } from "../../ui";
+import { Button, Card, DialogContent } from "../../ui";
 
 export const UploadUserFollowDialog = createDialog<{
   targetId: string;
@@ -19,50 +17,44 @@ export const UploadUserFollowDialog = createDialog<{
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);
 
-    const bufferId = useMemo(() => generateBufferId(), []);
     const onUpload = () => {
       dispatch(
-        actions.api.upload<UserFollow>("UserFollow", bufferId, {
-          followerId: currentUser.id,
-          targetId
-        })
+        actions.api.upload<UserFollow>(
+          "UserFollow",
+          generateBufferId(),
+          {
+            followerId: currentUser.id,
+            targetId
+          },
+          uploadResponse => {
+            dispatch(
+              actions.cache.search<UserFollow>(
+                "UserFollow",
+                {
+                  followerId: currentUser.id,
+                  targetId
+                },
+                {
+                  ids: [Object.keys(uploadResponse.UserFollow)[0]],
+                  entities: {},
+                  count: 1
+                }
+              )
+            );
+
+            onClose();
+          }
+        )
       );
     };
-    const { uploadStatus, uploadResponse } = useEntity<UserFollow>("UserFollow", bufferId);
-    useEffect(() => {
-      if (uploadStatus === 200 && uploadResponse !== undefined) {
-        dispatch(
-          actions.cache.search<UserFollow>(
-            "UserFollow",
-            {
-              followerId: currentUser.id,
-              targetId
-            },
-            {
-              ids: [Object.keys(uploadResponse.UserFollow)[0]],
-              entities: {},
-              count: 1
-            }
-          )
-        );
-
-        onClose();
-      }
-    }, [uploadStatus]);
 
     return (
-      <>
-        <DialogHeader onClose={onClose}>
-          <Typography>フォロー</Typography>
-        </DialogHeader>
-        <DialogMessage icon={<PersonAdd />}>
+      <DialogContent title="ユーザーをフォロー" onClose={onClose}>
+        <Card icon={<PersonAdd />} title="ユーザーをフォロー">
           <Typography>ユーザーをフォローします。</Typography>
-        </DialogMessage>
-        <DialogActions>
-          <Button icon={<PersonAdd />} label="フォロー" onClick={onUpload} />
-          <Button label="キャンセル" onClick={onClose} />
-        </DialogActions>
-      </>
+        </Card>
+        <Button icon={<PersonAdd />} label="フォロー" onClick={onUpload} />
+      </DialogContent>
     );
   })
 );

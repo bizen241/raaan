@@ -69,21 +69,23 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
             </Column>
           </CardContent>
           <Divider />
-          <Table>
-            <TableBody>
-              {sortedPlaylistItems.map((playlistItem, index) => (
-                <PlaylistItemViewer
-                  key={playlistItem.id}
-                  index={index}
-                  playlistItem={playlistItem}
-                  playlistId={playlistId}
-                  playlist={playlist}
-                  playlistItems={playlistItems}
-                  onPlay={onPartialPlay}
-                />
-              ))}
-            </TableBody>
-          </Table>
+          <Column pb={1}>
+            <Table>
+              <TableBody>
+                {sortedPlaylistItems.map((playlistItem, index) => (
+                  <PlaylistItemViewer
+                    key={playlistItem.id}
+                    index={index}
+                    playlistItem={playlistItem}
+                    playlistId={playlistId}
+                    playlist={playlist}
+                    playlistItems={playlistItems}
+                    onPlay={onPartialPlay}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          </Column>
         </Card>
         <UploadPlaylistBookmarkDialog
           playlistId={playlistId}

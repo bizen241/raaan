@@ -1,14 +1,13 @@
-import { Card, ListItemIcon, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
-import { ArrowForward } from "@material-ui/icons";
+import { Divider, ListItemIcon, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
+import { ArrowForward, SwapVert } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { ExerciseSummary, Playlist, PlaylistItem } from "../../../../shared/api/entities";
 import { sortPlaylistItems } from "../../../domain/playlist";
 import { createDialog } from "../../../enhancers/createDialog";
 import { withEntity } from "../../../enhancers/withEntity";
 import { actions } from "../../../reducers";
-import { Button, Column, DialogContent, DialogHeader, Row } from "../../ui";
+import { Card, Column, DialogContent, Row } from "../../ui";
 
 export const MovePlaylistItemDialog = createDialog<{
   playlistItemId: string;
@@ -19,40 +18,36 @@ export const MovePlaylistItemDialog = createDialog<{
   React.memo(({ playlistItemId, playlist, playlistItems, onClose }) => {
     const dispatch = useDispatch();
 
-    const sortedPlaylistItems = React.useMemo(() => sortPlaylistItems(playlistItems, playlist.orderBy), [
-      playlistItems
-    ]);
-
-    const onSelect = useCallback((nextId: string) => {
+    const onSelect = (nextId: string) => {
       dispatch(
-        actions.api.upload("PlaylistItem", playlistItemId, {
-          nextId
-        })
+        actions.api.upload(
+          "PlaylistItem",
+          playlistItemId,
+          {
+            nextId
+          },
+          onClose
+        )
       );
+    };
 
-      onClose();
-    }, []);
+    const sortedPlaylistItems = sortPlaylistItems(playlistItems, playlist.orderBy);
 
     return (
-      <>
-        <DialogHeader onClose={onClose}>
-          <Typography>プレイリストのアイテムの移動</Typography>
-        </DialogHeader>
-        <DialogContent>
+      <DialogContent title="プレイリストのアイテムの移動" onClose={onClose}>
+        <Card icon={<SwapVert />} title="移動先の選択" padding={false}>
+          <Divider />
           <Column pb={1}>
-            <Card>
-              <Table>
-                <TableBody>
-                  {sortedPlaylistItems.map(playlistItem => (
-                    <PlaylistItemWithButton key={playlistItem.id} playlistItem={playlistItem} onSelect={onSelect} />
-                  ))}
-                </TableBody>
-              </Table>
-            </Card>
+            <Table>
+              <TableBody>
+                {sortedPlaylistItems.map(playlistItem => (
+                  <PlaylistItemWithButton key={playlistItem.id} playlistItem={playlistItem} onSelect={onSelect} />
+                ))}
+              </TableBody>
+            </Table>
           </Column>
-          <Button label="キャンセル" onClick={onClose} />
-        </DialogContent>
-      </>
+        </Card>
+      </DialogContent>
     );
   })
 );
@@ -63,7 +58,7 @@ const PlaylistItemWithButton = React.memo<{
 }>(({ playlistItem, onSelect }) => {
   return (
     <>
-      <TableRow selected style={{ cursor: "pointer" }} onClick={useCallback(() => onSelect(playlistItem.id), [])}>
+      <TableRow selected style={{ cursor: "pointer" }} onClick={() => onSelect(playlistItem.id)}>
         <TableCell>
           <Row>
             <ListItemIcon>

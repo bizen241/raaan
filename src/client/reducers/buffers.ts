@@ -27,6 +27,7 @@ export const buffersActions = {
 export type BuffersActions = ActionUnion<typeof buffersActions>;
 
 export const generateBufferId = () => Date.now().toString();
+export const isNumber = (id: string) => !isNaN(Number(id));
 
 export type BuffersState = {
   [P in keyof EntityTypeToEntity]: {

@@ -8,7 +8,7 @@ import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { UserContext } from "../../project/Context";
-import { Button, Card, DialogContent2 } from "../../ui";
+import { Button, Card, DialogContent } from "../../ui";
 
 export const UploadExerciseVoteDialog = createDialog<{
   exerciseId: string;
@@ -51,7 +51,7 @@ export const UploadExerciseVoteDialog = createDialog<{
     };
 
     return (
-      <DialogContent2 title="投票する" onClose={onClose}>
+      <DialogContent title="投票する" onClose={onClose}>
         <Card icon={<HowToVote />} title="投票する">
           <Typography>内容を選んでください。</Typography>
         </Card>
@@ -62,7 +62,7 @@ export const UploadExerciseVoteDialog = createDialog<{
           labelColor="error"
           onClick={() => onUpload(false)}
         />
-      </DialogContent2>
+      </DialogContent>
     );
   })
 );

@@ -4,36 +4,25 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Row } from "../../ui";
-import { DialogContent, DialogHeader } from "../../ui/Dialog";
-import { useStyles } from "../../ui/styles";
+import { Button, Card, DialogContent } from "../../ui";
 
 export const UploadUserConfigDialog = createDialog<{
   userConfigId: string;
 }>(
   React.memo(({ userConfigId, onClose }) => {
-    const classes = useStyles();
     const dispatch = useDispatch();
 
     const onUpload = () => {
-      dispatch(actions.api.upload("UserConfig", userConfigId));
-      onClose();
+      dispatch(actions.api.upload("UserConfig", userConfigId, undefined, onClose));
     };
 
     return (
-      <>
-        <DialogHeader onClose={onClose}>
-          <Typography>問題集をアップロード</Typography>
-        </DialogHeader>
-        <DialogContent>
-          <Row flex={1} alignItems="center" pb={1}>
-            <CloudUpload className={classes.leftIcon} />
-            <Typography>設定をアップロードします。</Typography>
-          </Row>
-          <Button label="アップロード" onClick={onUpload} />
-          <Button label="キャンセル" onClick={onClose} />
-        </DialogContent>
-      </>
+      <DialogContent title="設定をアップロード" onClose={onClose}>
+        <Card icon={<CloudUpload />} title="設定をアップロード">
+          <Typography>設定をアップロードします。</Typography>
+        </Card>
+        <Button icon={<CloudUpload />} label="アップロード" onClick={onUpload} />
+      </DialogContent>
     );
   })
 );

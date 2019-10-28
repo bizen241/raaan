@@ -8,7 +8,7 @@ import { ExerciseReport } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { Button, DialogActions, DialogHeader, DialogMessage } from "../../ui";
+import { Button, Card, DialogContent } from "../../ui";
 
 export const ConfirmExerciseReportDialog = createDialog<{
   targetId: string;
@@ -28,18 +28,12 @@ export const ConfirmExerciseReportDialog = createDialog<{
     }, []);
 
     return (
-      <>
-        <DialogHeader onClose={onClose}>
-          <Typography>違反を報告する</Typography>
-        </DialogHeader>
-        <DialogMessage icon={<Warning />}>
+      <DialogContent title="違反を報告する" onClose={onClose}>
+        <Card icon={<Warning />} title="違反を報告する">
           <Typography>本当に通報しますか？</Typography>
-        </DialogMessage>
-        <DialogActions>
-          <Button icon={<ReportProblem />} label="通報する" onClick={onCreate} />
-          <Button label="キャンセル" onClick={onClose} />
-        </DialogActions>
-      </>
+        </Card>
+        <Button icon={<ReportProblem />} label="通報する" onClick={onCreate} />
+      </DialogContent>
     );
   })
 );

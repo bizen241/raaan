@@ -4,7 +4,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent2 } from "../../ui";
+import { Button, Card, DialogContent } from "../../ui";
 
 export const DeleteExerciseDraftBufferDialog = createDialog<{
   bufferId: string;
@@ -18,12 +18,12 @@ export const DeleteExerciseDraftBufferDialog = createDialog<{
     };
 
     return (
-      <DialogContent2 title="編集の破棄" onClose={onClose}>
+      <DialogContent title="編集の破棄" onClose={onClose}>
         <Card icon={<Warning />} title="編集の破棄">
           <Typography>編集内容がブラウザから削除されます。</Typography>
         </Card>
         <Button icon={<Delete color="error" />} label="編集を破棄" labelColor="error" onClick={onDelete} />
-      </DialogContent2>
+      </DialogContent>
     );
   })
 );
