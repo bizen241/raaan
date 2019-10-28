@@ -1,18 +1,9 @@
-import { Avatar, Box, Card, CardContent, CardHeader, IconButton, makeStyles, Typography } from "@material-ui/core";
-import {
-  ArrowForward,
-  InsertChart,
-  Keyboard,
-  Replay,
-  TrendingDown,
-  TrendingFlat,
-  TrendingUp
-} from "@material-ui/icons";
+import { makeStyles } from "@material-ui/core";
+import { ArrowForward, Keyboard, Replay, TrendingDown, TrendingFlat, TrendingUp } from "@material-ui/icons";
 import * as React from "react";
 import { AttemptResult, SubmissionSummary } from "../../../../shared/api/entities";
 import { Attempt, summarizeResults } from "../../../domain/exercise/attempt";
-import { Button, Column, OldDialogContent, Row } from "../../ui";
-import { useStyles } from "../../ui/styles";
+import { Button, Card, Column, Row } from "../../ui";
 
 export const AttemptResultViewer: React.FunctionComponent<{
   attempt: Attempt;
@@ -21,7 +12,6 @@ export const AttemptResultViewer: React.FunctionComponent<{
   onReplay: () => void;
   onFinish: () => void;
 }> = ({ attempt: { results }, submissionSummary, hasNext, onReplay, onFinish }) => {
-  const classes = useStyles();
   const speedClasses = useSpeedStyles();
 
   const attemptResult = summarizeResults(results);
@@ -31,38 +21,19 @@ export const AttemptResultViewer: React.FunctionComponent<{
   const SpeedDiffIcon = getDiffIcon(speedDiff);
 
   return (
-    <OldDialogContent>
-      <Column flex={1} justifyContent="center">
-        <Column pb={1}>
-          <Card>
-            <CardHeader
-              avatar={
-                <Avatar className={classes.cardAvatar}>
-                  <Keyboard />
-                </Avatar>
-              }
-              title={<Typography>結果</Typography>}
-              action={
-                <IconButton>
-                  <InsertChart />
-                </IconButton>
-              }
-            />
-            <CardContent>
-              <Row flex={1} justifyContent="center" alignItems="center">
-                {SpeedDiffIcon && <SpeedDiffIcon className={speedClasses.icon} />}
-                <Box>
-                  <span className={speedClasses.speed}>{speed.toFixed(0)}</span>
-                  <span className={speedClasses.unit}>打/分</span>
-                </Box>
-              </Row>
-            </CardContent>
-          </Card>
-        </Column>
+    <Column alignItems="center">
+      <Column width="100%" maxWidth="1000px" p={1}>
+        <Card icon={<Keyboard />} title="結果">
+          <Row justifyContent="center" alignItems="center">
+            {SpeedDiffIcon && <SpeedDiffIcon className={speedClasses.icon} />}
+            <span className={speedClasses.speed}>{speed.toFixed(0)}</span>
+            <span className={speedClasses.unit}>打/分</span>
+          </Row>
+        </Card>
         <Button icon={<Replay />} label="もう一度" onClick={onReplay} />
         <Button color="primary" icon={<ArrowForward />} label={hasNext ? "次へ" : "終了"} onClick={onFinish} />
       </Column>
-    </OldDialogContent>
+    </Column>
   );
 };
 

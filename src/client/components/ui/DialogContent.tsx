@@ -8,15 +8,14 @@ import { Row } from "./Row";
 export const DialogContent: React.FunctionComponent<{
   title: React.ReactNode;
   action?: React.ReactNode;
-  wide?: boolean;
   onClose: () => void;
   children: React.ReactNode;
-}> = ({ title, action, wide = false, onClose, children }) => {
+}> = ({ title, action, onClose, children }) => {
   return (
     <>
       <AppBar position="relative">
         <Column height="100%" alignItems="center">
-          <Column flex={1} width="100%" maxWidth={wide ? "2000px" : "1000px"}>
+          <Column flex={1} width="100%" maxWidth="1000px">
             <Toolbar variant="dense">
               <IconButton edge="start" color="inherit" onClick={onClose}>
                 <Close />
