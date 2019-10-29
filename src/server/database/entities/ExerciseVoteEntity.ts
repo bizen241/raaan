@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, RelationId } from "typeorm";
 import { ExerciseEntity, UserEntity } from ".";
 import { BaseEntityClass } from "./BaseEntityClass";
 
-@Entity("exercise-votes")
+@Entity("exercise_votes")
 export class ExerciseVoteEntity extends BaseEntityClass {
   type: "ExerciseVote" = "ExerciseVote";
 

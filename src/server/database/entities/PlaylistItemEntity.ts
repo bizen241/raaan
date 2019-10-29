@@ -3,7 +3,7 @@ import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { PlaylistEntity } from "./PlaylistEntity";
 
-@Entity("playlist-items")
+@Entity("playlist_items")
 export class PlaylistItemEntity extends BaseEntityClass {
   type: "PlaylistItem" = "PlaylistItem";
 

@@ -3,7 +3,7 @@ import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { GroupEntity } from "./GroupEntity";
 
-@Entity("group-exercises")
+@Entity("group_exercises")
 export class GroupExerciseEntity extends BaseEntityClass {
   type: "GroupExercise" = "GroupExercise";
 

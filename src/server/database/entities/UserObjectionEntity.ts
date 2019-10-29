@@ -2,7 +2,7 @@ import { Entity, OneToOne } from "typeorm";
 import { BaseObjectionClass } from "./BaseObjectionClass";
 import { UserEntity } from "./UserEntity";
 
-@Entity("user-objection")
+@Entity("user_objection")
 export class UserObjectionEntity extends BaseObjectionClass<UserEntity> {
   type: "UserObjection" = "UserObjection";
 

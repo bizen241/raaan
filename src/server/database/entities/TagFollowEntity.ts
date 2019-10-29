@@ -3,7 +3,7 @@ import { BaseFollowClass } from "./BaseFollowClass";
 import { TagEntity } from "./TagEntity";
 import { UserEntity } from "./UserEntity";
 
-@Entity("tag-follows")
+@Entity("tag_follows")
 export class TagFollowEntity extends BaseFollowClass<TagEntity> {
   type: "TagFollow" = "TagFollow";
 

@@ -4,7 +4,7 @@ import { BaseEntityClass } from "./BaseEntityClass";
 import { GroupEntity } from "./GroupEntity";
 import { UserEntity } from "./UserEntity";
 
-@Entity("group-member")
+@Entity("group_member")
 export class GroupMemberEntity extends BaseEntityClass {
   type: "GroupMember" = "GroupMember";
 

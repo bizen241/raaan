@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { TagEntity } from "./TagEntity";
 
-@Entity("tag-summaries")
+@Entity("tag_summaries")
 export class TagSummaryEntity extends BaseEntityClass {
   type: "TagSummary" = "TagSummary";
 

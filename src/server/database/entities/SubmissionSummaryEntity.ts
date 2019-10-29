@@ -4,7 +4,7 @@ import { ExerciseEntity } from "./ExerciseEntity";
 import { SubmissionEntity } from "./SubmissionEntity";
 import { UserEntity } from "./UserEntity";
 
-@Entity("submission-summaries")
+@Entity("submission_summaries")
 export class SubmissionSummaryEntity extends BaseEntityClass {
   type: "SubmissionSummary" = "SubmissionSummary";
 

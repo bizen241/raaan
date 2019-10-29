@@ -3,7 +3,7 @@ import { BaseEntityClass } from "./BaseEntityClass";
 import { GroupEntity } from "./GroupEntity";
 import { PlaylistEntity } from "./PlaylistEntity";
 
-@Entity("group-playlists")
+@Entity("group_playlists")
 export class GroupPlaylistEntity extends BaseEntityClass {
   type: "GroupPlaylist" = "GroupPlaylist";
 

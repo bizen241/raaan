@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
 import { BaseExerciseClass } from "./BaseExerciseClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 
-@Entity("exercise-drafts")
+@Entity("exercise_drafts")
 export class ExerciseDraftEntity extends BaseExerciseClass {
   type: "ExerciseDraft" = "ExerciseDraft";
 

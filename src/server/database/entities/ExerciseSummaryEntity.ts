@@ -3,7 +3,7 @@ import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { TagEntity } from "./TagEntity";
 
-@Entity("exercise-summaries")
+@Entity("exercise_summaries")
 export class ExerciseSummaryEntity extends BaseEntityClass {
   type: "ExerciseSummary" = "ExerciseSummary";
 

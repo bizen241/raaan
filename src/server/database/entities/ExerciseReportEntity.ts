@@ -2,7 +2,7 @@ import { Entity, ManyToOne } from "typeorm";
 import { ExerciseEntity, UserEntity } from ".";
 import { BaseReportClass } from "./BaseReportClass";
 
-@Entity("exercise-reports")
+@Entity("exercise_reports")
 export class ExerciseReportEntity extends BaseReportClass<ExerciseEntity> {
   type: "ExerciseReport" = "ExerciseReport";
 

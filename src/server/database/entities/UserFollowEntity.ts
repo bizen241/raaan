@@ -2,7 +2,7 @@ import { Entity, ManyToOne } from "typeorm";
 import { BaseFollowClass } from "./BaseFollowClass";
 import { UserEntity } from "./UserEntity";
 
-@Entity("user-follows")
+@Entity("user_follows")
 export class UserFollowEntity extends BaseFollowClass<UserEntity> {
   type: "UserFollow" = "UserFollow";
 

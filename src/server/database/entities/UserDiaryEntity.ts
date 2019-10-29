@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
-@Entity("user-diaries")
+@Entity("user_diaries")
 export class UserDiaryEntity extends BaseEntityClass {
   type: "UserDiary" = "UserDiary";
 

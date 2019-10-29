@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
-@Entity("user-summaries")
+@Entity("user_summaries")
 export class UserSummaryEntity extends BaseEntityClass {
   type: "UserSummary" = "UserSummary";
 

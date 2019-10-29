@@ -2,7 +2,7 @@ import { Entity, ManyToOne } from "typeorm";
 import { PlaylistEntity, UserEntity } from ".";
 import { BaseReportClass } from "./BaseReportClass";
 
-@Entity("playlist-reports")
+@Entity("playlist_reports")
 export class PlaylistReportEntity extends BaseReportClass<PlaylistEntity> {
   type: "PlaylistReport" = "PlaylistReport";
 

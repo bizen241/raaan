@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from "typeorm";
 
-@Entity("rate-limits")
+@Entity("rate_limits")
 export class RateLimitEntity {
   @PrimaryColumn()
   key: string;

@@ -3,7 +3,7 @@ import { BaseReportClass } from "./BaseReportClass";
 import { SynonymEntity } from "./SynonymEntity";
 import { UserEntity } from "./UserEntity";
 
-@Entity("synonym-reports")
+@Entity("synonym_reports")
 export class SynonymReportEntity extends BaseReportClass<SynonymEntity> {
   type: "SynonymReport" = "SynonymReport";
 
