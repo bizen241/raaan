@@ -22,17 +22,13 @@ export const UploadExerciseReportDialog = createDialog<{
       dispatch(
         actions.api.upload<ExerciseReport>("ExerciseReport", reportId, undefined, uploadResponse => {
           dispatch(
-            actions.cache.search<ExerciseReport>(
+            actions.cache.add<ExerciseReport>(
               "ExerciseReport",
               {
                 reporterId: currentUser.id,
                 targetId
               },
-              {
-                ids: [Object.keys(uploadResponse.ExerciseReport)[0]],
-                entities: {},
-                count: 1
-              }
+              uploadResponse
             )
           );
 

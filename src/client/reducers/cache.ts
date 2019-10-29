@@ -10,6 +10,7 @@ import { ActionUnion, createAction } from "./action";
 export enum CacheActionType {
   Get = "cache/get",
   Search = "cache/search",
+  Add = "cache/add",
   Purge = "cache/purge"
 }
 
@@ -20,6 +21,12 @@ export const cacheActions = {
     }),
   search: <E extends EntityObject>(type: EntityType, params: Params<E>, response: SearchResponse) =>
     createAction(CacheActionType.Search, {
+      type,
+      params,
+      response
+    }),
+  add: <E extends EntityObject>(type: EntityType, params: Params<E>, response: EntityStore) =>
+    createAction(CacheActionType.Add, {
       type,
       params,
       response
@@ -67,6 +74,18 @@ export const cacheReducer: Reducer<CacheState, CacheActions> = (state = initialC
       return {
         get: mergeEntityTypeToObject(state.get, response.entities),
         search: mergeSearchResultStore<EntityObject>(state.search, type, params, response)
+      };
+    }
+    case CacheActionType.Add: {
+      const { type, params, response } = action.payload;
+
+      return {
+        get: state.get,
+        search: mergeSearchResultStore<EntityObject>(state.search, type, params, {
+          ids: [Object.keys(response[type])[0]],
+          entities: {},
+          count: 1
+        })
       };
     }
     case CacheActionType.Purge: {

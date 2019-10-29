@@ -33,7 +33,12 @@ export const apiSyncActions = {
 
 export type ApiActions = ActionUnion<typeof apiSyncActions>;
 
-const getEntity = (type: EntityType, id: string): AsyncAction => async dispatch => {
+const getEntity = (type: EntityType, id: string): AsyncAction => async (dispatch, getState) => {
+  const state = getState().api.get[type][id];
+  if (state && state.code === 102) {
+    return;
+  }
+
   dispatch(apiSyncActions.update("get", type, id, 102));
 
   try {
@@ -48,7 +53,15 @@ const getEntity = (type: EntityType, id: string): AsyncAction => async dispatch 
   }
 };
 
-const searchEntity = <E extends EntityObject>(type: EntityType, params: Params<E>): AsyncAction => async dispatch => {
+const searchEntity = <E extends EntityObject>(type: EntityType, params: Params<E>): AsyncAction => async (
+  dispatch,
+  getState
+) => {
+  const state = getState().api.search[type][stringifyParams(params)];
+  if (state && state.code === 102) {
+    return;
+  }
+
   dispatch(apiSyncActions.update<E>("search", type, params, 102));
 
   try {
@@ -69,7 +82,8 @@ const uploadEntity = <E extends EntityObject>(
   type: EntityType,
   id: string,
   params?: Params<E>,
-  callback?: (response: EntityStore) => void
+  onSuccess?: (uploadResponse: EntityStore) => void,
+  onFailure?: () => void
 ): AsyncAction => async (dispatch, getState) => {
   const buffer = getState().buffers[type][id] as Partial<E> | undefined;
   const target = params || buffer;
@@ -89,17 +103,27 @@ const uploadEntity = <E extends EntityObject>(
       dispatch(buffersActions.delete(type, id));
     }
 
-    if (callback !== undefined) {
-      callback({ ...createEntityTypeToObject(), ...response });
+    if (onSuccess !== undefined) {
+      onSuccess({ ...createEntityTypeToObject(), ...response });
     }
   } catch (e) {
     const code = e instanceof HTTPError ? e.response.status : 500;
 
     dispatch(apiSyncActions.update("upload", type, id, code));
+
+    if (onFailure !== undefined) {
+      onFailure();
+    }
   }
 };
 
-const deleteEntity = (type: EntityType, id: string, callback?: () => void): AsyncAction => async dispatch => {
+const deleteEntity = (
+  type: EntityType,
+  id: string,
+  timeout?: number,
+  onSuccess?: () => void,
+  onFailure?: () => void
+): AsyncAction => async dispatch => {
   dispatch(apiSyncActions.update("delete", type, id, 102));
 
   try {
@@ -109,15 +133,19 @@ const deleteEntity = (type: EntityType, id: string, callback?: () => void): Asyn
     dispatch(buffersActions.delete(type, id));
     dispatch(apiSyncActions.update("delete", type, id, 200, response));
 
-    if (callback !== undefined) {
-      callback();
+    if (onSuccess !== undefined) {
+      onSuccess();
     }
 
-    setTimeout(() => dispatch(cacheActions.purge(type, id)), 1000);
+    setTimeout(() => dispatch(cacheActions.purge(type, id)), timeout);
   } catch (e) {
     const code = e instanceof HTTPError ? e.response.status : 500;
 
     dispatch(apiSyncActions.update("delete", type, id, code));
+
+    if (onFailure !== undefined) {
+      onFailure();
+    }
   }
 };
 

@@ -12,7 +12,7 @@ export const UnpublishExerciseDialog = createDialog<{
   React.memo(({ exerciseId, onClose }) => {
     const dispatch = useDispatch();
 
-    const onUnpublish = () => {
+    const onUnpublish = () =>
       dispatch(
         actions.api.upload(
           "Exercise",
@@ -23,7 +23,6 @@ export const UnpublishExerciseDialog = createDialog<{
           onClose
         )
       );
-    };
 
     return (
       <DialogContent title="問題集の公開を終了" onClose={onClose}>

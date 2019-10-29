@@ -1,46 +1,62 @@
 import { Checkbox, TableCell, TableRow } from "@material-ui/core";
+import { createContext, useCallback, useContext } from "react";
 import * as React from "react";
-import { createContext, useCallback, useContext, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { PlaylistItem, PlaylistSummary } from "../../../shared/api/entities";
 import { createEntityList } from "../../enhancers/createEntityList";
-import { useEntity } from "../../hooks/useEntity";
+import { useSearch } from "../../hooks/useSearch";
+import { useToggleState } from "../../hooks/useToggleState";
 import { actions } from "../../reducers";
 import { generateBufferId } from "../../reducers/buffers";
+import { UserContext } from "../project/Context";
 import { Column } from "../ui";
 
 export const ExerciseContext = createContext<string | undefined>(undefined);
-export const PlaylistItemsContext = createContext<PlaylistItem[]>([]);
 
 export const PlaylistSummarySelectList = createEntityList<PlaylistSummary>({ entityType: "PlaylistSummary" })(
   React.memo(({ entity: { playlistId, title } }) => {
     const dispatch = useDispatch();
+    const currentUser = useContext(UserContext);
     const exerciseId = useContext(ExerciseContext);
-    const playlistItems = useContext(PlaylistItemsContext);
     if (exerciseId === undefined) {
-      throw new Error("exerciseId is not defined.");
+      return null;
     }
 
-    const bufferId = useMemo(() => generateBufferId(), []);
-    const { uploadStatus } = useEntity<PlaylistItem>("PlaylistItem", bufferId);
+    const [isRequested, toggleRequestState] = useToggleState();
+
+    const { entities: playlistItems, onReload: onReloadPlaylistItems } = useSearch<PlaylistItem>("PlaylistItem", {
+      authorId: currentUser.id,
+      exerciseId
+    });
+    const belongingItem = playlistItems.find(playlistItem => playlistItem.playlistId === playlistId);
 
     const onClick = useCallback(() => {
-      dispatch(
-        actions.api.upload<PlaylistItem>("PlaylistItem", bufferId, {
-          playlistId,
-          exerciseId
-        })
-      );
-    }, []);
+      toggleRequestState();
 
-    const isAdded = playlistItems.some(playlistItem => playlistItem.playlistId === playlistId) || uploadStatus === 200;
-
-    const isUploading = uploadStatus === 102;
+      if (belongingItem === undefined) {
+        dispatch(
+          actions.api.upload<PlaylistItem>(
+            "PlaylistItem",
+            generateBufferId(),
+            {
+              playlistId,
+              exerciseId
+            },
+            () => {
+              onReloadPlaylistItems();
+              toggleRequestState();
+            }
+          )
+        );
+      } else {
+        dispatch(actions.api.delete("PlaylistItem", belongingItem.id, 0, toggleRequestState));
+      }
+    }, [playlistItems]);
 
     return (
-      <TableRow hover onClick={!isUploading ? onClick : undefined}>
+      <TableRow hover onClick={!isRequested ? onClick : undefined}>
         <TableCell padding="checkbox">
-          <Checkbox checked={isAdded} disabled={isUploading} />
+          <Checkbox checked={belongingItem !== undefined} disabled={isRequested} />
         </TableCell>
         <TableCell>
           <Column>{title || "無題"}</Column>

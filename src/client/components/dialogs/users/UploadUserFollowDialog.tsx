@@ -28,17 +28,13 @@ export const UploadUserFollowDialog = createDialog<{
           },
           uploadResponse => {
             dispatch(
-              actions.cache.search<UserFollow>(
+              actions.cache.add<UserFollow>(
                 "UserFollow",
                 {
                   followerId: currentUser.id,
                   targetId
                 },
-                {
-                  ids: [Object.keys(uploadResponse.UserFollow)[0]],
-                  entities: {},
-                  count: 1
-                }
+                uploadResponse
               )
             );
 

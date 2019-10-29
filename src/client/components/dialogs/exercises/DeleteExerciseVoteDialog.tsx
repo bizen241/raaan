@@ -2,7 +2,7 @@ import { Typography } from "@material-ui/core";
 import { Delete, HowToVote } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { createDialog } from "../../../enhancers/createDialog";
+import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card, DialogContent } from "../../ui";
 
@@ -13,7 +13,7 @@ export const DeleteExerciseVoteDialog = createDialog<{
     const dispatch = useDispatch();
 
     const onDelete = () => {
-      dispatch(actions.api.delete("ExerciseVote", exerciseVoteId, onClose));
+      dispatch(actions.api.delete("ExerciseVote", exerciseVoteId, dialogTimeout, onClose));
     };
 
     return (

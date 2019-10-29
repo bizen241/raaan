@@ -26,7 +26,7 @@ interface EntityListParams {
 
 interface EntityListProps<E extends EntityObject> {
   title?: React.ReactNode;
-  elevation?: number;
+  onReload?: () => void;
   initialParams: Params<E>;
 }
 
@@ -44,14 +44,24 @@ export const createEntityList = <E extends EntityObject>({ entityType, itemHeigh
   ItemComponent: React.ComponentType<EntityListItemProps<E>>,
   ParamsComponent?: React.ComponentType<EntityListParamsProps<E>>
 ) =>
-  React.memo<EntityListProps<E>>(({ elevation, initialParams }) => {
-    const { entities, params, status, limit, offset, count, onReload, onChange } = useSearch(entityType, initialParams);
+  React.memo<EntityListProps<E>>(({ initialParams, ...props }) => {
+    const { entities, params, status, limit, offset, count, onChange, ...searchProps } = useSearch(
+      entityType,
+      initialParams
+    );
 
     const isLoading = status !== undefined && status !== 200;
     const emptyRows = !isLoading && limit - entities.length;
 
+    const onReload = () => {
+      if (props.onReload !== undefined) {
+        props.onReload();
+      }
+      searchProps.onReload();
+    };
+
     return (
-      <Card elevation={elevation}>
+      <Card>
         <CardContent>
           <Column>
             {ParamsComponent === undefined ? (

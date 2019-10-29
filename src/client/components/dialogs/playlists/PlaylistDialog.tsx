@@ -3,13 +3,13 @@ import { Add, CloudUpload, PlaylistPlay } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Playlist, PlaylistItem } from "../../../../shared/api/entities";
+import { Playlist, PlaylistItem, PlaylistSummary } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { ExerciseContext, PlaylistItemsContext, PlaylistSummarySelectList } from "../../list/PlaylistSummarySelectList";
+import { ExerciseContext, PlaylistSummarySelectList } from "../../list/PlaylistSummarySelectList";
 import { UserContext } from "../../project/Context";
 import { Button, Card, Column, DialogContent } from "../../ui";
 
@@ -20,13 +20,16 @@ export const PlaylistDialog = createDialog<{
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);
 
-    const { entities: playlistItems } = useSearch<PlaylistItem>("PlaylistItem", {
+    const [isEditoOpen, onToggleEditor] = useToggleState();
+    const [title, setTitle] = useState();
+
+    const { onReload: onReloadPlaylistSummaries } = useSearch<PlaylistSummary>("PlaylistSummary", {
+      authorId: currentUser.id
+    });
+    const { onReload: onReloadPlaylistItems } = useSearch<PlaylistItem>("PlaylistItem", {
       authorId: currentUser.id,
       exerciseId
     });
-
-    const [isPlaylistEditorOpen, onTogglePlaylistEditor] = useToggleState();
-    const [title, setTitle] = useState();
 
     const onUpdateTitle = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
       setTitle(e.target.value);
@@ -42,26 +45,29 @@ export const PlaylistDialog = createDialog<{
             title,
             exerciseId
           },
-          onClose
+          () => {
+            onReloadPlaylistSummaries();
+            onReloadPlaylistItems();
+            onClose();
+          }
         )
       );
     };
 
     return (
       <DialogContent title="プレイリストに追加" onClose={onClose}>
-        {!isPlaylistEditorOpen ? (
+        {!isEditoOpen ? (
           <>
-            <Button icon={<Add />} label="新規作成" onClick={onTogglePlaylistEditor} />
+            <Button icon={<Add />} label="新規作成" onClick={onToggleEditor} />
             <Column pb={1}>
               <ExerciseContext.Provider value={exerciseId}>
-                <PlaylistItemsContext.Provider value={playlistItems}>
-                  <PlaylistSummarySelectList
-                    title="プレイリスト一覧"
-                    initialParams={{
-                      authorId: currentUser.id
-                    }}
-                  />
-                </PlaylistItemsContext.Provider>
+                <PlaylistSummarySelectList
+                  title="プレイリスト一覧"
+                  initialParams={{
+                    authorId: currentUser.id
+                  }}
+                  onReload={onReloadPlaylistItems}
+                />
               </ExerciseContext.Provider>
             </Column>
           </>

@@ -34,6 +34,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+export const dialogTimeout = 500;
+
 const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
-  <Slide direction="up" ref={ref} {...props} />
+  <Slide direction="up" ref={ref} timeout={{ enter: dialogTimeout, exit: dialogTimeout }} {...props} />
 ));

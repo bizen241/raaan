@@ -30,17 +30,13 @@ export const UploadExerciseVoteDialog = createDialog<{
           },
           uploadResponse => {
             dispatch(
-              actions.cache.search<ExerciseVote>(
+              actions.cache.add<ExerciseVote>(
                 "ExerciseVote",
                 {
                   voterId: currentUser.id,
                   targetId
                 },
-                {
-                  ids: [Object.keys(uploadResponse.ExerciseVote)[0]],
-                  entities: {},
-                  count: 1
-                }
+                uploadResponse
               )
             );
 

@@ -28,17 +28,13 @@ export const UploadTagFollowDialog = createDialog<{
           },
           uploadResponse => {
             dispatch(
-              actions.cache.search<TagFollow>(
+              actions.cache.add<TagFollow>(
                 "TagFollow",
                 {
                   followerId: currentTag.id,
                   targetId
                 },
-                {
-                  ids: [Object.keys(uploadResponse.TagFollow)[0]],
-                  entities: {},
-                  count: 1
-                }
+                uploadResponse
               )
             );
 

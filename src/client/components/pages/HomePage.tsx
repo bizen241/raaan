@@ -35,7 +35,7 @@ export const HomePage = React.memo(() => {
         </Column>
       )}
       {isGuest ? (
-        <Button icon={<AccountCircle />} label="ログイン" to="/user-account" />
+        <Button icon={<AccountCircle />} label="ログイン" to="/user/user-accounts" />
       ) : (
         <Button icon={<AccountCircle />} label="マイページ" to={`/users/${currentUser.id}`} />
       )}

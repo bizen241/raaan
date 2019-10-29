@@ -265,7 +265,7 @@ const normalizeGroupPlaylist: Normalizer<GroupPlaylistEntity> = (_, store, entit
   };
 };
 
-const normalizePlaylist: Normalizer<PlaylistEntity> = (_, store, entity) => {
+const normalizePlaylist: Normalizer<PlaylistEntity> = (context, store, entity) => {
   const { id, authorId, summaryId, title, tags, description, orderBy, isPrivate, isLocked } = entity;
 
   store.Playlist[id] = {
@@ -279,6 +279,13 @@ const normalizePlaylist: Normalizer<PlaylistEntity> = (_, store, entity) => {
     isPrivate,
     isLocked
   };
+
+  if (entity.summary !== undefined) {
+    entity.summary.playlist = entity;
+    entity.summary.playlistId = entity.id;
+
+    normalizeEntity(context, store, entity.summary);
+  }
 };
 
 const normalizePlaylistBookmark: Normalizer<PlaylistBookmarkEntity> = (context, store, entity) => {

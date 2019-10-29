@@ -6,7 +6,7 @@ import { UserContext } from "../../project/Context";
 import { Message } from "../../project/Message";
 import { Button, Page } from "../../ui";
 
-export const UserAccountPage = React.memo(() => {
+export const UserAccountsPage = React.memo(() => {
   const currentUser = useContext(UserContext);
 
   const [isLogoutDialogOpen, toggleLogoutDialog] = useState(false);

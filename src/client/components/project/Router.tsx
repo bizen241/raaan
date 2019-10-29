@@ -5,7 +5,7 @@ import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { RootState } from "../../reducers";
 import { AppPage } from "../pages/AppPage";
 import { EditExercisesPage } from "../pages/exercises/EditExercisesPage";
-import { ExerciseDraftsPage } from "../pages/exercises/ExerciseDraftsPage";
+import { UserExerciseDraftsPage } from "../pages/exercises/UserExerciseDraftsPage";
 import { ExercisePage } from "../pages/exercises/ExercisePage";
 import { ExercisesPage } from "../pages/exercises/ExercisesPage";
 import { UserExercisesPage } from "../pages/exercises/UserExercisesPage";
@@ -21,9 +21,9 @@ import { PlaylistPage } from "../pages/playlists/PlaylistPage";
 import { PlaylistsPage } from "../pages/playlists/PlaylistsPage";
 import { UserPlaylistsPage } from "../pages/playlists/UserPlaylistsPage";
 import { EditExerciseReportPage } from "../pages/reports/EditExerciseReportPage";
-import { SubmissionsPage } from "../pages/submissions/SubmissionsPage";
+import { UserSubmissionsPage } from "../pages/submissions/UserSubmissionsPage";
 import { TagPage } from "../pages/tags/TagPage";
-import { UserAccountPage } from "../pages/user/UserAccountPage";
+import { UserAccountsPage } from "../pages/user/UserAccountsPage";
 import { UserConfigPage } from "../pages/user/UserConfigPage";
 import { UserSessionsPage } from "../pages/user/UserSessionsPage";
 import { UserPage } from "../pages/users/UserPage";
@@ -45,12 +45,12 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/app" component={AppPage} />
 
         <Route exact={true} path="/user/user-config" component={UserConfigPage} />
-        <Route exact={true} path="/user/user-accounts" component={UserAccountPage} />
+        <Route exact={true} path="/user/user-accounts" component={UserAccountsPage} />
         <Route exact={true} path="/user/user-sessions" component={UserSessionsPage} />
 
-        <Route exact={true} path="/user/submissions" component={SubmissionsPage} />
-        <Route exact={true} path="/user/exercise-drafts" component={ExerciseDraftsPage} />
-        <Route exact={true} path="/user/group-exercises" component={NotFoundPage} />
+        <Route exact={true} path="/user/submissions" component={UserSubmissionsPage} />
+        <Route exact={true} path="/user/exercise-drafts" component={UserExerciseDraftsPage} />
+        {/* <Route exact={true} path="/user/group-exercises" component={UserGroupExercisesPage} /> */}
 
         <Route exact={true} path="/users" component={NotFoundPage} />
         <Route exact={true} path="/users/:id" component={UserPage} />
@@ -79,7 +79,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/groups/edit" component={EditGroupsPage} />
         <Route exact={true} path="/groups/:id" component={GroupPage} />
         <Route exact={true} path="/groups/:id/edit" component={EditGroupPage} />
-        <Route exact={true} path="/groups/:id/group-exercises" component={NotFoundPage} />
+        {/* <Route exact={true} path="/groups/:id/group-exercises" component={GroupExercisesPage} /> */}
 
         <Route exact={true} path="/exercise-reports" component={NotFoundPage} />
         <Route exact={true} path="/exercise-reports/edit" component={NotFoundPage} />

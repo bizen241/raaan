@@ -34,17 +34,13 @@ export const UploadPlaylistBookmarkDialog = createDialog<{
           },
           uploadResponse => {
             dispatch(
-              actions.cache.search<PlaylistBookmark>(
+              actions.cache.add<PlaylistBookmark>(
                 "PlaylistBookmark",
                 {
                   userId: currentUser.id,
                   playlistId
                 },
-                {
-                  ids: [Object.keys(uploadResponse.PlaylistBookmark)[0]],
-                  entities: {},
-                  count: 1
-                }
+                uploadResponse
               )
             );
 

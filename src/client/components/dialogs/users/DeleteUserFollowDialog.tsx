@@ -2,7 +2,7 @@ import { Typography } from "@material-ui/core";
 import { RemoveCircle } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { createDialog } from "../../../enhancers/createDialog";
+import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card, DialogContent } from "../../ui";
 
@@ -13,7 +13,7 @@ export const DeleteUserFollowDialog = createDialog<{
     const dispatch = useDispatch();
 
     const onDelete = () => {
-      dispatch(actions.api.delete("UserFollow", userFollowId, onClose));
+      dispatch(actions.api.delete("UserFollow", userFollowId, dialogTimeout, onClose));
     };
 
     return (
