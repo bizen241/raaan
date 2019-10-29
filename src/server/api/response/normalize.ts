@@ -236,8 +236,8 @@ const normalizeGroupExercise: Normalizer<GroupExerciseEntity> = (_, store, entit
   };
 };
 
-const normalizeGroupMember: Normalizer<GroupMemberEntity> = (_, store, entity) => {
-  const { id, groupId, user, permission } = entity;
+const normalizeGroupMember: Normalizer<GroupMemberEntity> = (context, store, entity) => {
+  const { id, groupId, user, userId, permission } = entity;
   if (user === undefined) {
     return;
   }
@@ -245,9 +245,12 @@ const normalizeGroupMember: Normalizer<GroupMemberEntity> = (_, store, entity) =
   store.GroupMember[id] = {
     ...base(entity),
     groupId,
+    userId,
     userSummaryId: user.summaryId,
     permission
   };
+
+  normalizeEntity(context, store, user.summary);
 };
 
 const normalizeGroupPlaylist: Normalizer<GroupPlaylistEntity> = (_, store, entity) => {
@@ -502,6 +505,10 @@ const normalizeUser: Normalizer<UserEntity> = (context, store, entity) => {
     configId,
     summaryId
   };
+
+  if (summary !== undefined) {
+    summary.user = entity;
+  }
 
   normalizeEntity(context, store, config);
   normalizeEntity(context, store, summary);

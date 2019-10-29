@@ -24,6 +24,15 @@ export const useApi = (env: Env, app: Express) => {
   });
 
   if (env.server.host === "localhost") {
-    app.use("/api/docs/ui", swagger.serve, swagger.setup(null, { swaggerUrl: "/api/docs" }));
+    app.use(
+      "/api/docs/ui",
+      swagger.serve,
+      swagger.setup(null, {
+        swaggerUrl: "/api/docs",
+        swaggerOptions: {
+          tagsSorter: "alpha"
+        }
+      })
+    );
   }
 };

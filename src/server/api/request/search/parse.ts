@@ -144,8 +144,12 @@ const parseGroupExercise: Parser<GroupExercise> = query => {
 };
 
 const parseGroupMember: Parser<GroupMember> = query => {
+  const { groupId, userId } = query;
+
   return {
-    ...base(query)
+    ...base(query),
+    groupId,
+    userId
   };
 };
 
