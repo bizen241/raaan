@@ -5,10 +5,11 @@ import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { RootState } from "../../reducers";
 import { AppPage } from "../pages/AppPage";
 import { EditExercisesPage } from "../pages/exercises/EditExercisesPage";
-import { UserExerciseDraftsPage } from "../pages/exercises/UserExerciseDraftsPage";
 import { ExercisePage } from "../pages/exercises/ExercisePage";
 import { ExercisesPage } from "../pages/exercises/ExercisesPage";
+import { UserExerciseDraftsPage } from "../pages/exercises/UserExerciseDraftsPage";
 import { UserExercisesPage } from "../pages/exercises/UserExercisesPage";
+import { GroupExercisesPage } from "../pages/group-exercises/GroupExercisesPage";
 import { UserGroupMembersPage } from "../pages/group-members/UserGroupMembersPage";
 import { EditGroupPage } from "../pages/groups/EditGroupPage";
 import { EditGroupsPage } from "../pages/groups/EditGroupsPage";
@@ -50,7 +51,6 @@ export const Router = React.memo(() => {
 
         <Route exact={true} path="/user/submissions" component={UserSubmissionsPage} />
         <Route exact={true} path="/user/exercise-drafts" component={UserExerciseDraftsPage} />
-        {/* <Route exact={true} path="/user/group-exercises" component={UserGroupExercisesPage} /> */}
 
         <Route exact={true} path="/users" component={NotFoundPage} />
         <Route exact={true} path="/users/:id" component={UserPage} />
@@ -79,7 +79,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/groups/edit" component={EditGroupsPage} />
         <Route exact={true} path="/groups/:id" component={GroupPage} />
         <Route exact={true} path="/groups/:id/edit" component={EditGroupPage} />
-        {/* <Route exact={true} path="/groups/:id/group-exercises" component={GroupExercisesPage} /> */}
+        <Route exact={true} path="/groups/:id/group-exercises" component={GroupExercisesPage} />
 
         <Route exact={true} path="/exercise-reports" component={NotFoundPage} />
         <Route exact={true} path="/exercise-reports/edit" component={NotFoundPage} />

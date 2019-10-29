@@ -15,7 +15,7 @@ export const UserGroupMemberList = createEntityList<GroupMember>({ entityType: "
         <TableCell>
           <Column>
             <Link color="textPrimary" underline="always" component={RouterLink} to={`/groups/${groupMember.groupId}`}>
-              <Typography>{group && group.name}</Typography>
+              <Typography>{(group && group.name) || "名無しのグループ"}</Typography>
             </Link>
           </Column>
         </TableCell>
