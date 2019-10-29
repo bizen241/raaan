@@ -79,7 +79,6 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/groups/edit" component={EditGroupsPage} />
         <Route exact={true} path="/groups/:id" component={GroupPage} />
         <Route exact={true} path="/groups/:id/edit" component={EditGroupPage} />
-        <Route exact={true} path="/groups/:id/group-members" component={NotFoundPage} />
         <Route exact={true} path="/groups/:id/group-exercises" component={NotFoundPage} />
 
         <Route exact={true} path="/exercise-reports" component={NotFoundPage} />
