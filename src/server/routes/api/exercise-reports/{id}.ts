@@ -27,7 +27,6 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
 
 DELETE.apiDoc = createOperationDoc({
   entityType: "ExerciseReport",
-  summary: "Delete an report",
   permission: "Read",
   hasId: true
 });

@@ -28,7 +28,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
 
 GET.apiDoc = createOperationDoc({
   entityType: "Playlist",
-  summary: "Get a playlist",
   permission: "Guest",
   hasId: true
 });
@@ -107,7 +106,6 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
 
 DELETE.apiDoc = createOperationDoc({
   entityType: "Playlist",
-  summary: "Delete a playlist",
   permission: "Read",
   hasId: true
 });

@@ -20,7 +20,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
 
 GET.apiDoc = createOperationDoc({
   entityType: "User",
-  summary: "Get a user",
   permission: "Guest",
   hasId: true
 });

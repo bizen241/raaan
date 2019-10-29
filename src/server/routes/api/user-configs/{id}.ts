@@ -34,7 +34,6 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
 
 PATCH.apiDoc = createOperationDoc({
   entityType: "UserConfig",
-  summary: "Update a config",
   permission: "Read",
   hasId: true,
   hasBody: true

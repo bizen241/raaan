@@ -25,7 +25,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
 
 GET.apiDoc = createOperationDoc({
   entityType: "Tag",
-  summary: "Search tags",
   permission: "Read",
   hasQuery: true
 });

@@ -29,7 +29,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
 
 GET.apiDoc = createOperationDoc({
   entityType: "GroupMember",
-  summary: "Search group members",
   permission: "Read",
   hasQuery: true
 });

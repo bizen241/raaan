@@ -27,7 +27,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
 
 GET.apiDoc = createOperationDoc({
   entityType: "Exercise",
-  summary: "Get an exercise",
   permission: "Guest",
   hasId: true
 });
@@ -76,7 +75,6 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
 
 PATCH.apiDoc = createOperationDoc({
   entityType: "Exercise",
-  summary: "Update an exercise",
   permission: "Write",
   hasId: true,
   hasBody: true
@@ -104,7 +102,6 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
 
 DELETE.apiDoc = createOperationDoc({
   entityType: "Exercise",
-  summary: "Delete an exercise",
   permission: "Read",
   hasId: true
 });

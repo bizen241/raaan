@@ -38,7 +38,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
 
 GET.apiDoc = createOperationDoc({
   entityType: "ExerciseVote",
-  summary: "Search votes",
   permission: "Read",
   hasQuery: true
 });
@@ -73,7 +72,6 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
 
 POST.apiDoc = createOperationDoc({
   entityType: "ExerciseVote",
-  summary: "Vote",
   permission: "Write",
   hasBody: true
 });

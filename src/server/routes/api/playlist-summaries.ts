@@ -38,7 +38,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res, _, currentU
 
 GET.apiDoc = createOperationDoc({
   entityType: "PlaylistSummary",
-  summary: "Search playlists",
   permission: "Guest",
   hasQuery: true
 });

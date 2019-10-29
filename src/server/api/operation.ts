@@ -14,7 +14,6 @@ export interface PathParams {
 
 interface OperationDocument {
   entityType: EntityType;
-  summary: string;
   permission: Permission;
   tag?: string;
   hasId?: boolean;
@@ -23,7 +22,7 @@ interface OperationDocument {
 }
 
 export const createOperationDoc = (document: OperationDocument): OpenAPIV3.OperationObject => {
-  const { entityType, summary, permission, tag, hasId, hasQuery, hasBody } = document;
+  const { entityType, permission, tag, hasId, hasQuery, hasBody } = document;
 
   const parameters: OpenAPIV3.ParameterObject[] = [
     {
@@ -77,7 +76,7 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
   };
 
   return {
-    summary,
+    summary: "",
     tags: [tag || endpoints[entityType]],
     parameters,
     requestBody,

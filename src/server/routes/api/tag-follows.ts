@@ -35,7 +35,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
 
 GET.apiDoc = createOperationDoc({
   entityType: "TagFollow",
-  summary: "Search follows",
   permission: "Read",
   hasQuery: true
 });
@@ -66,7 +65,6 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
 
 POST.apiDoc = createOperationDoc({
   entityType: "TagFollow",
-  summary: "Follow a tag",
   permission: "Read",
   hasBody: true
 });

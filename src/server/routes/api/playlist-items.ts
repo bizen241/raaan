@@ -55,7 +55,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
 
 GET.apiDoc = createOperationDoc({
   entityType: "PlaylistItem",
-  summary: "Search exercises",
   permission: "Guest",
   hasQuery: true
 });
@@ -108,7 +107,6 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
 
 POST.apiDoc = createOperationDoc({
   entityType: "PlaylistItem",
-  summary: "Create a playlist item",
   permission: "Read",
   hasBody: true
 });

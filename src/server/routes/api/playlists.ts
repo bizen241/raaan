@@ -41,7 +41,6 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
 
 POST.apiDoc = createOperationDoc({
   entityType: "Playlist",
-  summary: "Create a playlist",
   permission: "Read",
   hasBody: true
 });

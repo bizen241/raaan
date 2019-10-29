@@ -32,7 +32,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
 
 GET.apiDoc = createOperationDoc({
   entityType: "UserSession",
-  summary: "Search user sessions",
   permission: "Read",
   hasQuery: true
 });

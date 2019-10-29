@@ -35,7 +35,6 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
 
 DELETE.apiDoc = createOperationDoc({
   entityType: "TagFollow",
-  summary: "Unfollow a tag",
   permission: "Read",
   hasId: true
 });

@@ -35,7 +35,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res, _, currentU
 
 GET.apiDoc = createOperationDoc({
   entityType: "PlaylistBookmark",
-  summary: "Search bookmarks",
   permission: "Read",
   hasQuery: true
 });
@@ -58,7 +57,6 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
 
 POST.apiDoc = createOperationDoc({
   entityType: "PlaylistBookmark",
-  summary: "Create a bookmark",
   permission: "Read",
   hasBody: true
 });

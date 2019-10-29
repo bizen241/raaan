@@ -45,7 +45,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res, _, currentU
 
 GET.apiDoc = createOperationDoc({
   entityType: "ExerciseSummary",
-  summary: "Search exercises",
   permission: "Guest",
   hasQuery: true
 });

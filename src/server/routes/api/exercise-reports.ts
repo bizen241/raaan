@@ -36,7 +36,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
 
 GET.apiDoc = createOperationDoc({
   entityType: "ExerciseReport",
-  summary: "Search reports",
   permission: "Read",
   hasQuery: true
 });
@@ -64,7 +63,6 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
 
 POST.apiDoc = createOperationDoc({
   entityType: "ExerciseReport",
-  summary: "Report",
   permission: "Write",
   hasBody: true
 });

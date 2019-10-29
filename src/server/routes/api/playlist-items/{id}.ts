@@ -94,7 +94,6 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
 
 PATCH.apiDoc = createOperationDoc({
   entityType: "PlaylistItem",
-  summary: "Update a playlist item",
   permission: "Read",
   hasBody: true
 });
@@ -144,7 +143,6 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
 
 DELETE.apiDoc = createOperationDoc({
   entityType: "PlaylistItem",
-  summary: "Delete a playlist item",
   permission: "Read",
   hasId: true
 });

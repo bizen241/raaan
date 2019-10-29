@@ -35,7 +35,6 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
 
 DELETE.apiDoc = createOperationDoc({
   entityType: "UserFollow",
-  summary: "Unfollow a user",
   permission: "Read",
   hasId: true
 });

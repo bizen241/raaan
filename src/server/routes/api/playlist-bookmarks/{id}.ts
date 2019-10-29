@@ -27,7 +27,6 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
 
 DELETE.apiDoc = createOperationDoc({
   entityType: "PlaylistBookmark",
-  summary: "Delete a bookmark",
   permission: "Read",
   hasId: true
 });
