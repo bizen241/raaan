@@ -1,7 +1,6 @@
 export * from "./Button";
 export * from "./Card";
 export * from "./Column";
-export * from "./Dialog";
 export * from "./DialogContent";
 export * from "./Menu";
 export * from "./MenuItem";
