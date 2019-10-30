@@ -87,10 +87,18 @@ export const cacheReducer: Reducer<CacheState, CacheActions> = (state = initialC
         fetchedAt: Date.now()
       };
 
+      const createdAt = Object.values(response[type]).reduce(
+        (prev, current: EntityObject) => Math.max(prev, current.createdAt),
+        0
+      );
+      const target: EntityObject = Object.values(response[type]).find(
+        (entity: EntityObject) => entity.createdAt === createdAt
+      );
+
       return {
         get: state.get,
         search: mergeSearchResultStore<EntityObject>(state.search, type, params, {
-          ids: [Object.keys(response[type])[0], ...(Object.values(result.ids) as string[])],
+          ids: [target.id, ...(Object.values(result.ids) as string[])],
           entities: {},
           count: result.count + 1
         })

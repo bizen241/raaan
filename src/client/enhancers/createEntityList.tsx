@@ -61,64 +61,66 @@ export const createEntityList = <E extends EntityObject>({ entityType, itemHeigh
     };
 
     return (
-      <Card>
-        <CardContent>
-          <Column>
-            {ParamsComponent === undefined ? (
-              <Row>
-                <IconButton onClick={onReload}>
-                  <Refresh />
-                </IconButton>
-              </Row>
-            ) : (
-              <ParamsComponent params={params} onReload={onReload} onChange={onChange} />
-            )}
-          </Column>
-        </CardContent>
-        <Divider />
-        <Table>
-          <TableBody>
-            {isLoading && (
-              <TableRow style={{ height: itemHeight * limit }}>
-                <TableCell>
-                  <Row alignItems="center" justifyContent="center">
-                    <CircularProgress />
-                  </Row>
-                </TableCell>
+      <Column pb={1}>
+        <Card>
+          <CardContent>
+            <Column>
+              {ParamsComponent === undefined ? (
+                <Row>
+                  <IconButton onClick={onReload}>
+                    <Refresh />
+                  </IconButton>
+                </Row>
+              ) : (
+                <ParamsComponent params={params} onReload={onReload} onChange={onChange} />
+              )}
+            </Column>
+          </CardContent>
+          <Divider />
+          <Table>
+            <TableBody>
+              {isLoading && (
+                <TableRow style={{ height: itemHeight * limit }}>
+                  <TableCell>
+                    <Row alignItems="center" justifyContent="center">
+                      <CircularProgress />
+                    </Row>
+                  </TableCell>
+                </TableRow>
+              )}
+              {!isLoading && entities.map(entity => entity && <ItemComponent key={entity.id} entity={entity as E} />)}
+              {emptyRows && (
+                <TableRow style={{ height: itemHeight * emptyRows }}>
+                  <TableCell colSpan={3} />
+                </TableRow>
+              )}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPage={limit}
+                  page={offset / limit}
+                  count={count}
+                  labelRowsPerPage="表示件数:"
+                  onChangePage={useCallback(
+                    (_, page) =>
+                      onChange({
+                        searchOffset: page * limit
+                      } as Params<E>),
+                    [limit]
+                  )}
+                  onChangeRowsPerPage={useCallback(
+                    (e: React.ChangeEvent<HTMLInputElement>) =>
+                      onChange({
+                        searchLimit: parseInt(e.target.value, 10)
+                      } as Params<E>),
+                    []
+                  )}
+                />
               </TableRow>
-            )}
-            {!isLoading && entities.map(entity => entity && <ItemComponent key={entity.id} entity={entity as E} />)}
-            {emptyRows && (
-              <TableRow style={{ height: itemHeight * emptyRows }}>
-                <TableCell colSpan={3} />
-              </TableRow>
-            )}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPage={limit}
-                page={offset / limit}
-                count={count}
-                labelRowsPerPage="表示件数:"
-                onChangePage={useCallback(
-                  (_, page) =>
-                    onChange({
-                      searchOffset: page * limit
-                    } as Params<E>),
-                  [limit]
-                )}
-                onChangeRowsPerPage={useCallback(
-                  (e: React.ChangeEvent<HTMLInputElement>) =>
-                    onChange({
-                      searchLimit: parseInt(e.target.value, 10)
-                    } as Params<E>),
-                  []
-                )}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </Card>
+            </TableFooter>
+          </Table>
+        </Card>
+      </Column>
     );
   });

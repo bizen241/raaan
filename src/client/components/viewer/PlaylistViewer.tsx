@@ -1,5 +1,5 @@
 import { Card, CardContent, Divider, IconButton, Table, TableBody } from "@material-ui/core";
-import { Bookmark, PlayArrow, Refresh } from "@material-ui/icons";
+import { Add, Bookmark, PlayArrow, Refresh } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { Playlist, PlaylistBookmark, PlaylistItem } from "../../../shared/api/entities";
@@ -8,6 +8,7 @@ import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeletePlaylistBookmarkDialog } from "../dialogs/playlists/DeletePlaylistBookmarkDialog";
+import { PlaylistItemsDialog } from "../dialogs/playlists/PlaylistItemsDialog";
 import { UploadPlaylistBookmarkDialog } from "../dialogs/playlists/UploadPlaylistBookmarkDialog";
 import { PlaylistPlayer } from "../player/dialogs/PlaylistPlayer";
 import { UserContext } from "../project/Context";
@@ -18,6 +19,8 @@ import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
   React.memo(({ entity: playlist, entityId: playlistId }) => {
     const currentUser = useContext(UserContext);
+
+    const [isPlaylistItemsDialogOpen, onTogglePlaylistItemsDialog] = useToggleState();
 
     const [isUploadPlaylistBookmarkDialogOpen, onToggleUploadPlaylistBookmarkDialog] = useToggleState();
     const [isDeletePlaylistBookmarkDialogOpen, onToggleDeletePlaylistBookmarkDialog] = useToggleState();
@@ -33,6 +36,7 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
     const { entities: playlistItems, count, onReload } = useSearch<PlaylistItem>("PlaylistItem", {
       playlistId
     });
+    console.log(playlistItems);
     const sortedPlaylistItems = useMemo(() => sortPlaylistItems(playlistItems, playlist.orderBy), [playlistItems]);
     const onPlay = useCallback(() => {
       requestPlaylistItems(sortedPlaylistItems);
@@ -46,13 +50,16 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
       [sortedPlaylistItems]
     );
 
+    const isAuthor = playlist.authorId === currentUser.id;
+
     return (
       <Column>
         <Button color="primary" icon={<PlayArrow />} label="始める" disabled={count === 0} onClick={onPlay} />
-        {!isBookmarked && (
+        {isAuthor ? (
+          <Button icon={<Add />} label="クイズを追加" onClick={onTogglePlaylistItemsDialog} />
+        ) : !isBookmarked ? (
           <Button icon={<Bookmark />} label="ブックマークに追加" onClick={onToggleUploadPlaylistBookmarkDialog} />
-        )}
-        {isBookmarked && (
+        ) : (
           <Button icon={<Bookmark />} label="ブックマークを解除" onClick={onToggleDeletePlaylistBookmarkDialog} />
         )}
         <Column pb={1}>
@@ -87,6 +94,11 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
             </Table>
           </Column>
         </Card>
+        <PlaylistItemsDialog
+          playlistId={playlistId}
+          isOpen={isPlaylistItemsDialogOpen}
+          onClose={onTogglePlaylistItemsDialog}
+        />
         <UploadPlaylistBookmarkDialog
           playlistId={playlistId}
           isOpen={isUploadPlaylistBookmarkDialogOpen}

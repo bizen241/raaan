@@ -13,7 +13,7 @@ import { ExerciseContext, TogglePlaylistItemList } from "../../list/playlist-sum
 import { UserContext } from "../../project/Context";
 import { Button, Card, Column, DialogContent } from "../../ui";
 
-export const PlaylistDialog = createDialog<{
+export const PlaylistItemsDialog = createDialog<{
   exerciseId: string;
 }>(
   React.memo(({ exerciseId, onClose }) => {

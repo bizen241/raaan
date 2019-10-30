@@ -14,7 +14,9 @@ export class GroupExerciseEntity extends BaseEntityClass {
   @RelationId((groupExercise: GroupExerciseEntity) => groupExercise.group)
   groupId!: string;
 
-  @ManyToOne(() => ExerciseEntity)
+  @ManyToOne(() => ExerciseEntity, {
+    onDelete: "CASCADE"
+  })
   exercise?: ExerciseEntity;
   @RelationId((groupExercise: GroupExerciseEntity) => groupExercise.exercise)
   exerciseId!: string;

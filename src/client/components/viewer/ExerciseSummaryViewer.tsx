@@ -12,6 +12,7 @@ import { RootState } from "../../reducers";
 import { DeleteExerciseVoteDialog } from "../dialogs/exercise-votes/DeleteExerciseVoteDialog";
 import { UploadExerciseVoteDialog } from "../dialogs/exercise-votes/UploadExerciseVoteDialog";
 import { DeleteExerciseDialog } from "../dialogs/exercises/DeleteExerciseDialog";
+import { GroupExercisesDialog } from "../dialogs/exercises/GroupExercisesDialog";
 import { PublishExerciseDialog } from "../dialogs/exercises/PublishExerciseDialog";
 import { UnpublishExerciseDialog } from "../dialogs/exercises/UnpublishExerciseDialog";
 import { ConfirmExerciseReportDialog } from "../dialogs/reports/ConfirmExerciseReportDialog";
@@ -28,6 +29,7 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
 
     const [isPublishExerciseDialogOpen, onTogglePublishExerciseDialog] = useToggleState();
     const [isUnpublishExerciseDialogOpen, onToggleUnpublishExerciseDialog] = useToggleState();
+    const [isGroupExercisesDialogOpen, onToggleGroupExercisesDialog] = useToggleState();
     const [isDeleteExerciseDialogOpen, onToggleDeleteExerciseDialog] = useToggleState();
     const [isUploadVoteDialogOpen, onToggleUploadVoteDialog] = useToggleState();
     const [isDeleteVoteDialogOpen, onToggleDeleteVoteDialog] = useToggleState();
@@ -80,7 +82,7 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
                     非公開にする
                   </MenuItem>
                 )}
-                <MenuItem>
+                <MenuItem onClick={onToggleGroupExercisesDialog}>
                   <Group className={classes.leftIcon} />
                   グループに公開する
                 </MenuItem>
@@ -156,6 +158,11 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
           exerciseId={exerciseId}
           isOpen={isUnpublishExerciseDialogOpen}
           onClose={onToggleUnpublishExerciseDialog}
+        />
+        <GroupExercisesDialog
+          exerciseId={exerciseId}
+          isOpen={isGroupExercisesDialogOpen}
+          onClose={onToggleGroupExercisesDialog}
         />
         <DeleteExerciseDialog
           exerciseId={exerciseId}

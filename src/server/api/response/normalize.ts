@@ -225,13 +225,14 @@ const normalizeGroup: Normalizer<GroupEntity> = (_, store, entity) => {
 };
 
 const normalizeGroupExercise: Normalizer<GroupExerciseEntity> = (_, store, entity) => {
-  const { id, exercise, exerciseId } = entity;
+  const { id, groupId, exercise, exerciseId } = entity;
   if (exercise === undefined) {
     return;
   }
 
   store.GroupExercise[id] = {
     ...base(entity),
+    groupId,
     exerciseId,
     exerciseSummaryId: exercise.summaryId
   };

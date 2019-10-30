@@ -101,7 +101,17 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
 
     await manager.save(lastPlaylistItem);
 
-    responseFindResult(req, res, newPlaylistItem, lastPlaylistItem);
+    const savedPlaylistItem = await manager.findOne(PlaylistItemEntity, newPlaylistItem.id, {
+      relations: ["exercise"]
+    });
+    const updatedPlaylistItem = await manager.findOne(PlaylistItemEntity, lastPlaylistItem.id, {
+      relations: ["exercise"]
+    });
+    if (savedPlaylistItem === undefined || updatedPlaylistItem === undefined) {
+      return next(createError(500));
+    }
+
+    responseFindResult(req, res, savedPlaylistItem, updatedPlaylistItem);
   });
 });
 

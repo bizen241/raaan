@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { Exercise } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useToggleState } from "../../hooks/useToggleState";
-import { PlaylistDialog } from "../dialogs/exercises/PlaylistItemsDialog";
+import { PlaylistItemsDialog } from "../dialogs/exercises/PlaylistItemsDialog";
 import { ExercisePlayer } from "../player/dialogs/ExercisePlayer";
 import { UserContext } from "../project/Context";
 import { Button, Column } from "../ui";
@@ -33,7 +33,7 @@ export const ExerciseViewer = withEntity<Exercise>({ entityType: "Exercise" })(
           </Column>
         )}
         <ExercisePlayer exerciseId={exerciseId} isOpen={isExercisePlayerOpen} onClose={onToggleExercisePlayer} />
-        <PlaylistDialog exerciseId={exerciseId} isOpen={isPlaylistDialogOpen} onClose={onTogglePlaylistDialog} />
+        <PlaylistItemsDialog exerciseId={exerciseId} isOpen={isPlaylistDialogOpen} onClose={onTogglePlaylistDialog} />
       </Column>
     );
   })
