@@ -4,8 +4,39 @@ import { getManager } from "typeorm";
 import { GroupExercise } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseFindResult } from "../../api/response";
+import { parseQuery } from "../../api/request/search/parse";
+import { responseFindResult, responseSearchResult } from "../../api/response";
 import { ExerciseEntity, GroupEntity, GroupExerciseEntity } from "../../database/entities";
+
+export const GET: OperationFunction = errorBoundary(async (req, res) => {
+  const { groupId, exerciseId, searchLimit, searchOffset } = parseQuery<GroupExercise>("GroupExercise", req.query);
+
+  const manager = getManager();
+
+  const query = await manager
+    .createQueryBuilder(GroupExerciseEntity, "groupExercise")
+    .leftJoinAndSelect("groupExercise.group", "group")
+    .leftJoinAndSelect("groupExercise.exercise", "exercise")
+    .take(searchLimit)
+    .skip(searchOffset);
+
+  if (groupId !== undefined) {
+    query.andWhere("groupExercise.groupId = :groupId", { groupId });
+  }
+  if (exerciseId !== undefined) {
+    query.andWhere("groupExercise.exerciseId = :exerciseId", { exerciseId });
+  }
+
+  const [groupExercises, count] = await query.getManyAndCount();
+
+  responseSearchResult(req, res, groupExercises, count);
+});
+
+GET.apiDoc = createOperationDoc({
+  entityType: "GroupExercise",
+  permission: "Read",
+  hasQuery: true
+});
 
 export const POST: OperationFunction = errorBoundary(async (req, res, next) => {
   const { groupId, exerciseId }: Params<GroupExercise> = req.body;
