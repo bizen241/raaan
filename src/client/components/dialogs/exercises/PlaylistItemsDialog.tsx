@@ -9,7 +9,7 @@ import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { ExerciseContext, PlaylistSummarySelectList } from "../../list/PlaylistSummarySelectList";
+import { ExerciseContext, TogglePlaylistItemList } from "../../list/playlist-summaries/TogglePlaylistItemList";
 import { UserContext } from "../../project/Context";
 import { Button, Card, Column, DialogContent } from "../../ui";
 
@@ -45,9 +45,18 @@ export const PlaylistDialog = createDialog<{
             title,
             exerciseId
           },
-          () => {
+          uploadResponse => {
+            dispatch(
+              actions.cache.add<PlaylistItem>(
+                "PlaylistItem",
+                {
+                  authorId: currentUser.id,
+                  exerciseId
+                },
+                uploadResponse
+              )
+            );
             onReloadPlaylistSummaries();
-            onReloadPlaylistItems();
             onClose();
           }
         )
@@ -61,8 +70,7 @@ export const PlaylistDialog = createDialog<{
             <Button icon={<Add />} label="新規作成" onClick={onToggleEditor} />
             <Column pb={1}>
               <ExerciseContext.Provider value={exerciseId}>
-                <PlaylistSummarySelectList
-                  title="プレイリスト一覧"
+                <TogglePlaylistItemList
                   initialParams={{
                     authorId: currentUser.id
                   }}

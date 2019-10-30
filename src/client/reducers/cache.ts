@@ -3,6 +3,7 @@ import { createEntityTypeToObject, EntityObject, EntityType, mergeEntityTypeToOb
 import { Params } from "../../shared/api/request/params";
 import { EntityStore } from "../../shared/api/response/get";
 import { SearchResponse } from "../../shared/api/response/search";
+import { stringifyParams } from "../api/request/search";
 import { IdMap, mergeSearchResultStore, SearchResultMap, SearchResultStore } from "../api/response/search";
 import { guestUser, guestUserConfig } from "../components/project/Context";
 import { ActionUnion, createAction } from "./action";
@@ -79,12 +80,19 @@ export const cacheReducer: Reducer<CacheState, CacheActions> = (state = initialC
     case CacheActionType.Add: {
       const { type, params, response } = action.payload;
 
+      const query = stringifyParams<EntityObject>(params, true);
+      const result = state.search[type][query] || {
+        ids: {},
+        count: 0,
+        fetchedAt: Date.now()
+      };
+
       return {
         get: state.get,
         search: mergeSearchResultStore<EntityObject>(state.search, type, params, {
-          ids: [Object.keys(response[type])[0]],
+          ids: [Object.keys(response[type])[0], ...(Object.values(result.ids) as string[])],
           entities: {},
-          count: 1
+          count: result.count + 1
         })
       };
     }

@@ -7,7 +7,7 @@ import { Button, Card, Column, Property } from "../ui";
 export const GroupViewer = withEntity<Group, {}>({ entityType: "Group" })(({ entityId: groupId, entity: group }) => {
   return (
     <Column>
-      <Button icon={<Keyboard />} label="クイズ" color="primary" to={`/group/${groupId}/group-exercises`} />
+      <Button icon={<Keyboard />} label="クイズ" color="primary" to={`/groups/${groupId}/group-exercises`} />
       <Card icon={<GroupIcon />} title={group.name}>
         <Property label="説明">{group.description}</Property>
       </Card>
