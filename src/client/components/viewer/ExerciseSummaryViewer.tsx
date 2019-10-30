@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, Link, MenuItem, Typography } from "@material-ui/core";
-import { Delete, Edit, HowToVote, Lock, Public, ReportProblem } from "@material-ui/icons";
+import { Delete, Edit, Group, HowToVote, Lock, Public, ReportProblem } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { useSelector } from "react-redux";
@@ -9,11 +9,11 @@ import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
 import { RootState } from "../../reducers";
+import { DeleteExerciseVoteDialog } from "../dialogs/exercise-votes/DeleteExerciseVoteDialog";
+import { UploadExerciseVoteDialog } from "../dialogs/exercise-votes/UploadExerciseVoteDialog";
 import { DeleteExerciseDialog } from "../dialogs/exercises/DeleteExerciseDialog";
-import { DeleteExerciseVoteDialog } from "../dialogs/exercises/DeleteExerciseVoteDialog";
 import { PublishExerciseDialog } from "../dialogs/exercises/PublishExerciseDialog";
 import { UnpublishExerciseDialog } from "../dialogs/exercises/UnpublishExerciseDialog";
-import { UploadExerciseVoteDialog } from "../dialogs/exercises/UploadExerciseVoteDialog";
 import { ConfirmExerciseReportDialog } from "../dialogs/reports/ConfirmExerciseReportDialog";
 import { UserContext } from "../project/Context";
 import { Column, Menu, Property, Row } from "../ui";
@@ -80,6 +80,10 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
                     非公開にする
                   </MenuItem>
                 )}
+                <MenuItem>
+                  <Group className={classes.leftIcon} />
+                  グループに公開する
+                </MenuItem>
                 <MenuItem onClick={onToggleDeleteExerciseDialog}>
                   <Delete className={classes.leftIcon} />
                   削除する
