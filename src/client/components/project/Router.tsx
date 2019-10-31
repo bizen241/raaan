@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { RootState } from "../../reducers";
 import { AppPage } from "../pages/AppPage";
+import { EditExerciseReportPage } from "../pages/exercise-reports/EditExerciseReportPage";
+import { ExerciseReportsPage } from "../pages/exercise-reports/ExerciseReportsPage";
 import { EditExercisesPage } from "../pages/exercises/EditExercisesPage";
 import { ExercisePage } from "../pages/exercises/ExercisePage";
 import { ExercisesPage } from "../pages/exercises/ExercisesPage";
@@ -22,7 +24,6 @@ import { UserPlaylistBookmarksPage } from "../pages/playlist-bookmarks/UserPlayl
 import { PlaylistPage } from "../pages/playlists/PlaylistPage";
 import { PlaylistsPage } from "../pages/playlists/PlaylistsPage";
 import { UserPlaylistsPage } from "../pages/playlists/UserPlaylistsPage";
-import { EditExerciseReportPage } from "../pages/reports/EditExerciseReportPage";
 import { UserSubmissionsPage } from "../pages/submissions/UserSubmissionsPage";
 import { EditTagPage } from "../pages/tags/EditTagPage";
 import { EditTagsPage } from "../pages/tags/EditTagsPage";
@@ -87,7 +88,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/groups/:id/edit" component={EditGroupPage} />
         <Route exact={true} path="/groups/:id/group-exercises" component={GroupExercisesPage} />
 
-        <Route exact={true} path="/exercise-reports" component={NotFoundPage} />
+        <Route exact={true} path="/exercise-reports" component={ExerciseReportsPage} />
         <Route exact={true} path="/exercise-reports/edit" component={NotFoundPage} />
         <Route exact={true} path="/exercise-reports/:id" component={NotFoundPage} />
         <Route exact={true} path="/exercise-reports/:id/edit" component={EditExerciseReportPage} />
