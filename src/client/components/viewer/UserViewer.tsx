@@ -27,19 +27,19 @@ export const UserViewer = withEntity<User, {}>({ entityType: "User" })(({ entity
 
   return (
     <Column>
-      {isOwn && <Button icon={<History />} label="復習" to="/user/submissions" />}
-      <Button icon={<Keyboard />} label="クイズ" color="primary" to={`/users/${userId}/exercises`} />
-      <Button icon={<PlaylistPlay />} label="プレイリスト" color="primary" to={`/users/${userId}/playlists`} />
+      {isOwn && <Button icon={<History />} color="primary" label="提出履歴" to="/user/submissions" />}
       {!isOwn && !isFollowed && (
         <Button icon={<PersonAdd />} label="フォローする" onClick={onToggleUploadUserFollowDialog} />
       )}
       {!isOwn && isFollowed && (
         <Button icon={<PersonAdd />} label="フォロー中" onClick={onToggleDeleteUserFollowDialog} />
       )}
+      <Button icon={<Keyboard />} label="クイズ" to={`/users/${userId}/exercises`} />
+      <Button icon={<PlaylistPlay />} label="プレイリスト" to={`/users/${userId}/playlists`} />
       <Column pb={1}>
         <UserSummaryViewer entityId={user.summaryId} />
       </Column>
-      {isOwn && <Button icon={<Group />} label="グループ" to={`/users/${userId}/group-members`} />}
+      <Button icon={<Group />} label="グループ" to={`/users/${userId}/group-members`} />
       <UploadUserFollowDialog
         targetId={userId}
         isOpen={isUploadUserFollowDialogOpen}

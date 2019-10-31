@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { RootState } from "../../reducers";
 import { AppPage } from "../pages/AppPage";
+import { CommunityPage } from "../pages/CommunityPage";
 import { EditExerciseReportPage } from "../pages/exercise-reports/EditExerciseReportPage";
 import { ExerciseReportsPage } from "../pages/exercise-reports/ExerciseReportsPage";
 import { EditExercisesPage } from "../pages/exercises/EditExercisesPage";
@@ -24,6 +25,7 @@ import { UserPlaylistBookmarksPage } from "../pages/playlist-bookmarks/UserPlayl
 import { PlaylistPage } from "../pages/playlists/PlaylistPage";
 import { PlaylistsPage } from "../pages/playlists/PlaylistsPage";
 import { UserPlaylistsPage } from "../pages/playlists/UserPlaylistsPage";
+import { ReportsPage } from "../pages/ReportsPage";
 import { UserSubmissionsPage } from "../pages/submissions/UserSubmissionsPage";
 import { EditTagPage } from "../pages/tags/EditTagPage";
 import { EditTagsPage } from "../pages/tags/EditTagsPage";
@@ -51,6 +53,8 @@ export const Router = React.memo(() => {
       <Switch location={location}>
         <Route exact={true} path="/" component={HomePage} />
         <Route exact={true} path="/app" component={AppPage} />
+        <Route exact={true} path="/community" component={CommunityPage} />
+        <Route exact={true} path="/reports" component={ReportsPage} />
 
         <Route exact={true} path="/user/user-config" component={UserConfigPage} />
         <Route exact={true} path="/user/user-accounts" component={UserAccountsPage} />
