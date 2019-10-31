@@ -1,6 +1,6 @@
-import { Bookmarks, Group, Keyboard, PersonAdd, PlaylistPlay } from "@material-ui/icons";
-import * as React from "react";
+import { Group, History, Keyboard, PersonAdd, PlaylistPlay } from "@material-ui/icons";
 import { useContext } from "react";
+import * as React from "react";
 import { User, UserFollow } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
@@ -27,6 +27,7 @@ export const UserViewer = withEntity<User, {}>({ entityType: "User" })(({ entity
 
   return (
     <Column>
+      {isOwn && <Button icon={<History />} label="復習" to="/user/submissions" />}
       <Button icon={<Keyboard />} label="クイズ" color="primary" to={`/users/${userId}/exercises`} />
       <Button icon={<PlaylistPlay />} label="プレイリスト" color="primary" to={`/users/${userId}/playlists`} />
       {!isOwn && !isFollowed && (
@@ -38,7 +39,6 @@ export const UserViewer = withEntity<User, {}>({ entityType: "User" })(({ entity
       <Column pb={1}>
         <UserSummaryViewer entityId={user.summaryId} />
       </Column>
-      <Button icon={<Bookmarks />} label="ブックマーク" to={`/users/${userId}/playlist-bookmarks`} />
       {isOwn && <Button icon={<Group />} label="グループ" to={`/users/${userId}/group-members`} />}
       <UploadUserFollowDialog
         targetId={userId}

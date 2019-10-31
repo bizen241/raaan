@@ -1,4 +1,4 @@
-import { Edit } from "@material-ui/icons";
+import { Bookmarks, Edit } from "@material-ui/icons";
 import { useContext, useMemo } from "react";
 import * as React from "react";
 import { PlaylistSummaryList } from "../../list/PlaylistSummaryList";
@@ -17,6 +17,7 @@ export const UserPlaylistsPage = React.memo<PageProps>(({ match }) => {
   return (
     <Page title={userId === currentUser.id ? "自分のプレイリスト" : "ユーザーのプレイリスト"}>
       <Button icon={<Edit />} label="編集中のプレイリスト" to={`/playlists/edit`} />
+      <Button icon={<Bookmarks />} label="ブックマーク" to={`/users/${userId}/playlist-bookmarks`} />
       <Column pb={1}>
         <PlaylistSummaryList initialParams={initialParams} />
       </Column>

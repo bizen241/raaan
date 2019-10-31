@@ -28,6 +28,7 @@ import { UserAccountsPage } from "../pages/user/UserAccountsPage";
 import { UserConfigPage } from "../pages/user/UserConfigPage";
 import { UserSessionsPage } from "../pages/user/UserSessionsPage";
 import { UserPage } from "../pages/users/UserPage";
+import { UsersPage } from "../pages/users/UsersPage";
 
 export type PageProps = RouteComponentProps<{ id: string; name: string }>;
 
@@ -52,7 +53,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/user/submissions" component={UserSubmissionsPage} />
         <Route exact={true} path="/user/exercise-drafts" component={UserExerciseDraftsPage} />
 
-        <Route exact={true} path="/users" component={NotFoundPage} />
+        <Route exact={true} path="/users" component={UsersPage} />
         <Route exact={true} path="/users/:id" component={UserPage} />
         <Route exact={true} path="/users/:id/edit" component={NotFoundPage} />
         <Route exact={true} path="/users/:id/exercises" component={UserExercisesPage} />
