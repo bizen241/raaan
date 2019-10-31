@@ -24,6 +24,7 @@ import { PlaylistsPage } from "../pages/playlists/PlaylistsPage";
 import { UserPlaylistsPage } from "../pages/playlists/UserPlaylistsPage";
 import { EditExerciseReportPage } from "../pages/reports/EditExerciseReportPage";
 import { UserSubmissionsPage } from "../pages/submissions/UserSubmissionsPage";
+import { EditTagPage } from "../pages/tags/EditTagPage";
 import { EditTagsPage } from "../pages/tags/EditTagsPage";
 import { TagPage } from "../pages/tags/TagPage";
 import { TagsPage } from "../pages/tags/TagsPage";
@@ -78,7 +79,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/tags" component={TagsPage} />
         <Route exact={true} path="/tags/edit" component={EditTagsPage} />
         <Route exact={true} path="/tags/:name" component={TagPage} />
-        <Route exact={true} path="/tags/:name/edit" component={NotFoundPage} />
+        <Route exact={true} path="/tags/:id/edit" component={EditTagPage} />
 
         <Route exact={true} path="/groups" component={GroupsPage} />
         <Route exact={true} path="/groups/edit" component={EditGroupsPage} />
