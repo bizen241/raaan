@@ -3,15 +3,18 @@ import { TypographyProps } from "@material-ui/core/Typography";
 import * as React from "react";
 import { Link } from "react-router-dom";
 
-export const MenuItem = React.memo<{
-  icon: React.ReactElement;
-  label: React.ReactNode;
-  labelColor?: TypographyProps["color"];
-  disabled?: boolean;
-  href?: string;
-  to?: string;
-  onClick?: () => void;
-}>(({ icon, label, labelColor, href, to, ...props }) => {
+export const MenuItem = React.forwardRef<
+  HTMLLIElement,
+  {
+    icon: React.ReactElement;
+    label: React.ReactNode;
+    labelColor?: TypographyProps["color"];
+    disabled?: boolean;
+    href?: string;
+    to?: string;
+    onClick?: () => void;
+  }
+>(({ icon, label, labelColor, href, to, ...props }, ref) => {
   const menuItemClasses = useMenuItemStyles();
 
   const linkProps =
@@ -25,7 +28,7 @@ export const MenuItem = React.memo<{
         };
 
   return (
-    <MuiMenuItem {...props} {...linkProps}>
+    <MuiMenuItem ref={ref} {...props} {...linkProps}>
       {icon}
       <Typography className={icon !== undefined ? menuItemClasses.label : undefined} color={labelColor}>
         {label}
