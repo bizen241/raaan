@@ -17,9 +17,13 @@ export const UploadTagDialog = createDialog<{
     const onUpload = () => {
       dispatch(
         actions.api.upload<Tag>("Tag", bufferId, undefined, uploadResponse => {
-          const tagId = Object.keys(uploadResponse.Tag)[0];
+          const tag = Object.values(uploadResponse.Tag)[0];
 
-          dispatch(replace(`/tags/${tagId}`));
+          if (tag !== undefined) {
+            dispatch(replace(`/tags/${tag.name}`));
+          } else {
+            dispatch(replace(`/tags`));
+          }
         })
       );
     };

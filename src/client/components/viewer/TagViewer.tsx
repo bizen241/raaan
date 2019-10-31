@@ -39,6 +39,7 @@ export const TagViewer = withEntity<Tag>({ entityType: "Tag" })(
             </Menu>
           }
         >
+          <Property label="説明">{tag.description}</Property>
           <Property label="更新日時">{new Date(tag.updatedAt).toLocaleDateString()}</Property>
         </Card>
         <UploadTagFollowDialog
