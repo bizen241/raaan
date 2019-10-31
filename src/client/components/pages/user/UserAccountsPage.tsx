@@ -17,6 +17,7 @@ export const UserAccountsPage = React.memo(() => {
   if (currentUser.permission !== "Guest") {
     return (
       <Page title="アカウント">
+        <Button label="プロフィールを編集" to={`/users/${currentUser.id}/edit`} />
         <Button label="セッション一覧" to="/user/user-sessions" />
         <Button label={<Message id="logout" />} labelColor="error" onClick={onToggleLogoutDialog} />
         <Button label="アカウントを削除" labelColor="error" onClick={onToggleDeleteAccountDialog} />

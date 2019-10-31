@@ -1,5 +1,5 @@
 import { Avatar, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
-import { AccountCircle, Edit, Search, Timeline } from "@material-ui/icons";
+import { AccountCircle, Edit, Group, Label, Person, Search, Timeline } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { UserDiaryGraph } from "../graphs/UserDiaryGraph";
@@ -39,6 +39,9 @@ export const HomePage = React.memo(() => {
           </Card>
         </Column>
       )}
+      <Button icon={<Label />} label="タグ" to="/tags" />
+      <Button icon={<Person />} label="ユーザー" to="/users" />
+      <Button icon={<Group />} label="グループ" to="/groups" />
     </Page>
   );
 });
