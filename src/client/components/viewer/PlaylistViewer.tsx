@@ -36,7 +36,6 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
     const { entities: playlistItems, count, onReload } = useSearch<PlaylistItem>("PlaylistItem", {
       playlistId
     });
-    console.log(playlistItems);
     const sortedPlaylistItems = useMemo(() => sortPlaylistItems(playlistItems, playlist.orderBy), [playlistItems]);
     const onPlay = useCallback(() => {
       requestPlaylistItems(sortedPlaylistItems);
