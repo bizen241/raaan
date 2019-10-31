@@ -1,7 +1,6 @@
-import { Avatar, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
-import { AddAlert, Label } from "@material-ui/icons";
-import * as React from "react";
+import { AddAlert, Edit, Label } from "@material-ui/icons";
 import { useContext } from "react";
+import * as React from "react";
 import { Tag, TagFollow } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
@@ -9,12 +8,10 @@ import { useToggleState } from "../../hooks/useToggleState";
 import { DeleteTagFollowDialog } from "../dialogs/tags/DeleteTagFollowDialog";
 import { UploadTagFollowDialog } from "../dialogs/tags/UploadTagFollowDialog";
 import { UserContext } from "../project/Context";
-import { Button, Column, Property } from "../ui";
-import { useStyles } from "../ui/styles";
+import { Button, Card, Column, Menu, MenuItem, Property } from "../ui";
 
 export const TagViewer = withEntity<Tag>({ entityType: "Tag" })(
   React.memo(({ entityId: tagId, entity: tag }) => {
-    const classes = useStyles();
     const currentUser = useContext(UserContext);
 
     const [isUploadTagFollowDialogOpen, onToggleUploadTagFollowDialog] = useToggleState();
@@ -33,23 +30,17 @@ export const TagViewer = withEntity<Tag>({ entityType: "Tag" })(
         ) : (
           <Button icon={<AddAlert />} label="フォロー中" onClick={onToggleDeleteTagFollowDialog} />
         )}
-        <Column pb={1}>
-          <Card>
-            <CardHeader
-              avatar={
-                <Avatar className={classes.cardAvatar}>
-                  <Label />
-                </Avatar>
-              }
-              title={<Typography>{tag.name}</Typography>}
-            />
-            <CardContent>
-              <Column>
-                <Property label="更新日時">{new Date(tag.updatedAt).toLocaleDateString()}</Property>
-              </Column>
-            </CardContent>
-          </Card>
-        </Column>
+        <Card
+          icon={<Label />}
+          title={tag.name}
+          action={
+            <Menu>
+              <MenuItem icon={<Edit />} label="編集する" to={`/tags/${tagId}/edit`} />
+            </Menu>
+          }
+        >
+          <Property label="更新日時">{new Date(tag.updatedAt).toLocaleDateString()}</Property>
+        </Card>
         <UploadTagFollowDialog
           targetId={tagId}
           isOpen={isUploadTagFollowDialogOpen}

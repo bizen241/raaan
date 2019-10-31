@@ -1,10 +1,18 @@
+import { Edit } from "@material-ui/icons";
 import * as React from "react";
+import { useContext } from "react";
 import { TagSummaryList } from "../../list/tag-summaries/TagSummaryList";
-import { Page } from "../../ui";
+import { UserContext } from "../../project/Context";
+import { Button, Page } from "../../ui";
 
 export const TagsPage = React.memo(() => {
+  const currentUser = useContext(UserContext);
+
+  const isOwner = currentUser.permission === "Owner";
+
   return (
     <Page title="タグを探す">
+      {isOwner && <Button icon={<Edit />} label="編集中のタグ" to={`/tags/edit`} />}
       <TagSummaryList initialParams={{}} />
     </Page>
   );

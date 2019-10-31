@@ -5,9 +5,10 @@ import { Column } from "./Column";
 export const Card = React.memo<{
   icon: React.ReactNode;
   title: React.ReactNode;
+  action?: React.ReactNode;
   padding?: boolean;
   children: React.ReactNode;
-}>(({ icon, title, padding = true, children }) => {
+}>(({ icon, title, action, padding = true, children }) => {
   const cardClasses = useCardStyles();
 
   return (
@@ -16,6 +17,7 @@ export const Card = React.memo<{
         <CardHeader
           avatar={<Avatar className={cardClasses.avatar}>{icon}</Avatar>}
           title={<Typography>{title}</Typography>}
+          action={action}
         />
         {padding ? (
           <CardContent>
