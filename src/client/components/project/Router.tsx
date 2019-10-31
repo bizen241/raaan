@@ -14,6 +14,7 @@ import { UserGroupMembersPage } from "../pages/group-members/UserGroupMembersPag
 import { EditGroupPage } from "../pages/groups/EditGroupPage";
 import { EditGroupsPage } from "../pages/groups/EditGroupsPage";
 import { GroupPage } from "../pages/groups/GroupPage";
+import { GroupsPage } from "../pages/groups/GroupsPage";
 import { HomePage } from "../pages/HomePage";
 import { LoadingPage } from "../pages/LoadingPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
@@ -77,7 +78,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/tags/:name" component={TagPage} />
         <Route exact={true} path="/tags/:name/edit" component={NotFoundPage} />
 
-        <Route exact={true} path="/groups" component={NotFoundPage} />
+        <Route exact={true} path="/groups" component={GroupsPage} />
         <Route exact={true} path="/groups/edit" component={EditGroupsPage} />
         <Route exact={true} path="/groups/:id" component={GroupPage} />
         <Route exact={true} path="/groups/:id/edit" component={EditGroupPage} />
