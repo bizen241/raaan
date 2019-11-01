@@ -1,4 +1,4 @@
-import { Group, History, Keyboard, PersonAdd, PlaylistPlay } from "@material-ui/icons";
+import { Group, History, Keyboard, PersonAdd, PlaylistPlay, Report } from "@material-ui/icons";
 import { useContext } from "react";
 import * as React from "react";
 import { User, UserFollow } from "../../../shared/api/entities";
@@ -24,22 +24,34 @@ export const UserViewer = withEntity<User, {}>({ entityType: "User" })(({ entity
   const isFollowed = follow !== undefined;
 
   const isOwn = userId === currentUser.id;
+  const isOwner = currentUser.permission === "Owner";
 
   return (
     <Column>
-      {isOwn && <Button icon={<History />} color="primary" label="提出履歴" to="/user/submissions" />}
+      {isOwn && <Button color="primary" icon={<History />} label="提出履歴" to="/user/submissions" />}
+      <Button
+        color={isOwn ? "default" : "primary"}
+        icon={<Keyboard />}
+        label="クイズ"
+        to={`/users/${userId}/exercises`}
+      />
+      <Button
+        color={isOwn ? "default" : "primary"}
+        icon={<PlaylistPlay />}
+        label="プレイリスト"
+        to={`/users/${userId}/playlists`}
+      />
       {!isOwn && !isFollowed && (
         <Button icon={<PersonAdd />} label="フォローする" onClick={onToggleUploadUserFollowDialog} />
       )}
       {!isOwn && isFollowed && (
         <Button icon={<PersonAdd />} label="フォロー中" onClick={onToggleDeleteUserFollowDialog} />
       )}
-      <Button icon={<Keyboard />} label="クイズ" to={`/users/${userId}/exercises`} />
-      <Button icon={<PlaylistPlay />} label="プレイリスト" to={`/users/${userId}/playlists`} />
       <Column pb={1}>
         <UserSummaryViewer entityId={user.summaryId} />
       </Column>
       <Button icon={<Group />} label="グループ" to={`/users/${userId}/group-members`} />
+      {isOwner && <Button icon={<Report />} label="報告一覧" to={`/users/${userId}/reports`} />}
       <UploadUserFollowDialog
         targetId={userId}
         isOpen={isUploadUserFollowDialogOpen}

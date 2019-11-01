@@ -7,6 +7,7 @@ import { AppPage } from "../pages/AppPage";
 import { CommunityPage } from "../pages/CommunityPage";
 import { EditExerciseReportPage } from "../pages/exercise-reports/EditExerciseReportPage";
 import { ExerciseReportsPage } from "../pages/exercise-reports/ExerciseReportsPage";
+import { UserExerciseReportssPage } from "../pages/exercise-reports/UserExerciseReportsPage";
 import { EditExercisesPage } from "../pages/exercises/EditExercisesPage";
 import { ExercisePage } from "../pages/exercises/ExercisePage";
 import { ExercisesPage } from "../pages/exercises/ExercisesPage";
@@ -34,6 +35,7 @@ import { TagsPage } from "../pages/tags/TagsPage";
 import { UserAccountsPage } from "../pages/user/UserAccountsPage";
 import { UserConfigPage } from "../pages/user/UserConfigPage";
 import { UserSessionsPage } from "../pages/user/UserSessionsPage";
+import { UserReportsPage } from "../pages/UserReportsPage";
 import { EditUserPage } from "../pages/users/EditUserPage";
 import { UserPage } from "../pages/users/UserPage";
 import { UsersPage } from "../pages/users/UsersPage";
@@ -72,7 +74,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/users/:id/group-members" component={UserGroupMembersPage} />
 
         <Route exact={true} path="/users/:id/reports" component={UserReportsPage} />
-        <Route exact={true} path="/users/:id/exercise-reports" component={UserExerciseReportsPage} />
+        <Route exact={true} path="/users/:id/exercise-reports" component={UserExerciseReportssPage} />
 
         <Route exact={true} path="/exercises" component={ExercisesPage} />
         <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
