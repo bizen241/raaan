@@ -6,6 +6,7 @@ import { RootState } from "../../reducers";
 import { AppPage } from "../pages/AppPage";
 import { CommunityPage } from "../pages/CommunityPage";
 import { EditExerciseReportPage } from "../pages/exercise-reports/EditExerciseReportPage";
+import { ExerciseReportPage } from "../pages/exercise-reports/ExerciseReportPage";
 import { ExerciseReportsPage } from "../pages/exercise-reports/ExerciseReportsPage";
 import { UserExerciseReportssPage } from "../pages/exercise-reports/UserExerciseReportsPage";
 import { EditExercisesPage } from "../pages/exercises/EditExercisesPage";
@@ -99,7 +100,7 @@ export const Router = React.memo(() => {
 
         <Route exact={true} path="/exercise-reports" component={ExerciseReportsPage} />
         <Route exact={true} path="/exercise-reports/edit" component={EditExerciseReportPage} />
-        <Route exact={true} path="/exercise-reports/:id" component={NotFoundPage} />
+        <Route exact={true} path="/exercise-reports/:id" component={ExerciseReportPage} />
         <Route exact={true} path="/exercise-reports/:id/edit" component={EditExerciseReportPage} />
 
         <Route component={NotFoundPage} />
