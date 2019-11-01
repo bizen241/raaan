@@ -15,7 +15,7 @@ import { DeleteExerciseDialog } from "../dialogs/exercises/DeleteExerciseDialog"
 import { GroupExercisesDialog } from "../dialogs/exercises/GroupExercisesDialog";
 import { PublishExerciseDialog } from "../dialogs/exercises/PublishExerciseDialog";
 import { UnpublishExerciseDialog } from "../dialogs/exercises/UnpublishExerciseDialog";
-import { ConfirmExerciseReportDialog } from "../dialogs/reports/ConfirmExerciseReportDialog";
+import { ConfirmExerciseReportDialog } from "../dialogs/exercise-reports/ConfirmExerciseReportDialog";
 import { UserContext } from "../project/Context";
 import { Column, Menu, Property, Row } from "../ui";
 import { useStyles } from "../ui/styles";

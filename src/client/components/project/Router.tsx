@@ -71,6 +71,9 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/users/:id/playlist-bookmarks" component={UserPlaylistBookmarksPage} />
         <Route exact={true} path="/users/:id/group-members" component={UserGroupMembersPage} />
 
+        <Route exact={true} path="/users/:id/reports" component={UserReportsPage} />
+        <Route exact={true} path="/users/:id/exercise-reports" component={UserExerciseReportsPage} />
+
         <Route exact={true} path="/exercises" component={ExercisesPage} />
         <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
         <Route exact={true} path="/exercises/:id" component={ExercisePage} />
@@ -93,7 +96,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/groups/:id/group-exercises" component={GroupExercisesPage} />
 
         <Route exact={true} path="/exercise-reports" component={ExerciseReportsPage} />
-        <Route exact={true} path="/exercise-reports/edit" component={NotFoundPage} />
+        <Route exact={true} path="/exercise-reports/edit" component={EditExerciseReportPage} />
         <Route exact={true} path="/exercise-reports/:id" component={NotFoundPage} />
         <Route exact={true} path="/exercise-reports/:id/edit" component={EditExerciseReportPage} />
 

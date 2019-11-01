@@ -6,7 +6,7 @@ import { ExerciseReport } from "../../../shared/api/entities";
 import { ReportReason } from "../../../shared/api/entities/BaseReportObject";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
-import { UploadExerciseReportDialog } from "../dialogs/reports/UploadExerciseReportDialog";
+import { UploadExerciseReportDialog } from "../dialogs/exercise-reports/UploadExerciseReportDialog";
 import { Button, Column, Select } from "../ui";
 
 const reasonToLabel: { [P in ReportReason]: string } = {
