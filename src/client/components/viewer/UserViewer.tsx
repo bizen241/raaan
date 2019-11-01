@@ -1,4 +1,5 @@
-import { Group, History, Keyboard, PersonAdd, PlaylistPlay, Report } from "@material-ui/icons";
+import { Divider } from "@material-ui/core";
+import { ContactMail, History, Keyboard, PersonAdd, PlaylistPlay } from "@material-ui/icons";
 import { useContext } from "react";
 import * as React from "react";
 import { User, UserFollow } from "../../../shared/api/entities";
@@ -24,11 +25,17 @@ export const UserViewer = withEntity<User, {}>({ entityType: "User" })(({ entity
   const isFollowed = follow !== undefined;
 
   const isOwn = userId === currentUser.id;
-  const isOwner = currentUser.permission === "Owner";
 
   return (
     <Column>
-      {isOwn && <Button color="primary" icon={<History />} label="提出履歴" to="/user/submissions" />}
+      {isOwn && (
+        <>
+          <Button color="primary" icon={<History />} label="提出履歴" to="/user/submissions" />
+          <Column pb={1}>
+            <Divider />
+          </Column>
+        </>
+      )}
       <Button
         color={isOwn ? "default" : "primary"}
         icon={<Keyboard />}
@@ -41,6 +48,10 @@ export const UserViewer = withEntity<User, {}>({ entityType: "User" })(({ entity
         label="プレイリスト"
         to={`/users/${userId}/playlists`}
       />
+      <Column pb={1}>
+        <Divider />
+      </Column>
+      <Button icon={<ContactMail />} label="コミュニティ" to={`/users/${userId}/community`} />
       {!isOwn && !isFollowed && (
         <Button icon={<PersonAdd />} label="フォローする" onClick={onToggleUploadUserFollowDialog} />
       )}
@@ -48,10 +59,11 @@ export const UserViewer = withEntity<User, {}>({ entityType: "User" })(({ entity
         <Button icon={<PersonAdd />} label="フォロー中" onClick={onToggleDeleteUserFollowDialog} />
       )}
       <Column pb={1}>
+        <Divider />
+      </Column>
+      <Column pb={1}>
         <UserSummaryViewer entityId={user.summaryId} />
       </Column>
-      <Button icon={<Group />} label="グループ" to={`/users/${userId}/group-members`} />
-      {isOwner && <Button icon={<Report />} label="報告一覧" to={`/users/${userId}/reports`} />}
       <UploadUserFollowDialog
         targetId={userId}
         isOpen={isUploadUserFollowDialogOpen}
