@@ -1,5 +1,5 @@
 import { CssBaseline } from "@material-ui/core";
-import blueGrey from "@material-ui/core/colors/blueGrey";
+import grey from "@material-ui/core/colors/grey";
 import teal from "@material-ui/core/colors/teal";
 import { createMuiTheme, makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
 import * as React from "react";
@@ -37,7 +37,11 @@ export const Style = React.memo<{ children: React.ReactNode }>(({ children }) =>
         paper: isDarkMode ? "#1e1e1e" : "#fff"
       },
       primary: teal,
-      secondary: blueGrey
+      secondary: isDarkMode
+        ? grey
+        : {
+            main: "#e0e0e0"
+          }
     }
   });
 

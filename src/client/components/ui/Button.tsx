@@ -14,7 +14,7 @@ export const Button = React.memo<{
   href?: string;
   to?: string;
   onClick?: () => void;
-}>(({ icon, label, labelColor, href, to, ...props }) => {
+}>(({ icon, label, labelColor, href, to, color = "secondary", ...props }) => {
   const buttonClasses = useButtonStyles();
 
   const linkProps =
@@ -29,7 +29,7 @@ export const Button = React.memo<{
 
   return (
     <Column pb={1}>
-      <MuiButton className={buttonClasses.button} variant="contained" {...props} {...linkProps}>
+      <MuiButton className={buttonClasses.button} variant="contained" color={color} {...props} {...linkProps}>
         {icon}
         <Typography className={icon !== undefined ? buttonClasses.label : undefined} color={labelColor}>
           {label}
