@@ -16,14 +16,14 @@ export class ExerciseEntity extends BaseExerciseClass {
   authorId!: string;
 
   @OneToOne(() => ExerciseSummaryEntity, exerciseSummary => exerciseSummary.exercise, {
-    cascade: ["insert"]
+    cascade: true
   })
   summary?: ExerciseSummaryEntity;
   @RelationId((exercise: ExerciseEntity) => exercise.summary)
   summaryId!: string;
 
   @OneToOne(() => ExerciseDraftEntity, exerciseDraft => exerciseDraft.exercise, {
-    cascade: ["insert"]
+    cascade: true
   })
   draft?: ExerciseDraftEntity;
   @RelationId((exercise: ExerciseEntity) => exercise.draft)

@@ -1,6 +1,5 @@
 import { Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
-import { ExerciseEntity } from "./ExerciseEntity";
 import { RevisionEntity } from "./RevisionEntity";
 
 @Entity("revision_summaries")
@@ -11,7 +10,7 @@ export class RevisionSummaryEntity extends BaseEntityClass {
     onDelete: "CASCADE"
   })
   @JoinColumn()
-  revision?: ExerciseEntity;
+  revision?: RevisionEntity;
   @RelationId((revisionSummary: RevisionSummaryEntity) => revisionSummary.revision)
   revisionId!: string;
 }
