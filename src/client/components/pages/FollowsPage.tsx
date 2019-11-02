@@ -9,7 +9,7 @@ export const FollowsPage = React.memo<PageProps>(props => {
   return (
     <Page title="フォロー">
       <Button icon={<Label />} label="フォロー中のタグ" to={`/users/${userId}/tag-follows`} />
-      <Button icon={<Person />} label="フォロー中のユーザー" to={`/users/${userId}/exercise-follows`} />
+      <Button icon={<Person />} label="フォロー中のユーザー" to={`/users/${userId}/user-follows`} />
       <Button icon={<Hearing />} label="フォロワー" to={`/users/${userId}/followers`} />
     </Page>
   );

@@ -17,15 +17,17 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
   }
 
   const query = await getManager()
-    .createQueryBuilder(UserFollowEntity, "exerciseVote")
+    .createQueryBuilder(UserFollowEntity, "userFollow")
+    .leftJoinAndSelect("userFollow.follower", "follower")
+    .leftJoinAndSelect("userFollow.target", "target")
     .take(searchLimit)
     .skip(searchOffset);
 
   if (followerId !== undefined) {
-    query.andWhere("exerciseVote.followerId = :followerId", { followerId });
+    query.andWhere("userFollow.followerId = :followerId", { followerId });
   }
   if (targetId !== undefined) {
-    query.andWhere("exerciseVote.targetId = :targetId", { targetId });
+    query.andWhere("userFollow.targetId = :targetId", { targetId });
   }
 
   const [userFollows, count] = await query.getManyAndCount();
