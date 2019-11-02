@@ -30,6 +30,7 @@ import { PlaylistsPage } from "../pages/playlists/PlaylistsPage";
 import { UserPlaylistsPage } from "../pages/playlists/UserPlaylistsPage";
 import { ReportsPage } from "../pages/ReportsPage";
 import { ExerciseRevisionsPage } from "../pages/revisions/ExerciseRevisionsPage";
+import { RevisionPage } from "../pages/revisions/RevisionPage";
 import { UserSubmissionsPage } from "../pages/submissions/UserSubmissionsPage";
 import { TagFollowersPage } from "../pages/tag-follows/TagFollowersPage";
 import { TagFollowsPage } from "../pages/tag-follows/TagFollowsPage";
@@ -97,7 +98,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/exercises/:id/edit" component={EditExercisePage} />
         <Route exact={true} path="/exercises/:id/revisions" component={ExerciseRevisionsPage} />
 
-        <Route exact={true} path="/revisions/:id" component={NotFoundPage} />
+        <Route exact={true} path="/revisions/:id" component={RevisionPage} />
 
         <Route exact={true} path="/playlists" component={PlaylistsPage} />
         <Route exact={true} path="/playlists/edit" component={EditUserPage} />
