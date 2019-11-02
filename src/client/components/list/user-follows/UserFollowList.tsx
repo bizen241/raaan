@@ -8,13 +8,16 @@ import { Column } from "../../ui";
 
 export const UserFollowList = createEntityList<UserFollow>({ entityType: "UserFollow" })(
   React.memo(({ entity: userFollow }) => {
-    const { entity: userSummary } = useEntity<UserSummary>("UserSummary", userFollow.userSummaryId);
+    const { entity: userSummary } = useEntity<UserSummary>("UserSummary", userFollow.targetSummaryId);
+    if (userSummary === undefined) {
+      return null;
+    }
 
     return (
       <TableRow>
         <TableCell>
           <Column>
-            <Link color="textPrimary" underline="always" component={RouterLink} to={`/users/${userFollow.userId}`}>
+            <Link color="textPrimary" underline="always" component={RouterLink} to={`/users/${userSummary.userId}`}>
               <Typography>{userSummary && userSummary.name}</Typography>
             </Link>
           </Column>
