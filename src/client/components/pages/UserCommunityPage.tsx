@@ -1,4 +1,4 @@
-import { Group, Report, ThumbsUpDown } from "@material-ui/icons";
+import { Group, Notifications, Report, ThumbsUpDown } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { UserContext } from "../project/Context";
@@ -16,6 +16,7 @@ export const UserCommunityPage = React.memo<PageProps>(props => {
   return (
     <Page title="コミュニティ">
       <Button color="primary" icon={<Group />} label="グループ" to={`/users/${userId}/group-members`} />
+      <Button icon={<Notifications />} label="フォロー" to={`/users/${userId}/follows`} />
       {(isOwn || isOwner) && <Button icon={<Report />} label="報告履歴" to={`/users/${userId}/reports`} />}
       <Button icon={<ThumbsUpDown />} label="評価履歴" to={`/users/${userId}/exercise-votes`} />
     </Page>
