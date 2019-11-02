@@ -53,7 +53,7 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
   }
 
   const exercise = await manager.findOne(ExerciseEntity, exerciseDraft.exerciseId, {
-    relations: ["author", "summary", "summary.tags", "draft"]
+    relations: ["author", "summary", "summary.tags", "summary.tags.summary", "draft"]
   });
   if (exercise === undefined) {
     return next(createError(404));
@@ -74,10 +74,10 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
     exercise.draft.tags = params.tags;
   }
   if (params.questions !== undefined) {
-    exercise.questions = params.questions;
+    exercise.draft.questions = params.questions;
   }
 
-  if (params.isMerged) {
+  if (params.isMerged !== false) {
     if (!exercise.isDraft) {
       const revisions = await manager.find(RevisionEntity, {
         where: {
@@ -122,7 +122,7 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
 
   await manager.save(exercise);
 
-  responseFindResult(req, res, exercise);
+  responseFindResult(req, res, exercise, exercise.draft);
 });
 
 PATCH.apiDoc = createOperationDoc({
