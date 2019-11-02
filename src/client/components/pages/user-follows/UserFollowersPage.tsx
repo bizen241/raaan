@@ -1,5 +1,5 @@
 import * as React from "react";
-import { UserFollowList } from "../../list/user-follows/UserFollowList";
+import { UserFollowerList } from "../../list/user-follows/UserFollowerList";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui/Page";
 
@@ -8,7 +8,7 @@ export const UserFollowersPage = React.memo<PageProps>(({ match }) => {
 
   return (
     <Page title="フォロワー">
-      <UserFollowList
+      <UserFollowerList
         initialParams={{
           targetId: userId
         }}
