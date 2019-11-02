@@ -1,6 +1,6 @@
 import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
+import { FindConditions, getManager } from "typeorm";
 import { UserFollow } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
@@ -8,29 +8,27 @@ import { parseQuery } from "../../api/request/search/parse";
 import { responseFindResult, responseSearchResult } from "../../api/response";
 import { UserEntity, UserFollowEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
+export const GET: OperationFunction = errorBoundary(async (req, res) => {
   const { followerId, targetId, searchLimit, searchOffset } = parseQuery<UserFollow>("UserFollow", req.query);
 
-  const isFollower = followerId === currentUser.id;
-  if (!isFollower) {
-    return next(createError(403));
-  }
-
-  const query = await getManager()
-    .createQueryBuilder(UserFollowEntity, "userFollow")
-    .leftJoinAndSelect("userFollow.follower", "follower")
-    .leftJoinAndSelect("userFollow.target", "target")
-    .take(searchLimit)
-    .skip(searchOffset);
-
+  const where: FindConditions<UserFollowEntity> = {};
   if (followerId !== undefined) {
-    query.andWhere("userFollow.followerId = :followerId", { followerId });
+    where.follower = {
+      id: followerId
+    };
   }
   if (targetId !== undefined) {
-    query.andWhere("userFollow.targetId = :targetId", { targetId });
+    where.target = {
+      id: targetId
+    };
   }
 
-  const [userFollows, count] = await query.getManyAndCount();
+  const [userFollows, count] = await getManager().findAndCount(UserFollowEntity, {
+    where,
+    relations: ["follower", "follower.summary", "target", "target.summary"],
+    take: searchLimit,
+    skip: searchOffset
+  });
 
   responseSearchResult(req, res, userFollows, count);
 });

@@ -475,18 +475,21 @@ const normalizeTag: Normalizer<TagEntity> = (_, store, entity) => {
   };
 };
 
-const normalizeTagFollow: Normalizer<TagFollowEntity> = (_, store, entity) => {
-  const { id, target, followerId, checkedAt } = entity;
-  if (target === undefined) {
+const normalizeTagFollow: Normalizer<TagFollowEntity> = (context, store, entity) => {
+  const { id, follower, target, checkedAt } = entity;
+  if (follower === undefined || target === undefined) {
     return;
   }
 
   store.TagFollow[id] = {
     ...base(entity),
+    followerSummaryId: follower.summaryId,
     tagSummaryId: target.summaryId,
-    followerId,
     checkedAt: checkedAt.getTime()
   };
+
+  normalizeEntity(context, store, follower.summary);
+  normalizeEntity(context, store, target.summary);
 };
 
 const normalizeTagSummary: Normalizer<TagSummaryEntity> = (_, store, entity) => {
@@ -561,18 +564,26 @@ const normalizeUserDiary: Normalizer<UserDiaryEntity> = (_, store, entity) => {
   };
 };
 
-const normalizeUserFollow: Normalizer<UserFollowEntity> = (_, store, entity) => {
-  const { id, target, followerId, checkedAt } = entity;
-  if (target === undefined) {
+const normalizeUserFollow: Normalizer<UserFollowEntity> = (context, store, entity) => {
+  const { id, follower, target, checkedAt } = entity;
+  if (follower === undefined || target === undefined) {
     return;
   }
 
   store.UserFollow[id] = {
     ...base(entity),
-    userSummaryId: target.summaryId,
-    followerId,
+    followerSummaryId: follower.summaryId,
+    targetSummaryId: target.summaryId,
     checkedAt: checkedAt.getTime()
   };
+
+  if (follower.summary !== undefined && target.summary !== undefined) {
+    follower.summary.user = follower;
+    target.summary.user = target;
+
+    normalizeEntity(context, store, follower.summary);
+    normalizeEntity(context, store, target.summary);
+  }
 };
 
 const normalizeUserObjection: Normalizer<UserObjectionEntity> = (_, store, entity) => {
