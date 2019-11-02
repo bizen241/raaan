@@ -1,4 +1,4 @@
-import { AddAlert, Edit, Label } from "@material-ui/icons";
+import { AddAlert, Edit, Label, Person } from "@material-ui/icons";
 import { useContext } from "react";
 import * as React from "react";
 import { Tag, TagFollow } from "../../../shared/api/entities";
@@ -23,8 +23,11 @@ export const TagViewer = withEntity<Tag>({ entityType: "Tag" })(
     const follow = follows[0];
     const isFollowed = follow !== undefined;
 
+    const isOwner = currentUser.permission === "Owner";
+
     return (
       <Column>
+        <Button icon={<Person />} label="フォロワー" to={`/tags/${tagId}/followers`} />
         {!isFollowed ? (
           <Button icon={<AddAlert />} label="フォローする" onClick={onToggleUploadTagFollowDialog} />
         ) : (
@@ -33,11 +36,7 @@ export const TagViewer = withEntity<Tag>({ entityType: "Tag" })(
         <Card
           icon={<Label />}
           title={tag.name}
-          action={
-            <Menu>
-              <MenuItem icon={<Edit />} label="編集する" to={`/tags/${tagId}/edit`} />
-            </Menu>
-          }
+          action={<Menu>{isOwner && <MenuItem icon={<Edit />} label="編集する" to={`/tags/${tagId}/edit`} />}</Menu>}
         >
           <Property label="説明">{tag.description}</Property>
           <Property label="更新日時">{new Date(tag.updatedAt).toLocaleDateString()}</Property>

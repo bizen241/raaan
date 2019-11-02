@@ -484,7 +484,7 @@ const normalizeTagFollow: Normalizer<TagFollowEntity> = (context, store, entity)
   store.TagFollow[id] = {
     ...base(entity),
     followerSummaryId: follower.summaryId,
-    tagSummaryId: target.summaryId,
+    targetSummaryId: target.summaryId,
     checkedAt: checkedAt.getTime()
   };
 
