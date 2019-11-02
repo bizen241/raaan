@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, Link, MenuItem, Typography } from "@material-ui/core";
-import { Delete, Edit, Group, HowToVote, Lock, Public, ReportProblem } from "@material-ui/icons";
+import { Delete, Edit, Group, History, HowToVote, Lock, Public, ReportProblem } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { useSelector } from "react-redux";
@@ -70,6 +70,10 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
                 <MenuItem component={RouterLink} to={`/exercises/${exerciseId}/edit`}>
                   <Edit className={classes.leftIcon} />
                   編集する
+                </MenuItem>
+                <MenuItem component={RouterLink} to={`/exercises/${exerciseId}/revisions`}>
+                  <History className={classes.leftIcon} />
+                  編集履歴
                 </MenuItem>
                 {exerciseSummary.isPrivate ? (
                   <MenuItem onClick={onTogglePublishExerciseDialog}>
