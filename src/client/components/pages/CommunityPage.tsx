@@ -1,4 +1,4 @@
-import { Group, Person, Report } from "@material-ui/icons";
+import { Group, Person, Report, SmsFailed } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { UserContext } from "../project/Context";
@@ -11,7 +11,8 @@ export const CommunityPage = React.memo(() => {
 
   return (
     <Page title="コミュニティ">
-      {isOwner && <Button color="primary" icon={<Report />} label="報告一覧" to="/reports" />}
+      {isOwner && <Button color="primary" icon={<Report />} label="報告一覧" to="/community/reports" />}
+      {isOwner && <Button color="primary" icon={<SmsFailed />} label="異議一覧" to="/community/reports" />}
       <Button icon={<Person />} label="ユーザー" to="/users" />
       <Button icon={<Group />} label="グループ" to="/groups" />
     </Page>

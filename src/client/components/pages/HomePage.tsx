@@ -1,4 +1,4 @@
-import { AccountCircle, ContactMail, Keyboard, Label, PlaylistPlay, Timeline } from "@material-ui/icons";
+import { AccountCircle, ContactMail, Keyboard, LocalOffer, PlaylistPlay, Timeline } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { UserDiaryGraph } from "../graphs/UserDiaryGraph";
@@ -19,7 +19,7 @@ export const HomePage = React.memo(() => {
       )}
       <Button icon={<Keyboard />} label="クイズ" to="/exercises" />
       <Button icon={<PlaylistPlay />} label="プレイリスト" to="/playlists" />
-      <Button icon={<Label />} label="タグ" to="/tags" />
+      <Button icon={<LocalOffer />} label="タグ" to="/tags" />
       <Button icon={<ContactMail />} label="コミュニティ" to="/community" />
       <Card icon={<Timeline />} title="活動記録">
         <UserDiaryGraph entityId={currentUser.id} />
