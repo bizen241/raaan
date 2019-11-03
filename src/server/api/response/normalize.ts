@@ -439,14 +439,12 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context
 };
 
 const normalizeSynonym: Normalizer<SynonymEntity> = (_, store, entity) => {
-  const { id, creatorId, name, target, state } = entity;
+  const { id, name, target } = entity;
 
   store.Synonym[id] = {
     ...base(entity),
-    creatorId,
     name,
-    target,
-    state
+    target
   };
 };
 
