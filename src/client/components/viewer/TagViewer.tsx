@@ -1,6 +1,6 @@
-import { AddAlert, Edit, Label, Person } from "@material-ui/icons";
-import { useContext } from "react";
+import { AddAlert, Dns, Edit, LocalOffer, Person } from "@material-ui/icons";
 import * as React from "react";
+import { useContext } from "react";
 import { Tag, TagFollow } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
@@ -34,9 +34,14 @@ export const TagViewer = withEntity<Tag>({ entityType: "Tag" })(
           <Button icon={<AddAlert />} label="フォロー中" onClick={onToggleDeleteTagFollowDialog} />
         )}
         <Card
-          icon={<Label />}
+          icon={<LocalOffer />}
           title={tag.name}
-          action={<Menu>{isOwner && <MenuItem icon={<Edit />} label="編集する" to={`/tags/${tagId}/edit`} />}</Menu>}
+          action={
+            <Menu>
+              {isOwner && <MenuItem icon={<Edit />} label="編集する" to={`/tags/${tagId}/edit`} />}
+              <MenuItem icon={<Dns />} label="タグの別名" to={`/tags/${tag.name}/synonyms`} />
+            </Menu>
+          }
         >
           <Property label="説明">{tag.description}</Property>
           <Property label="更新日時">{new Date(tag.updatedAt).toLocaleDateString()}</Property>
