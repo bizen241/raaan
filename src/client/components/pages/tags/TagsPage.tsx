@@ -1,4 +1,4 @@
-import { Edit } from "@material-ui/icons";
+import { Dns, Edit } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { TagSummaryList } from "../../list/tag-summaries/TagSummaryList";
@@ -13,6 +13,7 @@ export const TagsPage = React.memo(() => {
   return (
     <Page title="タグを探す">
       {isOwner && <Button icon={<Edit />} label="編集中のタグ" to={`/tags/edit`} />}
+      <Button icon={<Dns />} label="タグの別名" to={`/synonyms`} />
       <TagSummaryList initialParams={{}} />
     </Page>
   );
