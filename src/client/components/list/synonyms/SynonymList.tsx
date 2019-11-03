@@ -12,9 +12,7 @@ export const SynonymList = createEntityList<Synonym>({ entityType: "Synonym" })(
         <TableCell>
           <Column>
             <Link color="textPrimary" component={RouterLink} to={`/synonyms/${synonym.id}`}>
-              <Typography>
-                {synonym.name} -> {synonym.target}
-              </Typography>
+              <Typography>{synonym.name}</Typography>
             </Link>
           </Column>
         </TableCell>

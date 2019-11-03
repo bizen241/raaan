@@ -120,9 +120,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/tags/:id/followers" component={TagFollowersPage} />
 
         <Route exact={true} path="/synonyms" component={NotFoundPage} />
-        <Route exact={true} path="/synonyms/edit" component={NotFoundPage} />
         <Route exact={true} path="/synonyms/:id" component={NotFoundPage} />
-        <Route exact={true} path="/synonyms/:id/edit" component={NotFoundPage} />
 
         <Route exact={true} path="/groups" component={GroupsPage} />
         <Route exact={true} path="/groups/edit" component={EditGroupsPage} />
