@@ -32,6 +32,7 @@ import { ReportsPage } from "../pages/ReportsPage";
 import { ExerciseRevisionsPage } from "../pages/revisions/ExerciseRevisionsPage";
 import { RevisionPage } from "../pages/revisions/RevisionPage";
 import { UserSubmissionsPage } from "../pages/submissions/UserSubmissionsPage";
+import { SynonymPage } from "../pages/synonyms/SynonymPage";
 import { SynonymsPage } from "../pages/synonyms/SynonymsPage";
 import { TagSynonymsPage } from "../pages/synonyms/TagSynonymsPage";
 import { TagFollowersPage } from "../pages/tag-follows/TagFollowersPage";
@@ -121,7 +122,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/tags/:id/followers" component={TagFollowersPage} />
 
         <Route exact={true} path="/synonyms" component={SynonymsPage} />
-        <Route exact={true} path="/synonyms/:id" component={NotFoundPage} />
+        <Route exact={true} path="/synonyms/:id" component={SynonymPage} />
 
         <Route exact={true} path="/groups" component={GroupsPage} />
         <Route exact={true} path="/groups/edit" component={EditGroupsPage} />
