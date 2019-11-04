@@ -181,7 +181,7 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (_, store, e
     return;
   }
 
-  const { author, authorId, lang, title, description, isDraft, isPrivate } = exercise;
+  const { author, authorId, lang, title, description, isDraft, isPrivate, isLocked } = exercise;
   if (author === undefined) {
     return;
   }
@@ -199,7 +199,8 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (_, store, e
     submitCount,
     isDraft,
     isEditing: !exercise.draft.isMerged,
-    isPrivate
+    isPrivate,
+    isLocked
   };
 };
 

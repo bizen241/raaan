@@ -1,10 +1,10 @@
-import { Card, CardContent, CardHeader, Link, MenuItem, Typography } from "@material-ui/core";
-import { Delete, Edit, Group, History, HowToVote, Lock, Public, ReportProblem } from "@material-ui/icons";
+import { Card, CardContent, CardHeader, Link, Typography } from "@material-ui/core";
+import { Delete, Edit, Group, History, HowToVote, Lock, Public, ReportProblem, SmsFailed } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
-import { ExerciseReport, ExerciseSummary, ExerciseVote } from "../../../shared/api/entities";
+import { ExerciseObjection, ExerciseReport, ExerciseSummary, ExerciseVote } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
@@ -17,12 +17,10 @@ import { GroupExercisesDialog } from "../dialogs/exercises/GroupExercisesDialog"
 import { PublishExerciseDialog } from "../dialogs/exercises/PublishExerciseDialog";
 import { UnpublishExerciseDialog } from "../dialogs/exercises/UnpublishExerciseDialog";
 import { UserContext } from "../project/Context";
-import { Column, Menu, Property, Row } from "../ui";
-import { useStyles } from "../ui/styles";
+import { Column, Menu, MenuItem, Property, Row } from "../ui";
 
 export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "ExerciseSummary" })(
   React.memo(({ entity: exerciseSummary }) => {
-    const classes = useStyles();
     const currentUser = useContext(UserContext);
 
     const { exerciseId } = exerciseSummary;
@@ -69,63 +67,35 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
           action={
             isAuthor ? (
               <Menu>
-                <MenuItem component={RouterLink} to={`/exercises/${exerciseId}/edit`}>
-                  <Edit className={classes.leftIcon} />
-                  編集する
-                </MenuItem>
-                <MenuItem component={RouterLink} to={`/exercises/${exerciseId}/revisions`}>
-                  <History className={classes.leftIcon} />
-                  編集履歴
-                </MenuItem>
+                <MenuItem icon={<Edit />} label="編集する" to={`/exercises/${exerciseId}/edit`} />
+                <MenuItem icon={<History />} label="編集履歴" to={`/exercises/${exerciseId}/revisions`} />
                 {exerciseSummary.isPrivate ? (
-                  <MenuItem onClick={onTogglePublishExerciseDialog}>
-                    <Public className={classes.leftIcon} />
-                    公開する
-                  </MenuItem>
+                  <MenuItem icon={<Public />} label="公開する" onClick={onTogglePublishExerciseDialog} />
                 ) : (
-                  <MenuItem onClick={onToggleUnpublishExerciseDialog}>
-                    <Lock className={classes.leftIcon} />
-                    非公開にする
-                  </MenuItem>
+                  <MenuItem icon={<Lock />} label="非公開にする" onClick={onToggleUnpublishExerciseDialog} />
                 )}
-                <MenuItem onClick={onToggleGroupExercisesDialog}>
-                  <Group className={classes.leftIcon} />
-                  グループに公開する
-                </MenuItem>
-                <MenuItem onClick={onToggleDeleteExerciseDialog}>
-                  <Delete className={classes.leftIcon} />
-                  削除する
-                </MenuItem>
+                <MenuItem icon={<Group />} label="グループに公開する" onClick={onToggleGroupExercisesDialog} />
+                {exerciseSummary.isLocked && <ObjectionMenuItem objectorId={currentUser.id} targetId={exerciseId} />}
+                <MenuItem icon={<Delete />} label="削除する" onClick={onToggleDeleteExerciseDialog} />
               </Menu>
             ) : (
               <Menu>
                 {!isVoted ? (
-                  <MenuItem onClick={onToggleUploadVoteDialog}>
-                    <HowToVote className={classes.leftIcon} />
-                    投票する
-                  </MenuItem>
+                  <MenuItem icon={<HowToVote />} label="投票する" onClick={onToggleUploadVoteDialog} />
                 ) : (
-                  <MenuItem onClick={onToggleDeleteVoteDialog}>
-                    <HowToVote className={classes.leftIcon} />
-                    投票を取り消す
-                  </MenuItem>
+                  <MenuItem icon={<HowToVote />} label="投票を取り消す" onClick={onToggleDeleteVoteDialog} />
                 )}
                 {!isReported ? (
-                  <MenuItem onClick={onToggleConfirmReportDialog}>
-                    <ReportProblem className={classes.leftIcon} />
-                    通報する
-                  </MenuItem>
+                  <MenuItem icon={<ReportProblem />} label="通報する" onClick={onToggleConfirmReportDialog} />
                 ) : (
-                  <MenuItem component={RouterLink} to={`/exercise-reports/${reportId}/edit`}>
-                    <ReportProblem className={classes.leftIcon} />
-                    通報を編集する
-                  </MenuItem>
+                  <MenuItem icon={<ReportProblem />} label="通報を編集する" to={`/exercise-reports/${reportId}/edit`} />
                 )}
                 {isOwner && (
-                  <MenuItem component={RouterLink} to={`/exercises/${exerciseId}/exercise-reports`}>
-                    <ReportProblem className={classes.leftIcon} />
-                    通報の一覧
-                  </MenuItem>
+                  <MenuItem
+                    icon={<ReportProblem />}
+                    label="通報の一覧"
+                    to={`/exercises/${exerciseId}/exercise-reports`}
+                  />
                 )}
               </Menu>
             )
@@ -202,3 +172,32 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
     );
   })
 );
+
+const ObjectionMenuItem = React.memo<{
+  objectorId: string;
+  targetId: string;
+}>(({ objectorId, targetId }) => {
+  const { entities: objections } = useSearch<ExerciseObjection>("ExerciseObjection", {
+    objectorId,
+    targetId
+  });
+  const objectionBuffers = useSelector((state: RootState) => state.buffers.ExerciseObjection);
+
+  const objection = objections[0];
+  const objectionId =
+    objection !== undefined
+      ? objection.id
+      : Object.keys(objectionBuffers).find(bufferId => {
+          const buffer = objectionBuffers[bufferId];
+
+          return buffer !== undefined && buffer.targetId === targetId;
+        });
+
+  const isObjected = objectionId !== undefined;
+
+  return !isObjected ? (
+    <MenuItem icon={<SmsFailed />} label="異議を申し立てる" />
+  ) : (
+    <MenuItem icon={<SmsFailed />} label="異議申し立てを編集する" to={`/exercise-objections/${objectionId}/edit`} />
+  );
+});
