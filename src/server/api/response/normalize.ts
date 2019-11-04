@@ -151,11 +151,11 @@ const normalizeExerciseDraft: Normalizer<ExerciseDraftEntity> = (_, store, entit
 };
 
 const normalizeExerciseObjection: Normalizer<ExerciseObjectionEntity> = (_, store, entity) => {
-  const { id, target, comment, state } = entity;
+  const { id, targetId, comment, state } = entity;
 
   store.ExerciseObjection[id] = {
     ...base(entity),
-    exerciseSummaryId: target && target.summaryId,
+    targetId,
     comment,
     state
   };
@@ -330,11 +330,11 @@ const normalizePlaylistItem: Normalizer<PlaylistItemEntity> = (context, store, e
 };
 
 const normalizePlaylistObjection: Normalizer<PlaylistObjectionEntity> = (_, store, entity) => {
-  const { id, target, comment, state } = entity;
+  const { id, targetId, comment, state } = entity;
 
   store.PlaylistObjection[id] = {
     ...base(entity),
-    playlistSummaryId: target && target.summaryId,
+    targetId,
     comment,
     state
   };
@@ -585,11 +585,11 @@ const normalizeUserFollow: Normalizer<UserFollowEntity> = (context, store, entit
 };
 
 const normalizeUserObjection: Normalizer<UserObjectionEntity> = (_, store, entity) => {
-  const { id, target, comment, state } = entity;
+  const { id, targetId, comment, state } = entity;
 
   store.UserObjection[id] = {
     ...base(entity),
-    userSummaryId: target && target.summaryId,
+    targetId,
     comment,
     state
   };

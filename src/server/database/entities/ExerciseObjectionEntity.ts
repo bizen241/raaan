@@ -1,4 +1,4 @@
-import { Entity, OneToOne } from "typeorm";
+import { Entity, JoinColumn, OneToOne } from "typeorm";
 import { BaseObjectionClass } from "./BaseObjectionClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 
@@ -9,5 +9,6 @@ export class ExerciseObjectionEntity extends BaseObjectionClass<ExerciseEntity> 
   @OneToOne(() => ExerciseEntity, {
     onDelete: "CASCADE"
   })
+  @JoinColumn()
   target?: ExerciseEntity;
 }

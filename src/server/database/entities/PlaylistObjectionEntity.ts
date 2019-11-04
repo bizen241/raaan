@@ -1,4 +1,4 @@
-import { Entity, OneToOne } from "typeorm";
+import { Entity, JoinColumn, OneToOne } from "typeorm";
 import { BaseObjectionClass } from "./BaseObjectionClass";
 import { PlaylistEntity } from "./PlaylistEntity";
 
@@ -9,5 +9,6 @@ export class PlaylistObjectionEntity extends BaseObjectionClass<PlaylistEntity> 
   @OneToOne(() => PlaylistEntity, {
     onDelete: "CASCADE"
   })
+  @JoinColumn()
   target?: PlaylistEntity;
 }

@@ -90,8 +90,12 @@ const parseExerciseDraft: Parser<ExerciseDraft> = query => {
 };
 
 const parseExerciseObjection: Parser<ExerciseObjection> = query => {
+  const { objectorId, targetId } = query;
+
   return {
-    ...base(query)
+    ...base(query),
+    objectorId,
+    targetId
   };
 };
 
@@ -187,8 +191,12 @@ const parsePlaylistItem: Parser<PlaylistItem> = query => {
 };
 
 const parsePlaylistObjection: Parser<PlaylistObjection> = query => {
+  const { objectorId, targetId } = query;
+
   return {
-    ...base(query)
+    ...base(query),
+    objectorId,
+    targetId
   };
 };
 
@@ -321,8 +329,12 @@ const parseUserFollow: Parser<UserFollow> = query => {
 };
 
 const parseUserObjection: Parser<UserObjection> = query => {
+  const { objectorId, targetId } = query;
+
   return {
-    ...base(query)
+    ...base(query),
+    objectorId,
+    targetId
   };
 };
 
