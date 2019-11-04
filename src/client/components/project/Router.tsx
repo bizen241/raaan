@@ -6,6 +6,7 @@ import { RootState } from "../../reducers";
 import { AppPage } from "../pages/AppPage";
 import { ObjectionsPage } from "../pages/community/ObjectionsPage";
 import { CommunityPage } from "../pages/CommunityPage";
+import { ExerciseObjectionsPage } from "../pages/exercise-objections/ExerciseObjectionsPage";
 import { EditExerciseReportPage } from "../pages/exercise-reports/EditExerciseReportPage";
 import { ExerciseReportPage } from "../pages/exercise-reports/ExerciseReportPage";
 import { ExerciseReportsPage } from "../pages/exercise-reports/ExerciseReportsPage";
@@ -136,10 +137,10 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/exercise-reports/:id" component={ExerciseReportPage} />
         <Route exact={true} path="/exercise-reports/:id/edit" component={EditExerciseReportPage} />
 
-        <Route exact={true} path="/exercise-objection" component={NotFoundPage} />
-        <Route exact={true} path="/exercise-objection/edit" component={NotFoundPage} />
-        <Route exact={true} path="/exercise-objection/:id" component={NotFoundPage} />
-        <Route exact={true} path="/exercise-objection/:id/edit" component={NotFoundPage} />
+        <Route exact={true} path="/exercise-objections" component={ExerciseObjectionsPage} />
+        <Route exact={true} path="/exercise-objections/edit" component={NotFoundPage} />
+        <Route exact={true} path="/exercise-objections/:id" component={NotFoundPage} />
+        <Route exact={true} path="/exercise-objections/:id/edit" component={NotFoundPage} />
 
         <Route component={NotFoundPage} />
       </Switch>
