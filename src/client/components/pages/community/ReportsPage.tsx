@@ -1,6 +1,6 @@
 import { Keyboard, Person, PlaylistPlay } from "@material-ui/icons";
 import * as React from "react";
-import { Button, Page } from "../ui";
+import { Button, Page } from "../../ui";
 
 export const ReportsPage = React.memo(() => {
   return (
