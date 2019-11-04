@@ -56,6 +56,8 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
             return buffer !== undefined && buffer.targetId === exerciseId;
           });
 
+    const isOwner = currentUser.permission === "Owner";
+
     const isAuthor = exerciseSummary.authorId === currentUser.id;
     const isVoted = vote !== undefined;
     const isReported = reportId !== undefined;
@@ -117,6 +119,12 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
                   <MenuItem component={RouterLink} to={`/exercise-reports/${reportId}/edit`}>
                     <ReportProblem className={classes.leftIcon} />
                     通報を編集する
+                  </MenuItem>
+                )}
+                {isOwner && (
+                  <MenuItem component={RouterLink} to={`/exercises/${exerciseId}/exercise-reports`}>
+                    <ReportProblem className={classes.leftIcon} />
+                    通報の一覧
                   </MenuItem>
                 )}
               </Menu>
