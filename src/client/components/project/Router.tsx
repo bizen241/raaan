@@ -4,8 +4,12 @@ import { useSelector } from "react-redux";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { RootState } from "../../reducers";
 import { AppPage } from "../pages/AppPage";
-import { ObjectionsPage } from "../pages/community/ObjectionsPage";
 import { CommunityPage } from "../pages/community/CommunityPage";
+import { FollowsPage } from "../pages/community/FollowsPage";
+import { ObjectionsPage } from "../pages/community/ObjectionsPage";
+import { ReportsPage } from "../pages/community/ReportsPage";
+import { UserCommunityPage } from "../pages/community/UserCommunityPage";
+import { UserReportsPage } from "../pages/community/UserReportsPage";
 import { ExerciseObjectionsPage } from "../pages/exercise-objections/ExerciseObjectionsPage";
 import { EditExerciseReportPage } from "../pages/exercise-reports/EditExerciseReportPage";
 import { ExerciseReportPage } from "../pages/exercise-reports/ExerciseReportPage";
@@ -16,7 +20,6 @@ import { ExercisePage } from "../pages/exercises/ExercisePage";
 import { ExercisesPage } from "../pages/exercises/ExercisesPage";
 import { UserExerciseDraftsPage } from "../pages/exercises/UserExerciseDraftsPage";
 import { UserExercisesPage } from "../pages/exercises/UserExercisesPage";
-import { FollowsPage } from "../pages/community/FollowsPage";
 import { GroupExercisesPage } from "../pages/group-exercises/GroupExercisesPage";
 import { UserGroupMembersPage } from "../pages/group-members/UserGroupMembersPage";
 import { EditGroupPage } from "../pages/groups/EditGroupPage";
@@ -30,7 +33,6 @@ import { UserPlaylistBookmarksPage } from "../pages/playlist-bookmarks/UserPlayl
 import { PlaylistPage } from "../pages/playlists/PlaylistPage";
 import { PlaylistsPage } from "../pages/playlists/PlaylistsPage";
 import { UserPlaylistsPage } from "../pages/playlists/UserPlaylistsPage";
-import { ReportsPage } from "../pages/community/ReportsPage";
 import { ExerciseRevisionsPage } from "../pages/revisions/ExerciseRevisionsPage";
 import { RevisionPage } from "../pages/revisions/RevisionPage";
 import { UserSubmissionsPage } from "../pages/submissions/UserSubmissionsPage";
@@ -48,11 +50,10 @@ import { UserFollowsPage } from "../pages/user-follows/UserFollowsPage";
 import { UserAccountsPage } from "../pages/user/UserAccountsPage";
 import { UserConfigPage } from "../pages/user/UserConfigPage";
 import { UserSessionsPage } from "../pages/user/UserSessionsPage";
-import { UserCommunityPage } from "../pages/community/UserCommunityPage";
-import { UserReportsPage } from "../pages/community/UserReportsPage";
 import { EditUserPage } from "../pages/users/EditUserPage";
 import { UserPage } from "../pages/users/UserPage";
 import { UsersPage } from "../pages/users/UsersPage";
+import { UserObjectionsPage } from "../pages/community/UserObjectionsPage";
 
 export type PageProps = RouteComponentProps<{ id: string; name: string }>;
 
@@ -99,7 +100,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/users/:id/reports" component={UserReportsPage} />
         <Route exact={true} path="/users/:id/exercise-reports" component={UserExerciseReportssPage} />
 
-        <Route exact={true} path="/users/:id/objections" component={NotFoundPage} />
+        <Route exact={true} path="/users/:id/objections" component={UserObjectionsPage} />
         <Route exact={true} path="/users/:id/exercise-objections" component={NotFoundPage} />
 
         <Route exact={true} path="/exercises" component={ExercisesPage} />
