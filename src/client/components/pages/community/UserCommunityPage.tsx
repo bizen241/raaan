@@ -14,7 +14,7 @@ export const UserCommunityPage = React.memo<PageProps>(props => {
   const isOwner = currentUser.permission === "Owner";
 
   return (
-    <Page title="コミュニティ">
+    <Page title={isOwn ? "自分のコミュニティ" : "ユーザーのコミュニティ"}>
       <Button color="primary" icon={<Group />} label="グループ" to={`/users/${userId}/group-members`} />
       <Button icon={<Notifications />} label="フォロー" to={`/users/${userId}/follows`} />
       {(isOwn || isOwner) && <Button icon={<Report />} label="報告履歴" to={`/users/${userId}/reports`} />}
