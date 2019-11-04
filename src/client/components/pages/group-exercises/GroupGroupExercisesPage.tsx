@@ -7,7 +7,7 @@ import { PageProps } from "../../project/Router";
 import { Button, Column } from "../../ui";
 import { Page } from "../../ui/Page";
 
-export const GroupExercisesPage = React.memo<PageProps>(({ match }) => {
+export const GroupGroupExercisesPage = React.memo<PageProps>(({ match }) => {
   const groupId = match.params.id;
 
   const [isGroupExercisesDialogOpen, toggleGroupExercisesDialog] = useToggleState();

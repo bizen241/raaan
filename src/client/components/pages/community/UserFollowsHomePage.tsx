@@ -3,7 +3,7 @@ import * as React from "react";
 import { PageProps } from "../../project/Router";
 import { Button, Page } from "../../ui";
 
-export const FollowsPage = React.memo<PageProps>(props => {
+export const UserFollowsHomePage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;
 
   return (

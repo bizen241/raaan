@@ -7,7 +7,7 @@ import { PageProps } from "../../project/Router";
 import { Button } from "../../ui";
 import { Page } from "../../ui/Page";
 
-export const UserExerciseReportssPage = React.memo<PageProps>(({ match }) => {
+export const UserExerciseReportsPage = React.memo<PageProps>(({ match }) => {
   const userId = match.params.id;
 
   const currentUser = useContext(UserContext);

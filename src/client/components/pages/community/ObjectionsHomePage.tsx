@@ -2,7 +2,7 @@ import { Keyboard, Person, PlaylistPlay } from "@material-ui/icons";
 import * as React from "react";
 import { Button, Page } from "../../ui";
 
-export const ObjectionsPage = React.memo(() => {
+export const ObjectionsHomePage = React.memo(() => {
   return (
     <Page title="異議履歴">
       <Button icon={<Person />} label="ユーザーの異議" to="/user-objections" />

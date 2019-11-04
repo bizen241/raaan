@@ -4,7 +4,7 @@ import { UserConfigEditor } from "../../editor/UserConfigEditor";
 import { UserContext } from "../../project/Context";
 import { Page } from "../../ui/Page";
 
-export const UserConfigPage = React.memo(() => {
+export const UserUserConfigPage = React.memo(() => {
   const currentUser = useContext(UserContext);
 
   return (
