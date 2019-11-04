@@ -16,7 +16,7 @@ export const UserExerciseObjectionsPage = React.memo<PageProps>(({ match }) => {
 
   return (
     <Page title={isOwn ? "クイズの異議" : "ユーザーの異議"}>
-      {isOwn && <Button icon={<Edit />} label="編集中の異議" to="/exercise-reports/edit" />}
+      {isOwn && <Button icon={<Edit />} label="編集中の異議" to="/exercise-objections/edit" />}
       <ExerciseObjectionList
         initialParams={{
           objectorId: userId
