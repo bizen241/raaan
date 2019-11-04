@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { RootState } from "../../reducers";
 import { AppPage } from "../pages/AppPage";
+import { ObjectionsPage } from "../pages/community/ObjectionsPage";
 import { CommunityPage } from "../pages/CommunityPage";
 import { EditExerciseReportPage } from "../pages/exercise-reports/EditExerciseReportPage";
 import { ExerciseReportPage } from "../pages/exercise-reports/ExerciseReportPage";
@@ -70,7 +71,7 @@ export const Router = React.memo(() => {
 
         <Route exact={true} path="/community" component={CommunityPage} />
         <Route exact={true} path="/community/reports" component={ReportsPage} />
-        <Route exact={true} path="/community/objections" component={NotFoundPage} />
+        <Route exact={true} path="/community/objections" component={ObjectionsPage} />
 
         <Route exact={true} path="/user/user-config" component={UserConfigPage} />
         <Route exact={true} path="/user/user-accounts" component={UserAccountsPage} />
