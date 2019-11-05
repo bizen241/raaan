@@ -240,14 +240,14 @@ const normalizeGroupExercise: Normalizer<GroupExerciseEntity> = (_, store, entit
 };
 
 const normalizeGroupMember: Normalizer<GroupMemberEntity> = (context, store, entity) => {
-  const { id, group, groupId, user, userId, permission } = entity;
-  if (user === undefined) {
+  const { id, group, user, userId, permission } = entity;
+  if (group === undefined || user === undefined) {
     return;
   }
 
   store.GroupMember[id] = {
     ...base(entity),
-    groupId,
+    groupSummaryId: group.summaryId,
     userId,
     userSummaryId: user.summaryId,
     permission
@@ -258,7 +258,7 @@ const normalizeGroupMember: Normalizer<GroupMemberEntity> = (context, store, ent
 };
 
 const normalizeGroupSummary: Normalizer<GroupSummaryEntity> = (_, store, entity) => {
-  const { id, group } = entity;
+  const { id, group, groupId } = entity;
   if (group === undefined) {
     return;
   }
@@ -267,6 +267,7 @@ const normalizeGroupSummary: Normalizer<GroupSummaryEntity> = (_, store, entity)
 
   store.GroupSummary[id] = {
     ...base(entity),
+    groupId,
     name,
     description
   };

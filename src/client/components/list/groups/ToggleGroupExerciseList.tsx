@@ -1,8 +1,8 @@
 import { Checkbox, TableCell, TableRow, Typography } from "@material-ui/core";
-import * as React from "react";
 import { createContext, useCallback, useContext } from "react";
+import * as React from "react";
 import { useDispatch } from "react-redux";
-import { Group, GroupExercise, GroupMember } from "../../../../shared/api/entities";
+import { GroupExercise, GroupMember, GroupSummary } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
 import { useSearch } from "../../../hooks/useSearch";
@@ -13,7 +13,7 @@ import { generateBufferId } from "../../../reducers/buffers";
 export const ExerciseContext = createContext<string | undefined>(undefined);
 
 export const ToggleGroupExerciseList = createEntityList<GroupMember>({ entityType: "GroupMember" })(
-  React.memo(({ entity: { groupId } }) => {
+  React.memo(({ entity: { groupSummaryId } }) => {
     const dispatch = useDispatch();
     const exerciseId = useContext(ExerciseContext);
     if (exerciseId === undefined) {
@@ -22,12 +22,13 @@ export const ToggleGroupExerciseList = createEntityList<GroupMember>({ entityTyp
 
     const [isRequested, toggleRequestState] = useToggleState();
 
-    const { entity: group } = useEntity<Group>("Group", groupId);
+    const { entity: groupSummary } = useEntity<GroupSummary>("GroupSummary", groupSummaryId);
+    const groupId = groupSummary && groupSummary.groupId;
 
     const { entities: groupExercises } = useSearch<GroupExercise>("GroupExercise", {
       exerciseId
     });
-    const foundGroupExercise = groupExercises.find(groupExercise => groupExercise.groupId === groupId);
+    const foundGroupExercise = groupSummary && groupExercises.find(groupExercise => groupExercise.groupId === groupId);
 
     const onClick = useCallback(() => {
       toggleRequestState();
@@ -61,12 +62,12 @@ export const ToggleGroupExerciseList = createEntityList<GroupMember>({ entityTyp
     }, [groupExercises]);
 
     return (
-      <TableRow hover onClick={!isRequested ? onClick : undefined}>
+      <TableRow hover onClick={groupId && !isRequested ? onClick : undefined}>
         <TableCell padding="checkbox">
-          <Checkbox checked={foundGroupExercise !== undefined} disabled={isRequested} />
+          <Checkbox checked={foundGroupExercise !== undefined} disabled={groupId === undefined || isRequested} />
         </TableCell>
         <TableCell>
-          <Typography>{(group && group.name) || "名無しのグループ"}</Typography>
+          <Typography>{(groupSummary && groupSummary.name) || "名無しのグループ"}</Typography>
         </TableCell>
       </TableRow>
     );
