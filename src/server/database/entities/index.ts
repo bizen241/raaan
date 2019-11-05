@@ -9,7 +9,7 @@ import { ExerciseVoteEntity } from "./ExerciseVoteEntity";
 import { GroupEntity } from "./GroupEntity";
 import { GroupExerciseEntity } from "./GroupExerciseEntity";
 import { GroupMemberEntity } from "./GroupMemberEntity";
-import { GroupPlaylistEntity } from "./GroupPlaylistEntity";
+import { GroupSummaryEntity } from "./GroupSummaryEntity";
 import { PlaylistBookmarkEntity } from "./PlaylistBookmarkEntity";
 import { PlaylistEntity } from "./PlaylistEntity";
 import { PlaylistItemEntity } from "./PlaylistItemEntity";
@@ -46,7 +46,7 @@ export * from "./ExerciseVoteEntity";
 export * from "./GroupEntity";
 export * from "./GroupExerciseEntity";
 export * from "./GroupMemberEntity";
-export * from "./GroupPlaylistEntity";
+export * from "./GroupSummaryEntity";
 export * from "./PlaylistBookmarkEntity";
 export * from "./PlaylistEntity";
 export * from "./PlaylistItemEntity";
@@ -83,7 +83,7 @@ export type Entity =
   | GroupEntity
   | GroupExerciseEntity
   | GroupMemberEntity
-  | GroupPlaylistEntity
+  | GroupSummaryEntity
   | PlaylistBookmarkEntity
   | PlaylistEntity
   | PlaylistItemEntity
@@ -122,7 +122,7 @@ export const entities = [
     Group: GroupEntity,
     GroupExercise: GroupExerciseEntity,
     GroupMember: GroupMemberEntity,
-    GroupPlaylist: GroupPlaylistEntity,
+    GroupSummary: GroupSummaryEntity,
     Playlist: PlaylistEntity,
     PlaylistBookmark: PlaylistBookmarkEntity,
     PlaylistItem: PlaylistItemEntity,

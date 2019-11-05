@@ -12,7 +12,7 @@ import {
   GroupEntity,
   GroupExerciseEntity,
   GroupMemberEntity,
-  GroupPlaylistEntity,
+  GroupSummaryEntity,
   PlaylistBookmarkEntity,
   PlaylistEntity,
   PlaylistItemEntity,
@@ -257,15 +257,18 @@ const normalizeGroupMember: Normalizer<GroupMemberEntity> = (context, store, ent
   normalizeEntity(context, store, user.summary);
 };
 
-const normalizeGroupPlaylist: Normalizer<GroupPlaylistEntity> = (_, store, entity) => {
-  const { id, playlist } = entity;
-  if (playlist === undefined) {
+const normalizeGroupSummary: Normalizer<GroupSummaryEntity> = (_, store, entity) => {
+  const { id, group } = entity;
+  if (group === undefined) {
     return;
   }
 
-  store.GroupPlaylist[id] = {
+  const { name, description } = group;
+
+  store.GroupSummary[id] = {
     ...base(entity),
-    playlistSummaryId: playlist.summaryId
+    name,
+    description
   };
 };
 
@@ -653,7 +656,7 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Group: normalizeGroup,
   GroupExercise: normalizeGroupExercise,
   GroupMember: normalizeGroupMember,
-  GroupPlaylist: normalizeGroupPlaylist,
+  GroupSummary: normalizeGroupSummary,
   Playlist: normalizePlaylist,
   PlaylistBookmark: normalizePlaylistBookmark,
   PlaylistItem: normalizePlaylistItem,

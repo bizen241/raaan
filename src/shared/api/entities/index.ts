@@ -8,7 +8,7 @@ import { ExerciseVote } from "./ExerciseVote";
 import { Group } from "./Group";
 import { GroupExercise } from "./GroupExercise";
 import { GroupMember } from "./GroupMember";
-import { GroupPlaylist } from "./GroupPlaylist";
+import { GroupSummary } from "./GroupSummary";
 import { Playlist } from "./Playlist";
 import { PlaylistBookmark } from "./PlaylistBookmark";
 import { PlaylistItem } from "./PlaylistItem";
@@ -45,7 +45,8 @@ export * from "./ExerciseVote";
 export * from "./Group";
 export * from "./GroupExercise";
 export * from "./GroupMember";
-export * from "./GroupPlaylist";
+export * from "./GroupSummary";
+export * from "./GroupSummary";
 export * from "./Playlist";
 export * from "./PlaylistBookmark";
 export * from "./PlaylistItem";
@@ -82,7 +83,7 @@ export type EntityObject =
   | Group
   | GroupExercise
   | GroupMember
-  | GroupPlaylist
+  | GroupSummary
   | Playlist
   | PlaylistBookmark
   | PlaylistItem
@@ -119,7 +120,7 @@ export type EntityTypeToEntity = {
   Group: Group;
   GroupExercise: GroupExercise;
   GroupMember: GroupMember;
-  GroupPlaylist: GroupPlaylist;
+  GroupSummary: GroupSummary;
   Playlist: Playlist;
   PlaylistBookmark: PlaylistBookmark;
   PlaylistItem: PlaylistItem;
@@ -162,7 +163,7 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     Group: {},
     GroupExercise: {},
     GroupMember: {},
-    GroupPlaylist: {},
+    GroupSummary: {},
     Playlist: {},
     PlaylistBookmark: {},
     PlaylistItem: {},

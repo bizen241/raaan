@@ -1,5 +1,6 @@
-import { Column, Entity, ManyToOne, RelationId } from "typeorm";
+import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
+import { GroupSummaryEntity } from "./GroupSummaryEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity("groups")
@@ -12,6 +13,13 @@ export class GroupEntity extends BaseEntityClass {
   owner?: UserEntity;
   @RelationId((group: GroupEntity) => group.owner)
   ownerId!: string;
+
+  @OneToOne(() => GroupSummaryEntity, groupSummary => groupSummary.group, {
+    cascade: true
+  })
+  summary?: GroupSummaryEntity;
+  @RelationId((group: GroupEntity) => group.summary)
+  summaryId!: string;
 
   @Column()
   name: string;

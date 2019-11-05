@@ -11,7 +11,7 @@ import {
   Group,
   GroupExercise,
   GroupMember,
-  GroupPlaylist,
+  GroupSummary,
   Permission,
   Playlist,
   PlaylistBookmark,
@@ -161,7 +161,7 @@ const parseGroupMember: Parser<GroupMember> = query => {
   };
 };
 
-const parseGroupPlaylist: Parser<GroupPlaylist> = query => {
+const parseGroupSummary: Parser<GroupSummary> = query => {
   return {
     ...base(query)
   };
@@ -373,7 +373,7 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   Group: parseGroup,
   GroupExercise: parseGroupExercise,
   GroupMember: parseGroupMember,
-  GroupPlaylist: parseGroupPlaylist,
+  GroupSummary: parseGroupSummary,
   Playlist: parsePlaylist,
   PlaylistBookmark: parsePlaylistBookmark,
   PlaylistItem: parsePlaylistItem,

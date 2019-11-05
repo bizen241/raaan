@@ -11,7 +11,7 @@ export const endpoints: { [P in EntityType]: string } = {
   Group: "groups",
   GroupExercise: "group-exercises",
   GroupMember: "group-members",
-  GroupPlaylist: "group-playlists",
+  GroupSummary: "group-summaries",
   Playlist: "playlists",
   PlaylistBookmark: "playlist-bookmarks",
   PlaylistItem: "playlist-items",
