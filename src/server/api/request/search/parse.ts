@@ -33,6 +33,7 @@ import {
   UserConfig,
   UserDiary,
   UserFollow,
+  UserMessage,
   UserObjection,
   UserReport,
   UserSession,
@@ -328,6 +329,15 @@ const parseUserFollow: Parser<UserFollow> = query => {
   };
 };
 
+const parseUserMessage: Parser<UserMessage> = query => {
+  const { userId } = query;
+
+  return {
+    ...base(query),
+    userId
+  };
+};
+
 const parseUserObjection: Parser<UserObjection> = query => {
   const { objectorId, targetId } = query;
 
@@ -394,6 +404,7 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   UserConfig: parseUserConfig,
   UserDiary: parseUserDiary,
   UserFollow: parseUserFollow,
+  UserMessage: parseUserMessage,
   UserObjection: parseUserObjection,
   UserReport: parseUserReport,
   UserSession: parseUserSession,

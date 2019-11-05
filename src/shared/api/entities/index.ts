@@ -29,6 +29,7 @@ import { UserAccount } from "./UserAccount";
 import { UserConfig } from "./UserConfig";
 import { UserDiary } from "./UserDiary";
 import { UserFollow } from "./UserFollow";
+import { UserMessage } from "./UserMessage";
 import { UserObjection } from "./UserObjection";
 import { UserReport } from "./UserReport";
 import { UserSession } from "./UserSession";
@@ -67,6 +68,7 @@ export * from "./UserAccount";
 export * from "./UserConfig";
 export * from "./UserDiary";
 export * from "./UserFollow";
+export * from "./UserMessage";
 export * from "./UserObjection";
 export * from "./UserReport";
 export * from "./UserSession";
@@ -104,6 +106,7 @@ export type EntityObject =
   | UserConfig
   | UserDiary
   | UserFollow
+  | UserMessage
   | UserObjection
   | UserReport
   | UserSession
@@ -141,6 +144,7 @@ export type EntityTypeToEntity = {
   UserConfig: UserConfig;
   UserDiary: UserDiary;
   UserFollow: UserFollow;
+  UserMessage: UserMessage;
   UserObjection: UserObjection;
   UserReport: UserReport;
   UserSession: UserSession;
@@ -184,6 +188,7 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     UserConfig: {},
     UserDiary: {},
     UserFollow: {},
+    UserMessage: {},
     UserObjection: {},
     UserReport: {},
     UserSession: {},

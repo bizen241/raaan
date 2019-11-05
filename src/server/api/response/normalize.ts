@@ -33,6 +33,7 @@ import {
   UserDiaryEntity,
   UserEntity,
   UserFollowEntity,
+  UserMessageEntity,
   UserObjectionEntity,
   UserSessionEntity,
   UserSummaryEntity
@@ -593,6 +594,15 @@ const normalizeUserFollow: Normalizer<UserFollowEntity> = (context, store, entit
   }
 };
 
+const normalizeUserMessage: Normalizer<UserMessageEntity> = (_, store, entity) => {
+  const { id, body } = entity;
+
+  store.UserMessage[id] = {
+    ...base(entity),
+    body
+  };
+};
+
 const normalizeUserObjection: Normalizer<UserObjectionEntity> = (_, store, entity) => {
   const { id, targetId, comment, state } = entity;
 
@@ -682,6 +692,7 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   UserConfig: normalizeUserConfig,
   UserDiary: normalizeUserDiary,
   UserFollow: normalizeUserFollow,
+  UserMessage: normalizeUserMessage,
   UserObjection: normalizeUserObjection,
   UserReport: normalizeUserReport,
   UserSession: normalizeUserSession,

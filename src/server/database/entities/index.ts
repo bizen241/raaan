@@ -31,6 +31,7 @@ import { UserConfigEntity } from "./UserConfigEntity";
 import { UserDiaryEntity } from "./UserDiaryEntity";
 import { UserEntity } from "./UserEntity";
 import { UserFollowEntity } from "./UserFollowEntity";
+import { UserMessageEntity } from "./UserMessageEntity";
 import { UserObjectionEntity } from "./UserObjectionEntity";
 import { UserReportEntity } from "./UserReportEntity";
 import { UserSessionEntity } from "./UserSessionEntity";
@@ -67,6 +68,7 @@ export * from "./UserConfigEntity";
 export * from "./UserDiaryEntity";
 export * from "./UserEntity";
 export * from "./UserFollowEntity";
+export * from "./UserMessageEntity";
 export * from "./UserObjectionEntity";
 export * from "./UserReportEntity";
 export * from "./UserSessionEntity";
@@ -104,6 +106,7 @@ export type Entity =
   | UserDiaryEntity
   | UserEntity
   | UserFollowEntity
+  | UserMessageEntity
   | UserObjectionEntity
   | UserReportEntity
   | UserSessionEntity
@@ -143,6 +146,7 @@ export const entities = [
     UserConfig: UserConfigEntity,
     UserDiary: UserDiaryEntity,
     UserFollow: UserFollowEntity,
+    UserMessage: UserMessageEntity,
     UserObjection: UserObjectionEntity,
     UserReport: UserReportEntity,
     UserSession: UserSessionEntity,

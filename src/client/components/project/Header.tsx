@@ -1,5 +1,5 @@
 import { AppBar, Box, IconButton, MenuItem, Toolbar, Typography } from "@material-ui/core";
-import { AccountCircle, ArrowBack, Home, Info, Settings } from "@material-ui/icons";
+import { AccountCircle, ArrowBack, Home, Info, Mail, Settings } from "@material-ui/icons";
 import { goBack } from "connected-react-router";
 import * as React from "react";
 import { useCallback } from "react";
@@ -29,7 +29,7 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
             <Typography component="span">{title}</Typography>
             <Box flex={1} />
             <Menu>
-              <MenuItem disabled={pathname === "/config"} component={Link} to="/user/user-config">
+              <MenuItem disabled={pathname === "/user/user-config"} component={Link} to="/user/user-config">
                 <Settings className={classes.leftIcon} />
                 <Typography>
                   <Message id="settings" />
@@ -39,7 +39,11 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
                 <Home className={classes.leftIcon} />
                 <Typography>ホーム</Typography>
               </MenuItem>
-              <MenuItem disabled={pathname === "/account"} component={Link} to="/user/user-accounts">
+              <MenuItem disabled={pathname === "/user/user-messages"} component={Link} to="/user/user-messages">
+                <Mail className={classes.leftIcon} />
+                <Typography>通知</Typography>
+              </MenuItem>
+              <MenuItem disabled={pathname === "/user/user-accounts"} component={Link} to="/user/user-accounts">
                 <AccountCircle className={classes.leftIcon} />
                 <Typography>
                   <Message id="account" />
