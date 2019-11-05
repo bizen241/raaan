@@ -253,8 +253,12 @@ const normalizeGroupMember: Normalizer<GroupMemberEntity> = (context, store, ent
     permission
   };
 
-  normalizeEntity(context, store, group);
-  normalizeEntity(context, store, user.summary);
+  if (group.summary !== undefined) {
+    group.summary.group = group;
+
+    normalizeEntity(context, store, group.summary);
+    normalizeEntity(context, store, user.summary);
+  }
 };
 
 const normalizeGroupSummary: Normalizer<GroupSummaryEntity> = (_, store, entity) => {

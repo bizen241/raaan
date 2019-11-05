@@ -4,13 +4,15 @@ import { Group } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
-import { GroupEntity, GroupMemberEntity } from "../../database/entities";
+import { GroupEntity, GroupMemberEntity, GroupSummaryEntity } from "../../database/entities";
 
 export const POST: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
   const { name = "", description = "" }: Params<Group> = req.body;
 
   await getManager().transaction(async manager => {
-    const group = new GroupEntity(currentUser, name);
+    const groupSummary = new GroupSummaryEntity();
+
+    const group = new GroupEntity(currentUser, groupSummary, name);
     group.description = description;
     await manager.save(group);
 

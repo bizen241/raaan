@@ -9,13 +9,16 @@ import { Column } from "../../ui";
 export const UserGroupMemberList = createEntityList<GroupMember>({ entityType: "GroupMember" })(
   React.memo(({ entity: groupMember }) => {
     const { entity: groupSummary } = useEntity<GroupSummary>("GroupSummary", groupMember.groupSummaryId);
+    if (groupSummary === undefined) {
+      return null;
+    }
 
     return (
       <TableRow>
         <TableCell>
           <Column>
-            <Link color="textPrimary" underline="always" component={RouterLink} to={`/groups/${groupMember.groupId}`}>
-              <Typography>{(groupSummary && groupSummary.name) || "名無しのグループ"}</Typography>
+            <Link color="textPrimary" underline="always" component={RouterLink} to={`/groups/${groupSummary.groupId}`}>
+              <Typography>{groupSummary.name || "名無しのグループ"}</Typography>
             </Link>
           </Column>
         </TableCell>

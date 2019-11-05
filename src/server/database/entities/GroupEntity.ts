@@ -27,10 +27,11 @@ export class GroupEntity extends BaseEntityClass {
   @Column()
   description: string = "";
 
-  constructor(owner: UserEntity, name: string) {
+  constructor(owner: UserEntity, summary: GroupSummaryEntity, name: string) {
     super();
 
     this.owner = owner;
+    this.summary = summary;
     this.name = name;
   }
 }

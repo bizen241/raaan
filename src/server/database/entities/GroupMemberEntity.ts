@@ -8,7 +8,9 @@ import { UserEntity } from "./UserEntity";
 export class GroupMemberEntity extends BaseEntityClass {
   type: "GroupMember" = "GroupMember";
 
-  @ManyToOne(() => GroupEntity)
+  @ManyToOne(() => GroupEntity, {
+    onDelete: "CASCADE"
+  })
   group?: GroupEntity;
   @RelationId((groupMember: GroupMemberEntity) => groupMember.group)
   groupId!: string;
