@@ -25,6 +25,8 @@ import {
   RevisionSummary,
   Submission,
   SubmissionSummary,
+  Suggestion,
+  SuggestionSummary,
   Synonym,
   SynonymReport,
   Tag,
@@ -267,6 +269,21 @@ const parseSubmissionSummary: Parser<SubmissionSummary> = query => {
   };
 };
 
+const parseSuggestion: Parser<Suggestion> = query => {
+  return {
+    ...base(query)
+  };
+};
+
+const parseSuggestionSummary: Parser<SuggestionSummary> = query => {
+  const { exerciseId } = query;
+
+  return {
+    ...base(query),
+    exerciseId
+  };
+};
+
 const parseSynonym: Parser<Synonym> = query => {
   return {
     ...base(query)
@@ -416,6 +433,8 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   RevisionSummary: parseRevisionSummary,
   Submission: parseSubmission,
   SubmissionSummary: parseSubmissionSummary,
+  Suggestion: parseSuggestion,
+  SuggestionSummary: parseSuggestionSummary,
   Synonym: parseSynonym,
   SynonymReport: parseSynonymReport,
   Tag: parseTag,

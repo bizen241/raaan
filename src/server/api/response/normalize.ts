@@ -25,6 +25,8 @@ import {
   RevisionSummaryEntity,
   SubmissionEntity,
   SubmissionSummaryEntity,
+  SuggestionEntity,
+  SuggestionSummaryEntity,
   SynonymEntity,
   SynonymReportEntity,
   TagEntity,
@@ -478,6 +480,37 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context
   normalizeEntity(context, store, exercise.summary);
 };
 
+const normalizeSuggestion: Normalizer<SuggestionEntity> = (_, store, entity) => {
+  const { id, summaryId, lang, title, tags, description, questions, isRandom } = entity;
+
+  store.Suggestion[id] = {
+    ...base(entity),
+    summaryId,
+    lang,
+    title,
+    tags,
+    description,
+    questions,
+    isRandom
+  };
+};
+
+const normalizeSuggestionSummary: Normalizer<SuggestionSummaryEntity> = (_, store, entity) => {
+  const { id, suggestion, suggestionId } = entity;
+  if (suggestion === undefined) {
+    return;
+  }
+
+  const { authorId, exerciseId } = suggestion;
+
+  store.SuggestionSummary[id] = {
+    ...base(entity),
+    authorId,
+    exerciseId,
+    suggestionId
+  };
+};
+
 const normalizeSynonym: Normalizer<SynonymEntity> = (_, store, entity) => {
   const { id, name, target } = entity;
 
@@ -714,6 +747,8 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   RevisionSummary: normalizeRevisionSummary,
   Submission: normalizeSubmission,
   SubmissionSummary: normalizeSubmissionSummary,
+  Suggestion: normalizeSuggestion,
+  SuggestionSummary: normalizeSuggestionSummary,
   Synonym: normalizeSynonym,
   SynonymReport: normalizeSynonymReport,
   Tag: normalizeTag,

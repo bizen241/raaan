@@ -24,6 +24,8 @@ export const endpoints: { [P in EntityType]: string } = {
   RevisionSummary: "revision-summaries",
   Submission: "submissions",
   SubmissionSummary: "submission-summaries",
+  Suggestion: "suggestions",
+  SuggestionSummary: "suggestion-summaries",
   Synonym: "synonyms",
   SynonymReport: "synonym-reports",
   Tag: "tags",

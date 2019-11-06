@@ -23,6 +23,8 @@ import { RevisionEntity } from "./RevisionEntity";
 import { RevisionSummaryEntity } from "./RevisionSummaryEntity";
 import { SubmissionEntity } from "./SubmissionEntity";
 import { SubmissionSummaryEntity } from "./SubmissionSummaryEntity";
+import { SuggestionEntity } from "./SuggestionEntity";
+import { SuggestionSummaryEntity } from "./SuggestionSummaryEntity";
 import { SynonymEntity } from "./SynonymEntity";
 import { SynonymReportEntity } from "./SynonymReportEntity";
 import { TagEntity } from "./TagEntity";
@@ -62,6 +64,8 @@ export * from "./RevisionEntity";
 export * from "./RevisionSummaryEntity";
 export * from "./SubmissionEntity";
 export * from "./SubmissionSummaryEntity";
+export * from "./SuggestionEntity";
+export * from "./SuggestionSummaryEntity";
 export * from "./SynonymEntity";
 export * from "./SynonymReportEntity";
 export * from "./TagEntity";
@@ -144,6 +148,8 @@ export const entities = [
     RevisionSummary: RevisionSummaryEntity,
     Submission: SubmissionEntity,
     SubmissionSummary: SubmissionSummaryEntity,
+    Suggestion: SuggestionEntity,
+    SuggestionSummary: SuggestionSummaryEntity,
     Synonym: SynonymEntity,
     SynonymReport: SynonymReportEntity,
     Tag: TagEntity,
