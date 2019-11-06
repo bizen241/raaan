@@ -2,6 +2,8 @@ import { createEntityTypeToObject, EntityType } from "../../../shared/api/entiti
 import { BaseEntityObject } from "../../../shared/api/entities/BaseEntityObject";
 import { EntityStore } from "../../../shared/api/response/get";
 import {
+  ContestEntity,
+  ContestEntryEntity,
   Entity,
   ExerciseDiaryEntity,
   ExerciseDraftEntity,
@@ -86,6 +88,34 @@ const base = ({ id, createdAt, updatedAt }: BaseEntityClass): BaseEntityObject =
 });
 
 type Normalizer<E> = (context: RequestContext, store: EntityStore, entity: E) => void;
+
+const normalizeContest: Normalizer<ContestEntity> = (_, store, entity) => {
+  const { id, exerciseId, title, startAt, finishAt } = entity;
+
+  store.Contest[id] = {
+    ...base(entity),
+    exerciseId,
+    title,
+    startAt: startAt.getTime(),
+    finishAt: finishAt.getTime()
+  };
+};
+
+const normalizeContestEntry: Normalizer<ContestEntryEntity> = (_, store, entity) => {
+  const { id, contestId, participant, typeCount, time, accuracy } = entity;
+  if (participant === undefined || participant.user === undefined) {
+    return;
+  }
+
+  store.ContestEntry[id] = {
+    ...base(entity),
+    contestId,
+    userSummaryId: participant.user.summaryId,
+    typeCount,
+    time,
+    accuracy
+  };
+};
 
 const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) => {
   const {
@@ -661,6 +691,8 @@ const normalizeUserSummary: Normalizer<UserSummaryEntity> = (_, store, entity) =
 };
 
 const normalizers: { [T in EntityType]: Normalizer<any> } = {
+  Contest: normalizeContest,
+  ContestEntry: normalizeContestEntry,
   Exercise: normalizeExercise,
   ExerciseDiary: normalizeExerciseDiary,
   ExerciseDraft: normalizeExerciseDraft,

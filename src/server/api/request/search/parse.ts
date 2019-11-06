@@ -1,4 +1,6 @@
 import {
+  Contest,
+  ContestEntry,
   EntityObject,
   EntityType,
   Exercise,
@@ -62,6 +64,24 @@ const base = <E extends EntityObject>(query: SearchQuery<E>) => ({
 });
 
 type Parser<E extends EntityObject> = (query: SearchQuery<E>) => Params<E>;
+
+const parseContest: Parser<Contest> = query => {
+  const { groupId } = query;
+
+  return {
+    ...base(query),
+    groupId
+  };
+};
+
+const parseContestEntry: Parser<ContestEntry> = query => {
+  const { contestId } = query;
+
+  return {
+    ...base(query),
+    contestId
+  };
+};
 
 const parseExercise: Parser<Exercise> = query => {
   const { authorId } = query;
@@ -373,6 +393,8 @@ const parseUserSummary: Parser<UserSummary> = query => {
 };
 
 const parsers: { [T in EntityType]: Parser<any> } = {
+  Contest: parseContest,
+  ContestEntry: parseContestEntry,
   Exercise: parseExercise,
   ExerciseDiary: parseExerciseDiary,
   ExerciseDraft: parseExerciseDraft,

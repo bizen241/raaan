@@ -1,3 +1,5 @@
+import { Contest } from "./Contest";
+import { ContestEntry } from "./ContestEntry";
 import { Exercise } from "./Exercise";
 import { ExerciseDiary } from "./ExerciseDiary";
 import { ExerciseDraft } from "./ExerciseDraft";
@@ -36,6 +38,8 @@ import { UserSession } from "./UserSession";
 import { UserSummary } from "./UserSummary";
 
 export * from "./BaseExerciseObject";
+export * from "./Contest";
+export * from "./ContestEntry";
 export * from "./Exercise";
 export * from "./ExerciseDiary";
 export * from "./ExerciseDraft";
@@ -75,6 +79,8 @@ export * from "./UserSession";
 export * from "./UserSummary";
 
 export type EntityObject =
+  | Contest
+  | ContestEntry
   | Exercise
   | ExerciseDiary
   | ExerciseDraft
@@ -113,6 +119,8 @@ export type EntityObject =
   | UserSummary;
 
 export type EntityTypeToEntity = {
+  Contest: Contest;
+  ContestEntry: ContestEntry;
   Exercise: Exercise;
   ExerciseDiary: ExerciseDiary;
   ExerciseDraft: ExerciseDraft;
@@ -157,6 +165,8 @@ type EntityTypeToObject = { [P in EntityType]: object };
 
 export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
   const entityTypeToObject: EntityTypeToObject = {
+    Contest: {},
+    ContestEntry: {},
     Exercise: {},
     ExerciseDiary: {},
     ExerciseDraft: {},
