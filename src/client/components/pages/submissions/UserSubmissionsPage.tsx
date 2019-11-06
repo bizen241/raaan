@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useContext } from "react";
-import { SubmissionSummaryList } from "../../list/SubmissionSummaryList";
+import { SubmissionSummaryList } from "../../list/submission-summaries/SubmissionSummaryList";
 import { UserContext } from "../../project/Context";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui/Page";

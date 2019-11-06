@@ -2,12 +2,12 @@ import { IconButton, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
-import { PlaylistBookmark } from "../../../shared/api/entities";
-import { createEntityList } from "../../enhancers/createEntityList";
-import { useToggleState } from "../../hooks/useToggleState";
-import { DeletePlaylistBookmarkDialog } from "../dialogs/playlists/DeletePlaylistBookmarkDialog";
-import { UserContext } from "../project/Context";
-import { Column } from "../ui";
+import { PlaylistBookmark } from "../../../../shared/api/entities";
+import { createEntityList } from "../../../enhancers/createEntityList";
+import { useToggleState } from "../../../hooks/useToggleState";
+import { DeletePlaylistBookmarkDialog } from "../../dialogs/playlists/DeletePlaylistBookmarkDialog";
+import { UserContext } from "../../project/Context";
+import { Column } from "../../ui";
 
 export const PlaylistBookmarkList = createEntityList<PlaylistBookmark>({
   entityType: "PlaylistBookmark",

@@ -4,7 +4,7 @@ import * as React from "react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { generateBufferId } from "../../../reducers/buffers";
-import { ExerciseDraftBufferList } from "../../list/ExerciseDraftBufferList";
+import { ExerciseDraftBufferList } from "../../list/exercise-drafts/ExerciseDraftBufferList";
 import { Button, Column, Page } from "../../ui";
 
 export const EditExercisesPage = React.memo(() => {

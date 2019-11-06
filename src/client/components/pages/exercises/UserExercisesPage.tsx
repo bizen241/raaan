@@ -1,7 +1,7 @@
 import { Edit } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
-import { ExerciseSummaryList } from "../../list/ExerciseSummaryList";
+import { ExerciseSummaryList } from "../../list/exercise-summaries/ExerciseSummaryList";
 import { UserContext } from "../../project/Context";
 import { PageProps } from "../../project/Router";
 import { Button } from "../../ui";

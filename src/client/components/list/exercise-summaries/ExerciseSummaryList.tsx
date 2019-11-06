@@ -3,12 +3,12 @@ import { Edit, Refresh, Tune } from "@material-ui/icons";
 import * as React from "react";
 import { useContext, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { ExerciseSummary } from "../../../shared/api/entities";
-import { Params } from "../../../shared/api/request/params";
-import { createEntityList } from "../../enhancers/createEntityList";
-import { useToggleState } from "../../hooks/useToggleState";
-import { UserContext } from "../project/Context";
-import { Column, Row, Search, Select } from "../ui";
+import { ExerciseSummary } from "../../../../shared/api/entities";
+import { Params } from "../../../../shared/api/request/params";
+import { createEntityList } from "../../../enhancers/createEntityList";
+import { useToggleState } from "../../../hooks/useToggleState";
+import { UserContext } from "../../project/Context";
+import { Column, Row, Search, Select } from "../../ui";
 
 export const ExerciseSummaryList = createEntityList<ExerciseSummary>({ entityType: "ExerciseSummary" })(
   React.memo(({ entity: exerciseSummary }) => {

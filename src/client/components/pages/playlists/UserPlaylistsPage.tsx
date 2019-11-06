@@ -1,7 +1,7 @@
 import { Bookmarks, Edit } from "@material-ui/icons";
 import { useContext, useMemo } from "react";
 import * as React from "react";
-import { PlaylistSummaryList } from "../../list/PlaylistSummaryList";
+import { PlaylistSummaryList } from "../../list/playlist-summaries/PlaylistSummaryList";
 import { UserContext } from "../../project/Context";
 import { PageProps } from "../../project/Router";
 import { Button, Column } from "../../ui";
