@@ -501,12 +501,12 @@ const normalizeSuggestionSummary: Normalizer<SuggestionSummaryEntity> = (_, stor
     return;
   }
 
-  const { authorId, exerciseId } = suggestion;
+  const { authorId, revisionId } = suggestion;
 
   store.SuggestionSummary[id] = {
     ...base(entity),
     authorId,
-    exerciseId,
+    revisionId,
     suggestionId
   };
 };

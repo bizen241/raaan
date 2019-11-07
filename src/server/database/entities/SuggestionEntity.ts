@@ -1,6 +1,6 @@
 import { Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
 import { BaseExerciseClass } from "./BaseExerciseClass";
-import { ExerciseEntity } from "./ExerciseEntity";
+import { RevisionEntity } from "./RevisionEntity";
 import { SuggestionSummaryEntity } from "./SuggestionSummaryEntity";
 import { UserEntity } from "./UserEntity";
 
@@ -15,12 +15,12 @@ export class SuggestionEntity extends BaseExerciseClass {
   @RelationId((suggestion: SuggestionEntity) => suggestion.author)
   authorId!: string;
 
-  @ManyToOne(() => ExerciseEntity, {
+  @ManyToOne(() => RevisionEntity, {
     onDelete: "CASCADE"
   })
-  exercise?: ExerciseEntity;
-  @RelationId((suggestion: SuggestionEntity) => suggestion.exercise)
-  exerciseId!: string;
+  revision?: RevisionEntity;
+  @RelationId((suggestion: SuggestionEntity) => suggestion.revision)
+  revisionId!: string;
 
   @OneToOne(() => SuggestionSummaryEntity, suggestionSummary => suggestionSummary.suggestion, {
     cascade: ["insert"]
