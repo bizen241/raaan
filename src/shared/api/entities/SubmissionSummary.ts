@@ -13,4 +13,7 @@ export interface SubmissionSummary extends BaseEntityObject {
   latest: AttemptResult;
   submitCount: number;
   typeCount: number;
+  isRepeating: boolean;
+  remindAt: number;
+  searchSort?: "updatedAt" | "remindAt";
 }

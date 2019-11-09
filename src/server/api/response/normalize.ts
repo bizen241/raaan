@@ -458,7 +458,7 @@ const normalizeSubmission: Normalizer<SubmissionEntity> = (_, store, entity) => 
 };
 
 const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context, store, entity) => {
-  const { id, submitterId, exerciseId, exercise, latest, submitCount, typeCount } = entity;
+  const { id, submitterId, exerciseId, exercise, latest, submitCount, typeCount, isRepeating, remindAt } = entity;
   if (exercise === undefined || exercise.summary === undefined || latest === undefined) {
     return;
   }
@@ -474,7 +474,9 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context
       accuracy: latest.accuracy
     },
     submitCount,
-    typeCount
+    typeCount,
+    isRepeating,
+    remindAt: remindAt.getTime()
   };
 
   normalizeEntity(context, store, exercise.summary);

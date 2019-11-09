@@ -36,6 +36,12 @@ export class SubmissionSummaryEntity extends BaseEntityClass {
   @Column()
   typeCount: number = 0;
 
+  @Column()
+  isRepeating: boolean = true;
+
+  @Column()
+  remindAt: Date = new Date(Date.now() + 60 * 10 * 1000);
+
   constructor(submitter: UserEntity, exercise: ExerciseEntity, submission: SubmissionEntity) {
     super();
 

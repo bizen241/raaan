@@ -8,10 +8,9 @@ import { responseSearchResult } from "../../api/response";
 import { SubmissionSummaryEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { submitterId, exerciseId, searchLimit, searchOffset } = parseQuery<SubmissionSummary>(
-    "SubmissionSummary",
-    req.query
-  );
+  const { submitterId, exerciseId, searchSort = "updatedAt", searchOrder, searchLimit, searchOffset } = parseQuery<
+    SubmissionSummary
+  >("SubmissionSummary", req.query);
 
   const isOwnSubmissions = submitterId === currentUser.id;
   if (!isOwnSubmissions) {
@@ -24,6 +23,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     .leftJoinAndSelect("submissionSummary.exercise", "exercise")
     .leftJoinAndSelect("submissionSummary.latest", "latest")
     .leftJoinAndSelect("exercise.summary", "summary")
+    .orderBy(searchSort, searchOrder)
     .take(searchLimit)
     .skip(searchOffset);
 
