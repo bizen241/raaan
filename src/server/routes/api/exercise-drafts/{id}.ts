@@ -6,13 +6,8 @@ import { Params } from "../../../../shared/api/request/params";
 import { getMinMaxTypeCount } from "../../../../shared/exercise";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
-import {
-  ExerciseDraftEntity,
-  ExerciseEntity,
-  getTags,
-  RevisionEntity,
-  RevisionSummaryEntity
-} from "../../../database/entities";
+import { ExerciseDraftEntity, ExerciseEntity, RevisionEntity, RevisionSummaryEntity } from "../../../database/entities";
+import { getTags } from "../../../services/tags";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { id: exerciseDraftId }: PathParams = req.params;

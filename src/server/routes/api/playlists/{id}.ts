@@ -6,7 +6,8 @@ import { Params } from "../../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
 import { hasPermission } from "../../../api/security";
-import { getTags, PlaylistEntity } from "../../../database/entities";
+import { PlaylistEntity } from "../../../database/entities";
+import { getTags } from "../../../services/tags";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { id: playlistId }: PathParams = req.params;

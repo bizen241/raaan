@@ -5,7 +5,8 @@ import { Params } from "../../../shared/api/request/params";
 import { getMinMaxTypeCount } from "../../../shared/exercise";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
-import { ExerciseDraftEntity, ExerciseEntity, ExerciseSummaryEntity, getTags } from "../../database/entities";
+import { ExerciseDraftEntity, ExerciseEntity, ExerciseSummaryEntity } from "../../database/entities";
+import { getTags } from "../../services/tags";
 
 export const POST: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
   const { isMerged = true, isPrivate = true, ...params }: Params<ExerciseDraft> = req.body;

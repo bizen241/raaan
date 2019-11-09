@@ -5,13 +5,8 @@ import { Playlist } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
-import {
-  ExerciseEntity,
-  getTags,
-  PlaylistEntity,
-  PlaylistItemEntity,
-  PlaylistSummaryEntity
-} from "../../database/entities";
+import { ExerciseEntity, PlaylistEntity, PlaylistItemEntity, PlaylistSummaryEntity } from "../../database/entities";
+import { getTags } from "../../services/tags";
 
 export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const params: Params<Playlist> = req.body;
