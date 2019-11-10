@@ -4,7 +4,7 @@ import { useToggleState } from "../../../hooks/useToggleState";
 import { GroupExercisesDialog } from "../../dialogs/groups/GroupExercisesDialog";
 import { GroupExerciseList } from "../../list/group-exercises/GroupExerciseList";
 import { PageProps } from "../../project/Router";
-import { Button, Column } from "../../ui";
+import { Button } from "../../ui";
 import { Page } from "../../ui/Page";
 
 export const GroupGroupExercisesPage = React.memo<PageProps>(({ match }) => {
@@ -15,13 +15,11 @@ export const GroupGroupExercisesPage = React.memo<PageProps>(({ match }) => {
   return (
     <Page title="グループのクイズ">
       <Button icon={<Add />} label="クイズを追加" onClick={toggleGroupExercisesDialog} />
-      <Column pb={1}>
-        <GroupExerciseList
-          initialParams={{
-            groupId
-          }}
-        />
-      </Column>
+      <GroupExerciseList
+        initialParams={{
+          groupId
+        }}
+      />
       <GroupExercisesDialog
         groupId={groupId}
         isOpen={isGroupExercisesDialogOpen}
