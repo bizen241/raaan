@@ -12,6 +12,7 @@ export const endpoints: { [P in EntityType]: string } = {
   ExerciseVote: "exercise-votes",
   Group: "groups",
   GroupExercise: "group-exercises",
+  GroupInvitation: "group-invitations",
   GroupMember: "group-members",
   GroupSummary: "group-summaries",
   Playlist: "playlists",

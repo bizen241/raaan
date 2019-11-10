@@ -13,6 +13,7 @@ import {
   ExerciseSummaryEntity,
   GroupEntity,
   GroupExerciseEntity,
+  GroupInvitationEntity,
   GroupMemberEntity,
   GroupSummaryEntity,
   PlaylistBookmarkEntity,
@@ -269,6 +270,20 @@ const normalizeGroupExercise: Normalizer<GroupExerciseEntity> = (_, store, entit
     groupId,
     exerciseId,
     exerciseSummaryId: exercise.summaryId
+  };
+};
+
+const normalizeGroupInvitation: Normalizer<GroupInvitationEntity> = (_, store, entity) => {
+  const { id, group, groupId, target } = entity;
+  if (group === undefined || target === undefined) {
+    return;
+  }
+
+  store.GroupInvitation[id] = {
+    ...base(entity),
+    groupId,
+    groupSummaryId: group.summaryId,
+    targetSummaryId: target.summaryId
   };
 };
 
@@ -737,6 +752,7 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   ExerciseVote: normalizeExerciseVote,
   Group: normalizeGroup,
   GroupExercise: normalizeGroupExercise,
+  GroupInvitation: normalizeGroupInvitation,
   GroupMember: normalizeGroupMember,
   GroupSummary: normalizeGroupSummary,
   Playlist: normalizePlaylist,

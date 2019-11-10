@@ -10,6 +10,7 @@ import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";
 import { ExerciseVoteEntity } from "./ExerciseVoteEntity";
 import { GroupEntity } from "./GroupEntity";
 import { GroupExerciseEntity } from "./GroupExerciseEntity";
+import { GroupInvitationEntity } from "./GroupInvitationEntity";
 import { GroupMemberEntity } from "./GroupMemberEntity";
 import { GroupSummaryEntity } from "./GroupSummaryEntity";
 import { PlaylistBookmarkEntity } from "./PlaylistBookmarkEntity";
@@ -52,6 +53,7 @@ export * from "./ExerciseSummaryEntity";
 export * from "./ExerciseVoteEntity";
 export * from "./GroupEntity";
 export * from "./GroupExerciseEntity";
+export * from "./GroupInvitationEntity";
 export * from "./GroupMemberEntity";
 export * from "./GroupSummaryEntity";
 export * from "./PlaylistBookmarkEntity";
@@ -94,6 +96,7 @@ export type Entity =
   | ExerciseVoteEntity
   | GroupEntity
   | GroupExerciseEntity
+  | GroupInvitationEntity
   | GroupMemberEntity
   | GroupSummaryEntity
   | PlaylistBookmarkEntity
@@ -136,6 +139,7 @@ export const entities = [
     ExerciseVote: ExerciseVoteEntity,
     Group: GroupEntity,
     GroupExercise: GroupExerciseEntity,
+    GroupInvitation: GroupInvitationEntity,
     GroupMember: GroupMemberEntity,
     GroupSummary: GroupSummaryEntity,
     Playlist: PlaylistEntity,
