@@ -8,7 +8,7 @@ import { responseSearchResult } from "../../api/response";
 import { SubmissionSummaryEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { submitterId, exerciseId, searchSort = "updatedAt", searchOrder, searchLimit, searchOffset } = parseQuery<
+  const { submitterId, exerciseId, searchSort = "createdAt", searchOrder, searchLimit, searchOffset } = parseQuery<
     SubmissionSummary
   >("SubmissionSummary", req.query);
 
@@ -23,7 +23,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     .leftJoinAndSelect("submissionSummary.exercise", "exercise")
     .leftJoinAndSelect("submissionSummary.latest", "latest")
     .leftJoinAndSelect("exercise.summary", "summary")
-    .orderBy(searchSort, searchOrder)
+    .orderBy(`submissionSummary.${searchSort}`, searchOrder)
     .take(searchLimit)
     .skip(searchOffset);
 

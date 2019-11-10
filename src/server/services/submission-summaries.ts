@@ -35,7 +35,7 @@ export const updateSubmissionSummarySubmitCount = async (
     submissionSummary.submitCount += 1;
     submissionSummary.typeCount += submission.typeCount;
     if (submissionSummary.isRepeating) {
-      submissionSummary.remindAt = setReminder(submissionSummary, latest, submission);
+      submissionSummary.remindAt = updateReminder(submissionSummary, latest, submission);
     }
 
     await manager.save(submissionSummary);
@@ -45,10 +45,24 @@ export const updateSubmissionSummarySubmitCount = async (
   }
 };
 
-const setReminder = (
+const updateReminder = (
   submissionSummary: SubmissionSummaryEntity,
   previous: SubmissionEntity,
   current: SubmissionEntity
 ) => {
-  return new Date();
+  const foo = submissionSummary.remindAt.getTime();
+  const bar = previous.createdAt.getTime();
+  const baz = current.createdAt.getTime();
+
+  const interval = foo - bar;
+
+  if (baz < foo) {
+    return new Date(baz + interval);
+  }
+
+  if (current.accuracy > 90) {
+    return new Date(baz + interval * 1.2);
+  } else {
+    return new Date(baz + interval / 1.2);
+  }
 };

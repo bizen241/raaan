@@ -42,6 +42,7 @@ import { PlaylistsPage } from "../pages/playlists/PlaylistsPage";
 import { UserPlaylistsPage } from "../pages/playlists/UserPlaylistsPage";
 import { ExerciseRevisionsPage } from "../pages/revisions/ExerciseRevisionsPage";
 import { RevisionPage } from "../pages/revisions/RevisionPage";
+import { ReviewPage } from "../pages/submissions/ReviewPage";
 import { UserSubmissionsPage } from "../pages/submissions/UserSubmissionsPage";
 import { SynonymPage } from "../pages/synonyms/SynonymPage";
 import { SynonymsPage } from "../pages/synonyms/SynonymsPage";
@@ -88,6 +89,8 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/user/user-messages" component={UserUserMessagesPage} />
 
         <Route exact={true} path="/user/submissions" component={UserSubmissionsPage} />
+        <Route exact={true} path="/user/submissions/review" component={ReviewPage} />
+
         <Route exact={true} path="/user/exercise-drafts" component={UserExerciseDraftsPage} />
 
         <Route exact={true} path="/users" component={UsersPage} />
