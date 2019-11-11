@@ -1,4 +1,4 @@
-import { Email } from "@material-ui/icons";
+import { Email, Inbox } from "@material-ui/icons";
 import * as React from "react";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { GroupInvitationsDialog } from "../../dialogs/groups/GroupMembersDialog";
@@ -14,6 +14,7 @@ export const GroupGroupMembersPage = React.memo<PageProps>(props => {
   return (
     <Page title="メンバーの一覧">
       <Button icon={<Email />} label="フォロワーを招待" onClick={toggleGroupInvitationDialog} />
+      <Button icon={<Inbox />} label="招待一覧" to={`/groups/${groupId}/group-invitations`} />
       <GroupMemberList initialParams={{ groupId }} />
       <GroupInvitationsDialog
         groupId={groupId}
