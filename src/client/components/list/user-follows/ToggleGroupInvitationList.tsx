@@ -2,8 +2,9 @@ import { Checkbox, TableCell, TableRow } from "@material-ui/core";
 import { createContext, useCallback, useContext } from "react";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { GroupInvitation, UserFollow } from "../../../../shared/api/entities";
+import { GroupInvitation, UserFollow, UserSummary } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
+import { useEntity } from "../../../hooks/useEntity";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
@@ -13,7 +14,7 @@ import { Column } from "../../ui";
 export const GroupContext = createContext<string | undefined>(undefined);
 
 export const ToggleGroupInvitationList = createEntityList<UserFollow>({ entityType: "UserFollow" })(
-  React.memo(({ entity: { followerId } }) => {
+  React.memo(({ entity: { followerSummaryId } }) => {
     const dispatch = useDispatch();
     const groupId = useContext(GroupContext);
     if (groupId === undefined) {
@@ -22,10 +23,15 @@ export const ToggleGroupInvitationList = createEntityList<UserFollow>({ entityTy
 
     const [isRequested, toggleRequestState] = useToggleState();
 
+    const { entity: userSummary } = useEntity<UserSummary>("UserSummary", followerSummaryId);
+    const followerId = userSummary && userSummary.userId;
+
     const { entities: groupInvitations } = useSearch<GroupInvitation>("GroupInvitation", {
       groupId
     });
-    const foundGroupInvitation = groupInvitations.find(groupInvitation => groupInvitation.targetId === followerId);
+    const foundGroupInvitation = groupInvitations.find(
+      groupInvitation => groupInvitation.targetSummaryId === followerSummaryId
+    );
 
     const onClick = useCallback(() => {
       toggleRequestState();
@@ -59,12 +65,12 @@ export const ToggleGroupInvitationList = createEntityList<UserFollow>({ entityTy
     }, [groupInvitations]);
 
     return (
-      <TableRow hover onClick={!isRequested ? onClick : undefined}>
+      <TableRow hover onClick={followerId && !isRequested ? onClick : undefined}>
         <TableCell padding="checkbox">
           <Checkbox checked={foundGroupInvitation !== undefined} disabled={isRequested} />
         </TableCell>
         <TableCell>
-          <Column>{followerId}</Column>
+          <Column>{(userSummary && userSummary.name) || "名無しさん"}</Column>
         </TableCell>
       </TableRow>
     );
