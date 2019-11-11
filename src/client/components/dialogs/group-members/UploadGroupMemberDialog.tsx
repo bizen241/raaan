@@ -1,5 +1,6 @@
 import { Typography } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
+import { push } from "connected-react-router";
 import * as React from "react";
 import { useContext } from "react";
 import { useDispatch } from "react-redux";
@@ -12,8 +13,9 @@ import { Button, Card, DialogContent } from "../../ui";
 
 export const UploadGroupMemberDialog = createDialog<{
   groupId: string;
+  groupInvitationId: string;
 }>(
-  React.memo(({ groupId, onClose }) => {
+  React.memo(({ groupId, groupInvitationId, onClose }) => {
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);
 
@@ -37,8 +39,9 @@ export const UploadGroupMemberDialog = createDialog<{
                 uploadResponse
               )
             );
+            dispatch(actions.cache.purge("GroupInvitation", groupInvitationId));
 
-            onClose();
+            dispatch(push(`/groups/${groupId}`));
           }
         )
       );

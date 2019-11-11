@@ -25,6 +25,7 @@ export const UserGroupInvitationList = createEntityList<GroupInvitation>({ entit
         </TableCell>
         <UploadGroupMemberDialog
           groupId={groupSummary.groupId}
+          groupInvitationId={groupInvitation.id}
           isOpen={isUploadGroupMemberDialogOpen}
           onClose={onToggleUploadGroupMemberDialog}
         />
