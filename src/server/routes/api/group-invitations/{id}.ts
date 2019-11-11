@@ -19,8 +19,9 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
       return next(createError(500));
     }
 
+    const isOwn = groupInvitation.targetId === currentUser.id;
     const isOwner = groupInvitation.group.ownerId === currentUser.id;
-    if (!isOwner) {
+    if (!isOwn && !isOwner) {
       return next(createError(403));
     }
 
