@@ -25,7 +25,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
 
   const [groupInvitations, count] = await getManager().findAndCount(GroupInvitationEntity, {
     where,
-    relations: ["group", "target", "target.summary"],
+    relations: ["group", "group.summary", "target", "target.summary"],
     take: searchLimit,
     skip: searchOffset
   });

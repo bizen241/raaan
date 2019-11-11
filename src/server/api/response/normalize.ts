@@ -273,7 +273,7 @@ const normalizeGroupExercise: Normalizer<GroupExerciseEntity> = (_, store, entit
   };
 };
 
-const normalizeGroupInvitation: Normalizer<GroupInvitationEntity> = (_, store, entity) => {
+const normalizeGroupInvitation: Normalizer<GroupInvitationEntity> = (context, store, entity) => {
   const { id, group, groupId, target } = entity;
   if (group === undefined || target === undefined) {
     return;
@@ -285,6 +285,13 @@ const normalizeGroupInvitation: Normalizer<GroupInvitationEntity> = (_, store, e
     groupSummaryId: group.summaryId,
     targetSummaryId: target.summaryId
   };
+
+  if (group.summary !== undefined) {
+    group.summary.group = group;
+
+    normalizeEntity(context, store, group.summary);
+    normalizeEntity(context, store, target.summary);
+  }
 };
 
 const normalizeGroupMember: Normalizer<GroupMemberEntity> = (context, store, entity) => {
