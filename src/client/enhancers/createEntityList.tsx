@@ -40,11 +40,14 @@ interface EntityListParamsProps<E extends EntityObject> {
   onChange: (params: Params<E>) => void;
 }
 
-export const createEntityList = <E extends EntityObject>({ entityType, itemHeight = 53 }: EntityListParams) => (
-  ItemComponent: React.ComponentType<EntityListItemProps<E>>,
+export const createEntityList = <E extends EntityObject, P extends {} = {}>({
+  entityType,
+  itemHeight = 53
+}: EntityListParams) => (
+  ItemComponent: React.ComponentType<EntityListItemProps<E> & P>,
   ParamsComponent?: React.ComponentType<EntityListParamsProps<E>>
 ) =>
-  React.memo<EntityListProps<E>>(({ initialParams, ...props }) => {
+  React.memo<EntityListProps<E> & P>(({ initialParams, ...props }) => {
     const { entities, params, status, limit, offset, count, onChange, ...searchProps } = useSearch(
       entityType,
       initialParams
@@ -88,7 +91,10 @@ export const createEntityList = <E extends EntityObject>({ entityType, itemHeigh
                   </TableCell>
                 </TableRow>
               )}
-              {!isLoading && entities.map(entity => entity && <ItemComponent key={entity.id} entity={entity as E} />)}
+              {!isLoading &&
+                entities.map(
+                  entity => entity && <ItemComponent key={entity.id} entity={entity as E} {...props as P} />
+                )}
               {emptyRows && (
                 <TableRow style={{ height: itemHeight * emptyRows }}>
                   <TableCell colSpan={3} />
