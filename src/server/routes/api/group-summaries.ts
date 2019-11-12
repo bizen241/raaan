@@ -7,13 +7,17 @@ import { responseSearchResult } from "../../api/response";
 import { GroupSummaryEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { searchLimit, searchOffset } = parseQuery<GroupSummary>("GroupSummary", req.query);
+  const { ownerId, searchLimit, searchOffset } = parseQuery<GroupSummary>("GroupSummary", req.query);
 
-  const query = await getManager()
+  const query = getManager()
     .createQueryBuilder(GroupSummaryEntity, "groupSummary")
     .leftJoinAndSelect("groupSummary.group", "group")
     .take(searchLimit)
     .skip(searchOffset);
+
+  if (ownerId !== undefined) {
+    query.andWhere("group.ownerId = :ownerId", { ownerId });
+  }
 
   const [groups, count] = await query.getManyAndCount();
 

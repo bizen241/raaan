@@ -1,6 +1,6 @@
 import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { FindConditions, getManager } from "typeorm";
+import { getManager } from "typeorm";
 import { GroupInvitation } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
@@ -9,26 +9,31 @@ import { responseFindResult, responseSearchResult } from "../../api/response";
 import { GroupEntity, GroupInvitationEntity, UserEntity, UserFollowEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { groupId, targetId, searchLimit, searchOffset } = parseQuery<GroupInvitation>("GroupInvitation", req.query);
+  const { groupId, targetId, ownerId, searchLimit, searchOffset } = parseQuery<GroupInvitation>(
+    "GroupInvitation",
+    req.query
+  );
 
-  const where: FindConditions<GroupInvitationEntity> = {};
+  const query = getManager()
+    .createQueryBuilder(GroupInvitationEntity, "groupInvitation")
+    .leftJoinAndSelect("groupInvitation.group", "group")
+    .leftJoinAndSelect("groupInvitation.target", "target")
+    .leftJoinAndMapOne("group.summary", "group.summary", "groupSummary")
+    .leftJoinAndMapOne("target.summary", "target.summary", "targetSummary")
+    .take(searchLimit)
+    .skip(searchOffset);
+
   if (groupId !== undefined) {
-    where.group = {
-      id: groupId
-    };
+    query.andWhere("groupInvitation.groupId = :groupId", { groupId });
   }
   if (targetId !== undefined) {
-    where.target = {
-      id: targetId
-    };
+    query.andWhere("groupInvitation.targetId = :targetId", { targetId });
+  }
+  if (ownerId !== undefined) {
+    query.andWhere("group.ownerId = :ownerId", { ownerId });
   }
 
-  const [groupInvitations, count] = await getManager().findAndCount(GroupInvitationEntity, {
-    where,
-    relations: ["group", "group.summary", "target", "target.summary"],
-    take: searchLimit,
-    skip: searchOffset
-  });
+  const [groupInvitations, count] = await query.getManyAndCount();
 
   responseSearchResult(req, res, groupInvitations, count);
 });

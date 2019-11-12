@@ -1,6 +1,6 @@
 import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { FindConditions, getManager } from "typeorm";
+import { getManager } from "typeorm";
 import { TagFollow } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
@@ -11,24 +11,23 @@ import { TagEntity, TagFollowEntity } from "../../database/entities";
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
   const { followerId, targetId, searchLimit, searchOffset } = parseQuery<TagFollow>("TagFollow", req.query);
 
-  const where: FindConditions<TagFollowEntity> = {};
+  const query = getManager()
+    .createQueryBuilder(TagFollowEntity, "tagFollow")
+    .leftJoinAndSelect("tagFollow.follower", "follower")
+    .leftJoinAndSelect("tagFollow.target", "target")
+    .leftJoinAndMapOne("follower.summary", "follower.summary", "followerSummary")
+    .leftJoinAndMapOne("target.summary", "target.summary", "targetSummary")
+    .take(searchLimit)
+    .skip(searchOffset);
+
   if (followerId !== undefined) {
-    where.follower = {
-      id: followerId
-    };
+    query.andWhere("tagFollow.followerId = :followerId", { followerId });
   }
   if (targetId !== undefined) {
-    where.target = {
-      id: targetId
-    };
+    query.andWhere("tagFollow.targetId = :targetId", { targetId });
   }
 
-  const [tagFollows, count] = await getManager().findAndCount(TagFollowEntity, {
-    where,
-    relations: ["follower", "follower.summary", "target", "target.summary"],
-    take: searchLimit,
-    skip: searchOffset
-  });
+  const [tagFollows, count] = await query.getManyAndCount();
 
   responseSearchResult(req, res, tagFollows, count);
 });
