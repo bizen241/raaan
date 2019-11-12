@@ -5,4 +5,5 @@ export interface GroupInvitation extends BaseEntityObject {
   targetId?: UUID;
   groupSummaryId: UUID;
   targetSummaryId: UUID;
+  ownerId?: UUID;
 }

@@ -176,12 +176,13 @@ const parseGroupExercise: Parser<GroupExercise> = query => {
 };
 
 const parseGroupInvitation: Parser<GroupInvitation> = query => {
-  const { groupId, targetId } = query;
+  const { groupId, targetId, ownerId } = query;
 
   return {
     ...base(query),
     groupId,
-    targetId
+    targetId,
+    ownerId
   };
 };
 
@@ -196,8 +197,11 @@ const parseGroupMember: Parser<GroupMember> = query => {
 };
 
 const parseGroupSummary: Parser<GroupSummary> = query => {
+  const { ownerId } = query;
+
   return {
-    ...base(query)
+    ...base(query),
+    ownerId
   };
 };
 
