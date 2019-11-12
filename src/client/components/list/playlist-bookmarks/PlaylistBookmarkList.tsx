@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { PlaylistBookmark } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useToggleState } from "../../../hooks/useToggleState";
-import { DeletePlaylistBookmarkDialog } from "../../dialogs/playlists/DeletePlaylistBookmarkDialog";
+import { DeletePlaylistBookmarkDialog } from "../../dialogs/playlist-bookmarks/DeletePlaylistBookmarkDialog";
 import { UserContext } from "../../project/Context";
 import { Column } from "../../ui";
 
