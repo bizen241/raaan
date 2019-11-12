@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { GroupMember } from "../../../../shared/api/entities";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
-import { GroupInvitationsDialog } from "../../dialogs/groups/GroupMembersDialog";
+import { GroupInvitationsDialog } from "../../dialogs/groups/GroupInvitationsDialog";
 import { GroupMemberList } from "../../list/group-members/GroupMemberList";
 import { UserContext } from "../../project/Context";
 import { PageProps } from "../../project/Router";
@@ -21,7 +21,6 @@ export const GroupGroupMembersPage = React.memo<PageProps>(props => {
     groupId,
     userId: currentUser.id
   });
-
   const groupMember = groupMembers[0];
   const isGroupOwner = groupMember && groupMember.permission === "owner";
 
