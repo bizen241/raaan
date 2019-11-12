@@ -1,10 +1,14 @@
 import * as React from "react";
+import { useContext } from "react";
 import { UserFollowerList } from "../../list/user-follows/UserFollowerList";
+import { UserContext } from "../../project/Context";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui/Page";
 
 export const UserFollowersPage = React.memo<PageProps>(({ match }) => {
   const userId = match.params.id;
+
+  const currentUser = useContext(UserContext);
 
   return (
     <Page title="フォロワー">
@@ -12,6 +16,7 @@ export const UserFollowersPage = React.memo<PageProps>(({ match }) => {
         initialParams={{
           targetId: userId
         }}
+        isTarget={currentUser.id === userId}
       />
     </Page>
   );
