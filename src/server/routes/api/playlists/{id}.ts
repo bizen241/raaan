@@ -85,6 +85,13 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
   });
 });
 
+PATCH.apiDoc = createOperationDoc({
+  entityType: "Playlist",
+  permission: "Read",
+  hasId: true,
+  hasBody: true
+});
+
 export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { id: playlistId }: PathParams = req.params;
 
