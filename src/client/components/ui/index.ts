@@ -9,3 +9,4 @@ export * from "./Property";
 export * from "./Row";
 export * from "./Search";
 export * from "./Select";
+export * from "./TablePagination";

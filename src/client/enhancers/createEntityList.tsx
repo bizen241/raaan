@@ -7,8 +7,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
-  TablePagination,
   TableRow
 } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons";
@@ -16,7 +14,7 @@ import * as React from "react";
 import { useCallback } from "react";
 import { EntityObject, EntityType } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
-import { Column, Row } from "../components/ui";
+import { Column, Row, TablePagination } from "../components/ui";
 import { useSearch } from "../hooks/useSearch";
 
 interface EntityListParams {
@@ -101,31 +99,28 @@ export const createEntityList = <E extends EntityObject, P extends {} = {}>({
                 </TableRow>
               )}
             </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  rowsPerPage={limit}
-                  page={offset / limit}
-                  count={count}
-                  labelRowsPerPage="表示件数:"
-                  onChangePage={useCallback(
-                    (_, page) =>
-                      onChange({
-                        searchOffset: page * limit
-                      } as Params<E>),
-                    [limit]
-                  )}
-                  onChangeRowsPerPage={useCallback(
-                    (e: React.ChangeEvent<HTMLInputElement>) =>
-                      onChange({
-                        searchLimit: parseInt(e.target.value, 10)
-                      } as Params<E>),
-                    []
-                  )}
-                />
-              </TableRow>
-            </TableFooter>
           </Table>
+          <Column p={2}>
+            <TablePagination
+              rowsPerPage={limit}
+              page={offset / limit}
+              count={count}
+              onChangePage={useCallback(
+                (page: number) =>
+                  onChange({
+                    searchOffset: page * limit
+                  } as Params<E>),
+                [limit]
+              )}
+              onChangeRowsPerPage={useCallback(
+                (rowsPerPage: number) =>
+                  onChange({
+                    searchLimit: rowsPerPage
+                  } as Params<E>),
+                []
+              )}
+            />
+          </Column>
         </Card>
       </Column>
     );
