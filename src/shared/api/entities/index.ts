@@ -8,9 +8,11 @@ import { ExerciseReport } from "./ExerciseReport";
 import { ExerciseSummary } from "./ExerciseSummary";
 import { ExerciseVote } from "./ExerciseVote";
 import { Group } from "./Group";
+import { GroupApplication } from "./GroupApplication";
 import { GroupExercise } from "./GroupExercise";
 import { GroupInvitation } from "./GroupInvitation";
 import { GroupMember } from "./GroupMember";
+import { GroupSecret } from "./GroupSecret";
 import { GroupSummary } from "./GroupSummary";
 import { Playlist } from "./Playlist";
 import { PlaylistBookmark } from "./PlaylistBookmark";
@@ -51,9 +53,11 @@ export * from "./ExerciseReport";
 export * from "./ExerciseSummary";
 export * from "./ExerciseVote";
 export * from "./Group";
+export * from "./GroupApplication";
 export * from "./GroupExercise";
 export * from "./GroupInvitation";
 export * from "./GroupMember";
+export * from "./GroupSecret";
 export * from "./GroupSummary";
 export * from "./Playlist";
 export * from "./PlaylistBookmark";
@@ -94,9 +98,11 @@ export type EntityObject =
   | ExerciseSummary
   | ExerciseVote
   | Group
+  | GroupApplication
   | GroupExercise
   | GroupInvitation
   | GroupMember
+  | GroupSecret
   | GroupSummary
   | Playlist
   | PlaylistBookmark
@@ -137,9 +143,11 @@ export type EntityTypeToEntity = {
   ExerciseSummary: ExerciseSummary;
   ExerciseVote: ExerciseVote;
   Group: Group;
+  GroupApplication: GroupApplication;
   GroupExercise: GroupExercise;
   GroupInvitation: GroupInvitation;
   GroupMember: GroupMember;
+  GroupSecret: GroupSecret;
   GroupSummary: GroupSummary;
   Playlist: Playlist;
   PlaylistBookmark: PlaylistBookmark;
@@ -186,9 +194,11 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     ExerciseSummary: {},
     ExerciseVote: {},
     Group: {},
+    GroupApplication: {},
     GroupExercise: {},
     GroupInvitation: {},
     GroupMember: {},
+    GroupSecret: {},
     GroupSummary: {},
     Playlist: {},
     PlaylistBookmark: {},

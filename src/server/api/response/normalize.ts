@@ -11,10 +11,12 @@ import {
   ExerciseObjectionEntity,
   ExerciseReportEntity,
   ExerciseSummaryEntity,
+  GroupApplicationEntity,
   GroupEntity,
   GroupExerciseEntity,
   GroupInvitationEntity,
   GroupMemberEntity,
+  GroupSecretEntity,
   GroupSummaryEntity,
   PlaylistBookmarkEntity,
   PlaylistEntity,
@@ -259,6 +261,27 @@ const normalizeGroup: Normalizer<GroupEntity> = (_, store, entity) => {
   };
 };
 
+const normalizeGroupApplication: Normalizer<GroupApplicationEntity> = (context, store, entity) => {
+  const { id, group, groupId, applicant } = entity;
+  if (group === undefined || applicant === undefined) {
+    return;
+  }
+
+  store.GroupApplication[id] = {
+    ...base(entity),
+    groupId,
+    groupSummaryId: group.summaryId,
+    applicantSummaryId: applicant.summaryId
+  };
+
+  if (group.summary !== undefined) {
+    group.summary.group = group;
+
+    normalizeEntity(context, store, group.summary);
+    normalizeEntity(context, store, applicant.summary);
+  }
+};
+
 const normalizeGroupExercise: Normalizer<GroupExerciseEntity> = (_, store, entity) => {
   const { id, groupId, exercise, exerciseId } = entity;
   if (exercise === undefined) {
@@ -314,6 +337,17 @@ const normalizeGroupMember: Normalizer<GroupMemberEntity> = (context, store, ent
     normalizeEntity(context, store, group.summary);
     normalizeEntity(context, store, user.summary);
   }
+};
+
+const normalizeGroupSecret: Normalizer<GroupSecretEntity> = (_, store, entity) => {
+  const { id, groupId, value, expireAt } = entity;
+
+  store.GroupSecret[id] = {
+    ...base(entity),
+    groupId,
+    value,
+    expireAt: expireAt.getTime()
+  };
 };
 
 const normalizeGroupSummary: Normalizer<GroupSummaryEntity> = (_, store, entity) => {
@@ -758,9 +792,11 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   ExerciseSummary: normalizeExerciseSummary,
   ExerciseVote: normalizeExerciseVote,
   Group: normalizeGroup,
+  GroupApplication: normalizeGroupApplication,
   GroupExercise: normalizeGroupExercise,
   GroupInvitation: normalizeGroupInvitation,
   GroupMember: normalizeGroupMember,
+  GroupSecret: normalizeGroupSecret,
   GroupSummary: normalizeGroupSummary,
   Playlist: normalizePlaylist,
   PlaylistBookmark: normalizePlaylistBookmark,

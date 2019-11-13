@@ -8,10 +8,12 @@ import { ExerciseObjectionEntity } from "./ExerciseObjectionEntity";
 import { ExerciseReportEntity } from "./ExerciseReportEntity";
 import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";
 import { ExerciseVoteEntity } from "./ExerciseVoteEntity";
+import { GroupApplicationEntity } from "./GroupApplicationEntity";
 import { GroupEntity } from "./GroupEntity";
 import { GroupExerciseEntity } from "./GroupExerciseEntity";
 import { GroupInvitationEntity } from "./GroupInvitationEntity";
 import { GroupMemberEntity } from "./GroupMemberEntity";
+import { GroupSecretEntity } from "./GroupSecretEntity";
 import { GroupSummaryEntity } from "./GroupSummaryEntity";
 import { PlaylistBookmarkEntity } from "./PlaylistBookmarkEntity";
 import { PlaylistEntity } from "./PlaylistEntity";
@@ -51,10 +53,12 @@ export * from "./ExerciseObjectionEntity";
 export * from "./ExerciseReportEntity";
 export * from "./ExerciseSummaryEntity";
 export * from "./ExerciseVoteEntity";
+export * from "./GroupApplicationEntity";
 export * from "./GroupEntity";
 export * from "./GroupExerciseEntity";
 export * from "./GroupInvitationEntity";
 export * from "./GroupMemberEntity";
+export * from "./GroupSecretEntity";
 export * from "./GroupSummaryEntity";
 export * from "./PlaylistBookmarkEntity";
 export * from "./PlaylistEntity";
@@ -94,10 +98,12 @@ export type Entity =
   | ExerciseReportEntity
   | ExerciseSummaryEntity
   | ExerciseVoteEntity
+  | GroupApplicationEntity
   | GroupEntity
   | GroupExerciseEntity
   | GroupInvitationEntity
   | GroupMemberEntity
+  | GroupSecretEntity
   | GroupSummaryEntity
   | PlaylistBookmarkEntity
   | PlaylistEntity
@@ -138,9 +144,11 @@ export const entities = [
     ExerciseSummary: ExerciseSummaryEntity,
     ExerciseVote: ExerciseVoteEntity,
     Group: GroupEntity,
+    GroupApplication: GroupApplicationEntity,
     GroupExercise: GroupExerciseEntity,
     GroupInvitation: GroupInvitationEntity,
     GroupMember: GroupMemberEntity,
+    GroupSecret: GroupSecretEntity,
     GroupSummary: GroupSummaryEntity,
     Playlist: PlaylistEntity,
     PlaylistBookmark: PlaylistBookmarkEntity,
