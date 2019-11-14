@@ -252,10 +252,11 @@ const normalizeExerciseVote: Normalizer<ExerciseVoteEntity> = (_, store, entity)
 };
 
 const normalizeGroup: Normalizer<GroupEntity> = (_, store, entity) => {
-  const { id, name, description } = entity;
+  const { id, secretId, name, description } = entity;
 
   store.Group[id] = {
     ...base(entity),
+    secretId,
     name,
     description
   };
