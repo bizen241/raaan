@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
+import { GroupSecretEntity } from "./GroupSecretEntity";
 import { GroupSummaryEntity } from "./GroupSummaryEntity";
 import { UserEntity } from "./UserEntity";
 
@@ -21,17 +22,25 @@ export class GroupEntity extends BaseEntityClass {
   @RelationId((group: GroupEntity) => group.summary)
   summaryId!: string;
 
+  @OneToOne(() => GroupSecretEntity, groupSecret => groupSecret.group, {
+    cascade: true
+  })
+  secret?: GroupSecretEntity;
+  @RelationId((group: GroupEntity) => group.secret)
+  secretId!: string;
+
   @Column()
   name: string;
 
   @Column()
   description: string = "";
 
-  constructor(owner: UserEntity, summary: GroupSummaryEntity, name: string) {
+  constructor(owner: UserEntity, summary: GroupSummaryEntity, secret: GroupSecretEntity, name: string) {
     super();
 
     this.owner = owner;
     this.summary = summary;
+    this.secret = secret;
     this.name = name;
   }
 }

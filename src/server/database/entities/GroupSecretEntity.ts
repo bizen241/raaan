@@ -6,7 +6,7 @@ import { GroupEntity } from "./GroupEntity";
 export class GroupSecretEntity extends BaseEntityClass {
   type: "GroupSecret" = "GroupSecret";
 
-  @OneToOne(() => GroupEntity, {
+  @OneToOne(() => GroupEntity, group => group.secret, {
     onDelete: "CASCADE"
   })
   @JoinColumn()
@@ -14,7 +14,7 @@ export class GroupSecretEntity extends BaseEntityClass {
   @RelationId((groupSecret: GroupSecretEntity) => groupSecret.group)
   groupId!: string;
 
-  @Column()
+  @Column("uuid")
   value: string;
 
   @Column()
