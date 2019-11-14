@@ -5,7 +5,7 @@ import { GroupInvitation, GroupSummary } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
 import { useToggleState } from "../../../hooks/useToggleState";
-import { RejectGroupInvitationDialog } from "../../dialogs/group-invitations/RejectGroupInvitationDialog";
+import { RejectGroupInvitationDialog } from "../../dialogs/group-invitations/DeleteGroupInvitationDialog";
 import { UploadGroupMemberDialog } from "../../dialogs/group-members/UploadGroupMemberDialog";
 import { Column, Menu, MenuItem } from "../../ui";
 
