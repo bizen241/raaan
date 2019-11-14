@@ -18,8 +18,8 @@ export const GroupInvitePage = React.memo<PageProps>(props => {
     <Page title="グループへの招待">
       {isGroupOwner && <Button icon={<Link />} label="リンクで招待" to={`/groups/${groupId}/group-secret`} />}
       {isGroupOwner && <Button icon={<Email />} label="フォロワーを招待" onClick={toggleGroupInvitationDialog} />}
-      {isGroupOwner && <Button icon={<Send />} label="招待一覧" to={`/groups/${groupId}/group-invitations`} />}
       {isGroupOwner && <Button icon={<Inbox />} label="申請一覧" to={`/groups/${groupId}/group-applications`} />}
+      {isGroupOwner && <Button icon={<Send />} label="招待一覧" to={`/groups/${groupId}/group-invitations`} />}
       <GroupInvitationsDialog
         groupId={groupId}
         isOpen={isGroupInvitationDialogOpen}

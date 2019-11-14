@@ -28,6 +28,7 @@ import { EditExercisesPage } from "../pages/exercises/EditExercisesPage";
 import { ExercisePage } from "../pages/exercises/ExercisePage";
 import { ExercisesPage } from "../pages/exercises/ExercisesPage";
 import { UserExercisesPage } from "../pages/exercises/UserExercisesPage";
+import { GroupGroupApplicationsPage } from "../pages/group-applications/GroupGroupApplicationsPage";
 import { GroupGroupExercisesPage } from "../pages/group-exercises/GroupGroupExercisesPage";
 import { GroupGroupInvitationsPage } from "../pages/group-invitations/GroupGroupInvitationsPage";
 import { UserGroupInvitationsPage } from "../pages/group-invitations/UserGroupInvitationsPage";
@@ -155,7 +156,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/groups/:id/invite" component={GroupInvitePage} />
         <Route exact={true} path="/groups/:id/group-secret" component={NotFoundPage} />
         <Route exact={true} path="/groups/:id/group-invitations" component={GroupGroupInvitationsPage} />
-        <Route exact={true} path="/groups/:id/group-applications" component={NotFoundPage} />
+        <Route exact={true} path="/groups/:id/group-applications" component={GroupGroupApplicationsPage} />
 
         <Route exact={true} path="/exercise-reports" component={ExerciseReportsPage} />
         <Route exact={true} path="/exercise-reports/edit" component={EditExerciseReportsPage} />

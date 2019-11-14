@@ -5,7 +5,7 @@ import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
 import { GroupContext, ToggleGroupInvitationList } from "../../list/user-follows/ToggleGroupInvitationList";
 import { UserContext } from "../../project/Context";
-import { Button, DialogContent } from "../../ui";
+import { DialogContent } from "../../ui";
 
 export const GroupInvitationsDialog = createDialog<{
   groupId: string;
@@ -19,7 +19,6 @@ export const GroupInvitationsDialog = createDialog<{
 
     return (
       <DialogContent title="フォロワーを招待" onClose={onClose}>
-        <Button label="リンク" />
         <GroupContext.Provider value={groupId}>
           <ToggleGroupInvitationList
             initialParams={{
