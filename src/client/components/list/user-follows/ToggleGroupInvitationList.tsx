@@ -1,4 +1,4 @@
-import { Checkbox, TableCell, TableRow } from "@material-ui/core";
+import { Checkbox, TableCell, TableRow, Typography } from "@material-ui/core";
 import { createContext, useCallback, useContext } from "react";
 import * as React from "react";
 import { useDispatch } from "react-redux";
@@ -70,7 +70,9 @@ export const ToggleGroupInvitationList = createEntityList<UserFollow>({ entityTy
           <Checkbox checked={foundGroupInvitation !== undefined} disabled={isRequested} />
         </TableCell>
         <TableCell>
-          <Column>{(userSummary && userSummary.name) || "名無しさん"}</Column>
+          <Column>
+            <Typography>{(userSummary && userSummary.name) || "名無しさん"}</Typography>
+          </Column>
         </TableCell>
       </TableRow>
     );

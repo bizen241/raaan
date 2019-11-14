@@ -5,6 +5,7 @@ import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { RootState } from "../../reducers";
 import { AppPage } from "../pages/AppPage";
 import { CommunityPage } from "../pages/community/CommunityPage";
+import { GroupInvitePage } from "../pages/community/GroupInvitePage";
 import { ObjectionsHomePage } from "../pages/community/ObjectionsHomePage";
 import { ReportsHomePage } from "../pages/community/ReportsHomePage";
 import { UserCommunityPage } from "../pages/community/UserCommunityPage";
@@ -150,7 +151,11 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/groups/:id/edit" component={EditGroupPage} />
         <Route exact={true} path="/groups/:id/group-exercises" component={GroupGroupExercisesPage} />
         <Route exact={true} path="/groups/:id/group-members" component={GroupGroupMembersPage} />
+
+        <Route exact={true} path="/groups/:id/invite" component={GroupInvitePage} />
+        <Route exact={true} path="/groups/:id/group-secret" component={NotFoundPage} />
         <Route exact={true} path="/groups/:id/group-invitations" component={GroupGroupInvitationsPage} />
+        <Route exact={true} path="/groups/:id/group-applications" component={NotFoundPage} />
 
         <Route exact={true} path="/exercise-reports" component={ExerciseReportsPage} />
         <Route exact={true} path="/exercise-reports/edit" component={EditExerciseReportsPage} />
