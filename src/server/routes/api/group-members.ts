@@ -6,7 +6,7 @@ import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { parseQuery } from "../../api/request/search/parse";
 import { responseFindResult, responseSearchResult } from "../../api/response";
-import { GroupEntity, GroupInvitationEntity, GroupMemberEntity } from "../../database/entities";
+import { GroupApplicationEntity, GroupEntity, GroupInvitationEntity, GroupMemberEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
   const { groupId, userId, searchLimit, searchOffset } = parseQuery<GroupMember>("GroupMember", req.query);
@@ -38,7 +38,7 @@ GET.apiDoc = createOperationDoc({
 });
 
 export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { groupId }: Params<GroupMember> = req.body;
+  const { groupId, userId }: Params<GroupMember> = req.body;
   if (groupId === undefined) {
     return next(createError(400));
   }
@@ -49,24 +49,55 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
       return next(createError(404));
     }
 
-    const groupInvitation = await manager.findOne(GroupInvitationEntity, {
-      group: {
-        id: groupId
-      },
-      target: {
-        id: currentUser.id
+    if (currentUser.id !== group.ownerId) {
+      const groupInvitation = await manager.findOne(GroupInvitationEntity, {
+        group: {
+          id: groupId
+        },
+        target: {
+          id: currentUser.id
+        }
+      });
+      if (groupInvitation === undefined) {
+        return next(createError(403));
       }
-    });
-    if (groupInvitation === undefined) {
-      return next(createError(403));
+
+      await manager.remove(groupInvitation);
+
+      const groupMember = new GroupMemberEntity(group, currentUser);
+      await manager.save(groupMember);
+
+      responseFindResult(req, res, groupMember);
+    } else {
+      if (userId === undefined) {
+        return next(createError(400));
+      }
+
+      const groupApplication = await manager.findOne(GroupApplicationEntity, {
+        where: {
+          group: {
+            id: groupId
+          },
+          applicant: {
+            id: userId
+          }
+        },
+        relations: ["applicant"]
+      });
+      if (groupApplication === undefined) {
+        return next(createError(403));
+      }
+      if (groupApplication.applicant === undefined) {
+        return next(createError(500));
+      }
+
+      await manager.remove(groupApplication);
+
+      const groupMember = new GroupMemberEntity(group, groupApplication.applicant);
+      await manager.save(groupMember);
+
+      responseFindResult(req, res, groupMember);
     }
-
-    await manager.remove(groupInvitation);
-
-    const groupMember = new GroupMemberEntity(group, currentUser);
-    await manager.save(groupMember);
-
-    responseFindResult(req, res, groupMember);
   });
 });
 
