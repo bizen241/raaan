@@ -1,10 +1,12 @@
 import { OperationFunction } from "express-openapi";
+import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { GroupApplication } from "../../../shared/api/entities";
+import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { parseQuery } from "../../api/request/search/parse";
-import { responseSearchResult } from "../../api/response";
-import { GroupApplicationEntity } from "../../database/entities";
+import { responseFindResult, responseSearchResult } from "../../api/response";
+import { GroupApplicationEntity, GroupEntity, GroupSecretEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
   const { groupId, applicantId, searchLimit, searchOffset } = parseQuery<GroupApplication>(
@@ -37,4 +39,38 @@ GET.apiDoc = createOperationDoc({
   entityType: "GroupApplication",
   permission: "Read",
   hasQuery: true
+});
+
+export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
+  const { groupId, secret }: Params<GroupApplication> = req.body;
+
+  await getManager().transaction(async manager => {
+    const group = await manager.findOne(GroupEntity, groupId);
+    if (group === undefined) {
+      return next(createError(404));
+    }
+
+    const groupSecret = await manager.findOne(GroupSecretEntity, {
+      group: {
+        id: groupId
+      }
+    });
+    if (groupSecret === undefined) {
+      return next(createError(404));
+    }
+    if (groupSecret.value !== secret || groupSecret.expireAt.getTime() <= Date.now()) {
+      return next(createError(403));
+    }
+
+    const groupApplication = new GroupApplicationEntity(group, currentUser);
+    await manager.save(groupApplication);
+
+    responseFindResult(req, res, groupApplication);
+  });
+});
+
+POST.apiDoc = createOperationDoc({
+  entityType: "GroupApplication",
+  permission: "Write",
+  hasBody: true
 });

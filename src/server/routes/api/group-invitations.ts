@@ -53,14 +53,9 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
       return next(createError(404));
     }
 
-    const target = await manager.findOne(UserEntity, targetId, {
-      relations: ["summary"]
-    });
+    const target = await manager.findOne(UserEntity, targetId);
     if (target === undefined) {
       return next(createError(404));
-    }
-    if (target.summary === undefined) {
-      return next(createError(500));
     }
 
     const userFollow = await manager.findOne(UserFollowEntity, {
@@ -78,7 +73,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
     const groupInvitation = new GroupInvitationEntity(group, target);
     await manager.save(groupInvitation);
 
-    responseFindResult(req, res, groupInvitation, target.summary);
+    responseFindResult(req, res, groupInvitation);
   });
 });
 

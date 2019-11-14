@@ -5,4 +5,5 @@ export interface GroupApplication extends BaseEntityObject {
   applicantId?: UUID;
   groupSummaryId: UUID;
   applicantSummaryId: UUID;
+  secret?: UUID;
 }
