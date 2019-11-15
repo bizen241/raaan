@@ -205,8 +205,12 @@ const parseGroupMember: Parser<GroupMember> = query => {
 };
 
 const parseGroupSecret: Parser<GroupSecret> = query => {
+  const { groupId, value } = query;
+
   return {
-    ...base(query)
+    ...base(query),
+    groupId,
+    value
   };
 };
 

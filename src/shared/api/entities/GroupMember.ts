@@ -8,4 +8,4 @@ export interface GroupMember extends BaseEntityObject {
   permission: GroupMemberPermission;
 }
 
-export type GroupMemberPermission = "owner" | "admin" | "write" | "read";
+export type GroupMemberPermission = "owner" | "admin" | "write" | "read" | "guest";

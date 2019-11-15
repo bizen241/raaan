@@ -9,7 +9,12 @@ import { DeleteGroupMemberDialog } from "../dialogs/group-members/DeleteGroupMem
 import { UserContext } from "../project/Context";
 import { Button, Card, Column, Menu, MenuItem, Property } from "../ui";
 
-export const GroupViewer = withEntity<Group, {}>({ entityType: "Group" })(({ entityId: groupId, entity: group }) => {
+export const GroupViewer = withEntity<
+  Group,
+  {
+    hideActions?: boolean;
+  }
+>({ entityType: "Group" })(({ entityId: groupId, entity: group, hideActions = false }) => {
   const currentUser = useContext(UserContext);
 
   const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
@@ -22,17 +27,18 @@ export const GroupViewer = withEntity<Group, {}>({ entityType: "Group" })(({ ent
 
   return (
     <Column>
-      <Button icon={<Keyboard />} label="クイズ" to={`/groups/${groupId}/group-exercises`} />
-      <Button icon={<Person />} label="メンバー" to={`/groups/${groupId}/group-members`} />
+      {!hideActions && <Button icon={<Keyboard />} label="クイズ" to={`/groups/${groupId}/group-exercises`} />}
+      {!hideActions && <Button icon={<Person />} label="メンバー" to={`/groups/${groupId}/group-members`} />}
       <Card
         icon={<GroupIcon />}
         title={group.name}
         action={
-          <Menu>
-            {groupMember && groupMember.permission !== "owner" && (
+          groupMember &&
+          groupMember.permission !== "owner" && (
+            <Menu>
               <MenuItem icon={<RemoveCircle />} label="脱退" onClick={onToggleDeleteDialog} />
-            )}
-          </Menu>
+            </Menu>
+          )
         }
       >
         <Property label="説明">{group.description}</Property>

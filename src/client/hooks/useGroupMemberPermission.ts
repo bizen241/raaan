@@ -12,5 +12,5 @@ export const useGroupMemberPermission = (groupId: string): GroupMemberPermission
   });
   const groupMember = groupMembers[0];
 
-  return groupMember !== undefined ? groupMember.permission : "read";
+  return groupMember !== undefined ? groupMember.permission : "guest";
 };

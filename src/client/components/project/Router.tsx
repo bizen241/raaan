@@ -28,6 +28,7 @@ import { EditExercisesPage } from "../pages/exercises/EditExercisesPage";
 import { ExercisePage } from "../pages/exercises/ExercisePage";
 import { ExercisesPage } from "../pages/exercises/ExercisesPage";
 import { UserExercisesPage } from "../pages/exercises/UserExercisesPage";
+import { GroupApplicationPage } from "../pages/group-applications/GroupApplicationPage";
 import { GroupGroupApplicationsPage } from "../pages/group-applications/GroupGroupApplicationsPage";
 import { GroupGroupExercisesPage } from "../pages/group-exercises/GroupGroupExercisesPage";
 import { GroupGroupInvitationsPage } from "../pages/group-invitations/GroupGroupInvitationsPage";
@@ -69,7 +70,7 @@ import { EditUserPage } from "../pages/users/EditUserPage";
 import { UserPage } from "../pages/users/UserPage";
 import { UsersPage } from "../pages/users/UsersPage";
 
-export type PageProps = RouteComponentProps<{ id: string; name: string }>;
+export type PageProps = RouteComponentProps<{ id: string; name: string; secret: string }>;
 
 const EditExercisePage = React.lazy(() => import("../pages/exercises/EditExercisePage"));
 const EditPlaylistPage = React.lazy(() => import("../pages/playlists/EditPlaylistPage"));
@@ -155,6 +156,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/groups/:id/group-members" component={GroupGroupMembersPage} />
 
         <Route exact={true} path="/groups/:id/invite" component={GroupInvitePage} />
+        <Route exact={true} path="/groups/:id/invite/:secret" component={GroupApplicationPage} />
         <Route exact={true} path="/groups/:id/group-secret" component={GroupSecretPage} />
         <Route exact={true} path="/groups/:id/group-invitations" component={GroupGroupInvitationsPage} />
         <Route exact={true} path="/groups/:id/group-applications" component={GroupGroupApplicationsPage} />
