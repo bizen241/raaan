@@ -1,16 +1,17 @@
-import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import * as React from "react";
-import { Link as RouterLink } from "react-router-dom";
 import { GroupApplication, UserSummary } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { DeleteGroupApplicationByOwnerDialog } from "../../dialogs/group-applications/DeleteGroupApplicationByOwnerDialog";
+import { UploadGroupMemberByOwnerDialog } from "../../dialogs/group-members/UploadGroupMemberByOwnerDialog";
 import { Column, Menu, MenuItem } from "../../ui";
 
 export const GroupGroupApplicationList = createEntityList<GroupApplication>({ entityType: "GroupApplication" })(
   React.memo(({ entity: groupApplication }) => {
+    const [isUploadGroupMemberDialogOpen, onToggleUploadGroupMemberDialog] = useToggleState();
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
     const { entity: userSummary } = useEntity<UserSummary>("UserSummary", groupApplication.applicantSummaryId);
@@ -19,19 +20,24 @@ export const GroupGroupApplicationList = createEntityList<GroupApplication>({ en
     }
 
     return (
-      <TableRow>
-        <TableCell>
+      <TableRow hover>
+        <TableCell onClick={onToggleUploadGroupMemberDialog}>
           <Column>
-            <Link color="textPrimary" underline="always" component={RouterLink} to={`/users/${userSummary.userId}`}>
-              <Typography>{userSummary && userSummary.name}</Typography>
-            </Link>
+            <Typography>{userSummary && userSummary.name}</Typography>
           </Column>
         </TableCell>
         <TableCell padding="checkbox">
           <Menu>
-            <MenuItem icon={<Delete />} label="取り消し" onClick={onToggleDeleteDialog} />
+            <MenuItem icon={<Delete />} label="拒絶" onClick={onToggleDeleteDialog} />
           </Menu>
         </TableCell>
+        <UploadGroupMemberByOwnerDialog
+          groupId={groupApplication.groupId}
+          applicantId={groupApplication.applicantId}
+          groupApplicationId={groupApplication.id}
+          isOpen={isUploadGroupMemberDialogOpen}
+          onClose={onToggleUploadGroupMemberDialog}
+        />
         <DeleteGroupApplicationByOwnerDialog
           groupApplicationId={groupApplication.id}
           isOpen={isDeleteDialogOpen}

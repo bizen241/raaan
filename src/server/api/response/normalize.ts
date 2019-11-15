@@ -263,7 +263,7 @@ const normalizeGroup: Normalizer<GroupEntity> = (_, store, entity) => {
 };
 
 const normalizeGroupApplication: Normalizer<GroupApplicationEntity> = (context, store, entity) => {
-  const { id, group, groupId, applicant } = entity;
+  const { id, group, groupId, applicant, applicantId } = entity;
   if (group === undefined || applicant === undefined) {
     return;
   }
@@ -272,6 +272,7 @@ const normalizeGroupApplication: Normalizer<GroupApplicationEntity> = (context, 
     ...base(entity),
     groupId,
     groupSummaryId: group.summaryId,
+    applicantId,
     applicantSummaryId: applicant.summaryId
   };
 
