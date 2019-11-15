@@ -275,8 +275,9 @@ const normalizeGroupApplication: Normalizer<GroupApplicationEntity> = (context, 
     applicantSummaryId: applicant.summaryId
   };
 
-  if (group.summary !== undefined) {
+  if (group.summary !== undefined && applicant.summary !== undefined) {
     group.summary.group = group;
+    applicant.summary.user = applicant;
 
     normalizeEntity(context, store, group.summary);
     normalizeEntity(context, store, applicant.summary);

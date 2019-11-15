@@ -1,5 +1,6 @@
 import { CircularProgress, Typography } from "@material-ui/core";
 import { LinkOff, Send } from "@material-ui/icons";
+import { replace } from "connected-react-router";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { GroupApplication, GroupSecret } from "../../../../shared/api/entities";
@@ -36,10 +37,17 @@ const GroupApplicationPageContent = React.memo<{
 
   const onUpload = () => {
     dispatch(
-      actions.api.upload<GroupApplication>("GroupApplication", generateBufferId(), {
-        groupId,
-        secret
-      })
+      actions.api.upload<GroupApplication>(
+        "GroupApplication",
+        generateBufferId(),
+        {
+          groupId,
+          secret
+        },
+        () => {
+          dispatch(replace("/user/group-applications"));
+        }
+      )
     );
   };
 
