@@ -1,4 +1,4 @@
-import { Group as GroupIcon, Keyboard, Person, RemoveCircle } from "@material-ui/icons";
+import { Event, Group as GroupIcon, Keyboard, Person, RemoveCircle } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { Group, GroupMember } from "../../../shared/api/entities";
@@ -29,6 +29,7 @@ export const GroupViewer = withEntity<
     <Column>
       {!hideActions && <Button icon={<Keyboard />} label="クイズ" to={`/groups/${groupId}/group-exercises`} />}
       {!hideActions && <Button icon={<Person />} label="メンバー" to={`/groups/${groupId}/group-members`} />}
+      {!hideActions && <Button icon={<Event />} label="セッション" to={`/groups/${groupId}/contests`} />}
       <Card
         icon={<GroupIcon />}
         title={group.name}

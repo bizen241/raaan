@@ -12,6 +12,7 @@ import { UserCommunityPage } from "../pages/community/UserCommunityPage";
 import { UserFollowsHomePage } from "../pages/community/UserFollowsHomePage";
 import { UserObjectionsHomePage } from "../pages/community/UserObjectionsHomePage";
 import { UserReportsHomePage } from "../pages/community/UserReportsHomePage";
+import { GroupContestsPage } from "../pages/contests/GroupContestsPage";
 import { UserExerciseDraftsPage } from "../pages/exercise-drafts/UserExerciseDraftsPage";
 import { EditExerciseObjectionPage } from "../pages/exercise-objections/EditExerciseObjectionPage";
 import { EditExerciseObjectionsPage } from "../pages/exercise-objections/EditExerciseObjectionsPage";
@@ -154,12 +155,17 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/groups/:id/edit" component={EditGroupPage} />
         <Route exact={true} path="/groups/:id/group-exercises" component={GroupGroupExercisesPage} />
         <Route exact={true} path="/groups/:id/group-members" component={GroupGroupMembersPage} />
+        <Route exact={true} path="/groups/:id/contests" component={GroupContestsPage} />
 
         <Route exact={true} path="/groups/:id/invite" component={GroupInvitePage} />
         <Route exact={true} path="/groups/:id/invite/:secret" component={GroupApplicationPage} />
         <Route exact={true} path="/groups/:id/group-secret" component={GroupSecretPage} />
         <Route exact={true} path="/groups/:id/group-invitations" component={GroupGroupInvitationsPage} />
         <Route exact={true} path="/groups/:id/group-applications" component={GroupGroupApplicationsPage} />
+
+        <Route exact={true} path="/contests/edit" component={NotFoundPage} />
+        <Route exact={true} path="/contests/:id/" component={NotFoundPage} />
+        <Route exact={true} path="/contests/:id/edit" component={NotFoundPage} />
 
         <Route exact={true} path="/exercise-reports" component={ExerciseReportsPage} />
         <Route exact={true} path="/exercise-reports/edit" component={EditExerciseReportsPage} />
