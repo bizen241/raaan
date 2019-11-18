@@ -13,6 +13,7 @@ import { UserFollowsHomePage } from "../pages/community/UserFollowsHomePage";
 import { UserObjectionsHomePage } from "../pages/community/UserObjectionsHomePage";
 import { UserReportsHomePage } from "../pages/community/UserReportsHomePage";
 import { EditContestPage } from "../pages/contests/EditContestPage";
+import { EditContestsPage } from "../pages/contests/EditContestsPage";
 import { GroupContestsPage } from "../pages/contests/GroupContestsPage";
 import { UserExerciseDraftsPage } from "../pages/exercise-drafts/UserExerciseDraftsPage";
 import { EditExerciseObjectionPage } from "../pages/exercise-objections/EditExerciseObjectionPage";
@@ -164,7 +165,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/groups/:id/group-invitations" component={GroupGroupInvitationsPage} />
         <Route exact={true} path="/groups/:id/group-applications" component={GroupGroupApplicationsPage} />
 
-        <Route exact={true} path="/contests/edit" component={NotFoundPage} />
+        <Route exact={true} path="/contests/edit" component={EditContestsPage} />
         <Route exact={true} path="/contests/:id/" component={NotFoundPage} />
         <Route exact={true} path="/contests/:id/edit" component={EditContestPage} />
 

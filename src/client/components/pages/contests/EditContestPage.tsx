@@ -7,7 +7,7 @@ export const EditContestPage = React.memo<PageProps>(({ match }) => {
   const groupId = match.params.id;
 
   return (
-    <Page title="グループを編集中">
+    <Page title="セッションを編集中">
       <ContestEditor bufferId={groupId} />
     </Page>
   );
