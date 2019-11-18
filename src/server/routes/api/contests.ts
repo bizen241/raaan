@@ -70,6 +70,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
     const finishAt = new Date(params.finishAt);
 
     const contest = new ContestEntity(groupMember.group, exercise, "", startAt, finishAt);
+    await manager.save(contest);
 
     responseFindResult(req, res, contest);
   });
