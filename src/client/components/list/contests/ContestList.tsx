@@ -12,7 +12,7 @@ export const ContestList = createEntityList<Contest>({ entityType: "Contest" })(
         <TableCell>
           <Column>
             <Link color="textPrimary" underline="always" component={RouterLink} to={`/contests/${contest.id}`}>
-              <Typography>{contest.title}</Typography>
+              <Typography>{contest.title || "無題"}</Typography>
             </Link>
           </Column>
         </TableCell>

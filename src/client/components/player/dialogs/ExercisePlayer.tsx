@@ -4,8 +4,9 @@ import { createPlayerDialog } from "./PlayerDialog";
 
 export const ExercisePlayer = createPlayerDialog<{
   exerciseId: string;
+  contestId?: string;
 }>(
-  React.memo(({ exerciseId, onClose }) => {
-    return <SubmissionManager entityId={exerciseId} onClose={onClose} />;
+  React.memo(({ exerciseId, contestId, onClose }) => {
+    return <SubmissionManager entityId={exerciseId} contestId={contestId} onClose={onClose} />;
   })
 );

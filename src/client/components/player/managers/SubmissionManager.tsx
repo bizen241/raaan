@@ -9,14 +9,16 @@ import { actions, RootState } from "../../../reducers";
 import { UserContext } from "../../project/Context";
 import { AttemptManager } from "./AttemptManager";
 
-interface Props {
-  hasNext?: boolean;
-  onNext?: () => void;
-  onClose: () => void;
-}
-
-export const SubmissionManager = withEntity<Exercise, Props>({ entityType: "Exercise" })(
-  React.memo(({ entityId: exerciseId, entity: exercise, hasNext, onNext, onClose }) => {
+export const SubmissionManager = withEntity<
+  Exercise,
+  {
+    contestId?: string;
+    hasNext?: boolean;
+    onNext?: () => void;
+    onClose: () => void;
+  }
+>({ entityType: "Exercise" })(
+  React.memo(({ entityId: exerciseId, entity: exercise, contestId, hasNext, onNext, onClose }) => {
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);
 
@@ -32,6 +34,7 @@ export const SubmissionManager = withEntity<Exercise, Props>({ entityType: "Exer
         dispatch(
           actions.buffers.update<Submission>("Submission", submissionId, {
             exerciseId,
+            contestId,
             ...summarizeResults(results)
           })
         );
