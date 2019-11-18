@@ -39,7 +39,9 @@ export const SelectContestGroupList = React.memo<{
     dispatch(
       actions.buffers.update("Contest", bufferId, {
         groupId,
-        exerciseId
+        exerciseId,
+        startAt: Date.now(),
+        finishAt: Date.now() + 1000 * 60 * 60
       })
     );
     dispatch(push(`/contests/${bufferId}/edit`));
