@@ -3,8 +3,8 @@ import * as React from "react";
 import { GroupSecret } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useToggleState } from "../../hooks/useToggleState";
-import { RevokeGroupSecretDialog } from "../dialogs/group-secrets/RevokeGroupSecretDialog";
 import { RegenerateGroupSecretDialog } from "../dialogs/group-secrets/RegenerateGroupSecretDialog";
+import { RevokeGroupSecretDialog } from "../dialogs/group-secrets/RevokeGroupSecretDialog";
 import { Button, Card, Column, Property } from "../ui";
 
 export const GroupSecretViewer = withEntity<GroupSecret>({ entityType: "GroupSecret" })(
