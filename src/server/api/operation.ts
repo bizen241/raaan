@@ -1,6 +1,5 @@
 import { NextFunction } from "connect";
 import { Request, RequestHandler, Response } from "express";
-import * as createError from "http-errors";
 import { OpenAPIV3 } from "openapi-types";
 import { endpoints } from "../../shared/api/endpoint";
 import { EntityType, Permission } from "../../shared/api/entities";
@@ -95,8 +94,10 @@ export const errorBoundary = (
   const currentUser = req.user || (await getGuestUser());
 
   await fn(req, res, next, currentUser).catch(e => {
-    console.log(e);
+    if (e.status === undefined) {
+      console.log(e);
+    }
 
-    next(createError(500));
+    next(e);
   });
 };

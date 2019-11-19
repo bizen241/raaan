@@ -6,6 +6,7 @@ import * as serveStatic from "serve-static";
 import { useApi } from "./api";
 import { useAuth } from "./auth";
 import { Env } from "./env";
+import { errorHandler } from "./error";
 import { useLimiter } from "./limiter";
 import { authRouter } from "./routes/auth";
 import { fallbackRouter } from "./routes/fallback";
@@ -39,6 +40,8 @@ export const createApp = (env: Env, app: express.Express = express()) => {
   app.use("/auth", authRouter);
   app.use("/logout", logoutRouter);
   app.use("*", fallbackRouter);
+
+  app.use(errorHandler);
 
   return app;
 };
