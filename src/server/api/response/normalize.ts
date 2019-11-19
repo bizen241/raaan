@@ -222,13 +222,13 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (_, store, e
   if (exercise === undefined) {
     throw createError(500, "exerciseSummary.exercise is not defined");
   }
-  if (exercise.draft === undefined) {
-    throw createError(500, "exerciseSummary.draft is not defined");
-  }
 
-  const { author, authorId, lang, title, description, isDraft, isPrivate, isLocked } = exercise;
+  const { author, authorId, draft, lang, title, description, isDraft, isPrivate, isLocked } = exercise;
   if (author === undefined) {
     throw createError(500, "exerciseSummary.exercise.author is not defined");
+  }
+  if (draft === undefined) {
+    throw createError(500, "exerciseSummary.exercise.draft is not defined");
   }
 
   store.ExerciseSummary[id] = {
@@ -243,7 +243,7 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (_, store, e
     upvoteCount,
     submitCount,
     isDraft,
-    isEditing: !exercise.draft.isMerged,
+    isEditing: !draft.isMerged,
     isPrivate,
     isLocked
   };
@@ -550,7 +550,11 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context
     remindAt: remindAt.getTime()
   };
 
-  normalizeEntity(context, store, exercise.summary);
+  if (exercise.summary !== undefined) {
+    exercise.summary.exercise = exercise;
+
+    normalizeEntity(context, store, exercise.summary);
+  }
 };
 
 const normalizeSuggestion: Normalizer<SuggestionEntity> = (_, store, entity) => {
