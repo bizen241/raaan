@@ -22,5 +22,7 @@ export const updateExerciseSummarySubmittedCount = async (params: {
 
   await manager.save(exerciseSummary);
 
+  exerciseSummary.exercise = submission.exercise;
+
   return exerciseSummary;
 };

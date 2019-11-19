@@ -1,3 +1,4 @@
+import * as createError from "http-errors";
 import { createEntityTypeToObject, EntityType } from "../../../shared/api/entities";
 import { BaseEntityObject } from "../../../shared/api/entities/BaseEntityObject";
 import { EntityStore } from "../../../shared/api/response/get";
@@ -106,10 +107,13 @@ const normalizeContest: Normalizer<ContestEntity> = (_, store, entity) => {
   };
 };
 
-const normalizeContestEntry: Normalizer<ContestEntryEntity> = (_, store, entity) => {
-  const { id, contestId, participant, typeCount, time, accuracy } = entity;
-  if (participant === undefined || participant.user === undefined) {
-    return;
+const normalizeContestEntry: Normalizer<ContestEntryEntity> = (context, store, entity) => {
+  const { id, contest, contestId, participant, typeCount, time, accuracy } = entity;
+  if (participant === undefined) {
+    throw createError(500, "contestEntry.participant is not defined");
+  }
+  if (participant.user === undefined) {
+    throw createError(500, "contestEntry.participant.user is not defined");
   }
 
   store.ContestEntry[id] = {
@@ -120,6 +124,8 @@ const normalizeContestEntry: Normalizer<ContestEntryEntity> = (_, store, entity)
     time,
     accuracy
   };
+
+  normalizeEntity(context, store, contest);
 };
 
 const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) => {
@@ -213,13 +219,16 @@ const normalizeExerciseReport: Normalizer<ExerciseReportEntity> = (_, store, ent
 
 const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (_, store, entity) => {
   const { id, exercise, exerciseId, tags = [], upvoteCount, submittedCount: submitCount } = entity;
-  if (exercise === undefined || exercise.draft === undefined) {
-    return;
+  if (exercise === undefined) {
+    throw createError(500, "exerciseSummary.exercise is not defined");
+  }
+  if (exercise.draft === undefined) {
+    throw createError(500, "exerciseSummary.draft is not defined");
   }
 
   const { author, authorId, lang, title, description, isDraft, isPrivate, isLocked } = exercise;
   if (author === undefined) {
-    return;
+    throw createError(500, "exerciseSummary.exercise.author is not defined");
   }
 
   store.ExerciseSummary[id] = {
@@ -518,8 +527,11 @@ const normalizeSubmission: Normalizer<SubmissionEntity> = (_, store, entity) => 
 
 const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context, store, entity) => {
   const { id, submitterId, exerciseId, exercise, latest, submitCount, typeCount, isRepeating, remindAt } = entity;
-  if (exercise === undefined || exercise.summary === undefined || latest === undefined) {
-    return;
+  if (exercise === undefined) {
+    throw createError(500, "submissionSummary.exercise is not defined");
+  }
+  if (latest === undefined) {
+    throw createError(500, "submissionSummary.latest is not defined");
   }
 
   store.SubmissionSummary[id] = {
@@ -772,7 +784,7 @@ const normalizeUserSession: Normalizer<UserSessionEntity> = (context, store, ent
 const normalizeUserSummary: Normalizer<UserSummaryEntity> = (_, store, entity) => {
   const { id, user, userId, submitCount, typeCount } = entity;
   if (user === undefined) {
-    return;
+    throw createError(500, "userSummary.user is not defined");
   }
 
   store.UserSummary[id] = {

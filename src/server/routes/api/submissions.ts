@@ -17,7 +17,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, _, current
 
   await getManager().transaction(async manager => {
     const exercise = await manager.findOne(ExerciseEntity, exerciseId, {
-      relations: ["author", "summary"]
+      relations: ["author", "summary", "draft"]
     });
     if (exercise === undefined) {
       throw createError(400);

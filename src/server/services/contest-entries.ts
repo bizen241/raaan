@@ -35,12 +35,15 @@ export const updateContestEntry = async (params: {
   }
 
   const contestEntry = await manager.findOne(ContestEntryEntity, {
-    contest: {
-      id: contestId
+    where: {
+      contest: {
+        id: contestId
+      },
+      participant: {
+        id: groupMember.id
+      }
     },
-    participant: {
-      id: groupMember.id
-    }
+    relations: ["participant", "participant.user"]
   });
 
   if (contestEntry === undefined) {
@@ -49,6 +52,8 @@ export const updateContestEntry = async (params: {
       time: submission.time,
       typeCount: submission.typeCount
     });
+
+    await manager.save(newContestEntry);
 
     return newContestEntry;
   } else {

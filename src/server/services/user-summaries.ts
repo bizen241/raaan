@@ -10,7 +10,9 @@ export const updateUserSummarySubmitCount = async (params: {
   const { manager, currentUser, submission } = params;
   const { typeCount } = submission;
 
-  const userSummary = await manager.findOne(UserSummaryEntity, currentUser.summaryId);
+  const userSummary = await manager.findOne(UserSummaryEntity, currentUser.summaryId, {
+    relations: ["user"]
+  });
   if (userSummary === undefined) {
     throw createError(500);
   }
