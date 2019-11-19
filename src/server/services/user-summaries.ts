@@ -1,12 +1,15 @@
 import * as createError from "http-errors";
 import { EntityManager } from "typeorm";
-import { UserEntity, UserSummaryEntity } from "../database/entities";
+import { SubmissionEntity, UserEntity, UserSummaryEntity } from "../database/entities";
 
-export const updateUserSummarySubmitCount = async (
-  manager: EntityManager,
-  currentUser: UserEntity,
-  typeCount: number
-) => {
+export const updateUserSummarySubmitCount = async (params: {
+  manager: EntityManager;
+  currentUser: UserEntity;
+  submission: SubmissionEntity;
+}) => {
+  const { manager, currentUser, submission } = params;
+  const { typeCount } = submission;
+
   const userSummary = await manager.findOne(UserSummaryEntity, currentUser.summaryId);
   if (userSummary === undefined) {
     throw createError(500);

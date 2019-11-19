@@ -1,4 +1,4 @@
-import { Question } from "../api/entities";
+import { AttemptResult, Question } from "../api/entities";
 import { compileQuestions } from "./compiler";
 
 export const getMinMaxTypeCount = (questions: Question[] = []) => {
@@ -35,3 +35,5 @@ export const getMinMaxTypeCount = (questions: Question[] = []) => {
     minTypeCount
   };
 };
+
+export const getScore = ({ accuracy, time, typeCount }: AttemptResult) => (typeCount / (time / 1000)) * 60 * accuracy;

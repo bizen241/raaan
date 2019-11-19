@@ -6,31 +6,28 @@ import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
 import { ExerciseEntity, SubmissionEntity } from "../../database/entities";
-import { updateExerciseDiarySubmittedCount } from "../../services/exercise-diaries";
-import { updateExerciseSummarySubmittedCount } from "../../services/exercise-summaries";
-import { updateSubmissionSummarySubmitCount } from "../../services/submission-summaries";
-import { updateUserDiarySubmitCount, updateUserDiarySubmittedCount } from "../../services/user-diaries";
-import { updateUserSummarySubmitCount } from "../../services/user-summaries";
+import { updateContestEntry } from "../../services/contest-entries";
+import { updateRelatedEntities } from "../../services/submissions";
 
-export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { exerciseId, typeCount, time, accuracy }: Params<Submission> = req.body;
+export const POST: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
+  const { exerciseId, contestId, typeCount, time, accuracy }: Params<Submission> = req.body;
   if (exerciseId === undefined || typeCount === undefined || time === undefined || accuracy === undefined) {
-    return next(createError(400));
+    throw createError(400);
   }
 
   await getManager().transaction(async manager => {
     const exercise = await manager.findOne(ExerciseEntity, exerciseId, {
-      relations: ["author", "summary", "summary.tags"]
+      relations: ["author", "summary"]
     });
     if (exercise === undefined) {
-      return next(createError(400));
+      throw createError(400);
     }
     if (exercise.author === undefined || exercise.summary === undefined) {
-      return next(createError(500));
+      throw createError(500);
     }
 
     if (typeCount > exercise.summary.maxTypeCount) {
-      return next(createError(400));
+      throw createError(400);
     }
 
     const submission = await manager.save(
@@ -41,22 +38,24 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
       })
     );
 
-    const submittedAt = submission.createdAt;
-    const submittedDate = `${submittedAt.getFullYear()}-${submittedAt.getMonth() + 1}-${submittedAt.getDate()}`;
+    const updatedEntities = await updateRelatedEntities({
+      manager,
+      currentUser,
+      submission
+    });
 
-    const submissionSummary = await updateSubmissionSummarySubmitCount(manager, currentUser, exercise, submission);
-    const userSummary = await updateUserSummarySubmitCount(manager, currentUser, typeCount);
-    const userDiary = await updateUserDiarySubmitCount(manager, currentUser, typeCount, submittedDate);
-    const exerciseSummary = await updateExerciseSummarySubmittedCount(manager, exercise.summary, typeCount);
-    const exerciseDiary = await updateExerciseDiarySubmittedCount(manager, exercise, typeCount, submittedDate);
-    if (exercise.authorId !== currentUser.id) {
-      await updateUserDiarySubmittedCount(manager, exercise.author, typeCount, submittedDate);
+    if (contestId !== undefined) {
+      const contestEntry = await updateContestEntry({
+        manager,
+        currentUser,
+        submission,
+        contestId
+      });
+
+      updatedEntities.push(contestEntry);
     }
 
-    submissionSummary.exercise = exercise;
-    exerciseSummary.exercise = exercise;
-
-    responseFindResult(req, res, submissionSummary, userSummary, userDiary, exerciseSummary, exerciseDiary);
+    responseFindResult(req, res, ...updatedEntities);
   });
 });
 

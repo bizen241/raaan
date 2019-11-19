@@ -1,12 +1,19 @@
+import * as createError from "http-errors";
 import { EntityManager } from "typeorm";
-import { ExerciseDiaryEntity, ExerciseEntity } from "../database/entities";
+import { ExerciseDiaryEntity, SubmissionEntity } from "../database/entities";
+import { getSubmittedDateString } from "./submissions";
 
-export const updateExerciseDiarySubmittedCount = async (
-  manager: EntityManager,
-  exercise: ExerciseEntity,
-  typeCount: number,
-  submittedDate: string
-) => {
+export const updateExerciseDiarySubmittedCount = async (params: {
+  manager: EntityManager;
+  submission: SubmissionEntity;
+}) => {
+  const { manager, submission } = params;
+  const { exercise, typeCount } = submission;
+  const submittedDate = getSubmittedDateString(submission);
+  if (exercise === undefined) {
+    throw createError(500, "submission.exercise is not defined");
+  }
+
   const exerciseDiary = await manager.findOne(ExerciseDiaryEntity, {
     exerciseId: exercise.id,
     date: submittedDate

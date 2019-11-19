@@ -1,19 +1,25 @@
+import * as createError from "http-errors";
 import { EntityManager } from "typeorm";
-import { ExerciseEntity, SubmissionEntity, SubmissionSummaryEntity, UserEntity } from "../database/entities";
+import { SubmissionEntity, SubmissionSummaryEntity, UserEntity } from "../database/entities";
 
-export const updateSubmissionSummarySubmitCount = async (
-  manager: EntityManager,
-  currentUser: UserEntity,
-  exercise: ExerciseEntity,
-  submission: SubmissionEntity
-) => {
+export const updateSubmissionSummarySubmitCount = async (params: {
+  manager: EntityManager;
+  currentUser: UserEntity;
+  submission: SubmissionEntity;
+}) => {
+  const { manager, currentUser, submission } = params;
+  const { exercise } = submission;
+  if (exercise === undefined) {
+    throw createError(500, "submission.exercise is not defined");
+  }
+
   const submissionSummary = await manager.findOne(
     SubmissionSummaryEntity,
     {
       submitter: currentUser,
       exercise
     },
-    { relations: ["latest"] }
+    { relations: ["exercise", "latest"] }
   );
 
   if (submissionSummary === undefined) {
@@ -28,7 +34,7 @@ export const updateSubmissionSummarySubmitCount = async (
   } else {
     const { latest } = submissionSummary;
     if (latest === undefined) {
-      throw new Error("submissionSummary.latest is not defined");
+      throw createError(500, "submissionSummary.latest is not defined");
     }
 
     submissionSummary.latest = submission;
