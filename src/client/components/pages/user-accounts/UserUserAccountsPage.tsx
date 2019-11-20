@@ -14,13 +14,16 @@ export const UserUserAccountsPage = React.memo(() => {
   const onToggleLogoutDialog = useCallback(() => toggleLogoutDialog(s => !s), []);
   const onToggleDeleteAccountDialog = useCallback(() => toggleDeleteAccountDialog(s => !s), []);
 
-  if (currentUser.permission !== "Guest") {
+  const isGuest = currentUser.permission === "Guest";
+  const isOwner = currentUser.permission === "Owner";
+
+  if (!isGuest) {
     return (
       <Page title="アカウント">
         <Button label="プロフィールを編集" to={`/users/${currentUser.id}/edit`} />
         <Button label="セッション一覧" to="/user/user-sessions" />
         <Button label={<Message id="logout" />} labelColor="error" onClick={onToggleLogoutDialog} />
-        <Button label="アカウントを削除" labelColor="error" onClick={onToggleDeleteAccountDialog} />
+        {!isOwner && <Button label="アカウントを削除" labelColor="error" onClick={onToggleDeleteAccountDialog} />}
         <LogoutDialog isOpen={isLogoutDialogOpen} onClose={onToggleLogoutDialog} />
         <DeleteAccountDialog isOpen={isDeleteAccountDialogOpen} onClose={onToggleDeleteAccountDialog} />
       </Page>

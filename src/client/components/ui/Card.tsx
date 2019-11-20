@@ -3,8 +3,8 @@ import * as React from "react";
 import { Column } from "./Column";
 
 export const Card = React.memo<{
-  icon: React.ReactNode;
-  title: React.ReactNode;
+  icon?: React.ReactNode;
+  title?: React.ReactNode;
   action?: React.ReactNode;
   padding?: boolean;
   children: React.ReactNode;
@@ -14,11 +14,13 @@ export const Card = React.memo<{
   return (
     <Column pb={1}>
       <MuiCard>
-        <CardHeader
-          avatar={<Avatar className={cardClasses.avatar}>{icon}</Avatar>}
-          title={<Typography>{title}</Typography>}
-          action={action}
-        />
+        {(icon !== undefined || title !== undefined) && (
+          <CardHeader
+            avatar={<Avatar className={cardClasses.avatar}>{icon}</Avatar>}
+            title={<Typography>{title}</Typography>}
+            action={action}
+          />
+        )}
         {padding ? (
           <CardContent>
             <Column>{children}</Column>

@@ -15,7 +15,9 @@ export class GroupMemberEntity extends BaseEntityClass {
   @RelationId((groupMember: GroupMemberEntity) => groupMember.group)
   groupId!: string;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, {
+    onDelete: "CASCADE"
+  })
   user?: UserEntity;
   @RelationId((groupMember: GroupMemberEntity) => groupMember.user)
   userId!: string;
