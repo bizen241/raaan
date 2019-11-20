@@ -1,18 +1,15 @@
 import { Typography } from "@material-ui/core";
 import { Delete, Warning } from "@material-ui/icons";
-import { push } from "connected-react-router";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
-import { useDispatch } from "react-redux";
 import { deleteCurrentUser } from "../../../api/client";
 import { createDialog } from "../../../enhancers/createDialog";
 import { UserContext } from "../../project/Context";
 import { Button, Card, DialogContent, TextField } from "../../ui";
 
-export const DeleteAccountDialog = createDialog<{}>(
+export const DeleteAccountDialog = createDialog(
   React.memo(({ onClose }) => {
     const currentUser = useContext(UserContext);
-    const dispatch = useDispatch();
 
     const [userName, setUserName] = useState("");
     const [isFailed, setStatus] = useState(false);
@@ -21,15 +18,11 @@ export const DeleteAccountDialog = createDialog<{}>(
       try {
         await deleteCurrentUser();
 
-        dispatch(push("/"));
+        location.reload();
       } catch (e) {
         setStatus(true);
       }
     }, []);
-
-    if (isFailed) {
-      return null;
-    }
 
     return (
       <DialogContent title="アカウントの削除" onClose={onClose}>
