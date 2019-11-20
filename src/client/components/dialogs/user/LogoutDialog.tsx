@@ -10,7 +10,7 @@ import { UserContext } from "../../project/Context";
 import { Message } from "../../project/Message";
 import { Button, Card, DialogContent } from "../../ui";
 
-export const LogoutDialog = createDialog(
+export const LogoutDialog = createDialog<{}>(
   React.memo(({ onClose }) => {
     const currentUser = useContext(UserContext);
 

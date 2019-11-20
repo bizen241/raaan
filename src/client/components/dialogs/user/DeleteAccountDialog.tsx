@@ -7,7 +7,7 @@ import { createDialog } from "../../../enhancers/createDialog";
 import { UserContext } from "../../project/Context";
 import { Button, Card, DialogContent, TextField } from "../../ui";
 
-export const DeleteAccountDialog = createDialog(
+export const DeleteAccountDialog = createDialog<{}>(
   React.memo(({ onClose }) => {
     const currentUser = useContext(UserContext);
 

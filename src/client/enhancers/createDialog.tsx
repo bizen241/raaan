@@ -7,8 +7,8 @@ export interface DialogProps {
   onClose: () => void;
 }
 
-export const createDialog = <P extends {} = {}>(Content: React.ComponentType<P & DialogProps>) =>
-  React.memo<P & DialogProps>(props => {
+export const createDialog = <P extends {}>(Content: React.ComponentType<DialogProps & P>) =>
+  React.memo<DialogProps & P>(props => {
     const { isOpen, onClose } = props;
 
     const classes = useStyles();
