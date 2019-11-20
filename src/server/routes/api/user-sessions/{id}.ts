@@ -3,6 +3,7 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
+import { setClearSiteData } from "../../../auth";
 import { UserSessionEntity } from "../../../database/entities";
 
 export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
@@ -23,6 +24,10 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
   }
 
   await manager.remove(userSession);
+
+  if (userSession.sessionId === req.sessionID) {
+    setClearSiteData(res);
+  }
 
   responseFindResult(req, res, userSession);
 });

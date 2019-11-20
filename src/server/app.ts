@@ -10,7 +10,6 @@ import { errorHandler } from "./error";
 import { useLimiter } from "./limiter";
 import { authRouter } from "./routes/auth";
 import { fallbackRouter } from "./routes/fallback";
-import { logoutRouter } from "./routes/logout";
 import { useSession } from "./session";
 
 export const createApp = (env: Env, app: express.Express = express()) => {
@@ -38,7 +37,6 @@ export const createApp = (env: Env, app: express.Express = express()) => {
   useApi(env, app);
 
   app.use("/auth", authRouter);
-  app.use("/logout", logoutRouter);
   app.use("*", fallbackRouter);
 
   app.use(errorHandler);

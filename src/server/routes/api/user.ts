@@ -3,8 +3,8 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult } from "../../api/response";
+import { setClearSiteData } from "../../auth";
 import { UserEntity } from "../../database/entities";
-import { setClearSiteData } from "../logout";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const user = await getManager().findOne(UserEntity, currentUser.id, {

@@ -1,4 +1,4 @@
-import { Express } from "express";
+import { Express, Response } from "express";
 import * as createError from "http-errors";
 import * as passport from "passport";
 import { getManager } from "typeorm";
@@ -27,4 +27,8 @@ export const useAuth = (env: Env, app: Express) => {
 
   app.use(passport.initialize());
   app.use(passport.session());
+};
+
+export const setClearSiteData = (res: Response) => {
+  res.setHeader("Clear-Site-Data", `"cache", "cookies", "storage", "executionContexts"`);
 };
