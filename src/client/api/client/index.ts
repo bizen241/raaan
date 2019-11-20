@@ -10,6 +10,10 @@ export const getCurrentUser = () => {
   return request<Partial<EntityStore>>("get", "user");
 };
 
+export const deleteCurrentUser = () => {
+  return request<Partial<EntityStore>>("delete", "user");
+};
+
 export const getEntity = (entityType: EntityType, entityId: string) => {
   return request<Partial<EntityStore>>("get", `${endpoints[entityType]}/${entityId}`);
 };
