@@ -70,6 +70,7 @@ import { UserFollowersPage } from "../pages/user-follows/UserFollowersPage";
 import { UserUserFollowsPage } from "../pages/user-follows/UserUserFollowsPage";
 import { UserUserMessagesPage } from "../pages/user-messages/UserUserMessagesPage";
 import { UserUserSessionsPage } from "../pages/user-sessions/UserUserSessionsPage";
+import { UserUserPage } from "../pages/user/UserUserPage";
 import { EditUserPage } from "../pages/users/EditUserPage";
 import { UserPage } from "../pages/users/UserPage";
 import { UsersPage } from "../pages/users/UsersPage";
@@ -90,13 +91,11 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/" component={HomePage} />
         <Route exact={true} path="/app" component={AppPage} />
 
-        <Route exact={true} path="/community" component={CommunityPage} />
-        <Route exact={true} path="/reports" component={ReportsHomePage} />
-        <Route exact={true} path="/objections" component={ObjectionsHomePage} />
-
-        <Route exact={true} path="/user/user-config" component={UserUserConfigPage} />
+        <Route exact={true} path="/user" component={UserUserPage} />
         <Route exact={true} path="/user/user-accounts" component={UserUserAccountsPage} />
         <Route exact={true} path="/user/user-sessions" component={UserUserSessionsPage} />
+
+        <Route exact={true} path="/user/user-config" component={UserUserConfigPage} />
         <Route exact={true} path="/user/user-messages" component={UserUserMessagesPage} />
 
         <Route exact={true} path="/user/submissions" component={UserSubmissionsPage} />
@@ -170,10 +169,16 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/contests/:id/" component={ContestPage} />
         <Route exact={true} path="/contests/:id/edit" component={EditContestPage} />
 
+        <Route exact={true} path="/community" component={CommunityPage} />
+
+        <Route exact={true} path="/reports" component={ReportsHomePage} />
+
         <Route exact={true} path="/exercise-reports" component={ExerciseReportsPage} />
         <Route exact={true} path="/exercise-reports/edit" component={EditExerciseReportsPage} />
         <Route exact={true} path="/exercise-reports/:id" component={ExerciseReportPage} />
         <Route exact={true} path="/exercise-reports/:id/edit" component={EditExerciseReportPage} />
+
+        <Route exact={true} path="/objections" component={ObjectionsHomePage} />
 
         <Route exact={true} path="/exercise-objections" component={ExerciseObjectionsPage} />
         <Route exact={true} path="/exercise-objections/edit" component={EditExerciseObjectionsPage} />

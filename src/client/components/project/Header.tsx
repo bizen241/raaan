@@ -43,7 +43,7 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
                 <Mail className={classes.leftIcon} />
                 <Typography>通知</Typography>
               </MenuItem>
-              <MenuItem disabled={pathname === "/user/user-accounts"} component={Link} to="/user/user-accounts">
+              <MenuItem disabled={pathname === "/user"} component={Link} to="/user">
                 <AccountCircle className={classes.leftIcon} />
                 <Typography>
                   <Message id="account" />
