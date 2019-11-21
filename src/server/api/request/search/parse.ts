@@ -365,10 +365,11 @@ const parseUser: Parser<User> = query => {
 };
 
 const parseUserAccount: Parser<UserAccount> = query => {
-  const { provider, accountId } = query;
+  const { userId, provider, accountId } = query;
 
   return {
     ...base(query),
+    userId,
     provider: provider as AuthProviderName,
     accountId
   };
