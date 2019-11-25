@@ -3,6 +3,7 @@ import * as createError from "http-errors";
 import * as passport from "passport";
 import { getManager } from "typeorm";
 import { UAParser } from "ua-parser-js";
+import { AuthStrategyFailureReason } from "../auth/strategies";
 import { UserEntity, UserSessionEntity } from "../database/entities";
 import { getGuestUser } from "../database/setup/guest";
 
@@ -34,9 +35,16 @@ authRouter.get("/:provider/callback", (req, res, next) => {
     {
       failureRedirect: "/"
     },
-    async (authError: Error | null, user: UserEntity) => {
-      if (authError || req.session === undefined) {
+    async (authError: Error | null, user: UserEntity | false, reason?: AuthStrategyFailureReason) => {
+      if (authError == null || req.session === undefined) {
         return next(createError(500));
+      }
+      if (user === false) {
+        if (reason !== undefined && reason.provider !== undefined) {
+          return res.redirect(`/auth/${reason.provider}`);
+        } else {
+          return next(createError(500));
+        }
       }
 
       req.session.regenerate(async (sessionError?: Error) => {

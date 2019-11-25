@@ -20,14 +20,20 @@ export const createGitHubStrategy = (clientId: string, clientSecret: string) => 
           throw createError(500);
         }
 
-        const user = await saveUser(req.user, {
+        const result = await saveUser(req.user, {
           provider: "github",
           accountId: id,
           name: username || "",
           email: email.value
         });
 
-        done(null, user);
+        if (typeof result === "string") {
+          done(null, false, {
+            provider: result
+          });
+        } else {
+          done(null, result);
+        }
       } catch (e) {
         done(e);
       }

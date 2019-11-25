@@ -1,3 +1,4 @@
+import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { AuthProviderName } from "../../shared/auth";
 import { UserAccountEntity, UserConfigEntity, UserEntity, UserSummaryEntity } from "../database/entities";
@@ -23,11 +24,19 @@ export const saveUser = async (_: UserEntity | undefined, params: AuthParams) =>
     }
   );
 
-  if (account === undefined) {
-    return createUser(params);
-  } else {
+  if (account !== undefined) {
     return updateUser(account, params);
   }
+
+  const differentProviderAccount = await getManager().findOne(UserAccountEntity, {
+    email: params.email
+  });
+
+  if (differentProviderAccount !== undefined) {
+    return differentProviderAccount.provider;
+  }
+
+  return createUser(params);
 };
 
 const createUser = async ({ provider, accountId, name, email }: AuthParams) => {
@@ -46,6 +55,10 @@ const updateUser = async (account: UserAccountEntity, { email }: AuthParams) => 
     account.email = email;
 
     await getManager().save(account);
+  }
+
+  if (account.user === undefined) {
+    throw createError(500);
   }
 
   return account.user;
