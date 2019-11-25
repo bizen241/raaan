@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import * as createError from "http-errors";
 import * as passport from "passport";
 import { getManager } from "typeorm";
@@ -15,14 +15,13 @@ authRouter.get("/:provider", async (req, res, next) => {
   if (req.session === undefined || req.sessionID === undefined) {
     return next(createError(500));
   }
+
   if (req.user !== undefined) {
-    return res.redirect("/");
+    const guestUser = await getGuestUser();
+    const newUserSession = new UserSessionEntity(guestUser, req.sessionID);
+
+    await getManager().save(newUserSession);
   }
-
-  const guestUser = await getGuestUser();
-  const newUserSession = new UserSessionEntity(guestUser, req.sessionID);
-
-  await getManager().save(newUserSession);
 
   passport.authenticate(provider)(req, res, next);
 });
@@ -48,32 +47,40 @@ authRouter.get("/:provider/callback", (req, res, next) => {
       }
 
       req.session.regenerate(async (sessionError?: Error) => {
-        if (sessionError || req.session === undefined || req.sessionID === undefined) {
+        if (sessionError || req.session === undefined) {
           return next(createError(500));
         }
 
-        const userAgentParser = new UAParser(req.headers["user-agent"]);
-        const { type: deviceType, vendor, model } = userAgentParser.getDevice();
-        const os = userAgentParser.getOS();
-        const browser = userAgentParser.getBrowser();
-
-        const newUserSession = new UserSessionEntity(user, req.sessionID, {
-          deviceType: deviceType || "desktop",
-          deviceName: vendor !== undefined && model !== undefined ? `${vendor} ${model.slice(0, 100)}` : "",
-          os: os.name || "",
-          browser: browser.name || ""
-        });
-
-        await getManager().save(newUserSession);
-
-        req.login(user, (loginError: Error | null) => {
-          if (loginError) {
-            return next(createError(500));
-          }
-
-          res.redirect("/");
-        });
+        await login(req, res, next, user);
       });
     }
   )(req, res, next);
 });
+
+const login = async (req: Request, res: Response, next: NextFunction, user: UserEntity) => {
+  if (req.sessionID === undefined) {
+    return next(createError(500));
+  }
+
+  const userAgentParser = new UAParser(req.headers["user-agent"]);
+  const { type: deviceType, vendor, model } = userAgentParser.getDevice();
+  const os = userAgentParser.getOS();
+  const browser = userAgentParser.getBrowser();
+
+  const newUserSession = new UserSessionEntity(user, req.sessionID, {
+    deviceType: deviceType || "desktop",
+    deviceName: vendor !== undefined && model !== undefined ? `${vendor} ${model.slice(0, 100)}` : "",
+    os: os.name || "",
+    browser: browser.name || ""
+  });
+
+  await getManager().save(newUserSession);
+
+  req.login(user, (loginError: Error | null) => {
+    if (loginError) {
+      return next(createError(500));
+    }
+
+    res.redirect("/");
+  });
+};
