@@ -22,9 +22,7 @@ export class UserAccountEntity extends BaseEntityClass {
   @Column()
   accountId: string;
 
-  @Column({
-    unique: true
-  })
+  @Column()
   email: string;
 
   constructor(provider: AuthProviderName, accountId: string, email: string) {
