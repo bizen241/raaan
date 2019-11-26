@@ -657,20 +657,21 @@ const normalizeTagSummary: Normalizer<TagSummaryEntity> = (_, store, entity) => 
 };
 
 const normalizeUser: Normalizer<UserEntity> = (context, store, entity) => {
-  const { id, config, configId, summary, summaryId, name, permission } = entity;
+  const { id, account, config, summary, summaryId, name, permission } = entity;
+  if (summary === undefined) {
+    throw createError(500, "user.summary is not defined");
+  }
 
   store.User[id] = {
     ...base(entity),
     name,
     permission,
-    configId,
     summaryId
   };
 
-  if (summary !== undefined) {
-    summary.user = entity;
-  }
+  summary.user = entity;
 
+  normalizeEntity(context, store, account);
   normalizeEntity(context, store, config);
   normalizeEntity(context, store, summary);
 };
