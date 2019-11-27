@@ -2,9 +2,9 @@ import { push } from "connected-react-router";
 import { HTTPError } from "ky";
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { User } from "../../shared/api/entities";
+import { User, UserAccount, UserConfig } from "../../shared/api/entities";
 import { getCurrentUser } from "../api/client";
-import { guestUser } from "../components/project/Context";
+import { guestUser, guestUserAccount, guestUserConfig } from "../components/project/Context";
 import { install } from "../install";
 import { ActionUnion, AsyncAction, createAction } from "./action";
 import { isLocalOnly } from "./api";
@@ -17,7 +17,8 @@ export enum AppActionType {
 }
 
 const appSyncActions = {
-  ready: (user: Pick<User, "id" | "configId">) => createAction(AppActionType.Ready, { user }),
+  ready: (user: User, account: UserAccount, config: UserConfig) =>
+    createAction(AppActionType.Ready, { user, account, config }),
   network: (isOnline: boolean) => createAction(AppActionType.Network, { isOnline }),
   updateFound: () => createAction(AppActionType.UpdateFound)
 };
@@ -25,7 +26,8 @@ const appSyncActions = {
 export type AppActions = ActionUnion<typeof appSyncActions>;
 
 const initialize = (): AsyncAction => async (dispatch, getState) => {
-  const previousUser = getState().app.user;
+  const state = getState();
+  const appState = state.app;
 
   if (process.env.NODE_ENV === "production") {
     install(() => dispatch(appSyncActions.updateFound()));
@@ -38,27 +40,36 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
 
   try {
     const result = await getCurrentUser();
-    const currentUser = result.User && Object.values(result.User)[0];
+    const nextUser = result.User && Object.values(result.User)[0];
+    const nextUserAccount = result.UserAccount && Object.values(result.UserAccount)[0];
+    const nextUserConfig = result.UserConfig && Object.values(result.UserConfig)[0];
 
-    if (currentUser === undefined) {
+    if (nextUser === undefined || nextUserAccount === undefined || nextUserConfig === undefined) {
       throw new Error();
     }
 
-    if (currentUser.id !== previousUser.id) {
+    if (nextUser.id !== appState.userId) {
       dispatch(push("/"));
     }
 
     dispatch(cacheActions.get(result));
-    dispatch(appSyncActions.ready(currentUser));
+    dispatch(appSyncActions.ready(nextUser, nextUserAccount, nextUserConfig));
   } catch (e) {
-    if (e instanceof HTTPError && e.response.status === 403) {
-      if (isLocalOnly(previousUser.id)) {
-        dispatch(appSyncActions.ready(previousUser));
-      } else {
-        dispatch(appSyncActions.ready(guestUser));
-      }
+    if (e instanceof HTTPError && e.response.status === 403 && !isLocalOnly(appState.userId)) {
+      localStorage.clear();
+      location.reload();
+
+      return;
+    }
+
+    const prevUser = state.cache.get.User[appState.userId];
+    const prevUserAccount = state.cache.get.UserAccount[appState.userAccountId];
+    const prevUserConfig = state.cache.get.UserConfig[appState.userConfigId];
+
+    if (prevUser !== undefined && prevUserAccount !== undefined && prevUserConfig !== undefined) {
+      dispatch(appSyncActions.ready(prevUser, prevUserAccount, prevUserConfig));
     } else {
-      dispatch(appSyncActions.ready(previousUser));
+      dispatch(appSyncActions.ready(guestUser, guestUserAccount, guestUserConfig));
     }
   }
 };
@@ -69,20 +80,18 @@ export const appActions = {
 };
 
 export type AppState = {
-  user: {
-    id: string;
-    configId: string;
-  };
+  userId: string;
+  userConfigId: string;
+  userAccountId: string;
   isReady: boolean;
   isOnline: boolean;
   hasUpdate: boolean;
 };
 
 export const initialAppState: AppState = {
-  user: {
-    id: guestUser.id,
-    configId: guestUser.configId
-  },
+  userId: guestUser.id,
+  userConfigId: guestUserConfig.id,
+  userAccountId: guestUserAccount.id,
   isReady: false,
   isOnline: true,
   hasUpdate: false
@@ -91,14 +100,13 @@ export const initialAppState: AppState = {
 export const appReducer: Reducer<AppState, Actions> = (state = initialAppState, action) => {
   switch (action.type) {
     case AppActionType.Ready: {
-      const { user } = action.payload;
+      const { user, config, account } = action.payload;
 
       return {
         ...state,
-        user: {
-          id: user.id,
-          configId: user.configId
-        },
+        userId: user.id,
+        userConfigId: config.id,
+        useraccountId: account.id,
         isReady: true,
         isOnline: navigator.onLine,
         hasUpdate: false

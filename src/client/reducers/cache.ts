@@ -5,7 +5,7 @@ import { EntityStore } from "../../shared/api/response/get";
 import { SearchResponse } from "../../shared/api/response/search";
 import { stringifyParams } from "../api/request/search";
 import { IdMap, mergeSearchResultStore, SearchResultMap, SearchResultStore } from "../api/response/search";
-import { guestUser, guestUserConfig } from "../components/project/Context";
+import { guestUser, guestUserAccount, guestUserConfig } from "../components/project/Context";
 import { ActionUnion, createAction } from "./action";
 
 export enum CacheActionType {
@@ -51,6 +51,9 @@ export const initialCacheState: CacheState = {
     ...createEntityTypeToObject(),
     User: {
       [guestUser.id]: guestUser
+    },
+    UserAccount: {
+      [guestUserAccount.id]: guestUserAccount
     },
     UserConfig: {
       [guestUserConfig.id]: guestUserConfig
