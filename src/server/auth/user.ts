@@ -10,7 +10,13 @@ interface AuthParams {
   email: string;
 }
 
-export const saveUser = async (_: UserEntity | undefined, params: AuthParams) => {
+export class AuthError extends Error {
+  constructor(public provider: AuthProviderName) {
+    super();
+  }
+}
+
+export const saveUser = async (user: UserEntity | undefined, params: AuthParams) => {
   const { provider, accountId } = params;
 
   const account = await getManager().findOne(
@@ -25,7 +31,11 @@ export const saveUser = async (_: UserEntity | undefined, params: AuthParams) =>
   );
 
   if (account !== undefined) {
-    return updateUser(account, params);
+    if (user !== undefined) {
+      throw createError(403);
+    }
+
+    return updateUser(user, account, params);
   }
 
   const differentProviderAccount = await getManager().findOne(UserAccountEntity, {
@@ -33,7 +43,7 @@ export const saveUser = async (_: UserEntity | undefined, params: AuthParams) =>
   });
 
   if (differentProviderAccount !== undefined) {
-    return differentProviderAccount.provider;
+    throw new AuthError(differentProviderAccount.provider);
   }
 
   return createUser(params);
@@ -50,7 +60,19 @@ const createUser = async ({ provider, accountId, name, email }: AuthParams) => {
   return savedUser;
 };
 
-const updateUser = async (account: UserAccountEntity, { email }: AuthParams) => {
+const updateUser = async (
+  user: UserEntity | undefined,
+  account: UserAccountEntity,
+  { provider, accountId, email }: AuthParams
+) => {
+  if (user !== undefined) {
+    account.provider = provider;
+    account.accountId = accountId;
+    account.email = email;
+
+    await getManager().save(account);
+  }
+
   if (account.email !== email) {
     account.email = email;
 
