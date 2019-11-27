@@ -1,15 +1,15 @@
 import * as React from "react";
-import { useContext } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../reducers";
 import { UserConfigEditor } from "../../editor/UserConfigEditor";
-import { UserContext } from "../../project/Context";
 import { Page } from "../../ui/Page";
 
 export const UserUserConfigPage = React.memo(() => {
-  const currentUser = useContext(UserContext);
+  const currentUserConfigId = useSelector((state: RootState) => state.app.userConfigId);
 
   return (
     <Page title="設定">
-      <UserConfigEditor bufferId={currentUser.configId} />
+      <UserConfigEditor bufferId={currentUserConfigId} />
     </Page>
   );
 });

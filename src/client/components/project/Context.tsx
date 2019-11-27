@@ -5,6 +5,7 @@ import { Lang, User, UserAccount, UserConfig, UserSettings } from "../../../shar
 import { RootState } from "../../reducers";
 
 const guestUserId = Date.now().toString();
+const guestUserAccountId = Date.now().toString();
 const guestUserConfigId = Date.now().toString();
 
 export const guestUser: User = {
@@ -17,7 +18,7 @@ export const guestUser: User = {
   fetchedAt: 0
 };
 export const guestUserAccount: UserAccount = {
-  id: guestUserConfigId,
+  id: guestUserAccountId,
   provider: "github",
   accountId: "",
   email: "guest@example.com",

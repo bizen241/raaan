@@ -105,8 +105,8 @@ export const appReducer: Reducer<AppState, Actions> = (state = initialAppState, 
       return {
         ...state,
         userId: user.id,
+        userAccountId: account.id,
         userConfigId: config.id,
-        useraccountId: account.id,
         isReady: true,
         isOnline: navigator.onLine,
         hasUpdate: false
