@@ -21,8 +21,8 @@ export const UserUserPage = React.memo(() => {
     return (
       <Page title="アカウント">
         <Button label="プロフィールを編集" to={`/users/${currentUser.id}/edit`} />
+        <Button label="プロバイダの設定" to={`/user/user-account`} />
         <Button label="セッション一覧" to="/user/user-sessions" />
-        <Button label="プロバイダ一覧" to="/user/user-accounts" />
         <Button label={<Message id="logout" />} labelColor="error" onClick={onToggleLogoutDialog} />
         {!isOwner && <Button label="アカウントを削除" labelColor="error" onClick={onToggleDeleteAccountDialog} />}
         <LogoutDialog isOpen={isLogoutDialogOpen} onClose={onToggleLogoutDialog} />
