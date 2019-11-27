@@ -64,7 +64,7 @@ import { EditTagPage } from "../pages/tags/EditTagPage";
 import { EditTagsPage } from "../pages/tags/EditTagsPage";
 import { TagPage } from "../pages/tags/TagPage";
 import { TagsPage } from "../pages/tags/TagsPage";
-import { UserUserAccountsPage } from "../pages/user-accounts/UserUserAccountsPage";
+import { UserUserAccountPage } from "../pages/user-accounts/UserUserAccountPage";
 import { UserUserConfigPage } from "../pages/user-configs/UserUserConfigPage";
 import { UserFollowersPage } from "../pages/user-follows/UserFollowersPage";
 import { UserUserFollowsPage } from "../pages/user-follows/UserUserFollowsPage";
@@ -92,7 +92,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/app" component={AppPage} />
 
         <Route exact={true} path="/user" component={UserUserPage} />
-        <Route exact={true} path="/user/user-accounts" component={UserUserAccountsPage} />
+        <Route exact={true} path="/user/user-account" component={UserUserAccountPage} />
         <Route exact={true} path="/user/user-sessions" component={UserUserSessionsPage} />
 
         <Route exact={true} path="/user/user-config" component={UserUserConfigPage} />
