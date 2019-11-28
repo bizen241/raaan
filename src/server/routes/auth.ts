@@ -35,7 +35,7 @@ authRouter.get("/:provider/callback", (req, res, next) => {
       failureRedirect: "/"
     },
     async (authError: Error | null, user: UserEntity | false, reason?: AuthStrategyFailureReason) => {
-      if (authError == null || req.session === undefined) {
+      if (authError != null || req.session === undefined) {
         return next(createError(500));
       }
       if (user === false) {
@@ -44,6 +44,9 @@ authRouter.get("/:provider/callback", (req, res, next) => {
         } else {
           return next(createError(500));
         }
+      }
+      if (req.user !== undefined) {
+        return res.redirect("/user/user-account");
       }
 
       req.session.regenerate(async (sessionError?: Error) => {

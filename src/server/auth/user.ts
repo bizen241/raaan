@@ -19,7 +19,9 @@ export class AuthError extends Error {
 export const saveUser = async (user: UserEntity | undefined, params: AuthParams) => {
   const { provider, accountId } = params;
 
-  const account = await getManager().findOne(
+  const manager = getManager();
+
+  const targetAccount = await manager.findOne(
     UserAccountEntity,
     {
       provider,
@@ -29,24 +31,56 @@ export const saveUser = async (user: UserEntity | undefined, params: AuthParams)
       relations: ["user"]
     }
   );
+  const sameEmailAccount = await manager.findOne(
+    UserAccountEntity,
+    {
+      email: params.email
+    },
+    {
+      relations: ["user"]
+    }
+  );
 
-  if (account !== undefined) {
-    if (user !== undefined) {
+  if (user === undefined) {
+    if (targetAccount === undefined) {
+      if (sameEmailAccount === undefined) {
+        return createUser(params);
+      } else {
+        throw createError(403);
+      }
+    } else {
+      return updateUser(user, targetAccount, params);
+    }
+  }
+
+  const currentAccount = await manager.findOne(
+    UserAccountEntity,
+    {
+      user: {
+        id: user.id
+      }
+    },
+    {
+      relations: ["user"]
+    }
+  );
+  if (currentAccount === undefined) {
+    throw createError(500, "currentAccount is not defined");
+  }
+
+  if (targetAccount !== undefined) {
+    if (targetAccount.id === currentAccount.id) {
+      return updateUser(user, targetAccount, params);
+    } else {
       throw createError(403);
     }
-
-    return updateUser(user, account, params);
+  } else {
+    if (sameEmailAccount === undefined) {
+      return updateUser(user, currentAccount, params);
+    } else {
+      throw createError(403);
+    }
   }
-
-  const differentProviderAccount = await getManager().findOne(UserAccountEntity, {
-    email: params.email
-  });
-
-  if (differentProviderAccount !== undefined) {
-    throw new AuthError(differentProviderAccount.provider);
-  }
-
-  return createUser(params);
 };
 
 const createUser = async ({ provider, accountId, name, email }: AuthParams) => {
