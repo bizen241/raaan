@@ -5,7 +5,7 @@ import { useCallback, useContext, useState } from "react";
 import { UserConfig, UserSettings } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
-import { UploadUserConfigDialog } from "../dialogs/user/UploadUserConfigDialog";
+import { UploadUserConfigDialog } from "../dialogs/user-configs/UploadUserConfigDialog";
 import { defaultSettings, UserContext } from "../project/Context";
 import { Message } from "../project/Message";
 import { Button, Column, Select } from "../ui";

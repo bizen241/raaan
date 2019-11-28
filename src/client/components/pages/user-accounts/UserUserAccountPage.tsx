@@ -11,7 +11,7 @@ export const UserUserAccountPage = () => {
   return (
     <Page title="プロバイダの設定">
       <Button label="メールアドレスの更新" />
-      <Button label="プロバイダの変更" />
+      <Button label="プロバイダの変更" to="/user/user-account/edit" />
       <UserAccountViewer entityId={currentUserAccountId} />
     </Page>
   );
