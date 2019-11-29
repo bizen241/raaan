@@ -46,7 +46,7 @@ export const saveUser = async (user: UserEntity | undefined, params: AuthParams)
       if (sameEmailAccount === undefined) {
         return createUser(params);
       } else {
-        throw createError(403);
+        throw new AuthError(sameEmailAccount.provider);
       }
     } else {
       return updateUser(user, targetAccount, params);
@@ -75,7 +75,7 @@ export const saveUser = async (user: UserEntity | undefined, params: AuthParams)
       throw createError(403);
     }
   } else {
-    if (sameEmailAccount === undefined) {
+    if (sameEmailAccount === undefined || sameEmailAccount.id === currentAccount.id) {
       return updateUser(user, currentAccount, params);
     } else {
       throw createError(403);

@@ -16,7 +16,11 @@ authRouter.get("/:provider", async (req, res, next) => {
     return next(createError(500));
   }
 
-  if (req.user === undefined) {
+  const session = await getManager().findOne(UserSessionEntity, {
+    sessionId: req.sessionID
+  });
+
+  if (session === undefined) {
     const guestUser = await getGuestUser();
     const newUserSession = new UserSessionEntity(guestUser, req.sessionID);
 

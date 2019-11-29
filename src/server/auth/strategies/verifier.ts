@@ -32,8 +32,8 @@ export const createVerifier = (provider: AuthProviderName): Verifier => async (
       done(null, false, {
         provider: e.provider
       });
+    } else {
+      done(e);
     }
-
-    done(e);
   }
 };
