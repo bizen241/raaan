@@ -18,6 +18,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
   const query = await getManager()
     .createQueryBuilder(UserSessionEntity, "userSession")
     .leftJoinAndSelect("userSession.user", "user")
+    .leftJoinAndSelect("user.summary", "summary")
     .take(searchLimit)
     .skip(searchOffset);
 

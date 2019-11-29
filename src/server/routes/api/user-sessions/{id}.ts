@@ -29,7 +29,7 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
     setClearSiteData(res);
   }
 
-  responseFindResult(req, res, userSession);
+  responseFindResult(req, res);
 });
 
 DELETE.apiDoc = createOperationDoc({
