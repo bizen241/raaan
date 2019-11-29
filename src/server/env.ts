@@ -39,6 +39,10 @@ export const getEnv = () => {
       clientId: getenv("GITHUB_CLIENT_ID", "github_client_id"),
       clientSecret: getenv("GITHUB_CLIENT_SECRET", "github_client_secret")
     },
+    google: {
+      clientId: getenv("GOOGLE_CLIENT_ID", "google_client_id"),
+      clientSecret: getenv("GOOGLE_CLIENT_SECRET", "google_client_secret")
+    },
     report: {
       csp: getenv("REPORT_CSP", "https://example.com"),
       expectCt: getenv("REPORT_EXPECT_CT", "https://example.com")

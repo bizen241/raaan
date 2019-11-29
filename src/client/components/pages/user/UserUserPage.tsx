@@ -33,6 +33,7 @@ export const UserUserPage = React.memo(() => {
     return (
       <Page title="アカウント">
         <Button label="GitHubアカウントでログイン" href="/auth/github" />
+        <Button label="Googleアカウントでログイン" href="/auth/google" />
       </Page>
     );
   }

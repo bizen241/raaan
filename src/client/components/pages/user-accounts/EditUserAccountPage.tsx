@@ -31,11 +31,11 @@ export const EditUserAccountPage = React.memo(() => {
           }}
         />
       )}
-      {provider !== "twitter" && (
+      {provider !== "google" && (
         <Button
-          label="Twitterアカウントに変更"
+          label="Googleアカウントに変更"
           onClick={() => {
-            setProvider("twitter");
+            setProvider("google");
             onToggleChangeProviderDialog();
           }}
         />
