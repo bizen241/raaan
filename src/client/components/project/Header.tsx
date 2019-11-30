@@ -34,7 +34,7 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
             <Menu
               icon={
                 currentUserSummary && currentUserSummary.emailHash ? (
-                  <Avatar src={`https://www.gravatar.com/avatar/${currentUserSummary.emailHash}?d=mp`} />
+                  <Avatar src={`https://www.gravatar.com/avatar/${currentUserSummary.emailHash}?d=identicon`} />
                 ) : (
                   <Person />
                 )
