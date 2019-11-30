@@ -8,19 +8,24 @@ import { responseFindResult } from "../../../api/response";
 import { hasPermission } from "../../../api/security";
 import { ExerciseEntity } from "../../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
+export const GET: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
   const { id: exerciseId }: PathParams = req.params;
 
   const exercise = await getManager().findOne(ExerciseEntity, exerciseId, {
-    relations: ["author", "author.summary", "summary", "summary.tags"]
+    relations: ["author", "author.summary", "summary", "summary.tags", "draft"]
   });
   if (exercise === undefined) {
-    return next(createError(404));
+    throw createError(404);
+  }
+  if (exercise.summary === undefined) {
+    throw createError(500, "exercise.summary is not defined");
   }
 
   if (exercise.isPrivate && exercise.authorId !== currentUser.id) {
-    return next(createError(403));
+    throw createError(403);
   }
+
+  exercise.summary.exercise = exercise;
 
   responseFindResult(req, res, exercise);
 });
