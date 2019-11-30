@@ -1,30 +1,25 @@
 import { Typography } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
-import { push } from "connected-react-router";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card, DialogContent } from "../../ui";
 
-export const UploadUserConfigDialog = createDialog<{
-  userConfigId: string;
+export const UploadUserAccountDialog = createDialog<{
+  userAccountId: string;
 }>(
-  React.memo(({ userConfigId, onClose }) => {
+  React.memo(({ userAccountId, onClose }) => {
     const dispatch = useDispatch();
 
     const onUpload = () => {
-      dispatch(
-        actions.api.upload("UserConfig", userConfigId, undefined, () => {
-          dispatch(push("/user"));
-        })
-      );
+      dispatch(actions.api.upload("UserAccount", userAccountId, undefined, onClose));
     };
 
     return (
-      <DialogContent title="設定をアップロード" onClose={onClose}>
-        <Card icon={<CloudUpload />} title="設定をアップロード">
-          <Typography>設定をアップロードします。</Typography>
+      <DialogContent title="アバターの設定をアップロード" onClose={onClose}>
+        <Card icon={<CloudUpload />} title="アバターの設定をアップロード">
+          <Typography>アバターの設定をアップロードします。</Typography>
         </Card>
         <Button icon={<CloudUpload />} label="アップロード" onClick={onUpload} />
       </DialogContent>
