@@ -5,4 +5,5 @@ export interface UserSummary extends BaseEntityObject {
   name: string;
   submitCount: number;
   typeCount: number;
+  emailHash: string;
 }

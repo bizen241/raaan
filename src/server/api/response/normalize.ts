@@ -677,13 +677,14 @@ const normalizeUser: Normalizer<UserEntity> = (context, store, entity) => {
 };
 
 const normalizeUserAccount: Normalizer<UserAccountEntity> = (context, store, entity) => {
-  const { id, user, provider, accountId, email } = entity;
+  const { id, user, provider, accountId, email, avatar } = entity;
 
   store.UserAccount[id] = {
     ...base(entity),
     provider,
     accountId,
-    email
+    email,
+    avatar
   };
 
   normalizeEntity(context, store, user);
@@ -787,7 +788,7 @@ const normalizeUserSession: Normalizer<UserSessionEntity> = (context, store, ent
 };
 
 const normalizeUserSummary: Normalizer<UserSummaryEntity> = (_, store, entity) => {
-  const { id, user, userId, submitCount, typeCount } = entity;
+  const { id, user, userId, submitCount, typeCount, emailHash } = entity;
   if (user === undefined) {
     throw createError(500, "userSummary.user is not defined");
   }
@@ -797,7 +798,8 @@ const normalizeUserSummary: Normalizer<UserSummaryEntity> = (_, store, entity) =
     userId,
     name: user.name,
     submitCount,
-    typeCount
+    typeCount,
+    emailHash
   };
 };
 

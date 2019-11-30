@@ -23,7 +23,6 @@ export class UserSummaryEntity extends BaseEntityClass {
   @Column()
   typeCount: number = 0;
 
-  constructor() {
-    super();
-  }
+  @Column()
+  emailHash: string = "";
 }

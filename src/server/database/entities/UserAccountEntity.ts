@@ -1,4 +1,5 @@
 import { Column, Entity, JoinColumn, OneToOne, RelationId, Unique } from "typeorm";
+import { AvatarType } from "../../../shared/api/entities";
 import { AuthProviderName } from "../../../shared/auth";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
@@ -24,6 +25,9 @@ export class UserAccountEntity extends BaseEntityClass {
 
   @Column()
   email: string;
+
+  @Column()
+  avatar: AvatarType = "identicon";
 
   constructor(provider: AuthProviderName, accountId: string, email: string) {
     super();

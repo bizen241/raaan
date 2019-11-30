@@ -49,7 +49,7 @@ export const saveUser = async (user: UserEntity | undefined, params: AuthParams)
         throw new AuthError(sameEmailAccount.provider);
       }
     } else {
-      return updateUser(user, targetAccount, params);
+      return updateAccount(params, targetAccount, false);
     }
   }
 
@@ -70,13 +70,13 @@ export const saveUser = async (user: UserEntity | undefined, params: AuthParams)
 
   if (targetAccount !== undefined) {
     if (targetAccount.id === currentAccount.id) {
-      return updateUser(user, targetAccount, params);
+      return updateAccount(params, targetAccount, true);
     } else {
       throw createError(403);
     }
   } else {
     if (sameEmailAccount === undefined || sameEmailAccount.id === currentAccount.id) {
-      return updateUser(user, currentAccount, params);
+      return updateAccount(params, currentAccount, true);
     } else {
       throw createError(403);
     }
@@ -94,28 +94,37 @@ const createUser = async ({ provider, accountId, name, email }: AuthParams) => {
   return savedUser;
 };
 
-const updateUser = async (
-  user: UserEntity | undefined,
+const updateAccount = async (
+  { provider, accountId, email }: AuthParams,
   account: UserAccountEntity,
-  { provider, accountId, email }: AuthParams
+  isLoggedin: boolean
 ) => {
-  if (user !== undefined) {
-    account.provider = provider;
-    account.accountId = accountId;
-    account.email = email;
-
-    await getManager().save(account);
-  }
-
-  if (account.email !== email) {
-    account.email = email;
-
-    await getManager().save(account);
-  }
-
-  if (account.user === undefined) {
+  const user = account.user;
+  if (user === undefined) {
     throw createError(500);
   }
+
+  await getManager().transaction(async manager => {
+    const isEmailUpdated = account.email !== email;
+
+    if (isLoggedin) {
+      account.provider = provider;
+      account.accountId = accountId;
+      account.email = email;
+
+      await manager.save(account);
+    } else if (isEmailUpdated) {
+      account.email = email;
+
+      await manager.save(account);
+    }
+
+    if (isEmailUpdated) {
+      await manager.update(UserSummaryEntity, user.summaryId, {
+        emailHash: ""
+      });
+    }
+  });
 
   return account.user;
 };

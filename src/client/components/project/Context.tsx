@@ -22,6 +22,7 @@ export const guestUserAccount: UserAccount = {
   provider: "github",
   accountId: "",
   email: "guest@example.com",
+  avatar: "identicon",
   createdAt: 0,
   updatedAt: 0,
   fetchedAt: 0
@@ -36,7 +37,8 @@ export const guestUserConfig: UserConfig = {
 
 export const defaultSettings: UserSettings = {
   "ui.lang": navigator.language.slice(0, 2) as Lang,
-  "ui.colorScheme": "system"
+  "ui.colorScheme": "system",
+  "ui.avatar": "gravatar"
 };
 
 export const UserContext = createContext<User>(guestUser);
