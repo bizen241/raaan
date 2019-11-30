@@ -1,5 +1,5 @@
 import { AppBar, Avatar, Box, IconButton, Toolbar, Typography } from "@material-ui/core";
-import { AccountCircle, ArrowBack, Home, Info, Mail, Settings } from "@material-ui/icons";
+import { AccountCircle, ArrowBack, Home, Info, Mail, Person, Settings } from "@material-ui/icons";
 import { goBack } from "connected-react-router";
 import * as React from "react";
 import { useCallback, useContext } from "react";
@@ -31,10 +31,15 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
             </IconButton>
             <Typography component="span">{title}</Typography>
             <Box flex={1} />
-            {currentUserSummary && currentUserSummary.emailHash && (
-              <Avatar src={`https://www.gravatar.com/avatar/${currentUserSummary.emailHash}?d=mp`} />
-            )}
-            <Menu>
+            <Menu
+              icon={
+                currentUserSummary && currentUserSummary.emailHash ? (
+                  <Avatar src={`https://www.gravatar.com/avatar/${currentUserSummary.emailHash}?d=mp`} />
+                ) : (
+                  <Person />
+                )
+              }
+            >
               <MenuItem
                 icon={<Settings />}
                 label={<Message id="settings" />}
