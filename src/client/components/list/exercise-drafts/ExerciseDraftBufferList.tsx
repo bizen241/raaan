@@ -1,4 +1,4 @@
-import { IconButton, Link, TableCell, TableRow } from "@material-ui/core";
+import { IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -17,7 +17,7 @@ export const ExerciseDraftBufferList = createBufferList<ExerciseDraft>({ entityT
         <TableCell>
           <Column>
             <Link color="textPrimary" component={RouterLink} to={`/exercises/${bufferId}/edit`}>
-              {buffer.title || (source && source.title) || "無題"}
+              <Typography>{buffer.title || (source && source.title) || "無題"}</Typography>
             </Link>
           </Column>
         </TableCell>
