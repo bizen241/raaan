@@ -1,6 +1,7 @@
-import { Avatar, Card as MuiCard, CardContent, CardHeader, makeStyles, Typography } from "@material-ui/core";
+import { Card as MuiCard, CardContent, Typography } from "@material-ui/core";
 import * as React from "react";
 import { Column } from "./Column";
+import { Row } from "./Row";
 
 export const Card = React.memo<{
   icon?: React.ReactNode;
@@ -9,17 +10,19 @@ export const Card = React.memo<{
   padding?: boolean;
   children: React.ReactNode;
 }>(({ icon, title, action, padding = true, children }) => {
-  const cardClasses = useCardStyles();
-
   return (
     <Column pb={1}>
       <MuiCard>
         {(icon !== undefined || title !== undefined) && (
-          <CardHeader
-            avatar={<Avatar className={cardClasses.avatar}>{icon}</Avatar>}
-            title={<Typography>{title}</Typography>}
-            action={action}
-          />
+          <Row alignItems="center" pr={2}>
+            <Row alignItems="center" py={2} pl={2} flex={1}>
+              {icon}
+              <Row flex={1} px={2}>
+                <Typography>{title}</Typography>
+              </Row>
+            </Row>
+            {action}
+          </Row>
         )}
         {padding ? (
           <CardContent>
@@ -32,10 +35,3 @@ export const Card = React.memo<{
     </Column>
   );
 });
-
-const useCardStyles = makeStyles(theme => ({
-  avatar: {
-    color: theme.palette.text.primary,
-    backgroundColor: theme.palette.background.paper
-  }
-}));
