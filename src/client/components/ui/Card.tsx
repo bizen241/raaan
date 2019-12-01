@@ -1,4 +1,4 @@
-import { Card as MuiCard, CardContent, Typography } from "@material-ui/core";
+import { Card as MuiCard, Typography } from "@material-ui/core";
 import * as React from "react";
 import { Column } from "./Column";
 import { Row } from "./Row";
@@ -25,9 +25,9 @@ export const Card = React.memo<{
           </Row>
         )}
         {padding ? (
-          <CardContent>
+          <Column px={2} pb={2}>
             <Column>{children}</Column>
-          </CardContent>
+          </Column>
         ) : (
           children
         )}
