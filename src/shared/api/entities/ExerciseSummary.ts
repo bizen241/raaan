@@ -9,6 +9,7 @@ export interface ExerciseSummary extends BaseEntityObject {
   tags: string;
   description: string;
   upvoteCount: number;
+  downvoteCount: number;
   submitCount: number;
   isDraft: boolean;
   isEditing: boolean;

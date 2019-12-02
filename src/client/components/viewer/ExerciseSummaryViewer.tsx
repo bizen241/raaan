@@ -162,7 +162,7 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
         }
       >
         <Property label="提出回数">{exerciseSummary.submitCount}</Property>
-        <Property label="評価">{exerciseSummary.upvoteCount}</Property>
+        <Property label="評価">{exerciseSummary.upvoteCount - exerciseSummary.downvoteCount}</Property>
         {exerciseSummary.tags && (
           <Property label="タグ">
             <Row>
