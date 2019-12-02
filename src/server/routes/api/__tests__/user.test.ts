@@ -24,7 +24,7 @@ test("DELETE /api/user -> 200", async () => {
 
   await DELETE(req, res, next);
 
-  assert.equal(res._getStatusCode(), 302);
+  assert.equal(res._getStatusCode(), 200);
 });
 
 test("DELETE /api/user -> 403", async () => {
