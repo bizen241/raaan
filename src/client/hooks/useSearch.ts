@@ -5,7 +5,11 @@ import { defaultSearchLimit, defaultSearchOffset, Params } from "../../shared/ap
 import { stringifyParams } from "../api/request/search";
 import { actions, RootState } from "../reducers";
 
-export const useSearch = <E extends EntityObject>(entityType: EntityType, initialParams: Params<E>) => {
+export const useSearch = <E extends EntityObject>(
+  entityType: EntityType,
+  initialParams: Params<E>,
+  shouldFetch: boolean = true
+) => {
   const dispatch = useDispatch();
 
   const [params, setParams] = useState<Params<E>>(initialParams);
@@ -47,6 +51,10 @@ export const useSearch = <E extends EntityObject>(entityType: EntityType, initia
   }, [params, result, entityMap]);
 
   useEffect(() => {
+    if (!shouldFetch) {
+      return;
+    }
+
     if (result === undefined || selectedEntities === undefined) {
       dispatch(actions.api.search(entityType, params));
     }

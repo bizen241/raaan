@@ -25,7 +25,14 @@ export const ExerciseViewer = withEntity<Exercise>({ entityType: "Exercise" })(
         <Button color="primary" icon={<PlayArrow />} label="始める" onClick={onToggleExercisePlayer} />
         {!isGuest && <Button icon={<PlaylistAdd />} label="プレイリストに追加" onClick={onTogglePlaylistDialog} />}
         <ExerciseSummaryViewer entityId={exercise.summaryId} />
-        {!isGuest && <SubmissionSummaryViewer submitterId={currentUser.id} exerciseId={exercise.id} />}
+        {!isGuest && (
+          <SubmissionSummaryViewer
+            params={{
+              submitterId: currentUser.id,
+              exerciseId: exercise.id
+            }}
+          />
+        )}
         <ExercisePlayer exerciseId={exercise.id} isOpen={isExercisePlayerOpen} onClose={onToggleExercisePlayer} />
         <PlaylistItemsDialog exerciseId={exercise.id} isOpen={isPlaylistDialogOpen} onClose={onTogglePlaylistDialog} />
       </Column>

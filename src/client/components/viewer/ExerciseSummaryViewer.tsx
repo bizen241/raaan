@@ -8,6 +8,7 @@ import {
   Keyboard,
   Lock,
   Public,
+  Refresh,
   ReportProblem,
   SmsFailed
 } from "@material-ui/icons";
@@ -15,8 +16,15 @@ import * as React from "react";
 import { useContext } from "react";
 import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
-import { ExerciseObjection, ExerciseReport, ExerciseSummary, ExerciseVote } from "../../../shared/api/entities";
+import {
+  Exercise,
+  ExerciseObjection,
+  ExerciseReport,
+  ExerciseSummary,
+  ExerciseVote
+} from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
+import { useEntity } from "../../hooks/useEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
 import { RootState } from "../../reducers";
@@ -34,6 +42,9 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
   React.memo(({ entity: exerciseSummary }) => {
     const currentUser = useContext(UserContext);
 
+    const isOwner = currentUser.permission === "Owner";
+    const isAuthor = exerciseSummary.authorId === currentUser.id;
+
     const { exerciseId } = exerciseSummary;
 
     const [isPublishExerciseDialogOpen, onTogglePublishExerciseDialog] = useToggleState();
@@ -44,18 +55,40 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
     const [isDeleteVoteDialogOpen, onToggleDeleteVoteDialog] = useToggleState();
     const [isConfirmReportDialogOpen, onToggleConfirmReportDialog] = useToggleState();
 
-    const { entities: votes } = useSearch<ExerciseVote>("ExerciseVote", {
-      voterId: currentUser.id,
-      targetId: exerciseId
-    });
-    const { entities: reports } = useSearch<ExerciseReport>("ExerciseReport", {
-      reporterId: currentUser.id,
-      targetId: exerciseId
-    });
+    const { onReload: onReloadExercise } = useEntity<Exercise>("Exercise", exerciseId, false);
+
+    const { entities: votes } = useSearch<ExerciseVote>(
+      "ExerciseVote",
+      {
+        voterId: currentUser.id,
+        targetId: exerciseId
+      },
+      !isAuthor
+    );
+    const { entities: reports } = useSearch<ExerciseReport>(
+      "ExerciseReport",
+      {
+        reporterId: currentUser.id,
+        targetId: exerciseId
+      },
+      !isAuthor
+    );
+    const { entities: objections } = useSearch<ExerciseObjection>(
+      "ExerciseObjection",
+      {
+        objectorId: currentUser.id,
+        targetId: exerciseId
+      },
+      exerciseSummary.isLocked
+    );
+
+    const objectionBuffers = useSelector((state: RootState) => state.buffers.ExerciseObjection);
     const reportBuffers = useSelector((state: RootState) => state.buffers.ExerciseReport);
 
     const vote = votes[0];
     const report = reports[0];
+    const objection = objections[0];
+
     const reportId =
       report !== undefined
         ? report.id
@@ -64,12 +97,18 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
 
             return buffer !== undefined && buffer.targetId === exerciseId;
           });
+    const objectionId =
+      objection !== undefined
+        ? objection.id
+        : Object.keys(objectionBuffers).find(bufferId => {
+            const buffer = objectionBuffers[bufferId];
 
-    const isOwner = currentUser.permission === "Owner";
+            return buffer !== undefined && buffer.targetId === exerciseId;
+          });
 
-    const isAuthor = exerciseSummary.authorId === currentUser.id;
     const isVoted = vote !== undefined;
     const isReported = reportId !== undefined;
+    const isObjected = objectionId !== undefined;
 
     return (
       <Card
@@ -86,8 +125,18 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
                 <MenuItem icon={<Lock />} label="非公開にする" onClick={onToggleUnpublishExerciseDialog} />
               )}
               <MenuItem icon={<Group />} label="グループに公開する" onClick={onToggleGroupExercisesDialog} />
-              {exerciseSummary.isLocked && <ObjectionMenuItem objectorId={currentUser.id} targetId={exerciseId} />}
+              {exerciseSummary.isLocked &&
+                (!isObjected ? (
+                  <MenuItem icon={<SmsFailed />} label="異議を申し立てる" />
+                ) : (
+                  <MenuItem
+                    icon={<SmsFailed />}
+                    label="異議申し立てを編集する"
+                    to={`/exercise-objections/${objectionId}/edit`}
+                  />
+                ))}
               <MenuItem icon={<Delete />} label="削除する" onClick={onToggleDeleteExerciseDialog} />
+              <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReloadExercise} />
             </Menu>
           ) : (
             <Menu>
@@ -107,6 +156,7 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
               ) : (
                 <MenuItem icon={<ReportProblem />} label="通報を編集する" to={`/exercise-reports/${reportId}/edit`} />
               )}
+              <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReloadExercise} />
             </Menu>
           )
         }
@@ -175,32 +225,3 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
     );
   })
 );
-
-const ObjectionMenuItem = React.memo<{
-  objectorId: string;
-  targetId: string;
-}>(({ objectorId, targetId }) => {
-  const { entities: objections } = useSearch<ExerciseObjection>("ExerciseObjection", {
-    objectorId,
-    targetId
-  });
-  const objectionBuffers = useSelector((state: RootState) => state.buffers.ExerciseObjection);
-
-  const objection = objections[0];
-  const objectionId =
-    objection !== undefined
-      ? objection.id
-      : Object.keys(objectionBuffers).find(bufferId => {
-          const buffer = objectionBuffers[bufferId];
-
-          return buffer !== undefined && buffer.targetId === targetId;
-        });
-
-  const isObjected = objectionId !== undefined;
-
-  return !isObjected ? (
-    <MenuItem icon={<SmsFailed />} label="異議を申し立てる" />
-  ) : (
-    <MenuItem icon={<SmsFailed />} label="異議申し立てを編集する" to={`/exercise-objections/${objectionId}/edit`} />
-  );
-});

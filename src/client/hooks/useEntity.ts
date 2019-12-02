@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EntityObject, EntityType } from "../../shared/api/entities";
 import { actions, RootState } from "../reducers";
@@ -23,6 +23,7 @@ export const useEntity = <E extends EntityObject>(
 
   return {
     entity: entity as E | undefined,
-    getStatus: getStatus && getStatus.code
+    getStatus: getStatus && getStatus.code,
+    onReload: useCallback(() => dispatch(actions.api.get(entityType, entityId)), [])
   };
 };
