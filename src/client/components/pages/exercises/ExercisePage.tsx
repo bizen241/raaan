@@ -7,7 +7,7 @@ export const ExercisePage = React.memo<PageProps>(props => {
   const exerciseId = props.match.params.id;
 
   return (
-    <Page title="問題集の詳細">
+    <Page title="クイズの詳細">
       <ExerciseViewer entityId={exerciseId} />
     </Page>
   );

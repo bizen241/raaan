@@ -12,7 +12,7 @@ import { ExerciseSummaryViewer } from "./ExerciseSummaryViewer";
 import { SubmissionSummaryViewer } from "./SubmissionSummaryViewer";
 
 export const ExerciseViewer = withEntity<Exercise>({ entityType: "Exercise" })(
-  React.memo(({ entity: exercise, entityId: exerciseId }) => {
+  React.memo(({ entity: exercise }) => {
     const currentUser = useContext(UserContext);
 
     const [isExercisePlayerOpen, onToggleExercisePlayer] = useToggleState();
@@ -24,16 +24,10 @@ export const ExerciseViewer = withEntity<Exercise>({ entityType: "Exercise" })(
       <Column>
         <Button color="primary" icon={<PlayArrow />} label="始める" onClick={onToggleExercisePlayer} />
         {!isGuest && <Button icon={<PlaylistAdd />} label="プレイリストに追加" onClick={onTogglePlaylistDialog} />}
-        <Column pb={1}>
-          <ExerciseSummaryViewer entityId={exercise.summaryId} />
-        </Column>
-        {!isGuest && (
-          <Column pb={1}>
-            <SubmissionSummaryViewer submitterId={currentUser.id} exerciseId={exerciseId} />
-          </Column>
-        )}
-        <ExercisePlayer exerciseId={exerciseId} isOpen={isExercisePlayerOpen} onClose={onToggleExercisePlayer} />
-        <PlaylistItemsDialog exerciseId={exerciseId} isOpen={isPlaylistDialogOpen} onClose={onTogglePlaylistDialog} />
+        <ExerciseSummaryViewer entityId={exercise.summaryId} />
+        {!isGuest && <SubmissionSummaryViewer submitterId={currentUser.id} exerciseId={exercise.id} />}
+        <ExercisePlayer exerciseId={exercise.id} isOpen={isExercisePlayerOpen} onClose={onToggleExercisePlayer} />
+        <PlaylistItemsDialog exerciseId={exercise.id} isOpen={isPlaylistDialogOpen} onClose={onTogglePlaylistDialog} />
       </Column>
     );
   })
