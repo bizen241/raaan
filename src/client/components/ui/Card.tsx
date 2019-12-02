@@ -25,7 +25,7 @@ export const Card = React.memo<{
           </Row>
         )}
         {padding ? (
-          <Column px={2} pb={2}>
+          <Column p={2}>
             <Column>{children}</Column>
           </Column>
         ) : (
