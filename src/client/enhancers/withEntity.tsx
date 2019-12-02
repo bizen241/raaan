@@ -3,17 +3,17 @@ import { useEffect, useState } from "react";
 import { EntityObject, EntityType } from "../../shared/api/entities";
 import { useEntity } from "../hooks/useEntity";
 
-interface Params {
+interface WithEntityParams {
   entityType: EntityType;
 }
 
-interface Props<E extends EntityObject> {
+interface BaseComponentProps<E extends EntityObject> {
   entityId: string;
   entity: E;
 }
 
-export const withEntity = <E extends EntityObject, P extends {} = {}>(params: Params) => (
-  BaseComponent: React.ComponentType<Props<E> & P>
+export const withEntity = <E extends EntityObject, P extends {} = {}>(params: WithEntityParams) => (
+  BaseComponent: React.ComponentType<BaseComponentProps<E> & P>
 ) =>
   React.memo<{ entityId: string } & P>(({ entityId, ...props }) => {
     const { entityType } = params;
