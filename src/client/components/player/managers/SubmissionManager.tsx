@@ -38,7 +38,20 @@ export const SubmissionManager = withEntity<
             ...summarizeResults(results)
           })
         );
-        dispatch(actions.api.upload("Submission", submissionId));
+        dispatch(
+          actions.api.upload("Submission", submissionId, undefined, uploadResponse => {
+            dispatch(
+              actions.cache.add<SubmissionSummary>(
+                "SubmissionSummary",
+                {
+                  submitterId: currentUser.id,
+                  exerciseId
+                },
+                uploadResponse
+              )
+            );
+          })
+        );
       },
       [exerciseId, submissionSummary]
     );
