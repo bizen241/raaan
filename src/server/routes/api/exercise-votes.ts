@@ -47,7 +47,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
 
   await getManager().transaction(async manager => {
     const target = await manager.findOne(ExerciseEntity, targetId, {
-      relations: ["summary"]
+      relations: ["author", "summary", "summary.tags", "draft"]
     });
     if (target === undefined) {
       return next(createError(404));
@@ -65,6 +65,8 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
       target.summary.downvoteCount += 1;
     }
     await manager.save(target.summary);
+
+    target.summary.exercise = target;
 
     responseFindResult(req, res, exerciseVote, target.summary);
   });
