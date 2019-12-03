@@ -6,14 +6,15 @@ import { Column } from "./Column";
 export const TextField = React.memo<{
   label: string;
   defaultValue: string;
+  multiline?: boolean;
   onChange: (value: string) => void;
-}>(({ label, defaultValue, ...props }) => {
-  const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => props.onChange(e.target.value), []);
+}>(({ label, defaultValue, multiline, onChange }) => {
+  const onInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value), []);
 
   return (
     <Column pb={1}>
       <Typography color="textSecondary">{label}</Typography>
-      <MuiTextField variant="outlined" defaultValue={defaultValue} onChange={onChange} />
+      <MuiTextField variant="outlined" multiline={multiline} defaultValue={defaultValue} onChange={onInput} />
     </Column>
   );
 });

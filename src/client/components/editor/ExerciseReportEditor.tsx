@@ -1,4 +1,4 @@
-import { Card, CardContent, TextField, Typography } from "@material-ui/core";
+import { Card, CardContent } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
@@ -7,7 +7,7 @@ import { ReportReason } from "../../../shared/api/entities/BaseReportObject";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadExerciseReportDialog } from "../dialogs/exercise-reports/UploadExerciseReportDialog";
-import { Button, Column, Select } from "../ui";
+import { Button, Column, Select, TextField } from "../ui";
 
 const reasonToLabel: { [P in ReportReason]: string } = {
   copyright: "著作権の侵害",
@@ -24,8 +24,8 @@ export const ExerciseReportEditor = withBuffer<ExerciseReport>("ExerciseReport")
     const onUpdateReason = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
       onChange({ reason: e.target.value as ReportReason });
     }, []);
-    const onUpdateComment = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-      onChange({ comment: e.target.value });
+    const onUpdateComment = useCallback((comment: string) => {
+      onChange({ comment });
     }, []);
 
     const targetId = source.targetId || buffer.targetId;
@@ -52,15 +52,12 @@ export const ExerciseReportEditor = withBuffer<ExerciseReport>("ExerciseReport")
                 ))}
               </Select>
             </Column>
-            <Column pb={1}>
-              <Typography color="textSecondary">コメント</Typography>
-              <TextField
-                variant="outlined"
-                multiline
-                defaultValue={buffer.comment || source.comment || ""}
-                onChange={onUpdateComment}
-              />
-            </Column>
+            <TextField
+              label="コメント"
+              multiline
+              defaultValue={buffer.comment || source.comment || ""}
+              onChange={onUpdateComment}
+            />
           </CardContent>
         </Card>
         <UploadExerciseReportDialog
