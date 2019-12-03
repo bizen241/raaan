@@ -5,6 +5,8 @@ import { Column } from "./Column";
 import { Row } from "./Row";
 import { Select } from "./Select";
 
+type RowsPerPage = 10 | 25 | 50 | 100;
+
 export const TablePagination = React.memo<{
   page: number;
   count: number;
@@ -27,16 +29,17 @@ export const TablePagination = React.memo<{
           {theme.direction === "rtl" ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
         </IconButton>
       </Row>
-      <Select
+      <Select<RowsPerPage>
         label="表示件数"
-        defaultValue={rowsPerPage.toString()}
-        onChange={e => onChangeRowsPerPage(parseInt(e.target.value, 10))}
-      >
-        <option value={10}>10</option>
-        <option value={25}>25</option>
-        <option value={50}>50</option>
-        <option value={100}>100</option>
-      </Select>
+        options={{
+          10: { label: "10" },
+          25: { label: "25" },
+          50: { label: "50" },
+          100: { label: "100" }
+        }}
+        defaultValue={rowsPerPage as RowsPerPage}
+        onChange={value => onChangeRowsPerPage(value)}
+      />
     </Column>
   );
 });

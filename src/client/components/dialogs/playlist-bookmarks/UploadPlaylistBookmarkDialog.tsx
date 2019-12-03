@@ -7,7 +7,7 @@ import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { UserContext } from "../../project/Context";
-import { Button, Card, DialogContent, Select } from "../../ui";
+import { Button, Card, DialogContent, Select, SelectOptions } from "../../ui";
 
 type UploadType = "public" | "private";
 
@@ -50,15 +50,20 @@ export const UploadPlaylistBookmarkDialog = createDialog<{
       );
     };
 
+    const selectUploadTypeOptions: SelectOptions<UploadType> = {
+      public: {
+        label: "公開",
+        disabled: isReadOnly,
+      },
+      private: {
+        label: "非公開",
+      }
+    }
+
     return (
       <DialogContent title="ブックマークに追加" onClose={onClose}>
         <Card icon={<Bookmark />} title="ブックマークに追加">
-          <Select label="設定" defaultValue={uploadType} onChange={e => setUploadType(e.target.value as UploadType)}>
-            <option value="public" disabled={isReadOnly}>
-              公開
-            </option>
-            <option value="private">非公開</option>
-          </Select>
+          <Select<UploadType> label="設定" options={selectUploadTypeOptions} defaultValue={uploadType} onChange={value => setUploadType(value)} />
         </Card>
         <Button icon={<Add />} label="ブックマークに追加する" onClick={() => onUpload()} />
       </DialogContent>

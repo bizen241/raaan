@@ -52,39 +52,34 @@ export const ExerciseSummaryList = createEntityList<ExerciseSummary>({ entityTyp
         </Row>
         <Collapse in={isSearchConditionOpen} timeout="auto" unmountOnExit>
           <Column>
-            <Column pb={1}>
-              <Select
-                label="並び順"
-                defaultValue="title"
-                onChange={e => onChange({ searchSort: e.target.value as ExerciseSummary["searchSort"] })}
-              >
-                <option key="title" value="title">
-                  更新が新しい順
-                </option>
-                <option key="tags" value="tags">
-                  更新が古い順
-                </option>
-              </Select>
-            </Column>
-            <Column pb={1}>
-              <Select
-                label="検索対象"
-                defaultValue={searchTarget}
-                onChange={e =>
-                  onChange({
-                    [searchTarget]: undefined,
-                    [e.target.value]: searchText
-                  })
+            <Select<Required<ExerciseSummary>["searchSort"]>
+              label="並び順"
+              options={{
+                createdAt: {
+                  label: "作成日時"
                 }
-              >
-                <option key="title" value="title">
-                  タイトル
-                </option>
-                <option key="tags" value="tags">
-                  タグ
-                </option>
-              </Select>
-            </Column>
+              }}
+              defaultValue="createdAt"
+              onChange={value => onChange({ searchSort: value })}
+            />
+            <Select<SearchTarget>
+              label="検索対象"
+              options={{
+                title: {
+                  label: "タイトル"
+                },
+                tags: {
+                  label: "タグ"
+                }
+              }}
+              defaultValue={searchTarget}
+              onChange={value =>
+                onChange({
+                  [searchTarget]: undefined,
+                  [value]: searchText
+                })
+              }
+            />
           </Column>
         </Collapse>
         <Column pb={1}>

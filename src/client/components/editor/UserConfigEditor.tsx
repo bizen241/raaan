@@ -1,4 +1,3 @@
-import { Card, CardContent } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
@@ -6,19 +5,29 @@ import { UserConfig, UserSettings } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadUserConfigDialog } from "../dialogs/user-configs/UploadUserConfigDialog";
-import { defaultSettings, UserContext } from "../project/Context";
+import { UserContext } from "../project/Context";
 import { Message } from "../project/Message";
-import { Button, Column, Select } from "../ui";
+import { Button, Card, Column, Select, SelectOptions } from "../ui";
 
-const langToLabel: { [T in UserSettings["ui.lang"]]: string } = {
-  en: "en",
-  ja: "ja"
+const selectLangOptions: SelectOptions<UserSettings["ui.lang"]> = {
+  en: {
+    label: "en"
+  },
+  ja: {
+    label: "ja"
+  }
 };
 
-const colorSchemeToLabel: { [T in UserSettings["ui.colorScheme"]]: string } = {
-  system: "system",
-  dark: "dark",
-  light: "light"
+const selectColorSchemeOptions: SelectOptions<UserSettings["ui.colorScheme"]> = {
+  system: {
+    label: "system"
+  },
+  dark: {
+    label: "dark"
+  },
+  light: {
+    label: "light"
+  }
 };
 
 export const UserConfigEditor = withBuffer<UserConfig>("UserConfig")(
@@ -50,57 +59,21 @@ export const UserConfigEditor = withBuffer<UserConfig>("UserConfig")(
       <Column>
         <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
         <Card>
-          <CardContent>
-            <Column>
-              <Column pb={1}>
-                <SelectValue
-                  label={<Message id="language" />}
-                  name="ui.lang"
-                  settings={settings}
-                  onChange={onChangeSettings}
-                >
-                  {Object.entries(langToLabel).map(([key, label]) => (
-                    <option key={key} value={key}>
-                      {label}
-                    </option>
-                  ))}
-                </SelectValue>
-              </Column>
-            </Column>
-            <Column pb={1}>
-              <SelectValue
-                label={<Message id="theme" />}
-                name="ui.colorScheme"
-                settings={settings}
-                onChange={onChangeSettings}
-              >
-                {Object.entries(colorSchemeToLabel).map(([key, label]) => (
-                  <option key={key} value={key}>
-                    {label}
-                  </option>
-                ))}
-              </SelectValue>
-            </Column>
-          </CardContent>
+          <Select<UserSettings["ui.lang"]>
+            label={<Message id="language" />}
+            options={selectLangOptions}
+            defaultValue={settings["ui.lang"]}
+            onChange={value => onChangeSettings("ui.lang", value)}
+          />
+          <Select<UserSettings["ui.colorScheme"]>
+            label={<Message id="theme" />}
+            options={selectColorSchemeOptions}
+            defaultValue={settings["ui.colorScheme"]}
+            onChange={value => onChangeSettings("ui.colorScheme", value)}
+          />
         </Card>
         <UploadUserConfigDialog userConfigId={bufferId} isOpen={isUploadDialogOpen} onClose={onToggleUploadDialog} />
       </Column>
     );
   })
 );
-
-export const SelectValue = React.memo<{
-  label: React.ReactNode;
-  name: keyof UserSettings;
-  settings: Partial<UserSettings>;
-  children: React.ReactNode;
-  onChange: (name: keyof UserSettings, value: string) => void;
-}>(({ label, name, settings, onChange, children }) => (
-  <Select
-    label={label}
-    defaultValue={settings[name] || defaultSettings[name]}
-    onChange={e => onChange(name, e.target.value)}
-  >
-    {children}
-  </Select>
-));

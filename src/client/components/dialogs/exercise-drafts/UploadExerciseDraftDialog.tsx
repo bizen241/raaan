@@ -7,7 +7,7 @@ import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { isNumber } from "../../../reducers/buffers";
 import { UserContext } from "../../project/Context";
-import { Button, Card, DialogContent, Select } from "../../ui";
+import { Button, Card, DialogContent, Select, SelectOptions } from "../../ui";
 
 type UploadType = "public" | "private" | "update" | "draft";
 
@@ -41,19 +41,29 @@ export const UploadExerciseDraftDialog = createDialog<{
       );
     };
 
+    const selectUploadTypeOptions: SelectOptions<UploadType> = {
+      public: {
+        label: "公開",
+        disabled: isReadOnly,
+        hidden: !isLocalOnly
+      },
+      private: {
+        label: "非公開",
+        hidden: !isLocalOnly
+      },
+      update: {
+        label: "更新",
+        hidden: isLocalOnly
+      },
+      draft: {
+        label: "下書き"
+      }
+    }
+
     return (
       <DialogContent title="問題集をアップロード" onClose={onClose}>
         <Card icon={<CloudUpload />} title="問題集をアップロード">
-          <Select label="設定" defaultValue={uploadType} onChange={e => setUploadConfig(e.target.value as UploadType)}>
-            {isLocalOnly && (
-              <option value="public" disabled={isReadOnly}>
-                公開
-              </option>
-            )}
-            {isLocalOnly && <option value="private">非公開</option>}
-            {!isLocalOnly && <option value="update">更新</option>}
-            <option value="draft">下書き</option>
-          </Select>
+          <Select<UploadType> label="設定" options={selectUploadTypeOptions} defaultValue={uploadType} onChange={value => setUploadConfig(value)} />
         </Card>
         <Button color="primary" label="アップロード" onClick={onUpload} />
       </DialogContent>

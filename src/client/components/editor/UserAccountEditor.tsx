@@ -7,11 +7,15 @@ import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadUserAccountDialog } from "../dialogs/user-accounts/UploadUserAccountDialog";
 import { UserContext } from "../project/Context";
-import { Button, Column, Select } from "../ui";
+import { Button, Column, Select, SelectOptions } from "../ui";
 
-const avatarTypeToLabel: { [T in AvatarType]: string } = {
-  identicon: "identicon",
-  gravatar: "gravatar"
+const selectAvatarTypeOptions: SelectOptions<AvatarType> = {
+  identicon: {
+    label: "identicon"
+  },
+  gravatar: {
+    label: "gravatar"
+  }
 };
 
 export const UserAccountEditor = withBuffer<UserAccount>("UserAccount")(
@@ -21,8 +25,8 @@ export const UserAccountEditor = withBuffer<UserAccount>("UserAccount")(
     const currentUser = useContext(UserContext);
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
-    const onUpdateAvatar = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-      onChange({ avatar: e.target.value as AvatarType });
+    const onUpdateAvatar = useCallback((avatar: AvatarType) => {
+      onChange({ avatar });
     }, []);
 
     const canUpload = props.buffer !== undefined && currentUser.permission !== "Guest";
@@ -32,17 +36,12 @@ export const UserAccountEditor = withBuffer<UserAccount>("UserAccount")(
         <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
         <Card>
           <CardContent>
-            <Select
+            <Select<AvatarType>
               label="アバター"
+              options={selectAvatarTypeOptions}
               defaultValue={buffer.avatar || source.avatar || "identicon"}
               onChange={onUpdateAvatar}
-            >
-              {Object.entries(avatarTypeToLabel).map(([key, label]) => (
-                <option key={key} value={key}>
-                  {label}
-                </option>
-              ))}
-            </Select>
+            />
           </CardContent>
         </Card>
         <UploadUserAccountDialog userAccountId={bufferId} isOpen={isUploadDialogOpen} onClose={onToggleUploadDialog} />

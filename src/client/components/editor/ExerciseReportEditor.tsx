@@ -1,31 +1,54 @@
-import { Card, CardContent } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import { ExerciseReport } from "../../../shared/api/entities";
-import { ReportReason } from "../../../shared/api/entities/BaseReportObject";
+import { ReportReason, ReportState } from "../../../shared/api/entities/BaseReportObject";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadExerciseReportDialog } from "../dialogs/exercise-reports/UploadExerciseReportDialog";
-import { Button, Column, Select, TextField } from "../ui";
+import { UserContext } from "../project/Context";
+import { Button, Card, Column, Select, SelectOptions, TextField } from "../ui";
 
-const reasonToLabel: { [P in ReportReason]: string } = {
-  copyright: "著作権の侵害",
-  sexual: "性的な内容",
-  troll: "荒らし行為"
+const selectReportReasonOptions: SelectOptions<ReportReason> = {
+  copyright: {
+    label: "著作権の侵害"
+  },
+  sexual: {
+    label: "性的な内容"
+  },
+  troll: {
+    label: "荒らし行為"
+  }
+};
+
+const selectReportStateOptions: SelectOptions<ReportState> = {
+  pending: {
+    label: "保留"
+  },
+  accepted: {
+    label: "承認"
+  },
+  rejected: {
+    label: "却下"
+  }
 };
 
 export const ExerciseReportEditor = withBuffer<ExerciseReport>("ExerciseReport")(
   React.memo(props => {
     const { bufferId, buffer = {}, source = {}, onChange } = props;
 
+    const currentUser = useContext(UserContext);
+
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
-    const onUpdateReason = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-      onChange({ reason: e.target.value as ReportReason });
+    const onUpdateReason = useCallback((reason: ReportReason) => {
+      onChange({ reason });
     }, []);
     const onUpdateComment = useCallback((comment: string) => {
       onChange({ comment });
+    }, []);
+    const onUpdateState = useCallback((state: ReportState) => {
+      onChange({ state });
     }, []);
 
     const targetId = source.targetId || buffer.targetId;
@@ -34,32 +57,42 @@ export const ExerciseReportEditor = withBuffer<ExerciseReport>("ExerciseReport")
     }
 
     const canUpload = (props.source !== undefined && props.buffer !== undefined) || buffer.reason !== undefined;
+    const isOwner = currentUser.permission === "Owner";
 
     return (
       <Column>
         <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
-        <Card>
-          <CardContent>
-            <Column pb={1}>
-              <Select label="理由" defaultValue={buffer.reason || source.reason || ""} onChange={onUpdateReason}>
-                <option value="" disabled>
-                  選択してください
-                </option>
-                {Object.entries(reasonToLabel).map(([key, label]) => (
-                  <option key={key} value={key}>
-                    {label}
-                  </option>
-                ))}
-              </Select>
-            </Column>
+        {!isOwner ? (
+          <Card>
+            <Select<ReportReason>
+              label="理由"
+              options={selectReportReasonOptions}
+              defaultValue={buffer.reason || source.reason}
+              onChange={onUpdateReason}
+            />
             <TextField
               label="コメント"
               multiline
               defaultValue={buffer.comment || source.comment || ""}
               onChange={onUpdateComment}
             />
-          </CardContent>
-        </Card>
+          </Card>
+        ) : (
+          <Card>
+            <Select<ReportState>
+              label="状態"
+              options={selectReportStateOptions}
+              defaultValue={buffer.state || source.state}
+              onChange={onUpdateState}
+            />
+            <TextField
+              label="コメント"
+              multiline
+              defaultValue={buffer.comment || source.comment || ""}
+              onChange={onUpdateComment}
+            />
+          </Card>
+        )}
         <UploadExerciseReportDialog
           reportId={bufferId}
           targetId={targetId}
