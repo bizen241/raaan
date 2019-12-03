@@ -10,10 +10,4 @@ export class UserReportEntity extends BaseReportClass<UserEntity> {
     onDelete: "SET NULL"
   })
   target?: UserEntity;
-
-  constructor(reporter: UserEntity, target: UserEntity) {
-    super(reporter);
-
-    this.target = target;
-  }
 }

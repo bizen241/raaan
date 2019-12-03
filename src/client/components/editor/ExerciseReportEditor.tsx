@@ -44,11 +44,14 @@ export const ExerciseReportEditor = withBuffer<ExerciseReport>("ExerciseReport")
     const onUpdateReason = useCallback((reason: ReportReason) => {
       onChange({ reason });
     }, []);
-    const onUpdateComment = useCallback((comment: string) => {
-      onChange({ comment });
+    const onUpdateDescription = useCallback((description: string) => {
+      onChange({ description });
     }, []);
     const onUpdateState = useCallback((state: ReportState) => {
       onChange({ state });
+    }, []);
+    const onUpdateComment = useCallback((comment: string) => {
+      onChange({ comment });
     }, []);
 
     const targetId = source.targetId || buffer.targetId;
@@ -71,10 +74,10 @@ export const ExerciseReportEditor = withBuffer<ExerciseReport>("ExerciseReport")
               onChange={onUpdateReason}
             />
             <TextField
-              label="コメント"
+              label="説明"
               multiline
-              defaultValue={buffer.comment || source.comment || ""}
-              onChange={onUpdateComment}
+              defaultValue={buffer.description || source.description || ""}
+              onChange={onUpdateDescription}
             />
           </Card>
         ) : (

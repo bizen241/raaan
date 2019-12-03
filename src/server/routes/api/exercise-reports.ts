@@ -17,7 +17,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     return next(createError(403));
   }
 
-  const query = await getManager()
+  const query = getManager()
     .createQueryBuilder(ExerciseReportEntity, "exerciseReport")
     .take(searchLimit)
     .skip(searchOffset);
@@ -41,7 +41,7 @@ GET.apiDoc = createOperationDoc({
 });
 
 export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { targetId, reason, comment = "" }: Params<ExerciseReport> = req.body;
+  const { targetId, reason, description = "" }: Params<ExerciseReport> = req.body;
   if (reason === undefined) {
     return next(createError(400));
   }
@@ -52,9 +52,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, next, curr
       return next(createError(404));
     }
 
-    const exerciseReport = new ExerciseReportEntity(currentUser, target);
-    exerciseReport.reason = reason;
-    exerciseReport.comment = comment;
+    const exerciseReport = new ExerciseReportEntity(currentUser, target, reason, description);
     await manager.save(exerciseReport);
 
     responseFindResult(req, res, exerciseReport);

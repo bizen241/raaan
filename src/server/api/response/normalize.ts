@@ -204,7 +204,7 @@ const normalizeExerciseObjection: Normalizer<ExerciseObjectionEntity> = (_, stor
 };
 
 const normalizeExerciseReport: Normalizer<ExerciseReportEntity> = (_, store, entity) => {
-  const { id, reporterId, target, targetId, reason, comment, state } = entity;
+  const { id, reporterId, target, targetId, reason, description, state, comment } = entity;
 
   store.ExerciseReport[id] = {
     ...base(entity),
@@ -212,8 +212,9 @@ const normalizeExerciseReport: Normalizer<ExerciseReportEntity> = (_, store, ent
     targetId,
     exerciseSummaryId: target && target.summaryId,
     reason,
-    comment,
-    state
+    description,
+    state,
+    comment
   };
 };
 
@@ -452,7 +453,7 @@ const normalizePlaylistObjection: Normalizer<PlaylistObjectionEntity> = (_, stor
 };
 
 const normalizePlaylistReport: Normalizer<PlaylistReportEntity> = (_, store, entity) => {
-  const { id, reporterId, target, targetId, reason, comment, state } = entity;
+  const { id, reporterId, target, targetId, reason, description, state, comment } = entity;
 
   store.PlaylistReport[id] = {
     ...base(entity),
@@ -460,8 +461,9 @@ const normalizePlaylistReport: Normalizer<PlaylistReportEntity> = (_, store, ent
     targetId,
     playlistSummaryId: target && target.summaryId,
     reason,
-    comment,
-    state
+    description,
+    state,
+    comment
   };
 };
 
@@ -600,7 +602,7 @@ const normalizeSynonym: Normalizer<SynonymEntity> = (_, store, entity) => {
 };
 
 const normalizeSynonymReport: Normalizer<SynonymReportEntity> = (_, store, entity) => {
-  const { id, reporterId, target, targetId, reason, comment, state } = entity;
+  const { id, reporterId, target, targetId, reason, description, state, comment } = entity;
 
   store.SynonymReport[id] = {
     ...base(entity),
@@ -608,8 +610,9 @@ const normalizeSynonymReport: Normalizer<SynonymReportEntity> = (_, store, entit
     targetId,
     synonymId: target && target.id,
     reason,
-    comment,
-    state
+    description,
+    state,
+    comment
   };
 };
 
@@ -758,7 +761,7 @@ const normalizeUserObjection: Normalizer<UserObjectionEntity> = (_, store, entit
 };
 
 const normalizeUserReport: Normalizer<UserReportEntity> = (_, store, entity) => {
-  const { id, reporterId, target, targetId, reason, comment, state } = entity;
+  const { id, reporterId, target, targetId, reason, description, state, comment } = entity;
 
   store.UserReport[id] = {
     ...base(entity),
@@ -766,8 +769,9 @@ const normalizeUserReport: Normalizer<UserReportEntity> = (_, store, entity) => 
     targetId,
     userSummaryId: target && target.summaryId,
     reason,
-    comment,
-    state
+    description,
+    state,
+    comment
   };
 };
 

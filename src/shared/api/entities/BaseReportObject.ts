@@ -4,8 +4,9 @@ export interface BaseReportObject extends BaseEntityObject {
   reporterId: UUID;
   targetId: UUID;
   reason: ReportReason;
-  comment: string;
+  description: string;
   state: ReportState;
+  comment: string;
 }
 
 export type ReportReason = "troll" | "copyright" | "sexual";

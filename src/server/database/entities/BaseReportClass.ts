@@ -11,7 +11,7 @@ export abstract class BaseReportClass<E extends BaseEntityClass> extends BaseEnt
   @RelationId((report: BaseReportClass<E>) => report.reporter)
   reporterId!: string;
 
-  abstract target?: E;
+  target?: E;
   @RelationId((report: BaseReportClass<E>) => report.target)
   targetId!: string;
 
@@ -19,14 +19,20 @@ export abstract class BaseReportClass<E extends BaseEntityClass> extends BaseEnt
   reason!: ReportReason;
 
   @Column()
-  comment: string = "";
+  description: string = "";
 
   @Column()
   state: ReportState = "pending";
 
-  constructor(reporter: UserEntity) {
+  @Column()
+  comment: string = "";
+
+  constructor(reporter: UserEntity, target: E, reason: ReportReason, description: string) {
     super();
 
     this.reporter = reporter;
+    this.target = target;
+    this.reason = reason;
+    this.description = description;
   }
 }
