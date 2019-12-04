@@ -23,7 +23,7 @@ import { ExerciseObjectionPage } from "../pages/exercise-objections/ExerciseObje
 import { ExerciseObjectionsPage } from "../pages/exercise-objections/ExerciseObjectionsPage";
 import { UserExerciseObjectionsPage } from "../pages/exercise-objections/UserExeciseObjectionsPage";
 import { EditExerciseReportPage } from "../pages/exercise-reports/EditExerciseReportPage";
-import { EditExerciseReportsPage } from "../pages/exercise-reports/EditExerciseReportsPage";
+// import { EditExerciseReportsPage } from "../pages/exercise-reports/EditExerciseReportsPage";
 import { ExerciseExerciseReportsPage } from "../pages/exercise-reports/ExerciseExerciseReportsPage";
 import { ExerciseReportPage } from "../pages/exercise-reports/ExerciseReportPage";
 // import { ExerciseReportsPage } from "../pages/exercise-reports/ExerciseReportsPage";
@@ -51,6 +51,7 @@ import { UserPlaylistBookmarksPage } from "../pages/playlist-bookmarks/UserPlayl
 import { PlaylistPage } from "../pages/playlists/PlaylistPage";
 import { PlaylistsPage } from "../pages/playlists/PlaylistsPage";
 import { UserPlaylistsPage } from "../pages/playlists/UserPlaylistsPage";
+import { EditReportsPage } from "../pages/reports/EditReportsPage";
 import { ReportsPage } from "../pages/reports/ReportsPage";
 import { ExerciseRevisionsPage } from "../pages/revisions/ExerciseRevisionsPage";
 import { RevisionPage } from "../pages/revisions/RevisionPage";
@@ -175,7 +176,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/contests/:id/edit" component={EditContestPage} />
 
         <Route exact={true} path="/reports" component={ReportsPage} />
-        <Route exact={true} path="/reports/edit" component={EditExerciseReportsPage} />
+        <Route exact={true} path="/reports/edit" component={EditReportsPage} />
         <Route exact={true} path="/reports/:id" component={ExerciseReportPage} />
         <Route exact={true} path="/reports/:id/edit" component={EditExerciseReportPage} />
 
