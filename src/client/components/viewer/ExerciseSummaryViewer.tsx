@@ -16,25 +16,19 @@ import * as React from "react";
 import { useContext } from "react";
 import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
-import {
-  Exercise,
-  ExerciseObjection,
-  ExerciseReport,
-  ExerciseSummary,
-  ExerciseVote
-} from "../../../shared/api/entities";
+import { Exercise, ExerciseObjection, ExerciseSummary, ExerciseVote, Report } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useEntity } from "../../hooks/useEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
 import { RootState } from "../../reducers";
-import { ConfirmExerciseReportDialog } from "../dialogs/exercise-reports/ConfirmExerciseReportDialog";
 import { DeleteExerciseVoteDialog } from "../dialogs/exercise-votes/DeleteExerciseVoteDialog";
 import { UploadExerciseVoteDialog } from "../dialogs/exercise-votes/UploadExerciseVoteDialog";
 import { DeleteExerciseDialog } from "../dialogs/exercises/DeleteExerciseDialog";
 import { GroupExercisesDialog } from "../dialogs/exercises/GroupExercisesDialog";
 import { PublishExerciseDialog } from "../dialogs/exercises/PublishExerciseDialog";
 import { UnpublishExerciseDialog } from "../dialogs/exercises/UnpublishExerciseDialog";
+import { ConfirmReportDialog } from "../dialogs/reports/ConfirmReportDialog";
 import { UserContext } from "../project/Context";
 import { Card, Menu, MenuItem, Property, Row } from "../ui";
 
@@ -65,10 +59,11 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
       },
       !isAuthor
     );
-    const { entities: reports } = useSearch<ExerciseReport>(
-      "ExerciseReport",
+    const { entities: reports } = useSearch<Report>(
+      "Report",
       {
         reporterId: currentUser.id,
+        targetType: "Exercise",
         targetId: exerciseId
       },
       !isAuthor
@@ -216,7 +211,8 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
             onClose={onToggleDeleteVoteDialog}
           />
         )}
-        <ConfirmExerciseReportDialog
+        <ConfirmReportDialog
+          targetType="Exercise"
           targetId={exerciseId}
           isOpen={isConfirmReportDialogOpen}
           onClose={onToggleConfirmReportDialog}
