@@ -18,7 +18,9 @@ export const ExerciseReportViewer = withEntity<ExerciseReport, {}>({ entityType:
         />
         <Card icon={<Report />} title="クイズの報告">
           <Property label="理由">{exerciseReport.reason}</Property>
+          <Property label="説明">{exerciseReport.description || "&nbsp"}</Property>
           <Property label="状態">{exerciseReport.state}</Property>
+          <Property label="コメント">{exerciseReport.comment}</Property>
         </Card>
       </Column>
     );
