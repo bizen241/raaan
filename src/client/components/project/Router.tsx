@@ -6,12 +6,12 @@ import { RootState } from "../../reducers";
 import { AppPage } from "../pages/AppPage";
 import { CommunityPage } from "../pages/community/CommunityPage";
 import { GroupInvitePage } from "../pages/community/GroupInvitePage";
-import { ObjectionsHomePage } from "../pages/community/ObjectionsHomePage";
-import { ReportsHomePage } from "../pages/community/ReportsHomePage";
+// import { ObjectionsHomePage } from "../pages/community/ObjectionsHomePage";
+// import { ReportsHomePage } from "../pages/community/ReportsHomePage";
 import { UserCommunityPage } from "../pages/community/UserCommunityPage";
 import { UserFollowsHomePage } from "../pages/community/UserFollowsHomePage";
-import { UserObjectionsHomePage } from "../pages/community/UserObjectionsHomePage";
-import { UserReportsHomePage } from "../pages/community/UserReportsHomePage";
+// import { UserObjectionsHomePage } from "../pages/community/UserObjectionsHomePage";
+// import { UserReportsHomePage } from "../pages/community/UserReportsHomePage";
 import { ContestPage } from "../pages/contests/ContestPage";
 import { EditContestPage } from "../pages/contests/EditContestPage";
 import { EditContestsPage } from "../pages/contests/EditContestsPage";
@@ -101,13 +101,13 @@ export const Router = React.memo(() => {
 
         <Route exact={true} path="/user/user-sessions" component={UserUserSessionsPage} />
         <Route exact={true} path="/user/user-config" component={UserUserConfigPage} />
-        <Route exact={true} path="/user/user-messages" component={UserUserMessagesPage} />
 
-        <Route exact={true} path="/user/submissions" component={UserSubmissionsPage} />
-        <Route exact={true} path="/user/submissions/review" component={ReviewPage} />
+        <Route exact={true} path="/user/user-messages" component={UserUserMessagesPage} />
+        <Route exact={true} path="/user/group-invitations" component={UserGroupInvitationsPage} />
 
         <Route exact={true} path="/user/exercise-drafts" component={UserExerciseDraftsPage} />
-        <Route exact={true} path="/user/group-invitations" component={UserGroupInvitationsPage} />
+        <Route exact={true} path="/user/submissions" component={UserSubmissionsPage} />
+        <Route exact={true} path="/user/submissions/review" component={ReviewPage} />
 
         <Route exact={true} path="/users" component={UsersPage} />
         <Route exact={true} path="/users/:id" component={UserPage} />
@@ -126,18 +126,15 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/users/:id/user-follows" component={UserUserFollowsPage} />
         <Route exact={true} path="/users/:id/tag-follows" component={UserTagFollowsPage} />
 
-        <Route exact={true} path="/users/:id/reports" component={UserReportsHomePage} />
-        <Route exact={true} path="/users/:id/exercise-reports" component={UserExerciseReportsPage} />
-
-        <Route exact={true} path="/users/:id/objections" component={UserObjectionsHomePage} />
-        <Route exact={true} path="/users/:id/exercise-objections" component={UserExerciseObjectionsPage} />
+        <Route exact={true} path="/users/:id/reports" component={UserExerciseReportsPage} />
+        <Route exact={true} path="/users/:id/objections" component={UserExerciseObjectionsPage} />
 
         <Route exact={true} path="/exercises" component={ExercisesPage} />
         <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
         <Route exact={true} path="/exercises/:id" component={ExercisePage} />
         <Route exact={true} path="/exercises/:id/edit" component={EditExercisePage} />
         <Route exact={true} path="/exercises/:id/revisions" component={ExerciseRevisionsPage} />
-        <Route exact={true} path="/exercises/:id/exercise-reports" component={ExerciseExerciseReportsPage} />
+        <Route exact={true} path="/exercises/:id/reports" component={ExerciseExerciseReportsPage} />
 
         <Route exact={true} path="/revisions/:id" component={RevisionPage} />
 
@@ -155,6 +152,8 @@ export const Router = React.memo(() => {
 
         <Route exact={true} path="/synonyms" component={SynonymsPage} />
         <Route exact={true} path="/synonyms/:id" component={SynonymPage} />
+
+        <Route exact={true} path="/community" component={CommunityPage} />
 
         <Route exact={true} path="/groups" component={GroupsPage} />
         <Route exact={true} path="/groups/edit" component={EditGroupsPage} />
@@ -174,21 +173,15 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/contests/:id/" component={ContestPage} />
         <Route exact={true} path="/contests/:id/edit" component={EditContestPage} />
 
-        <Route exact={true} path="/community" component={CommunityPage} />
+        <Route exact={true} path="/reports" component={ExerciseReportsPage} />
+        <Route exact={true} path="/reports/edit" component={EditExerciseReportsPage} />
+        <Route exact={true} path="/reports/:id" component={ExerciseReportPage} />
+        <Route exact={true} path="/reports/:id/edit" component={EditExerciseReportPage} />
 
-        <Route exact={true} path="/reports" component={ReportsHomePage} />
-
-        <Route exact={true} path="/exercise-reports" component={ExerciseReportsPage} />
-        <Route exact={true} path="/exercise-reports/edit" component={EditExerciseReportsPage} />
-        <Route exact={true} path="/exercise-reports/:id" component={ExerciseReportPage} />
-        <Route exact={true} path="/exercise-reports/:id/edit" component={EditExerciseReportPage} />
-
-        <Route exact={true} path="/objections" component={ObjectionsHomePage} />
-
-        <Route exact={true} path="/exercise-objections" component={ExerciseObjectionsPage} />
-        <Route exact={true} path="/exercise-objections/edit" component={EditExerciseObjectionsPage} />
-        <Route exact={true} path="/exercise-objections/:id" component={ExerciseObjectionPage} />
-        <Route exact={true} path="/exercise-objections/:id/edit" component={EditExerciseObjectionPage} />
+        <Route exact={true} path="/objections" component={ExerciseObjectionsPage} />
+        <Route exact={true} path="/objections/edit" component={EditExerciseObjectionsPage} />
+        <Route exact={true} path="/objections/:id" component={ExerciseObjectionPage} />
+        <Route exact={true} path="/objections/:id/edit" component={EditExerciseObjectionPage} />
 
         <Route component={NotFoundPage} />
       </Switch>
