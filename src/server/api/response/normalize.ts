@@ -25,6 +25,7 @@ import {
   PlaylistObjectionEntity,
   PlaylistReportEntity,
   PlaylistSummaryEntity,
+  ReportEntity,
   RevisionEntity,
   RevisionSummaryEntity,
   SubmissionEntity,
@@ -491,6 +492,24 @@ const normalizePlaylistSummary: Normalizer<PlaylistSummaryEntity> = (_, store, e
   };
 };
 
+const normalizeReport: Normalizer<ReportEntity> = (_, store, entity) => {
+  const { id, reporterId, targetExerciseId, reason, description, state, comment } = entity;
+  if (targetExerciseId === undefined) {
+    return;
+  }
+
+  store.Report[id] = {
+    ...base(entity),
+    reporterId,
+    targetType: "Exercise",
+    targetId: targetExerciseId,
+    reason,
+    description,
+    state,
+    comment
+  };
+};
+
 const normalizeRevision: Normalizer<RevisionEntity> = (_, store, entity) => {
   const { id, summaryId, lang, title, tags, description, questions, isRandom } = entity;
 
@@ -831,6 +850,7 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   PlaylistObjection: normalizePlaylistObjection,
   PlaylistReport: normalizePlaylistReport,
   PlaylistSummary: normalizePlaylistSummary,
+  Report: normalizeReport,
   Revision: normalizeRevision,
   RevisionSummary: normalizeRevisionSummary,
   Submission: normalizeSubmission,

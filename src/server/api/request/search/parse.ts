@@ -24,6 +24,7 @@ import {
   PlaylistObjection,
   PlaylistReport,
   PlaylistSummary,
+  Report,
   Revision,
   RevisionSummary,
   Submission,
@@ -271,6 +272,12 @@ const parsePlaylistSummary: Parser<PlaylistSummary> = query => {
   };
 };
 
+const parseReport: Parser<Report> = query => {
+  return {
+    ...base(query)
+  };
+};
+
 const parseRevision: Parser<Revision> = query => {
   return {
     ...base(query)
@@ -466,6 +473,7 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   PlaylistObjection: parsePlaylistObjection,
   PlaylistReport: parsePlaylistReport,
   PlaylistSummary: parsePlaylistSummary,
+  Report: parseReport,
   Revision: parseRevision,
   RevisionSummary: parseRevisionSummary,
   Submission: parseSubmission,

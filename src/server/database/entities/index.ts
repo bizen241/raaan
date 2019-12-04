@@ -22,6 +22,7 @@ import { PlaylistObjectionEntity } from "./PlaylistObjectionEntity";
 import { PlaylistReportEntity } from "./PlaylistReportEntity";
 import { PlaylistSummaryEntity } from "./PlaylistSummaryEntity";
 import { RateLimitEntity } from "./RateLimitEntity";
+import { ReportEntity } from "./ReportEntity";
 import { RevisionEntity } from "./RevisionEntity";
 import { RevisionSummaryEntity } from "./RevisionSummaryEntity";
 import { SubmissionEntity } from "./SubmissionEntity";
@@ -66,6 +67,7 @@ export * from "./PlaylistItemEntity";
 export * from "./PlaylistObjectionEntity";
 export * from "./PlaylistReportEntity";
 export * from "./PlaylistSummaryEntity";
+export * from "./ReportEntity";
 export * from "./RevisionEntity";
 export * from "./RevisionSummaryEntity";
 export * from "./SubmissionEntity";
@@ -111,6 +113,7 @@ export type Entity =
   | PlaylistObjectionEntity
   | PlaylistReportEntity
   | PlaylistSummaryEntity
+  | ReportEntity
   | RevisionEntity
   | RevisionSummaryEntity
   | SubmissionEntity
@@ -156,6 +159,7 @@ export const entities = [
     PlaylistObjection: PlaylistObjectionEntity,
     PlaylistReport: PlaylistReportEntity,
     PlaylistSummary: PlaylistSummaryEntity,
+    Report: ReportEntity,
     Revision: RevisionEntity,
     RevisionSummary: RevisionSummaryEntity,
     Submission: SubmissionEntity,
