@@ -26,7 +26,7 @@ export const ConfirmReportDialog = createDialog<{
           targetId
         })
       );
-      dispatch(push(`/exercise-reports/${bufferId}/edit`));
+      dispatch(push(`/reports/${bufferId}/edit`));
     }, []);
 
     return (
