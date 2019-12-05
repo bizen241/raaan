@@ -41,9 +41,9 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     }
   }
 
-  const [exerciseReports, count] = await query.getManyAndCount();
+  const [reports, count] = await query.getManyAndCount();
 
-  responseSearchResult(req, res, exerciseReports, count);
+  responseSearchResult(req, res, reports, count);
 });
 
 GET.apiDoc = createOperationDoc({

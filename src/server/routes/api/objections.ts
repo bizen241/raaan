@@ -4,8 +4,41 @@ import { getManager } from "typeorm";
 import { Objection } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseFindResult } from "../../api/response";
+import { parseQuery } from "../../api/request/search/parse";
+import { responseFindResult, responseSearchResult } from "../../api/response";
+import { hasPermission } from "../../api/security";
 import { ExerciseEntity, GroupEntity, ObjectionEntity, PlaylistEntity, UserEntity } from "../../database/entities";
+
+export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
+  const { targetType, targetId, searchLimit, searchOffset } = parseQuery<Objection>("Objection", req.query);
+
+  if (!hasPermission(currentUser, "Admin")) {
+    return next(createError(403));
+  }
+
+  const query = getManager()
+    .createQueryBuilder(ObjectionEntity, "objection")
+    .take(searchLimit)
+    .skip(searchOffset);
+
+  if (targetType !== undefined) {
+    if (targetId !== undefined) {
+      query.andWhere(`objection.target${targetType}Id = :targetId`, { targetId });
+    } else {
+      query.andWhere(`objection.target${targetType}Id IS NOT NULL`);
+    }
+  }
+
+  const [objections, count] = await query.getManyAndCount();
+
+  responseSearchResult(req, res, objections, count);
+});
+
+GET.apiDoc = createOperationDoc({
+  entityType: "Objection",
+  permission: "Admin",
+  hasQuery: true
+});
 
 export const POST: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
   const { targetType, targetId, description = "" }: Params<Objection> = req.body;
