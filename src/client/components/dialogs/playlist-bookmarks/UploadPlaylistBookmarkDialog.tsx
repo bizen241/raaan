@@ -53,17 +53,22 @@ export const UploadPlaylistBookmarkDialog = createDialog<{
     const selectUploadTypeOptions: SelectOptions<UploadType> = {
       public: {
         label: "公開",
-        disabled: isReadOnly,
+        disabled: isReadOnly
       },
       private: {
-        label: "非公開",
+        label: "非公開"
       }
-    }
+    };
 
     return (
       <DialogContent title="ブックマークに追加" onClose={onClose}>
         <Card icon={<Bookmark />} title="ブックマークに追加">
-          <Select<UploadType> label="設定" options={selectUploadTypeOptions} defaultValue={uploadType} onChange={value => setUploadType(value)} />
+          <Select<UploadType>
+            label="設定"
+            options={selectUploadTypeOptions}
+            defaultValue={uploadType}
+            onChange={value => setUploadType(value)}
+          />
         </Card>
         <Button icon={<Add />} label="ブックマークに追加する" onClick={() => onUpload()} />
       </DialogContent>

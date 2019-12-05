@@ -58,12 +58,17 @@ export const UploadExerciseDraftDialog = createDialog<{
       draft: {
         label: "下書き"
       }
-    }
+    };
 
     return (
       <DialogContent title="問題集をアップロード" onClose={onClose}>
         <Card icon={<CloudUpload />} title="問題集をアップロード">
-          <Select<UploadType> label="設定" options={selectUploadTypeOptions} defaultValue={uploadType} onChange={value => setUploadConfig(value)} />
+          <Select<UploadType>
+            label="設定"
+            options={selectUploadTypeOptions}
+            defaultValue={uploadType}
+            onChange={value => setUploadConfig(value)}
+          />
         </Card>
         <Button color="primary" label="アップロード" onClick={onUpload} />
       </DialogContent>

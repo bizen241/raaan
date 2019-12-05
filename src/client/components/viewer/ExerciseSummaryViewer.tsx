@@ -16,7 +16,7 @@ import * as React from "react";
 import { useContext } from "react";
 import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
-import { Exercise, ExerciseSummary, ExerciseVote, Report, Objection } from "../../../shared/api/entities";
+import { Exercise, ExerciseSummary, ExerciseVote, Objection, Report } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useEntity } from "../../hooks/useEntity";
 import { useSearch } from "../../hooks/useSearch";
