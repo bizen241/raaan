@@ -89,52 +89,6 @@ export * from "./UserReport";
 export * from "./UserSession";
 export * from "./UserSummary";
 
-export type EntityObject =
-  | Contest
-  | ContestEntry
-  | Exercise
-  | ExerciseDiary
-  | ExerciseDraft
-  | ExerciseObjection
-  | ExerciseReport
-  | ExerciseSummary
-  | ExerciseVote
-  | Group
-  | GroupApplication
-  | GroupExercise
-  | GroupInvitation
-  | GroupMember
-  | GroupSecret
-  | GroupSummary
-  | Playlist
-  | PlaylistBookmark
-  | PlaylistItem
-  | PlaylistObjection
-  | PlaylistReport
-  | PlaylistSummary
-  | Report
-  | Revision
-  | RevisionSummary
-  | Submission
-  | SubmissionSummary
-  | Suggestion
-  | SuggestionSummary
-  | Synonym
-  | SynonymReport
-  | Tag
-  | TagFollow
-  | TagSummary
-  | User
-  | UserAccount
-  | UserConfig
-  | UserDiary
-  | UserFollow
-  | UserMessage
-  | UserObjection
-  | UserReport
-  | UserSession
-  | UserSummary;
-
 export type EntityTypeToEntity = {
   Contest: Contest;
   ContestEntry: ContestEntry;
@@ -181,6 +135,8 @@ export type EntityTypeToEntity = {
   UserSession: UserSession;
   UserSummary: UserSummary;
 };
+
+export type EntityObject = EntityTypeToEntity[keyof EntityTypeToEntity];
 
 export type EntityType = keyof EntityTypeToEntity;
 
