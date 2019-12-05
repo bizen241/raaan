@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, RelationId } from "typeorm";
-import { ReportReason, ReportState } from "../../../shared/api/entities/BaseReportObject";
+import { ReportReason, ReportState } from "../../../shared/api/entities/Report";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { GroupEntity } from "./GroupEntity";
@@ -26,7 +26,7 @@ export class ReportEntity extends BaseEntityClass {
   @RelationId((report: ReportEntity) => report.targetExercise)
   targetExerciseId?: string;
 
-  @ManyToOne(() => ExerciseEntity, {
+  @ManyToOne(() => GroupEntity, {
     onDelete: "CASCADE"
   })
   targetGroup?: GroupEntity;

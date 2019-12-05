@@ -25,6 +25,7 @@ import {
   PlaylistReport,
   PlaylistSummary,
   Report,
+  ReportTarget,
   Revision,
   RevisionSummary,
   Submission,
@@ -273,8 +274,13 @@ const parsePlaylistSummary: Parser<PlaylistSummary> = query => {
 };
 
 const parseReport: Parser<Report> = query => {
+  const { reporterId, targetType, targetId } = query;
+
   return {
-    ...base(query)
+    ...base(query),
+    reporterId,
+    targetType: targetType as ReportTarget,
+    targetId
   };
 };
 
