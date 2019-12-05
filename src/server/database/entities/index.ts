@@ -4,8 +4,6 @@ import { ContestEntryEntity } from "./ContestEntryEntity";
 import { ExerciseDiaryEntity } from "./ExerciseDiaryEntity";
 import { ExerciseDraftEntity } from "./ExerciseDraftEntity";
 import { ExerciseEntity } from "./ExerciseEntity";
-import { ExerciseObjectionEntity } from "./ExerciseObjectionEntity";
-import { ExerciseReportEntity } from "./ExerciseReportEntity";
 import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";
 import { ExerciseVoteEntity } from "./ExerciseVoteEntity";
 import { GroupApplicationEntity } from "./GroupApplicationEntity";
@@ -19,8 +17,6 @@ import { ObjectionEntity } from "./ObjectionEntity";
 import { PlaylistBookmarkEntity } from "./PlaylistBookmarkEntity";
 import { PlaylistEntity } from "./PlaylistEntity";
 import { PlaylistItemEntity } from "./PlaylistItemEntity";
-import { PlaylistObjectionEntity } from "./PlaylistObjectionEntity";
-import { PlaylistReportEntity } from "./PlaylistReportEntity";
 import { PlaylistSummaryEntity } from "./PlaylistSummaryEntity";
 import { RateLimitEntity } from "./RateLimitEntity";
 import { ReportEntity } from "./ReportEntity";
@@ -31,7 +27,6 @@ import { SubmissionSummaryEntity } from "./SubmissionSummaryEntity";
 import { SuggestionEntity } from "./SuggestionEntity";
 import { SuggestionSummaryEntity } from "./SuggestionSummaryEntity";
 import { SynonymEntity } from "./SynonymEntity";
-import { SynonymReportEntity } from "./SynonymReportEntity";
 import { TagEntity } from "./TagEntity";
 import { TagFollowEntity } from "./TagFollowEntity";
 import { TagSummaryEntity } from "./TagSummaryEntity";
@@ -41,8 +36,6 @@ import { UserDiaryEntity } from "./UserDiaryEntity";
 import { UserEntity } from "./UserEntity";
 import { UserFollowEntity } from "./UserFollowEntity";
 import { UserMessageEntity } from "./UserMessageEntity";
-import { UserObjectionEntity } from "./UserObjectionEntity";
-import { UserReportEntity } from "./UserReportEntity";
 import { UserSessionEntity } from "./UserSessionEntity";
 import { UserSummaryEntity } from "./UserSummaryEntity";
 
@@ -51,8 +44,6 @@ export * from "./ContestEntryEntity";
 export * from "./ExerciseDiaryEntity";
 export * from "./ExerciseDraftEntity";
 export * from "./ExerciseEntity";
-export * from "./ExerciseObjectionEntity";
-export * from "./ExerciseReportEntity";
 export * from "./ExerciseSummaryEntity";
 export * from "./ExerciseVoteEntity";
 export * from "./GroupApplicationEntity";
@@ -66,8 +57,6 @@ export * from "./ObjectionEntity";
 export * from "./PlaylistBookmarkEntity";
 export * from "./PlaylistEntity";
 export * from "./PlaylistItemEntity";
-export * from "./PlaylistObjectionEntity";
-export * from "./PlaylistReportEntity";
 export * from "./PlaylistSummaryEntity";
 export * from "./ReportEntity";
 export * from "./RevisionEntity";
@@ -77,7 +66,6 @@ export * from "./SubmissionSummaryEntity";
 export * from "./SuggestionEntity";
 export * from "./SuggestionSummaryEntity";
 export * from "./SynonymEntity";
-export * from "./SynonymReportEntity";
 export * from "./TagEntity";
 export * from "./TagFollowEntity";
 export * from "./TagSummaryEntity";
@@ -87,8 +75,6 @@ export * from "./UserDiaryEntity";
 export * from "./UserEntity";
 export * from "./UserFollowEntity";
 export * from "./UserMessageEntity";
-export * from "./UserObjectionEntity";
-export * from "./UserReportEntity";
 export * from "./UserSessionEntity";
 export * from "./UserSummaryEntity";
 
@@ -98,8 +84,6 @@ export type Entity =
   | ExerciseDiaryEntity
   | ExerciseDraftEntity
   | ExerciseEntity
-  | ExerciseObjectionEntity
-  | ExerciseReportEntity
   | ExerciseSummaryEntity
   | ExerciseVoteEntity
   | GroupApplicationEntity
@@ -113,8 +97,6 @@ export type Entity =
   | PlaylistBookmarkEntity
   | PlaylistEntity
   | PlaylistItemEntity
-  | PlaylistObjectionEntity
-  | PlaylistReportEntity
   | PlaylistSummaryEntity
   | ReportEntity
   | RevisionEntity
@@ -122,7 +104,6 @@ export type Entity =
   | SubmissionEntity
   | SubmissionSummaryEntity
   | SynonymEntity
-  | SynonymReportEntity
   | TagEntity
   | TagFollowEntity
   | TagSummaryEntity
@@ -132,8 +113,6 @@ export type Entity =
   | UserEntity
   | UserFollowEntity
   | UserMessageEntity
-  | UserObjectionEntity
-  | UserReportEntity
   | UserSessionEntity
   | UserSummaryEntity;
 
@@ -145,8 +124,6 @@ export const entities = [
     Exercise: ExerciseEntity,
     ExerciseDiary: ExerciseDiaryEntity,
     ExerciseDraft: ExerciseDraftEntity,
-    ExerciseObjection: ExerciseObjectionEntity,
-    ExerciseReport: ExerciseReportEntity,
     ExerciseSummary: ExerciseSummaryEntity,
     ExerciseVote: ExerciseVoteEntity,
     Group: GroupEntity,
@@ -160,8 +137,6 @@ export const entities = [
     Playlist: PlaylistEntity,
     PlaylistBookmark: PlaylistBookmarkEntity,
     PlaylistItem: PlaylistItemEntity,
-    PlaylistObjection: PlaylistObjectionEntity,
-    PlaylistReport: PlaylistReportEntity,
     PlaylistSummary: PlaylistSummaryEntity,
     Report: ReportEntity,
     Revision: RevisionEntity,
@@ -171,7 +146,6 @@ export const entities = [
     Suggestion: SuggestionEntity,
     SuggestionSummary: SuggestionSummaryEntity,
     Synonym: SynonymEntity,
-    SynonymReport: SynonymReportEntity,
     Tag: TagEntity,
     TagFollow: TagFollowEntity,
     TagSummary: TagSummaryEntity,
@@ -181,8 +155,6 @@ export const entities = [
     UserDiary: UserDiaryEntity,
     UserFollow: UserFollowEntity,
     UserMessage: UserMessageEntity,
-    UserObjection: UserObjectionEntity,
-    UserReport: UserReportEntity,
     UserSession: UserSessionEntity,
     UserSummary: UserSummaryEntity
   } as { [P in EntityType]: Function })

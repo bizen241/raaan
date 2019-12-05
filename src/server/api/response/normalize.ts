@@ -9,9 +9,8 @@ import {
   ExerciseDiaryEntity,
   ExerciseDraftEntity,
   ExerciseEntity,
-  ExerciseObjectionEntity,
-  ExerciseReportEntity,
   ExerciseSummaryEntity,
+  ExerciseVoteEntity,
   GroupApplicationEntity,
   GroupEntity,
   GroupExerciseEntity,
@@ -23,8 +22,6 @@ import {
   PlaylistBookmarkEntity,
   PlaylistEntity,
   PlaylistItemEntity,
-  PlaylistObjectionEntity,
-  PlaylistReportEntity,
   PlaylistSummaryEntity,
   ReportEntity,
   RevisionEntity,
@@ -34,7 +31,6 @@ import {
   SuggestionEntity,
   SuggestionSummaryEntity,
   SynonymEntity,
-  SynonymReportEntity,
   TagEntity,
   TagFollowEntity,
   TagSummaryEntity,
@@ -44,13 +40,10 @@ import {
   UserEntity,
   UserFollowEntity,
   UserMessageEntity,
-  UserObjectionEntity,
   UserSessionEntity,
   UserSummaryEntity
 } from "../../database/entities";
 import { BaseEntityClass } from "../../database/entities/BaseEntityClass";
-import { ExerciseVoteEntity } from "../../database/entities/ExerciseVoteEntity";
-import { UserReportEntity } from "../../database/entities/UserReportEntity";
 import { getObjectionTargetProperties } from "../../services/objections";
 import { getReportTargetProperties } from "../../services/reports";
 
@@ -193,32 +186,6 @@ const normalizeExerciseDraft: Normalizer<ExerciseDraftEntity> = (_, store, entit
     questions,
     isRandom,
     isMerged
-  };
-};
-
-const normalizeExerciseObjection: Normalizer<ExerciseObjectionEntity> = (_, store, entity) => {
-  const { id, targetId, comment, state } = entity;
-
-  store.ExerciseObjection[id] = {
-    ...base(entity),
-    targetId,
-    comment,
-    state
-  };
-};
-
-const normalizeExerciseReport: Normalizer<ExerciseReportEntity> = (_, store, entity) => {
-  const { id, reporterId, target, targetId, reason, description, state, comment } = entity;
-
-  store.ExerciseReport[id] = {
-    ...base(entity),
-    reporterId,
-    targetId,
-    exerciseSummaryId: target && target.summaryId,
-    reason,
-    description,
-    state,
-    comment
   };
 };
 
@@ -460,32 +427,6 @@ const normalizePlaylistItem: Normalizer<PlaylistItemEntity> = (context, store, e
   }
 };
 
-const normalizePlaylistObjection: Normalizer<PlaylistObjectionEntity> = (_, store, entity) => {
-  const { id, targetId, comment, state } = entity;
-
-  store.PlaylistObjection[id] = {
-    ...base(entity),
-    targetId,
-    comment,
-    state
-  };
-};
-
-const normalizePlaylistReport: Normalizer<PlaylistReportEntity> = (_, store, entity) => {
-  const { id, reporterId, target, targetId, reason, description, state, comment } = entity;
-
-  store.PlaylistReport[id] = {
-    ...base(entity),
-    reporterId,
-    targetId,
-    playlistSummaryId: target && target.summaryId,
-    reason,
-    description,
-    state,
-    comment
-  };
-};
-
 const normalizePlaylistSummary: Normalizer<PlaylistSummaryEntity> = (_, store, entity) => {
   const { id, playlist, playlistId, tags = [], itemCount } = entity;
   if (playlist === undefined) {
@@ -636,21 +577,6 @@ const normalizeSynonym: Normalizer<SynonymEntity> = (_, store, entity) => {
   };
 };
 
-const normalizeSynonymReport: Normalizer<SynonymReportEntity> = (_, store, entity) => {
-  const { id, reporterId, target, targetId, reason, description, state, comment } = entity;
-
-  store.SynonymReport[id] = {
-    ...base(entity),
-    reporterId,
-    targetId,
-    synonymId: target && target.id,
-    reason,
-    description,
-    state,
-    comment
-  };
-};
-
 const normalizeTag: Normalizer<TagEntity> = (_, store, entity) => {
   const { id, summaryId, name, description } = entity;
 
@@ -784,32 +710,6 @@ const normalizeUserMessage: Normalizer<UserMessageEntity> = (_, store, entity) =
   };
 };
 
-const normalizeUserObjection: Normalizer<UserObjectionEntity> = (_, store, entity) => {
-  const { id, targetId, comment, state } = entity;
-
-  store.UserObjection[id] = {
-    ...base(entity),
-    targetId,
-    comment,
-    state
-  };
-};
-
-const normalizeUserReport: Normalizer<UserReportEntity> = (_, store, entity) => {
-  const { id, reporterId, target, targetId, reason, description, state, comment } = entity;
-
-  store.UserReport[id] = {
-    ...base(entity),
-    reporterId,
-    targetId,
-    userSummaryId: target && target.summaryId,
-    reason,
-    description,
-    state,
-    comment
-  };
-};
-
 const normalizeUserSession: Normalizer<UserSessionEntity> = (context, store, entity) => {
   const { id, user, userId, accessCount, deviceType, deviceName, os, browser } = entity;
 
@@ -849,8 +749,6 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Exercise: normalizeExercise,
   ExerciseDiary: normalizeExerciseDiary,
   ExerciseDraft: normalizeExerciseDraft,
-  ExerciseObjection: normalizeExerciseObjection,
-  ExerciseReport: normalizeExerciseReport,
   ExerciseSummary: normalizeExerciseSummary,
   ExerciseVote: normalizeExerciseVote,
   Group: normalizeGroup,
@@ -864,8 +762,6 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Playlist: normalizePlaylist,
   PlaylistBookmark: normalizePlaylistBookmark,
   PlaylistItem: normalizePlaylistItem,
-  PlaylistObjection: normalizePlaylistObjection,
-  PlaylistReport: normalizePlaylistReport,
   PlaylistSummary: normalizePlaylistSummary,
   Report: normalizeReport,
   Revision: normalizeRevision,
@@ -875,7 +771,6 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Suggestion: normalizeSuggestion,
   SuggestionSummary: normalizeSuggestionSummary,
   Synonym: normalizeSynonym,
-  SynonymReport: normalizeSynonymReport,
   Tag: normalizeTag,
   TagFollow: normalizeTagFollow,
   TagSummary: normalizeTagSummary,
@@ -885,8 +780,6 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   UserDiary: normalizeUserDiary,
   UserFollow: normalizeUserFollow,
   UserMessage: normalizeUserMessage,
-  UserObjection: normalizeUserObjection,
-  UserReport: normalizeUserReport,
   UserSession: normalizeUserSession,
   UserSummary: normalizeUserSummary
 };

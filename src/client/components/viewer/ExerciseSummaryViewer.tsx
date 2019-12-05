@@ -16,7 +16,7 @@ import * as React from "react";
 import { useContext } from "react";
 import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
-import { Exercise, ExerciseObjection, ExerciseSummary, ExerciseVote, Report } from "../../../shared/api/entities";
+import { Exercise, ExerciseSummary, ExerciseVote, Report, Objection } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useEntity } from "../../hooks/useEntity";
 import { useSearch } from "../../hooks/useSearch";
@@ -68,8 +68,8 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
       },
       !isAuthor
     );
-    const { entities: objections } = useSearch<ExerciseObjection>(
-      "ExerciseObjection",
+    const { entities: objections } = useSearch<Objection>(
+      "Objection",
       {
         objectorId: currentUser.id,
         targetId: exerciseId
@@ -77,8 +77,8 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
       exerciseSummary.isLocked
     );
 
-    const objectionBuffers = useSelector((state: RootState) => state.buffers.ExerciseObjection);
-    const reportBuffers = useSelector((state: RootState) => state.buffers.ExerciseReport);
+    const objectionBuffers = useSelector((state: RootState) => state.buffers.Objection);
+    const reportBuffers = useSelector((state: RootState) => state.buffers.Report);
 
     const vote = votes[0];
     const report = reports[0];

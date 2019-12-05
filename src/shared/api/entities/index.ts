@@ -3,8 +3,6 @@ import { ContestEntry } from "./ContestEntry";
 import { Exercise } from "./Exercise";
 import { ExerciseDiary } from "./ExerciseDiary";
 import { ExerciseDraft } from "./ExerciseDraft";
-import { ExerciseObjection } from "./ExerciseObjection";
-import { ExerciseReport } from "./ExerciseReport";
 import { ExerciseSummary } from "./ExerciseSummary";
 import { ExerciseVote } from "./ExerciseVote";
 import { Group } from "./Group";
@@ -18,8 +16,6 @@ import { Objection } from "./Objection";
 import { Playlist } from "./Playlist";
 import { PlaylistBookmark } from "./PlaylistBookmark";
 import { PlaylistItem } from "./PlaylistItem";
-import { PlaylistObjection } from "./PlaylistObjection";
-import { PlaylistReport } from "./PlaylistReport";
 import { PlaylistSummary } from "./PlaylistSummary";
 import { Report } from "./Report";
 import { Revision } from "./Revision";
@@ -29,7 +25,6 @@ import { SubmissionSummary } from "./SubmissionSummary";
 import { Suggestion } from "./Suggestion";
 import { SuggestionSummary } from "./SuggestionSummary";
 import { Synonym } from "./Synonym";
-import { SynonymReport } from "./SynonymReport";
 import { Tag } from "./Tag";
 import { TagFollow } from "./TagFollow";
 import { TagSummary } from "./TagSummary";
@@ -39,8 +34,6 @@ import { UserConfig } from "./UserConfig";
 import { UserDiary } from "./UserDiary";
 import { UserFollow } from "./UserFollow";
 import { UserMessage } from "./UserMessage";
-import { UserObjection } from "./UserObjection";
-import { UserReport } from "./UserReport";
 import { UserSession } from "./UserSession";
 import { UserSummary } from "./UserSummary";
 
@@ -50,8 +43,6 @@ export * from "./ContestEntry";
 export * from "./Exercise";
 export * from "./ExerciseDiary";
 export * from "./ExerciseDraft";
-export * from "./ExerciseObjection";
-export * from "./ExerciseReport";
 export * from "./ExerciseSummary";
 export * from "./ExerciseVote";
 export * from "./Group";
@@ -65,8 +56,6 @@ export * from "./Objection";
 export * from "./Playlist";
 export * from "./PlaylistBookmark";
 export * from "./PlaylistItem";
-export * from "./PlaylistObjection";
-export * from "./PlaylistReport";
 export * from "./PlaylistSummary";
 export * from "./Report";
 export * from "./Revision";
@@ -76,7 +65,6 @@ export * from "./SubmissionSummary";
 export * from "./Suggestion";
 export * from "./SuggestionSummary";
 export * from "./Synonym";
-export * from "./SynonymReport";
 export * from "./Tag";
 export * from "./TagFollow";
 export * from "./TagSummary";
@@ -86,8 +74,6 @@ export * from "./UserConfig";
 export * from "./UserDiary";
 export * from "./UserFollow";
 export * from "./UserMessage";
-export * from "./UserObjection";
-export * from "./UserReport";
 export * from "./UserSession";
 export * from "./UserSummary";
 
@@ -97,8 +83,6 @@ export type EntityTypeToEntity = {
   Exercise: Exercise;
   ExerciseDiary: ExerciseDiary;
   ExerciseDraft: ExerciseDraft;
-  ExerciseObjection: ExerciseObjection;
-  ExerciseReport: ExerciseReport;
   ExerciseSummary: ExerciseSummary;
   ExerciseVote: ExerciseVote;
   Group: Group;
@@ -112,8 +96,6 @@ export type EntityTypeToEntity = {
   Playlist: Playlist;
   PlaylistBookmark: PlaylistBookmark;
   PlaylistItem: PlaylistItem;
-  PlaylistObjection: PlaylistObjection;
-  PlaylistReport: PlaylistReport;
   PlaylistSummary: PlaylistSummary;
   Report: Report;
   Revision: Revision;
@@ -123,7 +105,6 @@ export type EntityTypeToEntity = {
   Suggestion: Suggestion;
   SuggestionSummary: SuggestionSummary;
   Synonym: Synonym;
-  SynonymReport: SynonymReport;
   Tag: Tag;
   TagFollow: TagFollow;
   TagSummary: TagSummary;
@@ -133,8 +114,6 @@ export type EntityTypeToEntity = {
   UserDiary: UserDiary;
   UserFollow: UserFollow;
   UserMessage: UserMessage;
-  UserObjection: UserObjection;
-  UserReport: UserReport;
   UserSession: UserSession;
   UserSummary: UserSummary;
 };
@@ -152,8 +131,6 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     Exercise: {},
     ExerciseDiary: {},
     ExerciseDraft: {},
-    ExerciseObjection: {},
-    ExerciseReport: {},
     ExerciseSummary: {},
     ExerciseVote: {},
     Group: {},
@@ -167,8 +144,6 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     Playlist: {},
     PlaylistBookmark: {},
     PlaylistItem: {},
-    PlaylistObjection: {},
-    PlaylistReport: {},
     PlaylistSummary: {},
     Report: {},
     Revision: {},
@@ -178,7 +153,6 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     Suggestion: {},
     SuggestionSummary: {},
     Synonym: {},
-    SynonymReport: {},
     Tag: {},
     TagFollow: {},
     TagSummary: {},
@@ -188,8 +162,6 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     UserDiary: {},
     UserFollow: {},
     UserMessage: {},
-    UserObjection: {},
-    UserReport: {},
     UserSession: {},
     UserSummary: {}
   };

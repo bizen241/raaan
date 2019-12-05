@@ -6,8 +6,6 @@ import {
   Exercise,
   ExerciseDiary,
   ExerciseDraft,
-  ExerciseObjection,
-  ExerciseReport,
   ExerciseSummary,
   ExerciseVote,
   Group,
@@ -23,8 +21,6 @@ import {
   Playlist,
   PlaylistBookmark,
   PlaylistItem,
-  PlaylistObjection,
-  PlaylistReport,
   PlaylistSummary,
   Report,
   ReportTarget,
@@ -35,7 +31,6 @@ import {
   Suggestion,
   SuggestionSummary,
   Synonym,
-  SynonymReport,
   Tag,
   TagFollow,
   TagSummary,
@@ -45,8 +40,6 @@ import {
   UserDiary,
   UserFollow,
   UserMessage,
-  UserObjection,
-  UserReport,
   UserSession,
   UserSummary
 } from "../../../../shared/api/entities";
@@ -116,26 +109,6 @@ const parseExerciseDraft: Parser<ExerciseDraft> = query => {
   return {
     ...base(query),
     exerciseId
-  };
-};
-
-const parseExerciseObjection: Parser<ExerciseObjection> = query => {
-  const { objectorId, targetId } = query;
-
-  return {
-    ...base(query),
-    objectorId,
-    targetId
-  };
-};
-
-const parseExerciseReport: Parser<ExerciseReport> = query => {
-  const { reporterId, targetId } = query;
-
-  return {
-    ...base(query),
-    reporterId,
-    targetId
   };
 };
 
@@ -261,22 +234,6 @@ const parsePlaylistItem: Parser<PlaylistItem> = query => {
   };
 };
 
-const parsePlaylistObjection: Parser<PlaylistObjection> = query => {
-  const { objectorId, targetId } = query;
-
-  return {
-    ...base(query),
-    objectorId,
-    targetId
-  };
-};
-
-const parsePlaylistReport: Parser<PlaylistReport> = query => {
-  return {
-    ...base(query)
-  };
-};
-
 const parsePlaylistSummary: Parser<PlaylistSummary> = query => {
   const { authorId } = query;
 
@@ -344,12 +301,6 @@ const parseSuggestionSummary: Parser<SuggestionSummary> = query => {
 };
 
 const parseSynonym: Parser<Synonym> = query => {
-  return {
-    ...base(query)
-  };
-};
-
-const parseSynonymReport: Parser<SynonymReport> = query => {
   return {
     ...base(query)
   };
@@ -435,22 +386,6 @@ const parseUserMessage: Parser<UserMessage> = query => {
   };
 };
 
-const parseUserObjection: Parser<UserObjection> = query => {
-  const { objectorId, targetId } = query;
-
-  return {
-    ...base(query),
-    objectorId,
-    targetId
-  };
-};
-
-const parseUserReport: Parser<UserReport> = query => {
-  return {
-    ...base(query)
-  };
-};
-
 const parseUserSession: Parser<UserSession> = query => {
   const { userId } = query;
 
@@ -475,8 +410,6 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   Exercise: parseExercise,
   ExerciseDiary: parseExerciseDiary,
   ExerciseDraft: parseExerciseDraft,
-  ExerciseObjection: parseExerciseObjection,
-  ExerciseReport: parseExerciseReport,
   ExerciseSummary: parseExerciseSummary,
   ExerciseVote: parseExerciseVote,
   Group: parseGroup,
@@ -490,8 +423,6 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   Playlist: parsePlaylist,
   PlaylistBookmark: parsePlaylistBookmark,
   PlaylistItem: parsePlaylistItem,
-  PlaylistObjection: parsePlaylistObjection,
-  PlaylistReport: parsePlaylistReport,
   PlaylistSummary: parsePlaylistSummary,
   Report: parseReport,
   Revision: parseRevision,
@@ -501,7 +432,6 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   Suggestion: parseSuggestion,
   SuggestionSummary: parseSuggestionSummary,
   Synonym: parseSynonym,
-  SynonymReport: parseSynonymReport,
   Tag: parseTag,
   TagFollow: parseTagFollow,
   TagSummary: parseTagSummary,
@@ -511,8 +441,6 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   UserDiary: parseUserDiary,
   UserFollow: parseUserFollow,
   UserMessage: parseUserMessage,
-  UserObjection: parseUserObjection,
-  UserReport: parseUserReport,
   UserSession: parseUserSession,
   UserSummary: parseUserSummary
 };
