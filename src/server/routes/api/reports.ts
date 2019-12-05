@@ -4,7 +4,9 @@ import { getManager } from "typeorm";
 import { Report } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseFindResult } from "../../api/response";
+import { parseQuery } from "../../api/request/search/parse";
+import { responseFindResult, responseSearchResult } from "../../api/response";
+import { hasPermission } from "../../api/security";
 import {
   ExerciseEntity,
   GroupEntity,
@@ -14,6 +16,41 @@ import {
   TagEntity,
   UserEntity
 } from "../../database/entities";
+
+export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
+  const { reporterId, targetType, targetId, searchLimit, searchOffset } = parseQuery<Report>("Report", req.query);
+
+  const isReporter = reporterId === currentUser.id;
+  if (!isReporter && !hasPermission(currentUser, "Admin")) {
+    return next(createError(403));
+  }
+
+  const query = getManager()
+    .createQueryBuilder(ReportEntity, "report")
+    .take(searchLimit)
+    .skip(searchOffset);
+
+  if (reporterId !== undefined) {
+    query.andWhere("report.reporterId = :reporterId", { reporterId });
+  }
+  if (targetType !== undefined) {
+    if (targetId !== undefined) {
+      query.andWhere(`report.target${targetType}Id = :targetId`, { targetId });
+    } else {
+      query.andWhere(`report.target${targetType}Id IS NOT NULL`);
+    }
+  }
+
+  const [exerciseReports, count] = await query.getManyAndCount();
+
+  responseSearchResult(req, res, exerciseReports, count);
+});
+
+GET.apiDoc = createOperationDoc({
+  entityType: "Report",
+  permission: "Read",
+  hasQuery: true
+});
 
 export const POST: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
   const { targetType, targetId, reason, description = "" }: Params<Report> = req.body;
