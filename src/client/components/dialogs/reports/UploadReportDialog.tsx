@@ -4,6 +4,7 @@ import { replace } from "connected-react-router";
 import { useContext } from "react";
 import * as React from "react";
 import { useDispatch } from "react-redux";
+import { endpoints } from "../../../../shared/api/endpoint";
 import { Report, ReportTarget } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
@@ -34,7 +35,9 @@ export const UploadReportDialog = createDialog<{
             )
           );
 
-          dispatch(replace(`/exercises/${targetId}`));
+          const path = endpoints[targetType];
+
+          dispatch(replace(`/${path}/${targetId}`));
         })
       );
     };

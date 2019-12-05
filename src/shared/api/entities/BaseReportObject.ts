@@ -1,4 +1,5 @@
 import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { ReportReason, ReportState } from "./Report";
 
 export interface BaseReportObject extends BaseEntityObject {
   reporterId: UUID;
@@ -8,7 +9,3 @@ export interface BaseReportObject extends BaseEntityObject {
   state: ReportState;
   comment: string;
 }
-
-export type ReportReason = "troll" | "copyright" | "sexual";
-
-export type ReportState = "pending" | "accepted" | "rejected";

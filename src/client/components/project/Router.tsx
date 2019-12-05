@@ -17,7 +17,7 @@ import { EditContestPage } from "../pages/contests/EditContestPage";
 import { EditContestsPage } from "../pages/contests/EditContestsPage";
 import { GroupContestsPage } from "../pages/contests/GroupContestsPage";
 import { UserExerciseDraftsPage } from "../pages/exercise-drafts/UserExerciseDraftsPage";
-import { EditExerciseObjectionPage } from "../pages/exercise-objections/EditExerciseObjectionPage";
+// import { EditExerciseObjectionPage } from "../pages/exercise-objections/EditExerciseObjectionPage";
 // import { EditExerciseObjectionsPage } from "../pages/exercise-objections/EditExerciseObjectionsPage";
 // import { ExerciseObjectionPage } from "../pages/exercise-objections/ExerciseObjectionPage";
 // import { ExerciseObjectionsPage } from "../pages/exercise-objections/ExerciseObjectionsPage";
@@ -47,6 +47,7 @@ import { GroupsPage } from "../pages/groups/GroupsPage";
 import { HomePage } from "../pages/HomePage";
 import { LoadingPage } from "../pages/LoadingPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
+import { EditObjectionPage } from "../pages/objections/EditObjectionPage";
 import { EditObjectionsPage } from "../pages/objections/EditObjectionsPage";
 import { ObjectionPage } from "../pages/objections/ObjectionPage";
 import { ObjectionsPage } from "../pages/objections/ObjectionsPage";
@@ -186,7 +187,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/objections" component={ObjectionsPage} />
         <Route exact={true} path="/objections/edit" component={EditObjectionsPage} />
         <Route exact={true} path="/objections/:id" component={ObjectionPage} />
-        <Route exact={true} path="/objections/:id/edit" component={EditExerciseObjectionPage} />
+        <Route exact={true} path="/objections/:id/edit" component={EditObjectionPage} />
 
         <Route component={NotFoundPage} />
       </Switch>

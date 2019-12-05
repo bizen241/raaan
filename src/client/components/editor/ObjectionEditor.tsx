@@ -1,26 +1,14 @@
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext } from "react";
-import { Report, ReportReason, ReportState } from "../../../shared/api/entities";
+import { Objection, ObjectionState } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
-import { UploadReportDialog } from "../dialogs/reports/UploadReportDialog";
+import { UploadObjectionDialog } from "../dialogs/objections/UploadObjectionDialog";
 import { UserContext } from "../project/Context";
 import { Button, Card, Column, Select, SelectOptions, TextField } from "../ui";
 
-const selectReportReasonOptions: SelectOptions<ReportReason> = {
-  copyright: {
-    label: "著作権の侵害"
-  },
-  sexual: {
-    label: "性的な内容"
-  },
-  troll: {
-    label: "荒らし行為"
-  }
-};
-
-const selectReportStateOptions: SelectOptions<ReportState> = {
+const selectObjectionStateOptions: SelectOptions<ObjectionState> = {
   pending: {
     label: "保留"
   },
@@ -32,7 +20,7 @@ const selectReportStateOptions: SelectOptions<ReportState> = {
   }
 };
 
-export const ReportEditor = withBuffer<Report>("Report")(
+export const ObjectionEditor = withBuffer<Objection>("Objection")(
   React.memo(props => {
     const { bufferId, buffer = {}, source = {}, onChange } = props;
 
@@ -40,13 +28,10 @@ export const ReportEditor = withBuffer<Report>("Report")(
 
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
-    const onUpdateReason = useCallback((reason: ReportReason) => {
-      onChange({ reason });
-    }, []);
     const onUpdateDescription = useCallback((description: string) => {
       onChange({ description });
     }, []);
-    const onUpdateState = useCallback((state: ReportState) => {
+    const onUpdateState = useCallback((state: ObjectionState) => {
       onChange({ state });
     }, []);
     const onUpdateComment = useCallback((comment: string) => {
@@ -59,20 +44,14 @@ export const ReportEditor = withBuffer<Report>("Report")(
       return null;
     }
 
-    const canUpload = (props.source !== undefined && props.buffer !== undefined) || buffer.reason !== undefined;
     const isOwner = currentUser.permission === "Owner";
+    const canUpload = !isOwner ? buffer.description !== undefined : buffer.state !== undefined;
 
     return (
       <Column>
         <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
         {!isOwner ? (
           <Card>
-            <Select<ReportReason>
-              label="理由"
-              options={selectReportReasonOptions}
-              defaultValue={buffer.reason || source.reason}
-              onChange={onUpdateReason}
-            />
             <TextField
               label="説明"
               multiline
@@ -82,9 +61,9 @@ export const ReportEditor = withBuffer<Report>("Report")(
           </Card>
         ) : (
           <Card>
-            <Select<ReportState>
+            <Select<ObjectionState>
               label="状態"
-              options={selectReportStateOptions}
+              options={selectObjectionStateOptions}
               defaultValue={buffer.state || source.state}
               onChange={onUpdateState}
             />
@@ -96,7 +75,7 @@ export const ReportEditor = withBuffer<Report>("Report")(
             />
           </Card>
         )}
-        <UploadReportDialog
+        <UploadObjectionDialog
           reportId={bufferId}
           targetType={targetType}
           targetId={targetId}

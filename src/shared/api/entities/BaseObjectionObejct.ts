@@ -1,4 +1,5 @@
 import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { ObjectionState } from "./Objection";
 
 export interface BaseObjectionObject extends BaseEntityObject {
   objectorId?: UUID;
@@ -6,5 +7,3 @@ export interface BaseObjectionObject extends BaseEntityObject {
   comment: string;
   state: ObjectionState;
 }
-
-export type ObjectionState = "pending" | "accepted" | "rejected";
