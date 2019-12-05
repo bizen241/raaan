@@ -140,17 +140,12 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
               ) : (
                 <MenuItem icon={<HowToVote />} label="投票を取り消す" onClick={onToggleDeleteVoteDialog} />
               )}
-              {isOwner ? (
-                <MenuItem
-                  icon={<ReportProblem />}
-                  label="通報の一覧"
-                  to={`/exercises/${exerciseId}/exercise-reports`}
-                />
-              ) : !isReported ? (
-                <MenuItem icon={<ReportProblem />} label="通報する" onClick={onToggleConfirmReportDialog} />
-              ) : (
-                <MenuItem icon={<ReportProblem />} label="通報を編集する" to={`/exercise-reports/${reportId}/edit`} />
-              )}
+              {!isOwner &&
+                (!isReported ? (
+                  <MenuItem icon={<ReportProblem />} label="通報する" onClick={onToggleConfirmReportDialog} />
+                ) : (
+                  <MenuItem icon={<ReportProblem />} label="通報を編集する" to={`/reports/${reportId}/edit`} />
+                ))}
               <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReloadExercise} />
             </Menu>
           )
