@@ -1,5 +1,5 @@
 import { Column, ManyToOne, RelationId } from "typeorm";
-import { ReportReason, ReportState } from "../../../shared/api/entities/BaseReportObject";
+import { ReportReason, ReportState } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 

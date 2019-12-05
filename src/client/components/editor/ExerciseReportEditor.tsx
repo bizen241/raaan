@@ -1,8 +1,7 @@
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext } from "react";
-import { ExerciseReport } from "../../../shared/api/entities";
-import { ReportReason, ReportState } from "../../../shared/api/entities/BaseReportObject";
+import { ExerciseReport, ReportReason, ReportState } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadExerciseReportDialog } from "../dialogs/exercise-reports/UploadExerciseReportDialog";
