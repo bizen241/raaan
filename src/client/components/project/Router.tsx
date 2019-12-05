@@ -6,28 +6,13 @@ import { RootState } from "../../reducers";
 import { AppPage } from "../pages/AppPage";
 import { CommunityPage } from "../pages/community/CommunityPage";
 import { GroupInvitePage } from "../pages/community/GroupInvitePage";
-// import { ObjectionsHomePage } from "../pages/community/ObjectionsHomePage";
-// import { ReportsHomePage } from "../pages/community/ReportsHomePage";
 import { UserCommunityPage } from "../pages/community/UserCommunityPage";
 import { UserFollowsHomePage } from "../pages/community/UserFollowsHomePage";
-// import { UserObjectionsHomePage } from "../pages/community/UserObjectionsHomePage";
-// import { UserReportsHomePage } from "../pages/community/UserReportsHomePage";
 import { ContestPage } from "../pages/contests/ContestPage";
 import { EditContestPage } from "../pages/contests/EditContestPage";
 import { EditContestsPage } from "../pages/contests/EditContestsPage";
 import { GroupContestsPage } from "../pages/contests/GroupContestsPage";
 import { UserExerciseDraftsPage } from "../pages/exercise-drafts/UserExerciseDraftsPage";
-// import { EditExerciseObjectionPage } from "../pages/exercise-objections/EditExerciseObjectionPage";
-// import { EditExerciseObjectionsPage } from "../pages/exercise-objections/EditExerciseObjectionsPage";
-// import { ExerciseObjectionPage } from "../pages/exercise-objections/ExerciseObjectionPage";
-// import { ExerciseObjectionsPage } from "../pages/exercise-objections/ExerciseObjectionsPage";
-// import { UserExerciseObjectionsPage } from "../pages/exercise-objections/UserExeciseObjectionsPage";
-// import { EditExerciseReportPage } from "../pages/exercise-reports/EditExerciseReportPage";
-// import { EditExerciseReportsPage } from "../pages/exercise-reports/EditExerciseReportsPage";
-// import { ExerciseExerciseReportsPage } from "../pages/exercise-reports/ExerciseExerciseReportsPage";
-// import { ExerciseReportPage } from "../pages/exercise-reports/ExerciseReportPage";
-// import { ExerciseReportsPage } from "../pages/exercise-reports/ExerciseReportsPage";
-import { UserExerciseReportsPage } from "../pages/exercise-reports/UserExerciseReportsPage";
 import { EditExercisesPage } from "../pages/exercises/EditExercisesPage";
 import { ExercisePage } from "../pages/exercises/ExercisePage";
 import { ExercisesPage } from "../pages/exercises/ExercisesPage";
@@ -133,8 +118,6 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/users/:id/followers" component={UserFollowersPage} />
         <Route exact={true} path="/users/:id/user-follows" component={UserUserFollowsPage} />
         <Route exact={true} path="/users/:id/tag-follows" component={UserTagFollowsPage} />
-
-        <Route exact={true} path="/users/:id/reports" component={UserExerciseReportsPage} />
 
         <Route exact={true} path="/exercises" component={ExercisesPage} />
         <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
