@@ -22,6 +22,9 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     .take(searchLimit)
     .skip(searchOffset);
 
+  if (objectorId !== undefined) {
+    query.andWhere("report.objectorId = :objectorId", { objectorId });
+  }
   if (targetType !== undefined) {
     if (targetId !== undefined) {
       query.andWhere(`objection.target${targetType}Id = :targetId`, { targetId });
