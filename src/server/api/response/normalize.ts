@@ -19,6 +19,7 @@ import {
   GroupMemberEntity,
   GroupSecretEntity,
   GroupSummaryEntity,
+  ObjectionEntity,
   PlaylistBookmarkEntity,
   PlaylistEntity,
   PlaylistItemEntity,
@@ -50,7 +51,8 @@ import {
 import { BaseEntityClass } from "../../database/entities/BaseEntityClass";
 import { ExerciseVoteEntity } from "../../database/entities/ExerciseVoteEntity";
 import { UserReportEntity } from "../../database/entities/UserReportEntity";
-import { getTargetProperties } from "../../services/reports";
+import { getObjectionTargetProperties } from "../../services/objections";
+import { getReportTargetProperties } from "../../services/reports";
 
 export interface RequestContext {
   sessionId?: string;
@@ -382,6 +384,20 @@ const normalizeGroupSummary: Normalizer<GroupSummaryEntity> = (_, store, entity)
   };
 };
 
+const normalizeObjection: Normalizer<ObjectionEntity> = (_, store, entity) => {
+  const { id, description, state, comment } = entity;
+  const { targetType, targetId } = getObjectionTargetProperties(entity);
+
+  store.Objection[id] = {
+    ...base(entity),
+    targetType,
+    targetId,
+    description,
+    state,
+    comment
+  };
+};
+
 const normalizePlaylist: Normalizer<PlaylistEntity> = (context, store, entity) => {
   const { id, authorId, summaryId, title, tags, description, orderBy, isPrivate, isLocked } = entity;
 
@@ -495,7 +511,7 @@ const normalizePlaylistSummary: Normalizer<PlaylistSummaryEntity> = (_, store, e
 
 const normalizeReport: Normalizer<ReportEntity> = (_, store, entity) => {
   const { id, reporterId, reason, description, state, comment } = entity;
-  const { targetType, targetId } = getTargetProperties(entity);
+  const { targetType, targetId } = getReportTargetProperties(entity);
 
   store.Report[id] = {
     ...base(entity),
@@ -843,6 +859,7 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   GroupMember: normalizeGroupMember,
   GroupSecret: normalizeGroupSecret,
   GroupSummary: normalizeGroupSummary,
+  Objection: normalizeObjection,
   Playlist: normalizePlaylist,
   PlaylistBookmark: normalizePlaylistBookmark,
   PlaylistItem: normalizePlaylistItem,

@@ -14,6 +14,7 @@ import { GroupInvitation } from "./GroupInvitation";
 import { GroupMember } from "./GroupMember";
 import { GroupSecret } from "./GroupSecret";
 import { GroupSummary } from "./GroupSummary";
+import { Objection } from "./Objection";
 import { Playlist } from "./Playlist";
 import { PlaylistBookmark } from "./PlaylistBookmark";
 import { PlaylistItem } from "./PlaylistItem";
@@ -60,6 +61,7 @@ export * from "./GroupInvitation";
 export * from "./GroupMember";
 export * from "./GroupSecret";
 export * from "./GroupSummary";
+export * from "./Objection";
 export * from "./Playlist";
 export * from "./PlaylistBookmark";
 export * from "./PlaylistItem";
@@ -106,6 +108,7 @@ export type EntityTypeToEntity = {
   GroupMember: GroupMember;
   GroupSecret: GroupSecret;
   GroupSummary: GroupSummary;
+  Objection: Objection;
   Playlist: Playlist;
   PlaylistBookmark: PlaylistBookmark;
   PlaylistItem: PlaylistItem;
@@ -160,6 +163,7 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     GroupMember: {},
     GroupSecret: {},
     GroupSummary: {},
+    Objection: {},
     Playlist: {},
     PlaylistBookmark: {},
     PlaylistItem: {},

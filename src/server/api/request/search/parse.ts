@@ -17,6 +17,8 @@ import {
   GroupMember,
   GroupSecret,
   GroupSummary,
+  Objection,
+  ObjectionTarget,
   Permission,
   Playlist,
   PlaylistBookmark,
@@ -222,6 +224,16 @@ const parseGroupSummary: Parser<GroupSummary> = query => {
   return {
     ...base(query),
     ownerId
+  };
+};
+
+const parseObjection: Parser<Objection> = query => {
+  const { targetType, targetId } = query;
+
+  return {
+    ...base(query),
+    targetType: targetType as ObjectionTarget,
+    targetId
   };
 };
 
@@ -473,6 +485,7 @@ const parsers: { [T in EntityType]: Parser<any> } = {
   GroupMember: parseGroupMember,
   GroupSecret: parseGroupSecret,
   GroupSummary: parseGroupSummary,
+  Objection: parseObjection,
   Playlist: parsePlaylist,
   PlaylistBookmark: parsePlaylistBookmark,
   PlaylistItem: parsePlaylistItem,

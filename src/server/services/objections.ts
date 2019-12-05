@@ -1,16 +1,14 @@
 import * as createError from "http-errors";
-import { ReportTarget } from "../../shared/api/entities";
-import { ReportEntity } from "../database/entities";
+import { ObjectionTarget } from "../../shared/api/entities";
+import { ObjectionEntity } from "../database/entities";
 
-export const getReportTargetProperties = ({
+export const getObjectionTargetProperties = ({
   targetExerciseId,
   targetGroupId,
   targetPlaylistId,
-  targetSynonymId,
-  targetTagId,
   targetUserId
-}: ReportEntity): {
-  targetType: ReportTarget;
+}: ObjectionEntity): {
+  targetType: ObjectionTarget;
   targetId: string;
 } => {
   if (targetExerciseId !== undefined) {
@@ -28,16 +26,6 @@ export const getReportTargetProperties = ({
       targetType: "Playlist",
       targetId: targetPlaylistId
     };
-  } else if (targetSynonymId !== undefined) {
-    return {
-      targetType: "Synonym",
-      targetId: targetSynonymId
-    };
-  } else if (targetTagId !== undefined) {
-    return {
-      targetType: "Tag",
-      targetId: targetTagId
-    };
   } else if (targetUserId !== undefined) {
     return {
       targetType: "User",
@@ -45,5 +33,5 @@ export const getReportTargetProperties = ({
     };
   }
 
-  throw createError(500, "report.targetId is not defined");
+  throw createError(500, "objection.targetId is not defined");
 };

@@ -15,6 +15,7 @@ import { GroupInvitationEntity } from "./GroupInvitationEntity";
 import { GroupMemberEntity } from "./GroupMemberEntity";
 import { GroupSecretEntity } from "./GroupSecretEntity";
 import { GroupSummaryEntity } from "./GroupSummaryEntity";
+import { ObjectionEntity } from "./ObjectionEntity";
 import { PlaylistBookmarkEntity } from "./PlaylistBookmarkEntity";
 import { PlaylistEntity } from "./PlaylistEntity";
 import { PlaylistItemEntity } from "./PlaylistItemEntity";
@@ -61,6 +62,7 @@ export * from "./GroupInvitationEntity";
 export * from "./GroupMemberEntity";
 export * from "./GroupSecretEntity";
 export * from "./GroupSummaryEntity";
+export * from "./ObjectionEntity";
 export * from "./PlaylistBookmarkEntity";
 export * from "./PlaylistEntity";
 export * from "./PlaylistItemEntity";
@@ -107,6 +109,7 @@ export type Entity =
   | GroupMemberEntity
   | GroupSecretEntity
   | GroupSummaryEntity
+  | ObjectionEntity
   | PlaylistBookmarkEntity
   | PlaylistEntity
   | PlaylistItemEntity
@@ -153,6 +156,7 @@ export const entities = [
     GroupMember: GroupMemberEntity,
     GroupSecret: GroupSecretEntity,
     GroupSummary: GroupSummaryEntity,
+    Objection: ObjectionEntity,
     Playlist: PlaylistEntity,
     PlaylistBookmark: PlaylistBookmarkEntity,
     PlaylistItem: PlaylistItemEntity,
