@@ -18,8 +18,8 @@ import { EditContestsPage } from "../pages/contests/EditContestsPage";
 import { GroupContestsPage } from "../pages/contests/GroupContestsPage";
 import { UserExerciseDraftsPage } from "../pages/exercise-drafts/UserExerciseDraftsPage";
 import { EditExerciseObjectionPage } from "../pages/exercise-objections/EditExerciseObjectionPage";
-import { EditExerciseObjectionsPage } from "../pages/exercise-objections/EditExerciseObjectionsPage";
-import { ExerciseObjectionPage } from "../pages/exercise-objections/ExerciseObjectionPage";
+// import { EditExerciseObjectionsPage } from "../pages/exercise-objections/EditExerciseObjectionsPage";
+// import { ExerciseObjectionPage } from "../pages/exercise-objections/ExerciseObjectionPage";
 // import { ExerciseObjectionsPage } from "../pages/exercise-objections/ExerciseObjectionsPage";
 // import { UserExerciseObjectionsPage } from "../pages/exercise-objections/UserExeciseObjectionsPage";
 // import { EditExerciseReportPage } from "../pages/exercise-reports/EditExerciseReportPage";
@@ -47,6 +47,8 @@ import { GroupsPage } from "../pages/groups/GroupsPage";
 import { HomePage } from "../pages/HomePage";
 import { LoadingPage } from "../pages/LoadingPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
+import { EditObjectionsPage } from "../pages/objections/EditObjectionsPage";
+import { ObjectionPage } from "../pages/objections/ObjectionPage";
 import { ObjectionsPage } from "../pages/objections/ObjectionsPage";
 import { UserPlaylistBookmarksPage } from "../pages/playlist-bookmarks/UserPlaylistBookmarksPage";
 import { PlaylistPage } from "../pages/playlists/PlaylistPage";
@@ -182,8 +184,8 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/reports/:id/edit" component={EditReportPage} />
 
         <Route exact={true} path="/objections" component={ObjectionsPage} />
-        <Route exact={true} path="/objections/edit" component={EditExerciseObjectionsPage} />
-        <Route exact={true} path="/objections/:id" component={ExerciseObjectionPage} />
+        <Route exact={true} path="/objections/edit" component={EditObjectionsPage} />
+        <Route exact={true} path="/objections/:id" component={ObjectionPage} />
         <Route exact={true} path="/objections/:id/edit" component={EditExerciseObjectionPage} />
 
         <Route component={NotFoundPage} />

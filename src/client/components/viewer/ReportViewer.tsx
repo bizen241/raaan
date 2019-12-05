@@ -17,7 +17,7 @@ export const ReportViewer = withEntity<Report, {}>({ entityType: "Report" })(({ 
       />
       <Card icon={<ReportIcon />} title="クイズの報告">
         <Property label="理由">{report.reason}</Property>
-        <Property label="説明">{report.description || "&nbsp"}</Property>
+        <Property label="説明">{report.description}</Property>
         <Property label="状態">{report.state}</Property>
         <Property label="コメント">{report.comment}</Property>
       </Card>
