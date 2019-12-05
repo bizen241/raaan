@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, RelationId } from "typeorm";
 import { ObjectionState } from "../../../shared/api/entities/Objection";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
@@ -20,6 +20,7 @@ export class ObjectionEntity extends BaseEntityClass {
   @OneToOne(() => ExerciseEntity, {
     onDelete: "CASCADE"
   })
+  @JoinColumn()
   targetExercise?: ExerciseEntity;
   @RelationId((report: ObjectionEntity) => report.targetExercise)
   targetExerciseId?: string;
@@ -27,6 +28,7 @@ export class ObjectionEntity extends BaseEntityClass {
   @OneToOne(() => GroupEntity, {
     onDelete: "CASCADE"
   })
+  @JoinColumn()
   targetGroup?: GroupEntity;
   @RelationId((report: ObjectionEntity) => report.targetGroup)
   targetGroupId?: string;
@@ -34,6 +36,7 @@ export class ObjectionEntity extends BaseEntityClass {
   @OneToOne(() => PlaylistEntity, {
     onDelete: "CASCADE"
   })
+  @JoinColumn()
   targetPlaylist?: PlaylistEntity;
   @RelationId((report: ObjectionEntity) => report.targetPlaylist)
   targetPlaylistId?: string;
@@ -41,6 +44,7 @@ export class ObjectionEntity extends BaseEntityClass {
   @OneToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
+  @JoinColumn()
   targetUser?: UserEntity;
   @RelationId((report: ObjectionEntity) => report.targetUser)
   targetUserId?: string;
