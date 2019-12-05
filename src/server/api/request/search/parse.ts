@@ -228,10 +228,11 @@ const parseGroupSummary: Parser<GroupSummary> = query => {
 };
 
 const parseObjection: Parser<Objection> = query => {
-  const { targetType, targetId } = query;
+  const { objectorId, targetType, targetId } = query;
 
   return {
     ...base(query),
+    objectorId,
     targetType: targetType as ObjectionTarget,
     targetId
   };

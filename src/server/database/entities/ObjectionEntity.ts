@@ -13,9 +13,9 @@ export class ObjectionEntity extends BaseEntityClass {
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
-  reporter?: UserEntity;
-  @RelationId((report: ObjectionEntity) => report.reporter)
-  reporterId!: string;
+  objector?: UserEntity;
+  @RelationId((report: ObjectionEntity) => report.objector)
+  objectorId!: string;
 
   @OneToOne(() => ExerciseEntity, {
     onDelete: "CASCADE"
@@ -58,9 +58,10 @@ export class ObjectionEntity extends BaseEntityClass {
   @Column()
   comment: string = "";
 
-  constructor(description: string) {
+  constructor(objector: UserEntity, description: string) {
     super();
 
+    this.objector = objector;
     this.description = description;
   }
 }

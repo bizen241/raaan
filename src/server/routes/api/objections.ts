@@ -10,9 +10,10 @@ import { hasPermission } from "../../api/security";
 import { ExerciseEntity, GroupEntity, ObjectionEntity, PlaylistEntity, UserEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { targetType, targetId, searchLimit, searchOffset } = parseQuery<Objection>("Objection", req.query);
+  const { objectorId, targetType, targetId, searchLimit, searchOffset } = parseQuery<Objection>("Objection", req.query);
 
-  if (!hasPermission(currentUser, "Admin")) {
+  const isObjector = objectorId === currentUser.id;
+  if (!isObjector && !hasPermission(currentUser, "Admin")) {
     return next(createError(403));
   }
 
@@ -47,7 +48,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, _, current
   }
 
   await getManager().transaction(async manager => {
-    const report = new ObjectionEntity(description);
+    const report = new ObjectionEntity(currentUser, description);
 
     switch (targetType) {
       case "Exercise": {

@@ -385,11 +385,12 @@ const normalizeGroupSummary: Normalizer<GroupSummaryEntity> = (_, store, entity)
 };
 
 const normalizeObjection: Normalizer<ObjectionEntity> = (_, store, entity) => {
-  const { id, description, state, comment } = entity;
+  const { id, objectorId, description, state, comment } = entity;
   const { targetType, targetId } = getObjectionTargetProperties(entity);
 
   store.Objection[id] = {
     ...base(entity),
+    objectorId,
     targetType,
     targetId,
     description,
