@@ -50,6 +50,7 @@ import {
 import { BaseEntityClass } from "../../database/entities/BaseEntityClass";
 import { ExerciseVoteEntity } from "../../database/entities/ExerciseVoteEntity";
 import { UserReportEntity } from "../../database/entities/UserReportEntity";
+import { getTargetProperties } from "../../services/reports";
 
 export interface RequestContext {
   sessionId?: string;
@@ -493,16 +494,14 @@ const normalizePlaylistSummary: Normalizer<PlaylistSummaryEntity> = (_, store, e
 };
 
 const normalizeReport: Normalizer<ReportEntity> = (_, store, entity) => {
-  const { id, reporterId, targetExerciseId, reason, description, state, comment } = entity;
-  if (targetExerciseId === undefined) {
-    return;
-  }
+  const { id, reporterId, reason, description, state, comment } = entity;
+  const { targetType, targetId } = getTargetProperties(entity);
 
   store.Report[id] = {
     ...base(entity),
     reporterId,
-    targetType: "Exercise",
-    targetId: targetExerciseId,
+    targetType,
+    targetId,
     reason,
     description,
     state,
