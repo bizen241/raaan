@@ -12,13 +12,12 @@ import {
 import { Refresh } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
-import { EntityObject, EntityType } from "../../shared/api/entities";
+import { EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { Column, Row, TablePagination } from "../components/ui";
 import { useSearch } from "../hooks/useSearch";
 
-interface EntityListParams {
-  entityType: EntityType;
+interface EntityListOptions {
   itemHeight?: number;
 }
 
@@ -38,14 +37,13 @@ interface EntityListParamsProps<E extends EntityObject> {
   onChange: (params: Params<E>) => void;
 }
 
-export const createEntityList = <E extends EntityObject, P extends {} = {}>({
-  entityType,
-  itemHeight = 53
-}: EntityListParams) => (
-  ItemComponent: React.ComponentType<EntityListItemProps<E> & P>,
-  ParamsComponent?: React.ComponentType<EntityListParamsProps<E>>
+export const createEntityList = <T extends EntityType>(entityType: T, options: EntityListOptions = {}) => (
+  ItemComponent: React.ComponentType<EntityListItemProps<EntityTypeToEntity[T]>>,
+  ParamsComponent?: React.ComponentType<EntityListParamsProps<EntityTypeToEntity[T]>>
 ) =>
-  React.memo<EntityListProps<E> & P>(({ initialParams, ...props }) => {
+  React.memo<EntityListProps<EntityTypeToEntity[T]>>(({ initialParams, ...props }) => {
+    const { itemHeight = 53 } = options;
+
     const { entities, params, status, limit, offset, count, onChange, ...searchProps } = useSearch(
       entityType,
       initialParams
@@ -91,7 +89,7 @@ export const createEntityList = <E extends EntityObject, P extends {} = {}>({
               )}
               {!isLoading &&
                 entities.map(
-                  entity => entity && <ItemComponent key={entity.id} entity={entity as E} {...props as P} />
+                  entity => entity && <ItemComponent key={entity.id} entity={entity as EntityTypeToEntity[T]} />
                 )}
               {emptyRows && (
                 <TableRow style={{ height: itemHeight * emptyRows }}>
@@ -109,14 +107,14 @@ export const createEntityList = <E extends EntityObject, P extends {} = {}>({
                 (page: number) =>
                   onChange({
                     searchOffset: page * limit
-                  } as Params<E>),
+                  } as Params<EntityTypeToEntity[T]>),
                 [limit]
               )}
               onChangeRowsPerPage={useCallback(
                 (rowsPerPage: number) =>
                   onChange({
                     searchLimit: rowsPerPage
-                  } as Params<E>),
+                  } as Params<EntityTypeToEntity[T]>),
                 []
               )}
             />

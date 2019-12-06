@@ -1,7 +1,7 @@
 import { Event, Group as GroupIcon, Keyboard, Person, RemoveCircle } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
-import { Group, GroupMember } from "../../../shared/api/entities";
+import { Group } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
@@ -19,7 +19,7 @@ export const GroupViewer = withEntity<
 
   const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-  const { entities: groupMembers } = useSearch<GroupMember>("GroupMember", {
+  const { entities: groupMembers } = useSearch("GroupMember", {
     groupId,
     userId: currentUser.id
   });

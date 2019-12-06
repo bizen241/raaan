@@ -16,7 +16,6 @@ import * as React from "react";
 import { useContext } from "react";
 import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
-import { Exercise, ExerciseSummary, ExerciseVote, Objection, Report } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useEntity } from "../../hooks/useEntity";
 import { useSearch } from "../../hooks/useSearch";
@@ -32,7 +31,7 @@ import { ConfirmReportDialog } from "../dialogs/reports/ConfirmReportDialog";
 import { UserContext } from "../project/Context";
 import { Card, Menu, MenuItem, Property, Row } from "../ui";
 
-export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "ExerciseSummary" })(
+export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
   React.memo(({ entity: exerciseSummary }) => {
     const currentUser = useContext(UserContext);
 
@@ -49,9 +48,9 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
     const [isDeleteVoteDialogOpen, onToggleDeleteVoteDialog] = useToggleState();
     const [isConfirmReportDialogOpen, onToggleConfirmReportDialog] = useToggleState();
 
-    const { onReload: onReloadExercise } = useEntity<Exercise>("Exercise", exerciseId, false);
+    const { onReload: onReloadExercise } = useEntity("Exercise", exerciseId, false);
 
-    const { entities: votes } = useSearch<ExerciseVote>(
+    const { entities: votes } = useSearch(
       "ExerciseVote",
       {
         voterId: currentUser.id,
@@ -59,7 +58,7 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
       },
       !isAuthor
     );
-    const { entities: reports } = useSearch<Report>(
+    const { entities: reports } = useSearch(
       "Report",
       {
         reporterId: currentUser.id,
@@ -68,7 +67,7 @@ export const ExerciseSummaryViewer = withEntity<ExerciseSummary>({ entityType: "
       },
       !isAuthor
     );
-    const { entities: objections } = useSearch<Objection>(
+    const { entities: objections } = useSearch(
       "Objection",
       {
         objectorId: currentUser.id,

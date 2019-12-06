@@ -4,7 +4,7 @@ import { replace } from "connected-react-router";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { endpoints } from "../../../../shared/api/endpoint";
-import { Objection, ObjectionTarget } from "../../../../shared/api/entities";
+import { ObjectionTarget } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card, DialogContent } from "../../ui";
@@ -19,7 +19,7 @@ export const UploadObjectionDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload<Objection>("Objection", reportId, undefined, () => {
+        actions.api.upload("Objection", reportId, undefined, () => {
           const path = endpoints[targetType];
 
           dispatch(replace(`/${path}/${targetId}`));

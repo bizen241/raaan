@@ -1,7 +1,7 @@
 import { useCallback, useContext, useMemo, useState } from "react";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Exercise, Submission, SubmissionSummary } from "../../../../shared/api/entities";
+import { Exercise, SubmissionSummary } from "../../../../shared/api/entities";
 import { EntityMap } from "../../../../shared/api/response/get";
 import { QuestionResult, summarizeResults } from "../../../domain/exercise/attempt";
 import { withEntity } from "../../../enhancers/withEntity";
@@ -32,7 +32,7 @@ export const SubmissionManager = withEntity<
         const submissionId = Date.now().toString();
 
         dispatch(
-          actions.buffers.update<Submission>("Submission", submissionId, {
+          actions.buffers.update("Submission", submissionId, {
             exerciseId,
             contestId,
             ...summarizeResults(results)
@@ -41,7 +41,7 @@ export const SubmissionManager = withEntity<
         dispatch(
           actions.api.upload("Submission", submissionId, undefined, uploadResponse => {
             dispatch(
-              actions.cache.add<SubmissionSummary>(
+              actions.cache.add(
                 "SubmissionSummary",
                 {
                   submitterId: currentUser.id,

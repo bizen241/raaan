@@ -3,7 +3,7 @@ import { Delete, PlayArrow, SwapVert } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { ExerciseSummary, Playlist, PlaylistItem } from "../../../shared/api/entities";
+import { Playlist, PlaylistItem } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeletePlaylistItemDialog } from "../dialogs/playlist-items/DeletePlaylistItemDialog";
@@ -59,7 +59,7 @@ export const PlaylistItemViewer = React.memo<{
   );
 });
 
-const ExerciseTitleViewer = withEntity<ExerciseSummary>({ entityType: "ExerciseSummary" })(
+const ExerciseTitleViewer = withEntity("ExerciseSummary")(
   React.memo(({ entity: exerciseSummary }) => {
     return (
       <Box>

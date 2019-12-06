@@ -8,7 +8,7 @@ import { ExerciseSummaryEntity } from "../../database/entities";
 export const GET: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
   const { authorId, tags, isEditing, searchLimit, searchOffset } = parseQuery("ExerciseSummary", req.query);
 
-  const query = await getManager()
+  const query = getManager()
     .createQueryBuilder(ExerciseSummaryEntity, "exerciseSummary")
     .leftJoinAndSelect("exerciseSummary.exercise", "exercise")
     .leftJoinAndSelect("exerciseSummary.tags", "tags")

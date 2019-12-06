@@ -2,7 +2,6 @@ import { Typography } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { GroupMember } from "../../../../shared/api/entities";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
@@ -18,7 +17,7 @@ export const UploadGroupMemberByOwnerDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload<GroupMember>(
+        actions.api.upload(
           "GroupMember",
           generateBufferId(),
           {
@@ -27,7 +26,7 @@ export const UploadGroupMemberByOwnerDialog = createDialog<{
           },
           uploadResponse => {
             dispatch(
-              actions.cache.add<GroupMember>(
+              actions.cache.add(
                 "GroupMember",
                 {
                   groupId,

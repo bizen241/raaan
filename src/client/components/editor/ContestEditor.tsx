@@ -1,13 +1,12 @@
 import { AccessTime, CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
-import { Contest } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadContestDialog } from "../dialogs/contests/UploadContestDialog";
 import { Button, Card, Column, DateTimeField } from "../ui";
 
-export const ContestEditor = withBuffer<Contest>("Contest")(
+export const ContestEditor = withBuffer("Contest")(
   React.memo(props => {
     const { bufferId, buffer = {}, source = {}, onChange } = props;
 

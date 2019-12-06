@@ -2,7 +2,6 @@ import { Checkbox, TableCell, TableRow } from "@material-ui/core";
 import * as React from "react";
 import { createContext, useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
-import { ExerciseSummary, PlaylistItem } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
@@ -12,7 +11,7 @@ import { Column } from "../../ui";
 
 export const PlaylistContext = createContext<string | undefined>(undefined);
 
-export const TogglePlaylistItemList = createEntityList<ExerciseSummary>({ entityType: "ExerciseSummary" })(
+export const TogglePlaylistItemList = createEntityList("ExerciseSummary")(
   React.memo(({ entity: { exerciseId, title } }) => {
     const dispatch = useDispatch();
     const playlistId = useContext(PlaylistContext);
@@ -22,7 +21,7 @@ export const TogglePlaylistItemList = createEntityList<ExerciseSummary>({ entity
 
     const [isRequested, toggleRequestState] = useToggleState();
 
-    const { entities: playlistItems } = useSearch<PlaylistItem>("PlaylistItem", {
+    const { entities: playlistItems } = useSearch("PlaylistItem", {
       playlistId
     });
     const foundPlaylistItem = playlistItems.find(playlistItem => playlistItem.exerciseId === exerciseId);
@@ -32,7 +31,7 @@ export const TogglePlaylistItemList = createEntityList<ExerciseSummary>({ entity
 
       if (foundPlaylistItem === undefined) {
         dispatch(
-          actions.api.upload<PlaylistItem>(
+          actions.api.upload(
             "PlaylistItem",
             generateBufferId(),
             {
@@ -41,7 +40,7 @@ export const TogglePlaylistItemList = createEntityList<ExerciseSummary>({ entity
             },
             uploadResponse => {
               dispatch(
-                actions.cache.add<PlaylistItem>(
+                actions.cache.add(
                   "PlaylistItem",
                   {
                     playlistId

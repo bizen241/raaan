@@ -1,11 +1,10 @@
 import { Typography } from "@material-ui/core";
 import { Assessment } from "@material-ui/icons";
 import * as React from "react";
-import { SubmissionSummary } from "../../../shared/api/entities";
 import { withSearch } from "../../enhancers/withSearch";
 import { Card, Column, Property } from "../ui";
 
-export const SubmissionSummaryViewer = withSearch<SubmissionSummary>({ entityType: "SubmissionSummary" })(
+export const SubmissionSummaryViewer = withSearch("SubmissionSummary")(
   React.memo(({ entities: submissionSummaries }) => {
     const submissionSummary = submissionSummaries[0];
 

@@ -2,7 +2,7 @@ import { Card, CardContent, Divider, IconButton, Table, TableBody } from "@mater
 import { Add, Bookmark, PlayArrow, Refresh } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useMemo, useState } from "react";
-import { Playlist, PlaylistBookmark, PlaylistItem } from "../../../shared/api/entities";
+import { PlaylistItem } from "../../../shared/api/entities";
 import { sortPlaylistItems } from "../../domain/playlist";
 import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
@@ -16,7 +16,7 @@ import { Button, Column, Row } from "../ui";
 import { PlaylistItemViewer } from "./PlaylistItemViewer";
 import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 
-export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
+export const PlaylistViewer = withEntity("Playlist")(
   React.memo(({ entity: playlist, entityId: playlistId }) => {
     const currentUser = useContext(UserContext);
 
@@ -24,7 +24,7 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
 
     const [isUploadPlaylistBookmarkDialogOpen, onToggleUploadPlaylistBookmarkDialog] = useToggleState();
     const [isDeletePlaylistBookmarkDialogOpen, onToggleDeletePlaylistBookmarkDialog] = useToggleState();
-    const { entities: bookmarks } = useSearch<PlaylistBookmark>("PlaylistBookmark", {
+    const { entities: bookmarks } = useSearch("PlaylistBookmark", {
       userId: currentUser.id,
       playlistId
     });
@@ -33,7 +33,7 @@ export const PlaylistViewer = withEntity<Playlist>({ entityType: "Playlist" })(
 
     const [isPlaylistPlayerOpen, onTogglePlaylistPlayer] = useToggleState();
     const [requestedPlaylistItems, requestPlaylistItems] = useState<PlaylistItem[]>([]);
-    const { entities: playlistItems, count, onReload } = useSearch<PlaylistItem>("PlaylistItem", {
+    const { entities: playlistItems, count, onReload } = useSearch("PlaylistItem", {
       playlistId
     });
     const sortedPlaylistItems = useMemo(() => sortPlaylistItems(playlistItems, playlist.orderBy), [playlistItems]);

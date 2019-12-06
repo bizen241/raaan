@@ -2,7 +2,6 @@ import { Checkbox, TableCell, TableRow } from "@material-ui/core";
 import { createContext, useCallback, useContext } from "react";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { PlaylistItem, PlaylistSummary } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
@@ -13,7 +12,7 @@ import { Column } from "../../ui";
 
 export const ExerciseContext = createContext<string | undefined>(undefined);
 
-export const TogglePlaylistItemList = createEntityList<PlaylistSummary>({ entityType: "PlaylistSummary" })(
+export const TogglePlaylistItemList = createEntityList("PlaylistSummary")(
   React.memo(({ entity: { playlistId, title } }) => {
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);
@@ -24,7 +23,7 @@ export const TogglePlaylistItemList = createEntityList<PlaylistSummary>({ entity
 
     const [isRequested, toggleRequestState] = useToggleState();
 
-    const { entities: playlistItems } = useSearch<PlaylistItem>("PlaylistItem", {
+    const { entities: playlistItems } = useSearch("PlaylistItem", {
       authorId: currentUser.id,
       exerciseId
     });
@@ -35,7 +34,7 @@ export const TogglePlaylistItemList = createEntityList<PlaylistSummary>({ entity
 
       if (foundPlaylistItem === undefined) {
         dispatch(
-          actions.api.upload<PlaylistItem>(
+          actions.api.upload(
             "PlaylistItem",
             generateBufferId(),
             {
@@ -44,7 +43,7 @@ export const TogglePlaylistItemList = createEntityList<PlaylistSummary>({ entity
             },
             uploadResponse => {
               dispatch(
-                actions.cache.add<PlaylistItem>(
+                actions.cache.add(
                   "PlaylistItem",
                   {
                     authorId: currentUser.id,

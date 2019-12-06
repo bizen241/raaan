@@ -1,7 +1,7 @@
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
-import { UserConfig, UserSettings } from "../../../shared/api/entities";
+import { UserSettings } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadUserConfigDialog } from "../dialogs/user-configs/UploadUserConfigDialog";
@@ -30,7 +30,7 @@ const selectColorSchemeOptions: SelectOptions<UserSettings["ui.colorScheme"]> = 
   }
 };
 
-export const UserConfigEditor = withBuffer<UserConfig>("UserConfig")(
+export const UserConfigEditor = withBuffer("UserConfig")(
   React.memo(props => {
     const { bufferId, buffer = {}, source = {}, onChange } = props;
 

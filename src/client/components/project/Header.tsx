@@ -4,7 +4,6 @@ import { goBack } from "connected-react-router";
 import * as React from "react";
 import { useCallback, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { UserSummary } from "../../../shared/api/entities";
 import { useEntity } from "../../hooks/useEntity";
 import { RootState } from "../../reducers";
 import { Column, Menu, MenuItem } from "../ui";
@@ -15,7 +14,7 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
   const dispatch = useDispatch();
   const currentUser = useContext(UserContext);
 
-  const { entity: currentUserSummary } = useEntity<UserSummary>("UserSummary", currentUser.summaryId);
+  const { entity: currentUserSummary } = useEntity("UserSummary", currentUser.summaryId);
 
   const { pathname } = useSelector((state: RootState) => ({
     pathname: state.router.location.pathname

@@ -3,7 +3,6 @@ import { CloudUpload, Event } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { Contest } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card, DialogContent } from "../../ui";
@@ -16,7 +15,7 @@ export const UploadContestDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload<Contest>("Contest", bufferId, undefined, uploadResponse => {
+        actions.api.upload("Contest", bufferId, undefined, uploadResponse => {
           const contestId = Object.keys(uploadResponse.Contest)[0];
 
           dispatch(replace(`/contests/${contestId}`));

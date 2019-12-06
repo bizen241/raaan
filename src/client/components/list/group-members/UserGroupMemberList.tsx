@@ -1,14 +1,13 @@
 import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { GroupMember, GroupSummary } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
 import { Column } from "../../ui";
 
-export const UserGroupMemberList = createEntityList<GroupMember>({ entityType: "GroupMember" })(
+export const UserGroupMemberList = createEntityList("GroupMember")(
   React.memo(({ entity: groupMember }) => {
-    const { entity: groupSummary } = useEntity<GroupSummary>("GroupSummary", groupMember.groupSummaryId);
+    const { entity: groupSummary } = useEntity("GroupSummary", groupMember.groupSummaryId);
     if (groupSummary === undefined) {
       return null;
     }

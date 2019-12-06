@@ -1,14 +1,10 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { EntityObject, EntityType } from "../../shared/api/entities";
+import { EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { actions, RootState } from "../reducers";
 import { isLocalOnly } from "../reducers/api";
 
-export const useEntity = <E extends EntityObject>(
-  entityType: EntityType,
-  entityId: string,
-  shouldFetch: boolean = true
-) => {
+export const useEntity = <T extends EntityType>(entityType: T, entityId: string, shouldFetch: boolean = true) => {
   const dispatch = useDispatch();
 
   const entity = useSelector((state: RootState) => state.cache.get[entityType][entityId]);
@@ -22,7 +18,7 @@ export const useEntity = <E extends EntityObject>(
   }, [entityId]);
 
   return {
-    entity: entity as E | undefined,
+    entity: entity as EntityTypeToEntity[T] | undefined,
     getStatus: getStatus && getStatus.code,
     onReload: useCallback(() => dispatch(actions.api.get(entityType, entityId)), [])
   };

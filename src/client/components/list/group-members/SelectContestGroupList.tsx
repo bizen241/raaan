@@ -14,7 +14,7 @@ import { push } from "connected-react-router";
 import * as React from "react";
 import { useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
-import { GroupMember, GroupSummary } from "../../../../shared/api/entities";
+import { GroupMember } from "../../../../shared/api/entities";
 import { useEntity } from "../../../hooks/useEntity";
 import { useSearch } from "../../../hooks/useSearch";
 import { actions } from "../../../reducers";
@@ -28,7 +28,7 @@ export const SelectContestGroupList = React.memo<{
   const currentUser = useContext(UserContext);
   const dispatch = useDispatch();
 
-  const { entities: groupMembers, onReload } = useSearch<GroupMember>("GroupMember", {
+  const { entities: groupMembers, onReload } = useSearch("GroupMember", {
     userId: currentUser.id
   });
   const selectableGroups = groupMembers.filter(groupMember => groupMember.permission !== "read");
@@ -76,7 +76,7 @@ const SelectContestGroupListItem = React.memo<{
   groupMember: GroupMember;
   onSelect: (groupId: string) => void;
 }>(({ groupMember, onSelect }) => {
-  const { entity: groupSummary } = useEntity<GroupSummary>("GroupSummary", groupMember.groupSummaryId);
+  const { entity: groupSummary } = useEntity("GroupSummary", groupMember.groupSummaryId);
   if (groupSummary === undefined) {
     return null;
   }

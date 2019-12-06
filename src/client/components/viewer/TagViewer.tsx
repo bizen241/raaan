@@ -1,7 +1,6 @@
 import { AddAlert, Dns, Edit, LocalOffer, Person } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
-import { Tag, TagFollow } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
@@ -10,13 +9,13 @@ import { UploadTagFollowDialog } from "../dialogs/tags/UploadTagFollowDialog";
 import { UserContext } from "../project/Context";
 import { Button, Card, Column, Menu, MenuItem, Property } from "../ui";
 
-export const TagViewer = withEntity<Tag>({ entityType: "Tag" })(
+export const TagViewer = withEntity("Tag")(
   React.memo(({ entityId: tagId, entity: tag }) => {
     const currentUser = useContext(UserContext);
 
     const [isUploadTagFollowDialogOpen, onToggleUploadTagFollowDialog] = useToggleState();
     const [isDeleteTagFollowDialogOpen, onToggleDeleteTagFollowDialog] = useToggleState();
-    const { entities: follows } = useSearch<TagFollow>("TagFollow", {
+    const { entities: follows } = useSearch("TagFollow", {
       followerId: currentUser.id,
       targetId: tagId
     });

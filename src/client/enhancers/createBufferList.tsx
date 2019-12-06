@@ -2,13 +2,9 @@ import { Card, Table, TableBody, TableCell, TableFooter, TablePagination, TableR
 import * as React from "react";
 import { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
-import { EntityObject, EntityType } from "../../shared/api/entities";
+import { EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { RootState } from "../reducers";
-
-interface BufferListParams {
-  entityType: EntityType;
-}
 
 interface BufferListProps {
   title?: React.ReactNode;
@@ -21,13 +17,13 @@ interface BufferListItemProps<E extends EntityObject> {
   source: E | undefined;
 }
 
-export const createBufferList = <E extends EntityObject>({ entityType }: BufferListParams) => (
-  ListItem: React.ComponentType<BufferListItemProps<E>>
+export const createBufferList = <T extends EntityType>(entityType: T) => (
+  ListItem: React.ComponentType<BufferListItemProps<EntityTypeToEntity[T]>>
 ) =>
   React.memo<BufferListProps>(({ elevation }) => {
     const { bufferMap, entityMap } = useSelector((state: RootState) => ({
       bufferMap: state.buffers[entityType],
-      entityMap: state.cache.get[entityType] as { [key: string]: E | undefined }
+      entityMap: state.cache.get[entityType] as { [key: string]: EntityTypeToEntity[T] | undefined }
     }));
 
     const [limit, setLimit] = useState(10);

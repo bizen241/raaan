@@ -1,14 +1,13 @@
 import { Email, Person } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
-import { UserSummary } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useToggleState } from "../../hooks/useToggleState";
 import { GroupInvitationsDialog } from "../dialogs/user-follows/GroupInvitationsDialog";
 import { UserContext } from "../project/Context";
 import { Card, Menu, MenuItem, Property } from "../ui";
 
-export const UserSummaryViewer = withEntity<UserSummary>({ entityType: "UserSummary" })(
+export const UserSummaryViewer = withEntity("UserSummary")(
   React.memo(({ entity: userSummary }) => {
     const currentUser = useContext(UserContext);
 

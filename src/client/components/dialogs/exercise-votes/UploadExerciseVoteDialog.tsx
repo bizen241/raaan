@@ -3,7 +3,6 @@ import { ArrowDownward, ArrowUpward, HowToVote } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { useDispatch } from "react-redux";
-import { ExerciseVote } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
@@ -21,7 +20,7 @@ export const UploadExerciseVoteDialog = createDialog<{
       const bufferId = generateBufferId();
 
       dispatch(
-        actions.api.upload<ExerciseVote>(
+        actions.api.upload(
           "ExerciseVote",
           bufferId,
           {
@@ -30,7 +29,7 @@ export const UploadExerciseVoteDialog = createDialog<{
           },
           uploadResponse => {
             dispatch(
-              actions.cache.add<ExerciseVote>(
+              actions.cache.add(
                 "ExerciseVote",
                 {
                   voterId: currentUser.id,

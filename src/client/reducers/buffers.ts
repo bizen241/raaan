@@ -1,6 +1,6 @@
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { createEntityTypeToObject, EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
+import { createEntityTypeToObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { guestUserConfig } from "../components/project/Context";
 import { ActionUnion, createAction } from "./action";
@@ -11,7 +11,7 @@ export enum BuffersActionType {
 }
 
 export const buffersActions = {
-  update: <E extends EntityObject>(type: EntityType, id: string, params: Params<E>) =>
+  update: <T extends EntityType>(type: T, id: string, params: Params<EntityTypeToEntity[T]>) =>
     createAction(BuffersActionType.Update, {
       type,
       id,

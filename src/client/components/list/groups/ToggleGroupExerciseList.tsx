@@ -2,7 +2,6 @@ import { Checkbox, TableCell, TableRow, Typography } from "@material-ui/core";
 import { createContext, useCallback, useContext } from "react";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { GroupExercise, GroupMember, GroupSummary } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
 import { useSearch } from "../../../hooks/useSearch";
@@ -12,7 +11,7 @@ import { generateBufferId } from "../../../reducers/buffers";
 
 export const ExerciseContext = createContext<string | undefined>(undefined);
 
-export const ToggleGroupExerciseList = createEntityList<GroupMember>({ entityType: "GroupMember" })(
+export const ToggleGroupExerciseList = createEntityList("GroupMember")(
   React.memo(({ entity: { groupSummaryId } }) => {
     const dispatch = useDispatch();
     const exerciseId = useContext(ExerciseContext);
@@ -22,10 +21,10 @@ export const ToggleGroupExerciseList = createEntityList<GroupMember>({ entityTyp
 
     const [isRequested, toggleRequestState] = useToggleState();
 
-    const { entity: groupSummary } = useEntity<GroupSummary>("GroupSummary", groupSummaryId);
+    const { entity: groupSummary } = useEntity("GroupSummary", groupSummaryId);
     const groupId = groupSummary && groupSummary.groupId;
 
-    const { entities: groupExercises } = useSearch<GroupExercise>("GroupExercise", {
+    const { entities: groupExercises } = useSearch("GroupExercise", {
       exerciseId
     });
     const foundGroupExercise = groupSummary && groupExercises.find(groupExercise => groupExercise.groupId === groupId);
@@ -35,7 +34,7 @@ export const ToggleGroupExerciseList = createEntityList<GroupMember>({ entityTyp
 
       if (foundGroupExercise === undefined) {
         dispatch(
-          actions.api.upload<GroupExercise>(
+          actions.api.upload(
             "GroupExercise",
             generateBufferId(),
             {
@@ -44,7 +43,7 @@ export const ToggleGroupExerciseList = createEntityList<GroupMember>({ entityTyp
             },
             uploadResponse => {
               dispatch(
-                actions.cache.add<GroupExercise>(
+                actions.cache.add(
                   "GroupExercise",
                   {
                     exerciseId

@@ -3,7 +3,6 @@ import { PersonAdd } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { useDispatch } from "react-redux";
-import { UserFollow } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
@@ -19,7 +18,7 @@ export const UploadUserFollowDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload<UserFollow>(
+        actions.api.upload(
           "UserFollow",
           generateBufferId(),
           {
@@ -28,7 +27,7 @@ export const UploadUserFollowDialog = createDialog<{
           },
           uploadResponse => {
             dispatch(
-              actions.cache.add<UserFollow>(
+              actions.cache.add(
                 "UserFollow",
                 {
                   followerId: currentUser.id,

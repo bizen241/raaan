@@ -1,11 +1,10 @@
 import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Contest } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { Column } from "../../ui";
 
-export const ContestList = createEntityList<Contest>({ entityType: "Contest" })(
+export const ContestList = createEntityList("Contest")(
   React.memo(({ entity: contest }) => {
     return (
       <TableRow>

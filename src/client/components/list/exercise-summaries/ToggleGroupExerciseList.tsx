@@ -2,7 +2,6 @@ import { Checkbox, TableCell, TableRow } from "@material-ui/core";
 import { createContext, useCallback, useContext } from "react";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { ExerciseSummary, GroupExercise } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
@@ -12,7 +11,7 @@ import { Column } from "../../ui";
 
 export const GroupContext = createContext<string | undefined>(undefined);
 
-export const ToggleGroupExerciseList = createEntityList<ExerciseSummary>({ entityType: "ExerciseSummary" })(
+export const ToggleGroupExerciseList = createEntityList("ExerciseSummary")(
   React.memo(({ entity: { exerciseId, title } }) => {
     const dispatch = useDispatch();
     const groupId = useContext(GroupContext);
@@ -22,7 +21,7 @@ export const ToggleGroupExerciseList = createEntityList<ExerciseSummary>({ entit
 
     const [isRequested, toggleRequestState] = useToggleState();
 
-    const { entities: groupExercises } = useSearch<GroupExercise>("GroupExercise", {
+    const { entities: groupExercises } = useSearch("GroupExercise", {
       groupId
     });
     const foundGroupExercise = groupExercises.find(groupExercise => groupExercise.exerciseId === exerciseId);
@@ -32,7 +31,7 @@ export const ToggleGroupExerciseList = createEntityList<ExerciseSummary>({ entit
 
       if (foundGroupExercise === undefined) {
         dispatch(
-          actions.api.upload<GroupExercise>(
+          actions.api.upload(
             "GroupExercise",
             generateBufferId(),
             {
@@ -41,7 +40,7 @@ export const ToggleGroupExerciseList = createEntityList<ExerciseSummary>({ entit
             },
             uploadResponse => {
               dispatch(
-                actions.cache.add<GroupExercise>(
+                actions.cache.add(
                   "GroupExercise",
                   {
                     groupId

@@ -3,7 +3,6 @@ import { LinkOff, Send } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { GroupApplication, GroupSecret } from "../../../../shared/api/entities";
 import { useSearch } from "../../../hooks/useSearch";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
@@ -29,7 +28,7 @@ const GroupApplicationPageContent = React.memo<{
 }>(({ groupId, secret }) => {
   const dispatch = useDispatch();
 
-  const { entities: groupSecrets, status } = useSearch<GroupSecret>("GroupSecret", {
+  const { entities: groupSecrets, status } = useSearch("GroupSecret", {
     groupId,
     value: secret
   });
@@ -37,7 +36,7 @@ const GroupApplicationPageContent = React.memo<{
 
   const onUpload = () => {
     dispatch(
-      actions.api.upload<GroupApplication>(
+      actions.api.upload(
         "GroupApplication",
         generateBufferId(),
         {

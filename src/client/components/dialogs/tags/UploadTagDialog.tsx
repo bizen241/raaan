@@ -3,7 +3,6 @@ import { CloudUpload, Person } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { Tag } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card, DialogContent } from "../../ui";
@@ -16,7 +15,7 @@ export const UploadTagDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload<Tag>("Tag", bufferId, undefined, uploadResponse => {
+        actions.api.upload("Tag", bufferId, undefined, uploadResponse => {
           const tag = Object.values(uploadResponse.Tag)[0];
 
           if (tag !== undefined) {

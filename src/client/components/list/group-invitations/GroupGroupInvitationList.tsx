@@ -2,18 +2,17 @@ import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { GroupInvitation, UserSummary } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { CancelGroupInvitationDialog } from "../../dialogs/group-invitations/DeleteGroupInvitationByOwnerDialog";
 import { Column, Menu, MenuItem } from "../../ui";
 
-export const GroupGroupInvitationList = createEntityList<GroupInvitation>({ entityType: "GroupInvitation" })(
+export const GroupGroupInvitationList = createEntityList("GroupInvitation")(
   React.memo(({ entity: groupInvitation }) => {
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-    const { entity: userSummary } = useEntity<UserSummary>("UserSummary", groupInvitation.targetSummaryId);
+    const { entity: userSummary } = useEntity("UserSummary", groupInvitation.targetSummaryId);
     if (userSummary === undefined) {
       return null;
     }

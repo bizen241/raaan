@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useContext } from "react";
-import { GroupInvitation } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
 import { ToggleGroupInvitationList } from "../../list/group-summaries/ToggleGroupInvitationList";
@@ -13,13 +12,10 @@ export const GroupInvitationsDialog = createDialog<{
   React.memo(({ followerId, onClose }) => {
     const currentUser = useContext(UserContext);
 
-    const { entities: groupInvitations, onReload: onReloadGroupInvitations } = useSearch<GroupInvitation>(
-      "GroupInvitation",
-      {
-        targetId: followerId,
-        ownerId: currentUser.id
-      }
-    );
+    const { onReload: onReloadGroupInvitations } = useSearch("GroupInvitation", {
+      targetId: followerId,
+      ownerId: currentUser.id
+    });
 
     return (
       <DialogContent title="フォロワーを招待" onClose={onClose}>
@@ -27,8 +23,6 @@ export const GroupInvitationsDialog = createDialog<{
           initialParams={{
             ownerId: currentUser.id
           }}
-          followerId={followerId}
-          followerInvitations={groupInvitations}
           onReload={onReloadGroupInvitations}
         />
       </DialogContent>

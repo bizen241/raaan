@@ -1,10 +1,9 @@
 import { Gavel, Report as ReportIcon } from "@material-ui/icons";
 import * as React from "react";
-import { Report } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { Button, Card, Column, Property } from "../ui";
 
-export const ReportViewer = withEntity<Report, {}>({ entityType: "Report" })(({ entity: report }) => {
+export const ReportViewer = withEntity("Report")(({ entity: report }) => {
   const { state } = report;
 
   return (

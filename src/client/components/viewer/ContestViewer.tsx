@@ -1,12 +1,11 @@
 import { Group as GroupIcon, Send } from "@material-ui/icons";
 import * as React from "react";
-import { Contest } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useToggleState } from "../../hooks/useToggleState";
 import { ExercisePlayer } from "../player/dialogs/ExercisePlayer";
 import { Button, Card, Column, Property } from "../ui";
 
-export const ContestViewer = withEntity<Contest>({ entityType: "Contest" })(({ entity: contest }) => {
+export const ContestViewer = withEntity("Contest")(({ entity: contest }) => {
   const [isExercisePlayerOpen, onToggleExercisePlayer] = useToggleState();
 
   return (

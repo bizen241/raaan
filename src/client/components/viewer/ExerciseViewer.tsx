@@ -1,7 +1,6 @@
 import { PlayArrow, PlaylistAdd } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
-import { Exercise } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useToggleState } from "../../hooks/useToggleState";
 import { PlaylistItemsDialog } from "../dialogs/exercises/PlaylistItemsDialog";
@@ -11,7 +10,7 @@ import { Button, Column } from "../ui";
 import { ExerciseSummaryViewer } from "./ExerciseSummaryViewer";
 import { SubmissionSummaryViewer } from "./SubmissionSummaryViewer";
 
-export const ExerciseViewer = withEntity<Exercise>({ entityType: "Exercise" })(
+export const ExerciseViewer = withEntity("Exercise")(
   React.memo(({ entity: exercise }) => {
     const currentUser = useContext(UserContext);
 

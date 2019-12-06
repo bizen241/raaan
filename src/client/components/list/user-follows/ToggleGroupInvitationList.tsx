@@ -2,7 +2,6 @@ import { Checkbox, TableCell, TableRow, Typography } from "@material-ui/core";
 import { createContext, useCallback, useContext } from "react";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { GroupInvitation, UserFollow, UserSummary } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
 import { useSearch } from "../../../hooks/useSearch";
@@ -13,7 +12,7 @@ import { Column } from "../../ui";
 
 export const GroupContext = createContext<string | undefined>(undefined);
 
-export const ToggleGroupInvitationList = createEntityList<UserFollow>({ entityType: "UserFollow" })(
+export const ToggleGroupInvitationList = createEntityList("UserFollow")(
   React.memo(({ entity: { followerSummaryId } }) => {
     const dispatch = useDispatch();
     const groupId = useContext(GroupContext);
@@ -23,10 +22,10 @@ export const ToggleGroupInvitationList = createEntityList<UserFollow>({ entityTy
 
     const [isRequested, toggleRequestState] = useToggleState();
 
-    const { entity: userSummary } = useEntity<UserSummary>("UserSummary", followerSummaryId);
+    const { entity: userSummary } = useEntity("UserSummary", followerSummaryId);
     const followerId = userSummary && userSummary.userId;
 
-    const { entities: groupInvitations } = useSearch<GroupInvitation>("GroupInvitation", {
+    const { entities: groupInvitations } = useSearch("GroupInvitation", {
       groupId
     });
     const foundGroupInvitation = groupInvitations.find(
@@ -38,7 +37,7 @@ export const ToggleGroupInvitationList = createEntityList<UserFollow>({ entityTy
 
       if (foundGroupInvitation === undefined) {
         dispatch(
-          actions.api.upload<GroupInvitation>(
+          actions.api.upload(
             "GroupInvitation",
             generateBufferId(),
             {
@@ -47,7 +46,7 @@ export const ToggleGroupInvitationList = createEntityList<UserFollow>({ entityTy
             },
             uploadResponse => {
               dispatch(
-                actions.cache.add<GroupInvitation>(
+                actions.cache.add(
                   "GroupInvitation",
                   {
                     groupId

@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { UserAccount } from "../../../../shared/api/entities";
 import { useEntity } from "../../../hooks/useEntity";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { RootState } from "../../../reducers";
@@ -13,7 +12,7 @@ export const EditUserAccountProviderPage = React.memo(() => {
   const [isChangeProviderDialogOpen, onToggleChangeProviderDialog] = useToggleState();
 
   const currentUserAccountId = useSelector((state: RootState) => state.app.userAccountId);
-  const { entity: currentUserAccount } = useEntity<UserAccount>("UserAccount", currentUserAccountId);
+  const { entity: currentUserAccount } = useEntity("UserAccount", currentUserAccountId);
   if (currentUserAccount === undefined) {
     return null;
   }

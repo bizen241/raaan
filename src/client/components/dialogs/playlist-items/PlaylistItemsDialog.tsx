@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useContext } from "react";
-import { PlaylistItem } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
 import { PlaylistContext, TogglePlaylistItemList } from "../../list/exercise-summaries/TogglePlaylistItemList";
@@ -13,7 +12,7 @@ export const PlaylistItemsDialog = createDialog<{
   React.memo(({ playlistId, onClose }) => {
     const currentUser = useContext(UserContext);
 
-    const { onReload: onReloadPlaylistItems } = useSearch<PlaylistItem>("PlaylistItem", {
+    const { onReload: onReloadPlaylistItems } = useSearch("PlaylistItem", {
       playlistId
     });
 

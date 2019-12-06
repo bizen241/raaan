@@ -1,7 +1,6 @@
 import { ContactMail, History, Keyboard, PersonAdd, PlaylistPlay } from "@material-ui/icons";
 import { useContext } from "react";
 import * as React from "react";
-import { User, UserFollow } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
@@ -11,12 +10,12 @@ import { UserContext } from "../project/Context";
 import { Button, Column } from "../ui";
 import { UserSummaryViewer } from "./UserSummaryViewer";
 
-export const UserViewer = withEntity<User, {}>({ entityType: "User" })(({ entityId: userId, entity: user }) => {
+export const UserViewer = withEntity("User")(({ entityId: userId, entity: user }) => {
   const currentUser = useContext(UserContext);
 
   const [isUploadUserFollowDialogOpen, onToggleUploadUserFollowDialog] = useToggleState();
   const [isDeleteUserFollowDialogOpen, onToggleDeleteUserFollowDialog] = useToggleState();
-  const { entities: follows } = useSearch<UserFollow>("UserFollow", {
+  const { entities: follows } = useSearch("UserFollow", {
     followerId: currentUser.id,
     targetId: userId
   });

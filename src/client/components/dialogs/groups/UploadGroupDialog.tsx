@@ -3,7 +3,6 @@ import { CloudUpload, Group as GroupIcon } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { Group } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card, DialogContent } from "../../ui";
@@ -16,7 +15,7 @@ export const UploadGroupDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload<Group>("Group", bufferId, undefined, uploadResponse => {
+        actions.api.upload("Group", bufferId, undefined, uploadResponse => {
           const groupId = Object.keys(uploadResponse.Group)[0];
 
           dispatch(replace(`/groups/${groupId}`));

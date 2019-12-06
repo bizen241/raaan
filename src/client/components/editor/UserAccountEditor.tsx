@@ -2,7 +2,7 @@ import { Card, CardContent } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext } from "react";
-import { AvatarType, UserAccount } from "../../../shared/api/entities";
+import { AvatarType } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadUserAccountDialog } from "../dialogs/user-accounts/UploadUserAccountDialog";
@@ -18,7 +18,7 @@ const selectAvatarTypeOptions: SelectOptions<AvatarType> = {
   }
 };
 
-export const UserAccountEditor = withBuffer<UserAccount>("UserAccount")(
+export const UserAccountEditor = withBuffer("UserAccount")(
   React.memo(props => {
     const { bufferId, buffer = {}, source = {}, onChange } = props;
 

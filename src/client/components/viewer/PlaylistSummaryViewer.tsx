@@ -3,7 +3,6 @@ import { Delete, Edit, HowToVote, Lock, Public } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { PlaylistSummary } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeletePlaylistDialog } from "../dialogs/playlists/DeletePlaylistDialog";
@@ -13,7 +12,7 @@ import { UserContext } from "../project/Context";
 import { Column, Menu, Property, Row } from "../ui";
 import { useStyles } from "../ui/styles";
 
-export const PlaylistSummaryViewer = withEntity<PlaylistSummary>({ entityType: "PlaylistSummary" })(
+export const PlaylistSummaryViewer = withEntity("PlaylistSummary")(
   React.memo(({ entity: playlistSummary }) => {
     const classes = useStyles();
     const currentUser = useContext(UserContext);

@@ -1,14 +1,13 @@
 import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { TagFollow, TagSummary } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
 import { Column } from "../../ui";
 
-export const TagFollowList = createEntityList<TagFollow>({ entityType: "TagFollow" })(
+export const TagFollowList = createEntityList("TagFollow")(
   React.memo(({ entity: userFollow }) => {
-    const { entity: tagSummary } = useEntity<TagSummary>("TagSummary", userFollow.targetSummaryId);
+    const { entity: tagSummary } = useEntity("TagSummary", userFollow.targetSummaryId);
     if (tagSummary === undefined) {
       return null;
     }

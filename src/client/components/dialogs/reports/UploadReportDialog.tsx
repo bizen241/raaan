@@ -5,7 +5,7 @@ import { useContext } from "react";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { endpoints } from "../../../../shared/api/endpoint";
-import { Report, ReportTarget } from "../../../../shared/api/entities";
+import { ReportTarget } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { UserContext } from "../../project/Context";
@@ -22,9 +22,9 @@ export const UploadReportDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload<Report>("Report", reportId, undefined, uploadResponse => {
+        actions.api.upload("Report", reportId, undefined, uploadResponse => {
           dispatch(
-            actions.cache.add<Report>(
+            actions.cache.add(
               "Report",
               {
                 reporterId: currentUser.id,

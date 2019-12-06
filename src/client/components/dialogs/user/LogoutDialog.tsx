@@ -2,7 +2,6 @@ import { Typography } from "@material-ui/core";
 import { Delete, Warning } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
-import { UserSession } from "../../../../shared/api/entities";
 import { deleteEntity } from "../../../api/client";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
@@ -14,7 +13,7 @@ export const LogoutDialog = createDialog<{}>(
   React.memo(({ onClose }) => {
     const currentUser = useContext(UserContext);
 
-    const { entities: userSessions } = useSearch<UserSession>("UserSession", {
+    const { entities: userSessions } = useSearch("UserSession", {
       userId: currentUser.id
     });
 

@@ -3,7 +3,6 @@ import { Add, CloudUpload, PlaylistPlay } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Playlist, PlaylistItem, PlaylistSummary } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
@@ -23,10 +22,10 @@ export const PlaylistItemsDialog = createDialog<{
     const [isEditoOpen, onToggleEditor] = useToggleState();
     const [title, setTitle] = useState();
 
-    const { onReload: onReloadPlaylistSummaries } = useSearch<PlaylistSummary>("PlaylistSummary", {
+    const { onReload: onReloadPlaylistSummaries } = useSearch("PlaylistSummary", {
       authorId: currentUser.id
     });
-    const { onReload: onReloadPlaylistItems } = useSearch<PlaylistItem>("PlaylistItem", {
+    const { onReload: onReloadPlaylistItems } = useSearch("PlaylistItem", {
       authorId: currentUser.id,
       exerciseId
     });
@@ -38,7 +37,7 @@ export const PlaylistItemsDialog = createDialog<{
       const bufferId = generateBufferId();
 
       dispatch(
-        actions.api.upload<Playlist>(
+        actions.api.upload(
           "Playlist",
           bufferId,
           {
@@ -47,7 +46,7 @@ export const PlaylistItemsDialog = createDialog<{
           },
           uploadResponse => {
             dispatch(
-              actions.cache.add<PlaylistItem>(
+              actions.cache.add(
                 "PlaylistItem",
                 {
                   authorId: currentUser.id,

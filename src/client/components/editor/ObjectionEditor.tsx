@@ -1,7 +1,7 @@
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext } from "react";
-import { Objection, ObjectionState } from "../../../shared/api/entities";
+import { ObjectionState } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadObjectionDialog } from "../dialogs/objections/UploadObjectionDialog";
@@ -20,7 +20,7 @@ const selectObjectionStateOptions: SelectOptions<ObjectionState> = {
   }
 };
 
-export const ObjectionEditor = withBuffer<Objection>("Objection")(
+export const ObjectionEditor = withBuffer("Objection")(
   React.memo(props => {
     const { bufferId, buffer = {}, source = {}, onChange } = props;
 

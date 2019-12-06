@@ -22,10 +22,10 @@ export enum ApiActionType {
 }
 
 export const apiSyncActions = {
-  update: <E extends EntityObject>(
+  update: <T extends EntityType>(
     method: keyof ApiState,
-    type: EntityType,
-    key: string | Params<E>,
+    type: T,
+    key: string | Params<EntityTypeToEntity[T]>,
     code: number,
     response?: Partial<EntityStore>
   ) => createAction(ApiActionType.Update, { method, type, key, code, response })
@@ -53,7 +53,7 @@ const getEntity = (type: EntityType, id: string): AsyncAction => async (dispatch
   }
 };
 
-const searchEntity = <E extends EntityObject>(type: EntityType, params: Params<E>): AsyncAction => async (
+const searchEntity = <T extends EntityType>(type: T, params: Params<EntityTypeToEntity[T]>): AsyncAction => async (
   dispatch,
   getState
 ) => {
@@ -62,7 +62,7 @@ const searchEntity = <E extends EntityObject>(type: EntityType, params: Params<E
     return;
   }
 
-  dispatch(apiSyncActions.update<E>("search", type, params, 102));
+  dispatch(apiSyncActions.update<T>("search", type, params, 102));
 
   try {
     const response = await api.searchEntity(type, params);
@@ -78,14 +78,14 @@ const searchEntity = <E extends EntityObject>(type: EntityType, params: Params<E
 
 export const isLocalOnly = (id: string) => !isNaN(Number(id));
 
-const uploadEntity = <E extends EntityObject>(
-  type: EntityType,
+const uploadEntity = <T extends EntityType>(
+  type: T,
   id: string,
-  params?: Params<E>,
+  params?: Params<EntityTypeToEntity[T]>,
   onSuccess?: (uploadResponse: EntityStore) => void,
   onFailure?: () => void
 ): AsyncAction => async (dispatch, getState) => {
-  const buffer = getState().buffers[type][id] as Partial<E> | undefined;
+  const buffer = getState().buffers[type][id] as Partial<EntityTypeToEntity[T]> | undefined;
   const target = params || buffer;
   if (target === undefined) {
     return;

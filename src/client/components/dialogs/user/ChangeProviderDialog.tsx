@@ -1,7 +1,6 @@
 import { Cloud } from "@material-ui/icons";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { UserAccount } from "../../../../shared/api/entities";
 import { AuthProviderName } from "../../../../shared/auth";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useEntity } from "../../../hooks/useEntity";
@@ -13,7 +12,7 @@ export const ChangeProviderDialog = createDialog<{
 }>(
   React.memo(({ requestedProvider, onClose }) => {
     const currentUserAccountId = useSelector((state: RootState) => state.app.userAccountId);
-    const { entity: currentUserAccount } = useEntity<UserAccount>("UserAccount", currentUserAccountId);
+    const { entity: currentUserAccount } = useEntity("UserAccount", currentUserAccountId);
     if (currentUserAccount === undefined) {
       return null;
     }

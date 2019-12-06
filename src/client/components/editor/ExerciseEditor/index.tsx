@@ -2,7 +2,7 @@ import { Card, CardContent, TextField, Typography } from "@material-ui/core";
 import { CloudUpload, PlayArrow } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext } from "react";
-import { ExerciseDraft, Question } from "../../../../shared/api/entities";
+import { Question } from "../../../../shared/api/entities";
 import { withBuffer } from "../../../enhancers/withBuffer";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { UploadExerciseDraftDialog } from "../../dialogs/exercise-drafts/UploadExerciseDraftDialog";
@@ -11,7 +11,7 @@ import { UserContext } from "../../project/Context";
 import { Button, Column } from "../../ui";
 import { QuestionsEditor } from "./QuestionsEditor";
 
-export const ExerciseDraftEditor = withBuffer<ExerciseDraft>("ExerciseDraft")(
+export const ExerciseDraftEditor = withBuffer("ExerciseDraft")(
   React.memo(props => {
     const { bufferId, buffer = {}, source = {}, onChange } = props;
 

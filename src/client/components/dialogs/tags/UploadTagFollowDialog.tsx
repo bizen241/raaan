@@ -3,7 +3,6 @@ import { AddAlert } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { useDispatch } from "react-redux";
-import { TagFollow } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
@@ -19,7 +18,7 @@ export const UploadTagFollowDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload<TagFollow>(
+        actions.api.upload(
           "TagFollow",
           generateBufferId(),
           {
@@ -28,7 +27,7 @@ export const UploadTagFollowDialog = createDialog<{
           },
           uploadResponse => {
             dispatch(
-              actions.cache.add<TagFollow>(
+              actions.cache.add(
                 "TagFollow",
                 {
                   followerId: currentTag.id,

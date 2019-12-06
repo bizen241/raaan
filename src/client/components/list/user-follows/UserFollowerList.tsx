@@ -2,23 +2,17 @@ import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Email } from "@material-ui/icons";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { UserFollow, UserSummary } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { GroupInvitationsDialog } from "../../dialogs/user-follows/GroupInvitationsDialog";
 import { Column, Menu, MenuItem } from "../../ui";
 
-export const UserFollowerList = createEntityList<
-  UserFollow,
-  {
-    isTarget: boolean;
-  }
->({ entityType: "UserFollow" })(
-  React.memo(({ entity: userFollow, isTarget }) => {
+export const UserFollowerList = createEntityList("UserFollow")(
+  React.memo(({ entity: userFollow }) => {
     const [isGroupInvitationsDialogOpen, toggleGroupInvitationsDialog] = useToggleState();
 
-    const { entity: userSummary } = useEntity<UserSummary>("UserSummary", userFollow.followerSummaryId);
+    const { entity: userSummary } = useEntity("UserSummary", userFollow.followerSummaryId);
     if (userSummary === undefined) {
       return null;
     }

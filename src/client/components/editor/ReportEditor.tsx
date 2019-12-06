@@ -1,7 +1,7 @@
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext } from "react";
-import { Report, ReportReason, ReportState } from "../../../shared/api/entities";
+import { ReportReason, ReportState } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadReportDialog } from "../dialogs/reports/UploadReportDialog";
@@ -32,7 +32,7 @@ const selectReportStateOptions: SelectOptions<ReportState> = {
   }
 };
 
-export const ReportEditor = withBuffer<Report>("Report")(
+export const ReportEditor = withBuffer("Report")(
   React.memo(props => {
     const { bufferId, buffer = {}, source = {}, onChange } = props;
 

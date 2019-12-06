@@ -2,7 +2,6 @@ import { Typography } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { GroupSecret } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card, DialogContent } from "../../ui";
@@ -15,7 +14,7 @@ export const RegenerateGroupSecretDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload<GroupSecret>(
+        actions.api.upload(
           "GroupSecret",
           groupSecretId,
           {

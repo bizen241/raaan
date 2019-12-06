@@ -1,5 +1,11 @@
 import { Reducer } from "redux";
-import { createEntityTypeToObject, EntityObject, EntityType, mergeEntityTypeToObject } from "../../shared/api/entities";
+import {
+  createEntityTypeToObject,
+  EntityObject,
+  EntityType,
+  EntityTypeToEntity,
+  mergeEntityTypeToObject
+} from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { EntityStore } from "../../shared/api/response/get";
 import { SearchResponse } from "../../shared/api/response/search";
@@ -20,13 +26,13 @@ export const cacheActions = {
     createAction(CacheActionType.Get, {
       response
     }),
-  search: <E extends EntityObject>(type: EntityType, params: Params<E>, response: SearchResponse) =>
+  search: <T extends EntityType>(type: T, params: Params<EntityTypeToEntity[T]>, response: SearchResponse) =>
     createAction(CacheActionType.Search, {
       type,
       params,
       response
     }),
-  add: <E extends EntityObject>(type: EntityType, params: Params<E>, response: EntityStore) =>
+  add: <T extends EntityType>(type: T, params: Params<EntityTypeToEntity[T]>, response: EntityStore) =>
     createAction(CacheActionType.Add, {
       type,
       params,
@@ -77,7 +83,7 @@ export const cacheReducer: Reducer<CacheState, CacheActions> = (state = initialC
 
       return {
         get: mergeEntityTypeToObject(state.get, response.entities),
-        search: mergeSearchResultStore<EntityObject>(state.search, type, params, response)
+        search: mergeSearchResultStore(state.search, type, params, response)
       };
     }
     case CacheActionType.Add: {
@@ -100,7 +106,7 @@ export const cacheReducer: Reducer<CacheState, CacheActions> = (state = initialC
 
       return {
         get: state.get,
-        search: mergeSearchResultStore<EntityObject>(state.search, type, params, {
+        search: mergeSearchResultStore(state.search, type, params, {
           ids: [target.id, ...(Object.values(result.ids) as string[])],
           entities: {},
           count: result.count + 1

@@ -4,7 +4,6 @@ import { push } from "connected-react-router";
 import * as React from "react";
 import { useContext } from "react";
 import { useDispatch } from "react-redux";
-import { GroupMember } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
@@ -21,7 +20,7 @@ export const UploadGroupMemberDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload<GroupMember>(
+        actions.api.upload(
           "GroupMember",
           generateBufferId(),
           {
@@ -30,7 +29,7 @@ export const UploadGroupMemberDialog = createDialog<{
           },
           uploadResponse => {
             dispatch(
-              actions.cache.add<GroupMember>(
+              actions.cache.add(
                 "GroupMember",
                 {
                   groupId,

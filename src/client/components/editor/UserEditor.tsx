@@ -2,13 +2,12 @@ import { Card, CardContent, TextField, Typography } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
-import { User } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadUserDialog } from "../dialogs/users/UploadUserDialog";
 import { Button, Column } from "../ui";
 
-export const UserEditor = withBuffer<User>("User")(
+export const UserEditor = withBuffer("User")(
   React.memo(props => {
     const { bufferId, buffer = {}, source = {}, onChange } = props;
 

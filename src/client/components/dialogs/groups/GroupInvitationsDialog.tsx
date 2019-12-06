@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useContext } from "react";
-import { GroupInvitation } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
 import { GroupContext, ToggleGroupInvitationList } from "../../list/user-follows/ToggleGroupInvitationList";
@@ -13,7 +12,7 @@ export const GroupInvitationsDialog = createDialog<{
   React.memo(({ groupId, onClose }) => {
     const currentUser = useContext(UserContext);
 
-    const { onReload: onReloadGroupInvitations } = useSearch<GroupInvitation>("GroupInvitation", {
+    const { onReload: onReloadGroupInvitations } = useSearch("GroupInvitation", {
       groupId
     });
 

@@ -1,11 +1,10 @@
 import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Synonym } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { Column } from "../../ui";
 
-export const SynonymList = createEntityList<Synonym>({ entityType: "Synonym" })(
+export const SynonymList = createEntityList("Synonym")(
   React.memo(({ entity: synonym }) => {
     return (
       <TableRow>

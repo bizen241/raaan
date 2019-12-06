@@ -1,7 +1,6 @@
 import { TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import * as React from "react";
-import { GroupApplication, UserSummary } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
 import { useToggleState } from "../../../hooks/useToggleState";
@@ -9,12 +8,12 @@ import { DeleteGroupApplicationByOwnerDialog } from "../../dialogs/group-applica
 import { UploadGroupMemberByOwnerDialog } from "../../dialogs/group-members/UploadGroupMemberByOwnerDialog";
 import { Column, Menu, MenuItem } from "../../ui";
 
-export const GroupGroupApplicationList = createEntityList<GroupApplication>({ entityType: "GroupApplication" })(
+export const GroupGroupApplicationList = createEntityList("GroupApplication")(
   React.memo(({ entity: groupApplication }) => {
     const [isUploadGroupMemberDialogOpen, onToggleUploadGroupMemberDialog] = useToggleState();
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-    const { entity: userSummary } = useEntity<UserSummary>("UserSummary", groupApplication.applicantSummaryId);
+    const { entity: userSummary } = useEntity("UserSummary", groupApplication.applicantSummaryId);
     if (userSummary === undefined) {
       return null;
     }

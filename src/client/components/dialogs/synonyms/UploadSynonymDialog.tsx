@@ -3,7 +3,6 @@ import { CloudUpload, Dns } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Synonym } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
@@ -24,7 +23,7 @@ export const UploadSynonymDialog = createDialog<{
       const bufferId = generateBufferId();
 
       dispatch(
-        actions.api.upload<Synonym>(
+        actions.api.upload(
           "Synonym",
           bufferId,
           {

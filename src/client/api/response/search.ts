@@ -1,4 +1,4 @@
-import { EntityObject, EntityType } from "../../../shared/api/entities";
+import { EntityType, EntityTypeToEntity } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { SearchResponse } from "../../../shared/api/response/search";
 import { stringifyParams } from "../request/search";
@@ -60,10 +60,10 @@ const mergeIds = (target: SearchResult, response: SearchResponse, offset: number
   };
 };
 
-export const mergeSearchResultStore = <E extends EntityObject>(
+export const mergeSearchResultStore = <T extends EntityType>(
   store: SearchResultStore,
-  entityType: EntityType,
-  params: Params<E>,
+  entityType: T,
+  params: Params<EntityTypeToEntity[T]>,
   response: SearchResponse
 ): SearchResultStore => {
   const searchQueryString = stringifyParams(params, true);

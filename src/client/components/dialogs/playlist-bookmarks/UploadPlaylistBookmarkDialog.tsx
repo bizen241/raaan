@@ -2,7 +2,6 @@ import { Add, Bookmark } from "@material-ui/icons";
 import * as React from "react";
 import { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
-import { PlaylistBookmark } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
@@ -25,7 +24,7 @@ export const UploadPlaylistBookmarkDialog = createDialog<{
       const bufferId = generateBufferId();
 
       dispatch(
-        actions.api.upload<PlaylistBookmark>(
+        actions.api.upload(
           "PlaylistBookmark",
           bufferId,
           {
@@ -34,7 +33,7 @@ export const UploadPlaylistBookmarkDialog = createDialog<{
           },
           uploadResponse => {
             dispatch(
-              actions.cache.add<PlaylistBookmark>(
+              actions.cache.add(
                 "PlaylistBookmark",
                 {
                   userId: currentUser.id,

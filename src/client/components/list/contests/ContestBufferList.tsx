@@ -2,13 +2,12 @@ import { IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/
 import { Delete } from "@material-ui/icons";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Contest } from "../../../../shared/api/entities";
 import { createBufferList } from "../../../enhancers/createBufferList";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { DeleteContestBufferDialog } from "../../dialogs/contests/DeleteContestBufferDialog";
 import { Column } from "../../ui";
 
-export const ContestBufferList = createBufferList<Contest>({ entityType: "Contest" })(
+export const ContestBufferList = createBufferList("Contest")(
   React.memo(({ bufferId, buffer, source }) => {
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 

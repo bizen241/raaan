@@ -1,10 +1,9 @@
 import { Lock } from "@material-ui/icons";
 import * as React from "react";
-import { UserAccount } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { Card, Property } from "../ui";
 
-export const UserAccountViewer = withEntity<UserAccount>({ entityType: "UserAccount" })(
+export const UserAccountViewer = withEntity("UserAccount")(
   React.memo(({ entity: userAccount }) => {
     return (
       <Card icon={<Lock />} title="現在のプロバイダ">

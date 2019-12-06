@@ -2,13 +2,12 @@ import { Card, CardContent, TextField, Typography } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
-import { Group } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadGroupDialog } from "../dialogs/groups/UploadGroupDialog";
 import { Button, Column } from "../ui";
 
-export const GroupEditor = withBuffer<Group>("Group")(
+export const GroupEditor = withBuffer("Group")(
   React.memo(props => {
     const { bufferId, buffer = {}, source = {}, onChange } = props;
 

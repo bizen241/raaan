@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useContext } from "react";
-import { GroupExercise } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
 import { ExerciseContext, ToggleGroupExerciseList } from "../../list/groups/ToggleGroupExerciseList";
@@ -13,7 +12,7 @@ export const GroupExercisesDialog = createDialog<{
   React.memo(({ exerciseId, onClose }) => {
     const currentUser = useContext(UserContext);
 
-    const { onReload: onReloadGroupExercises } = useSearch<GroupExercise>("GroupExercise", {
+    const { onReload: onReloadGroupExercises } = useSearch("GroupExercise", {
       exerciseId
     });
 

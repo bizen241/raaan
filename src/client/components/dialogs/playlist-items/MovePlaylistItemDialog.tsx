@@ -2,7 +2,7 @@ import { Divider, ListItemIcon, Table, TableBody, TableCell, TableRow, Typograph
 import { ArrowForward, SwapVert } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { ExerciseSummary, Playlist, PlaylistItem } from "../../../../shared/api/entities";
+import { Playlist, PlaylistItem } from "../../../../shared/api/entities";
 import { sortPlaylistItems } from "../../../domain/playlist";
 import { createDialog } from "../../../enhancers/createDialog";
 import { withEntity } from "../../../enhancers/withEntity";
@@ -81,7 +81,7 @@ const PlaylistItemWithButton = React.memo<{
   );
 });
 
-const ExerciseTitleViewer = withEntity<ExerciseSummary>({ entityType: "ExerciseSummary" })(
+const ExerciseTitleViewer = withEntity("ExerciseSummary")(
   React.memo(({ entity: exerciseSummary }) => {
     return <Typography>{exerciseSummary.title}</Typography>;
   })

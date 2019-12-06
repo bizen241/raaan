@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Exercise } from "../../../../shared/api/entities";
 import { withEntity } from "../../../enhancers/withEntity";
 import { isLocalOnly } from "../../../reducers/api";
 import { ExerciseDraftEditor } from "../../editor/ExerciseEditor";
@@ -20,9 +19,7 @@ const EditExercisePage = React.memo<PageProps>(({ match }) => {
   );
 });
 
-const EditExercisePageContent = withEntity<Exercise>({
-  entityType: "Exercise"
-})(
+const EditExercisePageContent = withEntity("Exercise")(
   React.memo(({ entity: exercise }) => {
     return <ExerciseDraftEditor bufferId={exercise.draftId} />;
   })

@@ -2,13 +2,12 @@ import { IconButton, Link, TableCell, TableRow } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { Group } from "../../../../shared/api/entities";
 import { createBufferList } from "../../../enhancers/createBufferList";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { DeleteGroupBufferDialog } from "../../dialogs/groups/DeleteGroupBufferDialog";
 import { Column } from "../../ui";
 
-export const GroupBufferList = createBufferList<Group>({ entityType: "Group" })(
+export const GroupBufferList = createBufferList("Group")(
   React.memo(({ bufferId, buffer, source }) => {
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 

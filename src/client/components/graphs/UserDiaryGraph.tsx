@@ -1,19 +1,19 @@
 import { makeStyles } from "@material-ui/core";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { User, UserDiary } from "../../../shared/api/entities";
+import { UserDiary } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { Row } from "../ui";
 
 type DateToUserDiary = { [date: string]: UserDiary | undefined };
 
-export const UserDiaryGraph = withEntity<User>({ entityType: "User" })(({ entityId: userId }) => {
+export const UserDiaryGraph = withEntity("User")(({ entityId: userId }) => {
   const heatMapClasses = useHeatMapStyles();
 
   const [userDiaries, setUserDiaries] = useState<DateToUserDiary>({});
 
-  const { entities, count, params, status, onChange } = useSearch<UserDiary>("UserDiary", {
+  const { entities, count, params, status, onChange } = useSearch("UserDiary", {
     userId,
     searchLimit: 100,
     searchOffset: 0

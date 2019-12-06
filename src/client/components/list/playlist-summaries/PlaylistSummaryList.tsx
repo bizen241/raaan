@@ -10,7 +10,7 @@ import { useToggleState } from "../../../hooks/useToggleState";
 import { UserContext } from "../../project/Context";
 import { Column, Row, Search, Select } from "../../ui";
 
-export const PlaylistSummaryList = createEntityList<PlaylistSummary>({ entityType: "PlaylistSummary" })(
+export const PlaylistSummaryList = createEntityList("PlaylistSummary")(
   React.memo(({ entity: playlistSummary }) => {
     const currentUser = useContext(UserContext);
 

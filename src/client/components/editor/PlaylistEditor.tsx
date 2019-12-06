@@ -2,11 +2,10 @@ import { Box, Card, CardContent, TextField, Typography } from "@material-ui/core
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
-import { Playlist } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { Button, Column } from "../ui";
 
-export const PlaylistEditor = withBuffer<Playlist>("Playlist")(
+export const PlaylistEditor = withBuffer("Playlist")(
   React.memo(({ buffer = {}, source = {}, onChange }) => {
     const onUpdateTitle = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => onChange({ title: e.target.value }),
