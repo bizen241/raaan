@@ -3,16 +3,13 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { GroupInvitation } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
+import { parseQuery } from "../../../shared/api/request/parse";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseQuery } from "../../api/request/search/parse";
 import { responseFindResult, responseSearchResult } from "../../api/response";
 import { GroupEntity, GroupInvitationEntity, UserEntity, UserFollowEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { groupId, targetId, ownerId, searchLimit, searchOffset } = parseQuery<GroupInvitation>(
-    "GroupInvitation",
-    req.query
-  );
+  const { groupId, targetId, ownerId, searchLimit, searchOffset } = parseQuery("GroupInvitation", req.query);
 
   const query = getManager()
     .createQueryBuilder(GroupInvitationEntity, "groupInvitation")

@@ -1,14 +1,13 @@
 import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
 import { getManager } from "typeorm";
-import { UserSession } from "../../../shared/api/entities";
+import { parseQuery } from "../../../shared/api/request/parse";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseQuery } from "../../api/request/search/parse";
 import { responseSearchResult } from "../../api/response";
 import { UserSessionEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { userId, searchLimit, searchOffset } = parseQuery<UserSession>("UserSession", req.query);
+  const { userId, searchLimit, searchOffset } = parseQuery("UserSession", req.query);
 
   const isOwnSessions = userId === currentUser.id;
   if (!isOwnSessions) {

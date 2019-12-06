@@ -3,16 +3,13 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { PlaylistItem } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
+import { parseQuery } from "../../../shared/api/request/parse";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseQuery } from "../../api/request/search/parse";
 import { responseFindResult, responseSearchResult } from "../../api/response";
 import { ExerciseEntity, PlaylistEntity, PlaylistItemEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { authorId, playlistId, exerciseId, searchLimit, searchOffset } = parseQuery<PlaylistItem>(
-    "PlaylistItem",
-    req.query
-  );
+  const { authorId, playlistId, exerciseId, searchLimit, searchOffset } = parseQuery("PlaylistItem", req.query);
 
   const manager = getManager();
 

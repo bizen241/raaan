@@ -3,13 +3,13 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { ExerciseVote } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
+import { parseQuery } from "../../../shared/api/request/parse";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseQuery } from "../../api/request/search/parse";
 import { responseFindResult, responseSearchResult } from "../../api/response";
 import { ExerciseEntity, ExerciseVoteEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { voterId, targetId, isUp, searchLimit, searchOffset } = parseQuery<ExerciseVote>("ExerciseVote", req.query);
+  const { voterId, targetId, isUp, searchLimit, searchOffset } = parseQuery("ExerciseVote", req.query);
 
   const isVoter = voterId === currentUser.id;
   if (!isVoter) {

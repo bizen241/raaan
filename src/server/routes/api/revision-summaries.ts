@@ -1,13 +1,12 @@
 import { OperationFunction } from "express-openapi";
 import { FindConditions, getManager } from "typeorm";
-import { RevisionSummary } from "../../../shared/api/entities";
+import { parseQuery } from "../../../shared/api/request/parse";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseQuery } from "../../api/request/search/parse";
 import { responseSearchResult } from "../../api/response";
 import { RevisionSummaryEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { exerciseId, searchLimit, searchOffset } = parseQuery<RevisionSummary>("RevisionSummary", req.query);
+  const { exerciseId, searchLimit, searchOffset } = parseQuery("RevisionSummary", req.query);
 
   const where: FindConditions<RevisionSummaryEntity> = {};
   if (exerciseId !== undefined) {

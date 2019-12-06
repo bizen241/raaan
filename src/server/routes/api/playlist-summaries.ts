@@ -1,13 +1,12 @@
 import { OperationFunction } from "express-openapi";
 import { getManager } from "typeorm";
-import { PlaylistSummary } from "../../../shared/api/entities";
+import { parseQuery } from "../../../shared/api/request/parse";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseQuery } from "../../api/request/search/parse";
 import { responseSearchResult } from "../../api/response";
 import { PlaylistSummaryEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
-  const { authorId, tags, searchLimit, searchOffset } = parseQuery<PlaylistSummary>("PlaylistSummary", req.query);
+  const { authorId, tags, searchLimit, searchOffset } = parseQuery("PlaylistSummary", req.query);
 
   const query = await getManager()
     .createQueryBuilder(PlaylistSummaryEntity, "playlistSummary")

@@ -1,5 +1,7 @@
-import { EntityObject } from "../../../shared/api/entities";
+import { endpoints } from "../../../shared/api/endpoint";
+import { EntityObject, EntityType, EntityTypeToEntity } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
+import { parseQuery, SearchQuery } from "../../../shared/api/request/parse";
 
 export const stringifyParams = <E extends EntityObject>(params: Params<E>, excludePaginationParams?: boolean) => {
   const urlSearchParams = new URLSearchParams();
@@ -22,4 +24,19 @@ export const stringifyParams = <E extends EntityObject>(params: Params<E>, exclu
   urlSearchParams.sort();
 
   return urlSearchParams.toString();
+};
+
+export const parseParams = <T extends EntityType>(entityType: T, query: string) => {
+  const urlSearchParams = new URLSearchParams(query);
+
+  const searchQuery = [...urlSearchParams.entries()].reduce(
+    (params, [key, value]) => ({ ...params, [key]: value }),
+    {} as SearchQuery<EntityTypeToEntity[T]>
+  );
+
+  return parseQuery(entityType, searchQuery);
+};
+
+export const createSearchPath = <T extends EntityType>(entityType: T, params: Params<EntityTypeToEntity[T]>) => {
+  return `/${endpoints[entityType]}?${stringifyParams(params)}`;
 };

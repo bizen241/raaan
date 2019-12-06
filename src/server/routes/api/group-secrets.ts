@@ -1,14 +1,13 @@
 import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
 import { getManager } from "typeorm";
-import { GroupSecret } from "../../../shared/api/entities";
+import { parseQuery } from "../../../shared/api/request/parse";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseQuery } from "../../api/request/search/parse";
 import { responseSearchResult } from "../../api/response";
 import { GroupSecretEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
-  const { groupId, value, searchLimit, searchOffset } = parseQuery<GroupSecret>("GroupSecret", req.query);
+  const { groupId, value, searchLimit, searchOffset } = parseQuery("GroupSecret", req.query);
   if (groupId === undefined || value === undefined) {
     return next(createError(400));
   }

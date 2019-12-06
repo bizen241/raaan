@@ -1,16 +1,16 @@
 import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
 import { getManager } from "typeorm";
-import { SubmissionSummary } from "../../../shared/api/entities";
+import { parseQuery } from "../../../shared/api/request/parse";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseQuery } from "../../api/request/search/parse";
 import { responseSearchResult } from "../../api/response";
 import { SubmissionSummaryEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { submitterId, exerciseId, searchSort = "createdAt", searchOrder, searchLimit, searchOffset } = parseQuery<
-    SubmissionSummary
-  >("SubmissionSummary", req.query);
+  const { submitterId, exerciseId, searchSort = "createdAt", searchOrder, searchLimit, searchOffset } = parseQuery(
+    "SubmissionSummary",
+    req.query
+  );
 
   const isOwnSubmissions = submitterId === currentUser.id;
   if (!isOwnSubmissions) {

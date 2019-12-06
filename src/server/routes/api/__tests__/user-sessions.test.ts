@@ -1,8 +1,8 @@
 import { strict as assert } from "assert";
 import { UserSession } from "../../../../shared/api/entities";
+import { SearchQuery } from "../../../../shared/api/request/parse";
 import { SearchResponse } from "../../../../shared/api/response/search";
 import { close, connect, createHttpMocks, insertSession, reset } from "../../../__tests__/helpers";
-import { SearchQuery } from "../../../api/request/search/parse";
 import { GET } from "../user-sessions";
 
 beforeAll(async () => connect());

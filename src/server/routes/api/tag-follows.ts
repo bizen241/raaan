@@ -3,13 +3,13 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { TagFollow } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
+import { parseQuery } from "../../../shared/api/request/parse";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseQuery } from "../../api/request/search/parse";
 import { responseFindResult, responseSearchResult } from "../../api/response";
 import { TagEntity, TagFollowEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { followerId, targetId, searchLimit, searchOffset } = parseQuery<TagFollow>("TagFollow", req.query);
+  const { followerId, targetId, searchLimit, searchOffset } = parseQuery("TagFollow", req.query);
 
   const query = getManager()
     .createQueryBuilder(TagFollowEntity, "tagFollow")

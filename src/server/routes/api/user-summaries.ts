@@ -1,13 +1,12 @@
 import { OperationFunction } from "express-openapi";
 import { getManager } from "typeorm";
-import { UserSummary } from "../../../shared/api/entities";
+import { parseQuery } from "../../../shared/api/request/parse";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseQuery } from "../../api/request/search/parse";
 import { responseSearchResult } from "../../api/response";
 import { UserSummaryEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { searchLimit, searchOffset } = parseQuery<UserSummary>("UserSummary", req.query);
+  const { searchLimit, searchOffset } = parseQuery("UserSummary", req.query);
 
   const query = await getManager()
     .createQueryBuilder(UserSummaryEntity, "exerciseSummary")

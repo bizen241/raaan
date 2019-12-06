@@ -3,13 +3,13 @@ import * as createError from "http-errors";
 import { getManager } from "typeorm";
 import { GroupExercise } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
+import { parseQuery } from "../../../shared/api/request/parse";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { parseQuery } from "../../api/request/search/parse";
 import { responseFindResult, responseSearchResult } from "../../api/response";
 import { ExerciseEntity, GroupEntity, GroupExerciseEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { groupId, exerciseId, searchLimit, searchOffset } = parseQuery<GroupExercise>("GroupExercise", req.query);
+  const { groupId, exerciseId, searchLimit, searchOffset } = parseQuery("GroupExercise", req.query);
 
   const manager = getManager();
 

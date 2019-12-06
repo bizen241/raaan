@@ -1,8 +1,10 @@
+import { AuthProviderName } from "../../auth";
 import {
   Contest,
   ContestEntry,
   EntityObject,
   EntityType,
+  EntityTypeToEntity,
   Exercise,
   ExerciseDiary,
   ExerciseDraft,
@@ -42,14 +44,13 @@ import {
   UserMessage,
   UserSession,
   UserSummary
-} from "../../../../shared/api/entities";
-import { defaultSearchLimit, defaultSearchOffset, Params } from "../../../../shared/api/request/params";
-import { AuthProviderName } from "../../../../shared/auth";
+} from "../entities";
+import { defaultSearchLimit, defaultSearchOffset, Params } from "./params";
 
 export type SearchQuery<E extends EntityObject> = { [P in keyof Params<E>]?: string };
 
-export const parseQuery = <E extends EntityObject>(type: EntityType, query: SearchQuery<E>) =>
-  parsers[type](query) as Params<E>;
+export const parseQuery = <T extends EntityType>(entityType: T, query: SearchQuery<EntityTypeToEntity[T]>) =>
+  parsers[entityType](query) as Params<EntityTypeToEntity[T]>;
 
 const bool = (value: string | undefined) => {
   if (value === undefined) {
@@ -404,7 +405,7 @@ const parseUserSummary: Parser<UserSummary> = query => {
   };
 };
 
-const parsers: { [T in EntityType]: Parser<any> } = {
+const parsers: { [T in EntityType]: Parser<EntityTypeToEntity[T]> } = {
   Contest: parseContest,
   ContestEntry: parseContestEntry,
   Exercise: parseExercise,
