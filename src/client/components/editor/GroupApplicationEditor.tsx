@@ -13,7 +13,7 @@ export const GroupApplicationEditor = withSearch("GroupSecret")(
   React.memo(({ entities: groupSecrets, params }) => {
     const groupSecret = groupSecrets[0];
 
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     const onUpload = () => {
       dispatch(
@@ -48,4 +48,5 @@ export const GroupApplicationEditor = withSearch("GroupSecret")(
         <GroupSummaryViewer entityId={groupSecret.groupSummaryId} />
       </>
     );
+  })
 );
