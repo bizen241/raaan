@@ -1,20 +1,32 @@
 import { Email } from "@material-ui/icons";
 import * as React from "react";
-import { useGroupMemberPermission } from "../../../hooks/useGroupMemberPermission";
-import { GroupMemberList } from "../../list/group-members/GroupMemberList";
+import { useContext } from "react";
+import { useSearch } from "../../../hooks/useSearch";
+import { GroupMemberList, GroupMemberPermissionContext } from "../../list/group-members/GroupMemberList";
+import { UserContext } from "../../project/Context";
 import { PageProps } from "../../project/Router";
 import { Button, Page } from "../../ui";
 
 export const GroupGroupMembersPage = React.memo<PageProps>(props => {
   const groupId = props.match.params.id;
 
-  const groupMemberPermission = useGroupMemberPermission(groupId);
+  const currentUser = useContext(UserContext);
+
+  const { entities: groupMembers } = useSearch("GroupMember", {
+    groupId,
+    userId: currentUser.id
+  });
+  const groupMember = groupMembers[0];
+  const groupMemberPermission = groupMember !== undefined ? groupMember.permission : "guest";
+
   const isGroupOwner = groupMemberPermission === "owner";
 
   return (
     <Page title="メンバーの一覧">
       {isGroupOwner && <Button icon={<Email />} label="グループへの招待" to={`/groups/${groupId}/invite`} />}
-      <GroupMemberList initialParams={{ groupId }} isGroupOwner={isGroupOwner} />
+      <GroupMemberPermissionContext.Provider value={groupMemberPermission}>
+        <GroupMemberList initialParams={{ groupId }} />
+      </GroupMemberPermissionContext.Provider>
     </Page>
   );
 });

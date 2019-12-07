@@ -1,7 +1,7 @@
 import { useCallback, useContext, useMemo, useState } from "react";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Exercise, SubmissionSummary } from "../../../../shared/api/entities";
+import { SubmissionSummary } from "../../../../shared/api/entities";
 import { EntityMap } from "../../../../shared/api/response/get";
 import { QuestionResult, summarizeResults } from "../../../domain/exercise/attempt";
 import { withEntity } from "../../../enhancers/withEntity";
@@ -9,20 +9,21 @@ import { actions, RootState } from "../../../reducers";
 import { UserContext } from "../../project/Context";
 import { AttemptManager } from "./AttemptManager";
 
-export const SubmissionManager = withEntity<
-  Exercise,
-  {
-    contestId?: string;
-    hasNext?: boolean;
-    onNext?: () => void;
-    onClose: () => void;
-  }
->({ entityType: "Exercise" })(
-  React.memo(({ entityId: exerciseId, entity: exercise, contestId, hasNext, onNext, onClose }) => {
+/**
+ * {
+ *   contestId?: string;
+ *   hasNext?: boolean;
+ *   onNext?: () => void;
+ *   onClose: () => void;
+ * }
+ */
+
+export const SubmissionManager = withEntity("Exercise")(
+  React.memo(({ entity: exercise }) => {
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);
 
-    const submissionSummary = useSubmissionSummary(currentUser.id, exerciseId);
+    const submissionSummary = useSubmissionSummary(currentUser.id, exercise.id);
     const [prevSubmissionSummary, setPrevSubmissionSummary] = useState<SubmissionSummary>();
 
     const onFinish = useCallback(
@@ -33,7 +34,7 @@ export const SubmissionManager = withEntity<
 
         dispatch(
           actions.buffers.update("Submission", submissionId, {
-            exerciseId,
+            exerciseId: exercise.id,
             contestId,
             ...summarizeResults(results)
           })
@@ -45,7 +46,7 @@ export const SubmissionManager = withEntity<
                 "SubmissionSummary",
                 {
                   submitterId: currentUser.id,
-                  exerciseId
+                  exerciseId: exercise.id
                 },
                 uploadResponse
               )
@@ -53,7 +54,7 @@ export const SubmissionManager = withEntity<
           })
         );
       },
-      [exerciseId, submissionSummary]
+      [exercise, submissionSummary]
     );
 
     return (

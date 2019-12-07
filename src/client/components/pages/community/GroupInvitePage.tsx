@@ -1,6 +1,5 @@
 import { Email, Inbox, Link, Send } from "@material-ui/icons";
 import * as React from "react";
-import { useGroupMemberPermission } from "../../../hooks/useGroupMemberPermission";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { GroupInvitationsDialog } from "../../dialogs/groups/GroupInvitationsDialog";
 import { PageProps } from "../../project/Router";
@@ -11,15 +10,12 @@ export const GroupInvitePage = React.memo<PageProps>(props => {
 
   const [isGroupInvitationDialogOpen, toggleGroupInvitationDialog] = useToggleState();
 
-  const groupMemberPermission = useGroupMemberPermission(groupId);
-  const isGroupOwner = groupMemberPermission === "owner";
-
   return (
     <Page title="グループへの招待">
-      {isGroupOwner && <Button icon={<Link />} label="リンクで招待" to={`/groups/${groupId}/group-secret`} />}
-      {isGroupOwner && <Button icon={<Email />} label="フォロワーを招待" onClick={toggleGroupInvitationDialog} />}
-      {isGroupOwner && <Button icon={<Inbox />} label="申請一覧" to={`/groups/${groupId}/group-applications`} />}
-      {isGroupOwner && <Button icon={<Send />} label="招待一覧" to={`/groups/${groupId}/group-invitations`} />}
+      <Button icon={<Link />} label="リンクで招待" to={`/groups/${groupId}/group-secret`} />
+      <Button icon={<Email />} label="フォロワーを招待" onClick={toggleGroupInvitationDialog} />
+      <Button icon={<Inbox />} label="申請一覧" to={`/groups/${groupId}/group-applications`} />
+      <Button icon={<Send />} label="招待一覧" to={`/groups/${groupId}/group-invitations`} />
       <GroupInvitationsDialog
         groupId={groupId}
         isOpen={isGroupInvitationDialogOpen}

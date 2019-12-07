@@ -326,11 +326,14 @@ const normalizeGroupMember: Normalizer<GroupMemberEntity> = (context, store, ent
 };
 
 const normalizeGroupSecret: Normalizer<GroupSecretEntity> = (_, store, entity) => {
-  const { id, groupId, value, expireAt } = entity;
-
+  const { id, group, groupId, value, expireAt } = entity;
+  if (group === undefined) {
+    throw createError(500, "groupSecret.group is not defined");
+  }
   store.GroupSecret[id] = {
     ...base(entity),
     groupId,
+    groupSummaryId: group.summaryId,
     value,
     expireAt: expireAt.getTime()
   };

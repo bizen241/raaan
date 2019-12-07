@@ -5,6 +5,7 @@ import { useSearch } from "../hooks/useSearch";
 
 interface BaseComponentProps<E extends EntityObject> {
   entities: E[];
+  params: Params<E>;
 }
 
 export const withSearch = <T extends EntityType>(entityType: T) => (
@@ -17,5 +18,5 @@ export const withSearch = <T extends EntityType>(entityType: T) => (
       return null;
     }
 
-    return <BaseComponent entities={entities} />;
+    return <BaseComponent entities={entities} params={params} />;
   });
