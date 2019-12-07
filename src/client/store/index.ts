@@ -15,7 +15,7 @@ const persistConfig: PersistConfig<RootState> = {
   version: 0,
   storage,
   migrate,
-  blacklist: ["dialog", "router"],
+  blacklist: ["router"],
   writeFailHandler: () => {
     window.dispatchEvent(new Event("quotaexceeded"));
   }
