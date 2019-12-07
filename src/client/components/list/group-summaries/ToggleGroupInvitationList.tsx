@@ -9,12 +9,13 @@ import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { UserContext } from "../../project/Context";
 
-export const ExerciseContext = createContext<string | undefined>(undefined);
+export const FollowerContext = createContext<string | undefined>(undefined);
 
 export const ToggleGroupInvitationList = createEntityList("GroupSummary")(
   React.memo(({ entity: { groupId, name } }) => {
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);
+    const followerId = useContext(FollowerContext);
 
     const [isRequested, toggleRequestState] = useToggleState();
 

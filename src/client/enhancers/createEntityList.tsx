@@ -29,6 +29,7 @@ interface EntityListProps<E extends EntityObject> {
 
 interface EntityListItemProps<E extends EntityObject> {
   entity: E;
+  params: Params<E>;
 }
 
 interface EntityListParamsProps<E extends EntityObject> {
@@ -44,7 +45,7 @@ export const createEntityList = <T extends EntityType>(entityType: T, options: E
   React.memo<EntityListProps<EntityTypeToEntity[T]>>(({ initialParams, ...props }) => {
     const { itemHeight = 53 } = options;
 
-    const { entities, params, status, limit, offset, count, onChange, ...searchProps } = useSearch(
+    const { entities, params, status, limit, offset, count, onChange, ...searchProps } = useSearch<T>(
       entityType,
       initialParams
     );
@@ -89,7 +90,8 @@ export const createEntityList = <T extends EntityType>(entityType: T, options: E
               )}
               {!isLoading &&
                 entities.map(
-                  entity => entity && <ItemComponent key={entity.id} entity={entity as EntityTypeToEntity[T]} />
+                  entity =>
+                    entity && <ItemComponent key={entity.id} entity={entity as EntityTypeToEntity[T]} params={params} />
                 )}
               {emptyRows && (
                 <TableRow style={{ height: itemHeight * emptyRows }}>
