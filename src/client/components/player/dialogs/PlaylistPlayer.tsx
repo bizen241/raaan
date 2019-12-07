@@ -20,6 +20,8 @@ export const PlaylistPlayer = createPlayerDialog<{
 
     const currentExerciseId = exerciseIds[cursor];
     const nextExerciseId = exerciseIds[cursor + 1];
+
+    const { entity: currentExercise } = useEntity("Exercise", currentExerciseId);
     useEntity("Exercise", nextExerciseId || currentExerciseId);
 
     const hasNext = exerciseIds[cursor + 1] !== undefined;
@@ -27,6 +29,10 @@ export const PlaylistPlayer = createPlayerDialog<{
       setCursor(s => s + 1);
     };
 
-    return <SubmissionManager entityId={currentExerciseId} hasNext={hasNext} onNext={onNext} onClose={onClose} />;
+    if (currentExercise === undefined) {
+      return null;
+    }
+
+    return <SubmissionManager exercise={currentExercise} hasNext={hasNext} onNext={onNext} onClose={onClose} />;
   })
 );
