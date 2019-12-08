@@ -46,6 +46,7 @@ import { ReportPage } from "../pages/reports/ReportPage";
 import { ReportsPage } from "../pages/reports/ReportsPage";
 import { ExerciseRevisionsPage } from "../pages/revisions/ExerciseRevisionsPage";
 import { RevisionPage } from "../pages/revisions/RevisionPage";
+import { SecurityPage } from "../pages/SecurityPage";
 import { ReviewPage } from "../pages/submissions/ReviewPage";
 import { UserSubmissionsPage } from "../pages/submissions/UserSubmissionsPage";
 import { SynonymPage } from "../pages/synonyms/SynonymPage";
@@ -65,10 +66,11 @@ import { UserFollowersPage } from "../pages/user-follows/UserFollowersPage";
 import { UserUserFollowsPage } from "../pages/user-follows/UserUserFollowsPage";
 import { UserUserMessagesPage } from "../pages/user-messages/UserUserMessagesPage";
 import { UserUserSessionsPage } from "../pages/user-sessions/UserUserSessionsPage";
-import { UserUserPage } from "../pages/user/UserUserPage";
+import { AccountPage } from "../pages/user/UserUserPage";
 import { EditUserPage } from "../pages/users/EditUserPage";
 import { UserPage } from "../pages/users/UserPage";
 import { UsersPage } from "../pages/users/UsersPage";
+import { VersionPage } from "../pages/VersionPage";
 
 export type PageProps = RouteComponentProps<{ id: string; name: string; secret: string }>;
 
@@ -84,15 +86,24 @@ export const Router = React.memo(() => {
     <Suspense fallback={<LoadingPage />}>
       <Switch location={location}>
         <Route exact={true} path="/" component={HomePage} />
+
         <Route exact={true} path="/app" component={AppPage} />
+        <Route exact={true} path="/app/community" component={CommunityPage} />
+        <Route exact={true} path="/app/account" component={AccountPage} />
+        <Route exact={true} path="/app/security" component={SecurityPage} />
+        <Route exact={true} path="/app/version" component={VersionPage} />
 
-        <Route exact={true} path="/user" component={UserUserPage} />
+        <Route exact={true} path="/user-summaries" component={UsersPage} />
 
-        <Route exact={true} path="/user/user-account" component={UserUserAccountPage} />
-        <Route exact={true} path="/user/user-account/edit" component={EditUserAccountPage} />
-        <Route exact={true} path="/user/user-account/edit/provider" component={EditUserAccountProviderPage} />
+        <Route exact={true} path="/users/:id" component={UserPage} />
+        <Route exact={true} path="/users/:id/edit" component={EditUserPage} />
 
-        <Route exact={true} path="/user/user-sessions" component={UserUserSessionsPage} />
+        <Route exact={true} path="/user-accounts/:id" component={UserUserAccountPage} />
+        <Route exact={true} path="/user-accounts/:id/edit" component={EditUserAccountPage} />
+        <Route exact={true} path="/user-accounts/:id/provider" component={EditUserAccountProviderPage} />
+
+        <Route exact={true} path="/user-sessions" component={UserUserSessionsPage} />
+
         <Route exact={true} path="/user/user-config" component={UserUserConfigPage} />
 
         <Route exact={true} path="/user/user-messages" component={UserUserMessagesPage} />
@@ -101,10 +112,6 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/user/exercise-drafts" component={UserExerciseDraftsPage} />
         <Route exact={true} path="/user/submissions" component={UserSubmissionsPage} />
         <Route exact={true} path="/user/submissions/review" component={ReviewPage} />
-
-        <Route exact={true} path="/users" component={UsersPage} />
-        <Route exact={true} path="/users/:id" component={UserPage} />
-        <Route exact={true} path="/users/:id/edit" component={EditUserPage} />
 
         <Route exact={true} path="/users/:id/exercises" component={UserExercisesPage} />
         <Route exact={true} path="/users/:id/playlists" component={UserPlaylistsPage} />
@@ -141,8 +148,6 @@ export const Router = React.memo(() => {
 
         <Route exact={true} path="/synonyms" component={SynonymsPage} />
         <Route exact={true} path="/synonyms/:id" component={SynonymPage} />
-
-        <Route exact={true} path="/community" component={CommunityPage} />
 
         <Route exact={true} path="/groups" component={GroupsPage} />
         <Route exact={true} path="/groups/edit" component={EditGroupsPage} />
