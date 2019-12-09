@@ -107,7 +107,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
     return (
       <Card
         icon={<Keyboard />}
-        title={exerciseSummary.title}
+        title={exerciseSummary.title || "無題"}
         action={
           isAuthor ? (
             <Menu>

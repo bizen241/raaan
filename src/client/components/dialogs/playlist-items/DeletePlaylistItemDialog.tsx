@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import { Delete, Warning } from "@material-ui/icons";
+import { Delete } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
@@ -18,7 +18,7 @@ export const DeletePlaylistItemDialog = createDialog<{
 
     return (
       <DialogContent title="プレイリストのアイテムの削除" onClose={onClose}>
-        <Card icon={<Warning />} title="プレイリストのアイテムの削除">
+        <Card>
           <Typography>プレイリストのアイテムがサーバーから削除されます。</Typography>
         </Card>
         <Button

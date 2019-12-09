@@ -18,7 +18,7 @@ export const GroupInvitationsDialog = createDialog<{
     });
 
     return (
-      <DialogContent title="フォロワーを招待" onClose={onClose}>
+      <DialogContent title="グループへの招待" onClose={onClose}>
         <FollowerContext.Provider value={followerId}>
           <ToggleGroupInvitationList
             initialParams={{

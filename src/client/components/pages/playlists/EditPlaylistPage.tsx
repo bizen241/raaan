@@ -7,7 +7,7 @@ const EditPlaylistPage = React.memo<PageProps>(({ match }) => {
   const playlistId = match.params.id;
 
   return (
-    <Page>
+    <Page title="プレイリストを編集中">
       <PlaylistEditor bufferId={playlistId} />
     </Page>
   );

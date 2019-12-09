@@ -13,7 +13,7 @@ export const EditUserPage = React.memo<PageProps>(props => {
   const isOwn = userId === currentUser.id;
 
   return (
-    <Page title={isOwn ? "プロフィールの編集" : "ユーザーの編集"}>
+    <Page title={isOwn ? "プロフィールの設定" : "ユーザーの編集"}>
       <UserEditor bufferId={userId} />
     </Page>
   );

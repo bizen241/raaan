@@ -1,4 +1,3 @@
-import { endpoints } from "../../../shared/api/endpoint";
 import { EntityObject, EntityType, EntityTypeToEntity } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { parseQuery, SearchQuery } from "../../../shared/api/request/parse";
@@ -35,8 +34,4 @@ export const parseParams = <T extends EntityType>(entityType: T, query: string) 
   );
 
   return parseQuery(entityType, searchQuery);
-};
-
-export const createSearchPath = <T extends EntityType>(entityType: T, params: Params<EntityTypeToEntity[T]>) => {
-  return `/${endpoints[entityType]}?${stringifyParams(params)}`;
 };

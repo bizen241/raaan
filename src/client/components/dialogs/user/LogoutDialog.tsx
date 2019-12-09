@@ -38,7 +38,7 @@ export const LogoutDialog = createDialog<{}>(
       <DialogContent title={<Message id="logout" />} onClose={onClose}>
         {!isFailed ? (
           <>
-            <Card icon={<Warning />} title={<Message id="logout" />}>
+            <Card>
               <Typography>すべての下書きがブラウザから削除されます。</Typography>
             </Card>
             <Button icon={<Delete color="error" />} label="ログアウトする" labelColor="error" onClick={onLogout} />

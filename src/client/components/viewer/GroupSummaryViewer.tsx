@@ -35,7 +35,7 @@ export const GroupSummaryViewer = withEntity("GroupSummary")(
           )
         }
       >
-        <Property label="説明">{groupSummary.description}</Property>
+        {groupSummary.description && <Property label="説明">{groupSummary.description}</Property>}
         {groupMember && (
           <DeleteGroupMemberDialog
             groupMemberId={groupMember.id}

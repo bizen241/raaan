@@ -7,7 +7,7 @@ export const UserFollowersPage = React.memo<PageProps>(({ match }) => {
   const userId = match.params.id;
 
   return (
-    <Page title="フォロワー">
+    <Page title="ユーザーのフォロワー">
       <UserFollowerList
         initialParams={{
           targetId: userId

@@ -155,10 +155,10 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/groups/:id/contents/contests" component={GroupContestsPage} />
         <Route exact={true} path="/groups/:id/members" component={GroupMembersPage} />
         <Route exact={true} path="/groups/:id/members/invite" component={GroupInvitePage} />
-        <Route exact={true} path="/groups/:id/members/invite/secret" component={GroupSecretPage} />
+        <Route exact={true} path="/groups/:id/members/invite/link" component={GroupSecretPage} />
+        <Route exact={true} path="/groups/:id/members/invite/applications" component={GroupGroupApplicationsPage} />
+        <Route exact={true} path="/groups/:id/members/invite/invitations" component={GroupGroupInvitationsPage} />
         <Route exact={true} path="/groups/:id/members/invite/:secret" component={GroupApplicationPage} />
-        <Route exact={true} path="/groups/:id/members/invitations" component={GroupGroupInvitationsPage} />
-        <Route exact={true} path="/groups/:id/members/applications" component={GroupGroupApplicationsPage} />
 
         <Route exact={true} path="/contests/edit" component={EditContestsPage} />
         <Route exact={true} path="/contests/:id" component={ContestPage} />

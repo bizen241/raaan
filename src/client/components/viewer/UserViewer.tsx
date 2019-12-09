@@ -1,4 +1,4 @@
-import { ContactMail, History, Keyboard, PersonAdd, PlaylistPlay } from "@material-ui/icons";
+import { Group, History, Keyboard, PersonAdd, PlaylistPlay } from "@material-ui/icons";
 import { useContext } from "react";
 import * as React from "react";
 import { withEntity } from "../../enhancers/withEntity";
@@ -27,9 +27,14 @@ export const UserViewer = withEntity("User")(({ entityId: userId, entity: user }
   return (
     <Column>
       {isOwn && <Button color="primary" icon={<History />} label="提出履歴" to="/user/submissions" />}
-      <Button icon={<Keyboard />} label="クイズ" to={`/users/${userId}/contents/exercises`} />
+      <Button
+        color={isOwn ? undefined : "primary"}
+        icon={<Keyboard />}
+        label="クイズ"
+        to={`/users/${userId}/contents/exercises`}
+      />
       <Button icon={<PlaylistPlay />} label="プレイリスト" to={`/users/${userId}/contents/playlists`} />
-      <Button icon={<ContactMail />} label="コミュニティ" to={`/users/${userId}/community`} />
+      <Button icon={<Group />} label="コミュニティ" to={`/users/${userId}/community`} />
       {!isOwn && !isFollowed && (
         <Button icon={<PersonAdd />} label="フォローする" onClick={onToggleUploadUserFollowDialog} />
       )}

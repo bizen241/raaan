@@ -4,7 +4,7 @@ import { Page } from "../../ui";
 
 export const ReportsPage = React.memo(() => {
   return (
-    <Page title="報告の一覧">
+    <Page title="報告一覧">
       <ReportList initialParams={{}} />
     </Page>
   );

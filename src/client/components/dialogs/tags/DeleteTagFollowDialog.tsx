@@ -18,8 +18,8 @@ export const DeleteTagFollowDialog = createDialog<{
 
     return (
       <DialogContent title="タグのフォロー解除" onClose={onClose}>
-        <Card icon={<RemoveCircle />} title="タグのフォロー解除">
-          <Typography>フォローを解除します。</Typography>
+        <Card>
+          <Typography>タグのフォローを解除します。</Typography>
         </Card>
         <Button
           icon={<RemoveCircle color="error" />}

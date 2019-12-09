@@ -13,7 +13,7 @@ export const UserPage = React.memo<PageProps>(props => {
   const isOwn = userId === currentUser.id;
 
   return (
-    <Page title={isOwn ? "マイページ" : "ユーザーページ"}>
+    <Page title={isOwn ? "マイページ" : "ユーザーの詳細"}>
       <UserViewer entityId={userId} />
     </Page>
   );

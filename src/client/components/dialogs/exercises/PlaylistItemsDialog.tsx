@@ -66,17 +66,15 @@ export const PlaylistItemsDialog = createDialog<{
       <DialogContent title="プレイリストに追加" onClose={onClose}>
         {!isEditoOpen ? (
           <>
-            <Button icon={<Add />} label="新規作成" onClick={onToggleEditor} />
-            <Column pb={1}>
-              <ExerciseContext.Provider value={exerciseId}>
-                <TogglePlaylistItemList
-                  initialParams={{
-                    authorId: currentUser.id
-                  }}
-                  onReload={onReloadPlaylistItems}
-                />
-              </ExerciseContext.Provider>
-            </Column>
+            <Button icon={<Add />} label="新しいプレイリストを作る" onClick={onToggleEditor} />
+            <ExerciseContext.Provider value={exerciseId}>
+              <TogglePlaylistItemList
+                initialParams={{
+                  authorId: currentUser.id
+                }}
+                onReload={onReloadPlaylistItems}
+              />
+            </ExerciseContext.Provider>
           </>
         ) : (
           <>

@@ -19,7 +19,7 @@ export const UpdateEmailDialog = createDialog<{}>(
 
     return (
       <DialogContent title="メールアドレスの更新" onClose={onClose}>
-        <Card icon={<Email />} title="メールアドレスの更新">
+        <Card>
           <Typography>メールアドレスを更新します。</Typography>
         </Card>
         <Button icon={<Email />} label="メールアドレスを更新" href={`/auth/${provider}`} />

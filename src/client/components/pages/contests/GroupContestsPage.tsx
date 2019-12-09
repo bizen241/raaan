@@ -8,7 +8,7 @@ export const GroupContestsPage = React.memo<PageProps>(({ match }) => {
   const groupId = match.params.id;
 
   return (
-    <Page title="セッション一覧">
+    <Page title="グループのセッション">
       <Button icon={<Add />} label="新しいセッションを作る" />
       <Button icon={<Edit />} label="編集中のセッション" to="/contests/edit" />
       <ContestList

@@ -7,7 +7,7 @@ export const EditReportPage = React.memo<PageProps>(({ match }) => {
   const reportId = match.params.id;
 
   return (
-    <Page title="違反の報告を編集中">
+    <Page title="報告を編集中">
       <ReportEditor bufferId={reportId} />
     </Page>
   );

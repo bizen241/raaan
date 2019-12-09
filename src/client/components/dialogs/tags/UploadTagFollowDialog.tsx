@@ -45,10 +45,10 @@ export const UploadTagFollowDialog = createDialog<{
 
     return (
       <DialogContent title="タグをフォロー" onClose={onClose}>
-        <Card icon={<AddAlert />} title="タグをフォロー">
+        <Card>
           <Typography>タグをフォローします。</Typography>
         </Card>
-        <Button icon={<AddAlert />} label="フォロー" onClick={onUpload} />
+        <Button icon={<AddAlert />} label="タグをフォロー" onClick={onUpload} />
       </DialogContent>
     );
   })

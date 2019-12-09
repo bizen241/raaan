@@ -1,5 +1,5 @@
 import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
-import { Close } from "@material-ui/icons";
+import { Clear, Close } from "@material-ui/icons";
 import * as React from "react";
 import { Button } from "./Button";
 import { Column } from "./Column";
@@ -31,7 +31,7 @@ export const DialogContent: React.FunctionComponent<{
       <Column alignItems="center">
         <Column width="100%" maxWidth="1000px" p={1}>
           {children}
-          <Button label="キャンセル" onClick={onClose} />
+          <Button icon={<Clear />} label="キャンセル" onClick={onClose} />
         </Column>
       </Column>
     </>

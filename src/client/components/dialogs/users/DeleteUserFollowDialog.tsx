@@ -18,8 +18,8 @@ export const DeleteUserFollowDialog = createDialog<{
 
     return (
       <DialogContent title="ユーザーをフォロー解除" onClose={onClose}>
-        <Card icon={<RemoveCircle />} title="ユーザーをフォロー解除">
-          <Typography>フォローを解除します。</Typography>
+        <Card>
+          <Typography>ユーザーのフォローを解除します。</Typography>
         </Card>
         <Button icon={<RemoveCircle />} label="フォローを解除する" onClick={onDelete} />
       </DialogContent>

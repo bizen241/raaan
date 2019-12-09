@@ -1,4 +1,4 @@
-import { Checkbox, TableCell, TableRow } from "@material-ui/core";
+import { Checkbox, TableCell, TableRow, Typography } from "@material-ui/core";
 import { createContext, useCallback, useContext } from "react";
 import * as React from "react";
 import { useDispatch } from "react-redux";
@@ -63,7 +63,9 @@ export const ToggleGroupExerciseList = createEntityList("ExerciseSummary")(
           <Checkbox checked={foundGroupExercise !== undefined} disabled={isRequested} />
         </TableCell>
         <TableCell>
-          <Column>{title || "無題"}</Column>
+          <Column>
+            <Typography>{title || "無題"}</Typography>
+          </Column>
         </TableCell>
       </TableRow>
     );

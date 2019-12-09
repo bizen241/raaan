@@ -1,5 +1,5 @@
-import { Divider, ListItemIcon, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
-import { ArrowForward, SwapVert } from "@material-ui/icons";
+import { Divider, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
+import { ArrowForward } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { Playlist, PlaylistItem } from "../../../../shared/api/entities";
@@ -35,7 +35,7 @@ export const MovePlaylistItemDialog = createDialog<{
 
     return (
       <DialogContent title="プレイリストのアイテムの移動" onClose={onClose}>
-        <Card icon={<SwapVert />} title="移動先の選択" padding={false}>
+        <Card padding={false}>
           <Divider />
           <Column pb={1}>
             <Table>
@@ -61,9 +61,9 @@ const PlaylistItemWithButton = React.memo<{
       <TableRow selected style={{ cursor: "pointer" }} onClick={() => onSelect(playlistItem.id)}>
         <TableCell>
           <Row>
-            <ListItemIcon>
+            <Row pr={1}>
               <ArrowForward />
-            </ListItemIcon>
+            </Row>
             <Typography>ここに移動</Typography>
           </Row>
         </TableCell>

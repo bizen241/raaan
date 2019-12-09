@@ -11,8 +11,8 @@ export const CommunityPage = React.memo(() => {
 
   return (
     <Page title="コミュニティ">
-      {isOwner && <Button color="primary" icon={<Report />} label="報告一覧" to="/reports" />}
-      {isOwner && <Button color="primary" icon={<SmsFailed />} label="異議一覧" to="/objections" />}
+      {isOwner && <Button icon={<Report />} label="報告一覧" to="/reports" />}
+      {isOwner && <Button icon={<SmsFailed />} label="異議一覧" to="/objections" />}
       <Button icon={<Person />} label="ユーザー" to="/users" />
       <Button icon={<Group />} label="グループ" to="/groups" />
     </Page>

@@ -45,10 +45,10 @@ export const UploadUserFollowDialog = createDialog<{
 
     return (
       <DialogContent title="ユーザーをフォロー" onClose={onClose}>
-        <Card icon={<PersonAdd />} title="ユーザーをフォロー">
+        <Card>
           <Typography>ユーザーをフォローします。</Typography>
         </Card>
-        <Button icon={<PersonAdd />} label="フォロー" onClick={onUpload} />
+        <Button icon={<PersonAdd />} label="ユーザーをフォロー" onClick={onUpload} />
       </DialogContent>
     );
   })

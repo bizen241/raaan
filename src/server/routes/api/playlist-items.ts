@@ -13,10 +13,12 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
 
   const manager = getManager();
 
-  const query = await manager
+  const query = manager
     .createQueryBuilder(PlaylistItemEntity, "playlistItem")
     .leftJoinAndSelect("playlistItem.playlist", "playlist")
     .leftJoinAndSelect("playlistItem.exercise", "exercise")
+    .leftJoinAndSelect("exercise.author", "author")
+    .leftJoinAndSelect("exercise.draft", "draft")
     .leftJoinAndSelect("exercise.summary", "summary")
     .take(searchLimit)
     .skip(searchOffset);

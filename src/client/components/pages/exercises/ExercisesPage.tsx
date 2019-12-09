@@ -1,7 +1,7 @@
 import { Edit, Person } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
-import { createSearchPath, parseParams } from "../../../api/request/search";
+import { parseParams } from "../../../api/request/search";
 import { ExerciseSummaryList } from "../../list/exercise-summaries/ExerciseSummaryList";
 import { UserContext } from "../../project/Context";
 import { PageProps } from "../../project/Router";
@@ -15,13 +15,7 @@ export const ExercisesPage = React.memo<PageProps>(props => {
   return (
     <Page title="クイズを探す">
       {params.authorId !== currentUser.id && (
-        <Button
-          icon={<Person />}
-          label="自分のクイズ"
-          to={createSearchPath("ExerciseSummary", {
-            authorId: currentUser.id
-          })}
-        />
+        <Button icon={<Person />} label="自分のクイズ" to={`/users/${currentUser.id}/contents/exercises`} />
       )}
       <Button icon={<Edit />} label="クイズを作る" to="/exercises/edit" />
       <ExerciseSummaryList

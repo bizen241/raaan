@@ -7,7 +7,7 @@ export const TagFollowersPage = React.memo<PageProps>(({ match }) => {
   const tagId = match.params.id;
 
   return (
-    <Page title="フォロワー">
+    <Page title="タグのフォロワー">
       <TagFollowerList
         initialParams={{
           targetId: tagId

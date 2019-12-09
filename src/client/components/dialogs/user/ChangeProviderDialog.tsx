@@ -21,7 +21,7 @@ export const ChangeProviderDialog = createDialog<{
 
     return (
       <DialogContent title="プロバイダの変更" onClose={onClose}>
-        <Card icon={<Cloud />} title="プロバイダの変更">
+        <Card>
           <Property label="変更前">{currentProvider}</Property>
           <Property label="変更後">{requestedProvider}</Property>
         </Card>
