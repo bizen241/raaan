@@ -1,4 +1,4 @@
-import { AddAlert, Dns, Edit, LocalOffer, Person } from "@material-ui/icons";
+import { AddAlert, Dns, Edit, Keyboard, LocalOffer, Person } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { withEntity } from "../../enhancers/withEntity";
@@ -26,6 +26,7 @@ export const TagViewer = withEntity("Tag")(
 
     return (
       <Column>
+        <Button icon={<Keyboard />} label="クイズ" to={`/exercises?tags=${tag.name}`} />
         <Button icon={<Person />} label="フォロワー" to={`/tags/${tagId}/followers`} />
         {!isFollowed ? (
           <Button icon={<AddAlert />} label="フォローする" onClick={onToggleUploadTagFollowDialog} />
