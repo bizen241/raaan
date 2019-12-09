@@ -3,7 +3,7 @@ import { TagFollowList } from "../../list/tag-follows/TagFollowList";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui/Page";
 
-export const UserTagFollowsPage = React.memo<PageProps>(({ match }) => {
+export const TagFollowsPage = React.memo<PageProps>(({ match }) => {
   const userId = match.params.id;
 
   return (

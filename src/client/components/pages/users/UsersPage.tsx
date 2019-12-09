@@ -9,7 +9,6 @@ export const UsersPage = React.memo(() => {
         initialParams={{
           searchLimit: 10,
           searchOffset: 0,
-          searchSort: "createdAt",
           searchOrder: "DESC"
         }}
       />

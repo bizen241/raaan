@@ -7,7 +7,7 @@ import { UserContext } from "../../project/Context";
 import { PageProps } from "../../project/Router";
 import { Button, Page } from "../../ui";
 
-export const GroupGroupMembersPage = React.memo<PageProps>(props => {
+export const GroupMembersPage = React.memo<PageProps>(props => {
   const groupId = props.match.params.id;
 
   const currentUser = useContext(UserContext);

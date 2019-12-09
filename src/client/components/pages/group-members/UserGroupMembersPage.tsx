@@ -10,7 +10,7 @@ import { PageProps } from "../../project/Router";
 import { Button } from "../../ui";
 import { Page } from "../../ui/Page";
 
-export const UserGroupMembersPage = React.memo<PageProps>(() => {
+export const UserGroupsPage = React.memo<PageProps>(() => {
   const dispatch = useDispatch();
   const currentUser = useContext(UserContext);
 

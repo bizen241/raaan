@@ -7,7 +7,7 @@ import { PageProps } from "../../project/Router";
 import { Button } from "../../ui";
 import { Page } from "../../ui/Page";
 
-export const UserSubmissionsPage = React.memo<PageProps>(() => {
+export const SubmissionsPage = React.memo<PageProps>(() => {
   const currentUser = useContext(UserContext);
 
   return (

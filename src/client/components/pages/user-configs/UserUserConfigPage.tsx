@@ -4,7 +4,7 @@ import { RootState } from "../../../reducers";
 import { UserConfigEditor } from "../../editor/UserConfigEditor";
 import { Page } from "../../ui/Page";
 
-export const UserUserConfigPage = React.memo(() => {
+export const EditUserConfigPage = React.memo(() => {
   const currentUserConfigId = useSelector((state: RootState) => state.app.userConfigId);
 
   return (

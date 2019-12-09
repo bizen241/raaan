@@ -17,7 +17,7 @@ export const SecurityPage = React.memo(() => {
 
   return (
     <Page title="セキュリティ">
-      <Button icon={<Devices />} label="セッション一覧" to="/user/user-sessions" />
+      <Button icon={<Devices />} label="セッション一覧" to="/user/security/sessions" />
       <Button icon={<Warning color="error" />} label="ログアウト" labelColor="error" onClick={onToggleLogoutDialog} />
       {!isOwner && (
         <Button

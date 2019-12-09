@@ -1,5 +1,5 @@
 import { AppBar, Avatar, Box, IconButton, Toolbar, Typography } from "@material-ui/core";
-import { ArrowBack, Build, Home, Mail, Person, Settings } from "@material-ui/icons";
+import { ArrowBack, Home, Mail, Person, Settings, Web } from "@material-ui/icons";
 import { goBack } from "connected-react-router";
 import * as React from "react";
 import { useCallback, useContext } from "react";
@@ -8,7 +8,6 @@ import { useEntity } from "../../hooks/useEntity";
 import { RootState } from "../../reducers";
 import { Column, Menu, MenuItem } from "../ui";
 import { UserContext } from "./Context";
-import { Message } from "./Message";
 
 export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) => {
   const dispatch = useDispatch();
@@ -43,16 +42,17 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
               <MenuItem
                 icon={<Mail />}
                 label="通知"
-                disabled={pathname === "/user/user-messages"}
-                to="/user/user-messages"
+                disabled={pathname === "/user/notifications/messages"}
+                to="/user/notifications/messages"
               />
-              <MenuItem icon={<Build />} label="管理" disabled={pathname === "/app"} to="/app" />
+              <MenuItem icon={<Web />} label="アプリ" disabled={pathname === "/app"} to="/app" />
               <MenuItem
-                icon={<Settings />}
-                label={<Message id="settings" />}
-                disabled={pathname === "/user/user-config"}
-                to="/user/user-config"
+                icon={<Person />}
+                label="アカウント"
+                disabled={pathname === "/user/account"}
+                to="/user/account"
               />
+              <MenuItem icon={<Settings />} label="設定" disabled={pathname === "/user/config"} to="/user/config" />
             </Menu>
           </Toolbar>
         </Column>

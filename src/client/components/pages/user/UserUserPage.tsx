@@ -1,10 +1,10 @@
-import { AccountCircle, Lock } from "@material-ui/icons";
+import { AccountCircle, Lock, Security } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { UserContext } from "../../project/Context";
 import { Button, Page } from "../../ui";
 
-export const AccountPage = React.memo(() => {
+export const UserAccountPage = React.memo(() => {
   const currentUser = useContext(UserContext);
   const isGuest = currentUser.permission === "Guest";
 
@@ -12,8 +12,9 @@ export const AccountPage = React.memo(() => {
     return (
       <Page title="アカウント">
         <Button icon={<AccountCircle />} label="プロフィールの設定" to={`/users/${currentUser.id}/edit`} />
-        <Button icon={<AccountCircle />} label="アバターの設定" to={`/user/user-account/edit`} />
-        <Button icon={<Lock />} label="プロバイダの設定" to={`/user/user-account`} />
+        <Button icon={<AccountCircle />} label="アバターの設定" to={`/user/account/edit`} />
+        <Button icon={<Lock />} label="プロバイダの設定" to={`/user/account/provider`} />
+        <Button icon={<Security />} label="セキュリティ" to={`/user/security`} />
       </Page>
     );
   } else {
