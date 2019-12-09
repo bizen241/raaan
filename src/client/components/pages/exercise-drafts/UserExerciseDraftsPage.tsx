@@ -6,7 +6,7 @@ import { PageProps } from "../../project/Router";
 import { Column } from "../../ui";
 import { Page } from "../../ui/Page";
 
-export const DraftsPage = React.memo<PageProps>(() => {
+export const UserExerciseDraftsPage = React.memo<PageProps>(() => {
   const currentUser = useContext(UserContext);
 
   return (

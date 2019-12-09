@@ -8,7 +8,7 @@ import { Button } from "../../ui";
 import { Page } from "../../ui/Page";
 import { UserAccountViewer } from "../../viewer/UserAccountViewer";
 
-export const AccountProviderPage = () => {
+export const UserAccountProviderPage = () => {
   const currentUserAccountId = useSelector((state: RootState) => state.app.userAccountId);
 
   const [isUpdateEmailDialogOpen, onToggleUpdateEmailDialog] = useToggleState();

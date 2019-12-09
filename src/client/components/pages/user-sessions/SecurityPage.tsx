@@ -1,11 +1,11 @@
 import { Devices, Warning } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
-import { useToggleState } from "../../hooks/useToggleState";
-import { DeleteAccountDialog } from "../dialogs/user/DeleteAccountDialog";
-import { LogoutDialog } from "../dialogs/user/LogoutDialog";
-import { UserContext } from "../project/Context";
-import { Button, Page } from "../ui";
+import { useToggleState } from "../../../hooks/useToggleState";
+import { DeleteAccountDialog } from "../../dialogs/user/DeleteAccountDialog";
+import { LogoutDialog } from "../../dialogs/user/LogoutDialog";
+import { UserContext } from "../../project/Context";
+import { Button, Page } from "../../ui";
 
 export const SecurityPage = React.memo(() => {
   const currentUser = useContext(UserContext);

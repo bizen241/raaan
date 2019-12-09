@@ -5,25 +5,25 @@ import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { RootState } from "../../reducers";
 import { AppPage } from "../pages/AppPage";
 import { CommunityPage } from "../pages/community/CommunityPage";
-import { GroupInvitePage } from "../pages/community/GroupInvitePage";
 import { UserCommunityPage } from "../pages/community/UserCommunityPage";
-import { UserFollowingPage } from "../pages/community/UserFollowsHomePage";
+import { UserFollowingPage } from "../pages/community/UserFollowingPage";
 import { ContestPage } from "../pages/contests/ContestPage";
 import { EditContestPage } from "../pages/contests/EditContestPage";
 import { EditContestsPage } from "../pages/contests/EditContestsPage";
 import { GroupContestsPage } from "../pages/contests/GroupContestsPage";
-import { DraftsPage } from "../pages/exercise-drafts/UserExerciseDraftsPage";
+import { UserExerciseDraftsPage } from "../pages/exercise-drafts/UserExerciseDraftsPage";
 import { EditExercisesPage } from "../pages/exercises/EditExercisesPage";
 import { ExercisePage } from "../pages/exercises/ExercisePage";
 import { ExercisesPage } from "../pages/exercises/ExercisesPage";
 import { UserExercisesPage } from "../pages/exercises/UserExercisesPage";
 import { GroupApplicationPage } from "../pages/group-applications/GroupApplicationPage";
 import { GroupGroupApplicationsPage } from "../pages/group-applications/GroupGroupApplicationsPage";
-import { GroupExercisesPage } from "../pages/group-exercises/GroupGroupExercisesPage";
+import { GroupExercisesPage } from "../pages/group-exercises/GroupExercisesPage";
 import { GroupGroupInvitationsPage } from "../pages/group-invitations/GroupGroupInvitationsPage";
+import { GroupInvitePage } from "../pages/group-invitations/GroupInvitePage";
 import { UserGroupInvitationsPage } from "../pages/group-invitations/UserGroupInvitationsPage";
-import { GroupMembersPage } from "../pages/group-members/GroupGroupMembersPage";
-import { UserGroupsPage } from "../pages/group-members/UserGroupMembersPage";
+import { GroupMembersPage } from "../pages/group-members/GroupMembersPage";
+import { UserGroupsPage } from "../pages/group-members/UserGroupsPage";
 import { GroupSecretPage } from "../pages/group-secrets/GroupSecretPage";
 import { EditGroupPage } from "../pages/groups/EditGroupPage";
 import { EditGroupsPage } from "../pages/groups/EditGroupsPage";
@@ -46,27 +46,27 @@ import { ReportPage } from "../pages/reports/ReportPage";
 import { ReportsPage } from "../pages/reports/ReportsPage";
 import { ExerciseRevisionsPage } from "../pages/revisions/ExerciseRevisionsPage";
 import { RevisionPage } from "../pages/revisions/RevisionPage";
-import { SecurityPage } from "../pages/SecurityPage";
 import { ReviewPage } from "../pages/submissions/ReviewPage";
-import { SubmissionsPage } from "../pages/submissions/UserSubmissionsPage";
+import { SubmissionsPage } from "../pages/submissions/SubmissionsPage";
 import { SynonymPage } from "../pages/synonyms/SynonymPage";
 import { SynonymsPage } from "../pages/synonyms/SynonymsPage";
 import { TagSynonymsPage } from "../pages/synonyms/TagSynonymsPage";
 import { TagFollowersPage } from "../pages/tag-follows/TagFollowersPage";
-import { TagFollowsPage } from "../pages/tag-follows/UserTagFollowsPage";
+import { TagFollowsPage } from "../pages/tag-follows/TagFollowsPage";
 import { EditTagPage } from "../pages/tags/EditTagPage";
 import { EditTagsPage } from "../pages/tags/EditTagsPage";
 import { TagPage } from "../pages/tags/TagPage";
 import { TagsPage } from "../pages/tags/TagsPage";
 import { EditUserAccountPage } from "../pages/user-accounts/EditUserAccountPage";
-import { EditAccountProviderPage } from "../pages/user-accounts/EditUserAccountProviderPage";
-import { AccountProviderPage } from "../pages/user-accounts/UserUserAccountPage";
-import { EditUserConfigPage } from "../pages/user-configs/UserUserConfigPage";
+import { EditUserAccountProviderPage } from "../pages/user-accounts/EditUserAccountProviderPage";
+import { UserAccountPage } from "../pages/user-accounts/UserAccountPage";
+import { UserAccountProviderPage } from "../pages/user-accounts/UserAccountProviderPage";
+import { EditUserConfigPage } from "../pages/user-configs/EditUserConfigPage";
 import { UserFollowersPage } from "../pages/user-follows/UserFollowersPage";
-import { UserFollowsPage } from "../pages/user-follows/UserUserFollowsPage";
-import { UserMessagesPage } from "../pages/user-messages/UserUserMessagesPage";
+import { UserFollowsPage } from "../pages/user-follows/UserFollowsPage";
+import { UserMessagesPage } from "../pages/user-messages/UserMessagesPage";
+import { SecurityPage } from "../pages/user-sessions/SecurityPage";
 import { UserSessionsPage } from "../pages/user-sessions/UserUserSessionsPage";
-import { UserAccountPage } from "../pages/user/UserUserPage";
 import { EditUserPage } from "../pages/users/EditUserPage";
 import { UserPage } from "../pages/users/UserPage";
 import { UsersPage } from "../pages/users/UsersPage";
@@ -93,8 +93,8 @@ export const Router = React.memo(() => {
 
         <Route exact={true} path="/user/account" component={UserAccountPage} />
         <Route exact={true} path="/user/account/edit" component={EditUserAccountPage} />
-        <Route exact={true} path="/user/account/provider" component={AccountProviderPage} />
-        <Route exact={true} path="/user/account/provider/edit" component={EditAccountProviderPage} />
+        <Route exact={true} path="/user/account/provider" component={UserAccountProviderPage} />
+        <Route exact={true} path="/user/account/provider/edit" component={EditUserAccountProviderPage} />
         <Route exact={true} path="/user/security" component={SecurityPage} />
         <Route exact={true} path="/user/security/sessions" component={UserSessionsPage} />
         <Route exact={true} path="/user/config" component={EditUserConfigPage} />
@@ -102,7 +102,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/user/notifications/invitations" component={UserGroupInvitationsPage} />
         <Route exact={true} path="/user/submissions" component={SubmissionsPage} />
         <Route exact={true} path="/user/submissions/review" component={ReviewPage} />
-        <Route exact={true} path="/user/drafts" component={DraftsPage} />
+        <Route exact={true} path="/user/drafts" component={UserExerciseDraftsPage} />
 
         <Route exact={true} path="/users" component={UsersPage} />
         <Route exact={true} path="/users/:id" component={UserPage} />

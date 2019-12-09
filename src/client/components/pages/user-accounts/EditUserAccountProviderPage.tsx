@@ -7,7 +7,7 @@ import { RootState } from "../../../reducers";
 import { ChangeProviderDialog } from "../../dialogs/user/ChangeProviderDialog";
 import { Button, Page } from "../../ui";
 
-export const EditAccountProviderPage = React.memo(() => {
+export const EditUserAccountProviderPage = React.memo(() => {
   const [requestedProvider, setProvider] = useState();
   const [isChangeProviderDialogOpen, onToggleChangeProviderDialog] = useToggleState();
 
