@@ -10,4 +10,4 @@
 
 /coverage
 
-/src/server/api/request/schema.ts
+/src/server/api/schema.ts
