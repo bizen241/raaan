@@ -1,10 +1,10 @@
 import * as createError from "http-errors";
+import { EntityManager } from "typeorm";
 import { ReportTarget } from "../../shared/api/entities";
-import { ReportEntity } from "../database/entities";
+import { ExerciseEntity, PlaylistEntity, ReportEntity, UserEntity } from "../database/entities";
 
 export const getReportTargetProperties = ({
   targetExerciseId,
-  targetGroupId,
   targetPlaylistId,
   targetSynonymId,
   targetTagId,
@@ -17,11 +17,6 @@ export const getReportTargetProperties = ({
     return {
       targetType: "Exercise",
       targetId: targetExerciseId
-    };
-  } else if (targetGroupId !== undefined) {
-    return {
-      targetType: "Group",
-      targetId: targetGroupId
     };
   } else if (targetPlaylistId !== undefined) {
     return {
@@ -43,6 +38,44 @@ export const getReportTargetProperties = ({
       targetType: "User",
       targetId: targetUserId
     };
+  }
+
+  throw createError(500, "report.targetId is not defined");
+};
+
+export const lockReportTarget = async (
+  manager: EntityManager,
+  { targetExerciseId, targetPlaylistId, targetUserId }: ReportEntity
+) => {
+  if (targetExerciseId !== undefined) {
+    const targetExercise = await manager.findOne(ExerciseEntity, targetExerciseId);
+    if (targetExercise === undefined) {
+      throw createError(500);
+    }
+
+    targetExercise.isPrivate = true;
+    targetExercise.isLocked = true;
+
+    await manager.save(targetExercise);
+  } else if (targetPlaylistId !== undefined) {
+    const targetPlaylist = await manager.findOne(PlaylistEntity, targetPlaylistId);
+    if (targetPlaylist === undefined) {
+      throw createError(500);
+    }
+
+    targetPlaylist.isPrivate = true;
+    targetPlaylist.isLocked = true;
+
+    await manager.save(targetPlaylist);
+  } else if (targetUserId !== undefined) {
+    const targetUser = await manager.findOne(UserEntity, targetUserId);
+    if (targetUser === undefined) {
+      throw createError(400);
+    }
+
+    targetUser.permission = "Read";
+
+    await manager.save(targetUser);
   }
 
   throw createError(500, "report.targetId is not defined");
