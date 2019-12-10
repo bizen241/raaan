@@ -62,7 +62,7 @@ export const unlockObjectionTarget = async (
     targetUser.permission = "Write";
 
     await manager.save(targetUser);
+  } else {
+    throw createError(500, "report.targetId is not defined");
   }
-
-  throw createError(500, "report.targetId is not defined");
 };

@@ -7,7 +7,7 @@ import { parseQuery } from "../../../shared/api/request/parse";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult, responseSearchResult } from "../../api/response";
 import { hasPermission } from "../../api/security";
-import { ExerciseEntity, GroupEntity, ObjectionEntity, PlaylistEntity, UserEntity } from "../../database/entities";
+import { ExerciseEntity, ObjectionEntity, PlaylistEntity, UserEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { objectorId, targetType, targetId, searchLimit, searchOffset } = parseQuery("Objection", req.query);

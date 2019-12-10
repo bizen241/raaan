@@ -76,7 +76,7 @@ export const lockReportTarget = async (
     targetUser.permission = "Read";
 
     await manager.save(targetUser);
+  } else {
+    throw createError(500, "report.targetId is not defined");
   }
-
-  throw createError(500, "report.targetId is not defined");
 };
