@@ -56,3 +56,29 @@ PATCH.apiDoc = createOperationDoc({
   hasId: true,
   hasBody: true
 });
+
+export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
+  const { id: reportId }: PathParams = req.params;
+
+  await getManager().transaction(async manager => {
+    const report = await manager.findOne(ReportEntity, reportId);
+    if (report === undefined) {
+      return next(createError(404));
+    }
+
+    const isOwn = report.reporterId === currentUser.id;
+    if (!isOwn) {
+      return next(createError(403));
+    }
+
+    await manager.remove(report);
+
+    responseFindResult(req, res);
+  });
+});
+
+DELETE.apiDoc = createOperationDoc({
+  entityType: "Report",
+  permission: "Read",
+  hasId: true
+});
