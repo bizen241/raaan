@@ -17,7 +17,7 @@ export const GroupExercisesDialog = createDialog<{
     });
 
     return (
-      <DialogContent title="クイズをグループに公開" onClose={onClose}>
+      <DialogContent title="問題集をグループに公開" onClose={onClose}>
         <GroupContext.Provider value={groupId}>
           <ToggleGroupExerciseList
             initialParams={{

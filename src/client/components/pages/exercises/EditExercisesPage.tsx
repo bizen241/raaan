@@ -17,8 +17,8 @@ export const EditExercisesPage = React.memo(() => {
   }, []);
 
   return (
-    <Page title="未保存のクイズ">
-      <Button icon={<Add />} label="新しいクイズを作る" color="primary" onClick={onCreate} />
+    <Page title="未保存の問題集">
+      <Button icon={<Add />} label="新しい問題集を作る" color="primary" onClick={onCreate} />
       <Button icon={<Edit />} label="保存された下書き" to={`/user/drafts`} />
       <Column pb={1}>
         <ExerciseDraftBufferList />

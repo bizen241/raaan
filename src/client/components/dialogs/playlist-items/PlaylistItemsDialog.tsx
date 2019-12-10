@@ -13,7 +13,7 @@ export const PlaylistItemsDialog = createDialog<{
     });
 
     return (
-      <DialogContent title="クイズをプレイリストに追加" onClose={onClose}>
+      <DialogContent title="問題集をプレイリストに追加" onClose={onClose}>
         <PlaylistContext.Provider value={playlistId}>
           <TogglePlaylistItemList initialParams={{}} onReload={onReloadPlaylistItems} />
         </PlaylistContext.Provider>

@@ -9,7 +9,7 @@ const EditExercisePage = React.memo<PageProps>(({ match }) => {
   const bufferId = match.params.id;
 
   return (
-    <Page title="クイズを編集中">
+    <Page title="問題集を編集中">
       {isLocalOnly(bufferId) ? (
         <ExerciseDraftEditor bufferId={bufferId} />
       ) : (

@@ -13,11 +13,11 @@ export const ExercisesPage = React.memo<PageProps>(props => {
   const params = parseParams("ExerciseSummary", props.location.search);
 
   return (
-    <Page title="クイズを探す">
+    <Page title="問題集を探す">
       {params.authorId !== currentUser.id && (
-        <Button icon={<Person />} label="自分のクイズ" to={`/users/${currentUser.id}/contents/exercises`} />
+        <Button icon={<Person />} label="自分の問題集" to={`/users/${currentUser.id}/contents/exercises`} />
       )}
-      <Button icon={<Edit />} label="クイズを作る" to="/exercises/edit" />
+      <Button icon={<Edit />} label="問題集を作る" to="/exercises/edit" />
       <ExerciseSummaryList
         key={props.location.search}
         initialParams={{

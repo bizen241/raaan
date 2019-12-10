@@ -26,7 +26,7 @@ export const TagViewer = withEntity("Tag")(
 
     return (
       <Column>
-        <Button icon={<Keyboard />} label="クイズ" to={`/exercises?tags=${tag.name}`} />
+        <Button icon={<Keyboard />} label="問題集" to={`/exercises?tags=${tag.name}`} />
         <Button icon={<Person />} label="フォロワー" to={`/tags/${tagId}/followers`} />
         {!isFollowed ? (
           <Button icon={<AddAlert />} label="フォローする" onClick={onToggleUploadTagFollowDialog} />

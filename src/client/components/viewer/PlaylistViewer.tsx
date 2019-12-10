@@ -55,7 +55,7 @@ export const PlaylistViewer = withEntity("Playlist")(
       <Column>
         <Button color="primary" icon={<PlayArrow />} label="始める" disabled={count === 0} onClick={onPlay} />
         {isAuthor ? (
-          <Button icon={<Add />} label="クイズを追加" onClick={onTogglePlaylistItemsDialog} />
+          <Button icon={<Add />} label="問題集を追加" onClick={onTogglePlaylistItemsDialog} />
         ) : !isBookmarked ? (
           <Button icon={<Bookmark />} label="ブックマークに追加" onClick={onToggleUploadPlaylistBookmarkDialog} />
         ) : (

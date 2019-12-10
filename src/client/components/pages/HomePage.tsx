@@ -17,7 +17,7 @@ export const HomePage = React.memo(() => {
       ) : (
         <Button color="primary" icon={<AccountCircle />} label="マイページ" to={`/users/${currentUser.id}`} />
       )}
-      <Button icon={<Keyboard />} label="クイズ" to="/exercises" />
+      <Button icon={<Keyboard />} label="問題集" to="/exercises" />
       <Button icon={<PlaylistPlay />} label="プレイリスト" to="/playlists" />
       <Button icon={<LocalOffer />} label="タグ" to="/tags" />
       <Card icon={<Timeline />} title="活動記録">

@@ -13,8 +13,8 @@ export const GroupExercisesPage = React.memo<PageProps>(({ match }) => {
   const [isGroupExercisesDialogOpen, toggleGroupExercisesDialog] = useToggleState();
 
   return (
-    <Page title="グループのクイズ">
-      <Button icon={<Add />} label="クイズを追加" onClick={toggleGroupExercisesDialog} />
+    <Page title="グループの問題集">
+      <Button icon={<Add />} label="問題集を追加" onClick={toggleGroupExercisesDialog} />
       <GroupExerciseList
         initialParams={{
           groupId

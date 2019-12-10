@@ -30,7 +30,7 @@ export const UserViewer = withEntity("User")(({ entityId: userId, entity: user }
       <Button
         color={isOwn ? undefined : "primary"}
         icon={<Keyboard />}
-        label="クイズ"
+        label="問題集"
         to={`/users/${userId}/contents/exercises`}
       />
       <Button icon={<PlaylistPlay />} label="プレイリスト" to={`/users/${userId}/contents/playlists`} />

@@ -15,8 +15,8 @@ export const UserExercisesPage = React.memo<PageProps>(({ match }) => {
   const isOwn = userId === currentUser.id;
 
   return (
-    <Page title={isOwn ? "自分のクイズ" : "ユーザーのクイズ"}>
-      {isOwn && <Button icon={<Edit />} label="編集中のクイズ" to="/exercises/edit" />}
+    <Page title={isOwn ? "自分の問題集" : "ユーザーの問題集"}>
+      {isOwn && <Button icon={<Edit />} label="編集中の問題集" to="/exercises/edit" />}
       <ExerciseSummaryList
         initialParams={{
           authorId: userId
