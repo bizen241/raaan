@@ -14,11 +14,11 @@ export const ReportViewer = withEntity("Report")(({ entity: report }) => {
         label={state === "pending" ? "対応する" : "編集する"}
         to={`/reports/${report.id}/edit`}
       />
-      <Card icon={<ReportIcon />} title="クイズの報告">
+      <Card icon={<ReportIcon />} title="報告">
         <Property label="理由">{report.reason}</Property>
-        <Property label="説明">{report.description}</Property>
+        {report.description && <Property label="説明">{report.description}</Property>}
         <Property label="状態">{report.state}</Property>
-        <Property label="コメント">{report.comment}</Property>
+        {report.comment && <Property label="コメント">{report.comment}</Property>}
       </Card>
     </Column>
   );
