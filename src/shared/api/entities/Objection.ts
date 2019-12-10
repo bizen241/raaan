@@ -9,6 +9,6 @@ export interface Objection extends BaseEntityObject {
   state: ObjectionState;
 }
 
-export type ObjectionTarget = "Exercise" | "Group" | "Playlist" | "User";
+export type ObjectionTarget = "Exercise" | "Playlist" | "User";
 
 export type ObjectionState = "pending" | "accepted" | "rejected";

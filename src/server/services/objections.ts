@@ -4,7 +4,6 @@ import { ObjectionEntity } from "../database/entities";
 
 export const getObjectionTargetProperties = ({
   targetExerciseId,
-  targetGroupId,
   targetPlaylistId,
   targetUserId
 }: ObjectionEntity): {
@@ -15,11 +14,6 @@ export const getObjectionTargetProperties = ({
     return {
       targetType: "Exercise",
       targetId: targetExerciseId
-    };
-  } else if (targetGroupId !== undefined) {
-    return {
-      targetType: "Group",
-      targetId: targetGroupId
     };
   } else if (targetPlaylistId !== undefined) {
     return {

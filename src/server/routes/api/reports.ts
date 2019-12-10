@@ -9,7 +9,6 @@ import { responseFindResult, responseSearchResult } from "../../api/response";
 import { hasPermission } from "../../api/security";
 import {
   ExerciseEntity,
-  GroupEntity,
   PlaylistEntity,
   ReportEntity,
   SynonymEntity,
@@ -69,16 +68,6 @@ export const POST: OperationFunction = errorBoundary(async (req, res, _, current
         }
 
         report.targetExercise = targetExercise;
-
-        break;
-      }
-      case "Group": {
-        const targetGroup = await manager.findOne(GroupEntity, targetId);
-        if (targetGroup === undefined) {
-          throw createError(400);
-        }
-
-        report.targetGroup = targetGroup;
 
         break;
       }

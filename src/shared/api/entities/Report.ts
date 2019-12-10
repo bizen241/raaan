@@ -10,7 +10,7 @@ export interface Report extends BaseEntityObject {
   comment: string;
 }
 
-export type ReportTarget = "Exercise" | "Group" | "Playlist" | "Synonym" | "Tag" | "User";
+export type ReportTarget = "Exercise" | "Playlist" | "Synonym" | "Tag" | "User";
 
 export type ReportReason = "troll" | "copyright" | "sexual";
 

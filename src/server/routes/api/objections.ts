@@ -67,16 +67,6 @@ export const POST: OperationFunction = errorBoundary(async (req, res, _, current
 
         break;
       }
-      case "Group": {
-        const targetGroup = await manager.findOne(GroupEntity, targetId);
-        if (targetGroup === undefined) {
-          throw createError(400);
-        }
-
-        report.targetGroup = targetGroup;
-
-        break;
-      }
       case "Playlist": {
         const targetPlaylist = await manager.findOne(PlaylistEntity, targetId);
         if (targetPlaylist === undefined) {
