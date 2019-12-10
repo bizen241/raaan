@@ -27,6 +27,7 @@ import { DeleteExerciseDialog } from "../dialogs/exercises/DeleteExerciseDialog"
 import { GroupExercisesDialog } from "../dialogs/exercises/GroupExercisesDialog";
 import { PublishExerciseDialog } from "../dialogs/exercises/PublishExerciseDialog";
 import { UnpublishExerciseDialog } from "../dialogs/exercises/UnpublishExerciseDialog";
+import { ConfirmObjectionDialog } from "../dialogs/objections/ConfirmObjectionDialog";
 import { ConfirmReportDialog } from "../dialogs/reports/ConfirmReportDialog";
 import { UserContext } from "../project/Context";
 import { Card, Menu, MenuItem, Property, Row } from "../ui";
@@ -47,6 +48,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
     const [isUploadVoteDialogOpen, onToggleUploadVoteDialog] = useToggleState();
     const [isDeleteVoteDialogOpen, onToggleDeleteVoteDialog] = useToggleState();
     const [isConfirmReportDialogOpen, onToggleConfirmReportDialog] = useToggleState();
+    const [isConfirmObjectionDialogOpen, onToggleConfirmObjectionDialog] = useToggleState();
 
     const { onReload: onReloadExercise } = useEntity("Exercise", exerciseId, false);
 
@@ -113,19 +115,20 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
             <Menu>
               <MenuItem icon={<Edit />} label="編集する" to={`/exercises/${exerciseId}/edit`} />
               <MenuItem icon={<History />} label="編集履歴" to={`/exercises/${exerciseId}/revisions`} />
-              {exerciseSummary.isPrivate ? (
-                <MenuItem icon={<Public />} label="公開する" onClick={onTogglePublishExerciseDialog} />
-              ) : (
-                <MenuItem icon={<Lock />} label="非公開にする" onClick={onToggleUnpublishExerciseDialog} />
-              )}
+              {!exerciseSummary.isLocked &&
+                (exerciseSummary.isPrivate ? (
+                  <MenuItem icon={<Public />} label="公開する" onClick={onTogglePublishExerciseDialog} />
+                ) : (
+                  <MenuItem icon={<Lock />} label="非公開にする" onClick={onToggleUnpublishExerciseDialog} />
+                ))}
               <MenuItem icon={<Group />} label="グループに公開する" onClick={onToggleGroupExercisesDialog} />
               {exerciseSummary.isLocked &&
                 (!isObjected ? (
-                  <MenuItem icon={<SmsFailed />} label="異議を申し立てる" />
+                  <MenuItem icon={<SmsFailed />} label="抗議する" onClick={onToggleConfirmObjectionDialog} />
                 ) : (
                   <MenuItem
                     icon={<SmsFailed />}
-                    label="異議申し立てを編集する"
+                    label="抗議を編集する"
                     to={`/exercise-objections/${objectionId}/edit`}
                   />
                 ))}
@@ -210,6 +213,12 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
           targetId={exerciseId}
           isOpen={isConfirmReportDialogOpen}
           onClose={onToggleConfirmReportDialog}
+        />
+        <ConfirmObjectionDialog
+          targetType="Exercise"
+          targetId={exerciseId}
+          isOpen={isConfirmObjectionDialogOpen}
+          onClose={onToggleConfirmObjectionDialog}
         />
       </Card>
     );

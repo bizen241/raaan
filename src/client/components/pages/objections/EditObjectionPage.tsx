@@ -7,7 +7,7 @@ export const EditObjectionPage = React.memo<PageProps>(({ match }) => {
   const objectionId = match.params.id;
 
   return (
-    <Page title="異議を編集中">
+    <Page title="抗議を編集中">
       <ObjectionEditor bufferId={objectionId} />
     </Page>
   );

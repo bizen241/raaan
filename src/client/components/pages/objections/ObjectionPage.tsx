@@ -7,7 +7,7 @@ export const ObjectionPage = React.memo<PageProps>(props => {
   const objectionId = props.match.params.id;
 
   return (
-    <Page title="異議の詳細">
+    <Page title="抗議の詳細">
       <ObjectionViewer entityId={objectionId} />
     </Page>
   );

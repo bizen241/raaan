@@ -5,7 +5,7 @@ import { Page } from "../../ui/Page";
 
 export const EditObjectionsPage = React.memo<PageProps>(() => {
   return (
-    <Page title="未保存の異議">
+    <Page title="未保存の抗議">
       <ObjectionBufferList />
     </Page>
   );

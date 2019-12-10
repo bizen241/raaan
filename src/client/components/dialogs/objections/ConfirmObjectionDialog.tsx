@@ -1,17 +1,17 @@
 import { Typography } from "@material-ui/core";
-import { ReportProblem } from "@material-ui/icons";
+import { SmsFailed } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import { useCallback } from "react";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { ReportTarget } from "../../../../shared/api/entities";
+import { ObjectionTarget } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { Button, Card, DialogContent } from "../../ui";
 
-export const ConfirmReportDialog = createDialog<{
-  targetType: ReportTarget;
+export const ConfirmObjectionDialog = createDialog<{
+  targetType: ObjectionTarget;
   targetId: string;
 }>(
   React.memo(({ targetType, targetId, onClose }) => {
@@ -21,20 +21,20 @@ export const ConfirmReportDialog = createDialog<{
       const bufferId = generateBufferId();
 
       dispatch(
-        actions.buffers.update("Report", bufferId, {
+        actions.buffers.update("Objection", bufferId, {
           targetType,
           targetId
         })
       );
-      dispatch(push(`/reports/${bufferId}/edit`));
+      dispatch(push(`/objections/${bufferId}/edit`));
     }, []);
 
     return (
-      <DialogContent title="違反を報告する" onClose={onClose}>
+      <DialogContent title="抗議する" onClose={onClose}>
         <Card>
-          <Typography>本当に通報しますか？</Typography>
+          <Typography>本当に抗議しますか？</Typography>
         </Card>
-        <Button icon={<ReportProblem />} label="通報する" onClick={onCreate} />
+        <Button icon={<SmsFailed />} label="抗議する" onClick={onCreate} />
       </DialogContent>
     );
   })

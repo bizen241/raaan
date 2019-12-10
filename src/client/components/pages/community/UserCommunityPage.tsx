@@ -19,7 +19,7 @@ export const UserCommunityPage = React.memo<PageProps>(props => {
       <Button icon={<Notifications />} label="フォロー" to={`/users/${userId}/community/follows`} />
       {isOwn && !isOwner && <Button icon={<Report />} label="報告履歴" to={`/users/${userId}/community/reports`} />}
       {isOwn && !isOwner && (
-        <Button icon={<SmsFailed />} label="異議履歴" to={`/users/${userId}/community/objections`} />
+        <Button icon={<SmsFailed />} label="抗議履歴" to={`/users/${userId}/community/objections`} />
       )}
       <Button icon={<ThumbsUpDown />} label="評価履歴" to={`/users/${userId}/community/votes`} />
     </Page>

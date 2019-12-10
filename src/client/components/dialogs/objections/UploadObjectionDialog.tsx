@@ -19,7 +19,18 @@ export const UploadObjectionDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload("Objection", reportId, undefined, () => {
+        actions.api.upload("Objection", reportId, undefined, uploadResponse => {
+          dispatch(
+            actions.cache.add(
+              "Objection",
+              {
+                targetType,
+                targetId
+              },
+              uploadResponse
+            )
+          );
+
           const path = endpoints[targetType];
 
           dispatch(replace(`/${path}/${targetId}`));
@@ -28,11 +39,11 @@ export const UploadObjectionDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="異議を申し立てる" onClose={onClose}>
+      <DialogContent title="抗議をアップロード" onClose={onClose}>
         <Card>
-          <Typography>異議を申し立てます。</Typography>
+          <Typography>抗議をアップロードします。</Typography>
         </Card>
-        <Button icon={<ReportProblem />} label="異議をアップロード" onClick={onUpload} />
+        <Button icon={<ReportProblem />} label="抗議をアップロード" onClick={onUpload} />
       </DialogContent>
     );
   })
