@@ -35,7 +35,7 @@ export const ExerciseSummaryList = createEntityList("ExerciseSummary")(
   }),
   React.memo(({ params, onReload, onChange }) => {
     const [isSearchConditionOpen, onToggleSearchCondition] = useToggleState();
-    const [searchText, setSearchText] = useState(params.tags || params.title);
+    const [searchText, setSearchText] = useState(params.tags || params.title || "");
 
     const searchTarget = getSearchTarget(params);
 
