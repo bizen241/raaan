@@ -18,6 +18,7 @@ import { ExercisesPage } from "../pages/exercises/ExercisesPage";
 import { UserExercisesPage } from "../pages/exercises/UserExercisesPage";
 import { GroupApplicationPage } from "../pages/group-applications/GroupApplicationPage";
 import { GroupGroupApplicationsPage } from "../pages/group-applications/GroupGroupApplicationsPage";
+import { UserGroupApplicationsPage } from "../pages/group-applications/UserGroupApplicationsPage";
 import { GroupExercisesPage } from "../pages/group-exercises/GroupExercisesPage";
 import { GroupGroupInvitationsPage } from "../pages/group-invitations/GroupGroupInvitationsPage";
 import { GroupInvitePage } from "../pages/group-invitations/GroupInvitePage";
@@ -112,8 +113,8 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/users/:id/contents/bookmarks" component={UserPlaylistBookmarksPage} />
         <Route exact={true} path="/users/:id/community" component={UserCommunityPage} />
         <Route exact={true} path="/users/:id/community/groups" component={UserGroupsPage} />
-        <Route exact={true} path="/users/:id/community/groups/applications" component={NotFoundPage} />
-        <Route exact={true} path="/users/:id/community/votes" component={NotFoundPage} />
+        <Route exact={true} path="/users/:id/community/groups/applications" component={UserGroupApplicationsPage} />
+        <Route exact={true} path="/users/:id/community/votes" component={UserVotePage} />
         <Route exact={true} path="/users/:id/community/votes/up" component={NotFoundPage} />
         <Route exact={true} path="/users/:id/community/votes/down" component={NotFoundPage} />
         <Route exact={true} path="/users/:id/community/reports" component={NotFoundPage} />

@@ -6,7 +6,7 @@ import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card, DialogContent } from "../../ui";
 
-export const DeleteGroupApplicationByOwnerDialog = createDialog<{
+export const DeleteGroupApplicationDialog = createDialog<{
   groupApplicationId: string;
 }>(
   React.memo(({ groupApplicationId, onClose }) => {
@@ -17,11 +17,11 @@ export const DeleteGroupApplicationByOwnerDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="申請の拒絶" onClose={onClose}>
+      <DialogContent title="申請の取り消し" onClose={onClose}>
         <Card>
-          <Typography>申請を拒絶します。</Typography>
+          <Typography>グループへの参加の申請を取り消します。</Typography>
         </Card>
-        <Button icon={<RemoveCircle color="error" />} label="申請を拒絶" labelColor="error" onClick={onDelete} />
+        <Button icon={<RemoveCircle color="error" />} label="申請を取り消し" labelColor="error" onClick={onDelete} />
       </DialogContent>
     );
   })

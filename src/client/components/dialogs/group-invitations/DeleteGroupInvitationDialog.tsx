@@ -18,7 +18,7 @@ export const RejectGroupInvitationDialog = createDialog<{
 
     return (
       <DialogContent title="グループへの参加を辞退" onClose={onClose}>
-        <Card icon={<RemoveCircle />} title="グループへの参加を辞退">
+        <Card>
           <Typography>グループへの参加を辞退します。</Typography>
         </Card>
         <Button icon={<RemoveCircle color="error" />} label="参加を辞退" labelColor="error" onClick={onDelete} />

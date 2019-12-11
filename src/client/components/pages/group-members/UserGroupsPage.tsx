@@ -1,4 +1,4 @@
-import { Add, Edit } from "@material-ui/icons";
+import { Add, Edit, Inbox } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import * as React from "react";
 import { useCallback, useContext } from "react";
@@ -24,6 +24,7 @@ export const UserGroupsPage = React.memo<PageProps>(() => {
     <Page title="所属グループ">
       <Button icon={<Add />} label="新しいグループを作る" onClick={onCreate} />
       <Button icon={<Edit />} label="編集中のグループ" to={`/groups/edit`} />
+      <Button icon={<Inbox />} label="申請一覧" to={`/users/${currentUser.id}/community/groups/applications`} />
       <UserGroupMemberList initialParams={{ userId: currentUser.id }} />
     </Page>
   );
