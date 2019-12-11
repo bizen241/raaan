@@ -223,12 +223,20 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (_, store, e
 };
 
 const normalizeExerciseVote: Normalizer<ExerciseVoteEntity> = (_, store, entity) => {
-  const { id, targetId, voterId, isUp } = entity;
+  const { id, target, targetId, voter, voterId, isUp } = entity;
+  if (target === undefined) {
+    throw createError(500, "exerciseVote.target is not defined");
+  }
+  if (voter === undefined) {
+    throw createError(500, "exerciseVote.voter is not defined");
+  }
 
   store.ExerciseVote[id] = {
     ...base(entity),
     targetId,
+    targetSummaryId: target.summaryId,
     voterId,
+    voterSummaryId: voter.summaryId,
     isUp
   };
 };

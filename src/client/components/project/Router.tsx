@@ -7,11 +7,14 @@ import { AppPage } from "../pages/AppPage";
 import { CommunityPage } from "../pages/community/CommunityPage";
 import { UserCommunityPage } from "../pages/community/UserCommunityPage";
 import { UserFollowingPage } from "../pages/community/UserFollowingPage";
+import { UserVotesPage } from "../pages/community/UserVotesPage";
 import { ContestPage } from "../pages/contests/ContestPage";
 import { EditContestPage } from "../pages/contests/EditContestPage";
 import { EditContestsPage } from "../pages/contests/EditContestsPage";
 import { GroupContestsPage } from "../pages/contests/GroupContestsPage";
 import { UserExerciseDraftsPage } from "../pages/exercise-drafts/UserExerciseDraftsPage";
+import { UserDownVotesPage } from "../pages/exercise-votes/UserDownVotesPage";
+import { UserUpVotesPage } from "../pages/exercise-votes/UserUpVotesPage";
 import { EditExercisesPage } from "../pages/exercises/EditExercisesPage";
 import { ExercisePage } from "../pages/exercises/ExercisePage";
 import { ExercisesPage } from "../pages/exercises/ExercisesPage";
@@ -114,9 +117,9 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/users/:id/community" component={UserCommunityPage} />
         <Route exact={true} path="/users/:id/community/groups" component={UserGroupsPage} />
         <Route exact={true} path="/users/:id/community/groups/applications" component={UserGroupApplicationsPage} />
-        <Route exact={true} path="/users/:id/community/votes" component={UserVotePage} />
-        <Route exact={true} path="/users/:id/community/votes/up" component={NotFoundPage} />
-        <Route exact={true} path="/users/:id/community/votes/down" component={NotFoundPage} />
+        <Route exact={true} path="/users/:id/community/votes" component={UserVotesPage} />
+        <Route exact={true} path="/users/:id/community/votes/up" component={UserUpVotesPage} />
+        <Route exact={true} path="/users/:id/community/votes/down" component={UserDownVotesPage} />
         <Route exact={true} path="/users/:id/community/reports" component={NotFoundPage} />
         <Route exact={true} path="/users/:id/community/reporters" component={NotFoundPage} />
         <Route exact={true} path="/users/:id/community/objections" component={NotFoundPage} />

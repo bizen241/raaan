@@ -16,8 +16,10 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     return next(createError(403));
   }
 
-  const query = await getManager()
+  const query = getManager()
     .createQueryBuilder(ExerciseVoteEntity, "exerciseVote")
+    .leftJoinAndSelect("exerciseVote.target", "target")
+    .leftJoinAndSelect("exerciseVote.voter", "voter")
     .take(searchLimit)
     .skip(searchOffset);
 

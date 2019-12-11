@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import { Delete, HowToVote } from "@material-ui/icons";
+import { HowToVote } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
@@ -18,10 +18,10 @@ export const DeleteExerciseVoteDialog = createDialog<{
 
     return (
       <DialogContent title="投票の取り消し" onClose={onClose}>
-        <Card icon={<HowToVote />} title="投票の取り消し">
+        <Card>
           <Typography>投票を取り消します。</Typography>
         </Card>
-        <Button icon={<Delete />} label="投票を取り消す" onClick={onDelete} />
+        <Button icon={<HowToVote />} label="投票を取り消す" onClick={onDelete} />
       </DialogContent>
     );
   })
