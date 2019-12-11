@@ -40,6 +40,7 @@ import { EditObjectionPage } from "../pages/objections/EditObjectionPage";
 import { EditObjectionsPage } from "../pages/objections/EditObjectionsPage";
 import { ObjectionPage } from "../pages/objections/ObjectionPage";
 import { ObjectionsPage } from "../pages/objections/ObjectionsPage";
+import { UserObjectionsPage } from "../pages/objections/UserObjectionsPage";
 import { UserPlaylistBookmarksPage } from "../pages/playlist-bookmarks/UserPlaylistBookmarksPage";
 import { PlaylistPage } from "../pages/playlists/PlaylistPage";
 import { PlaylistsPage } from "../pages/playlists/PlaylistsPage";
@@ -48,6 +49,8 @@ import { EditReportPage } from "../pages/reports/EditReportPage";
 import { EditReportsPage } from "../pages/reports/EditReportsPage";
 import { ReportPage } from "../pages/reports/ReportPage";
 import { ReportsPage } from "../pages/reports/ReportsPage";
+import { UserReportersPage } from "../pages/reports/UserReportersPage";
+import { UserReportsPage } from "../pages/reports/UserReportsPage";
 import { ExerciseRevisionsPage } from "../pages/revisions/ExerciseRevisionsPage";
 import { RevisionPage } from "../pages/revisions/RevisionPage";
 import { ReviewPage } from "../pages/submissions/ReviewPage";
@@ -120,9 +123,9 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/users/:id/community/votes" component={UserVotesPage} />
         <Route exact={true} path="/users/:id/community/votes/up" component={UserUpVotesPage} />
         <Route exact={true} path="/users/:id/community/votes/down" component={UserDownVotesPage} />
-        <Route exact={true} path="/users/:id/community/reports" component={NotFoundPage} />
-        <Route exact={true} path="/users/:id/community/reporters" component={NotFoundPage} />
-        <Route exact={true} path="/users/:id/community/objections" component={NotFoundPage} />
+        <Route exact={true} path="/users/:id/community/reports" component={UserReportsPage} />
+        <Route exact={true} path="/users/:id/community/reporters" component={UserReportersPage} />
+        <Route exact={true} path="/users/:id/community/objections" component={UserObjectionsPage} />
         <Route exact={true} path="/users/:id/community/follows" component={UserFollowingPage} />
         <Route exact={true} path="/users/:id/community/follows/followers" component={UserFollowersPage} />
         <Route exact={true} path="/users/:id/community/follows/users" component={UserFollowsPage} />

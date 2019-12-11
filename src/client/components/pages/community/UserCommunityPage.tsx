@@ -13,14 +13,14 @@ export const UserCommunityPage = React.memo<PageProps>(props => {
   const isOwn = currentUser.id === userId;
   const isOwner = currentUser.permission === "Owner";
 
+  const isHoge = (isOwn && !isOwner) || (!isOwn && isOwner);
+
   return (
     <Page title={isOwn ? "自分のコミュニティ" : "ユーザーのコミュニティ"}>
       <Button color="primary" icon={<Group />} label="グループ" to={`/users/${userId}/community/groups`} />
       <Button icon={<Notifications />} label="フォロー" to={`/users/${userId}/community/follows`} />
-      {isOwn && !isOwner && <Button icon={<Report />} label="報告履歴" to={`/users/${userId}/community/reports`} />}
-      {isOwn && !isOwner && (
-        <Button icon={<SmsFailed />} label="抗議履歴" to={`/users/${userId}/community/objections`} />
-      )}
+      {isHoge && <Button icon={<Report />} label="報告履歴" to={`/users/${userId}/community/reports`} />}
+      {isHoge && <Button icon={<SmsFailed />} label="抗議履歴" to={`/users/${userId}/community/objections`} />}
       <Button icon={<ThumbsUpDown />} label="評価履歴" to={`/users/${userId}/community/votes`} />
     </Page>
   );
