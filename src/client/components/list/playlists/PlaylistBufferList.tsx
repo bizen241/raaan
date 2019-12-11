@@ -4,10 +4,10 @@ import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createBufferList } from "../../../enhancers/createBufferList";
 import { useToggleState } from "../../../hooks/useToggleState";
-import { DeleteGroupBufferDialog } from "../../dialogs/groups/DeleteGroupBufferDialog";
+import { DeletePlaylistBufferDialog } from "../../dialogs/playlists/DeletePlaylistBufferDialog";
 import { Column } from "../../ui";
 
-export const GroupBufferList = createBufferList("Group")(
+export const PlaylistBufferList = createBufferList("Playlist")(
   React.memo(({ bufferId, buffer, source }) => {
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
@@ -15,8 +15,8 @@ export const GroupBufferList = createBufferList("Group")(
       <TableRow>
         <TableCell>
           <Column>
-            <Link color="textPrimary" component={RouterLink} to={`/groups/${bufferId}/edit`}>
-              <Typography>{buffer.name || (source && source.name) || "無名のグループ"}</Typography>
+            <Link color="textPrimary" component={RouterLink} to={`/playlists/${bufferId}/edit`}>
+              <Typography>{buffer.title || (source && source.title) || "無題"}</Typography>
             </Link>
           </Column>
         </TableCell>
@@ -25,7 +25,7 @@ export const GroupBufferList = createBufferList("Group")(
             <Delete />
           </IconButton>
         </TableCell>
-        <DeleteGroupBufferDialog bufferId={bufferId} isOpen={isDeleteDialogOpen} onClose={onToggleDeleteDialog} />
+        <DeletePlaylistBufferDialog bufferId={bufferId} isOpen={isDeleteDialogOpen} onClose={onToggleDeleteDialog} />
       </TableRow>
     );
   })

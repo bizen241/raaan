@@ -42,6 +42,7 @@ import { ObjectionPage } from "../pages/objections/ObjectionPage";
 import { ObjectionsPage } from "../pages/objections/ObjectionsPage";
 import { UserObjectionsPage } from "../pages/objections/UserObjectionsPage";
 import { UserPlaylistBookmarksPage } from "../pages/playlist-bookmarks/UserPlaylistBookmarksPage";
+import { EditPlaylistsPage } from "../pages/playlists/EditPlaylistsPage";
 import { PlaylistPage } from "../pages/playlists/PlaylistPage";
 import { PlaylistsPage } from "../pages/playlists/PlaylistsPage";
 import { UserPlaylistsPage } from "../pages/playlists/UserPlaylistsPage";
@@ -140,7 +141,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/revisions/:id" component={RevisionPage} />
 
         <Route exact={true} path="/playlists" component={PlaylistsPage} />
-        <Route exact={true} path="/playlists/edit" component={NotFoundPage} />
+        <Route exact={true} path="/playlists/edit" component={EditPlaylistsPage} />
         <Route exact={true} path="/playlists/:id" component={PlaylistPage} />
         <Route exact={true} path="/playlists/:id/edit" component={EditPlaylistPage} />
 
