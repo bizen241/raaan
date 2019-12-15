@@ -10,7 +10,8 @@ import {
   Public,
   Refresh,
   ReportProblem,
-  SmsFailed
+  SmsFailed,
+  WbIncandescent
 } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
@@ -29,6 +30,7 @@ import { PublishExerciseDialog } from "../dialogs/exercises/PublishExerciseDialo
 import { UnpublishExerciseDialog } from "../dialogs/exercises/UnpublishExerciseDialog";
 import { ConfirmObjectionDialog } from "../dialogs/objections/ConfirmObjectionDialog";
 import { ConfirmReportDialog } from "../dialogs/reports/ConfirmReportDialog";
+import { ConfirmSuggestionDialog } from "../dialogs/suggestions/ConfirmSuggestionDialog";
 import { UserContext } from "../project/Context";
 import { Card, Menu, MenuItem, Property, Row } from "../ui";
 
@@ -39,7 +41,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
     const isOwner = currentUser.permission === "Owner";
     const isAuthor = exerciseSummary.authorId === currentUser.id;
 
-    const { exerciseId } = exerciseSummary;
+    const { exerciseId, title, isPrivate, isLocked } = exerciseSummary;
 
     const [isPublishExerciseDialogOpen, onTogglePublishExerciseDialog] = useToggleState();
     const [isUnpublishExerciseDialogOpen, onToggleUnpublishExerciseDialog] = useToggleState();
@@ -47,6 +49,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
     const [isDeleteExerciseDialogOpen, onToggleDeleteExerciseDialog] = useToggleState();
     const [isUploadVoteDialogOpen, onToggleUploadVoteDialog] = useToggleState();
     const [isDeleteVoteDialogOpen, onToggleDeleteVoteDialog] = useToggleState();
+    const [isConfirmSuggestionDialogOpen, onToggleConfirmSuggestionDialog] = useToggleState();
     const [isConfirmReportDialogOpen, onToggleConfirmReportDialog] = useToggleState();
     const [isConfirmObjectionDialogOpen, onToggleConfirmObjectionDialog] = useToggleState();
 
@@ -57,6 +60,15 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
       {
         voterId: currentUser.id,
         targetId: exerciseId
+      },
+      !isAuthor
+    );
+    const { entities: suggestions } = useSearch(
+      "SuggestionSummary",
+      {
+        authorId: currentUser.id,
+        exerciseId,
+        state: "pending"
       },
       !isAuthor
     );
@@ -78,13 +90,23 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
       exerciseSummary.isLocked
     );
 
+    const suggestionBuffers = useSelector((state: RootState) => state.buffers.Submission);
     const objectionBuffers = useSelector((state: RootState) => state.buffers.Objection);
     const reportBuffers = useSelector((state: RootState) => state.buffers.Report);
 
     const vote = votes[0];
+    const suggestion = suggestions[0];
     const report = reports[0];
     const objection = objections[0];
 
+    const suggestionId =
+      suggestion !== undefined
+        ? suggestion.suggestionId
+        : Object.keys(suggestionBuffers).find(bufferId => {
+            const buffer = suggestionBuffers[bufferId];
+
+            return buffer !== undefined && buffer.exerciseId === exerciseId;
+          });
     const reportId =
       report !== undefined
         ? report.id
@@ -103,26 +125,27 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
           });
 
     const isVoted = vote !== undefined;
+    const isSuggested = false;
     const isReported = reportId !== undefined;
     const isObjected = objectionId !== undefined;
 
     return (
       <Card
         icon={<Keyboard />}
-        title={exerciseSummary.title || "無題"}
+        title={title || "無題"}
         action={
           isAuthor ? (
             <Menu>
               <MenuItem icon={<Edit />} label="編集する" to={`/exercises/${exerciseId}/edit`} />
               <MenuItem icon={<History />} label="編集履歴" to={`/exercises/${exerciseId}/revisions`} />
-              {!exerciseSummary.isLocked &&
-                (exerciseSummary.isPrivate ? (
+              {!isLocked &&
+                (isPrivate ? (
                   <MenuItem icon={<Public />} label="公開する" onClick={onTogglePublishExerciseDialog} />
                 ) : (
                   <MenuItem icon={<Lock />} label="非公開にする" onClick={onToggleUnpublishExerciseDialog} />
                 ))}
               <MenuItem icon={<Group />} label="グループに公開する" onClick={onToggleGroupExercisesDialog} />
-              {exerciseSummary.isLocked &&
+              {isLocked &&
                 (!isObjected ? (
                   <MenuItem icon={<SmsFailed />} label="抗議する" onClick={onToggleConfirmObjectionDialog} />
                 ) : (
@@ -141,6 +164,11 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
                 <MenuItem icon={<HowToVote />} label="投票する" onClick={onToggleUploadVoteDialog} />
               ) : (
                 <MenuItem icon={<HowToVote />} label="投票を取り消す" onClick={onToggleDeleteVoteDialog} />
+              )}
+              {!isSuggested ? (
+                <MenuItem icon={<WbIncandescent />} label="提案する" onClick={onToggleConfirmSuggestionDialog} />
+              ) : (
+                <MenuItem icon={<WbIncandescent />} label="提案を編集する" to={`/suggestions/${suggestionId}/edit`} />
               )}
               {!isOwner &&
                 (!isReported ? (
@@ -208,6 +236,11 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
             onClose={onToggleDeleteVoteDialog}
           />
         )}
+        <ConfirmSuggestionDialog
+          targetId={exerciseId}
+          isOpen={isConfirmSuggestionDialogOpen}
+          onClose={onToggleConfirmSuggestionDialog}
+        />
         <ConfirmReportDialog
           targetType="Exercise"
           targetId={exerciseId}

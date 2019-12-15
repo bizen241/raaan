@@ -23,7 +23,8 @@ export class SubmissionSummaryEntity extends BaseEntityClass {
   exerciseId!: string;
 
   @OneToOne(() => SubmissionEntity, {
-    cascade: true
+    cascade: true,
+    onDelete: "CASCADE"
   })
   @JoinColumn()
   latest?: SubmissionEntity;

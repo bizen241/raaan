@@ -1,12 +1,20 @@
-import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
-import { BaseExerciseClass } from "./BaseExerciseClass";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, RelationId } from "typeorm";
+import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseDraftEntity } from "./ExerciseDraftEntity";
 import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";
+import { RevisionEntity } from "./RevisionEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity("exercises")
-export class ExerciseEntity extends BaseExerciseClass {
+export class ExerciseEntity extends BaseEntityClass {
   type: "Exercise" = "Exercise";
+
+  @OneToOne(() => ExerciseSummaryEntity, exerciseSummary => exerciseSummary.exercise, {
+    cascade: true
+  })
+  summary?: ExerciseSummaryEntity;
+  @RelationId((exercise: ExerciseEntity) => exercise.summary)
+  summaryId!: string;
 
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
@@ -15,12 +23,13 @@ export class ExerciseEntity extends BaseExerciseClass {
   @RelationId((exercise: ExerciseEntity) => exercise.author)
   authorId!: string;
 
-  @OneToOne(() => ExerciseSummaryEntity, exerciseSummary => exerciseSummary.exercise, {
+  @OneToOne(() => RevisionEntity, {
     cascade: true
   })
-  summary?: ExerciseSummaryEntity;
-  @RelationId((exercise: ExerciseEntity) => exercise.summary)
-  summaryId!: string;
+  @JoinColumn()
+  latest?: RevisionEntity;
+  @RelationId((exercise: ExerciseEntity) => exercise.latest)
+  latestId!: string;
 
   @OneToOne(() => ExerciseDraftEntity, exerciseDraft => exerciseDraft.exercise, {
     cascade: true
@@ -37,4 +46,12 @@ export class ExerciseEntity extends BaseExerciseClass {
 
   @Column()
   isLocked: boolean = false;
+
+  constructor(summary: ExerciseSummaryEntity, author: UserEntity, draft: ExerciseDraftEntity) {
+    super();
+
+    this.summary = summary;
+    this.author = author;
+    this.draft = draft;
+  }
 }

@@ -5,6 +5,8 @@ import {
   ExerciseDraftEntity,
   ExerciseEntity,
   ExerciseSummaryEntity,
+  RevisionEntity,
+  RevisionSummaryEntity,
   UserAccountEntity,
   UserConfigEntity,
   UserEntity,
@@ -49,20 +51,26 @@ export const insertSession = async (user: UserEntity) => {
 export const insertExercise = async (user: UserEntity) => {
   const manager = getManager();
 
+  const isMerged = true;
+  const isPrivate = false;
+
   const exerciseSummary = new ExerciseSummaryEntity();
   exerciseSummary.maxTypeCount = 0;
   exerciseSummary.minTypeCount = 0;
   exerciseSummary.tags = [];
 
   const exerciseDraft = new ExerciseDraftEntity({});
-  exerciseDraft.isMerged = true;
+  exerciseDraft.isMerged = isMerged;
 
-  const exercise = new ExerciseEntity({});
-  exercise.author = user;
-  exercise.summary = exerciseSummary;
-  exercise.draft = exerciseDraft;
-  exercise.isDraft = false;
+  const exercise = new ExerciseEntity(exerciseSummary, user, exerciseDraft);
+  exercise.isDraft = !isMerged;
   await manager.save(exercise);
+
+  const revisionSummary = new RevisionSummaryEntity();
+  const revision = new RevisionEntity(revisionSummary, exercise, {}, isPrivate);
+  await manager.save(revision);
+
+  exercise.latest = revision;
 
   return { exercise, exerciseSummary };
 };

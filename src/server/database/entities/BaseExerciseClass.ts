@@ -22,7 +22,7 @@ export abstract class BaseExerciseClass extends BaseEntityClass {
   @Column()
   isRandom!: boolean;
 
-  constructor(params?: Params<Exercise>) {
+  constructor(params: Params<Exercise> | undefined) {
     super();
 
     if (params !== undefined) {

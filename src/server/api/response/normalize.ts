@@ -126,22 +126,12 @@ const normalizeContestEntry: Normalizer<ContestEntryEntity> = (context, store, e
 };
 
 const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) => {
-  const {
-    id,
-    author,
-    authorId,
-    summary,
-    summaryId,
-    draftId,
-    lang,
-    title,
-    tags,
-    description,
-    questions,
-    isRandom,
-    isLocked,
-    isPrivate
-  } = entity;
+  const { id, author, authorId, summary, summaryId, draftId, latest, isLocked, isPrivate } = entity;
+  if (latest === undefined) {
+    throw createError(500, "exercise.latest.user is not defined");
+  }
+
+  const { lang, title, tags, description, questions, isRandom } = latest;
 
   store.Exercise[id] = {
     ...base(entity),
@@ -195,13 +185,18 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (_, store, e
     throw createError(500, "exerciseSummary.exercise is not defined");
   }
 
-  const { author, authorId, draft, lang, title, description, isDraft, isPrivate, isLocked } = exercise;
+  const { author, authorId, latest, draft, isDraft, isPrivate, isLocked } = exercise;
   if (author === undefined) {
     throw createError(500, "exerciseSummary.exercise.author is not defined");
+  }
+  if (latest === undefined) {
+    throw createError(500, "exerciseSummary.exercise.latest is not defined");
   }
   if (draft === undefined) {
     throw createError(500, "exerciseSummary.exercise.draft is not defined");
   }
+
+  const { lang, title, description } = latest;
 
   store.ExerciseSummary[id] = {
     ...base(entity),
@@ -549,11 +544,13 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context
 };
 
 const normalizeSuggestion: Normalizer<SuggestionEntity> = (_, store, entity) => {
-  const { id, summaryId, lang, title, tags, description, questions, isRandom } = entity;
+  const { id, summaryId, revisionId, state, lang, title, tags, description, questions, isRandom } = entity;
 
   store.Suggestion[id] = {
     ...base(entity),
     summaryId,
+    revisionId,
+    state,
     lang,
     title,
     tags,
@@ -566,16 +563,15 @@ const normalizeSuggestion: Normalizer<SuggestionEntity> = (_, store, entity) => 
 const normalizeSuggestionSummary: Normalizer<SuggestionSummaryEntity> = (_, store, entity) => {
   const { id, suggestion, suggestionId } = entity;
   if (suggestion === undefined) {
-    return;
+    throw createError(500, "suggestionSummary.suggestion is not defined");
   }
 
-  const { authorId, revisionId } = suggestion;
+  const { state } = suggestion;
 
   store.SuggestionSummary[id] = {
     ...base(entity),
-    authorId,
-    revisionId,
-    suggestionId
+    suggestionId,
+    state
   };
 };
 

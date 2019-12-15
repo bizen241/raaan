@@ -1,4 +1,6 @@
-import { Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
+import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
+import { Exercise } from "../../../shared/api/entities";
+import { Params } from "../../../shared/api/request/params";
 import { BaseExerciseClass } from "./BaseExerciseClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { RevisionSummaryEntity } from "./RevisionSummaryEntity";
@@ -20,4 +22,20 @@ export class RevisionEntity extends BaseExerciseClass {
   summary?: RevisionSummaryEntity;
   @RelationId((revision: RevisionEntity) => revision.summary)
   summaryId!: string;
+
+  @Column()
+  isPrivate: boolean;
+
+  constructor(
+    summary: RevisionSummaryEntity,
+    exercise: ExerciseEntity,
+    params: Params<Exercise> | undefined,
+    isPrivate: boolean
+  ) {
+    super(params);
+
+    this.summary = summary;
+    this.exercise = exercise;
+    this.isPrivate = isPrivate;
+  }
 }

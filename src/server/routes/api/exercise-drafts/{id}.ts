@@ -38,7 +38,7 @@ GET.apiDoc = createOperationDoc({
 
 export const PATCH: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { id: exerciseDraftId }: PathParams = req.params;
-  const params: Params<ExerciseDraft> = req.body;
+  const { isMerged = true, ...params }: Params<ExerciseDraft> = req.body;
 
   const manager = getManager();
 
@@ -48,12 +48,17 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
   }
 
   const exercise = await manager.findOne(ExerciseEntity, exerciseDraft.exerciseId, {
-    relations: ["author", "summary", "summary.tags", "summary.tags.summary", "draft"]
+    relations: ["author", "summary", "summary.tags", "summary.tags.summary", "latest", "draft"]
   });
   if (exercise === undefined) {
     return next(createError(404));
   }
-  if (exercise.summary === undefined || exercise.summary.tags === undefined || exercise.draft === undefined) {
+  if (
+    exercise.summary === undefined ||
+    exercise.summary.tags === undefined ||
+    exercise.latest === undefined ||
+    exercise.draft === undefined
+  ) {
     return next(createError(500));
   }
 
@@ -72,40 +77,27 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
     exercise.draft.questions = params.questions;
   }
 
-  if (params.isMerged !== false) {
-    if (!exercise.isDraft) {
-      const revisions = await manager.find(RevisionEntity, {
-        where: {
-          exercise: {
-            id: exercise.id
-          }
-        },
-        order: {
-          createdAt: "DESC"
-        }
-      });
-
-      if (revisions.length > 4) {
-        await manager.remove(revisions[0]);
+  if (isMerged) {
+    if (exercise.isDraft) {
+      if (params.title !== undefined) {
+        exercise.latest.title = params.title;
       }
-
+      if (params.tags !== undefined) {
+        exercise.latest.tags = params.tags;
+      }
+      if (params.questions !== undefined) {
+        exercise.latest.questions = params.questions;
+      }
+    } else {
       const revisionSummary = new RevisionSummaryEntity();
-
-      const revision = new RevisionEntity({
-        title: exercise.title,
-        tags: exercise.tags,
-        questions: exercise.questions
-      });
-      revision.exercise = exercise;
-      revision.summary = revisionSummary;
+      const revision = new RevisionEntity(revisionSummary, exercise, params, exercise.isPrivate);
       await manager.save(revision);
+
+      exercise.latest = revision;
     }
 
     const { maxTypeCount, minTypeCount } = getMinMaxTypeCount(params.questions);
 
-    exercise.title = exercise.draft.title;
-    exercise.tags = exercise.draft.tags;
-    exercise.questions = exercise.draft.questions;
     exercise.isDraft = false;
 
     exercise.summary.maxTypeCount = maxTypeCount;
