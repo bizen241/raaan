@@ -11,8 +11,8 @@ import {
   ExerciseEntity,
   ExerciseSummaryEntity,
   RevisionEntity,
-  UserSummaryEntity,
-  RevisionSummaryEntity
+  RevisionSummaryEntity,
+  UserSummaryEntity
 } from "../../database/entities";
 import { getTags } from "../../services/tags";
 
@@ -46,6 +46,10 @@ export const POST: OperationFunction = errorBoundary(async (req, res, _, current
     const revision = new RevisionEntity(revisionSummary, exercise, isMerged ? params : {}, isPrivate);
     await manager.save(revision);
 
+    exercise.latest = revision;
+
+    await manager.save(exercise);
+
     if (exercise.author === undefined) {
       throw createError(500, "exercise.author is not defined");
     }
@@ -56,7 +60,6 @@ export const POST: OperationFunction = errorBoundary(async (req, res, _, current
     exercise.author.summary = authorSummary;
     exercise.author.summary.user = exercise.author;
     exercise.summary.exercise = exercise;
-    exercise.latest = revision;
 
     responseFindResult(req, res, exercise);
   });
