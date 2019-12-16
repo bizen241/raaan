@@ -262,11 +262,12 @@ const parseRevision: Parser<Revision> = query => {
 };
 
 const parseRevisionSummary: Parser<RevisionSummary> = query => {
-  const { exerciseId } = query;
+  const { exerciseId, searchSort } = query;
 
   return {
     ...base(query),
-    exerciseId
+    exerciseId,
+    searchSort: searchSort as RevisionSummary["searchSort"]
   };
 };
 

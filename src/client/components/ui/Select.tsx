@@ -34,7 +34,7 @@ export const Select = <T extends string | number>({
           </option>
         )}
         {Object.entries<SelectOption>(options).map(([optionValue, optionSettings]) => (
-          <option key={optionValue} value={optionValue}>
+          <option key={optionValue} value={optionValue} hidden={optionSettings.hidden}>
             {optionSettings.label}
           </option>
         ))}

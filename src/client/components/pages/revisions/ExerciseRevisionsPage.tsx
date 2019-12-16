@@ -10,7 +10,9 @@ export const ExerciseRevisionsPage = React.memo<PageProps>(({ match }) => {
     <Page title="編集履歴">
       <RevisionSummaryList
         initialParams={{
-          exerciseId
+          exerciseId,
+          searchSort: "createdAt",
+          searchOrder: "DESC"
         }}
       />
     </Page>

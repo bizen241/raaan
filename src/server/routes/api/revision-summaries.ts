@@ -6,7 +6,10 @@ import { responseSearchResult } from "../../api/response";
 import { RevisionSummaryEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { exerciseId, searchLimit, searchOffset } = parseQuery("RevisionSummary", req.query);
+  const { exerciseId, searchSort = "createdAt", searchOrder, searchLimit, searchOffset } = parseQuery(
+    "RevisionSummary",
+    req.query
+  );
 
   const where: FindConditions<RevisionSummaryEntity> = {};
   if (exerciseId !== undefined) {
@@ -17,10 +20,11 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
     };
   }
 
-  const query = await getManager()
+  const query = getManager()
     .createQueryBuilder(RevisionSummaryEntity, "revisionSummary")
     .leftJoinAndSelect("revisionSummary.revision", "revision")
     .leftJoinAndSelect("revision.exercise", "exercise")
+    .orderBy(`revision.${searchSort}`, searchOrder)
     .take(searchLimit)
     .skip(searchOffset);
 
