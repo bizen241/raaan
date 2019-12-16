@@ -126,17 +126,21 @@ const normalizeContestEntry: Normalizer<ContestEntryEntity> = (context, store, e
 };
 
 const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) => {
-  const { id, author, authorId, summary, summaryId, draftId, latest, isLocked, isPrivate } = entity;
+  const { id, author, authorId, summary, summaryId, draftId, latest, latestId, isLocked, isPrivate } = entity;
+  if (summary === undefined) {
+    throw createError(500, "exercise.summary is not defined");
+  }
   if (latest === undefined) {
-    throw createError(500, "exercise.latest.user is not defined");
+    throw createError(500, "exercise.latest is not defined");
   }
 
   const { lang, title, tags, description, questions, isRandom } = latest;
 
   store.Exercise[id] = {
     ...base(entity),
-    authorId,
     summaryId,
+    authorId,
+    latestId,
     draftId,
     lang,
     title,
@@ -147,6 +151,8 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) =
     isLocked,
     isPrivate
   };
+
+  summary.exercise = entity;
 
   normalizeEntity(context, store, author);
   normalizeEntity(context, store, summary);
