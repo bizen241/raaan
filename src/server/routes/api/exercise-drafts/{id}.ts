@@ -40,76 +40,76 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
   const { id: exerciseDraftId }: PathParams = req.params;
   const { isMerged = true, ...params }: Params<ExerciseDraft> = req.body;
 
-  const manager = getManager();
-
-  const exerciseDraft = await manager.findOne(ExerciseDraftEntity, exerciseDraftId);
-  if (exerciseDraft === undefined) {
-    return next(createError(404));
-  }
-
-  const exercise = await manager.findOne(ExerciseEntity, exerciseDraft.exerciseId, {
-    relations: ["author", "summary", "summary.tags", "summary.tags.summary", "latest", "draft"]
-  });
-  if (exercise === undefined) {
-    return next(createError(404));
-  }
-  if (
-    exercise.summary === undefined ||
-    exercise.summary.tags === undefined ||
-    exercise.latest === undefined ||
-    exercise.draft === undefined
-  ) {
-    return next(createError(500));
-  }
-
-  const isAuthor = exercise.authorId === currentUser.id;
-  if (!isAuthor) {
-    return next(createError(403));
-  }
-
-  if (params.title !== undefined) {
-    exercise.draft.title = params.title;
-  }
-  if (params.tags !== undefined) {
-    exercise.draft.tags = params.tags;
-  }
-  if (params.questions !== undefined) {
-    exercise.draft.questions = params.questions;
-  }
-
-  if (isMerged) {
-    if (exercise.isDraft) {
-      if (params.title !== undefined) {
-        exercise.latest.title = params.title;
-      }
-      if (params.tags !== undefined) {
-        exercise.latest.tags = params.tags;
-      }
-      if (params.questions !== undefined) {
-        exercise.latest.questions = params.questions;
-      }
-    } else {
-      const revisionSummary = new RevisionSummaryEntity();
-      const revision = new RevisionEntity(revisionSummary, exercise, params, exercise.isPrivate);
-      await manager.save(revision);
-
-      exercise.latest = revision;
+  await getManager().transaction(async manager => {
+    const exerciseDraft = await manager.findOne(ExerciseDraftEntity, exerciseDraftId);
+    if (exerciseDraft === undefined) {
+      return next(createError(404));
     }
 
-    const { maxTypeCount, minTypeCount } = getMinMaxTypeCount(params.questions);
+    const exercise = await manager.findOne(ExerciseEntity, exerciseDraft.exerciseId, {
+      relations: ["author", "author.summary", "summary", "summary.tags", "summary.tags.summary", "latest", "draft"]
+    });
+    if (exercise === undefined) {
+      return next(createError(404));
+    }
+    if (
+      exercise.summary === undefined ||
+      exercise.summary.tags === undefined ||
+      exercise.latest === undefined ||
+      exercise.draft === undefined
+    ) {
+      return next(createError(500));
+    }
 
-    exercise.isDraft = false;
+    const isAuthor = exercise.authorId === currentUser.id;
+    if (!isAuthor) {
+      return next(createError(403));
+    }
 
-    exercise.summary.maxTypeCount = maxTypeCount;
-    exercise.summary.minTypeCount = minTypeCount;
-    exercise.summary.tags = await getTags(exercise.summary, params, manager);
+    if (params.title !== undefined) {
+      exercise.draft.title = params.title;
+    }
+    if (params.tags !== undefined) {
+      exercise.draft.tags = params.tags;
+    }
+    if (params.questions !== undefined) {
+      exercise.draft.questions = params.questions;
+    }
 
-    exercise.draft.isMerged = true;
-  }
+    if (isMerged) {
+      if (exercise.isDraft) {
+        if (params.title !== undefined) {
+          exercise.latest.title = params.title;
+        }
+        if (params.tags !== undefined) {
+          exercise.latest.tags = params.tags;
+        }
+        if (params.questions !== undefined) {
+          exercise.latest.questions = params.questions;
+        }
+      } else {
+        const revisionSummary = new RevisionSummaryEntity();
+        const revision = new RevisionEntity(revisionSummary, exercise, params, exercise.isPrivate);
+        await manager.save(revision);
 
-  await manager.save(exercise);
+        exercise.latest = revision;
+      }
 
-  responseFindResult(req, res, exercise, exercise.draft);
+      const { maxTypeCount, minTypeCount } = getMinMaxTypeCount(params.questions);
+
+      exercise.isDraft = false;
+
+      exercise.summary.maxTypeCount = maxTypeCount;
+      exercise.summary.minTypeCount = minTypeCount;
+      exercise.summary.tags = await getTags(exercise.summary, params, manager);
+
+      exercise.draft.isMerged = true;
+    }
+
+    await manager.save(exercise);
+
+    responseFindResult(req, res, exercise, exercise.draft);
+  });
 });
 
 PATCH.apiDoc = createOperationDoc({
