@@ -24,7 +24,8 @@ export class ExerciseEntity extends BaseEntityClass {
   authorId!: string;
 
   @OneToOne(() => RevisionEntity, {
-    cascade: true
+    cascade: true,
+    onDelete: "CASCADE"
   })
   @JoinColumn()
   latest?: RevisionEntity;
