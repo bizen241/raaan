@@ -13,7 +13,7 @@ export const HomePage = React.memo(() => {
   return (
     <Page title="ホーム">
       {isGuest ? (
-        <Button color="primary" icon={<AccountCircle />} label="ログイン" to="/user" />
+        <Button color="primary" icon={<AccountCircle />} label="ログイン" to="/user/account" />
       ) : (
         <Button color="primary" icon={<AccountCircle />} label="マイページ" to={`/users/${currentUser.id}`} />
       )}

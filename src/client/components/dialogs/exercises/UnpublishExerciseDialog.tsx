@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import { Lock, Warning } from "@material-ui/icons";
+import { Lock } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
@@ -26,7 +26,7 @@ export const UnpublishExerciseDialog = createDialog<{
 
     return (
       <DialogContent title="問題集の公開を終了" onClose={onClose}>
-        <Card icon={<Warning />} title="問題集の公開を終了">
+        <Card>
           <Typography>問題集が非公開に設定されます。</Typography>
         </Card>
         <Button icon={<Lock />} label="問題集の公開を終了" onClick={onUnpublish} />

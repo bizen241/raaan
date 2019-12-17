@@ -12,7 +12,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, _, currentU
   const { id: exerciseId }: PathParams = req.params;
 
   const exercise = await getManager().findOne(ExerciseEntity, exerciseId, {
-    relations: ["author", "author.summary", "summary", "summary.tags", "latest", "draft"]
+    relations: ["summary", "summary.tags", "author", "author.summary", "latest", "draft"]
   });
   if (exercise === undefined) {
     throw createError(404);
@@ -41,7 +41,7 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
   const manager = getManager();
 
   const exercise = await manager.findOne(ExerciseEntity, exerciseId, {
-    relations: ["author", "summary", "summary.tags"]
+    relations: ["summary", "summary.tags", "author", "author.summary", "latest", "draft"]
   });
   if (exercise === undefined) {
     return next(createError(404));

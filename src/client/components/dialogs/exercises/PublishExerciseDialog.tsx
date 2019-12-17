@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import { Warning } from "@material-ui/icons";
+import { Public } from "@material-ui/icons";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
@@ -26,10 +26,10 @@ export const PublishExerciseDialog = createDialog<{
 
     return (
       <DialogContent title="問題集を公開" onClose={onClose}>
-        <Card icon={<Warning />} title="問題集を公開">
+        <Card>
           <Typography>問題集が公開されます。</Typography>
         </Card>
-        <Button label="問題集を公開する" onClick={onUnpublish} />
+        <Button icon={<Public />} label="問題集を公開する" onClick={onUnpublish} />
       </DialogContent>
     );
   })
