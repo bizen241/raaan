@@ -78,15 +78,10 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
 
     if (isMerged) {
       if (exercise.isDraft) {
-        if (params.title !== undefined) {
-          exercise.latest.title = params.title;
-        }
-        if (params.tags !== undefined) {
-          exercise.latest.tags = params.tags;
-        }
-        if (params.questions !== undefined) {
-          exercise.latest.questions = params.questions;
-        }
+        exercise.latest.title = params.title || exercise.draft.title;
+        exercise.latest.tags = params.tags || exercise.draft.tags;
+        exercise.latest.questions = params.questions || exercise.draft.questions;
+        await manager.save(exercise.latest);
       } else {
         const revisionSummary = new RevisionSummaryEntity();
         const revision = new RevisionEntity(
