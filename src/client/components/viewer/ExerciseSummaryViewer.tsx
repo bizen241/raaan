@@ -41,7 +41,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
     const isOwner = currentUser.permission === "Owner";
     const isAuthor = exerciseSummary.authorId === currentUser.id;
 
-    const { exerciseId, title, isPrivate, isLocked } = exerciseSummary;
+    const { exerciseId, title, isDraft, isPrivate, isLocked } = exerciseSummary;
 
     const [isPublishExerciseDialogOpen, onTogglePublishExerciseDialog] = useToggleState();
     const [isUnpublishExerciseDialogOpen, onToggleUnpublishExerciseDialog] = useToggleState();
@@ -137,7 +137,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
           isAuthor ? (
             <Menu>
               <MenuItem icon={<Edit />} label="編集する" to={`/exercises/${exerciseId}/edit`} />
-              <MenuItem icon={<History />} label="編集履歴" to={`/exercises/${exerciseId}/revisions`} />
+              {!isDraft && <MenuItem icon={<History />} label="編集履歴" to={`/exercises/${exerciseId}/revisions`} />}
               {!isLocked &&
                 (isPrivate ? (
                   <MenuItem icon={<Public />} label="公開する" onClick={onTogglePublishExerciseDialog} />

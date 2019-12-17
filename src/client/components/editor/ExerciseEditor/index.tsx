@@ -30,7 +30,8 @@ export const ExerciseDraftEditor = withBuffer("ExerciseDraft")(
     );
     const onUpdateQuestions = useCallback((questions: Question[]) => onChange({ questions }), []);
 
-    const canUpload = props.buffer !== undefined && currentUser.permission !== "Guest";
+    const canUpload =
+      (source && !source.isMerged) || (props.buffer !== undefined && currentUser.permission !== "Guest");
 
     return (
       <Column flex={1}>
@@ -65,6 +66,7 @@ export const ExerciseDraftEditor = withBuffer("ExerciseDraft")(
         <Button color="secondary" icon={<PlayArrow />} label="プレビュー" onClick={onToggleExercisePreviewer} />
         <UploadExerciseDraftDialog
           exerciseDraftId={bufferId}
+          exerciseId={source && source.exerciseId}
           isOpen={isUploadDialogOpen}
           onClose={onToggleUploadDialog}
         />

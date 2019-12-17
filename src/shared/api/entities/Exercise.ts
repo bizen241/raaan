@@ -6,6 +6,7 @@ export interface Exercise extends BaseExerciseObject {
   authorId: UUID;
   latestId: UUID;
   draftId: UUID;
+  isDraft: boolean;
   isPrivate: boolean;
   isLocked: boolean;
 }

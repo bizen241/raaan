@@ -1,5 +1,6 @@
 import { Typography } from "@material-ui/core";
 import { Delete, Warning } from "@material-ui/icons";
+import { goBack } from "connected-react-router";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
@@ -13,7 +14,11 @@ export const DeleteExerciseDialog = createDialog<{
     const dispatch = useDispatch();
 
     const onDelete = () => {
-      dispatch(actions.api.delete("Exercise", exerciseId, dialogTimeout, onClose));
+      dispatch(
+        actions.api.delete("Exercise", exerciseId, dialogTimeout, () => {
+          dispatch(goBack());
+        })
+      );
     };
 
     return (
