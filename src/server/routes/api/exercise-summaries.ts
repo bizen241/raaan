@@ -13,6 +13,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, _, currentU
     .leftJoinAndSelect("exerciseSummary.exercise", "exercise")
     .leftJoinAndSelect("exerciseSummary.tags", "tags")
     .leftJoinAndSelect("exercise.author", "author")
+    .leftJoinAndSelect("exercise.latest", "latest")
     .leftJoinAndSelect("exercise.draft", "draft")
     .take(searchLimit)
     .skip(searchOffset);
