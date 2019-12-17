@@ -89,7 +89,16 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
         }
       } else {
         const revisionSummary = new RevisionSummaryEntity();
-        const revision = new RevisionEntity(revisionSummary, exercise, params, exercise.isPrivate);
+        const revision = new RevisionEntity(
+          revisionSummary,
+          exercise,
+          {
+            title: params.title || exercise.draft.title,
+            tags: params.tags || exercise.draft.tags,
+            questions: params.questions || exercise.draft.questions
+          },
+          exercise.isPrivate
+        );
         await manager.save(revision);
 
         exercise.latest = revision;
