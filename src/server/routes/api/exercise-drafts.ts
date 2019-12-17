@@ -57,11 +57,14 @@ export const POST: OperationFunction = errorBoundary(async (req, res, _, current
       throw createError(500, "exercise.summary is not defined");
     }
 
-    exercise.author.summary = authorSummary;
-    exercise.author.summary.user = exercise.author;
-    exercise.summary.exercise = exercise;
+    const savedExercise = await manager.findOne(ExerciseEntity, exercise.id, {
+      relations: ["author", "author.summary", "summary", "summary.tags", "latest", "draft"]
+    });
+    if (savedExercise === undefined) {
+      throw createError(500, "savedExercise is not defined");
+    }
 
-    responseFindResult(req, res, exercise);
+    responseFindResult(req, res, savedExercise);
   });
 });
 

@@ -12,7 +12,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, _, currentU
   const { id: exerciseId }: PathParams = req.params;
 
   const exercise = await getManager().findOne(ExerciseEntity, exerciseId, {
-    relations: ["author", "author.summary", "summary", "summary.tags", "draft"]
+    relations: ["author", "author.summary", "summary", "summary.tags", "latest", "draft"]
   });
   if (exercise === undefined) {
     throw createError(404);
@@ -24,8 +24,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res, _, currentU
   if (exercise.isPrivate && exercise.authorId !== currentUser.id) {
     throw createError(403);
   }
-
-  exercise.summary.exercise = exercise;
 
   responseFindResult(req, res, exercise);
 });
