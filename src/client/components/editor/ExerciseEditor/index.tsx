@@ -1,4 +1,3 @@
-import { Card, CardContent, TextField, Typography } from "@material-ui/core";
 import { CloudUpload, PlayArrow } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext } from "react";
@@ -8,7 +7,7 @@ import { useToggleState } from "../../../hooks/useToggleState";
 import { UploadExerciseDraftDialog } from "../../dialogs/exercise-drafts/UploadExerciseDraftDialog";
 import { ExercisePreviewer } from "../../player/dialogs/ExercisePreviewer";
 import { UserContext } from "../../project/Context";
-import { Button, Column } from "../../ui";
+import { Button, Card, Column, TextField } from "../../ui";
 import { QuestionsEditor } from "./QuestionsEditor";
 
 export const ExerciseDraftEditor = withBuffer("ExerciseDraft")(
@@ -20,14 +19,8 @@ export const ExerciseDraftEditor = withBuffer("ExerciseDraft")(
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
     const [isExercisePreviewerOpen, onToggleExercisePreviewer] = useToggleState();
 
-    const onUpdateTitle = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => onChange({ title: e.target.value }),
-      []
-    );
-    const onUpdateTags = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => onChange({ tags: e.target.value.split(/\s/) }),
-      []
-    );
+    const onUpdateTitle = useCallback((title: string) => onChange({ title }), []);
+    const onUpdateTags = useCallback((tags: string) => onChange({ tags: tags.split(/\s/) }), []);
     const onUpdateQuestions = useCallback((questions: Question[]) => onChange({ questions }), []);
 
     const canUpload =
@@ -36,32 +29,10 @@ export const ExerciseDraftEditor = withBuffer("ExerciseDraft")(
     return (
       <Column flex={1}>
         <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
-        <Column pb={1}>
-          <Card>
-            <CardContent>
-              <Column pb={1}>
-                <Column component="label">
-                  <Typography color="textSecondary">題名</Typography>
-                  <TextField
-                    variant="outlined"
-                    defaultValue={buffer.title || source.title || ""}
-                    onChange={onUpdateTitle}
-                  />
-                </Column>
-              </Column>
-              <Column>
-                <Column component="label">
-                  <Typography color="textSecondary">タグ</Typography>
-                  <TextField
-                    variant="outlined"
-                    defaultValue={(buffer.tags || source.tags || []).join(" ")}
-                    onChange={onUpdateTags}
-                  />
-                </Column>
-              </Column>
-            </CardContent>
-          </Card>
-        </Column>
+        <Card>
+          <TextField label="題名" defaultValue={buffer.title || source.title || ""} onChange={onUpdateTitle} />
+          <TextField label="タグ" defaultValue={(buffer.tags || source.tags || []).join(" ")} onChange={onUpdateTags} />
+        </Card>
         <QuestionsEditor questions={buffer.questions || source.questions || []} onChange={onUpdateQuestions} />
         <Button color="secondary" icon={<PlayArrow />} label="プレビュー" onClick={onToggleExercisePreviewer} />
         <UploadExerciseDraftDialog
@@ -72,8 +43,9 @@ export const ExerciseDraftEditor = withBuffer("ExerciseDraft")(
         />
         <ExercisePreviewer
           exercise={{
-            ...buffer,
-            ...source
+            title: buffer.title || source.title,
+            tags: buffer.tags || source.tags,
+            questions: buffer.questions || source.questions
           }}
           isOpen={isExercisePreviewerOpen}
           onClose={onToggleExercisePreviewer}

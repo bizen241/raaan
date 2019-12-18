@@ -58,7 +58,7 @@ export const QuestionsEditor = React.memo<{
   return (
     <Column>
       {questions.map((question, index) => (
-        <Column key={question.id} pb={1}>
+        <Column key={question.id}>
           <QuestionEditor
             questionIndex={index}
             question={question}
@@ -67,14 +67,12 @@ export const QuestionsEditor = React.memo<{
           />
         </Column>
       ))}
-      <Column>
-        <Button
-          color="primary"
-          icon={<Add />}
-          label="問題を追加"
-          onClick={useCallback(() => onInsertQuestion(questions.length - 1), [questions.length])}
-        />
-      </Column>
+      <Button
+        color="primary"
+        icon={<Add />}
+        label="問題を追加"
+        onClick={useCallback(() => onInsertQuestion(questions.length - 1), [questions.length])}
+      />
     </Column>
   );
 });

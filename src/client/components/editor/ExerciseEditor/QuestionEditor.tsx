@@ -1,12 +1,15 @@
-import { Avatar, Card, CardContent, CardHeader, MenuItem, Typography } from "@material-ui/core";
+import { makeStyles, TextField, Theme } from "@material-ui/core";
+import { Delete, PlayArrow, Settings, SpaceBar, Translate } from "@material-ui/icons";
 import * as React from "react";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Question } from "../../../../shared/api/entities";
+import { maskAnchor, maskTerminator } from "../../../../shared/exercise/mask/characters";
+import { addRuby } from "../../../domain/exercise/ruby";
+import { useToggleState } from "../../../hooks/useToggleState";
 import { DeleteQuestionDialog } from "../../dialogs/exercises/DeleteQuestionDialog";
 import { QuestionPreviewer } from "../../player/dialogs/QuestionPreviewer";
-import { Menu } from "../../ui/Menu";
-import { useStyles } from "../../ui/styles";
-import { HighlightedTextField } from "./HighlightedTextField";
+import { Card, Column, Menu, MenuItem } from "../../ui";
+import { Highlighter } from "./Highlighter";
 
 export const QuestionEditor = React.memo<{
   questionIndex: number;
@@ -14,35 +17,83 @@ export const QuestionEditor = React.memo<{
   onUpdate: (questionIndex: number, question: Partial<Question>) => void;
   onDelete: (questionIndex: number) => void;
 }>(({ question, questionIndex, onUpdate, onDelete }) => {
-  const classes = useStyles();
+  const [isQuestionPreviewerOpen, onToggleQuestionPreviewer] = useToggleState();
+  const [isDeleteQuestionDialogOpen, onToggleDeleteQuestionDialog] = useToggleState();
 
-  const [isQuestionPreviewerOpen, toggleQuestionPreviewer] = useState(false);
-  const onToggleQuestionPreviewer = useCallback(() => toggleQuestionPreviewer(s => !s), []);
+  const [isAddingRuby, toggleRubyState] = useState(false);
+  const [isCompositing, toggleCompositionState] = useState(false);
 
-  const [isDeleteQuestionDialogOpen, toggleDeleteQuestionDialog] = useState(false);
-  const onToggleDeleteQuestionDialog = useCallback(() => toggleDeleteQuestionDialog(s => !s), []);
+  const textFieldRef = useRef<HTMLTextAreaElement>(null);
+  const textFieldClasses = useTextFieldStyles({ isCompositing });
+
+  const onAddRuby = useCallback(() => {
+    if (textFieldRef.current == null) {
+      return;
+    }
+
+    toggleRubyState(true);
+
+    addRuby(textFieldRef.current.value, result => {
+      if (textFieldRef.current !== null) {
+        onUpdate(questionIndex, { value: result });
+      }
+
+      toggleRubyState(false);
+    });
+  }, [questionIndex]);
+
+  const onAddMask = useCallback(() => {
+    if (textFieldRef.current == null) {
+      return;
+    }
+
+    const { selectionStart, selectionEnd, value: prevValue } = textFieldRef.current;
+
+    const nextValue = `${prevValue.slice(0, selectionStart)}${maskAnchor}${prevValue.slice(
+      selectionStart,
+      selectionEnd
+    )}${maskTerminator}${prevValue.slice(selectionEnd)}`;
+
+    onUpdate(questionIndex, { value: nextValue });
+  }, [questionIndex]);
+
+  const { value } = question;
 
   return (
-    <Card>
-      <CardHeader
-        avatar={
-          <Avatar className={classes.cardAvatar}>
-            <Typography color="textSecondary">{questionIndex.toString()}</Typography>
-          </Avatar>
-        }
-        action={
-          <Menu>
-            <MenuItem onClick={onToggleQuestionPreviewer}>プレビュー</MenuItem>
-            <MenuItem onClick={onToggleDeleteQuestionDialog}>削除</MenuItem>
-          </Menu>
-        }
-      />
-      <CardContent>
-        <HighlightedTextField
-          value={question.value}
-          onChange={useCallback((value: string) => onUpdate(questionIndex, { value }), [questionIndex])}
+    <Card
+      title={questionIndex.toString()}
+      action={
+        <Menu>
+          <MenuItem icon={<Settings />} label="設定" />
+          <MenuItem icon={<PlayArrow />} label="プレビュー" onClick={onToggleQuestionPreviewer} />
+          <MenuItem icon={<Translate />} label="ふりがな" onClick={onAddRuby} />
+          <MenuItem icon={<SpaceBar />} label="空欄" onClick={onAddMask} />
+          <MenuItem icon={<Delete />} label="削除" onClick={onToggleDeleteQuestionDialog} />
+        </Menu>
+      }
+    >
+      <Column position="relative">
+        {!isCompositing ? <Highlighter value={value} /> : null}
+        <TextField
+          disabled={isAddingRuby}
+          variant="outlined"
+          multiline
+          className={textFieldClasses.textField}
+          InputProps={{
+            classes: {
+              inputMultiline: textFieldClasses.inputMultiline
+            }
+          }}
+          onCompositionStart={useCallback(() => toggleCompositionState(true), [])}
+          onCompositionEnd={useCallback(() => toggleCompositionState(false), [])}
+          inputRef={textFieldRef}
+          value={value}
+          onChange={useCallback(
+            (e: React.ChangeEvent<HTMLTextAreaElement>) => onUpdate(questionIndex, { value: e.target.value }),
+            [questionIndex]
+          )}
         />
-      </CardContent>
+      </Column>
       <QuestionPreviewer question={question} isOpen={isQuestionPreviewerOpen} onClose={onToggleQuestionPreviewer} />
       <DeleteQuestionDialog
         onDelete={useCallback(() => onDelete(questionIndex), [questionIndex])}
@@ -52,3 +103,15 @@ export const QuestionEditor = React.memo<{
     </Card>
   );
 });
+
+const useTextFieldStyles = makeStyles<Theme, { isCompositing: boolean }>(theme => ({
+  textField: {
+    position: "relative",
+    zIndex: 2
+  },
+  inputMultiline: props => ({
+    backgroundColor: "transparent",
+    caretColor: theme.palette.type === "light" ? "black" : "white",
+    color: props.isCompositing ? "inherit" : "transparent"
+  })
+}));
