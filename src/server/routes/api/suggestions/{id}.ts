@@ -7,6 +7,30 @@ import { createOperationDoc, errorBoundary, PathParams } from "../../../api/oper
 import { responseFindResult } from "../../../api/response";
 import { SuggestionEntity } from "../../../database/entities";
 
+export const GET: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
+  const { id: suggestionId }: PathParams = req.params;
+
+  const suggestion = await getManager().findOne(SuggestionEntity, suggestionId, {
+    relations: ["summary", "revision"]
+  });
+  if (suggestion === undefined) {
+    throw createError(404);
+  }
+
+  const isAuthor = suggestion.authorId === currentUser.id;
+  if (!isAuthor) {
+    throw createError(403);
+  }
+
+  responseFindResult(req, res, suggestion);
+});
+
+GET.apiDoc = createOperationDoc({
+  entityType: "Suggestion",
+  permission: "Read",
+  hasId: true
+});
+
 export const PATCH: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
   const { id: suggestionId }: PathParams = req.params;
   const params: Params<Suggestion> = req.body;
