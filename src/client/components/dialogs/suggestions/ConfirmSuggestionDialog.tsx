@@ -25,6 +25,7 @@ export const ConfirmSuggestionDialog = createDialog<{
           tags: exercise.tags,
           description: exercise.description,
           questions: exercise.questions,
+          exerciseId: exercise.id,
           revisionId: exercise.latestId
         })
       );

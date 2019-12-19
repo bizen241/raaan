@@ -1,7 +1,7 @@
 import * as React from "react";
 import { withEntity } from "../../../enhancers/withEntity";
 import { isLocalOnly } from "../../../reducers/api";
-import { ExerciseDraftEditor } from "../../editor/ExerciseEditor";
+import { ExerciseDraftEditor } from "../../editor/ExerciseDraftEditor";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui/Page";
 

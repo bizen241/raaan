@@ -90,7 +90,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
       exerciseSummary.isLocked
     );
 
-    const suggestionBuffers = useSelector((state: RootState) => state.buffers.Submission);
+    const suggestionBuffers = useSelector((state: RootState) => state.buffers.Suggestion);
     const objectionBuffers = useSelector((state: RootState) => state.buffers.Objection);
     const reportBuffers = useSelector((state: RootState) => state.buffers.Report);
 
@@ -125,7 +125,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
           });
 
     const isVoted = vote !== undefined;
-    const isSuggested = false;
+    const isSuggested = suggestionId !== undefined;
     const isReported = reportId !== undefined;
     const isObjected = objectionId !== undefined;
 

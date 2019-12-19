@@ -568,11 +568,29 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context
 };
 
 const normalizeSuggestion: Normalizer<SuggestionEntity> = (_, store, entity) => {
-  const { id, summaryId, revisionId, state, lang, title, tags, description, questions, isRandom } = entity;
+  const {
+    id,
+    summaryId,
+    authorId,
+    revision,
+    revisionId,
+    state,
+    lang,
+    title,
+    tags,
+    description,
+    questions,
+    isRandom
+  } = entity;
+  if (revision === undefined) {
+    throw createError(500, "suggestion.revision is not defined");
+  }
 
   store.Suggestion[id] = {
     ...base(entity),
     summaryId,
+    authorId,
+    exerciseId: revision.exerciseId,
     revisionId,
     state,
     lang,
