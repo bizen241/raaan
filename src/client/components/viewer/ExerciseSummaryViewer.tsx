@@ -53,7 +53,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
     const [isConfirmReportDialogOpen, onToggleConfirmReportDialog] = useToggleState();
     const [isConfirmObjectionDialogOpen, onToggleConfirmObjectionDialog] = useToggleState();
 
-    const { onReload: onReloadExercise } = useEntity("Exercise", exerciseId, false);
+    const { entity: exercise, onReload: onReloadExercise } = useEntity("Exercise", exerciseId, false);
 
     const { entities: votes } = useSearch(
       "ExerciseVote",
@@ -236,11 +236,13 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
             onClose={onToggleDeleteVoteDialog}
           />
         )}
-        <ConfirmSuggestionDialog
-          targetId={exerciseId}
-          isOpen={isConfirmSuggestionDialogOpen}
-          onClose={onToggleConfirmSuggestionDialog}
-        />
+        {exercise && (
+          <ConfirmSuggestionDialog
+            exercise={exercise}
+            isOpen={isConfirmSuggestionDialogOpen}
+            onClose={onToggleConfirmSuggestionDialog}
+          />
+        )}
         <ConfirmReportDialog
           targetType="Exercise"
           targetId={exerciseId}

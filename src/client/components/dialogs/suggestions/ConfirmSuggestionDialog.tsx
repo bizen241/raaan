@@ -1,18 +1,19 @@
 import { Typography } from "@material-ui/core";
-import { ReportProblem } from "@material-ui/icons";
+import { WbIncandescent } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import { useCallback } from "react";
 import * as React from "react";
 import { useDispatch } from "react-redux";
+import { Exercise } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { Button, Card, DialogContent } from "../../ui";
 
 export const ConfirmSuggestionDialog = createDialog<{
-  targetId: string;
+  exercise: Exercise;
 }>(
-  React.memo(({ onClose }) => {
+  React.memo(({ exercise, onClose }) => {
     const dispatch = useDispatch();
 
     const onCreate = useCallback(() => {
@@ -20,7 +21,11 @@ export const ConfirmSuggestionDialog = createDialog<{
 
       dispatch(
         actions.buffers.update("Suggestion", bufferId, {
-          revisionId: ""
+          title: exercise.title,
+          tags: exercise.tags,
+          description: exercise.description,
+          questions: exercise.questions,
+          revisionId: exercise.latestId
         })
       );
       dispatch(push(`/suggestions/${bufferId}/edit`));
@@ -31,7 +36,7 @@ export const ConfirmSuggestionDialog = createDialog<{
         <Card>
           <Typography>変更を提案しますか？</Typography>
         </Card>
-        <Button icon={<ReportProblem />} label="変更を提案する" onClick={onCreate} />
+        <Button icon={<WbIncandescent />} label="変更を提案する" onClick={onCreate} />
       </DialogContent>
     );
   })
