@@ -103,6 +103,8 @@ export type Entity =
   | RevisionSummaryEntity
   | SubmissionEntity
   | SubmissionSummaryEntity
+  | SuggestionEntity
+  | SuggestionSummaryEntity
   | SynonymEntity
   | TagEntity
   | TagFollowEntity
