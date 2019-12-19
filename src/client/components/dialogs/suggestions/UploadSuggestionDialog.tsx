@@ -6,6 +6,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
+import { isNumber } from "../../../reducers/buffers";
 import { UserContext } from "../../project/Context";
 import { Button, Card, DialogContent } from "../../ui";
 
@@ -20,16 +21,18 @@ export const UploadSuggestionDialog = createDialog<{
     const onUpload = () => {
       dispatch(
         actions.api.upload("Suggestion", suggestionId, undefined, uploadResponse => {
-          dispatch(
-            actions.cache.add(
-              "SuggestionSummary",
-              {
-                authorId: currentUser.id,
-                exerciseId
-              },
-              uploadResponse
-            )
-          );
+          if (isNumber(suggestionId)) {
+            dispatch(
+              actions.cache.add(
+                "SuggestionSummary",
+                {
+                  authorId: currentUser.id,
+                  exerciseId
+                },
+                uploadResponse
+              )
+            );
+          }
 
           dispatch(replace(`/exercises/${exerciseId}`));
         })

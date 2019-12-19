@@ -567,9 +567,10 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context
   }
 };
 
-const normalizeSuggestion: Normalizer<SuggestionEntity> = (_, store, entity) => {
+const normalizeSuggestion: Normalizer<SuggestionEntity> = (context, store, entity) => {
   const {
     id,
+    summary,
     summaryId,
     authorId,
     revision,
@@ -582,6 +583,9 @@ const normalizeSuggestion: Normalizer<SuggestionEntity> = (_, store, entity) => 
     questions,
     isRandom
   } = entity;
+  if (summary === undefined) {
+    throw createError(500, "suggestion.summary is not defined");
+  }
   if (revision === undefined) {
     throw createError(500, "suggestion.revision is not defined");
   }
@@ -600,6 +604,10 @@ const normalizeSuggestion: Normalizer<SuggestionEntity> = (_, store, entity) => 
     questions,
     isRandom
   };
+
+  summary.suggestion = entity;
+
+  normalizeEntity(context, store, summary);
 };
 
 const normalizeSuggestionSummary: Normalizer<SuggestionSummaryEntity> = (_, store, entity) => {
