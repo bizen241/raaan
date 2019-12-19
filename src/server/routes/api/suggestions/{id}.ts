@@ -70,3 +70,29 @@ PATCH.apiDoc = createOperationDoc({
   hasId: true,
   hasBody: true
 });
+
+export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
+  const { id: suggestionId }: PathParams = req.params;
+
+  await getManager().transaction(async manager => {
+    const suggestion = await manager.findOne(SuggestionEntity, suggestionId);
+    if (suggestion === undefined) {
+      return next(createError(404));
+    }
+
+    const isAuthor = suggestion.authorId === currentUser.id;
+    if (!isAuthor) {
+      return next(createError(403));
+    }
+
+    await manager.remove(suggestion);
+
+    responseFindResult(req, res);
+  });
+});
+
+DELETE.apiDoc = createOperationDoc({
+  entityType: "Suggestion",
+  permission: "Read",
+  hasId: true
+});
