@@ -14,7 +14,7 @@ import {
   WbIncandescent
 } from "@material-ui/icons";
 import * as React from "react";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { withEntity } from "../../enhancers/withEntity";
@@ -55,7 +55,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
 
     const { entity: exercise, onReload: onReloadExercise } = useEntity("Exercise", exerciseId, false);
 
-    const { entities: votes } = useSearch(
+    const { entities: votes, onReload: onReloadExerciseVotes } = useSearch(
       "ExerciseVote",
       {
         voterId: currentUser.id,
@@ -63,7 +63,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
       },
       !isAuthor
     );
-    const { entities: suggestions } = useSearch(
+    const { entities: suggestions, onReload: onReloadSuggestionSummaries } = useSearch(
       "SuggestionSummary",
       {
         authorId: currentUser.id,
@@ -72,7 +72,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
       },
       !isAuthor
     );
-    const { entities: reports } = useSearch(
+    const { entities: reports, onReload: onReloadReports } = useSearch(
       "Report",
       {
         reporterId: currentUser.id,
@@ -81,7 +81,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
       },
       !isAuthor
     );
-    const { entities: objections } = useSearch(
+    const { entities: objections, onReload: onReloadObjections } = useSearch(
       "Objection",
       {
         objectorId: currentUser.id,
@@ -129,6 +129,14 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
     const isReported = reportId !== undefined;
     const isObjected = objectionId !== undefined;
 
+    const onReload = useCallback(() => {
+      onReloadExercise();
+      onReloadExerciseVotes();
+      onReloadSuggestionSummaries();
+      onReloadReports();
+      onReloadObjections();
+    }, []);
+
     return (
       <Card
         icon={<Keyboard />}
@@ -156,7 +164,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
                   />
                 ))}
               <MenuItem icon={<Delete />} label="削除する" onClick={onToggleDeleteExerciseDialog} />
-              <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReloadExercise} />
+              <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReload} />
             </Menu>
           ) : (
             <Menu>
@@ -176,7 +184,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
                 ) : (
                   <MenuItem icon={<ReportProblem />} label="通報を編集する" to={`/reports/${reportId}/edit`} />
                 ))}
-              <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReloadExercise} />
+              <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReload} />
             </Menu>
           )
         }

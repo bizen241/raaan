@@ -40,7 +40,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
 
 GET.apiDoc = createOperationDoc({
   entityType: "Objection",
-  permission: "Admin",
+  permission: "Read",
   hasQuery: true
 });
 
