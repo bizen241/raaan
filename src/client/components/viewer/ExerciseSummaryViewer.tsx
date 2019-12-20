@@ -1,5 +1,6 @@
 import { Link } from "@material-ui/core";
 import {
+  CloudDownload,
   Delete,
   Edit,
   Group,
@@ -25,6 +26,7 @@ import { RootState } from "../../reducers";
 import { DeleteExerciseVoteDialog } from "../dialogs/exercise-votes/DeleteExerciseVoteDialog";
 import { UploadExerciseVoteDialog } from "../dialogs/exercise-votes/UploadExerciseVoteDialog";
 import { DeleteExerciseDialog } from "../dialogs/exercises/DeleteExerciseDialog";
+import { ExportExerciseDialog } from "../dialogs/exercises/ExportExerciseDialog";
 import { GroupExercisesDialog } from "../dialogs/exercises/GroupExercisesDialog";
 import { PublishExerciseDialog } from "../dialogs/exercises/PublishExerciseDialog";
 import { UnpublishExerciseDialog } from "../dialogs/exercises/UnpublishExerciseDialog";
@@ -47,6 +49,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
     const [isUnpublishExerciseDialogOpen, onToggleUnpublishExerciseDialog] = useToggleState();
     const [isGroupExercisesDialogOpen, onToggleGroupExercisesDialog] = useToggleState();
     const [isDeleteExerciseDialogOpen, onToggleDeleteExerciseDialog] = useToggleState();
+    const [isExportDialogOpen, onToggleExportDialog] = useToggleState();
     const [isUploadVoteDialogOpen, onToggleUploadVoteDialog] = useToggleState();
     const [isDeleteVoteDialogOpen, onToggleDeleteVoteDialog] = useToggleState();
     const [isConfirmSuggestionDialogOpen, onToggleConfirmSuggestionDialog] = useToggleState();
@@ -164,6 +167,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
                   />
                 ))}
               <MenuItem icon={<Delete />} label="削除する" onClick={onToggleDeleteExerciseDialog} />
+              {exercise && <MenuItem icon={<CloudDownload />} label="エクスポート" onClick={onToggleExportDialog} />}
               <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReload} />
             </Menu>
           ) : (
@@ -232,6 +236,9 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
           isOpen={isDeleteExerciseDialogOpen}
           onClose={onToggleDeleteExerciseDialog}
         />
+        {exercise && (
+          <ExportExerciseDialog exercise={exercise} isOpen={isExportDialogOpen} onClose={onToggleExportDialog} />
+        )}
         <UploadExerciseVoteDialog
           exerciseId={exerciseId}
           isOpen={isUploadVoteDialogOpen}
