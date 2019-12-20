@@ -17,7 +17,7 @@ export const ExerciseDraftEditor = withBuffer("ExerciseDraft")(
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
     const canUpload =
-      (source && !source.isMerged) || (props.buffer !== undefined && currentUser.permission !== "Guest");
+      (props.source && !source.isMerged) || (props.buffer !== undefined && currentUser.permission !== "Guest");
 
     return (
       <Column flex={1}>
