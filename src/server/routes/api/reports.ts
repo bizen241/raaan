@@ -7,17 +7,11 @@ import { parseQuery } from "../../../shared/api/request/parse";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult, responseSearchResult } from "../../api/response";
 import { hasPermission } from "../../api/security";
-import {
-  ExerciseEntity,
-  PlaylistEntity,
-  ReportEntity,
-  SynonymEntity,
-  TagEntity,
-  UserEntity
-} from "../../database/entities";
+import { ReportEntity } from "../../database/entities";
+import { getDefendant } from "../../services/reports";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { reporterId, targetType, targetId, searchLimit, searchOffset } = parseQuery("Report", req.query);
+  const { reporterId, defendantId, targetType, targetId, searchLimit, searchOffset } = parseQuery("Report", req.query);
 
   const isReporter = reporterId === currentUser.id;
   if (!isReporter && !hasPermission(currentUser, "Admin")) {
@@ -32,11 +26,14 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
   if (reporterId !== undefined) {
     query.andWhere("report.reporterId = :reporterId", { reporterId });
   }
+  if (defendantId !== undefined) {
+    query.andWhere("report.defendantId = :defendantId", { defendantId });
+  }
   if (targetType !== undefined) {
+    query.andWhere("report.targetType", { targetType });
+
     if (targetId !== undefined) {
-      query.andWhere(`report.target${targetType}Id = :targetId`, { targetId });
-    } else {
-      query.andWhere(`report.target${targetType}Id IS NOT NULL`);
+      query.andWhere("report.targetId = :targetId", { targetId });
     }
   }
 
@@ -58,60 +55,11 @@ export const POST: OperationFunction = errorBoundary(async (req, res, _, current
   }
 
   await getManager().transaction(async manager => {
-    const report = new ReportEntity(currentUser, reason, description);
+    const defendant = await getDefendant(manager, targetType, targetId);
+    const report = new ReportEntity(currentUser, defendant, reason, description);
 
-    switch (targetType) {
-      case "Exercise": {
-        const targetExercise = await manager.findOne(ExerciseEntity, targetId);
-        if (targetExercise === undefined) {
-          throw createError(400);
-        }
-
-        report.targetExercise = targetExercise;
-
-        break;
-      }
-      case "Playlist": {
-        const targetPlaylist = await manager.findOne(PlaylistEntity, targetId);
-        if (targetPlaylist === undefined) {
-          throw createError(400);
-        }
-
-        report.targetPlaylist = targetPlaylist;
-
-        break;
-      }
-      case "Synonym": {
-        const targetSynonym = await manager.findOne(SynonymEntity, targetId);
-        if (targetSynonym === undefined) {
-          throw createError(400);
-        }
-
-        report.targetSynonym = targetSynonym;
-
-        break;
-      }
-      case "Tag": {
-        const targetTag = await manager.findOne(TagEntity, targetId);
-        if (targetTag === undefined) {
-          throw createError(400);
-        }
-
-        report.targetTag = targetTag;
-
-        break;
-      }
-      case "User": {
-        const targetUser = await manager.findOne(UserEntity, targetId);
-        if (targetUser === undefined) {
-          throw createError(400);
-        }
-
-        report.targetUser = targetUser;
-
-        break;
-      }
-    }
+    report.targetType = targetType;
+    report.targetId = targetId;
 
     await manager.save(report);
 

@@ -1,11 +1,6 @@
 import { Column, Entity, ManyToOne, RelationId } from "typeorm";
-import { ReportReason, ReportState } from "../../../shared/api/entities/Report";
+import { ReportReason, ReportState, ReportTargetType } from "../../../shared/api/entities/Report";
 import { BaseEntityClass } from "./BaseEntityClass";
-import { ExerciseEntity } from "./ExerciseEntity";
-import { GroupEntity } from "./GroupEntity";
-import { PlaylistEntity } from "./PlaylistEntity";
-import { SynonymEntity } from "./SynonymEntity";
-import { TagEntity } from "./TagEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity("reports")
@@ -19,47 +14,18 @@ export class ReportEntity extends BaseEntityClass {
   @RelationId((report: ReportEntity) => report.reporter)
   reporterId!: string;
 
-  @ManyToOne(() => ExerciseEntity, {
-    onDelete: "CASCADE"
-  })
-  targetExercise?: ExerciseEntity;
-  @RelationId((report: ReportEntity) => report.targetExercise)
-  targetExerciseId?: string;
-
-  @ManyToOne(() => GroupEntity, {
-    onDelete: "CASCADE"
-  })
-  targetGroup?: GroupEntity;
-  @RelationId((report: ReportEntity) => report.targetGroup)
-  targetGroupId?: string;
-
-  @ManyToOne(() => PlaylistEntity, {
-    onDelete: "CASCADE"
-  })
-  targetPlaylist?: PlaylistEntity;
-  @RelationId((report: ReportEntity) => report.targetPlaylist)
-  targetPlaylistId?: string;
-
-  @ManyToOne(() => SynonymEntity, {
-    onDelete: "CASCADE"
-  })
-  targetSynonym?: SynonymEntity;
-  @RelationId((report: ReportEntity) => report.targetSynonym)
-  targetSynonymId?: string;
-
-  @ManyToOne(() => TagEntity, {
-    onDelete: "CASCADE"
-  })
-  targetTag?: TagEntity;
-  @RelationId((report: ReportEntity) => report.targetTag)
-  targetTagId?: string;
-
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
-  targetUser?: UserEntity;
-  @RelationId((report: ReportEntity) => report.targetUser)
-  targetUserId?: string;
+  defendant?: UserEntity;
+  @RelationId((report: ReportEntity) => report.defendant)
+  defendantId!: string;
+
+  @Column()
+  targetType!: ReportTargetType;
+
+  @Column("uuid")
+  targetId!: string;
 
   @Column()
   reason!: ReportReason;
@@ -73,10 +39,11 @@ export class ReportEntity extends BaseEntityClass {
   @Column()
   comment: string = "";
 
-  constructor(reporter: UserEntity, reason: ReportReason, description: string) {
+  constructor(reporter: UserEntity, defendant: UserEntity, reason: ReportReason, description: string) {
     super();
 
     this.reporter = reporter;
+    this.defendant = defendant;
     this.reason = reason;
     this.description = description;
   }

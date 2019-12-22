@@ -5,7 +5,7 @@ import { useContext } from "react";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { endpoints } from "../../../../shared/api/endpoint";
-import { ReportTarget } from "../../../../shared/api/entities";
+import { ReportTargetType } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { UserContext } from "../../project/Context";
@@ -13,7 +13,7 @@ import { Button, Card, DialogContent } from "../../ui";
 
 export const UploadReportDialog = createDialog<{
   reportId: string;
-  targetType: ReportTarget;
+  targetType: ReportTargetType;
   targetId: string;
 }>(
   React.memo(({ reportId, targetId, targetType, onClose }) => {

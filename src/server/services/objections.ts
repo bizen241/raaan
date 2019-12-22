@@ -1,68 +1,92 @@
 import * as createError from "http-errors";
 import { EntityManager } from "typeorm";
-import { ObjectionTarget } from "../../shared/api/entities";
+import { ObjectionTargetType } from "../../shared/api/entities";
 import { ExerciseEntity, ObjectionEntity, PlaylistEntity, UserEntity } from "../database/entities";
 
-export const getObjectionTargetProperties = ({
-  targetExerciseId,
-  targetPlaylistId,
-  targetUserId
-}: ObjectionEntity): {
-  targetType: ObjectionTarget;
-  targetId: string;
-} => {
-  if (targetExerciseId !== undefined) {
-    return {
-      targetType: "Exercise",
-      targetId: targetExerciseId
-    };
-  } else if (targetPlaylistId !== undefined) {
-    return {
-      targetType: "Playlist",
-      targetId: targetPlaylistId
-    };
-  } else if (targetUserId !== undefined) {
-    return {
-      targetType: "User",
-      targetId: targetUserId
-    };
-  }
+export const checkObjectionTarget = async (
+  manager: EntityManager,
+  currentUser: UserEntity,
+  targetType: ObjectionTargetType,
+  targetId: string
+) => {
+  switch (targetType) {
+    case "Exercise": {
+      const exercise = await manager.findOne(ExerciseEntity, targetId, {
+        relations: ["author"]
+      });
+      if (exercise === undefined) {
+        throw createError(400);
+      }
+      if (exercise.authorId !== currentUser.id || !exercise.isLocked) {
+        throw createError(403);
+      }
 
-  throw createError(500, "objection.targetId is not defined");
+      break;
+    }
+    case "Playlist": {
+      const playlist = await manager.findOne(PlaylistEntity, targetId, {
+        relations: ["author"]
+      });
+      if (playlist === undefined) {
+        throw createError(400);
+      }
+      if (playlist.authorId !== currentUser.id || !playlist.isLocked) {
+        throw createError(403);
+      }
+
+      break;
+    }
+    case "User": {
+      const user = await manager.findOne(UserEntity, targetId);
+      if (user === undefined) {
+        throw createError(400);
+      }
+      if (user.id !== currentUser.id || user.permission !== "Read") {
+        throw createError(403);
+      }
+
+      break;
+    }
+  }
 };
 
-export const unlockObjectionTarget = async (
-  manager: EntityManager,
-  { targetExerciseId, targetPlaylistId, targetUserId }: ObjectionEntity
-) => {
-  if (targetExerciseId !== undefined) {
-    const targetExercise = await manager.findOne(ExerciseEntity, targetExerciseId);
-    if (targetExercise === undefined) {
-      throw createError(500);
+export const unlockObjectionTarget = async (manager: EntityManager, { targetType, targetId }: ObjectionEntity) => {
+  switch (targetType) {
+    case "Exercise": {
+      const exercise = await manager.findOne(ExerciseEntity, targetId);
+      if (exercise === undefined) {
+        throw createError(500);
+      }
+
+      exercise.isLocked = false;
+
+      manager.save(exercise);
+
+      break;
     }
+    case "Playlist": {
+      const playlist = await manager.findOne(PlaylistEntity, targetId);
+      if (playlist === undefined) {
+        throw createError(500);
+      }
 
-    targetExercise.isLocked = false;
+      playlist.isLocked = false;
 
-    await manager.save(targetExercise);
-  } else if (targetPlaylistId !== undefined) {
-    const targetPlaylist = await manager.findOne(PlaylistEntity, targetPlaylistId);
-    if (targetPlaylist === undefined) {
-      throw createError(500);
+      manager.save(playlist);
+
+      break;
     }
+    case "User": {
+      const user = await manager.findOne(UserEntity, targetId);
+      if (user === undefined) {
+        throw createError(400);
+      }
 
-    targetPlaylist.isLocked = false;
+      user.permission = "Write";
 
-    await manager.save(targetPlaylist);
-  } else if (targetUserId !== undefined) {
-    const targetUser = await manager.findOne(UserEntity, targetUserId);
-    if (targetUser === undefined) {
-      throw createError(400);
+      manager.save(user);
+
+      break;
     }
-
-    targetUser.permission = "Write";
-
-    await manager.save(targetUser);
-  } else {
-    throw createError(500, "report.targetId is not defined");
   }
 };

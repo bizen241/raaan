@@ -44,8 +44,6 @@ import {
   UserSummaryEntity
 } from "../../database/entities";
 import { BaseEntityClass } from "../../database/entities/BaseEntityClass";
-import { getObjectionTargetProperties } from "../../services/objections";
-import { getReportTargetProperties } from "../../services/reports";
 
 export interface RequestContext {
   sessionId?: string;
@@ -383,8 +381,7 @@ const normalizeGroupSummary: Normalizer<GroupSummaryEntity> = (_, store, entity)
 };
 
 const normalizeObjection: Normalizer<ObjectionEntity> = (_, store, entity) => {
-  const { id, objectorId, description, state, comment } = entity;
-  const { targetType, targetId } = getObjectionTargetProperties(entity);
+  const { id, objectorId, targetType, targetId, description, state, comment } = entity;
 
   store.Objection[id] = {
     ...base(entity),
@@ -483,8 +480,7 @@ const normalizePlaylistSummary: Normalizer<PlaylistSummaryEntity> = (_, store, e
 };
 
 const normalizeReport: Normalizer<ReportEntity> = (_, store, entity) => {
-  const { id, reporterId, reason, description, state, comment } = entity;
-  const { targetType, targetId } = getReportTargetProperties(entity);
+  const { id, reporterId, targetType, targetId, reason, description, state, comment } = entity;
 
   store.Report[id] = {
     ...base(entity),

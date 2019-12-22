@@ -7,7 +7,8 @@ import { parseQuery } from "../../../shared/api/request/parse";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseFindResult, responseSearchResult } from "../../api/response";
 import { hasPermission } from "../../api/security";
-import { ExerciseEntity, ObjectionEntity, PlaylistEntity, UserEntity } from "../../database/entities";
+import { ObjectionEntity } from "../../database/entities";
+import { checkObjectionTarget } from "../../services/objections";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
   const { objectorId, targetType, targetId, searchLimit, searchOffset } = parseQuery("Objection", req.query);
@@ -26,10 +27,10 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     query.andWhere("objection.objectorId = :objectorId", { objectorId });
   }
   if (targetType !== undefined) {
+    query.andWhere("objection.targetType", { targetType });
+
     if (targetId !== undefined) {
-      query.andWhere(`objection.target${targetType}Id = :targetId`, { targetId });
-    } else {
-      query.andWhere(`objection.target${targetType}Id IS NOT NULL`);
+      query.andWhere("objection.targetId = :targetId", { targetId });
     }
   }
 
@@ -51,53 +52,16 @@ export const POST: OperationFunction = errorBoundary(async (req, res, _, current
   }
 
   await getManager().transaction(async manager => {
-    const report = new ObjectionEntity(currentUser, description);
+    await checkObjectionTarget(manager, currentUser, targetType, targetId);
 
-    switch (targetType) {
-      case "Exercise": {
-        const targetExercise = await manager.findOne(ExerciseEntity, targetId);
-        if (targetExercise === undefined) {
-          throw createError(400);
-        }
-        if (targetExercise.authorId !== currentUser.id || !targetExercise.isLocked) {
-          throw createError(403);
-        }
+    const objection = new ObjectionEntity(currentUser, description);
 
-        report.targetExercise = targetExercise;
+    objection.targetType = targetType;
+    objection.targetId = targetId;
 
-        break;
-      }
-      case "Playlist": {
-        const targetPlaylist = await manager.findOne(PlaylistEntity, targetId);
-        if (targetPlaylist === undefined) {
-          throw createError(400);
-        }
-        if (targetPlaylist.authorId !== currentUser.id || !targetPlaylist.isLocked) {
-          throw createError(403);
-        }
+    await manager.save(objection);
 
-        report.targetPlaylist = targetPlaylist;
-
-        break;
-      }
-      case "User": {
-        const targetUser = await manager.findOne(UserEntity, targetId);
-        if (targetUser === undefined) {
-          throw createError(400);
-        }
-        if (targetUser.id !== currentUser.id || targetUser.permission !== "Read") {
-          throw createError(403);
-        }
-
-        report.targetUser = targetUser;
-
-        break;
-      }
-    }
-
-    await manager.save(report);
-
-    responseFindResult(req, res, report);
+    responseFindResult(req, res, objection);
   });
 });
 

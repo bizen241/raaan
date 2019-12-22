@@ -4,14 +4,14 @@ import { push } from "connected-react-router";
 import { useCallback } from "react";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { ObjectionTarget } from "../../../../shared/api/entities";
+import { ObjectionTargetType } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { Button, Card, DialogContent } from "../../ui";
 
 export const ConfirmObjectionDialog = createDialog<{
-  targetType: ObjectionTarget;
+  targetType: ObjectionTargetType;
   targetId: string;
 }>(
   React.memo(({ targetType, targetId, onClose }) => {

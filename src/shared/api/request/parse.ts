@@ -18,14 +18,14 @@ import {
   GroupSecret,
   GroupSummary,
   Objection,
-  ObjectionTarget,
+  ObjectionTargetType,
   Permission,
   Playlist,
   PlaylistBookmark,
   PlaylistItem,
   PlaylistSummary,
   Report,
-  ReportTarget,
+  ReportTargetType,
   Revision,
   RevisionSummary,
   Submission,
@@ -207,7 +207,7 @@ const parseObjection: Parser<Objection> = query => {
   return {
     ...base(query),
     objectorId,
-    targetType: targetType as ObjectionTarget,
+    targetType: targetType as ObjectionTargetType,
     targetId
   };
 };
@@ -250,7 +250,7 @@ const parseReport: Parser<Report> = query => {
   return {
     ...base(query),
     reporterId,
-    targetType: targetType as ReportTarget,
+    targetType: targetType as ReportTargetType,
     targetId
   };
 };

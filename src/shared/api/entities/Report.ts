@@ -2,7 +2,8 @@ import { BaseEntityObject, UUID } from "./BaseEntityObject";
 
 export interface Report extends BaseEntityObject {
   reporterId: UUID;
-  targetType: ReportTarget;
+  defendantId?: UUID;
+  targetType: ReportTargetType;
   targetId: UUID;
   reason: ReportReason;
   description: string;
@@ -10,7 +11,7 @@ export interface Report extends BaseEntityObject {
   comment: string;
 }
 
-export type ReportTarget = "Exercise" | "Playlist" | "Synonym" | "Tag" | "User";
+export type ReportTargetType = "Exercise" | "Playlist" | "Synonym" | "Tag" | "User";
 
 export type ReportReason = "troll" | "copyright" | "sexual";
 

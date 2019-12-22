@@ -4,14 +4,14 @@ import { replace } from "connected-react-router";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { endpoints } from "../../../../shared/api/endpoint";
-import { ObjectionTarget } from "../../../../shared/api/entities";
+import { ObjectionTargetType } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card, DialogContent } from "../../ui";
 
 export const UploadObjectionDialog = createDialog<{
   reportId: string;
-  targetType: ObjectionTarget;
+  targetType: ObjectionTargetType;
   targetId: string;
 }>(
   React.memo(({ reportId, targetId, targetType, onClose }) => {

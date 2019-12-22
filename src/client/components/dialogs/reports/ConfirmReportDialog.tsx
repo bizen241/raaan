@@ -4,14 +4,14 @@ import { push } from "connected-react-router";
 import { useCallback } from "react";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { ReportTarget } from "../../../../shared/api/entities";
+import { ReportTargetType } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { Button, Card, DialogContent } from "../../ui";
 
 export const ConfirmReportDialog = createDialog<{
-  targetType: ReportTarget;
+  targetType: ReportTargetType;
   targetId: string;
 }>(
   React.memo(({ targetType, targetId, onClose }) => {
