@@ -72,5 +72,7 @@ export const insertExercise = async (user: UserEntity) => {
 
   exercise.latest = revision;
 
+  await manager.save(exercise);
+
   return { exercise, exerciseSummary };
 };
