@@ -1,8 +1,8 @@
 import { Typography } from "@material-ui/core";
-import { ReportProblem, Warning } from "@material-ui/icons";
+import { ReportProblem } from "@material-ui/icons";
 import { replace } from "connected-react-router";
-import { useContext } from "react";
 import * as React from "react";
+import { useContext } from "react";
 import { useDispatch } from "react-redux";
 import { endpoints } from "../../../../shared/api/endpoint";
 import { ReportTargetType } from "../../../../shared/api/entities";
@@ -43,9 +43,9 @@ export const UploadReportDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="違反を報告する" onClose={onClose}>
-        <Card icon={<Warning />} title="違反を報告する">
-          <Typography>違反を報告します。</Typography>
+      <DialogContent title="報告をアップロードする" onClose={onClose}>
+        <Card>
+          <Typography>報告をアップロードします。</Typography>
         </Card>
         <Button icon={<ReportProblem />} label="報告をアップロード" onClick={onUpload} />
       </DialogContent>
