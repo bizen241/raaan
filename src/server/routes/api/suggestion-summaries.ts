@@ -6,12 +6,16 @@ import { responseSearchResult } from "../../api/response";
 import { SuggestionSummaryEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { authorId, exerciseId, searchLimit, searchOffset } = parseQuery("SuggestionSummary", req.query);
+  const { authorId, exerciseId, exerciseAuthorId, searchLimit, searchOffset } = parseQuery(
+    "SuggestionSummary",
+    req.query
+  );
 
   const query = getManager()
     .createQueryBuilder(SuggestionSummaryEntity, "suggestionSummary")
     .leftJoinAndSelect("suggestionSummary.suggestion", "suggestion")
     .leftJoinAndSelect("suggestion.revision", "revision")
+    .leftJoinAndSelect("revision.exercise", "exercise")
     .take(searchLimit)
     .skip(searchOffset);
 
@@ -20,6 +24,9 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
   }
   if (exerciseId !== undefined) {
     query.andWhere("revision.exerciseId = :exerciseId", { exerciseId });
+  }
+  if (exerciseAuthorId !== undefined) {
+    query.andWhere("exercise.authorId = :authorId", { authorId: exerciseAuthorId });
   }
 
   const [suggestionSummaries, count] = await query.getManyAndCount();

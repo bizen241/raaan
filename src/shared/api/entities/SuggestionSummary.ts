@@ -4,6 +4,7 @@ import { SuggestionState } from "./Suggestion";
 
 export interface SuggestionSummary extends BaseEntityObject {
   exerciseId?: UUID;
+  exerciseAuthorId?: UUID;
   revisionId?: UUID;
   suggestionId: UUID;
   authorId?: UUID;

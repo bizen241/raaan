@@ -294,11 +294,13 @@ const parseSuggestion: Parser<Suggestion> = query => {
 };
 
 const parseSuggestionSummary: Parser<SuggestionSummary> = query => {
-  const { exerciseId } = query;
+  const { authorId, exerciseId, exerciseAuthorId } = query;
 
   return {
     ...base(query),
-    exerciseId
+    authorId,
+    exerciseId,
+    exerciseAuthorId
   };
 };
 
