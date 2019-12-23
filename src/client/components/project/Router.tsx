@@ -6,7 +6,7 @@ import { RootState } from "../../reducers";
 import { AppPage } from "../pages/AppPage";
 import { CommunityPage } from "../pages/community/CommunityPage";
 import { UserCommunityPage } from "../pages/community/UserCommunityPage";
-import { UserFollowingPage } from "../pages/community/UserFollowingPage";
+import { UserFollowPage } from "../pages/community/UserFollowPage";
 import { UserVotesPage } from "../pages/community/UserVotesPage";
 import { ContestPage } from "../pages/contests/ContestPage";
 import { EditContestPage } from "../pages/contests/EditContestPage";
@@ -50,8 +50,8 @@ import { EditReportPage } from "../pages/reports/EditReportPage";
 import { EditReportsPage } from "../pages/reports/EditReportsPage";
 import { ReportPage } from "../pages/reports/ReportPage";
 import { ReportsPage } from "../pages/reports/ReportsPage";
-import { UserReportersPage } from "../pages/reports/UserReportersPage";
-import { UserReportsPage } from "../pages/reports/UserReportsPage";
+import { UserReceivedReportsPage } from "../pages/reports/UserReceivedReportsPage";
+import { UserUploadedReportsPage } from "../pages/reports/UserUploadedReportsPage";
 import { ExerciseRevisionsPage } from "../pages/revisions/ExerciseRevisionsPage";
 import { RevisionPage } from "../pages/revisions/RevisionPage";
 import { ReviewPage } from "../pages/submissions/ReviewPage";
@@ -60,8 +60,8 @@ import { EditSuggestionPage } from "../pages/suggestions/EditSuggestionPage";
 import { SynonymPage } from "../pages/synonyms/SynonymPage";
 import { SynonymsPage } from "../pages/synonyms/SynonymsPage";
 import { TagSynonymsPage } from "../pages/synonyms/TagSynonymsPage";
+import { FollowingTagsPage } from "../pages/tag-follows/FollowingTagsPage";
 import { TagFollowersPage } from "../pages/tag-follows/TagFollowersPage";
-import { TagFollowsPage } from "../pages/tag-follows/TagFollowsPage";
 import { EditTagPage } from "../pages/tags/EditTagPage";
 import { EditTagsPage } from "../pages/tags/EditTagsPage";
 import { TagPage } from "../pages/tags/TagPage";
@@ -71,8 +71,8 @@ import { EditUserAccountProviderPage } from "../pages/user-accounts/EditUserAcco
 import { UserAccountPage } from "../pages/user-accounts/UserAccountPage";
 import { UserAccountProviderPage } from "../pages/user-accounts/UserAccountProviderPage";
 import { EditUserConfigPage } from "../pages/user-configs/EditUserConfigPage";
+import { FollowingUsersPage } from "../pages/user-follows/FollowingUsersPage";
 import { UserFollowersPage } from "../pages/user-follows/UserFollowersPage";
-import { UserFollowsPage } from "../pages/user-follows/UserFollowsPage";
 import { UserMessagesPage } from "../pages/user-messages/UserMessagesPage";
 import { SecurityPage } from "../pages/user-sessions/SecurityPage";
 import { UserSessionsPage } from "../pages/user-sessions/UserUserSessionsPage";
@@ -116,22 +116,25 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/users" component={UsersPage} />
         <Route exact={true} path="/users/:id" component={UserPage} />
         <Route exact={true} path="/users/:id/edit" component={EditUserPage} />
-        <Route exact={true} path="/users/:id/contents/exercises" component={UserExercisesPage} />
-        <Route exact={true} path="/users/:id/contents/playlists" component={UserPlaylistsPage} />
-        <Route exact={true} path="/users/:id/contents/bookmarks" component={UserPlaylistBookmarksPage} />
+        <Route exact={true} path="/users/:id/exercises" component={UserExercisesPage} />
+        <Route exact={true} path="/users/:id/playlists" component={UserPlaylistsPage} />
+        <Route exact={true} path="/users/:id/bookmarks" component={UserPlaylistBookmarksPage} />
         <Route exact={true} path="/users/:id/community" component={UserCommunityPage} />
-        <Route exact={true} path="/users/:id/community/groups" component={UserGroupsPage} />
-        <Route exact={true} path="/users/:id/community/groups/applications" component={UserGroupApplicationsPage} />
-        <Route exact={true} path="/users/:id/community/votes" component={UserVotesPage} />
-        <Route exact={true} path="/users/:id/community/votes/up" component={UserUpVotesPage} />
-        <Route exact={true} path="/users/:id/community/votes/down" component={UserDownVotesPage} />
-        <Route exact={true} path="/users/:id/community/reports" component={UserReportsPage} />
-        <Route exact={true} path="/users/:id/community/reporters" component={UserReportersPage} />
-        <Route exact={true} path="/users/:id/community/objections" component={UserObjectionsPage} />
-        <Route exact={true} path="/users/:id/community/follows" component={UserFollowingPage} />
-        <Route exact={true} path="/users/:id/community/follows/followers" component={UserFollowersPage} />
-        <Route exact={true} path="/users/:id/community/follows/users" component={UserFollowsPage} />
-        <Route exact={true} path="/users/:id/community/follows/tags" component={TagFollowsPage} />
+        <Route exact={true} path="/users/:id/groups" component={UserGroupsPage} />
+        <Route exact={true} path="/users/:id/groups/applications" component={UserGroupApplicationsPage} />
+        <Route exact={true} path="/users/:id/votes" component={UserVotesPage} />
+        <Route exact={true} path="/users/:id/votes/up" component={UserUpVotesPage} />
+        <Route exact={true} path="/users/:id/votes/down" component={UserDownVotesPage} />
+        {/* <Route exact={true} path="/users/:id/reports" component={UserReportsPage} /> */}
+        <Route exact={true} path="/users/:id/reports/uploaded" component={UserUploadedReportsPage} />
+        <Route exact={true} path="/users/:id/reports/received" component={UserReceivedReportsPage} />
+        <Route exact={true} path="/users/:id/objections" component={UserObjectionsPage} />
+        {/* <Route exact={true} path="/users/:id/suggestions/uploaded" component={UserUploadedSuggestionsPage} /> */}
+        {/* <Route exact={true} path="/users/:id/suggestions/received" component={UserReceivedSuggestionsPage} /> */}
+        <Route exact={true} path="/users/:id/follow" component={UserFollowPage} />
+        <Route exact={true} path="/users/:id/followers" component={UserFollowersPage} />
+        <Route exact={true} path="/users/:id/following/users" component={FollowingUsersPage} />
+        <Route exact={true} path="/users/:id/following/tags" component={FollowingTagsPage} />
 
         <Route exact={true} path="/exercises" component={ExercisesPage} />
         <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
@@ -141,6 +144,8 @@ export const Router = React.memo(() => {
 
         <Route exact={true} path="/revisions/:id" component={RevisionPage} />
 
+        {/* <Route exact={true} path="/suggestions/edit" component={EditSuggestionsPage} /> */}
+        {/* <Route exact={true} path="/suggestions/:id" component={SuggestionPage} /> */}
         <Route exact={true} path="/suggestions/:id/edit" component={EditSuggestionPage} />
 
         <Route exact={true} path="/playlists" component={PlaylistsPage} />
@@ -162,14 +167,14 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/groups/edit" component={EditGroupsPage} />
         <Route exact={true} path="/groups/:id" component={GroupPage} />
         <Route exact={true} path="/groups/:id/edit" component={EditGroupPage} />
-        <Route exact={true} path="/groups/:id/contents/exercises" component={GroupExercisesPage} />
-        <Route exact={true} path="/groups/:id/contents/contests" component={GroupContestsPage} />
+        <Route exact={true} path="/groups/:id/exercises" component={GroupExercisesPage} />
+        <Route exact={true} path="/groups/:id/contests" component={GroupContestsPage} />
         <Route exact={true} path="/groups/:id/members" component={GroupMembersPage} />
-        <Route exact={true} path="/groups/:id/members/invite" component={GroupInvitePage} />
-        <Route exact={true} path="/groups/:id/members/invite/link" component={GroupSecretPage} />
-        <Route exact={true} path="/groups/:id/members/invite/applications" component={GroupGroupApplicationsPage} />
-        <Route exact={true} path="/groups/:id/members/invite/invitations" component={GroupGroupInvitationsPage} />
-        <Route exact={true} path="/groups/:id/members/invite/:secret" component={GroupApplicationPage} />
+        <Route exact={true} path="/groups/:id/invite" component={GroupInvitePage} />
+        <Route exact={true} path="/groups/:id/invite/link" component={GroupSecretPage} />
+        <Route exact={true} path="/groups/:id/invite/:secret" component={GroupApplicationPage} />
+        <Route exact={true} path="/groups/:id/invitations" component={GroupGroupInvitationsPage} />
+        <Route exact={true} path="/groups/:id/applications" component={GroupGroupApplicationsPage} />
 
         <Route exact={true} path="/contests/edit" component={EditContestsPage} />
         <Route exact={true} path="/contests/:id" component={ContestPage} />

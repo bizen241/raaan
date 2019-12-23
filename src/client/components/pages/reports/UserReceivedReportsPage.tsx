@@ -3,14 +3,15 @@ import { ReportList } from "../../list/reports/ReportList";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui";
 
-export const UserReportsPage = React.memo<PageProps>(props => {
+export const UserReceivedReportsPage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;
 
   return (
-    <Page title="ユーザーの報告一覧">
+    <Page title="ユーザーの報告者一覧">
       <ReportList
         initialParams={{
-          reporterId: userId
+          targetType: "User",
+          targetId: userId
         }}
       />
     </Page>
