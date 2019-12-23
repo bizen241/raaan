@@ -8,8 +8,8 @@ export const UserVotesPage = React.memo<PageProps>(props => {
 
   return (
     <Page title="評価履歴">
-      <Button icon={<ThumbUp />} label="高評価" to={`/users/${userId}/community/votes/up`} />
-      <Button icon={<ThumbDown />} label="低評価" to={`/users/${userId}/community/votes/down`} />
+      <Button icon={<ThumbUp />} label="高評価" to={`/users/${userId}/votes/up`} />
+      <Button icon={<ThumbDown />} label="低評価" to={`/users/${userId}/votes/down`} />
     </Page>
   );
 });

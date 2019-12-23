@@ -24,7 +24,7 @@ export const UserGroupsPage = React.memo<PageProps>(() => {
     <Page title="所属グループ">
       <Button icon={<Add />} label="新しいグループを作る" onClick={onCreate} />
       <Button icon={<Edit />} label="編集中のグループ" to={`/groups/edit`} />
-      <Button icon={<Inbox />} label="申請一覧" to={`/users/${currentUser.id}/community/groups/applications`} />
+      <Button icon={<Inbox />} label="申請一覧" to={`/users/${currentUser.id}/groups/applications`} />
       <UserGroupMemberList initialParams={{ userId: currentUser.id }} />
     </Page>
   );

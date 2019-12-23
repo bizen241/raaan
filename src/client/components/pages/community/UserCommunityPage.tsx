@@ -17,11 +17,11 @@ export const UserCommunityPage = React.memo<PageProps>(props => {
 
   return (
     <Page title={isOwn ? "自分のコミュニティ" : "ユーザーのコミュニティ"}>
-      <Button color="primary" icon={<Group />} label="グループ" to={`/users/${userId}/community/groups`} />
-      <Button icon={<Notifications />} label="フォロー" to={`/users/${userId}/community/follows`} />
-      {isHoge && <Button icon={<Report />} label="報告履歴" to={`/users/${userId}/community/reports`} />}
-      {isHoge && <Button icon={<SmsFailed />} label="抗議履歴" to={`/users/${userId}/community/objections`} />}
-      <Button icon={<ThumbsUpDown />} label="評価履歴" to={`/users/${userId}/community/votes`} />
+      <Button color="primary" icon={<Group />} label="グループ" to={`/users/${userId}/groups`} />
+      <Button icon={<Notifications />} label="フォロー" to={`/users/${userId}/follow`} />
+      {isHoge && <Button icon={<Report />} label="報告履歴" to={`/users/${userId}/reports`} />}
+      {isHoge && <Button icon={<SmsFailed />} label="抗議履歴" to={`/users/${userId}/objections`} />}
+      <Button icon={<ThumbsUpDown />} label="評価履歴" to={`/users/${userId}/votes`} />
     </Page>
   );
 });

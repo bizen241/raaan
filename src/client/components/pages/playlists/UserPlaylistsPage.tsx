@@ -17,7 +17,7 @@ export const UserPlaylistsPage = React.memo<PageProps>(({ match }) => {
   return (
     <Page title={userId === currentUser.id ? "自分のプレイリスト" : "ユーザーのプレイリスト"}>
       {isOwn && <Button icon={<Edit />} label="編集中のプレイリスト" to={`/playlists/edit`} />}
-      {isOwn && <Button icon={<Bookmarks />} label="ブックマーク" to={`/users/${userId}/contents/bookmarks`} />}
+      {isOwn && <Button icon={<Bookmarks />} label="ブックマーク" to={`/users/${userId}/bookmarks`} />}
       <Column pb={1}>
         <PlaylistSummaryList initialParams={{ authorId: userId }} />
       </Column>

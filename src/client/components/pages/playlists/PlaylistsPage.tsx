@@ -10,8 +10,8 @@ export const PlaylistsPage = React.memo(() => {
 
   return (
     <Page title="プレイリストを探す">
-      <Button icon={<Person />} label="自分のプレイリスト" to={`/users/${currentUser.id}/contents/playlists`} />
-      <Button icon={<Bookmarks />} label="ブックマーク" to={`/users/${currentUser.id}/contents/bookmarks`} />
+      <Button icon={<Person />} label="自分のプレイリスト" to={`/users/${currentUser.id}/playlists`} />
+      <Button icon={<Bookmarks />} label="ブックマーク" to={`/users/${currentUser.id}/bookmarks`} />
       <PlaylistSummaryList
         initialParams={{
           searchLimit: 10,

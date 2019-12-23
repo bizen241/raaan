@@ -31,9 +31,9 @@ export const UserViewer = withEntity("User")(({ entityId: userId, entity: user }
         color={isOwn ? undefined : "primary"}
         icon={<Keyboard />}
         label="問題集"
-        to={`/users/${userId}/contents/exercises`}
+        to={`/users/${userId}/exercises`}
       />
-      <Button icon={<PlaylistPlay />} label="プレイリスト" to={`/users/${userId}/contents/playlists`} />
+      <Button icon={<PlaylistPlay />} label="プレイリスト" to={`/users/${userId}/playlists`} />
       <Button icon={<Group />} label="コミュニティ" to={`/users/${userId}/community`} />
       {!isOwn && !isFollowed && (
         <Button icon={<PersonAdd />} label="フォローする" onClick={onToggleUploadUserFollowDialog} />

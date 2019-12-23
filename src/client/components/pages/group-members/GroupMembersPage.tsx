@@ -23,7 +23,7 @@ export const GroupMembersPage = React.memo<PageProps>(props => {
 
   return (
     <Page title="グループのメンバー">
-      {isGroupOwner && <Button icon={<Email />} label="グループへの招待" to={`/groups/${groupId}/members/invite`} />}
+      {isGroupOwner && <Button icon={<Email />} label="グループへの招待" to={`/groups/${groupId}/invite`} />}
       <GroupMemberPermissionContext.Provider value={groupMemberPermission}>
         <GroupMemberList initialParams={{ groupId }} />
       </GroupMemberPermissionContext.Provider>
