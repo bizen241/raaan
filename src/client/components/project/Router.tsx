@@ -59,6 +59,7 @@ import { RevisionPage } from "../pages/revisions/RevisionPage";
 import { ReviewPage } from "../pages/submissions/ReviewPage";
 import { SubmissionsPage } from "../pages/submissions/SubmissionsPage";
 import { EditSuggestionPage } from "../pages/suggestions/EditSuggestionPage";
+import { UserReceivedSuggestionsPage } from "../pages/suggestions/UserReceivedSuggestionsPage";
 import { UserUploadedSuggestionsPage } from "../pages/suggestions/UserUploadedSuggestionsPage";
 import { SynonymPage } from "../pages/synonyms/SynonymPage";
 import { SynonymsPage } from "../pages/synonyms/SynonymsPage";
@@ -134,7 +135,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/users/:id/objections" component={UserObjectionsPage} />
         <Route exact={true} path="/users/:id/suggestions" component={UserSuggestionsPage} />
         <Route exact={true} path="/users/:id/suggestions/uploaded" component={UserUploadedSuggestionsPage} />
-        {/* <Route exact={true} path="/users/:id/suggestions/received" component={UserReceivedSuggestionsPage} /> */}
+        <Route exact={true} path="/users/:id/suggestions/received" component={UserReceivedSuggestionsPage} />
         <Route exact={true} path="/users/:id/follow" component={UserFollowPage} />
         <Route exact={true} path="/users/:id/followers" component={UserFollowersPage} />
         <Route exact={true} path="/users/:id/following/users" component={FollowingUsersPage} />
