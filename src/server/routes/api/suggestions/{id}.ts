@@ -7,7 +7,7 @@ import { createOperationDoc, errorBoundary, PathParams } from "../../../api/oper
 import { responseFindResult } from "../../../api/response";
 import { SuggestionEntity } from "../../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
+export const GET: OperationFunction = errorBoundary(async (req, res, _) => {
   const { id: suggestionId }: PathParams = req.params;
 
   const suggestion = await getManager().findOne(SuggestionEntity, suggestionId, {
@@ -15,11 +15,6 @@ export const GET: OperationFunction = errorBoundary(async (req, res, _, currentU
   });
   if (suggestion === undefined) {
     throw createError(404);
-  }
-
-  const isAuthor = suggestion.authorId === currentUser.id;
-  if (!isAuthor) {
-    throw createError(403);
   }
 
   responseFindResult(req, res, suggestion);
