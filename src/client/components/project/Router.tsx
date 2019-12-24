@@ -8,6 +8,7 @@ import { CommunityPage } from "../pages/community/CommunityPage";
 import { UserCommunityPage } from "../pages/community/UserCommunityPage";
 import { UserFollowPage } from "../pages/community/UserFollowPage";
 import { UserReportsPage } from "../pages/community/UserReportsPage";
+import { UserSuggestionsPage } from "../pages/community/UserSuggestionsPage";
 import { UserVotesPage } from "../pages/community/UserVotesPage";
 import { ContestPage } from "../pages/contests/ContestPage";
 import { EditContestPage } from "../pages/contests/EditContestPage";
@@ -130,7 +131,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/users/:id/reports/uploaded" component={UserUploadedReportsPage} />
         <Route exact={true} path="/users/:id/reports/received" component={UserReceivedReportsPage} />
         <Route exact={true} path="/users/:id/objections" component={UserObjectionsPage} />
-        {/* <Route exact={true} path="/users/:id/suggestions" component={UserSuggestionsPage} /> */}
+        <Route exact={true} path="/users/:id/suggestions" component={UserSuggestionsPage} />
         {/* <Route exact={true} path="/users/:id/suggestions/uploaded" component={UserUploadedSuggestionsPage} /> */}
         {/* <Route exact={true} path="/users/:id/suggestions/received" component={UserReceivedSuggestionsPage} /> */}
         <Route exact={true} path="/users/:id/follow" component={UserFollowPage} />
