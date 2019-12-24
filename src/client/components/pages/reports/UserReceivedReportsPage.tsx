@@ -7,7 +7,7 @@ export const UserReceivedReportsPage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;
 
   return (
-    <Page title="ユーザーの報告者一覧">
+    <Page title="受信した報告">
       <ReportList
         initialParams={{
           targetType: "User",
