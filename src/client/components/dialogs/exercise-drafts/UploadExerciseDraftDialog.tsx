@@ -1,22 +1,26 @@
 import { CloudUpload } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import * as React from "react";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useDispatch } from "react-redux";
+import { ExerciseDraft } from "../../../../shared/api/entities";
+import { Params } from "../../../../shared/api/request/params";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
 import { isNumber } from "../../../reducers/buffers";
 import { UserContext } from "../../project/Context";
-import { Button, Card, DialogContent, Select, SelectOptions } from "../../ui";
+import { Button, Card, DialogContent, Select, SelectOptions, TextField } from "../../ui";
 
 type UploadType = "public" | "private" | "update" | "draft";
 
 export const UploadExerciseDraftDialog = createDialog<{
   exerciseDraftId: string;
+  exerciseDraft: Params<ExerciseDraft>;
   exerciseId: string | undefined;
+  onChange: (exerciseDraft: Partial<ExerciseDraft>) => void;
 }>(
-  React.memo(({ exerciseDraftId, exerciseId, onClose }) => {
+  React.memo(({ exerciseDraftId, exerciseDraft, exerciseId, onChange, onClose }) => {
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);
 
@@ -43,6 +47,7 @@ export const UploadExerciseDraftDialog = createDialog<{
         })
       );
     };
+    const onUpdateMessage = useCallback((message: string) => onChange({ message }), []);
 
     const selectUploadTypeOptions: SelectOptions<UploadType> = {
       public: {
@@ -74,6 +79,9 @@ export const UploadExerciseDraftDialog = createDialog<{
             defaultValue={uploadType}
             onChange={value => setUploadConfig(value)}
           />
+          {uploadType !== "draft" && (
+            <TextField label="メッセージ" defaultValue={exerciseDraft.message || ""} onChange={onUpdateMessage} />
+          )}
         </Card>
         <Button disabled={!canUpload} color="primary" icon={<CloudUpload />} label="アップロード" onClick={onUpload} />
       </DialogContent>

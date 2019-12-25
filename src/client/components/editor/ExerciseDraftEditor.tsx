@@ -25,7 +25,9 @@ export const ExerciseDraftEditor = withBuffer("ExerciseDraft")(
         <ExerciseEditor buffer={buffer} source={source} onChange={onChange} />
         <UploadExerciseDraftDialog
           exerciseDraftId={bufferId}
+          exerciseDraft={buffer}
           exerciseId={source && source.exerciseId}
+          onChange={onChange}
           isOpen={isUploadDialogOpen}
           onClose={onToggleUploadDialog}
         />

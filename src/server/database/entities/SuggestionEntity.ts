@@ -32,18 +32,23 @@ export class SuggestionEntity extends BaseExerciseClass {
   revisionId!: string;
 
   @Column()
+  message: string;
+
+  @Column()
   state: SuggestionState = "pending";
 
   constructor(
     summary: SuggestionSummaryEntity,
     author: UserEntity,
     revision: RevisionEntity,
-    params: Params<Exercise>
+    params: Params<Exercise>,
+    message: string
   ) {
     super(params);
 
     this.summary = summary;
     this.author = author;
     this.revision = revision;
+    this.message = message;
   }
 }

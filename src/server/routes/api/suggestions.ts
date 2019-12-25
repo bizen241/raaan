@@ -9,7 +9,7 @@ import { RevisionEntity, SuggestionEntity, SuggestionSummaryEntity } from "../..
 
 export const POST: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
   const params: Params<Suggestion> = req.body;
-  const { revisionId } = params;
+  const { revisionId, message = "" } = params;
   if (revisionId === undefined) {
     throw createError(400);
   }
@@ -22,7 +22,7 @@ export const POST: OperationFunction = errorBoundary(async (req, res, _, current
 
     const suggestionSummary = new SuggestionSummaryEntity();
 
-    const suggestion = new SuggestionEntity(suggestionSummary, currentUser, revision, params);
+    const suggestion = new SuggestionEntity(suggestionSummary, currentUser, revision, params, message);
     await manager.save(suggestion);
 
     responseFindResult(req, res, suggestion);

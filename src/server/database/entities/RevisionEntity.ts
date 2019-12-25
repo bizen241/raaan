@@ -24,18 +24,23 @@ export class RevisionEntity extends BaseExerciseClass {
   summaryId!: string;
 
   @Column()
+  message: string;
+
+  @Column()
   isPrivate: boolean;
 
   constructor(
     summary: RevisionSummaryEntity,
     exercise: ExerciseEntity,
     params: Params<Exercise> | undefined,
+    message: string,
     isPrivate: boolean
   ) {
     super(params);
 
     this.summary = summary;
     this.exercise = exercise;
+    this.message = message;
     this.isPrivate = isPrivate;
   }
 }
