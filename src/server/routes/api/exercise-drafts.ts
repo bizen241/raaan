@@ -43,7 +43,14 @@ export const POST: OperationFunction = errorBoundary(async (req, res, _, current
     await manager.save(exercise);
 
     const revisionSummary = new RevisionSummaryEntity();
-    const revision = new RevisionEntity(revisionSummary, exercise, isMerged ? params : {}, isPrivate);
+    const revision = new RevisionEntity(
+      revisionSummary,
+      exercise,
+      isMerged ? params : {},
+      params.messageSubject || "",
+      params.messageBody || "",
+      isPrivate
+    );
     await manager.save(revision);
 
     exercise.latest = revision;

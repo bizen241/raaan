@@ -67,7 +67,7 @@ export const insertExercise = async (user: UserEntity) => {
   await manager.save(exercise);
 
   const revisionSummary = new RevisionSummaryEntity();
-  const revision = new RevisionEntity(revisionSummary, exercise, {}, isPrivate);
+  const revision = new RevisionEntity(revisionSummary, exercise, {}, "", "", isPrivate);
   await manager.save(revision);
 
   exercise.latest = revision;

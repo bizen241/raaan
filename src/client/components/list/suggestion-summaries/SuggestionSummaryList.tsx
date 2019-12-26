@@ -16,7 +16,7 @@ export const SuggestionSummaryList = createEntityList("SuggestionSummary")(
         <TableCell>
           <Column>
             <Link color="textPrimary" component={RouterLink} to={`/suggestions/${suggestionSummary.suggestionId}`}>
-              <Typography>{suggestionSummary.state}</Typography>
+              <Typography>{suggestionSummary.messageSubject || "件名なし"}</Typography>
             </Link>
           </Column>
         </TableCell>

@@ -3,5 +3,6 @@ import { BaseExerciseObject } from "./BaseExerciseObject";
 
 export interface Revision extends BaseExerciseObject {
   summaryId: UUID;
-  message: string;
+  messageSubject: string;
+  messageBody: string;
 }

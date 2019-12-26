@@ -92,7 +92,8 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
             tags: params.tags || exercise.draft.tags,
             questions: params.questions || exercise.draft.questions
           },
-          params.message || "",
+          params.messageSubject || "",
+          params.messageBody || "",
           exercise.isPrivate
         );
         await manager.save(revision);

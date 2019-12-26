@@ -32,7 +32,10 @@ export class SuggestionEntity extends BaseExerciseClass {
   revisionId!: string;
 
   @Column()
-  message: string;
+  messageSubject: string;
+
+  @Column()
+  messageBody: string;
 
   @Column()
   state: SuggestionState = "pending";
@@ -42,13 +45,15 @@ export class SuggestionEntity extends BaseExerciseClass {
     author: UserEntity,
     revision: RevisionEntity,
     params: Params<Exercise>,
-    message: string
+    messageSubject: string,
+    messageBody: string
   ) {
     super(params);
 
     this.summary = summary;
     this.author = author;
     this.revision = revision;
-    this.message = message;
+    this.messageSubject = messageSubject;
+    this.messageBody = messageBody;
   }
 }

@@ -8,8 +8,7 @@ import { responseFindResult } from "../../api/response";
 import { RevisionEntity, SuggestionEntity, SuggestionSummaryEntity } from "../../database/entities";
 
 export const POST: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
-  const params: Params<Suggestion> = req.body;
-  const { revisionId, message = "" } = params;
+  const { revisionId, messageSubject = "", messageBody = "", ...params }: Params<Suggestion> = req.body;
   if (revisionId === undefined) {
     throw createError(400);
   }
@@ -22,7 +21,14 @@ export const POST: OperationFunction = errorBoundary(async (req, res, _, current
 
     const suggestionSummary = new SuggestionSummaryEntity();
 
-    const suggestion = new SuggestionEntity(suggestionSummary, currentUser, revision, params, message);
+    const suggestion = new SuggestionEntity(
+      suggestionSummary,
+      currentUser,
+      revision,
+      params,
+      messageSubject,
+      messageBody
+    );
     await manager.save(suggestion);
 
     responseFindResult(req, res, suggestion);

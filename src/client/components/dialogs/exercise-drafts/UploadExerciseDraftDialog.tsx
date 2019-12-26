@@ -1,4 +1,4 @@
-import { CloudUpload } from "@material-ui/icons";
+import { CloudUpload, Message } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
@@ -47,7 +47,8 @@ export const UploadExerciseDraftDialog = createDialog<{
         })
       );
     };
-    const onUpdateMessage = useCallback((message: string) => onChange({ message }), []);
+    const onUpdateMessageSubject = useCallback((messageSubject: string) => onChange({ messageSubject }), []);
+    const onUpdateMessageBody = useCallback((messageBody: string) => onChange({ messageBody }), []);
 
     const selectUploadTypeOptions: SelectOptions<UploadType> = {
       public: {
@@ -79,10 +80,22 @@ export const UploadExerciseDraftDialog = createDialog<{
             defaultValue={uploadType}
             onChange={value => setUploadConfig(value)}
           />
-          {uploadType !== "draft" && (
-            <TextField label="メッセージ" defaultValue={exerciseDraft.message || ""} onChange={onUpdateMessage} />
-          )}
         </Card>
+        {uploadType !== "draft" && (
+          <Card icon={<Message />} title="メッセージ">
+            <TextField
+              label="件名"
+              defaultValue={exerciseDraft.messageSubject || ""}
+              onChange={onUpdateMessageSubject}
+            />
+            <TextField
+              label="本文"
+              multiline
+              defaultValue={exerciseDraft.messageBody || ""}
+              onChange={onUpdateMessageBody}
+            />
+          </Card>
+        )}
         <Button disabled={!canUpload} color="primary" icon={<CloudUpload />} label="アップロード" onClick={onUpload} />
       </DialogContent>
     );

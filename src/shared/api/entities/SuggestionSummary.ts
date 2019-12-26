@@ -8,5 +8,6 @@ export interface SuggestionSummary extends BaseEntityObject {
   revisionId?: UUID;
   suggestionId: UUID;
   authorId?: UUID;
+  messageSubject: string;
   state: SuggestionState;
 }

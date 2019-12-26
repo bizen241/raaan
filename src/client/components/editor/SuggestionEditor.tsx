@@ -1,4 +1,4 @@
-import { CloudUpload } from "@material-ui/icons";
+import { CloudUpload, Message } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
 import { withBuffer } from "../../enhancers/withBuffer";
@@ -18,18 +18,25 @@ export const SuggestionEditor = withBuffer("Suggestion")(
 
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
-    const onUpdateMessage = useCallback((message: string) => onChange({ message }), []);
+    const onUpdateMessageSubject = useCallback((messageSubject: string) => onChange({ messageSubject }), []);
+    const onUpdateMessageBody = useCallback((messageSubject: string) => onChange({ messageSubject }), []);
 
     const canUpload = props.buffer !== undefined;
 
     return (
       <Column flex={1}>
         <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
-        <Card>
+        <Card icon={<Message />} title="メッセージ">
           <TextField
-            label="メッセージ"
-            defaultValue={buffer.message || source.message || ""}
-            onChange={onUpdateMessage}
+            label="件名"
+            defaultValue={buffer.messageSubject || source.messageSubject || ""}
+            onChange={onUpdateMessageSubject}
+          />
+          <TextField
+            label="本文"
+            multiline
+            defaultValue={buffer.messageBody || source.messageBody || ""}
+            onChange={onUpdateMessageBody}
           />
         </Card>
         <ExerciseEditor buffer={buffer} source={source} onChange={onChange} />

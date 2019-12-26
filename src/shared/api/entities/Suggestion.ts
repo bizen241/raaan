@@ -6,7 +6,8 @@ export interface Suggestion extends BaseExerciseObject {
   authorId: UUID;
   exerciseId: UUID;
   revisionId: UUID;
-  message: string;
+  messageSubject: string;
+  messageBody: string;
   state: SuggestionState;
 }
 

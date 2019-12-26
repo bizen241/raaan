@@ -24,7 +24,10 @@ export class RevisionEntity extends BaseExerciseClass {
   summaryId!: string;
 
   @Column()
-  message: string;
+  messageSubject: string;
+
+  @Column()
+  messageBody: string;
 
   @Column()
   isPrivate: boolean;
@@ -33,14 +36,16 @@ export class RevisionEntity extends BaseExerciseClass {
     summary: RevisionSummaryEntity,
     exercise: ExerciseEntity,
     params: Params<Exercise> | undefined,
-    message: string,
+    messageSubject: string,
+    messageBody: string,
     isPrivate: boolean
   ) {
     super(params);
 
     this.summary = summary;
     this.exercise = exercise;
-    this.message = message;
+    this.messageSubject = messageSubject;
+    this.messageBody = messageBody;
     this.isPrivate = isPrivate;
   }
 }

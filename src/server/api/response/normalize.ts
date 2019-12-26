@@ -495,12 +495,13 @@ const normalizeReport: Normalizer<ReportEntity> = (_, store, entity) => {
 };
 
 const normalizeRevision: Normalizer<RevisionEntity> = (_, store, entity) => {
-  const { id, summaryId, message, lang, title, tags, description, questions, isRandom } = entity;
+  const { id, summaryId, messageSubject, messageBody, lang, title, tags, description, questions, isRandom } = entity;
 
   store.Revision[id] = {
     ...base(entity),
     summaryId,
-    message,
+    messageSubject,
+    messageBody,
     lang,
     title,
     tags,
@@ -519,7 +520,7 @@ const normalizeRevisionSummary: Normalizer<RevisionSummaryEntity> = (_, store, e
   store.RevisionSummary[id] = {
     ...base(entity),
     revisionId,
-    message: revision.message
+    messageSubject: revision.messageSubject
   };
 };
 
@@ -577,7 +578,8 @@ const normalizeSuggestion: Normalizer<SuggestionEntity> = (context, store, entit
     revision,
     revisionId,
     state,
-    message,
+    messageSubject,
+    messageBody,
     lang,
     title,
     tags,
@@ -598,8 +600,9 @@ const normalizeSuggestion: Normalizer<SuggestionEntity> = (context, store, entit
     authorId,
     exerciseId: revision.exerciseId,
     revisionId,
+    messageSubject,
+    messageBody,
     state,
-    message,
     lang,
     title,
     tags,
@@ -619,11 +622,12 @@ const normalizeSuggestionSummary: Normalizer<SuggestionSummaryEntity> = (_, stor
     throw createError(500, "suggestionSummary.suggestion is not defined");
   }
 
-  const { state } = suggestion;
+  const { messageSubject, state } = suggestion;
 
   store.SuggestionSummary[id] = {
     ...base(entity),
     suggestionId,
+    messageSubject,
     state
   };
 };

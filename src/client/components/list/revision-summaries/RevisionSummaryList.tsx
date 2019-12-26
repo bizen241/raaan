@@ -11,7 +11,7 @@ export const RevisionSummaryList = createEntityList("RevisionSummary")(
         <TableCell>
           <Column>
             <Link color="textPrimary" component={RouterLink} to={`/revisions/${revisionSummary.revisionId}`}>
-              <Typography>{new Date(revisionSummary.createdAt).toLocaleDateString()}</Typography>
+              <Typography>{revisionSummary.messageSubject || "件名なし"}</Typography>
             </Link>
           </Column>
         </TableCell>
