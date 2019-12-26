@@ -1,6 +1,9 @@
 import { Contest } from "./Contest";
 import { ContestEntry } from "./ContestEntry";
 import { Exercise } from "./Exercise";
+import { ExerciseComment } from "./ExerciseComment";
+import { ExerciseCommentSummary } from "./ExerciseCommentSummary";
+import { ExerciseCommentVote } from "./ExerciseCommentVote";
 import { ExerciseDiary } from "./ExerciseDiary";
 import { ExerciseDraft } from "./ExerciseDraft";
 import { ExerciseSummary } from "./ExerciseSummary";
@@ -13,16 +16,21 @@ import { GroupMember } from "./GroupMember";
 import { GroupSecret } from "./GroupSecret";
 import { GroupSummary } from "./GroupSummary";
 import { Objection } from "./Objection";
+import { ObjectionComment } from "./ObjectionComment";
 import { Playlist } from "./Playlist";
 import { PlaylistBookmark } from "./PlaylistBookmark";
 import { PlaylistItem } from "./PlaylistItem";
 import { PlaylistSummary } from "./PlaylistSummary";
 import { Report } from "./Report";
+import { ReportComment } from "./ReportComment";
 import { Revision } from "./Revision";
 import { RevisionSummary } from "./RevisionSummary";
 import { Submission } from "./Submission";
 import { SubmissionSummary } from "./SubmissionSummary";
 import { Suggestion } from "./Suggestion";
+import { SuggestionComment } from "./SuggestionComment";
+import { SuggestionCommentSummary } from "./SuggestionCommentSummary";
+import { SuggestionCommentVote } from "./SuggestionCommentVote";
 import { SuggestionSummary } from "./SuggestionSummary";
 import { Synonym } from "./Synonym";
 import { Tag } from "./Tag";
@@ -41,6 +49,9 @@ export * from "./BaseExerciseObject";
 export * from "./Contest";
 export * from "./ContestEntry";
 export * from "./Exercise";
+export * from "./ExerciseComment";
+export * from "./ExerciseCommentSummary";
+export * from "./ExerciseCommentVote";
 export * from "./ExerciseDiary";
 export * from "./ExerciseDraft";
 export * from "./ExerciseSummary";
@@ -53,16 +64,21 @@ export * from "./GroupMember";
 export * from "./GroupSecret";
 export * from "./GroupSummary";
 export * from "./Objection";
+export * from "./ObjectionComment";
 export * from "./Playlist";
 export * from "./PlaylistBookmark";
 export * from "./PlaylistItem";
 export * from "./PlaylistSummary";
 export * from "./Report";
+export * from "./ReportComment";
 export * from "./Revision";
 export * from "./RevisionSummary";
 export * from "./Submission";
 export * from "./SubmissionSummary";
 export * from "./Suggestion";
+export * from "./SuggestionComment";
+export * from "./SuggestionCommentSummary";
+export * from "./SuggestionCommentVote";
 export * from "./SuggestionSummary";
 export * from "./Synonym";
 export * from "./Tag";
@@ -81,6 +97,9 @@ export type EntityTypeToEntity = {
   Contest: Contest;
   ContestEntry: ContestEntry;
   Exercise: Exercise;
+  ExerciseComment: ExerciseComment;
+  ExerciseCommentSummary: ExerciseCommentSummary;
+  ExerciseCommentVote: ExerciseCommentVote;
   ExerciseDiary: ExerciseDiary;
   ExerciseDraft: ExerciseDraft;
   ExerciseSummary: ExerciseSummary;
@@ -93,16 +112,21 @@ export type EntityTypeToEntity = {
   GroupSecret: GroupSecret;
   GroupSummary: GroupSummary;
   Objection: Objection;
+  ObjectionComment: ObjectionComment;
   Playlist: Playlist;
   PlaylistBookmark: PlaylistBookmark;
   PlaylistItem: PlaylistItem;
   PlaylistSummary: PlaylistSummary;
   Report: Report;
+  ReportComment: ReportComment;
   Revision: Revision;
   RevisionSummary: RevisionSummary;
   Submission: Submission;
   SubmissionSummary: SubmissionSummary;
   Suggestion: Suggestion;
+  SuggestionComment: SuggestionComment;
+  SuggestionCommentSummary: SuggestionCommentSummary;
+  SuggestionCommentVote: SuggestionCommentVote;
   SuggestionSummary: SuggestionSummary;
   Synonym: Synonym;
   Tag: Tag;
@@ -129,6 +153,9 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     Contest: {},
     ContestEntry: {},
     Exercise: {},
+    ExerciseComment: {},
+    ExerciseCommentSummary: {},
+    ExerciseCommentVote: {},
     ExerciseDiary: {},
     ExerciseDraft: {},
     ExerciseSummary: {},
@@ -141,16 +168,21 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     GroupSecret: {},
     GroupSummary: {},
     Objection: {},
+    ObjectionComment: {},
     Playlist: {},
     PlaylistBookmark: {},
     PlaylistItem: {},
     PlaylistSummary: {},
     Report: {},
+    ReportComment: {},
     Revision: {},
     RevisionSummary: {},
     Submission: {},
     SubmissionSummary: {},
     Suggestion: {},
+    SuggestionComment: {},
+    SuggestionCommentSummary: {},
+    SuggestionCommentVote: {},
     SuggestionSummary: {},
     Synonym: {},
     Tag: {},

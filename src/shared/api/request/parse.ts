@@ -6,6 +6,9 @@ import {
   EntityType,
   EntityTypeToEntity,
   Exercise,
+  ExerciseComment,
+  ExerciseCommentSummary,
+  ExerciseCommentVote,
   ExerciseDiary,
   ExerciseDraft,
   ExerciseSummary,
@@ -18,6 +21,7 @@ import {
   GroupSecret,
   GroupSummary,
   Objection,
+  ObjectionComment,
   ObjectionTargetType,
   Permission,
   Playlist,
@@ -25,12 +29,16 @@ import {
   PlaylistItem,
   PlaylistSummary,
   Report,
+  ReportComment,
   ReportTargetType,
   Revision,
   RevisionSummary,
   Submission,
   SubmissionSummary,
   Suggestion,
+  SuggestionComment,
+  SuggestionCommentSummary,
+  SuggestionCommentVote,
   SuggestionSummary,
   Synonym,
   Tag,
@@ -92,6 +100,24 @@ const parseExercise: Parser<Exercise> = query => {
   return {
     ...base(query),
     authorId
+  };
+};
+
+const parseExerciseComment: Parser<ExerciseComment> = query => {
+  return {
+    ...base(query)
+  };
+};
+
+const parseExerciseCommentSummary: Parser<ExerciseCommentSummary> = query => {
+  return {
+    ...base(query)
+  };
+};
+
+const parseExerciseCommentVote: Parser<ExerciseCommentVote> = query => {
+  return {
+    ...base(query)
   };
 };
 
@@ -212,6 +238,12 @@ const parseObjection: Parser<Objection> = query => {
   };
 };
 
+const parseObjectionComment: Parser<ObjectionComment> = query => {
+  return {
+    ...base(query)
+  };
+};
+
 const parsePlaylist: Parser<Playlist> = query => {
   return {
     ...base(query)
@@ -255,6 +287,12 @@ const parseReport: Parser<Report> = query => {
   };
 };
 
+const parseReportComment: Parser<ReportComment> = query => {
+  return {
+    ...base(query)
+  };
+};
+
 const parseRevision: Parser<Revision> = query => {
   return {
     ...base(query)
@@ -288,6 +326,24 @@ const parseSubmissionSummary: Parser<SubmissionSummary> = query => {
 };
 
 const parseSuggestion: Parser<Suggestion> = query => {
+  return {
+    ...base(query)
+  };
+};
+
+const parseSuggestionComment: Parser<SuggestionComment> = query => {
+  return {
+    ...base(query)
+  };
+};
+
+const parseSuggestionCommentSummary: Parser<SuggestionCommentSummary> = query => {
+  return {
+    ...base(query)
+  };
+};
+
+const parseSuggestionCommentVote: Parser<SuggestionCommentVote> = query => {
   return {
     ...base(query)
   };
@@ -412,6 +468,9 @@ const parsers: { [T in EntityType]: Parser<EntityTypeToEntity[T]> } = {
   Contest: parseContest,
   ContestEntry: parseContestEntry,
   Exercise: parseExercise,
+  ExerciseComment: parseExerciseComment,
+  ExerciseCommentSummary: parseExerciseCommentSummary,
+  ExerciseCommentVote: parseExerciseCommentVote,
   ExerciseDiary: parseExerciseDiary,
   ExerciseDraft: parseExerciseDraft,
   ExerciseSummary: parseExerciseSummary,
@@ -424,16 +483,21 @@ const parsers: { [T in EntityType]: Parser<EntityTypeToEntity[T]> } = {
   GroupSecret: parseGroupSecret,
   GroupSummary: parseGroupSummary,
   Objection: parseObjection,
+  ObjectionComment: parseObjectionComment,
   Playlist: parsePlaylist,
   PlaylistBookmark: parsePlaylistBookmark,
   PlaylistItem: parsePlaylistItem,
   PlaylistSummary: parsePlaylistSummary,
   Report: parseReport,
+  ReportComment: parseReportComment,
   Revision: parseRevision,
   RevisionSummary: parseRevisionSummary,
   Submission: parseSubmission,
   SubmissionSummary: parseSubmissionSummary,
   Suggestion: parseSuggestion,
+  SuggestionComment: parseSuggestionComment,
+  SuggestionCommentSummary: parseSuggestionCommentSummary,
+  SuggestionCommentVote: parseSuggestionCommentVote,
   SuggestionSummary: parseSuggestionSummary,
   Synonym: parseSynonym,
   Tag: parseTag,

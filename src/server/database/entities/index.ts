@@ -1,6 +1,9 @@
 import { EntityType } from "../../../shared/api/entities";
 import { ContestEntity } from "./ContestEntity";
 import { ContestEntryEntity } from "./ContestEntryEntity";
+import { ExerciseCommentEntity } from "./ExerciseCommentEntity";
+import { ExerciseCommentSummaryEntity } from "./ExerciseCommentSummaryEntity";
+import { ExerciseCommentVoteEntity } from "./ExerciseCommentVoteEntity";
 import { ExerciseDiaryEntity } from "./ExerciseDiaryEntity";
 import { ExerciseDraftEntity } from "./ExerciseDraftEntity";
 import { ExerciseEntity } from "./ExerciseEntity";
@@ -13,17 +16,22 @@ import { GroupInvitationEntity } from "./GroupInvitationEntity";
 import { GroupMemberEntity } from "./GroupMemberEntity";
 import { GroupSecretEntity } from "./GroupSecretEntity";
 import { GroupSummaryEntity } from "./GroupSummaryEntity";
+import { ObjectionCommentEntity } from "./ObjectionCommentEntity";
 import { ObjectionEntity } from "./ObjectionEntity";
 import { PlaylistBookmarkEntity } from "./PlaylistBookmarkEntity";
 import { PlaylistEntity } from "./PlaylistEntity";
 import { PlaylistItemEntity } from "./PlaylistItemEntity";
 import { PlaylistSummaryEntity } from "./PlaylistSummaryEntity";
 import { RateLimitEntity } from "./RateLimitEntity";
+import { ReportCommentEntity } from "./ReportCommentEntity";
 import { ReportEntity } from "./ReportEntity";
 import { RevisionEntity } from "./RevisionEntity";
 import { RevisionSummaryEntity } from "./RevisionSummaryEntity";
 import { SubmissionEntity } from "./SubmissionEntity";
 import { SubmissionSummaryEntity } from "./SubmissionSummaryEntity";
+import { SuggestionCommentEntity } from "./SuggestionCommentEntity";
+import { SuggestionCommentSummaryEntity } from "./SuggestionCommentSummaryEntity";
+import { SuggestionCommentVoteEntity } from "./SuggestionCommentVoteEntity";
 import { SuggestionEntity } from "./SuggestionEntity";
 import { SuggestionSummaryEntity } from "./SuggestionSummaryEntity";
 import { SynonymEntity } from "./SynonymEntity";
@@ -41,6 +49,9 @@ import { UserSummaryEntity } from "./UserSummaryEntity";
 
 export * from "./ContestEntity";
 export * from "./ContestEntryEntity";
+export * from "./ExerciseCommentEntity";
+export * from "./ExerciseCommentSummaryEntity";
+export * from "./ExerciseCommentVoteEntity";
 export * from "./ExerciseDiaryEntity";
 export * from "./ExerciseDraftEntity";
 export * from "./ExerciseEntity";
@@ -54,15 +65,20 @@ export * from "./GroupMemberEntity";
 export * from "./GroupSecretEntity";
 export * from "./GroupSummaryEntity";
 export * from "./ObjectionEntity";
+export * from "./ObjectionCommentEntity";
 export * from "./PlaylistBookmarkEntity";
 export * from "./PlaylistEntity";
 export * from "./PlaylistItemEntity";
 export * from "./PlaylistSummaryEntity";
 export * from "./ReportEntity";
+export * from "./ReportCommentEntity";
 export * from "./RevisionEntity";
 export * from "./RevisionSummaryEntity";
 export * from "./SubmissionEntity";
 export * from "./SubmissionSummaryEntity";
+export * from "./SuggestionCommentEntity";
+export * from "./SuggestionCommentSummaryEntity";
+export * from "./SuggestionCommentVoteEntity";
 export * from "./SuggestionEntity";
 export * from "./SuggestionSummaryEntity";
 export * from "./SynonymEntity";
@@ -81,6 +97,9 @@ export * from "./UserSummaryEntity";
 export type Entity =
   | ContestEntity
   | ContestEntryEntity
+  | ExerciseCommentEntity
+  | ExerciseCommentSummaryEntity
+  | ExerciseCommentVoteEntity
   | ExerciseDiaryEntity
   | ExerciseDraftEntity
   | ExerciseEntity
@@ -94,15 +113,20 @@ export type Entity =
   | GroupSecretEntity
   | GroupSummaryEntity
   | ObjectionEntity
+  | ObjectionCommentEntity
   | PlaylistBookmarkEntity
   | PlaylistEntity
   | PlaylistItemEntity
   | PlaylistSummaryEntity
   | ReportEntity
+  | ReportCommentEntity
   | RevisionEntity
   | RevisionSummaryEntity
   | SubmissionEntity
   | SubmissionSummaryEntity
+  | SuggestionCommentEntity
+  | SuggestionCommentSummaryEntity
+  | SuggestionCommentVoteEntity
   | SuggestionEntity
   | SuggestionSummaryEntity
   | SynonymEntity
@@ -124,6 +148,9 @@ export const entities = [
     Contest: ContestEntity,
     ContestEntry: ContestEntryEntity,
     Exercise: ExerciseEntity,
+    ExerciseComment: ExerciseCommentEntity,
+    ExerciseCommentSummary: ExerciseCommentSummaryEntity,
+    ExerciseCommentVote: ExerciseCommentVoteEntity,
     ExerciseDiary: ExerciseDiaryEntity,
     ExerciseDraft: ExerciseDraftEntity,
     ExerciseSummary: ExerciseSummaryEntity,
@@ -136,16 +163,21 @@ export const entities = [
     GroupSecret: GroupSecretEntity,
     GroupSummary: GroupSummaryEntity,
     Objection: ObjectionEntity,
+    ObjectionComment: ObjectionCommentEntity,
     Playlist: PlaylistEntity,
     PlaylistBookmark: PlaylistBookmarkEntity,
     PlaylistItem: PlaylistItemEntity,
     PlaylistSummary: PlaylistSummaryEntity,
     Report: ReportEntity,
+    ReportComment: ReportCommentEntity,
     Revision: RevisionEntity,
     RevisionSummary: RevisionSummaryEntity,
     Submission: SubmissionEntity,
     SubmissionSummary: SubmissionSummaryEntity,
     Suggestion: SuggestionEntity,
+    SuggestionComment: SuggestionCommentEntity,
+    SuggestionCommentSummary: SuggestionCommentSummaryEntity,
+    SuggestionCommentVote: SuggestionCommentVoteEntity,
     SuggestionSummary: SuggestionSummaryEntity,
     Synonym: SynonymEntity,
     Tag: TagEntity,

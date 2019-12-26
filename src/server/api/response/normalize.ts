@@ -6,6 +6,9 @@ import {
   ContestEntity,
   ContestEntryEntity,
   Entity,
+  ExerciseCommentEntity,
+  ExerciseCommentSummaryEntity,
+  ExerciseCommentVoteEntity,
   ExerciseDiaryEntity,
   ExerciseDraftEntity,
   ExerciseEntity,
@@ -18,16 +21,21 @@ import {
   GroupMemberEntity,
   GroupSecretEntity,
   GroupSummaryEntity,
+  ObjectionCommentEntity,
   ObjectionEntity,
   PlaylistBookmarkEntity,
   PlaylistEntity,
   PlaylistItemEntity,
   PlaylistSummaryEntity,
+  ReportCommentEntity,
   ReportEntity,
   RevisionEntity,
   RevisionSummaryEntity,
   SubmissionEntity,
   SubmissionSummaryEntity,
+  SuggestionCommentEntity,
+  SuggestionCommentSummaryEntity,
+  SuggestionCommentVoteEntity,
   SuggestionEntity,
   SuggestionSummaryEntity,
   SynonymEntity,
@@ -174,6 +182,46 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) =
   normalizeEntity(context, store, summary);
 };
 
+const normalizeExerciseComment: Normalizer<ExerciseCommentEntity> = (context, store, entity) => {
+  const { id, summary, summaryId, body } = entity;
+
+  store.ExerciseComment[id] = {
+    ...base(entity),
+    summaryId,
+    body
+  };
+
+  normalizeEntity(context, store, summary);
+};
+
+const normalizeExerciseCommentSummary: Normalizer<ExerciseCommentSummaryEntity> = (_, store, entity) => {
+  const { id, parentId, upvoteCount, downvoteCount } = entity;
+
+  store.ExerciseCommentSummary[id] = {
+    ...base(entity),
+    parentId,
+    upvoteCount,
+    downvoteCount
+  };
+};
+
+const normalizeExerciseCommentVote: Normalizer<ExerciseCommentVoteEntity> = (_, store, entity) => {
+  const { id, target, voter, isUp } = entity;
+  if (target === undefined) {
+    throw createError(500, "exerciseCommentVote.target is not defined");
+  }
+  if (voter === undefined) {
+    throw createError(500, "exerciseCommentVote.voter is not defined");
+  }
+
+  store.ExerciseCommentVote[id] = {
+    ...base(entity),
+    targetSummaryId: target.summaryId,
+    voterSummaryId: voter.summaryId,
+    isUp
+  };
+};
+
 const normalizeExerciseDiary: Normalizer<ExerciseDiaryEntity> = (_, store, entity) => {
   const { id, date, submittedCount, typedCount } = entity;
 
@@ -240,7 +288,7 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (_, store, e
 };
 
 const normalizeExerciseVote: Normalizer<ExerciseVoteEntity> = (_, store, entity) => {
-  const { id, target, targetId, voter, voterId, isUp } = entity;
+  const { id, target, voter, isUp } = entity;
   if (target === undefined) {
     throw createError(500, "exerciseVote.target is not defined");
   }
@@ -250,9 +298,7 @@ const normalizeExerciseVote: Normalizer<ExerciseVoteEntity> = (_, store, entity)
 
   store.ExerciseVote[id] = {
     ...base(entity),
-    targetId,
     targetSummaryId: target.summaryId,
-    voterId,
     voterSummaryId: voter.summaryId,
     isUp
   };
@@ -394,6 +440,15 @@ const normalizeObjection: Normalizer<ObjectionEntity> = (_, store, entity) => {
   };
 };
 
+const normalizeObjectionComment: Normalizer<ObjectionCommentEntity> = (_, store, entity) => {
+  const { id, body } = entity;
+
+  store.ObjectionComment[id] = {
+    ...base(entity),
+    body
+  };
+};
+
 const normalizePlaylist: Normalizer<PlaylistEntity> = (context, store, entity) => {
   const { id, authorId, summaryId, title, tags, description, orderBy, isPrivate, isLocked } = entity;
 
@@ -491,6 +546,15 @@ const normalizeReport: Normalizer<ReportEntity> = (_, store, entity) => {
     description,
     state,
     comment
+  };
+};
+
+const normalizeReportComment: Normalizer<ReportCommentEntity> = (_, store, entity) => {
+  const { id, body } = entity;
+
+  store.ReportComment[id] = {
+    ...base(entity),
+    body
   };
 };
 
@@ -614,6 +678,46 @@ const normalizeSuggestion: Normalizer<SuggestionEntity> = (context, store, entit
   summary.suggestion = entity;
 
   normalizeEntity(context, store, summary);
+};
+
+const normalizeSuggestionComment: Normalizer<SuggestionCommentEntity> = (context, store, entity) => {
+  const { id, summary, summaryId, body } = entity;
+
+  store.SuggestionComment[id] = {
+    ...base(entity),
+    summaryId,
+    body
+  };
+
+  normalizeEntity(context, store, summary);
+};
+
+const normalizeSuggestionCommentSummary: Normalizer<SuggestionCommentSummaryEntity> = (_, store, entity) => {
+  const { id, parentId, upvoteCount, downvoteCount } = entity;
+
+  store.SuggestionCommentSummary[id] = {
+    ...base(entity),
+    parentId,
+    upvoteCount,
+    downvoteCount
+  };
+};
+
+const normalizeSuggestionCommentVote: Normalizer<SuggestionCommentVoteEntity> = (_, store, entity) => {
+  const { id, target, voter, isUp } = entity;
+  if (target === undefined) {
+    throw createError(500, "exerciseCommentVote.target is not defined");
+  }
+  if (voter === undefined) {
+    throw createError(500, "exerciseCommentVote.voter is not defined");
+  }
+
+  store.SuggestionCommentVote[id] = {
+    ...base(entity),
+    targetSummaryId: target.summaryId,
+    voterSummaryId: voter.summaryId,
+    isUp
+  };
 };
 
 const normalizeSuggestionSummary: Normalizer<SuggestionSummaryEntity> = (_, store, entity) => {
@@ -812,6 +916,9 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   Contest: normalizeContest,
   ContestEntry: normalizeContestEntry,
   Exercise: normalizeExercise,
+  ExerciseComment: normalizeExerciseComment,
+  ExerciseCommentSummary: normalizeExerciseCommentSummary,
+  ExerciseCommentVote: normalizeExerciseCommentVote,
   ExerciseDiary: normalizeExerciseDiary,
   ExerciseDraft: normalizeExerciseDraft,
   ExerciseSummary: normalizeExerciseSummary,
@@ -824,16 +931,21 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   GroupSecret: normalizeGroupSecret,
   GroupSummary: normalizeGroupSummary,
   Objection: normalizeObjection,
+  ObjectionComment: normalizeObjectionComment,
   Playlist: normalizePlaylist,
   PlaylistBookmark: normalizePlaylistBookmark,
   PlaylistItem: normalizePlaylistItem,
   PlaylistSummary: normalizePlaylistSummary,
   Report: normalizeReport,
+  ReportComment: normalizeReportComment,
   Revision: normalizeRevision,
   RevisionSummary: normalizeRevisionSummary,
   Submission: normalizeSubmission,
   SubmissionSummary: normalizeSubmissionSummary,
   Suggestion: normalizeSuggestion,
+  SuggestionComment: normalizeSuggestionComment,
+  SuggestionCommentSummary: normalizeSuggestionCommentSummary,
+  SuggestionCommentVote: normalizeSuggestionCommentVote,
   SuggestionSummary: normalizeSuggestionSummary,
   Synonym: normalizeSynonym,
   Tag: normalizeTag,
