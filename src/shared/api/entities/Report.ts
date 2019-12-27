@@ -8,7 +8,7 @@ export interface Report extends BaseEntityObject {
   reason: ReportReason;
   description: string;
   state: ReportState;
-  comment: string;
+  comment?: string;
 }
 
 export type ReportTargetType = "Exercise" | "Playlist" | "Synonym" | "Tag" | "User";

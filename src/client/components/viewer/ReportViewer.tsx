@@ -6,7 +6,7 @@ import { UserContext } from "../project/Context";
 import { Button, Card, Column, Property } from "../ui";
 
 export const ReportViewer = withEntity("Report")(({ entity: report }) => {
-  const { reason, description, state, comment } = report;
+  const { reason, description, state } = report;
 
   const currentUser = useContext(UserContext);
 
@@ -26,7 +26,6 @@ export const ReportViewer = withEntity("Report")(({ entity: report }) => {
         <Property label="理由">{reason}</Property>
         {description && <Property label="説明">{description}</Property>}
         <Property label="状態">{state}</Property>
-        {comment && <Property label="コメント">{comment}</Property>}
       </Card>
     </Column>
   );

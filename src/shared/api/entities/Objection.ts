@@ -5,7 +5,7 @@ export interface Objection extends BaseEntityObject {
   targetType: ObjectionTargetType;
   targetId: UUID;
   description: string;
-  comment: string;
+  comment?: string;
   state: ObjectionState;
 }
 

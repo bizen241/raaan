@@ -6,7 +6,7 @@ import { Params } from "../../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
 import { hasPermission } from "../../../api/security";
-import { ObjectionEntity } from "../../../database/entities";
+import { ObjectionCommentEntity, ObjectionEntity } from "../../../database/entities";
 import { unlockObjectionTarget } from "../../../services/objections";
 
 export const PATCH: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
@@ -37,7 +37,8 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, _, curren
         objection.state = params.state;
       }
       if (params.comment !== undefined) {
-        objection.comment = params.comment;
+        const objectionComment = new ObjectionCommentEntity(objection, currentUser, params.comment);
+        await manager.save(objectionComment);
       }
     }
 

@@ -26,9 +26,6 @@ export class ObjectionEntity extends BaseEntityClass {
   @Column()
   state: ObjectionState = "pending";
 
-  @Column()
-  comment: string = "";
-
   constructor(objector: UserEntity, description: string) {
     super();
 

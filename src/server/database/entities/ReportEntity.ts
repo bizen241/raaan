@@ -36,9 +36,6 @@ export class ReportEntity extends BaseEntityClass {
   @Column()
   state: ReportState = "pending";
 
-  @Column()
-  comment: string = "";
-
   constructor(reporter: UserEntity, defendant: UserEntity, reason: ReportReason, description: string) {
     super();
 

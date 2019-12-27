@@ -6,7 +6,7 @@ import { Params } from "../../../../shared/api/request/params";
 import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
 import { responseFindResult } from "../../../api/response";
 import { hasPermission } from "../../../api/security";
-import { ReportEntity } from "../../../database/entities";
+import { ReportCommentEntity, ReportEntity } from "../../../database/entities";
 import { lockReportTarget } from "../../../services/reports";
 
 export const PATCH: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
@@ -40,7 +40,8 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, _, curren
         report.state = params.state;
       }
       if (params.comment !== undefined) {
-        report.comment = params.comment;
+        const reportComment = new ReportCommentEntity(report, currentUser, params.comment);
+        await manager.save(reportComment);
       }
     }
 

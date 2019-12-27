@@ -427,7 +427,7 @@ const normalizeGroupSummary: Normalizer<GroupSummaryEntity> = (_, store, entity)
 };
 
 const normalizeObjection: Normalizer<ObjectionEntity> = (_, store, entity) => {
-  const { id, objectorId, targetType, targetId, description, state, comment } = entity;
+  const { id, objectorId, targetType, targetId, description, state } = entity;
 
   store.Objection[id] = {
     ...base(entity),
@@ -435,8 +435,7 @@ const normalizeObjection: Normalizer<ObjectionEntity> = (_, store, entity) => {
     targetType,
     targetId,
     description,
-    state,
-    comment
+    state
   };
 };
 
@@ -535,7 +534,7 @@ const normalizePlaylistSummary: Normalizer<PlaylistSummaryEntity> = (_, store, e
 };
 
 const normalizeReport: Normalizer<ReportEntity> = (_, store, entity) => {
-  const { id, reporterId, targetType, targetId, reason, description, state, comment } = entity;
+  const { id, reporterId, targetType, targetId, reason, description, state } = entity;
 
   store.Report[id] = {
     ...base(entity),
@@ -544,8 +543,7 @@ const normalizeReport: Normalizer<ReportEntity> = (_, store, entity) => {
     targetId,
     reason,
     description,
-    state,
-    comment
+    state
   };
 };
 

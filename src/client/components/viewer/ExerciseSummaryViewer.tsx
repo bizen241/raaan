@@ -160,11 +160,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
                 (!isObjected ? (
                   <MenuItem icon={<SmsFailed />} label="抗議する" onClick={onToggleConfirmObjectionDialog} />
                 ) : (
-                  <MenuItem
-                    icon={<SmsFailed />}
-                    label="抗議を編集する"
-                    to={`/exercise-objections/${objectionId}/edit`}
-                  />
+                  <MenuItem icon={<SmsFailed />} label="抗議を編集する" to={`/objections/${objectionId}/edit`} />
                 ))}
               <MenuItem icon={<Delete />} label="削除する" onClick={onToggleDeleteExerciseDialog} />
               {exercise && <MenuItem icon={<CloudDownload />} label="エクスポート" onClick={onToggleExportDialog} />}

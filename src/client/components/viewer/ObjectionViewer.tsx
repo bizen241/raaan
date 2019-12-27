@@ -6,7 +6,7 @@ import { UserContext } from "../project/Context";
 import { Button, Card, Column, Property } from "../ui";
 
 export const ObjectionViewer = withEntity("Objection")(({ entity: objection }) => {
-  const { description, state, comment } = objection;
+  const { description, state } = objection;
 
   const currentUser = useContext(UserContext);
 
@@ -25,7 +25,6 @@ export const ObjectionViewer = withEntity("Objection")(({ entity: objection }) =
       <Card icon={<SmsFailed />} title="抗議">
         {description && <Property label="説明">{description}</Property>}
         <Property label="状態">{state}</Property>
-        {comment && <Property label="コメント">{comment}</Property>}
       </Card>
     </Column>
   );
