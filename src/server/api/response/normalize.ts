@@ -183,11 +183,12 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) =
 };
 
 const normalizeExerciseComment: Normalizer<ExerciseCommentEntity> = (context, store, entity) => {
-  const { id, summary, summaryId, body } = entity;
+  const { id, summary, summaryId, authorId, body } = entity;
 
   store.ExerciseComment[id] = {
     ...base(entity),
     summaryId,
+    authorId,
     body
   };
 
@@ -440,10 +441,11 @@ const normalizeObjection: Normalizer<ObjectionEntity> = (_, store, entity) => {
 };
 
 const normalizeObjectionComment: Normalizer<ObjectionCommentEntity> = (_, store, entity) => {
-  const { id, body } = entity;
+  const { id, authorId, body } = entity;
 
   store.ObjectionComment[id] = {
     ...base(entity),
+    authorId,
     body
   };
 };
@@ -548,10 +550,11 @@ const normalizeReport: Normalizer<ReportEntity> = (_, store, entity) => {
 };
 
 const normalizeReportComment: Normalizer<ReportCommentEntity> = (_, store, entity) => {
-  const { id, body } = entity;
+  const { id, authorId, body } = entity;
 
   store.ReportComment[id] = {
     ...base(entity),
+    authorId,
     body
   };
 };
@@ -679,11 +682,12 @@ const normalizeSuggestion: Normalizer<SuggestionEntity> = (context, store, entit
 };
 
 const normalizeSuggestionComment: Normalizer<SuggestionCommentEntity> = (context, store, entity) => {
-  const { id, summary, summaryId, body } = entity;
+  const { id, summary, summaryId, authorId, body } = entity;
 
   store.SuggestionComment[id] = {
     ...base(entity),
     summaryId,
+    authorId,
     body
   };
 

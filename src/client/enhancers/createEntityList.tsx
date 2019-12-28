@@ -63,19 +63,18 @@ export const createEntityList = <T extends EntityType>(entityType: T, options: E
     return (
       <Column pb={1}>
         <Card>
-          <CardContent>
-            <Column>
-              {ParamsComponent === undefined ? (
-                <Row>
-                  <IconButton onClick={onReload}>
-                    <Refresh />
-                  </IconButton>
-                </Row>
-              ) : (
-                <ParamsComponent params={params} onReload={onReload} onChange={onChange} />
-              )}
-            </Column>
-          </CardContent>
+          <Column px={2} py={1}>
+            {ParamsComponent === undefined ? (
+              <Row>
+                <Row flex={1} />
+                <IconButton onClick={onReload}>
+                  <Refresh />
+                </IconButton>
+              </Row>
+            ) : (
+              <ParamsComponent params={params} onReload={onReload} onChange={onChange} />
+            )}
+          </Column>
           <Divider />
           <Table>
             <TableBody>
