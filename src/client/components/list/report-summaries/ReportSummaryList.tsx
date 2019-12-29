@@ -4,14 +4,14 @@ import { Link as RouterLink } from "react-router-dom";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { Column } from "../../ui";
 
-export const ReportList = createEntityList("Report")(
-  React.memo(({ entity: report }) => {
+export const ReportSummaryList = createEntityList("ReportSummary")(
+  React.memo(({ entity: reportSummary }) => {
     return (
       <TableRow>
         <TableCell>
           <Column>
-            <Link color="textPrimary" component={RouterLink} to={`/reports/${report.id}`}>
-              <Typography>{report.reason}</Typography>
+            <Link color="textPrimary" component={RouterLink} to={`/reports/${reportSummary.parentId}`}>
+              <Typography>{reportSummary.state}</Typography>
             </Link>
           </Column>
         </TableCell>

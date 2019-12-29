@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReportList } from "../../list/reports/ReportList";
+import { ReportSummaryList } from "../../list/report-summaries/ReportSummaryList";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui";
 
@@ -8,7 +8,7 @@ export const UserReceivedReportsPage = React.memo<PageProps>(props => {
 
   return (
     <Page title="受信した報告">
-      <ReportList
+      <ReportSummaryList
         initialParams={{
           targetType: "User",
           targetId: userId
