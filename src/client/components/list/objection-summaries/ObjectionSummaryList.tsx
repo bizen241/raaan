@@ -4,14 +4,14 @@ import { Link as RouterLink } from "react-router-dom";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { Column } from "../../ui";
 
-export const ObjectionList = createEntityList("Objection")(
-  React.memo(({ entity: objection }) => {
+export const ObjectionSummaryList = createEntityList("ObjectionSummary")(
+  React.memo(({ entity: objectionSummary }) => {
     return (
       <TableRow>
         <TableCell>
           <Column>
-            <Link color="textPrimary" component={RouterLink} to={`/objections/${objection.id}`}>
-              <Typography>{objection.state}</Typography>
+            <Link color="textPrimary" component={RouterLink} to={`/objections/${objectionSummary.parentId}`}>
+              <Typography>{objectionSummary.state}</Typography>
             </Link>
           </Column>
         </TableCell>
