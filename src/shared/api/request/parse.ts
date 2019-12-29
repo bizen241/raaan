@@ -110,8 +110,11 @@ const parseExerciseComment: Parser<ExerciseComment> = query => {
 };
 
 const parseExerciseCommentSummary: Parser<ExerciseCommentSummary> = query => {
+  const { authorId } = query;
+
   return {
-    ...base(query)
+    ...base(query),
+    authorId
   };
 };
 
