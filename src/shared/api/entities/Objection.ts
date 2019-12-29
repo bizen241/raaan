@@ -1,6 +1,7 @@
 import { BaseEntityObject, UUID } from "./BaseEntityObject";
 
 export interface Objection extends BaseEntityObject {
+  summaryId: UUID;
   objectorId: UUID;
   targetType: ObjectionTargetType;
   targetId: UUID;

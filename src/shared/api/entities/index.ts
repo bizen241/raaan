@@ -17,12 +17,14 @@ import { GroupSecret } from "./GroupSecret";
 import { GroupSummary } from "./GroupSummary";
 import { Objection } from "./Objection";
 import { ObjectionComment } from "./ObjectionComment";
+import { ObjectionSummary } from "./ObjectionSummary";
 import { Playlist } from "./Playlist";
 import { PlaylistBookmark } from "./PlaylistBookmark";
 import { PlaylistItem } from "./PlaylistItem";
 import { PlaylistSummary } from "./PlaylistSummary";
 import { Report } from "./Report";
 import { ReportComment } from "./ReportComment";
+import { ReportSummary } from "./ReportSummary";
 import { Revision } from "./Revision";
 import { RevisionSummary } from "./RevisionSummary";
 import { Submission } from "./Submission";
@@ -65,12 +67,14 @@ export * from "./GroupSecret";
 export * from "./GroupSummary";
 export * from "./Objection";
 export * from "./ObjectionComment";
+export * from "./ObjectionSummary";
 export * from "./Playlist";
 export * from "./PlaylistBookmark";
 export * from "./PlaylistItem";
 export * from "./PlaylistSummary";
 export * from "./Report";
 export * from "./ReportComment";
+export * from "./ReportSummary";
 export * from "./Revision";
 export * from "./RevisionSummary";
 export * from "./Submission";
@@ -113,12 +117,14 @@ export type EntityTypeToEntity = {
   GroupSummary: GroupSummary;
   Objection: Objection;
   ObjectionComment: ObjectionComment;
+  ObjectionSummary: ObjectionSummary;
   Playlist: Playlist;
   PlaylistBookmark: PlaylistBookmark;
   PlaylistItem: PlaylistItem;
   PlaylistSummary: PlaylistSummary;
   Report: Report;
   ReportComment: ReportComment;
+  ReportSummary: ReportSummary;
   Revision: Revision;
   RevisionSummary: RevisionSummary;
   Submission: Submission;
@@ -169,12 +175,14 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     GroupSummary: {},
     Objection: {},
     ObjectionComment: {},
+    ObjectionSummary: {},
     Playlist: {},
     PlaylistBookmark: {},
     PlaylistItem: {},
     PlaylistSummary: {},
     Report: {},
     ReportComment: {},
+    ReportSummary: {},
     Revision: {},
     RevisionSummary: {},
     Submission: {},

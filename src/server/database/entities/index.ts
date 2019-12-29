@@ -18,6 +18,7 @@ import { GroupSecretEntity } from "./GroupSecretEntity";
 import { GroupSummaryEntity } from "./GroupSummaryEntity";
 import { ObjectionCommentEntity } from "./ObjectionCommentEntity";
 import { ObjectionEntity } from "./ObjectionEntity";
+import { ObjectionSummaryEntity } from "./ObjectionSummaryEntity";
 import { PlaylistBookmarkEntity } from "./PlaylistBookmarkEntity";
 import { PlaylistEntity } from "./PlaylistEntity";
 import { PlaylistItemEntity } from "./PlaylistItemEntity";
@@ -25,6 +26,7 @@ import { PlaylistSummaryEntity } from "./PlaylistSummaryEntity";
 import { RateLimitEntity } from "./RateLimitEntity";
 import { ReportCommentEntity } from "./ReportCommentEntity";
 import { ReportEntity } from "./ReportEntity";
+import { ReportSummaryEntity } from "./ReportSummaryEntity";
 import { RevisionEntity } from "./RevisionEntity";
 import { RevisionSummaryEntity } from "./RevisionSummaryEntity";
 import { SubmissionEntity } from "./SubmissionEntity";
@@ -64,14 +66,16 @@ export * from "./GroupInvitationEntity";
 export * from "./GroupMemberEntity";
 export * from "./GroupSecretEntity";
 export * from "./GroupSummaryEntity";
-export * from "./ObjectionEntity";
 export * from "./ObjectionCommentEntity";
+export * from "./ObjectionEntity";
+export * from "./ObjectionSummaryEntity";
 export * from "./PlaylistBookmarkEntity";
 export * from "./PlaylistEntity";
 export * from "./PlaylistItemEntity";
 export * from "./PlaylistSummaryEntity";
-export * from "./ReportEntity";
 export * from "./ReportCommentEntity";
+export * from "./ReportEntity";
+export * from "./ReportSummaryEntity";
 export * from "./RevisionEntity";
 export * from "./RevisionSummaryEntity";
 export * from "./SubmissionEntity";
@@ -112,14 +116,16 @@ export type Entity =
   | GroupMemberEntity
   | GroupSecretEntity
   | GroupSummaryEntity
-  | ObjectionEntity
   | ObjectionCommentEntity
+  | ObjectionEntity
+  | ObjectionSummaryEntity
   | PlaylistBookmarkEntity
   | PlaylistEntity
   | PlaylistItemEntity
   | PlaylistSummaryEntity
-  | ReportEntity
   | ReportCommentEntity
+  | ReportEntity
+  | ReportSummaryEntity
   | RevisionEntity
   | RevisionSummaryEntity
   | SubmissionEntity
@@ -164,12 +170,14 @@ export const entities = [
     GroupSummary: GroupSummaryEntity,
     Objection: ObjectionEntity,
     ObjectionComment: ObjectionCommentEntity,
+    ObjectionSummary: ObjectionSummaryEntity,
     Playlist: PlaylistEntity,
     PlaylistBookmark: PlaylistBookmarkEntity,
     PlaylistItem: PlaylistItemEntity,
     PlaylistSummary: PlaylistSummaryEntity,
     Report: ReportEntity,
     ReportComment: ReportCommentEntity,
+    ReportSummary: ReportSummaryEntity,
     Revision: RevisionEntity,
     RevisionSummary: RevisionSummaryEntity,
     Submission: SubmissionEntity,

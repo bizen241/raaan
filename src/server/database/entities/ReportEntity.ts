@@ -1,11 +1,19 @@
-import { Column, Entity, ManyToOne, RelationId } from "typeorm";
+import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
 import { ReportReason, ReportState, ReportTargetType } from "../../../shared/api/entities/Report";
 import { BaseEntityClass } from "./BaseEntityClass";
+import { ReportSummaryEntity } from "./ReportSummaryEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity("reports")
 export class ReportEntity extends BaseEntityClass {
   type: "Report" = "Report";
+
+  @OneToOne(() => ReportSummaryEntity, reportSummary => reportSummary.parent, {
+    cascade: ["insert"]
+  })
+  summary?: ReportSummaryEntity;
+  @RelationId((report: ReportEntity) => report.summary)
+  summaryId!: string;
 
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"

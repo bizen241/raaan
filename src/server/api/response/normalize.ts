@@ -23,12 +23,14 @@ import {
   GroupSummaryEntity,
   ObjectionCommentEntity,
   ObjectionEntity,
+  ObjectionSummaryEntity,
   PlaylistBookmarkEntity,
   PlaylistEntity,
   PlaylistItemEntity,
   PlaylistSummaryEntity,
   ReportCommentEntity,
   ReportEntity,
+  ReportSummaryEntity,
   RevisionEntity,
   RevisionSummaryEntity,
   SubmissionEntity,
@@ -427,17 +429,23 @@ const normalizeGroupSummary: Normalizer<GroupSummaryEntity> = (_, store, entity)
   };
 };
 
-const normalizeObjection: Normalizer<ObjectionEntity> = (_, store, entity) => {
-  const { id, objectorId, targetType, targetId, description, state } = entity;
+const normalizeObjection: Normalizer<ObjectionEntity> = (context, store, entity) => {
+  const { id, summary, summaryId, objectorId, targetType, targetId, description, state } = entity;
+  if (summary === undefined) {
+    throw createError(500, "objection.summary is not defined");
+  }
 
   store.Objection[id] = {
     ...base(entity),
+    summaryId,
     objectorId,
     targetType,
     targetId,
     description,
     state
   };
+
+  normalizeEntity(context, store, summary);
 };
 
 const normalizeObjectionComment: Normalizer<ObjectionCommentEntity> = (context, store, entity) => {
@@ -456,6 +464,22 @@ const normalizeObjectionComment: Normalizer<ObjectionCommentEntity> = (context, 
   };
 
   normalizeEntity(context, store, author.summary);
+};
+
+const normalizeObjectionSummary: Normalizer<ObjectionSummaryEntity> = (_, store, entity) => {
+  const { id, parent, parentId, commentCount } = entity;
+  if (parent === undefined) {
+    throw createError(500, "objectionSummary.parent is not defined");
+  }
+
+  const { state } = parent;
+
+  store.ObjectionSummary[id] = {
+    ...base(entity),
+    parentId,
+    state,
+    commentCount
+  };
 };
 
 const normalizePlaylist: Normalizer<PlaylistEntity> = (context, store, entity) => {
@@ -543,11 +567,15 @@ const normalizePlaylistSummary: Normalizer<PlaylistSummaryEntity> = (_, store, e
   };
 };
 
-const normalizeReport: Normalizer<ReportEntity> = (_, store, entity) => {
-  const { id, reporterId, targetType, targetId, reason, description, state } = entity;
+const normalizeReport: Normalizer<ReportEntity> = (context, store, entity) => {
+  const { id, summary, summaryId, reporterId, targetType, targetId, reason, description, state } = entity;
+  if (summary === undefined) {
+    throw createError(500, "report.summary is not defined");
+  }
 
   store.Report[id] = {
     ...base(entity),
+    summaryId,
     reporterId,
     targetType,
     targetId,
@@ -555,6 +583,8 @@ const normalizeReport: Normalizer<ReportEntity> = (_, store, entity) => {
     description,
     state
   };
+
+  normalizeEntity(context, store, summary);
 };
 
 const normalizeReportComment: Normalizer<ReportCommentEntity> = (context, store, entity) => {
@@ -573,6 +603,22 @@ const normalizeReportComment: Normalizer<ReportCommentEntity> = (context, store,
   };
 
   normalizeEntity(context, store, author.summary);
+};
+
+const normalizeReportSummary: Normalizer<ReportSummaryEntity> = (_, store, entity) => {
+  const { id, parent, parentId, commentCount } = entity;
+  if (parent === undefined) {
+    throw createError(500, "reportSummary.parent is not defined");
+  }
+
+  const { state } = parent;
+
+  store.ReportSummary[id] = {
+    ...base(entity),
+    parentId,
+    state,
+    commentCount
+  };
 };
 
 const normalizeRevision: Normalizer<RevisionEntity> = (_, store, entity) => {
@@ -950,12 +996,14 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   GroupSummary: normalizeGroupSummary,
   Objection: normalizeObjection,
   ObjectionComment: normalizeObjectionComment,
+  ObjectionSummary: normalizeObjectionSummary,
   Playlist: normalizePlaylist,
   PlaylistBookmark: normalizePlaylistBookmark,
   PlaylistItem: normalizePlaylistItem,
   PlaylistSummary: normalizePlaylistSummary,
   Report: normalizeReport,
   ReportComment: normalizeReportComment,
+  ReportSummary: normalizeReportSummary,
   Revision: normalizeRevision,
   RevisionSummary: normalizeRevisionSummary,
   Submission: normalizeSubmission,

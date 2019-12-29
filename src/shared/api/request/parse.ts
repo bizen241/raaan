@@ -22,6 +22,7 @@ import {
   GroupSummary,
   Objection,
   ObjectionComment,
+  ObjectionSummary,
   ObjectionTargetType,
   Permission,
   Playlist,
@@ -30,6 +31,7 @@ import {
   PlaylistSummary,
   Report,
   ReportComment,
+  ReportSummary,
   ReportTargetType,
   Revision,
   RevisionSummary,
@@ -254,6 +256,12 @@ const parseObjectionComment: Parser<ObjectionComment> = query => {
   };
 };
 
+const parseObjectionSummary: Parser<ObjectionSummary> = query => {
+  return {
+    ...base(query)
+  };
+};
+
 const parsePlaylist: Parser<Playlist> = query => {
   return {
     ...base(query)
@@ -298,6 +306,12 @@ const parseReport: Parser<Report> = query => {
 };
 
 const parseReportComment: Parser<ReportComment> = query => {
+  return {
+    ...base(query)
+  };
+};
+
+const parseReportSummary: Parser<ReportSummary> = query => {
   return {
     ...base(query)
   };
@@ -500,12 +514,14 @@ const parsers: { [T in EntityType]: Parser<EntityTypeToEntity[T]> } = {
   GroupSummary: parseGroupSummary,
   Objection: parseObjection,
   ObjectionComment: parseObjectionComment,
+  ObjectionSummary: parseObjectionSummary,
   Playlist: parsePlaylist,
   PlaylistBookmark: parsePlaylistBookmark,
   PlaylistItem: parsePlaylistItem,
   PlaylistSummary: parsePlaylistSummary,
   Report: parseReport,
   ReportComment: parseReportComment,
+  ReportSummary: parseReportSummary,
   Revision: parseRevision,
   RevisionSummary: parseRevisionSummary,
   Submission: parseSubmission,

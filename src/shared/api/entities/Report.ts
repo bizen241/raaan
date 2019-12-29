@@ -1,6 +1,7 @@
 import { BaseEntityObject, UUID } from "./BaseEntityObject";
 
 export interface Report extends BaseEntityObject {
+  summaryId: UUID;
   reporterId: UUID;
   defendantId?: UUID;
   targetType: ReportTargetType;

@@ -1,11 +1,19 @@
-import { Column, Entity, ManyToOne, RelationId } from "typeorm";
+import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
 import { ObjectionState, ObjectionTargetType } from "../../../shared/api/entities/Objection";
 import { BaseEntityClass } from "./BaseEntityClass";
+import { ObjectionSummaryEntity } from "./ObjectionSummaryEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity("objections")
 export class ObjectionEntity extends BaseEntityClass {
   type: "Objection" = "Objection";
+
+  @OneToOne(() => ObjectionSummaryEntity, objectionSummary => objectionSummary.parent, {
+    cascade: ["insert"]
+  })
+  summary?: ObjectionSummaryEntity;
+  @RelationId((objection: ObjectionEntity) => objection.summary)
+  summaryId!: string;
 
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
