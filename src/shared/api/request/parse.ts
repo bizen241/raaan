@@ -104,8 +104,11 @@ const parseExercise: Parser<Exercise> = query => {
 };
 
 const parseExerciseComment: Parser<ExerciseComment> = query => {
+  const { targetId } = query;
+
   return {
-    ...base(query)
+    ...base(query),
+    targetId
   };
 };
 
@@ -339,8 +342,11 @@ const parseSuggestion: Parser<Suggestion> = query => {
 };
 
 const parseSuggestionComment: Parser<SuggestionComment> = query => {
+  const { targetId } = query;
+
   return {
-    ...base(query)
+    ...base(query),
+    targetId
   };
 };
 

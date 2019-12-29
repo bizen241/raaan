@@ -10,6 +10,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
 
   const query = getManager()
     .createQueryBuilder(ExerciseCommentEntity, "exerciseComment")
+    .leftJoinAndSelect("exerciseComment.summary", "summary")
     .leftJoinAndSelect("exerciseComment.target", "target")
     .leftJoinAndSelect("exerciseComment.author", "author")
     .take(searchLimit)
