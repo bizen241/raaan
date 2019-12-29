@@ -9,7 +9,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
   const { authorId, searchLimit, searchOffset } = parseQuery("SuggestionCommentSummary", req.query);
 
   const query = getManager()
-    .createQueryBuilder(SuggestionCommentSummaryEntity, "suggestionCommentSummaries")
+    .createQueryBuilder(SuggestionCommentSummaryEntity, "suggestionCommentSummary")
     .leftJoinAndSelect("suggestionCommentSummary.parent", "parent")
     .leftJoinAndSelect("parent.target", "target")
     .leftJoinAndSelect("parent.author", "author")
