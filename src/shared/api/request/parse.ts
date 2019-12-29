@@ -345,8 +345,11 @@ const parseSuggestionComment: Parser<SuggestionComment> = query => {
 };
 
 const parseSuggestionCommentSummary: Parser<SuggestionCommentSummary> = query => {
+  const { authorId } = query;
+
   return {
-    ...base(query)
+    ...base(query),
+    authorId
   };
 };
 
