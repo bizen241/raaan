@@ -295,13 +295,8 @@ const parsePlaylistSummary: Parser<PlaylistSummary> = query => {
 };
 
 const parseReport: Parser<Report> = query => {
-  const { reporterId, targetType, targetId } = query;
-
   return {
-    ...base(query),
-    reporterId,
-    targetType: targetType as ReportTargetType,
-    targetId
+    ...base(query)
   };
 };
 
@@ -312,8 +307,13 @@ const parseReportComment: Parser<ReportComment> = query => {
 };
 
 const parseReportSummary: Parser<ReportSummary> = query => {
+  const { reporterId, targetType, targetId } = query;
+
   return {
-    ...base(query)
+    ...base(query),
+    reporterId,
+    targetType: targetType as ReportTargetType,
+    targetId
   };
 };
 
