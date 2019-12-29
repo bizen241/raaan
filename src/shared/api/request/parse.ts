@@ -239,8 +239,12 @@ const parseObjection: Parser<Objection> = query => {
 };
 
 const parseObjectionComment: Parser<ObjectionComment> = query => {
+  const { targetId, authorId } = query;
+
   return {
-    ...base(query)
+    ...base(query),
+    targetId,
+    authorId
   };
 };
 

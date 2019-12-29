@@ -440,14 +440,22 @@ const normalizeObjection: Normalizer<ObjectionEntity> = (_, store, entity) => {
   };
 };
 
-const normalizeObjectionComment: Normalizer<ObjectionCommentEntity> = (_, store, entity) => {
-  const { id, authorId, body } = entity;
+const normalizeObjectionComment: Normalizer<ObjectionCommentEntity> = (context, store, entity) => {
+  const { id, author, authorId, body } = entity;
+  if (author === undefined) {
+    throw createError(500, "objectionComment.author is not defined");
+  }
+  if (author.summary === undefined) {
+    throw createError(500, "objectionComment.author.summary is not defined");
+  }
 
   store.ObjectionComment[id] = {
     ...base(entity),
     authorId,
     body
   };
+
+  normalizeEntity(context, store, author.summary);
 };
 
 const normalizePlaylist: Normalizer<PlaylistEntity> = (context, store, entity) => {
@@ -549,14 +557,22 @@ const normalizeReport: Normalizer<ReportEntity> = (_, store, entity) => {
   };
 };
 
-const normalizeReportComment: Normalizer<ReportCommentEntity> = (_, store, entity) => {
-  const { id, authorId, body } = entity;
+const normalizeReportComment: Normalizer<ReportCommentEntity> = (context, store, entity) => {
+  const { id, author, authorId, body } = entity;
+  if (author === undefined) {
+    throw createError(500, "reportComment.author is not defined");
+  }
+  if (author.summary === undefined) {
+    throw createError(500, "reportComment.author.summary is not defined");
+  }
 
   store.ReportComment[id] = {
     ...base(entity),
     authorId,
     body
   };
+
+  normalizeEntity(context, store, author.summary);
 };
 
 const normalizeRevision: Normalizer<RevisionEntity> = (_, store, entity) => {
