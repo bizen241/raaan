@@ -1,4 +1,4 @@
-import { Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { SuggestionEntity } from "./SuggestionEntity";
 
@@ -13,4 +13,7 @@ export class SuggestionSummaryEntity extends BaseEntityClass {
   suggestion?: SuggestionEntity;
   @RelationId((suggestionSummary: SuggestionSummaryEntity) => suggestionSummary.suggestion)
   suggestionId!: string;
+
+  @Column()
+  commentCount: number = 0;
 }
