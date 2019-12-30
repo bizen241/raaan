@@ -47,6 +47,7 @@ export class ReportEntity extends BaseEntityClass {
   constructor(reporter: UserEntity, defendant: UserEntity, reason: ReportReason, description: string) {
     super();
 
+    this.summary = new ReportSummaryEntity();
     this.reporter = reporter;
     this.defendant = defendant;
     this.reason = reason;

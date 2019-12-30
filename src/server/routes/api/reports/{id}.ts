@@ -9,6 +9,25 @@ import { hasPermission } from "../../../api/security";
 import { ReportCommentEntity, ReportEntity } from "../../../database/entities";
 import { lockReportTarget } from "../../../services/reports";
 
+export const GET: OperationFunction = errorBoundary(async (req, res) => {
+  const { id: exerciseId }: PathParams = req.params;
+
+  const report = await getManager().findOne(ReportEntity, exerciseId, {
+    relations: ["summary"]
+  });
+  if (report === undefined) {
+    throw createError(404);
+  }
+
+  responseFindResult(req, res, report);
+});
+
+GET.apiDoc = createOperationDoc({
+  entityType: "Report",
+  permission: "Read",
+  hasId: true
+});
+
 export const PATCH: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
   const { id: reportId }: PathParams = req.params;
   const params: Params<Report> = req.body;

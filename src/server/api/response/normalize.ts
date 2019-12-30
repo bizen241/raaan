@@ -584,6 +584,8 @@ const normalizeReport: Normalizer<ReportEntity> = (context, store, entity) => {
     state
   };
 
+  summary.parent = entity;
+
   normalizeEntity(context, store, summary);
 };
 
