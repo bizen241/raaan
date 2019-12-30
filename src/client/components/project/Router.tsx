@@ -38,6 +38,7 @@ import { GroupsPage } from "../pages/groups/GroupsPage";
 import { HomePage } from "../pages/HomePage";
 import { LoadingPage } from "../pages/LoadingPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
+import { ObjectionObjectionCommentsPage } from "../pages/objection-comments/ObjectionObjectionCommentsPage";
 import { EditObjectionPage } from "../pages/objections/EditObjectionPage";
 import { EditObjectionsPage } from "../pages/objections/EditObjectionsPage";
 import { ObjectionPage } from "../pages/objections/ObjectionPage";
@@ -200,7 +201,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/objections/edit" component={EditObjectionsPage} />
         <Route exact={true} path="/objections/:id" component={ObjectionPage} />
         <Route exact={true} path="/objections/:id/edit" component={EditObjectionPage} />
-        {/* <Route exact={true} path="/objections/:id/comments" component={ObjectionObjectionCommentsPage} /> */}
+        <Route exact={true} path="/objections/:id/comments" component={ObjectionObjectionCommentsPage} />
 
         <Route component={NotFoundPage} />
       </Switch>

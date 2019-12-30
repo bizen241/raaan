@@ -6,7 +6,7 @@ import { useBuffers } from "../../../hooks/useBuffers";
 import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { ReportCommentEditor } from "../../editor/ReportComentEditor";
+import { ReportCommentEditor } from "../../editor/ReportCommentEditor";
 import { ReportCommentList } from "../../list/report-comments/ReportCommentList";
 import { UserContext } from "../../project/Context";
 import { PageProps } from "../../project/Router";
