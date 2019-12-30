@@ -3,10 +3,11 @@ import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
 import { withBuffer } from "../../enhancers/withBuffer";
+import { mergeBuffer } from "../../reducers/buffers";
 import { Button, Column } from "../ui";
 
 export const PlaylistEditor = withBuffer("Playlist")(
-  React.memo(({ buffer = {}, source = {}, onChange }) => {
+  React.memo(({ buffer, source, onChange }) => {
     const onUpdateTitle = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => onChange({ title: e.target.value }),
       []
@@ -16,6 +17,8 @@ export const PlaylistEditor = withBuffer("Playlist")(
       []
     );
 
+    const params = mergeBuffer(source, buffer);
+
     return (
       <Box>
         <Button icon={<CloudUpload />} label="アップロード" />
@@ -24,19 +27,11 @@ export const PlaylistEditor = withBuffer("Playlist")(
             <CardContent>
               <Column pb={1}>
                 <Typography color="textSecondary">題名</Typography>
-                <TextField
-                  variant="outlined"
-                  defaultValue={buffer.title || source.title || ""}
-                  onChange={onUpdateTitle}
-                />
+                <TextField variant="outlined" defaultValue={params.title || ""} onChange={onUpdateTitle} />
               </Column>
               <Column>
                 <Typography color="textSecondary">説明</Typography>
-                <TextField
-                  variant="outlined"
-                  defaultValue={buffer.description || source.description || ""}
-                  onChange={onUpdateDescription}
-                />
+                <TextField variant="outlined" defaultValue={params.description || ""} onChange={onUpdateDescription} />
               </Column>
             </CardContent>
           </Card>

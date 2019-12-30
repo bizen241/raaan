@@ -4,15 +4,16 @@ import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createBufferList } from "../../../enhancers/createBufferList";
 import { useToggleState } from "../../../hooks/useToggleState";
+import { mergeBuffer } from "../../../reducers/buffers";
 import { DeleteObjectionCommentBufferDialog } from "../../dialogs/objection-comments/DeleteObjectionCommentBufferDialog";
 import { Column } from "../../ui";
 
 export const ObjectionCommentBufferList = createBufferList("ObjectionComment")(
-  React.memo(({ bufferId, buffer, source = {} }) => {
+  React.memo(({ bufferId, buffer, source }) => {
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-    const targetId = source.targetId || buffer.targetId;
-    if (targetId === undefined) {
+    const params = mergeBuffer(source, buffer);
+    if (params.targetId === undefined) {
       return null;
     }
 
@@ -20,8 +21,8 @@ export const ObjectionCommentBufferList = createBufferList("ObjectionComment")(
       <TableRow>
         <TableCell>
           <Column>
-            <Link color="textPrimary" component={RouterLink} to={`/objections/${targetId}`}>
-              <Typography>{buffer.body || (source && source.body) || ""}</Typography>
+            <Link color="textPrimary" component={RouterLink} to={`/objections/${params.targetId}`}>
+              <Typography>{params.body || ""}</Typography>
             </Link>
           </Column>
         </TableCell>

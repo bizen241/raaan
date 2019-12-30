@@ -4,6 +4,7 @@ import { useCallback, useContext, useState } from "react";
 import { UserSettings } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
+import { mergeBuffer } from "../../reducers/buffers";
 import { UploadUserConfigDialog } from "../dialogs/user-configs/UploadUserConfigDialog";
 import { UserContext } from "../project/Context";
 import { Message } from "../project/Message";
@@ -31,13 +32,13 @@ const selectColorSchemeOptions: SelectOptions<UserSettings["ui.colorScheme"]> = 
 };
 
 export const UserConfigEditor = withBuffer("UserConfig")(
-  React.memo(props => {
-    const { bufferId, buffer = {}, source = {}, onChange } = props;
-
+  React.memo(({ bufferId, buffer, source, onChange }) => {
     const currentUser = useContext(UserContext);
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
-    const [settings, setSettings] = useState(buffer.settings || source.settings || {});
+    const params = mergeBuffer(source, buffer);
+
+    const [settings, setSettings] = useState(params.settings || {});
 
     const onChangeSettings = useCallback((key: string, value: string) => {
       setSettings(previousSettings => {
@@ -53,7 +54,7 @@ export const UserConfigEditor = withBuffer("UserConfig")(
       });
     }, []);
 
-    const canUpload = props.buffer !== undefined && currentUser.permission !== "Guest";
+    const canUpload = buffer !== undefined && currentUser.permission !== "Guest";
 
     return (
       <Column>

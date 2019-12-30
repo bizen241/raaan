@@ -4,15 +4,16 @@ import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createBufferList } from "../../../enhancers/createBufferList";
 import { useToggleState } from "../../../hooks/useToggleState";
+import { mergeBuffer } from "../../../reducers/buffers";
 import { DeleteExerciseCommentBufferDialog } from "../../dialogs/exercise-comments/DeleteExerciseCommentBufferDialog";
 import { Column } from "../../ui";
 
 export const ExerciseCommentBufferList = createBufferList("ExerciseComment")(
-  React.memo(({ bufferId, buffer, source = {} }) => {
+  React.memo(({ bufferId, buffer, source }) => {
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-    const targetId = source.targetId || buffer.targetId;
-    if (targetId === undefined) {
+    const params = mergeBuffer(source, buffer);
+    if (params.targetId === undefined) {
       return null;
     }
 
@@ -20,8 +21,8 @@ export const ExerciseCommentBufferList = createBufferList("ExerciseComment")(
       <TableRow>
         <TableCell>
           <Column>
-            <Link color="textPrimary" component={RouterLink} to={`/exercises/${targetId}/comments`}>
-              <Typography>{buffer.body || (source && source.body) || ""}</Typography>
+            <Link color="textPrimary" component={RouterLink} to={`/exercises/${params.targetId}/comments`}>
+              <Typography>{params.body || "空のコメント"}</Typography>
             </Link>
           </Column>
         </TableCell>

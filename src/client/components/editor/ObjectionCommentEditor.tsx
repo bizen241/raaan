@@ -3,40 +3,34 @@ import * as React from "react";
 import { useCallback } from "react";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
+import { mergeBuffer } from "../../reducers/buffers";
 import { UploadObjectionCommentDialog } from "../dialogs/objection-comments/UploadObjectionCommentDialog";
 import { Button, Card, Column, TextField } from "../ui";
 
 export const ObjectionCommentEditor = withBuffer("ObjectionComment")(
-  React.memo(props => {
-    const { bufferId, buffer = {}, source = {}, onChange } = props;
-
+  React.memo(({ bufferId, buffer, source, onChange }) => {
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
     const onUpdateBody = useCallback((body: string) => {
       onChange({ body });
     }, []);
 
-    const targetId = source.targetId || buffer.targetId;
-    if (targetId === undefined) {
+    const params = mergeBuffer(source, buffer);
+    if (params.targetId === undefined) {
       return null;
     }
 
-    const canUpload = buffer.body !== undefined;
+    const canUpload = buffer && buffer.body !== undefined;
 
     return (
       <Column>
         <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
         <Card>
-          <TextField
-            label="コメント"
-            multiline
-            defaultValue={buffer.body || source.body || ""}
-            onChange={onUpdateBody}
-          />
+          <TextField label="コメント" multiline defaultValue={params.body || ""} onChange={onUpdateBody} />
         </Card>
         <UploadObjectionCommentDialog
           bufferId={bufferId}
-          targetId={targetId}
+          targetId={params.targetId}
           isOpen={isUploadDialogOpen}
           onClose={onToggleUploadDialog}
         />

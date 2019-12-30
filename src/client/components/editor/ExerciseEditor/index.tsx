@@ -8,11 +8,10 @@ import { Button, Card, Column, TextField } from "../../ui";
 import { QuestionsEditor } from "./QuestionsEditor";
 
 export const ExerciseEditor = React.memo<{
-  buffer: Partial<BaseExerciseObject>;
-  source: Partial<BaseExerciseObject>;
+  params: Partial<BaseExerciseObject>;
   onChange: (exercise: Partial<BaseExerciseObject>) => void;
 }>(props => {
-  const { buffer = {}, source = {}, onChange } = props;
+  const { params, onChange } = props;
 
   const [isExercisePreviewerOpen, onToggleExercisePreviewer] = useToggleState();
 
@@ -23,16 +22,16 @@ export const ExerciseEditor = React.memo<{
   return (
     <Column flex={1}>
       <Card>
-        <TextField label="題名" defaultValue={buffer.title || source.title || ""} onChange={onUpdateTitle} />
-        <TextField label="タグ" defaultValue={(buffer.tags || source.tags || []).join(" ")} onChange={onUpdateTags} />
+        <TextField label="題名" defaultValue={params.title || ""} onChange={onUpdateTitle} />
+        <TextField label="タグ" defaultValue={(params.tags || []).join(" ")} onChange={onUpdateTags} />
       </Card>
-      <QuestionsEditor questions={buffer.questions || source.questions || []} onChange={onUpdateQuestions} />
+      <QuestionsEditor questions={params.questions || []} onChange={onUpdateQuestions} />
       <Button color="secondary" icon={<PlayArrow />} label="プレビュー" onClick={onToggleExercisePreviewer} />
       <ExercisePreviewer
         exercise={{
-          title: buffer.title || source.title,
-          tags: buffer.tags || source.tags,
-          questions: buffer.questions || source.questions
+          title: params.title,
+          tags: params.tags,
+          questions: params.questions
         }}
         isOpen={isExercisePreviewerOpen}
         onClose={onToggleExercisePreviewer}

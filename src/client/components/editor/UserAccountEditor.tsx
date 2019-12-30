@@ -5,6 +5,7 @@ import { useCallback, useContext } from "react";
 import { AvatarType } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
+import { mergeBuffer } from "../../reducers/buffers";
 import { UploadUserAccountDialog } from "../dialogs/user-accounts/UploadUserAccountDialog";
 import { UserContext } from "../project/Context";
 import { Button, Column, Select, SelectOptions } from "../ui";
@@ -19,9 +20,7 @@ const selectAvatarTypeOptions: SelectOptions<AvatarType> = {
 };
 
 export const UserAccountEditor = withBuffer("UserAccount")(
-  React.memo(props => {
-    const { bufferId, buffer = {}, source = {}, onChange } = props;
-
+  React.memo(({ bufferId, buffer, source, onChange }) => {
     const currentUser = useContext(UserContext);
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
@@ -29,7 +28,9 @@ export const UserAccountEditor = withBuffer("UserAccount")(
       onChange({ avatar });
     }, []);
 
-    const canUpload = props.buffer !== undefined && currentUser.permission !== "Guest";
+    const params = mergeBuffer(source, buffer);
+
+    const canUpload = buffer !== undefined && currentUser.permission !== "Guest";
 
     return (
       <Column>
@@ -39,7 +40,7 @@ export const UserAccountEditor = withBuffer("UserAccount")(
             <Select<AvatarType>
               label="アバター"
               options={selectAvatarTypeOptions}
-              defaultValue={buffer.avatar || source.avatar || "identicon"}
+              defaultValue={params.avatar || "identicon"}
               onChange={onUpdateAvatar}
             />
           </CardContent>

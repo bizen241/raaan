@@ -4,13 +4,12 @@ import * as React from "react";
 import { useCallback } from "react";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
+import { mergeBuffer } from "../../reducers/buffers";
 import { UploadUserDialog } from "../dialogs/users/UploadUserDialog";
 import { Button, Column } from "../ui";
 
 export const UserEditor = withBuffer("User")(
-  React.memo(props => {
-    const { bufferId, buffer = {}, source = {}, onChange } = props;
-
+  React.memo(({ bufferId, buffer, source, onChange }) => {
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
     const onUpdateName = useCallback(
@@ -18,7 +17,9 @@ export const UserEditor = withBuffer("User")(
       []
     );
 
-    const canUpload = props.buffer !== undefined;
+    const params = mergeBuffer(source, buffer);
+
+    const canUpload = buffer !== undefined;
 
     return (
       <Column>
@@ -28,7 +29,7 @@ export const UserEditor = withBuffer("User")(
             <CardContent>
               <Column pb={1}>
                 <Typography color="textSecondary">ユーザー名</Typography>
-                <TextField variant="outlined" defaultValue={buffer.name || source.name || ""} onChange={onUpdateName} />
+                <TextField variant="outlined" defaultValue={params.name || ""} onChange={onUpdateName} />
               </Column>
             </CardContent>
           </Card>

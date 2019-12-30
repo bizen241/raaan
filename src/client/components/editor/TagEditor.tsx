@@ -4,13 +4,12 @@ import * as React from "react";
 import { useCallback } from "react";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
+import { mergeBuffer } from "../../reducers/buffers";
 import { UploadTagDialog } from "../dialogs/tags/UploadTagDialog";
 import { Button, Column } from "../ui";
 
 export const TagEditor = withBuffer("Tag")(
-  React.memo(props => {
-    const { bufferId, buffer = {}, source = {}, onChange } = props;
-
+  React.memo(({ bufferId, buffer, source, onChange }) => {
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
     const onUpdateDescription = useCallback(
@@ -18,7 +17,9 @@ export const TagEditor = withBuffer("Tag")(
       []
     );
 
-    const canUpload = props.buffer !== undefined;
+    const params = mergeBuffer(source, buffer);
+
+    const canUpload = buffer !== undefined;
 
     return (
       <Column>
@@ -28,11 +29,7 @@ export const TagEditor = withBuffer("Tag")(
             <CardContent>
               <Column pb={1}>
                 <Typography color="textSecondary">説明</Typography>
-                <TextField
-                  variant="outlined"
-                  defaultValue={buffer.description || source.description || ""}
-                  onChange={onUpdateDescription}
-                />
+                <TextField variant="outlined" defaultValue={params.description || ""} onChange={onUpdateDescription} />
               </Column>
             </CardContent>
           </Card>

@@ -11,7 +11,7 @@ import { isLocalOnly } from "../reducers/api";
 interface Props<E extends EntityObject> {
   bufferId: string;
   buffer: Params<E> | undefined;
-  source: Params<E> | undefined;
+  source: E | undefined;
   onChange: (params: Params<E>) => void;
 }
 

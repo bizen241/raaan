@@ -4,6 +4,7 @@ import { useCallback, useContext } from "react";
 import { ReportReason, ReportState } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
+import { mergeBuffer } from "../../reducers/buffers";
 import { UploadReportDialog } from "../dialogs/reports/UploadReportDialog";
 import { UserContext } from "../project/Context";
 import { Button, Card, Column, Select, SelectOptions, TextField } from "../ui";
@@ -33,33 +34,23 @@ const selectReportStateOptions: SelectOptions<ReportState> = {
 };
 
 export const ReportEditor = withBuffer("Report")(
-  React.memo(props => {
-    const { bufferId, buffer = {}, source = {}, onChange } = props;
-
+  React.memo(({ bufferId, buffer, source, onChange }) => {
     const currentUser = useContext(UserContext);
 
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
-    const onUpdateReason = useCallback((reason: ReportReason) => {
-      onChange({ reason });
-    }, []);
-    const onUpdateDescription = useCallback((description: string) => {
-      onChange({ description });
-    }, []);
-    const onUpdateState = useCallback((state: ReportState) => {
-      onChange({ state });
-    }, []);
-    const onUpdateComment = useCallback((comment: string) => {
-      onChange({ comment });
-    }, []);
+    const onUpdateReason = useCallback((reason: ReportReason) => onChange({ reason }), []);
+    const onUpdateDescription = useCallback((description: string) => onChange({ description }), []);
+    const onUpdateState = useCallback((state: ReportState) => onChange({ state }), []);
+    const onUpdateComment = useCallback((comment: string) => onChange({ comment }), []);
 
-    const targetType = source.targetType || buffer.targetType;
-    const targetId = source.targetId || buffer.targetId;
-    if (targetType === undefined || targetId === undefined) {
+    const params = mergeBuffer(source, buffer);
+    if (params.targetType === undefined || params.targetId === undefined) {
       return null;
     }
 
-    const canUpload = (props.source !== undefined && props.buffer !== undefined) || buffer.reason !== undefined;
+    const canUpload =
+      (source !== undefined && buffer !== undefined) || (buffer !== undefined && buffer.reason !== undefined);
     const isOwner = currentUser.permission === "Owner";
 
     return (
@@ -70,36 +61,26 @@ export const ReportEditor = withBuffer("Report")(
             <Select<ReportReason>
               label="理由"
               options={selectReportReasonOptions}
-              defaultValue={buffer.reason || source.reason}
+              defaultValue={params.reason}
               onChange={onUpdateReason}
             />
-            <TextField
-              label="説明"
-              multiline
-              defaultValue={buffer.description || source.description || ""}
-              onChange={onUpdateDescription}
-            />
+            <TextField label="説明" multiline defaultValue={params.description || ""} onChange={onUpdateDescription} />
           </Card>
         ) : (
           <Card>
             <Select<ReportState>
               label="状態"
               options={selectReportStateOptions}
-              defaultValue={buffer.state || source.state}
+              defaultValue={params.state}
               onChange={onUpdateState}
             />
-            <TextField
-              label="コメント"
-              multiline
-              defaultValue={buffer.comment || source.comment || ""}
-              onChange={onUpdateComment}
-            />
+            <TextField label="コメント" multiline defaultValue={params.comment || ""} onChange={onUpdateComment} />
           </Card>
         )}
         <UploadReportDialog
           reportId={bufferId}
-          targetType={targetType}
-          targetId={targetId}
+          targetType={params.targetType}
+          targetId={params.targetId}
           isOpen={isUploadDialogOpen}
           onClose={onToggleUploadDialog}
         />

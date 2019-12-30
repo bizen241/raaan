@@ -4,6 +4,7 @@ import { useCallback, useContext } from "react";
 import { ObjectionState } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
+import { mergeBuffer } from "../../reducers/buffers";
 import { UploadObjectionDialog } from "../dialogs/objections/UploadObjectionDialog";
 import { UserContext } from "../project/Context";
 import { Button, Card, Column, Select, SelectOptions, TextField } from "../ui";
@@ -21,9 +22,7 @@ const selectObjectionStateOptions: SelectOptions<ObjectionState> = {
 };
 
 export const ObjectionEditor = withBuffer("Objection")(
-  React.memo(props => {
-    const { bufferId, buffer = {}, source = {}, onChange } = props;
-
+  React.memo(({ bufferId, buffer, source, onChange }) => {
     const currentUser = useContext(UserContext);
 
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
@@ -38,47 +37,36 @@ export const ObjectionEditor = withBuffer("Objection")(
       onChange({ comment });
     }, []);
 
-    const targetType = source.targetType || buffer.targetType;
-    const targetId = source.targetId || buffer.targetId;
-    if (targetType === undefined || targetId === undefined) {
+    const params = mergeBuffer(source, buffer);
+    if (params.targetType === undefined || params.targetId === undefined) {
       return null;
     }
 
     const isOwner = currentUser.permission === "Owner";
-    const canUpload = !isOwner ? buffer.description !== undefined : buffer.state !== undefined;
+    const canUpload = buffer !== undefined;
 
     return (
       <Column>
         <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
         {!isOwner ? (
           <Card>
-            <TextField
-              label="説明"
-              multiline
-              defaultValue={buffer.description || source.description || ""}
-              onChange={onUpdateDescription}
-            />
+            <TextField label="説明" multiline defaultValue={params.description || ""} onChange={onUpdateDescription} />
           </Card>
         ) : (
           <Card>
             <Select<ObjectionState>
               label="状態"
               options={selectObjectionStateOptions}
-              defaultValue={buffer.state || source.state}
+              defaultValue={params.state}
               onChange={onUpdateState}
             />
-            <TextField
-              label="コメント"
-              multiline
-              defaultValue={buffer.comment || source.comment || ""}
-              onChange={onUpdateComment}
-            />
+            <TextField label="コメント" multiline defaultValue={params.comment || ""} onChange={onUpdateComment} />
           </Card>
         )}
         <UploadObjectionDialog
           reportId={bufferId}
-          targetType={targetType}
-          targetId={targetId}
+          targetType={params.targetType}
+          targetId={params.targetId}
           isOpen={isUploadDialogOpen}
           onClose={onToggleUploadDialog}
         />

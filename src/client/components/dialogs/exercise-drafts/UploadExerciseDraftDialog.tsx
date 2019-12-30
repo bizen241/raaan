@@ -16,11 +16,11 @@ type UploadType = "public" | "private" | "update" | "draft";
 
 export const UploadExerciseDraftDialog = createDialog<{
   exerciseDraftId: string;
-  exerciseDraft: Params<ExerciseDraft>;
+  exerciseDraft: Params<ExerciseDraft> | undefined;
   exerciseId: string | undefined;
   onChange: (exerciseDraft: Partial<ExerciseDraft>) => void;
 }>(
-  React.memo(({ exerciseDraftId, exerciseDraft, exerciseId, onChange, onClose }) => {
+  React.memo(({ exerciseDraftId, exerciseDraft = {}, exerciseId, onChange, onClose }) => {
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);
 

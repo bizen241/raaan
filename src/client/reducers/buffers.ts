@@ -1,6 +1,6 @@
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { createEntityTypeToObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
+import { createEntityTypeToObject, EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { guestUserConfig } from "../components/project/Context";
 import { ActionUnion, createAction } from "./action";
@@ -28,6 +28,10 @@ export type BuffersActions = ActionUnion<typeof buffersActions>;
 
 export const generateBufferId = () => Date.now().toString();
 export const isNumber = (id: string) => !isNaN(Number(id));
+export const mergeBuffer = <E extends EntityObject>(source: E | undefined, buffer: Params<E> | undefined = {}) => ({
+  ...source,
+  ...buffer
+});
 
 export type BuffersState = {
   [P in keyof EntityTypeToEntity]: {

@@ -4,13 +4,12 @@ import * as React from "react";
 import { useCallback } from "react";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
+import { mergeBuffer } from "../../reducers/buffers";
 import { UploadGroupDialog } from "../dialogs/groups/UploadGroupDialog";
 import { Button, Column } from "../ui";
 
 export const GroupEditor = withBuffer("Group")(
-  React.memo(props => {
-    const { bufferId, buffer = {}, source = {}, onChange } = props;
-
+  React.memo(({ bufferId, buffer, source, onChange }) => {
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
     const onUpdateName = useCallback(
@@ -22,7 +21,9 @@ export const GroupEditor = withBuffer("Group")(
       []
     );
 
-    const canUpload = props.buffer !== undefined;
+    const params = mergeBuffer(source, buffer);
+
+    const canUpload = buffer !== undefined;
 
     return (
       <Column>
@@ -32,15 +33,11 @@ export const GroupEditor = withBuffer("Group")(
             <CardContent>
               <Column pb={1}>
                 <Typography color="textSecondary">グループ名</Typography>
-                <TextField variant="outlined" defaultValue={buffer.name || source.name || ""} onChange={onUpdateName} />
+                <TextField variant="outlined" defaultValue={params.name || ""} onChange={onUpdateName} />
               </Column>
               <Column>
                 <Typography color="textSecondary">説明</Typography>
-                <TextField
-                  variant="outlined"
-                  defaultValue={buffer.description || source.description || ""}
-                  onChange={onUpdateDescription}
-                />
+                <TextField variant="outlined" defaultValue={params.description || ""} onChange={onUpdateDescription} />
               </Column>
             </CardContent>
           </Card>
