@@ -9,6 +9,25 @@ import { hasPermission } from "../../../api/security";
 import { ObjectionCommentEntity, ObjectionEntity } from "../../../database/entities";
 import { unlockObjectionTarget } from "../../../services/objections";
 
+export const GET: OperationFunction = errorBoundary(async (req, res) => {
+  const { id: exerciseId }: PathParams = req.params;
+
+  const objection = await getManager().findOne(ObjectionEntity, exerciseId, {
+    relations: ["summary"]
+  });
+  if (objection === undefined) {
+    throw createError(404);
+  }
+
+  responseFindResult(req, res, objection);
+});
+
+GET.apiDoc = createOperationDoc({
+  entityType: "Objection",
+  permission: "Read",
+  hasId: true
+});
+
 export const PATCH: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
   const { id: objectionId }: PathParams = req.params;
   const params: Params<Objection> = req.body;

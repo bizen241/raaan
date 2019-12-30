@@ -37,6 +37,7 @@ export class ObjectionEntity extends BaseEntityClass {
   constructor(objector: UserEntity, description: string) {
     super();
 
+    this.summary = new ObjectionSummaryEntity();
     this.objector = objector;
     this.description = description;
   }

@@ -445,6 +445,8 @@ const normalizeObjection: Normalizer<ObjectionEntity> = (context, store, entity)
     state
   };
 
+  summary.parent = entity;
+
   normalizeEntity(context, store, summary);
 };
 
