@@ -1,6 +1,6 @@
 import { UUID } from "./BaseEntityObject";
 import { BaseEntityObject } from "./BaseEntityObject";
-import { ReportState } from "./Report";
+import { ReportReason, ReportState } from "./Report";
 
 export interface ReportSummary extends BaseEntityObject {
   parentId: UUID;
@@ -8,6 +8,7 @@ export interface ReportSummary extends BaseEntityObject {
   defendantId?: UUID;
   targetType?: UUID;
   targetId?: UUID;
+  reason: ReportReason;
   state: ReportState;
   commentCount: number;
 }

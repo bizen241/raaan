@@ -611,11 +611,12 @@ const normalizeReportSummary: Normalizer<ReportSummaryEntity> = (_, store, entit
     throw createError(500, "reportSummary.parent is not defined");
   }
 
-  const { state } = parent;
+  const { reason, state } = parent;
 
   store.ReportSummary[id] = {
     ...base(entity),
     parentId,
+    reason,
     state,
     commentCount
   };
