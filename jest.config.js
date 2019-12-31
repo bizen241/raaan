@@ -13,7 +13,7 @@ const initialOptions = {
   testEnvironment: "node",
   testMatch: ["**/__tests__/**.test.{ts, tsx}"],
   coverageReporters: ["text", "lcov"],
-  collectCoverageFrom: ["src/**/*.{ts,tsx}", "!**/__tests__/**"]
+  collectCoverageFrom: ["src/server/routes/api/**/*.ts", "!**/__tests__/**"]
 };
 
 module.exports = initialOptions;
