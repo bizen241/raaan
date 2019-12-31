@@ -27,6 +27,7 @@ import {
   Permission,
   Playlist,
   PlaylistBookmark,
+  PlaylistDiary,
   PlaylistItem,
   PlaylistSummary,
   Report,
@@ -44,6 +45,7 @@ import {
   SuggestionSummary,
   Synonym,
   Tag,
+  TagDiary,
   TagFollow,
   TagSummary,
   User,
@@ -274,6 +276,15 @@ const parsePlaylistBookmark: Parser<PlaylistBookmark> = query => {
   };
 };
 
+const parsePlaylistDiary: Parser<PlaylistDiary> = query => {
+  const { playlistId } = query;
+
+  return {
+    ...base(query),
+    playlistId
+  };
+};
+
 const parsePlaylistItem: Parser<PlaylistItem> = query => {
   const { authorId, playlistId, exerciseId } = query;
 
@@ -405,6 +416,15 @@ const parseTag: Parser<Tag> = query => {
   };
 };
 
+const parseTagDiary: Parser<TagDiary> = query => {
+  const { tagId } = query;
+
+  return {
+    ...base(query),
+    tagId
+  };
+};
+
 const parseTagFollow: Parser<TagFollow> = query => {
   const { followerId, targetId } = query;
 
@@ -517,6 +537,7 @@ const parsers: { [T in EntityType]: Parser<EntityTypeToEntity[T]> } = {
   ObjectionSummary: parseObjectionSummary,
   Playlist: parsePlaylist,
   PlaylistBookmark: parsePlaylistBookmark,
+  PlaylistDiary: parsePlaylistDiary,
   PlaylistItem: parsePlaylistItem,
   PlaylistSummary: parsePlaylistSummary,
   Report: parseReport,
@@ -533,6 +554,7 @@ const parsers: { [T in EntityType]: Parser<EntityTypeToEntity[T]> } = {
   SuggestionSummary: parseSuggestionSummary,
   Synonym: parseSynonym,
   Tag: parseTag,
+  TagDiary: parseTagDiary,
   TagFollow: parseTagFollow,
   TagSummary: parseTagSummary,
   User: parseUser,

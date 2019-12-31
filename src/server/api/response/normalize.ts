@@ -25,6 +25,7 @@ import {
   ObjectionEntity,
   ObjectionSummaryEntity,
   PlaylistBookmarkEntity,
+  PlaylistDiaryEntity,
   PlaylistEntity,
   PlaylistItemEntity,
   PlaylistSummaryEntity,
@@ -41,6 +42,7 @@ import {
   SuggestionEntity,
   SuggestionSummaryEntity,
   SynonymEntity,
+  TagDiaryEntity,
   TagEntity,
   TagFollowEntity,
   TagSummaryEntity,
@@ -523,6 +525,17 @@ const normalizePlaylistBookmark: Normalizer<PlaylistBookmarkEntity> = (context, 
   }
 };
 
+const normalizePlaylistDiary: Normalizer<PlaylistDiaryEntity> = (_, store, entity) => {
+  const { id, date, submittedCount, typedCount } = entity;
+
+  store.PlaylistDiary[id] = {
+    ...base(entity),
+    date,
+    submittedCount,
+    typedCount
+  };
+};
+
 const normalizePlaylistItem: Normalizer<PlaylistItemEntity> = (context, store, entity) => {
   const { id, playlistId, exercise, nextId, memo } = entity;
   if (exercise === undefined) {
@@ -826,6 +839,17 @@ const normalizeTag: Normalizer<TagEntity> = (_, store, entity) => {
   };
 };
 
+const normalizeTagDiary: Normalizer<TagDiaryEntity> = (_, store, entity) => {
+  const { id, date, submittedCount, typedCount } = entity;
+
+  store.TagDiary[id] = {
+    ...base(entity),
+    date,
+    submittedCount,
+    typedCount
+  };
+};
+
 const normalizeTagFollow: Normalizer<TagFollowEntity> = (context, store, entity) => {
   const { id, follower, target, checkedAt } = entity;
   if (follower === undefined || target === undefined) {
@@ -1004,6 +1028,7 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   ObjectionSummary: normalizeObjectionSummary,
   Playlist: normalizePlaylist,
   PlaylistBookmark: normalizePlaylistBookmark,
+  PlaylistDiary: normalizePlaylistDiary,
   PlaylistItem: normalizePlaylistItem,
   PlaylistSummary: normalizePlaylistSummary,
   Report: normalizeReport,
@@ -1020,6 +1045,7 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   SuggestionSummary: normalizeSuggestionSummary,
   Synonym: normalizeSynonym,
   Tag: normalizeTag,
+  TagDiary: normalizeTagDiary,
   TagFollow: normalizeTagFollow,
   TagSummary: normalizeTagSummary,
   User: normalizeUser,

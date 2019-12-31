@@ -20,6 +20,7 @@ import { ObjectionComment } from "./ObjectionComment";
 import { ObjectionSummary } from "./ObjectionSummary";
 import { Playlist } from "./Playlist";
 import { PlaylistBookmark } from "./PlaylistBookmark";
+import { PlaylistDiary } from "./PlaylistDiary";
 import { PlaylistItem } from "./PlaylistItem";
 import { PlaylistSummary } from "./PlaylistSummary";
 import { Report } from "./Report";
@@ -36,6 +37,7 @@ import { SuggestionCommentVote } from "./SuggestionCommentVote";
 import { SuggestionSummary } from "./SuggestionSummary";
 import { Synonym } from "./Synonym";
 import { Tag } from "./Tag";
+import { TagDiary } from "./TagDiary";
 import { TagFollow } from "./TagFollow";
 import { TagSummary } from "./TagSummary";
 import { User } from "./User";
@@ -70,6 +72,7 @@ export * from "./ObjectionComment";
 export * from "./ObjectionSummary";
 export * from "./Playlist";
 export * from "./PlaylistBookmark";
+export * from "./PlaylistDiary";
 export * from "./PlaylistItem";
 export * from "./PlaylistSummary";
 export * from "./Report";
@@ -86,6 +89,7 @@ export * from "./SuggestionCommentVote";
 export * from "./SuggestionSummary";
 export * from "./Synonym";
 export * from "./Tag";
+export * from "./TagDiary";
 export * from "./TagFollow";
 export * from "./TagSummary";
 export * from "./User";
@@ -120,6 +124,7 @@ export type EntityTypeToEntity = {
   ObjectionSummary: ObjectionSummary;
   Playlist: Playlist;
   PlaylistBookmark: PlaylistBookmark;
+  PlaylistDiary: PlaylistDiary;
   PlaylistItem: PlaylistItem;
   PlaylistSummary: PlaylistSummary;
   Report: Report;
@@ -136,6 +141,7 @@ export type EntityTypeToEntity = {
   SuggestionSummary: SuggestionSummary;
   Synonym: Synonym;
   Tag: Tag;
+  TagDiary: TagDiary;
   TagFollow: TagFollow;
   TagSummary: TagSummary;
   User: User;
@@ -178,6 +184,7 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     ObjectionSummary: {},
     Playlist: {},
     PlaylistBookmark: {},
+    PlaylistDiary: {},
     PlaylistItem: {},
     PlaylistSummary: {},
     Report: {},
@@ -194,6 +201,7 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     SuggestionSummary: {},
     Synonym: {},
     Tag: {},
+    TagDiary: {},
     TagFollow: {},
     TagSummary: {},
     User: {},

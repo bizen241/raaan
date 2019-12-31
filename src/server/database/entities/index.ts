@@ -20,6 +20,7 @@ import { ObjectionCommentEntity } from "./ObjectionCommentEntity";
 import { ObjectionEntity } from "./ObjectionEntity";
 import { ObjectionSummaryEntity } from "./ObjectionSummaryEntity";
 import { PlaylistBookmarkEntity } from "./PlaylistBookmarkEntity";
+import { PlaylistDiaryEntity } from "./PlaylistDiaryEntity";
 import { PlaylistEntity } from "./PlaylistEntity";
 import { PlaylistItemEntity } from "./PlaylistItemEntity";
 import { PlaylistSummaryEntity } from "./PlaylistSummaryEntity";
@@ -37,6 +38,7 @@ import { SuggestionCommentVoteEntity } from "./SuggestionCommentVoteEntity";
 import { SuggestionEntity } from "./SuggestionEntity";
 import { SuggestionSummaryEntity } from "./SuggestionSummaryEntity";
 import { SynonymEntity } from "./SynonymEntity";
+import { TagDiaryEntity } from "./TagDiaryEntity";
 import { TagEntity } from "./TagEntity";
 import { TagFollowEntity } from "./TagFollowEntity";
 import { TagSummaryEntity } from "./TagSummaryEntity";
@@ -70,6 +72,7 @@ export * from "./ObjectionCommentEntity";
 export * from "./ObjectionEntity";
 export * from "./ObjectionSummaryEntity";
 export * from "./PlaylistBookmarkEntity";
+export * from "./PlaylistDiaryEntity";
 export * from "./PlaylistEntity";
 export * from "./PlaylistItemEntity";
 export * from "./PlaylistSummaryEntity";
@@ -87,6 +90,7 @@ export * from "./SuggestionEntity";
 export * from "./SuggestionSummaryEntity";
 export * from "./SynonymEntity";
 export * from "./TagEntity";
+export * from "./TagDiaryEntity";
 export * from "./TagFollowEntity";
 export * from "./TagSummaryEntity";
 export * from "./UserAccountEntity";
@@ -120,6 +124,7 @@ export type Entity =
   | ObjectionEntity
   | ObjectionSummaryEntity
   | PlaylistBookmarkEntity
+  | PlaylistDiaryEntity
   | PlaylistEntity
   | PlaylistItemEntity
   | PlaylistSummaryEntity
@@ -137,6 +142,7 @@ export type Entity =
   | SuggestionSummaryEntity
   | SynonymEntity
   | TagEntity
+  | TagDiaryEntity
   | TagFollowEntity
   | TagSummaryEntity
   | UserAccountEntity
@@ -173,6 +179,7 @@ export const entities = [
     ObjectionSummary: ObjectionSummaryEntity,
     Playlist: PlaylistEntity,
     PlaylistBookmark: PlaylistBookmarkEntity,
+    PlaylistDiary: PlaylistDiaryEntity,
     PlaylistItem: PlaylistItemEntity,
     PlaylistSummary: PlaylistSummaryEntity,
     Report: ReportEntity,
@@ -189,6 +196,7 @@ export const entities = [
     SuggestionSummary: SuggestionSummaryEntity,
     Synonym: SynonymEntity,
     Tag: TagEntity,
+    TagDiary: TagDiaryEntity,
     TagFollow: TagFollowEntity,
     TagSummary: TagSummaryEntity,
     User: UserEntity,
