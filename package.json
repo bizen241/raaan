@@ -86,7 +86,7 @@
     "@types/kuromoji": "0.1.0",
     "@types/node-fetch": "2.3.2",
     "@types/passport": "1.0.0",
-    "@types/react": "16.8.13",
+    "@types/react": "16.9.17",
     "@types/react-dom": "16.8.4",
     "@types/react-redux": "7.1.5",
     "@types/react-router-dom": "5.1.3",
