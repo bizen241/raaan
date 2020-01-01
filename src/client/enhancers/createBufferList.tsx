@@ -21,10 +21,10 @@ export const createBufferList = <T extends EntityType>(entityType: T) => (
   ListItem: React.ComponentType<BufferListItemProps<EntityTypeToEntity[T]>>
 ) =>
   React.memo<BufferListProps>(() => {
-    const { bufferMap, entityMap } = useSelector((state: RootState) => ({
-      bufferMap: state.buffers[entityType],
-      entityMap: state.cache.get[entityType]
-    }));
+    const bufferMap = useSelector((state: RootState) => state.buffers[entityType]);
+    const entityMap = useSelector(
+      (state: RootState) => state.cache.get[entityType] as { [key: string]: EntityTypeToEntity[T] | undefined }
+    );
 
     const [limit, setLimit] = useState(10);
     const [offset, setOffset] = useState(0);
