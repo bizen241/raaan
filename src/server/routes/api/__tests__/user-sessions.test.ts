@@ -1,26 +1,56 @@
 import { strict as assert } from "assert";
+import * as uuid from "uuid/v4";
 import { UserSession } from "../../../../shared/api/entities";
-import { SearchQuery } from "../../../../shared/api/request/parse";
-import { SearchResponse } from "../../../../shared/api/response/search";
-import { close, connect, createHttpMocks, insertSession, reset } from "../../../__tests__/helpers";
+import {
+  close,
+  connect,
+  createMocks,
+  createQuery,
+  getSearchResult,
+  hasSecurity,
+  insertSession,
+  reset
+} from "../../../__tests__/helpers";
 import { GET } from "../user-sessions";
 
 beforeAll(async () => connect());
 beforeEach(async () => reset());
 afterAll(async () => close());
 
-test("GET /api/user-sessions", async () => {
-  const { req, res, next, user } = await createHttpMocks("Read");
+test("GET /api/user-sessions", () => assert(hasSecurity(GET.apiDoc, "Read")));
+
+test("GET /api/user-sessions -> 200", async () => {
+  const { req, res, next, user } = await createMocks("Read");
+
   const session = await insertSession(user);
 
-  const query: SearchQuery<UserSession> = {
-    userId: req.user.id
-  };
-  req.query = query;
+  req.query = createQuery<UserSession>({
+    userId: user.id
+  });
 
   await GET(req, res, next);
-  assert.equal(res._getStatusCode(), 200);
+  assert.equal(res.statusCode, 200);
 
-  const data: SearchResponse = res._getJSONData();
-  assert.equal(data.ids[0], session.id);
+  const response = getSearchResult(res);
+  assert(response.entities.UserSession[session.id]);
+});
+
+test("GET /api/user-sessions -> 400", async () => {
+  const { req, res, next } = await createMocks("Read");
+
+  req.query = createQuery<UserSession>({});
+
+  await GET(req, res, next);
+  assert.equal(res.statusCode, 400);
+});
+
+test("GET /api/user-sessions -> 403", async () => {
+  const { req, res, next } = await createMocks("Read");
+
+  req.query = createQuery<UserSession>({
+    userId: uuid()
+  });
+
+  await GET(req, res, next);
+  assert.equal(res.statusCode, 403);
 });

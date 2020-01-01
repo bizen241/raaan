@@ -5,14 +5,16 @@ import { createOperationDoc, errorBoundary, PathParams } from "../../../api/oper
 import { responseFindResult } from "../../../api/response";
 import { UserEntity } from "../../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
+export const GET: OperationFunction = errorBoundary(async (req, res) => {
   const { id: userId }: PathParams = req.params;
 
-  const user = await getManager().findOne(UserEntity, userId, {
-    relations: ["summary"]
-  });
+  const user = await getManager()
+    .createQueryBuilder(UserEntity, "user")
+    .leftJoinAndSelect("user.summary", "summary")
+    .where("user.id = :userId", { userId })
+    .getOne();
   if (user === undefined) {
-    return next(createError(404));
+    throw createError(404);
   }
 
   responseFindResult(req, res, user);

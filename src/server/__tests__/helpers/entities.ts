@@ -64,6 +64,7 @@ export const insertExercise = async (user: UserEntity) => {
 
   const exercise = new ExerciseEntity(exerciseSummary, user, exerciseDraft);
   exercise.isDraft = !isMerged;
+  exercise.isPrivate = isPrivate;
   await manager.save(exercise);
 
   const revisionSummary = new RevisionSummaryEntity();

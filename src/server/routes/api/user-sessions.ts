@@ -6,12 +6,15 @@ import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseSearchResult } from "../../api/response";
 import { UserSessionEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
+export const GET: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
   const { userId, searchLimit, searchOffset } = parseQuery("UserSession", req.query);
+  if (userId === undefined) {
+    throw createError(400);
+  }
 
-  const isOwnSessions = userId === currentUser.id;
-  if (!isOwnSessions) {
-    return next(createError(403));
+  const isOwn = userId === currentUser.id;
+  if (!isOwn) {
+    throw createError(403);
   }
 
   const query = await getManager()
@@ -21,9 +24,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     .take(searchLimit)
     .skip(searchOffset);
 
-  if (userId !== undefined) {
-    query.andWhere("user.id = :userId", { userId });
-  }
+  query.andWhere("user.id = :userId", { userId });
 
   const [userSessions, count] = await query.getManyAndCount();
 

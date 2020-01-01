@@ -11,14 +11,18 @@ import { ExerciseEntity } from "../../../database/entities";
 export const GET: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
   const { id: exerciseId }: PathParams = req.params;
 
-  const exercise = await getManager().findOne(ExerciseEntity, exerciseId, {
-    relations: ["summary", "summary.tags", "author", "author.summary", "latest", "draft"]
-  });
+  const exercise = await getManager()
+    .createQueryBuilder(ExerciseEntity, "exercise")
+    .leftJoinAndSelect("exercise.summary", "summary")
+    .leftJoinAndSelect("exercise.author", "author")
+    .leftJoinAndSelect("exercise.latest", "latest")
+    .leftJoinAndSelect("exercise.draft", "draft")
+    .leftJoinAndSelect("summary.tags", "tags")
+    .leftJoinAndMapOne("author.summary", "author.summary", "authorSummary")
+    .where("exercise.id = :exerciseId", { exerciseId })
+    .getOne();
   if (exercise === undefined) {
     throw createError(404);
-  }
-  if (exercise.summary === undefined) {
-    throw createError(500, "exercise.summary is not defined");
   }
 
   if (exercise.isPrivate && exercise.authorId !== currentUser.id) {
@@ -45,9 +49,6 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
   });
   if (exercise === undefined) {
     return next(createError(404));
-  }
-  if (exercise.summary === undefined || exercise.summary.tags === undefined) {
-    return next(createError(500));
   }
 
   const isAuthor = exercise.authorId === currentUser.id;
@@ -78,7 +79,7 @@ export const PATCH: OperationFunction = errorBoundary(async (req, res, next, cur
 
 PATCH.apiDoc = createOperationDoc({
   entityType: "Exercise",
-  permission: "Write",
+  permission: "Read",
   hasId: true,
   hasBody: true
 });

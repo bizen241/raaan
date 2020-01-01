@@ -6,12 +6,18 @@ import { responseFindResult } from "../../api/response";
 import { setClearSiteData } from "../../auth";
 import { UserEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const user = await getManager().findOne(UserEntity, currentUser.id, {
-    relations: ["account", "config", "summary"]
-  });
+export const GET: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
+  const userId = currentUser.id;
+
+  const user = await getManager()
+    .createQueryBuilder(UserEntity, "user")
+    .leftJoinAndSelect("user.account", "account")
+    .leftJoinAndSelect("user.config", "config")
+    .leftJoinAndSelect("user.summary", "summary")
+    .where("user.id = :userId", { userId })
+    .getOne();
   if (user === undefined) {
-    return next(createError(404));
+    throw createError(500);
   }
 
   responseFindResult(req, res, user);
@@ -19,20 +25,22 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
 
 GET.apiDoc = createOperationDoc({
   entityType: "User",
-  permission: "Write",
+  permission: "Read",
   tag: "user"
 });
 
-export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
+export const DELETE: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
   if (currentUser.permission === "Owner") {
-    return next(createError(403));
+    throw createError(403);
   }
 
-  await getManager().remove(currentUser);
+  await getManager().transaction(async manager => {
+    await manager.remove(currentUser);
 
-  setClearSiteData(res);
+    setClearSiteData(res);
 
-  responseFindResult(req, res);
+    responseFindResult(req, res);
+  });
 });
 
 DELETE.apiDoc = createOperationDoc({

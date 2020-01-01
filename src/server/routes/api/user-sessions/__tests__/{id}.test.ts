@@ -1,7 +1,15 @@
 import { strict as assert } from "assert";
-import { getManager } from "typeorm";
-import * as uuid from "uuid";
-import { close, connect, createHttpMocks, insertSession, insertUser, reset } from "../../../../__tests__/helpers";
+import * as uuid from "uuid/v4";
+import {
+  close,
+  connect,
+  createMocks,
+  createParams,
+  hasSecurity,
+  insertSession,
+  insertUser,
+  reset
+} from "../../../../__tests__/helpers";
 import { PathParams } from "../../../../api/operation";
 import { UserSessionEntity } from "../../../../database/entities";
 import { DELETE } from "../{id}";
@@ -10,46 +18,42 @@ beforeAll(async () => connect());
 beforeEach(async () => reset());
 afterAll(async () => close());
 
+test("DELETE /api/users/{id}", () => assert(hasSecurity(DELETE.apiDoc, "Read")));
+
+test("DELETE /api/user-sessions/{id} -> 200", async () => {
+  const { req, res, next, manager, user } = await createMocks("Read");
+
+  const session = await insertSession(user);
+
+  req.params = createParams(session.id);
+
+  await DELETE(req, res, next);
+  assert.equal(res.statusCode, 200);
+
+  const deletedSession = await manager.findOne(UserSessionEntity, session.id);
+  assert.equal(deletedSession, undefined);
+});
+
 test("DELETE /api/user-sessions/{id} -> 404", async () => {
-  const { req, res, next } = await createHttpMocks("Read");
+  const { req, res, next } = await createMocks("Read");
 
   (req.params as PathParams) = {
     id: uuid()
   };
+  req.params = createParams(uuid());
 
   await DELETE(req, res, next);
-
-  assert.equal(res._getStatusCode(), 404);
+  assert.equal(res.statusCode, 404);
 });
 
 test("DELETE /api/user-sessions/{id} -> 403", async () => {
-  const { req, res, next } = await createHttpMocks("Read");
+  const { req, res, next } = await createMocks("Read");
 
   const { user } = await insertUser("Read");
   const session = await insertSession(user);
 
-  (req.params as PathParams) = {
-    id: session.id
-  };
+  req.params = createParams(session.id);
 
   await DELETE(req, res, next);
-
-  assert.equal(res._getStatusCode(), 403);
-});
-
-test("DELETE /api/user-sessions/{id} -> 200", async () => {
-  const { req, res, next, user } = await createHttpMocks("Read");
-
-  const session = await insertSession(user);
-
-  (req.params as PathParams) = {
-    id: session.id
-  };
-
-  await DELETE(req, res, next);
-
-  assert.equal(res._getStatusCode(), 200);
-
-  const deletedSession = await getManager().findOne(UserSessionEntity, session.id);
-  assert(!deletedSession);
+  assert.equal(res.statusCode, 403);
 });

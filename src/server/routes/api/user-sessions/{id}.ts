@@ -11,15 +11,17 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
 
   const manager = getManager();
 
-  const userSession = await manager.findOne(UserSessionEntity, userSessionId, {
-    relations: ["user"]
-  });
+  const userSession = await getManager()
+    .createQueryBuilder(UserSessionEntity, "userSession")
+    .leftJoinAndSelect("userSession.user", "user")
+    .where("userSession.id = :userSessionId", { userSessionId })
+    .getOne();
   if (userSession === undefined) {
     return next(createError(404));
   }
 
-  const isOwnSession = userSession.userId !== currentUser.id;
-  if (isOwnSession) {
+  const isOwn = userSession.userId !== currentUser.id;
+  if (isOwn) {
     return next(createError(403));
   }
 

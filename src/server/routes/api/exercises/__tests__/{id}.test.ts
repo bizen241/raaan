@@ -1,9 +1,15 @@
 import { strict as assert } from "assert";
-import { getManager } from "typeorm";
 import * as uuid from "uuid";
-import { EntityStore } from "../../../../../shared/api/response/get";
-import { close, connect, createHttpMocks, hasSecurity, insertExercise, reset } from "../../../../__tests__/helpers";
-import { PathParams } from "../../../../api/operation";
+import {
+  close,
+  connect,
+  createMocks,
+  createParams,
+  getFindResult,
+  hasSecurity,
+  insertExercise,
+  reset
+} from "../../../../__tests__/helpers";
 import { ExerciseEntity } from "../../../../database/entities";
 import { DELETE, GET, PATCH } from "../{id}";
 
@@ -11,67 +17,52 @@ beforeAll(async () => connect());
 beforeEach(async () => reset());
 afterAll(async () => close());
 
-test("GET /api/exercises/{id} -> 404", async () => {
-  const { req, res, next } = await createHttpMocks("Guest");
-
-  (req.params as PathParams) = {
-    id: uuid()
-  };
-
-  await GET(req, res, next);
-
-  assert.equal(res._getStatusCode(), 404);
-});
+test("GET /api/exercises/{id}", () => assert(hasSecurity(GET.apiDoc, "Guest")));
+test("PATCH /api/exercises/{id}", () => assert(hasSecurity(PATCH.apiDoc, "Read")));
+test("DELETE /api/exercises/{id}", () => assert(hasSecurity(DELETE.apiDoc, "Read")));
 
 test("GET /api/exercises/{id} -> 200", async () => {
-  const { req, res, next, user } = await createHttpMocks("Guest");
+  const { req, res, next, user } = await createMocks("Guest");
 
   const { exercise } = await insertExercise(user);
 
-  (req.params as PathParams) = {
-    id: exercise.id
-  };
+  req.params = createParams(exercise.id);
 
   await GET(req, res, next);
+  assert.equal(res.statusCode, 200);
 
-  assert.equal(res._getStatusCode(), 200);
-
-  const data = JSON.parse(res._getData()) as EntityStore;
-  assert(data.Exercise[exercise.id]);
+  const entities = getFindResult(res);
+  assert(entities.Exercise[exercise.id]);
 });
 
-test("PATCH /api/exercises/{id} requires Write premission", async () => {
-  assert(hasSecurity(PATCH.apiDoc, "Write"));
-});
+test("GET /api/exercises/{id} -> 404", async () => {
+  const { req, res, next } = await createMocks("Guest");
 
-test("DELETE /api/exercises/{id} -> 404", async () => {
-  const { req, res, next } = await createHttpMocks("Admin");
+  req.params = createParams(uuid());
 
-  (req.params as PathParams) = {
-    id: uuid()
-  };
-
-  await DELETE(req, res, next);
-
-  assert.equal(res._getStatusCode(), 404);
+  await GET(req, res, next);
+  assert.equal(res.statusCode, 404);
 });
 
 test("DELETE /api/exercises/{id} -> 200", async () => {
-  const { req, res, next, user } = await createHttpMocks("Read");
+  const { req, res, next, manager, user } = await createMocks("Read");
 
   const { exercise } = await insertExercise(user);
 
-  (req.params as PathParams) = {
-    id: exercise.id
-  };
+  req.params = createParams(exercise.id);
 
   await DELETE(req, res, next);
+  assert.equal(res.statusCode, 200);
 
-  assert.equal(res._getStatusCode(), 200);
+  const deletedExercise = await manager.findOne(ExerciseEntity, exercise.id);
+  assert.equal(deletedExercise, undefined);
+});
 
-  const data = JSON.parse(res._getData()) as EntityStore;
-  assert.equal(data.Exercise, undefined);
+test("DELETE /api/exercises/{id} -> 404", async () => {
+  const { req, res, next } = await createMocks("Admin");
 
-  const removedExercise = await getManager().findOne(ExerciseEntity, exercise.id);
-  assert.equal(removedExercise, undefined);
+  req.params = createParams(uuid());
+
+  await DELETE(req, res, next);
+  assert.equal(res.statusCode, 404);
 });
