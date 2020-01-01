@@ -7,16 +7,18 @@ export const connect = async () => {
 
   const { host, port, username, password, name: database } = testEnv.database;
 
-  const connection = await createConnection({
+  await createConnection({
+    name: "default",
     type: "mysql",
     host,
     port,
     username,
     password,
     database,
-    entities
+    entities,
+    synchronize: true,
+    dropSchema: true
   });
-  await connection.synchronize();
 };
 
 export const reset = async () => {
