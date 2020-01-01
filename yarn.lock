@@ -624,10 +624,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/cookie-signature@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@types/cookie-signature/-/cookie-signature-1.0.2.tgz#b0ad7d6844df4e1094d8f15f49255b1efcc06e5b"
-  integrity sha512-YMlB2u2zZJzQs6crqTgtlisRVmrTSah6nbrHsdtixwX11RV1Vii5vi+violganNUzanURIQPTG+sD6ILvBUAZQ==
+"@types/cookie-signature@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@types/cookie-signature/-/cookie-signature-1.0.3.tgz#4761a0c31ad159306564a6b41a3f8b014c47eab2"
+  integrity sha512-0jpd4oizLaBybWBCew/lx4iAjjNWmCfzbspvnjoppyGEquN51BjShmPCksiH2IXLwtxQ2F/e2PkFy0LL7jpLsw==
 
 "@types/cookie@0.3.3":
   version "0.3.3"
