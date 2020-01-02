@@ -44,7 +44,7 @@
     "express-rate-limit": "5.0.0",
     "express-session": "1.17.0",
     "getenv": "1.0.0",
-    "helmet": "3.20.0",
+    "helmet": "3.21.2",
     "history": "4.9.0",
     "http-errors": "1.7.2",
     "kuromoji": "0.1.2",
