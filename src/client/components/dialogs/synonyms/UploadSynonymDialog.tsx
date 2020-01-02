@@ -1,4 +1,3 @@
-import { TextField, Typography } from "@material-ui/core";
 import { CloudUpload, Dns } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useState } from "react";
@@ -6,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { Button, Card, Column, DialogContent } from "../../ui";
+import { Button, Card, DialogContent, TextField } from "../../ui";
 
 export const UploadSynonymDialog = createDialog<{
   target: string;
@@ -14,10 +13,10 @@ export const UploadSynonymDialog = createDialog<{
   React.memo(({ target, onClose }) => {
     const dispatch = useDispatch();
 
-    const [name, setName] = useState();
+    const [name, setName] = useState("");
 
-    const onUpdateName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-      setName(e.target.value);
+    const onUpdateName = useCallback((value: string) => {
+      setName(value);
     }, []);
     const onUploadSynonym = () => {
       const bufferId = generateBufferId();
@@ -40,10 +39,7 @@ export const UploadSynonymDialog = createDialog<{
     return (
       <DialogContent title="タグの別名を作成" onClose={onClose}>
         <Card icon={<Dns />} title="タグの別名">
-          <Column component="label">
-            <Typography color="textSecondary">別名</Typography>
-            <TextField variant="outlined" defaultValue={""} onChange={onUpdateName} />
-          </Column>
+          <TextField label="別名" defaultValue={name} onChange={onUpdateName} />
         </Card>
         <Button icon={<CloudUpload />} label="タグの別名をアップロード" onClick={onUploadSynonym} />
       </DialogContent>

@@ -1,42 +1,25 @@
-import { Box, Card, CardContent, TextField, Typography } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { mergeBuffer } from "../../reducers/buffers";
-import { Button, Column } from "../ui";
+import { Button, Card, Column, TextField } from "../ui";
 
 export const PlaylistEditor = withBuffer("Playlist")(
   React.memo(({ buffer, source, onChange }) => {
-    const onUpdateTitle = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => onChange({ title: e.target.value }),
-      []
-    );
-    const onUpdateDescription = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => onChange({ description: e.target.value }),
-      []
-    );
+    const onUpdateTitle = useCallback((title: string) => onChange({ title }), []);
+    const onUpdateDescription = useCallback((description: string) => onChange({ description }), []);
 
     const params = mergeBuffer(source, buffer);
 
     return (
-      <Box>
+      <Column>
         <Button icon={<CloudUpload />} label="アップロード" />
-        <Column pb={1}>
-          <Card>
-            <CardContent>
-              <Column pb={1}>
-                <Typography color="textSecondary">題名</Typography>
-                <TextField variant="outlined" defaultValue={params.title || ""} onChange={onUpdateTitle} />
-              </Column>
-              <Column>
-                <Typography color="textSecondary">説明</Typography>
-                <TextField variant="outlined" defaultValue={params.description || ""} onChange={onUpdateDescription} />
-              </Column>
-            </CardContent>
-          </Card>
-        </Column>
-      </Box>
+        <Card>
+          <TextField label="題名" defaultValue={params.title || ""} onChange={onUpdateTitle} />
+          <TextField label="説明" defaultValue={params.description || ""} onChange={onUpdateDescription} />
+        </Card>
+      </Column>
     );
   })
 );

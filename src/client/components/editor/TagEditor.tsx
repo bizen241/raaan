@@ -1,4 +1,3 @@
-import { Card, CardContent, TextField, Typography } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback } from "react";
@@ -6,16 +5,13 @@ import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
 import { mergeBuffer } from "../../reducers/buffers";
 import { UploadTagDialog } from "../dialogs/tags/UploadTagDialog";
-import { Button, Column } from "../ui";
+import { Button, Card, Column, TextField } from "../ui";
 
 export const TagEditor = withBuffer("Tag")(
   React.memo(({ bufferId, buffer, source, onChange }) => {
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
-    const onUpdateDescription = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => onChange({ description: e.target.value }),
-      []
-    );
+    const onUpdateDescription = useCallback((description: string) => onChange({ description }), []);
 
     const params = mergeBuffer(source, buffer);
 
@@ -24,16 +20,9 @@ export const TagEditor = withBuffer("Tag")(
     return (
       <Column>
         <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
-        <Column pb={1}>
-          <Card>
-            <CardContent>
-              <Column pb={1}>
-                <Typography color="textSecondary">説明</Typography>
-                <TextField variant="outlined" defaultValue={params.description || ""} onChange={onUpdateDescription} />
-              </Column>
-            </CardContent>
-          </Card>
-        </Column>
+        <Card>
+          <TextField label="説明" defaultValue={params.description || ""} onChange={onUpdateDescription} />
+        </Card>
         <UploadTagDialog tagId={bufferId} isOpen={isUploadDialogOpen} onClose={onToggleUploadDialog} />
       </Column>
     );

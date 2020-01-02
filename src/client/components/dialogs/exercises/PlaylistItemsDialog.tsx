@@ -1,4 +1,3 @@
-import { TextField, Typography } from "@material-ui/core";
 import { Add, CloudUpload, PlaylistPlay } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
@@ -10,7 +9,7 @@ import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { ExerciseContext, TogglePlaylistItemList } from "../../list/playlist-summaries/TogglePlaylistItemList";
 import { UserContext } from "../../project/Context";
-import { Button, Card, Column, DialogContent } from "../../ui";
+import { Button, Card, DialogContent, TextField } from "../../ui";
 
 export const PlaylistItemsDialog = createDialog<{
   exerciseId: string;
@@ -20,7 +19,7 @@ export const PlaylistItemsDialog = createDialog<{
     const currentUser = useContext(UserContext);
 
     const [isEditoOpen, onToggleEditor] = useToggleState();
-    const [title, setTitle] = useState();
+    const [title, setTitle] = useState("新しいプレイリスト");
 
     const { onReload: onReloadPlaylistSummaries } = useSearch("PlaylistSummary", {
       authorId: currentUser.id
@@ -30,8 +29,8 @@ export const PlaylistItemsDialog = createDialog<{
       exerciseId
     });
 
-    const onUpdateTitle = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-      setTitle(e.target.value);
+    const onUpdateTitle = useCallback((value: string) => {
+      setTitle(value);
     }, []);
     const onUploadPlaylist = () => {
       const bufferId = generateBufferId();
@@ -79,10 +78,7 @@ export const PlaylistItemsDialog = createDialog<{
         ) : (
           <>
             <Card icon={<PlaylistPlay />} title="プレイリストを作る">
-              <Column component="label">
-                <Typography color="textSecondary">題名</Typography>
-                <TextField variant="outlined" defaultValue={"新しいプレイリスト"} onChange={onUpdateTitle} />
-              </Column>
+              <TextField label="題名" defaultValue={title} onChange={onUpdateTitle} />
             </Card>
             <Button icon={<CloudUpload />} label="プレイリストをアップロード" onClick={onUploadPlaylist} />
           </>
