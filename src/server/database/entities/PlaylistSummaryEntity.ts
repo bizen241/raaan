@@ -25,4 +25,13 @@ export class PlaylistSummaryEntity extends BaseEntityClass {
 
   @Column()
   itemCount: number = 0;
+
+  @Column()
+  commentCount: number = 0;
+
+  @Column()
+  submittedCount: number = 0;
+
+  @Column()
+  typedCount: number = 0;
 }

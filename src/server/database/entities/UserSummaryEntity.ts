@@ -15,10 +15,10 @@ export class UserSummaryEntity extends BaseEntityClass {
   userId!: string;
 
   @Column()
-  submitCount: number = 0;
+  followerCount: number = 0;
 
   @Column()
-  followerCount: number = 0;
+  submitCount: number = 0;
 
   @Column()
   typeCount: number = 0;

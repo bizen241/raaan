@@ -22,4 +22,10 @@ export class TagSummaryEntity extends BaseEntityClass {
 
   @Column()
   followerCount: number = 0;
+
+  @Column()
+  submittedCount: number = 0;
+
+  @Column()
+  typedCount: number = 0;
 }
