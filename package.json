@@ -63,7 +63,7 @@
     "redux-devtools-extension": "2.13.8",
     "redux-persist": "6.0.0",
     "redux-thunk": "2.3.0",
-    "swagger-ui-express": "4.0.2",
+    "swagger-ui-express": "4.1.2",
     "typeorm": "0.2.20",
     "typescript-json-schema": "0.37.0",
     "ua-parser-js": "0.7.20",
