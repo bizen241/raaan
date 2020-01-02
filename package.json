@@ -42,7 +42,7 @@
     "express": "4.17.0",
     "express-openapi": "4.6.5",
     "express-rate-limit": "5.0.0",
-    "express-session": "1.16.1",
+    "express-session": "1.17.0",
     "getenv": "0.7.0",
     "helmet": "3.20.0",
     "history": "4.9.0",

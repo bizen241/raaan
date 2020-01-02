@@ -10,7 +10,7 @@ export const useSession = (env: Env, app: Express) => {
       store: new SessionStore(),
       secret: env.session.secret,
       cookie: {
-        sameSite: "Lax",
+        sameSite: "lax",
         secure: env.server.host === "localhost" ? false : true
       },
       genid: () => uuid(),
