@@ -81,6 +81,7 @@ import { EditUserAccountProviderPage } from "../pages/user-accounts/EditUserAcco
 import { UserAccountPage } from "../pages/user-accounts/UserAccountPage";
 import { UserAccountProviderPage } from "../pages/user-accounts/UserAccountProviderPage";
 import { EditUserConfigPage } from "../pages/user-configs/EditUserConfigPage";
+import { UserDiaryPage } from "../pages/user-diary-entries/UserDiaryPage";
 import { FollowingUsersPage } from "../pages/user-follows/FollowingUsersPage";
 import { UserFollowersPage } from "../pages/user-follows/UserFollowersPage";
 import { UserMessagesPage } from "../pages/user-messages/UserMessagesPage";
@@ -146,6 +147,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/users/:id/followers" component={UserFollowersPage} />
         <Route exact={true} path="/users/:id/following/users" component={FollowingUsersPage} />
         <Route exact={true} path="/users/:id/following/tags" component={FollowingTagsPage} />
+        <Route exact={true} path="/users/:id/diary" component={UserDiaryPage} />
 
         <Route exact={true} path="/exercises" component={ExercisesPage} />
         <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
