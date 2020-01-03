@@ -255,7 +255,7 @@ const normalizeExerciseDraft: Normalizer<ExerciseDraftEntity> = (_, store, entit
 };
 
 const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (_, store, entity) => {
-  const { id, exercise, exerciseId, tags = [], upvoteCount, downvoteCount, submittedCount: submitCount } = entity;
+  const { id, exercise, exerciseId, tags = [], upvoteCount, downvoteCount, commentCount, submittedCount: submitCount } = entity;
   if (exercise === undefined) {
     throw createError(500, "exerciseSummary.exercise is not defined");
   }
@@ -284,6 +284,7 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (_, store, e
     description,
     upvoteCount,
     downvoteCount,
+    commentCount,
     submitCount,
     isDraft,
     isEditing: !draft.isMerged,

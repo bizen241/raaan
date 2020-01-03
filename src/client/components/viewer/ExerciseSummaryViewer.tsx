@@ -43,7 +43,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
     const isOwner = currentUser.permission === "Owner";
     const isAuthor = exerciseSummary.authorId === currentUser.id;
 
-    const { exerciseId, title, isDraft, isPrivate, isLocked } = exerciseSummary;
+    const { exerciseId, title, commentCount, isDraft, isPrivate, isLocked } = exerciseSummary;
 
     const [isPublishExerciseDialogOpen, onTogglePublishExerciseDialog] = useToggleState();
     const [isUnpublishExerciseDialogOpen, onToggleUnpublishExerciseDialog] = useToggleState();
@@ -210,6 +210,16 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
         <Property label="作者">
           <Link underline="always" color="textPrimary" component={RouterLink} to={`/users/${exerciseSummary.authorId}`}>
             {exerciseSummary.authorName || "名無しさん"}
+          </Link>
+        </Property>
+        <Property label="コメント">
+          <Link
+            underline="always"
+            color="textPrimary"
+            component={RouterLink}
+            to={`/exercises/${exerciseSummary.exerciseId}/comments`}
+          >
+            {commentCount}
           </Link>
         </Property>
         <PublishExerciseDialog
