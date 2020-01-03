@@ -65,7 +65,7 @@
     "swagger-ui-express": "4.1.2",
     "typeorm": "0.2.20",
     "typescript-json-schema": "0.41.0",
-    "ua-parser-js": "0.7.20",
+    "ua-parser-js": "0.7.21",
     "uuid": "3.3.3"
   },
   "devDependencies": {
