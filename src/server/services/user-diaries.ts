@@ -1,9 +1,9 @@
 import * as createError from "http-errors";
 import { EntityManager } from "typeorm";
-import { SubmissionEntity, UserDiaryEntity, UserEntity } from "../database/entities";
+import { SubmissionEntity, UserDiaryEntryEntity, UserEntity } from "../database/entities";
 import { getSubmittedDateString } from "./submissions";
 
-export const updateUserDiarySubmitCount = async (params: {
+export const updateUserDiaryEntrySubmitCount = async (params: {
   manager: EntityManager;
   currentUser: UserEntity;
   submission: SubmissionEntity;
@@ -12,35 +12,35 @@ export const updateUserDiarySubmitCount = async (params: {
   const { typeCount } = submission;
   const submittedDate = getSubmittedDateString(submission);
 
-  const userDiary = await manager.findOne(UserDiaryEntity, {
+  const userDiaryEntry = await manager.findOne(UserDiaryEntryEntity, {
     userId: currentUser.id,
     date: submittedDate
   });
 
-  if (userDiary === undefined) {
-    const newUserDiary = new UserDiaryEntity(currentUser, submittedDate);
+  if (userDiaryEntry === undefined) {
+    const newUserDiaryEntry = new UserDiaryEntryEntity(currentUser, submittedDate);
 
-    newUserDiary.submitCount += 1;
-    newUserDiary.typeCount += typeCount;
-    newUserDiary.submittedCount += 1;
-    newUserDiary.typedCount += typeCount;
+    newUserDiaryEntry.submitCount += 1;
+    newUserDiaryEntry.typeCount += typeCount;
+    newUserDiaryEntry.submittedCount += 1;
+    newUserDiaryEntry.typedCount += typeCount;
 
-    await manager.save(newUserDiary);
+    await manager.save(newUserDiaryEntry);
 
-    return newUserDiary;
+    return newUserDiaryEntry;
   } else {
-    userDiary.submitCount += 1;
-    userDiary.typeCount += typeCount;
-    userDiary.submittedCount += 1;
-    userDiary.typedCount += typeCount;
+    userDiaryEntry.submitCount += 1;
+    userDiaryEntry.typeCount += typeCount;
+    userDiaryEntry.submittedCount += 1;
+    userDiaryEntry.typedCount += typeCount;
 
-    await manager.save(userDiary);
+    await manager.save(userDiaryEntry);
 
-    return userDiary;
+    return userDiaryEntry;
   }
 };
 
-export const updateUserDiarySubmittedCount = async (params: {
+export const updateUserDiaryEntrySubmittedCount = async (params: {
   manager: EntityManager;
   submission: SubmissionEntity;
 }) => {
@@ -56,26 +56,26 @@ export const updateUserDiarySubmittedCount = async (params: {
   const { typeCount } = submission;
   const submittedDate = getSubmittedDateString(submission);
 
-  const userDiary = await manager.findOne(UserDiaryEntity, {
+  const userDiaryEntry = await manager.findOne(UserDiaryEntryEntity, {
     userId: author.id,
     date: submittedDate
   });
 
-  if (userDiary === undefined) {
-    const newUserDiary = new UserDiaryEntity(author, submittedDate);
+  if (userDiaryEntry === undefined) {
+    const newUserDiaryEntry = new UserDiaryEntryEntity(author, submittedDate);
 
-    newUserDiary.submittedCount += 1;
-    newUserDiary.typedCount += typeCount;
+    newUserDiaryEntry.submittedCount += 1;
+    newUserDiaryEntry.typedCount += typeCount;
 
-    await manager.save(newUserDiary);
+    await manager.save(newUserDiaryEntry);
 
-    return newUserDiary;
+    return newUserDiaryEntry;
   } else {
-    userDiary.submittedCount += 1;
-    userDiary.typedCount += typeCount;
+    userDiaryEntry.submittedCount += 1;
+    userDiaryEntry.typedCount += typeCount;
 
-    await manager.save(userDiary);
+    await manager.save(userDiaryEntry);
 
-    return userDiary;
+    return userDiaryEntry;
   }
 };

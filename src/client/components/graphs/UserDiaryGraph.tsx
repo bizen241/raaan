@@ -1,19 +1,19 @@
 import { makeStyles } from "@material-ui/core";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { UserDiary } from "../../../shared/api/entities";
+import { UserDiaryEntry } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { Row } from "../ui";
 
-type DateToUserDiary = { [date: string]: UserDiary | undefined };
+type DateToUserDiaryEntry = { [date: string]: UserDiaryEntry | undefined };
 
 export const UserDiaryGraph = withEntity("User")(({ entityId: userId }) => {
   const heatMapClasses = useHeatMapStyles();
 
-  const [userDiaries, setUserDiaries] = useState<DateToUserDiary>({});
+  const [userDiaryEntries, setUserDiaryEntries] = useState<DateToUserDiaryEntry>({});
 
-  const { entities, count, params, status, onChange } = useSearch("UserDiary", {
+  const { entities, count, params, status, onChange } = useSearch("UserDiaryEntry", {
     userId,
     searchLimit: 100,
     searchOffset: 0
@@ -27,19 +27,19 @@ export const UserDiaryGraph = withEntity("User")(({ entityId: userId }) => {
       return;
     }
 
-    const searchedUserDiaries: DateToUserDiary = {};
+    const searchedUserDiaryEntries: DateToUserDiaryEntry = {};
     entities.forEach(entity => {
       if (entity !== undefined) {
         const date = new Date(entity.date).getTime();
 
-        searchedUserDiaries[date] = entity;
+        searchedUserDiaryEntries[date] = entity;
       }
     });
 
-    setUserDiaries({ ...userDiaries, ...searchedUserDiaries });
+    setUserDiaryEntries({ ...userDiaryEntries, ...searchedUserDiaryEntries });
 
     const lastEntity = entities[entities.length - 1];
-    if (Object.keys(userDiaries).length < count && lastEntity && new Date(lastEntity.date).getTime() > firstDate) {
+    if (Object.keys(userDiaryEntries).length < count && lastEntity && new Date(lastEntity.date).getTime() > firstDate) {
       onChange({
         searchOffset: (params.searchOffset || 0) + 100
       });
@@ -55,7 +55,7 @@ export const UserDiaryGraph = withEntity("User")(({ entityId: userId }) => {
               <g key={weekIndex} transform={`translate(${weekIndex * 18 + 1}, 1)`}>
                 {week.map((__, dateIndex) => {
                   const date = firstDate + ((weekIndex + 1) * 7 + dateIndex - 7) * 24 * 60 * 60 * 1000;
-                  const diary = userDiaries[date];
+                  const diary = userDiaryEntries[date];
 
                   return (
                     <rect

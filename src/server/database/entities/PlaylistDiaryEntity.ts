@@ -3,14 +3,14 @@ import { BaseEntityClass } from "./BaseEntityClass";
 import { PlaylistEntity } from "./PlaylistEntity";
 
 @Entity("playlist_diaries")
-export class PlaylistDiaryEntity extends BaseEntityClass {
-  type: "PlaylistDiary" = "PlaylistDiary";
+export class PlaylistDiaryEntryEntity extends BaseEntityClass {
+  type: "PlaylistDiaryEntry" = "PlaylistDiaryEntry";
 
   @ManyToOne(() => PlaylistEntity, {
     onDelete: "CASCADE"
   })
   playlist?: PlaylistEntity;
-  @RelationId((playlistDiary: PlaylistDiaryEntity) => playlistDiary.playlist)
+  @RelationId((playlistDiaryEntry: PlaylistDiaryEntryEntity) => playlistDiaryEntry.playlist)
   playlistId!: string;
 
   @Column("date")

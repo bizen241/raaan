@@ -9,7 +9,7 @@ import {
   ExerciseComment,
   ExerciseCommentSummary,
   ExerciseCommentVote,
-  ExerciseDiary,
+  ExerciseDiaryEntry,
   ExerciseDraft,
   ExerciseSummary,
   ExerciseVote,
@@ -27,7 +27,7 @@ import {
   Permission,
   Playlist,
   PlaylistBookmark,
-  PlaylistDiary,
+  PlaylistDiaryEntry,
   PlaylistItem,
   PlaylistSummary,
   Report,
@@ -45,13 +45,13 @@ import {
   SuggestionSummary,
   Synonym,
   Tag,
-  TagDiary,
+  TagDiaryEntry,
   TagFollow,
   TagSummary,
   User,
   UserAccount,
   UserConfig,
-  UserDiary,
+  UserDiaryEntry,
   UserFollow,
   UserMessage,
   UserSession,
@@ -131,7 +131,7 @@ const parseExerciseCommentVote: Parser<ExerciseCommentVote> = query => {
   };
 };
 
-const parseExerciseDiary: Parser<ExerciseDiary> = query => {
+const parseExerciseDiaryEntry: Parser<ExerciseDiaryEntry> = query => {
   const { exerciseId } = query;
 
   return {
@@ -276,7 +276,7 @@ const parsePlaylistBookmark: Parser<PlaylistBookmark> = query => {
   };
 };
 
-const parsePlaylistDiary: Parser<PlaylistDiary> = query => {
+const parsePlaylistDiaryEntry: Parser<PlaylistDiaryEntry> = query => {
   const { playlistId } = query;
 
   return {
@@ -416,7 +416,7 @@ const parseTag: Parser<Tag> = query => {
   };
 };
 
-const parseTagDiary: Parser<TagDiary> = query => {
+const parseTagDiaryEntry: Parser<TagDiaryEntry> = query => {
   const { tagId } = query;
 
   return {
@@ -468,7 +468,7 @@ const parseUserConfig: Parser<UserConfig> = query => {
   };
 };
 
-const parseUserDiary: Parser<UserDiary> = query => {
+const parseUserDiaryEntry: Parser<UserDiaryEntry> = query => {
   const { userId } = query;
 
   return {
@@ -521,7 +521,7 @@ const parsers: { [T in EntityType]: Parser<EntityTypeToEntity[T]> } = {
   ExerciseComment: parseExerciseComment,
   ExerciseCommentSummary: parseExerciseCommentSummary,
   ExerciseCommentVote: parseExerciseCommentVote,
-  ExerciseDiary: parseExerciseDiary,
+  ExerciseDiaryEntry: parseExerciseDiaryEntry,
   ExerciseDraft: parseExerciseDraft,
   ExerciseSummary: parseExerciseSummary,
   ExerciseVote: parseExerciseVote,
@@ -537,7 +537,7 @@ const parsers: { [T in EntityType]: Parser<EntityTypeToEntity[T]> } = {
   ObjectionSummary: parseObjectionSummary,
   Playlist: parsePlaylist,
   PlaylistBookmark: parsePlaylistBookmark,
-  PlaylistDiary: parsePlaylistDiary,
+  PlaylistDiaryEntry: parsePlaylistDiaryEntry,
   PlaylistItem: parsePlaylistItem,
   PlaylistSummary: parsePlaylistSummary,
   Report: parseReport,
@@ -554,13 +554,13 @@ const parsers: { [T in EntityType]: Parser<EntityTypeToEntity[T]> } = {
   SuggestionSummary: parseSuggestionSummary,
   Synonym: parseSynonym,
   Tag: parseTag,
-  TagDiary: parseTagDiary,
+  TagDiaryEntry: parseTagDiaryEntry,
   TagFollow: parseTagFollow,
   TagSummary: parseTagSummary,
   User: parseUser,
   UserAccount: parseUserAccount,
   UserConfig: parseUserConfig,
-  UserDiary: parseUserDiary,
+  UserDiaryEntry: parseUserDiaryEntry,
   UserFollow: parseUserFollow,
   UserMessage: parseUserMessage,
   UserSession: parseUserSession,

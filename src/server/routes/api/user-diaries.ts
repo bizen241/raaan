@@ -4,20 +4,20 @@ import { getManager } from "typeorm";
 import { parseQuery } from "../../../shared/api/request/parse";
 import { createOperationDoc, errorBoundary } from "../../api/operation";
 import { responseSearchResult } from "../../api/response";
-import { UserDiaryEntity } from "../../database/entities";
+import { UserDiaryEntryEntity } from "../../database/entities";
 
 export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { userId, searchLimit, searchOffset } = parseQuery("UserDiary", req.query);
+  const { userId, searchLimit, searchOffset } = parseQuery("UserDiaryEntry", req.query);
 
-  const isOwnDiaries = userId === currentUser.id;
-  if (!isOwnDiaries) {
+  const isOwnDiaryEntries = userId === currentUser.id;
+  if (!isOwnDiaryEntries) {
     return next(createError(403));
   }
 
   const query = await getManager()
-    .createQueryBuilder(UserDiaryEntity, "userDiary")
-    .leftJoinAndSelect("userDiary.user", "user")
-    .orderBy("userDiary.date", "DESC")
+    .createQueryBuilder(UserDiaryEntryEntity, "userDiaryEntry")
+    .leftJoinAndSelect("userDiaryEntry.user", "user")
+    .orderBy("userDiaryEntry.date", "DESC")
     .take(searchLimit)
     .skip(searchOffset);
 
@@ -25,13 +25,13 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     query.andWhere("user.id = :userId", { userId });
   }
 
-  const [userDiaries, count] = await query.getManyAndCount();
+  const [userDiaryEntries, count] = await query.getManyAndCount();
 
-  responseSearchResult(req, res, userDiaries, count);
+  responseSearchResult(req, res, userDiaryEntries, count);
 });
 
 GET.apiDoc = createOperationDoc({
-  entityType: "UserDiary",
+  entityType: "UserDiaryEntry",
   permission: "Read",
   hasQuery: true
 });

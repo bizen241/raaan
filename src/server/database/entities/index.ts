@@ -4,7 +4,7 @@ import { ContestEntryEntity } from "./ContestEntryEntity";
 import { ExerciseCommentEntity } from "./ExerciseCommentEntity";
 import { ExerciseCommentSummaryEntity } from "./ExerciseCommentSummaryEntity";
 import { ExerciseCommentVoteEntity } from "./ExerciseCommentVoteEntity";
-import { ExerciseDiaryEntity } from "./ExerciseDiaryEntity";
+import { ExerciseDiaryEntryEntity } from "./ExerciseDiaryEntity";
 import { ExerciseDraftEntity } from "./ExerciseDraftEntity";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { ExerciseSummaryEntity } from "./ExerciseSummaryEntity";
@@ -20,7 +20,7 @@ import { ObjectionCommentEntity } from "./ObjectionCommentEntity";
 import { ObjectionEntity } from "./ObjectionEntity";
 import { ObjectionSummaryEntity } from "./ObjectionSummaryEntity";
 import { PlaylistBookmarkEntity } from "./PlaylistBookmarkEntity";
-import { PlaylistDiaryEntity } from "./PlaylistDiaryEntity";
+import { PlaylistDiaryEntryEntity } from "./PlaylistDiaryEntity";
 import { PlaylistEntity } from "./PlaylistEntity";
 import { PlaylistItemEntity } from "./PlaylistItemEntity";
 import { PlaylistSummaryEntity } from "./PlaylistSummaryEntity";
@@ -38,13 +38,13 @@ import { SuggestionCommentVoteEntity } from "./SuggestionCommentVoteEntity";
 import { SuggestionEntity } from "./SuggestionEntity";
 import { SuggestionSummaryEntity } from "./SuggestionSummaryEntity";
 import { SynonymEntity } from "./SynonymEntity";
-import { TagDiaryEntity } from "./TagDiaryEntity";
+import { TagDiaryEntryEntity } from "./TagDiaryEntity";
 import { TagEntity } from "./TagEntity";
 import { TagFollowEntity } from "./TagFollowEntity";
 import { TagSummaryEntity } from "./TagSummaryEntity";
 import { UserAccountEntity } from "./UserAccountEntity";
 import { UserConfigEntity } from "./UserConfigEntity";
-import { UserDiaryEntity } from "./UserDiaryEntity";
+import { UserDiaryEntryEntity } from "./UserDiaryEntity";
 import { UserEntity } from "./UserEntity";
 import { UserFollowEntity } from "./UserFollowEntity";
 import { UserMessageEntity } from "./UserMessageEntity";
@@ -108,7 +108,7 @@ export type Entity =
   | ExerciseCommentEntity
   | ExerciseCommentSummaryEntity
   | ExerciseCommentVoteEntity
-  | ExerciseDiaryEntity
+  | ExerciseDiaryEntryEntity
   | ExerciseDraftEntity
   | ExerciseEntity
   | ExerciseSummaryEntity
@@ -124,7 +124,7 @@ export type Entity =
   | ObjectionEntity
   | ObjectionSummaryEntity
   | PlaylistBookmarkEntity
-  | PlaylistDiaryEntity
+  | PlaylistDiaryEntryEntity
   | PlaylistEntity
   | PlaylistItemEntity
   | PlaylistSummaryEntity
@@ -142,12 +142,12 @@ export type Entity =
   | SuggestionSummaryEntity
   | SynonymEntity
   | TagEntity
-  | TagDiaryEntity
+  | TagDiaryEntryEntity
   | TagFollowEntity
   | TagSummaryEntity
   | UserAccountEntity
   | UserConfigEntity
-  | UserDiaryEntity
+  | UserDiaryEntryEntity
   | UserEntity
   | UserFollowEntity
   | UserMessageEntity
@@ -163,7 +163,7 @@ export const entities = [
     ExerciseComment: ExerciseCommentEntity,
     ExerciseCommentSummary: ExerciseCommentSummaryEntity,
     ExerciseCommentVote: ExerciseCommentVoteEntity,
-    ExerciseDiary: ExerciseDiaryEntity,
+    ExerciseDiaryEntry: ExerciseDiaryEntryEntity,
     ExerciseDraft: ExerciseDraftEntity,
     ExerciseSummary: ExerciseSummaryEntity,
     ExerciseVote: ExerciseVoteEntity,
@@ -179,7 +179,7 @@ export const entities = [
     ObjectionSummary: ObjectionSummaryEntity,
     Playlist: PlaylistEntity,
     PlaylistBookmark: PlaylistBookmarkEntity,
-    PlaylistDiary: PlaylistDiaryEntity,
+    PlaylistDiaryEntry: PlaylistDiaryEntryEntity,
     PlaylistItem: PlaylistItemEntity,
     PlaylistSummary: PlaylistSummaryEntity,
     Report: ReportEntity,
@@ -196,13 +196,13 @@ export const entities = [
     SuggestionSummary: SuggestionSummaryEntity,
     Synonym: SynonymEntity,
     Tag: TagEntity,
-    TagDiary: TagDiaryEntity,
+    TagDiaryEntry: TagDiaryEntryEntity,
     TagFollow: TagFollowEntity,
     TagSummary: TagSummaryEntity,
     User: UserEntity,
     UserAccount: UserAccountEntity,
     UserConfig: UserConfigEntity,
-    UserDiary: UserDiaryEntity,
+    UserDiaryEntry: UserDiaryEntryEntity,
     UserFollow: UserFollowEntity,
     UserMessage: UserMessageEntity,
     UserSession: UserSessionEntity,

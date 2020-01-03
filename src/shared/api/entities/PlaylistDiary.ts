@@ -1,6 +1,6 @@
 import { BaseEntityObject, UUID } from "./BaseEntityObject";
 
-export interface PlaylistDiary extends BaseEntityObject {
+export interface PlaylistDiaryEntry extends BaseEntityObject {
   playlistId?: UUID;
   date: string;
   submittedCount: number;

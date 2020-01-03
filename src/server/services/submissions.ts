@@ -1,10 +1,10 @@
 import * as createError from "http-errors";
 import { EntityManager } from "typeorm";
 import { Entity, SubmissionEntity, UserEntity } from "../database/entities";
-import { updateExerciseDiarySubmittedCount } from "./exercise-diaries";
+import { updateExerciseDiaryEntrySubmittedCount } from "./exercise-diaries";
 import { updateExerciseSummarySubmittedCount } from "./exercise-summaries";
 import { updateSubmissionSummarySubmitCount } from "./submission-summaries";
-import { updateUserDiarySubmitCount, updateUserDiarySubmittedCount } from "./user-diaries";
+import { updateUserDiaryEntrySubmitCount, updateUserDiaryEntrySubmittedCount } from "./user-diaries";
 import { updateUserSummarySubmitCount } from "./user-summaries";
 
 export const updateRelatedEntities = async (params: {
@@ -19,15 +19,15 @@ export const updateRelatedEntities = async (params: {
 
   const submissionSummary = await updateSubmissionSummarySubmitCount(params);
   const userSummary = await updateUserSummarySubmitCount(params);
-  const userDiary = await updateUserDiarySubmitCount(params);
+  const userDiaryEntry = await updateUserDiaryEntrySubmitCount(params);
   const exerciseSummary = await updateExerciseSummarySubmittedCount(params);
-  const exerciseDiary = await updateExerciseDiarySubmittedCount(params);
+  const exerciseDiaryEntry = await updateExerciseDiaryEntrySubmittedCount(params);
 
   if (exercise.authorId !== params.currentUser.id) {
-    await updateUserDiarySubmittedCount(params);
+    await updateUserDiaryEntrySubmittedCount(params);
   }
 
-  return [submissionSummary, userSummary, userDiary, exerciseSummary, exerciseDiary];
+  return [submissionSummary, userSummary, userDiaryEntry, exerciseSummary, exerciseDiaryEntry];
 };
 
 export const getSubmittedDateString = ({ createdAt }: SubmissionEntity) =>

@@ -1,6 +1,6 @@
 import { BaseEntityObject, UUID } from "./BaseEntityObject";
 
-export interface ExerciseDiary extends BaseEntityObject {
+export interface ExerciseDiaryEntry extends BaseEntityObject {
   exerciseId?: UUID;
   date: string;
   submittedCount: number;

@@ -3,14 +3,14 @@ import { BaseEntityClass } from "./BaseEntityClass";
 import { TagEntity } from "./TagEntity";
 
 @Entity("tag_diaries")
-export class TagDiaryEntity extends BaseEntityClass {
-  type: "TagDiary" = "TagDiary";
+export class TagDiaryEntryEntity extends BaseEntityClass {
+  type: "TagDiaryEntry" = "TagDiaryEntry";
 
   @ManyToOne(() => TagEntity, {
     onDelete: "CASCADE"
   })
   tag?: TagEntity;
-  @RelationId((tagDiary: TagDiaryEntity) => tagDiary.tag)
+  @RelationId((tagDiaryEntry: TagDiaryEntryEntity) => tagDiaryEntry.tag)
   tagId!: string;
 
   @Column("date")

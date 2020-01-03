@@ -3,14 +3,14 @@ import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 
 @Entity("exercise_diaries")
-export class ExerciseDiaryEntity extends BaseEntityClass {
-  type: "ExerciseDiary" = "ExerciseDiary";
+export class ExerciseDiaryEntryEntity extends BaseEntityClass {
+  type: "ExerciseDiaryEntry" = "ExerciseDiaryEntry";
 
   @ManyToOne(() => ExerciseEntity, {
     onDelete: "CASCADE"
   })
   exercise?: ExerciseEntity;
-  @RelationId((exerciseDiary: ExerciseDiaryEntity) => exerciseDiary.exercise)
+  @RelationId((exerciseDiaryEntry: ExerciseDiaryEntryEntity) => exerciseDiaryEntry.exercise)
   exerciseId!: string;
 
   @Column("date")

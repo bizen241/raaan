@@ -9,7 +9,7 @@ import {
   ExerciseCommentEntity,
   ExerciseCommentSummaryEntity,
   ExerciseCommentVoteEntity,
-  ExerciseDiaryEntity,
+  ExerciseDiaryEntryEntity,
   ExerciseDraftEntity,
   ExerciseEntity,
   ExerciseSummaryEntity,
@@ -25,7 +25,7 @@ import {
   ObjectionEntity,
   ObjectionSummaryEntity,
   PlaylistBookmarkEntity,
-  PlaylistDiaryEntity,
+  PlaylistDiaryEntryEntity,
   PlaylistEntity,
   PlaylistItemEntity,
   PlaylistSummaryEntity,
@@ -42,13 +42,13 @@ import {
   SuggestionEntity,
   SuggestionSummaryEntity,
   SynonymEntity,
-  TagDiaryEntity,
+  TagDiaryEntryEntity,
   TagEntity,
   TagFollowEntity,
   TagSummaryEntity,
   UserAccountEntity,
   UserConfigEntity,
-  UserDiaryEntity,
+  UserDiaryEntryEntity,
   UserEntity,
   UserFollowEntity,
   UserMessageEntity,
@@ -227,10 +227,10 @@ const normalizeExerciseCommentVote: Normalizer<ExerciseCommentVoteEntity> = (_, 
   };
 };
 
-const normalizeExerciseDiary: Normalizer<ExerciseDiaryEntity> = (_, store, entity) => {
+const normalizeExerciseDiaryEntry: Normalizer<ExerciseDiaryEntryEntity> = (_, store, entity) => {
   const { id, date, submittedCount, typedCount } = entity;
 
-  store.ExerciseDiary[id] = {
+  store.ExerciseDiaryEntry[id] = {
     ...base(entity),
     date,
     submittedCount,
@@ -535,10 +535,10 @@ const normalizePlaylistBookmark: Normalizer<PlaylistBookmarkEntity> = (context, 
   }
 };
 
-const normalizePlaylistDiary: Normalizer<PlaylistDiaryEntity> = (_, store, entity) => {
+const normalizePlaylistDiaryEntry: Normalizer<PlaylistDiaryEntryEntity> = (_, store, entity) => {
   const { id, date, submittedCount, typedCount } = entity;
 
-  store.PlaylistDiary[id] = {
+  store.PlaylistDiaryEntry[id] = {
     ...base(entity),
     date,
     submittedCount,
@@ -850,10 +850,10 @@ const normalizeTag: Normalizer<TagEntity> = (_, store, entity) => {
   };
 };
 
-const normalizeTagDiary: Normalizer<TagDiaryEntity> = (_, store, entity) => {
+const normalizeTagDiaryEntry: Normalizer<TagDiaryEntryEntity> = (_, store, entity) => {
   const { id, date, submittedCount, typedCount } = entity;
 
-  store.TagDiary[id] = {
+  store.TagDiaryEntry[id] = {
     ...base(entity),
     date,
     submittedCount,
@@ -937,10 +937,10 @@ const normalizeUserConfig: Normalizer<UserConfigEntity> = (_, store, entity) => 
   };
 };
 
-const normalizeUserDiary: Normalizer<UserDiaryEntity> = (_, store, entity) => {
+const normalizeUserDiaryEntry: Normalizer<UserDiaryEntryEntity> = (_, store, entity) => {
   const { id, date, submitCount, typeCount, submittedCount, typedCount, createCount, editCount } = entity;
 
-  store.UserDiary[id] = {
+  store.UserDiaryEntry[id] = {
     ...base(entity),
     date,
     submitCount,
@@ -1023,7 +1023,7 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   ExerciseComment: normalizeExerciseComment,
   ExerciseCommentSummary: normalizeExerciseCommentSummary,
   ExerciseCommentVote: normalizeExerciseCommentVote,
-  ExerciseDiary: normalizeExerciseDiary,
+  ExerciseDiaryEntry: normalizeExerciseDiaryEntry,
   ExerciseDraft: normalizeExerciseDraft,
   ExerciseSummary: normalizeExerciseSummary,
   ExerciseVote: normalizeExerciseVote,
@@ -1039,7 +1039,7 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   ObjectionSummary: normalizeObjectionSummary,
   Playlist: normalizePlaylist,
   PlaylistBookmark: normalizePlaylistBookmark,
-  PlaylistDiary: normalizePlaylistDiary,
+  PlaylistDiaryEntry: normalizePlaylistDiaryEntry,
   PlaylistItem: normalizePlaylistItem,
   PlaylistSummary: normalizePlaylistSummary,
   Report: normalizeReport,
@@ -1056,13 +1056,13 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   SuggestionSummary: normalizeSuggestionSummary,
   Synonym: normalizeSynonym,
   Tag: normalizeTag,
-  TagDiary: normalizeTagDiary,
+  TagDiaryEntry: normalizeTagDiaryEntry,
   TagFollow: normalizeTagFollow,
   TagSummary: normalizeTagSummary,
   User: normalizeUser,
   UserAccount: normalizeUserAccount,
   UserConfig: normalizeUserConfig,
-  UserDiary: normalizeUserDiary,
+  UserDiaryEntry: normalizeUserDiaryEntry,
   UserFollow: normalizeUserFollow,
   UserMessage: normalizeUserMessage,
   UserSession: normalizeUserSession,

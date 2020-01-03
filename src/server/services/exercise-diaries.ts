@@ -1,9 +1,9 @@
 import * as createError from "http-errors";
 import { EntityManager } from "typeorm";
-import { ExerciseDiaryEntity, SubmissionEntity } from "../database/entities";
+import { ExerciseDiaryEntryEntity, SubmissionEntity } from "../database/entities";
 import { getSubmittedDateString } from "./submissions";
 
-export const updateExerciseDiarySubmittedCount = async (params: {
+export const updateExerciseDiaryEntrySubmittedCount = async (params: {
   manager: EntityManager;
   submission: SubmissionEntity;
 }) => {
@@ -14,26 +14,26 @@ export const updateExerciseDiarySubmittedCount = async (params: {
     throw createError(500, "submission.exercise is not defined");
   }
 
-  const exerciseDiary = await manager.findOne(ExerciseDiaryEntity, {
+  const exerciseDiaryEntry = await manager.findOne(ExerciseDiaryEntryEntity, {
     exerciseId: exercise.id,
     date: submittedDate
   });
 
-  if (exerciseDiary === undefined) {
-    const newExerciseDiary = new ExerciseDiaryEntity(exercise, submittedDate);
+  if (exerciseDiaryEntry === undefined) {
+    const newExerciseDiaryEntry = new ExerciseDiaryEntryEntity(exercise, submittedDate);
 
-    newExerciseDiary.submittedCount += 1;
-    newExerciseDiary.typedCount += typeCount;
+    newExerciseDiaryEntry.submittedCount += 1;
+    newExerciseDiaryEntry.typedCount += typeCount;
 
-    await manager.save(newExerciseDiary);
+    await manager.save(newExerciseDiaryEntry);
 
-    return newExerciseDiary;
+    return newExerciseDiaryEntry;
   } else {
-    exerciseDiary.submittedCount += 1;
-    exerciseDiary.typedCount += typeCount;
+    exerciseDiaryEntry.submittedCount += 1;
+    exerciseDiaryEntry.typedCount += typeCount;
 
-    await manager.save(exerciseDiary);
+    await manager.save(exerciseDiaryEntry);
 
-    return exerciseDiary;
+    return exerciseDiaryEntry;
   }
 };

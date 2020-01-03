@@ -4,7 +4,7 @@ import { Exercise } from "./Exercise";
 import { ExerciseComment } from "./ExerciseComment";
 import { ExerciseCommentSummary } from "./ExerciseCommentSummary";
 import { ExerciseCommentVote } from "./ExerciseCommentVote";
-import { ExerciseDiary } from "./ExerciseDiary";
+import { ExerciseDiaryEntry } from "./ExerciseDiary";
 import { ExerciseDraft } from "./ExerciseDraft";
 import { ExerciseSummary } from "./ExerciseSummary";
 import { ExerciseVote } from "./ExerciseVote";
@@ -20,7 +20,7 @@ import { ObjectionComment } from "./ObjectionComment";
 import { ObjectionSummary } from "./ObjectionSummary";
 import { Playlist } from "./Playlist";
 import { PlaylistBookmark } from "./PlaylistBookmark";
-import { PlaylistDiary } from "./PlaylistDiary";
+import { PlaylistDiaryEntry } from "./PlaylistDiary";
 import { PlaylistItem } from "./PlaylistItem";
 import { PlaylistSummary } from "./PlaylistSummary";
 import { Report } from "./Report";
@@ -37,13 +37,13 @@ import { SuggestionCommentVote } from "./SuggestionCommentVote";
 import { SuggestionSummary } from "./SuggestionSummary";
 import { Synonym } from "./Synonym";
 import { Tag } from "./Tag";
-import { TagDiary } from "./TagDiary";
+import { TagDiaryEntry } from "./TagDiary";
 import { TagFollow } from "./TagFollow";
 import { TagSummary } from "./TagSummary";
 import { User } from "./User";
 import { UserAccount } from "./UserAccount";
 import { UserConfig } from "./UserConfig";
-import { UserDiary } from "./UserDiary";
+import { UserDiaryEntry } from "./UserDiary";
 import { UserFollow } from "./UserFollow";
 import { UserMessage } from "./UserMessage";
 import { UserSession } from "./UserSession";
@@ -108,7 +108,7 @@ export type EntityTypeToEntity = {
   ExerciseComment: ExerciseComment;
   ExerciseCommentSummary: ExerciseCommentSummary;
   ExerciseCommentVote: ExerciseCommentVote;
-  ExerciseDiary: ExerciseDiary;
+  ExerciseDiaryEntry: ExerciseDiaryEntry;
   ExerciseDraft: ExerciseDraft;
   ExerciseSummary: ExerciseSummary;
   ExerciseVote: ExerciseVote;
@@ -124,7 +124,7 @@ export type EntityTypeToEntity = {
   ObjectionSummary: ObjectionSummary;
   Playlist: Playlist;
   PlaylistBookmark: PlaylistBookmark;
-  PlaylistDiary: PlaylistDiary;
+  PlaylistDiaryEntry: PlaylistDiaryEntry;
   PlaylistItem: PlaylistItem;
   PlaylistSummary: PlaylistSummary;
   Report: Report;
@@ -141,13 +141,13 @@ export type EntityTypeToEntity = {
   SuggestionSummary: SuggestionSummary;
   Synonym: Synonym;
   Tag: Tag;
-  TagDiary: TagDiary;
+  TagDiaryEntry: TagDiaryEntry;
   TagFollow: TagFollow;
   TagSummary: TagSummary;
   User: User;
   UserAccount: UserAccount;
   UserConfig: UserConfig;
-  UserDiary: UserDiary;
+  UserDiaryEntry: UserDiaryEntry;
   UserFollow: UserFollow;
   UserMessage: UserMessage;
   UserSession: UserSession;
@@ -168,7 +168,7 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     ExerciseComment: {},
     ExerciseCommentSummary: {},
     ExerciseCommentVote: {},
-    ExerciseDiary: {},
+    ExerciseDiaryEntry: {},
     ExerciseDraft: {},
     ExerciseSummary: {},
     ExerciseVote: {},
@@ -184,7 +184,7 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     ObjectionSummary: {},
     Playlist: {},
     PlaylistBookmark: {},
-    PlaylistDiary: {},
+    PlaylistDiaryEntry: {},
     PlaylistItem: {},
     PlaylistSummary: {},
     Report: {},
@@ -201,13 +201,13 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     SuggestionSummary: {},
     Synonym: {},
     Tag: {},
-    TagDiary: {},
+    TagDiaryEntry: {},
     TagFollow: {},
     TagSummary: {},
     User: {},
     UserAccount: {},
     UserConfig: {},
-    UserDiary: {},
+    UserDiaryEntry: {},
     UserFollow: {},
     UserMessage: {},
     UserSession: {},

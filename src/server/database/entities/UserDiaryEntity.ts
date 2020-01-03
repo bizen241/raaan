@@ -3,14 +3,14 @@ import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
 @Entity("user_diaries")
-export class UserDiaryEntity extends BaseEntityClass {
-  type: "UserDiary" = "UserDiary";
+export class UserDiaryEntryEntity extends BaseEntityClass {
+  type: "UserDiaryEntry" = "UserDiaryEntry";
 
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
   user?: UserEntity;
-  @RelationId((userDiary: UserDiaryEntity) => userDiary.user)
+  @RelationId((userDiaryEntry: UserDiaryEntryEntity) => userDiaryEntry.user)
   userId!: string;
 
   @Column("date")
