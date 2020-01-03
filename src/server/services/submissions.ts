@@ -4,7 +4,7 @@ import { Entity, SubmissionEntity, UserEntity } from "../database/entities";
 import { updateExerciseDiaryEntrySubmittedCount } from "./exercise-diaries";
 import { updateExerciseSummarySubmittedCount } from "./exercise-summaries";
 import { updateSubmissionSummarySubmitCount } from "./submission-summaries";
-import { updateUserDiaryEntrySubmitCount, updateUserDiaryEntrySubmittedCount } from "./user-diaries";
+import { updateUserDiaryEntrySubmitCount, updateUserDiaryEntrySubmittedCount } from "./user-diary-entries";
 import { updateUserSummarySubmitCount } from "./user-summaries";
 
 export const updateRelatedEntities = async (params: {
