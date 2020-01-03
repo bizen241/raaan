@@ -45,7 +45,7 @@
     "express-session": "1.17.0",
     "getenv": "1.0.0",
     "helmet": "3.21.2",
-    "history": "4.9.0",
+    "history": "4.10.1",
     "http-errors": "1.7.3",
     "kuromoji": "0.1.2",
     "ky": "0.16.1",
