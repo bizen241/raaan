@@ -10,4 +10,5 @@ export interface SuggestionSummary extends BaseEntityObject {
   authorId?: UUID;
   messageSubject: string;
   state: SuggestionState;
+  commentCount: number;
 }

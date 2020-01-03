@@ -61,6 +61,7 @@ import { ExerciseRevisionsPage } from "../pages/revisions/ExerciseRevisionsPage"
 import { RevisionPage } from "../pages/revisions/RevisionPage";
 import { ReviewPage } from "../pages/submissions/ReviewPage";
 import { SubmissionsPage } from "../pages/submissions/SubmissionsPage";
+import { SuggestionSuggestionCommentsPage } from "../pages/suggestion-comments/SuggestionSuggestionCommentsPage";
 import { EditSuggestionPage } from "../pages/suggestions/EditSuggestionPage";
 import { EditSuggestionsPage } from "../pages/suggestions/EditSuggestionsPage";
 import { SuggestionPage } from "../pages/suggestions/SuggestionPage";
@@ -158,7 +159,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/suggestions/edit" component={EditSuggestionsPage} />
         <Route exact={true} path="/suggestions/:id" component={SuggestionPage} />
         <Route exact={true} path="/suggestions/:id/edit" component={EditSuggestionPage} />
-        {/* <Route exact={true} path="/suggestions/:id/comments" component={SuggestionSuggestionCommentsPage} /> */}
+        <Route exact={true} path="/suggestions/:id/comments" component={SuggestionSuggestionCommentsPage} />
 
         <Route exact={true} path="/playlists" component={PlaylistsPage} />
         <Route exact={true} path="/playlists/edit" component={EditPlaylistsPage} />
