@@ -10,9 +10,13 @@ import { UserEntity } from "./UserEntity";
 export class SuggestionEntity extends BaseExerciseClass {
   type: "Suggestion" = "Suggestion";
 
-  @OneToOne(() => SuggestionSummaryEntity, suggestionSummary => suggestionSummary.suggestion, {
-    cascade: ["insert"]
-  })
+  @OneToOne(
+    () => SuggestionSummaryEntity,
+    suggestionSummary => suggestionSummary.suggestion,
+    {
+      cascade: ["insert"]
+    }
+  )
   summary?: SuggestionSummaryEntity;
   @RelationId((suggestion: SuggestionEntity) => suggestion.summary)
   summaryId!: string;

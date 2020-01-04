@@ -8,9 +8,13 @@ import { UserEntity } from "./UserEntity";
 export class ReportEntity extends BaseEntityClass {
   type: "Report" = "Report";
 
-  @OneToOne(() => ReportSummaryEntity, reportSummary => reportSummary.parent, {
-    cascade: ["insert"]
-  })
+  @OneToOne(
+    () => ReportSummaryEntity,
+    reportSummary => reportSummary.parent,
+    {
+      cascade: ["insert"]
+    }
+  )
   summary?: ReportSummaryEntity;
   @RelationId((report: ReportEntity) => report.summary)
   summaryId!: string;

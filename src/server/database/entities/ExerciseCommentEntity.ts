@@ -8,9 +8,13 @@ import { UserEntity } from "./UserEntity";
 export class ExerciseCommentEntity extends BaseCommentClass<ExerciseEntity> {
   type: "ExerciseComment" = "ExerciseComment";
 
-  @OneToOne(() => ExerciseCommentSummaryEntity, exerciseCommentSummary => exerciseCommentSummary.parent, {
-    cascade: true
-  })
+  @OneToOne(
+    () => ExerciseCommentSummaryEntity,
+    exerciseCommentSummary => exerciseCommentSummary.parent,
+    {
+      cascade: true
+    }
+  )
   summary?: ExerciseCommentSummaryEntity;
   @RelationId((exercise: ExerciseEntity) => exercise.summary)
   summaryId!: string;

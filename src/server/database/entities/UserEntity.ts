@@ -9,23 +9,35 @@ import { UserSummaryEntity } from "./UserSummaryEntity";
 export class UserEntity extends BaseEntityClass {
   type: "User" = "User";
 
-  @OneToOne(() => UserAccountEntity, userAccount => userAccount.user, {
-    cascade: true
-  })
+  @OneToOne(
+    () => UserAccountEntity,
+    userAccount => userAccount.user,
+    {
+      cascade: true
+    }
+  )
   account?: UserAccountEntity;
   @RelationId((user: UserEntity) => user.account)
   accountId!: string;
 
-  @OneToOne(() => UserConfigEntity, userConfig => userConfig.user, {
-    cascade: true
-  })
+  @OneToOne(
+    () => UserConfigEntity,
+    userConfig => userConfig.user,
+    {
+      cascade: true
+    }
+  )
   config?: UserConfigEntity;
   @RelationId((user: UserEntity) => user.config)
   configId!: string;
 
-  @OneToOne(() => UserSummaryEntity, userSummary => userSummary.user, {
-    cascade: true
-  })
+  @OneToOne(
+    () => UserSummaryEntity,
+    userSummary => userSummary.user,
+    {
+      cascade: true
+    }
+  )
   summary?: UserSummaryEntity;
   @RelationId((user: UserEntity) => user.summary)
   summaryId!: string;

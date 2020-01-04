@@ -7,9 +7,13 @@ import { TagEntity } from "./TagEntity";
 export class ExerciseSummaryEntity extends BaseEntityClass {
   type: "ExerciseSummary" = "ExerciseSummary";
 
-  @OneToOne(() => ExerciseEntity, exercise => exercise.summary, {
-    onDelete: "CASCADE"
-  })
+  @OneToOne(
+    () => ExerciseEntity,
+    exercise => exercise.summary,
+    {
+      onDelete: "CASCADE"
+    }
+  )
   @JoinColumn()
   exercise?: ExerciseEntity;
   @RelationId((exerciseSummary: ExerciseSummaryEntity) => exerciseSummary.exercise)

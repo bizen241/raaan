@@ -16,9 +16,13 @@ export class RevisionEntity extends BaseExerciseClass {
   @RelationId((revision: RevisionEntity) => revision.exercise)
   exerciseId!: string;
 
-  @OneToOne(() => RevisionSummaryEntity, revisionSummary => revisionSummary.revision, {
-    cascade: ["insert"]
-  })
+  @OneToOne(
+    () => RevisionSummaryEntity,
+    revisionSummary => revisionSummary.revision,
+    {
+      cascade: ["insert"]
+    }
+  )
   summary?: RevisionSummaryEntity;
   @RelationId((revision: RevisionEntity) => revision.summary)
   summaryId!: string;

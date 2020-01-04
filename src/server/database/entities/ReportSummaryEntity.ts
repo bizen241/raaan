@@ -6,9 +6,13 @@ import { ReportEntity } from "./ReportEntity";
 export class ReportSummaryEntity extends BaseEntityClass {
   type: "ReportSummary" = "ReportSummary";
 
-  @OneToOne(() => ReportEntity, report => report.summary, {
-    onDelete: "CASCADE"
-  })
+  @OneToOne(
+    () => ReportEntity,
+    report => report.summary,
+    {
+      onDelete: "CASCADE"
+    }
+  )
   @JoinColumn()
   parent?: ReportEntity;
   @RelationId((reportSummary: ReportSummaryEntity) => reportSummary.parent)

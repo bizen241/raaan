@@ -9,9 +9,13 @@ import { UserEntity } from "./UserEntity";
 export class ExerciseEntity extends BaseEntityClass {
   type: "Exercise" = "Exercise";
 
-  @OneToOne(() => ExerciseSummaryEntity, exerciseSummary => exerciseSummary.exercise, {
-    cascade: true
-  })
+  @OneToOne(
+    () => ExerciseSummaryEntity,
+    exerciseSummary => exerciseSummary.exercise,
+    {
+      cascade: true
+    }
+  )
   summary?: ExerciseSummaryEntity;
   @RelationId((exercise: ExerciseEntity) => exercise.summary)
   summaryId!: string;
@@ -32,9 +36,13 @@ export class ExerciseEntity extends BaseEntityClass {
   @RelationId((exercise: ExerciseEntity) => exercise.latest)
   latestId!: string;
 
-  @OneToOne(() => ExerciseDraftEntity, exerciseDraft => exerciseDraft.exercise, {
-    cascade: true
-  })
+  @OneToOne(
+    () => ExerciseDraftEntity,
+    exerciseDraft => exerciseDraft.exercise,
+    {
+      cascade: true
+    }
+  )
   draft?: ExerciseDraftEntity;
   @RelationId((exercise: ExerciseEntity) => exercise.draft)
   draftId!: string;

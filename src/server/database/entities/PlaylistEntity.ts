@@ -16,9 +16,13 @@ export class PlaylistEntity extends BaseEntityClass {
   @RelationId((playlist: PlaylistEntity) => playlist.author)
   authorId!: string;
 
-  @OneToOne(() => PlaylistSummaryEntity, playlistSummary => playlistSummary.playlist, {
-    cascade: ["insert"]
-  })
+  @OneToOne(
+    () => PlaylistSummaryEntity,
+    playlistSummary => playlistSummary.playlist,
+    {
+      cascade: ["insert"]
+    }
+  )
   summary?: PlaylistSummaryEntity;
   @RelationId((playlist: PlaylistEntity) => playlist.summary)
   summaryId!: string;

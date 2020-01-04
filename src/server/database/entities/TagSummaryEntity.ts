@@ -6,9 +6,13 @@ import { TagEntity } from "./TagEntity";
 export class TagSummaryEntity extends BaseEntityClass {
   type: "TagSummary" = "TagSummary";
 
-  @OneToOne(() => TagEntity, tag => tag.summary, {
-    onDelete: "CASCADE"
-  })
+  @OneToOne(
+    () => TagEntity,
+    tag => tag.summary,
+    {
+      onDelete: "CASCADE"
+    }
+  )
   @JoinColumn()
   tag?: TagEntity;
   @RelationId((tagSummary: TagSummaryEntity) => tagSummary.tag)

@@ -36,7 +36,7 @@ export const mergeBuffer = <E extends EntityObject>(source: E | undefined, buffe
 export type BuffersState = {
   [P in keyof EntityTypeToEntity]: {
     [id: string]: Params<EntityTypeToEntity[P]> | undefined;
-  }
+  };
 };
 
 export const initialBuffersState: BuffersState = {

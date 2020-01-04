@@ -7,9 +7,13 @@ import { TagEntity } from "./TagEntity";
 export class PlaylistSummaryEntity extends BaseEntityClass {
   type: "PlaylistSummary" = "PlaylistSummary";
 
-  @OneToOne(() => PlaylistEntity, playlist => playlist.summary, {
-    onDelete: "CASCADE"
-  })
+  @OneToOne(
+    () => PlaylistEntity,
+    playlist => playlist.summary,
+    {
+      onDelete: "CASCADE"
+    }
+  )
   @JoinColumn()
   playlist?: PlaylistEntity;
   @RelationId((playlistSummary: PlaylistSummaryEntity) => playlistSummary.playlist)

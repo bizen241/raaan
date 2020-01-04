@@ -165,7 +165,7 @@ type StatusMap = {
           response?: EntityStore;
         }
       | undefined;
-  }
+  };
 };
 
 export type ApiState = {

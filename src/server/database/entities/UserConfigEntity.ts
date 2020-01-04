@@ -7,9 +7,13 @@ import { UserEntity } from "./UserEntity";
 export class UserConfigEntity extends BaseEntityClass {
   type: "UserConfig" = "UserConfig";
 
-  @OneToOne(() => UserEntity, user => user.config, {
-    onDelete: "CASCADE"
-  })
+  @OneToOne(
+    () => UserEntity,
+    user => user.config,
+    {
+      onDelete: "CASCADE"
+    }
+  )
   @JoinColumn()
   user?: UserEntity;
   @RelationId((config: UserConfigEntity) => config.user)

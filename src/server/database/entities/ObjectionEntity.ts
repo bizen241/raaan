@@ -8,9 +8,13 @@ import { UserEntity } from "./UserEntity";
 export class ObjectionEntity extends BaseEntityClass {
   type: "Objection" = "Objection";
 
-  @OneToOne(() => ObjectionSummaryEntity, objectionSummary => objectionSummary.parent, {
-    cascade: ["insert"]
-  })
+  @OneToOne(
+    () => ObjectionSummaryEntity,
+    objectionSummary => objectionSummary.parent,
+    {
+      cascade: ["insert"]
+    }
+  )
   summary?: ObjectionSummaryEntity;
   @RelationId((objection: ObjectionEntity) => objection.summary)
   summaryId!: string;

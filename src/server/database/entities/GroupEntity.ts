@@ -15,16 +15,24 @@ export class GroupEntity extends BaseEntityClass {
   @RelationId((group: GroupEntity) => group.owner)
   ownerId!: string;
 
-  @OneToOne(() => GroupSummaryEntity, groupSummary => groupSummary.group, {
-    cascade: true
-  })
+  @OneToOne(
+    () => GroupSummaryEntity,
+    groupSummary => groupSummary.group,
+    {
+      cascade: true
+    }
+  )
   summary?: GroupSummaryEntity;
   @RelationId((group: GroupEntity) => group.summary)
   summaryId!: string;
 
-  @OneToOne(() => GroupSecretEntity, groupSecret => groupSecret.group, {
-    cascade: true
-  })
+  @OneToOne(
+    () => GroupSecretEntity,
+    groupSecret => groupSecret.group,
+    {
+      cascade: true
+    }
+  )
   secret?: GroupSecretEntity;
   @RelationId((group: GroupEntity) => group.secret)
   secretId!: string;
