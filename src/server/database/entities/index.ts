@@ -1,4 +1,6 @@
 import { EntityType } from "../../../shared/api/entities";
+import { AppDiaryEntryEntity } from "./AppDiaryEntryEntity";
+import { AppSummaryEntity } from "./AppSummaryEntity";
 import { ContestEntity } from "./ContestEntity";
 import { ContestEntryEntity } from "./ContestEntryEntity";
 import { ExerciseCommentEntity } from "./ExerciseCommentEntity";
@@ -51,6 +53,8 @@ import { UserMessageEntity } from "./UserMessageEntity";
 import { UserSessionEntity } from "./UserSessionEntity";
 import { UserSummaryEntity } from "./UserSummaryEntity";
 
+export * from "./AppDiaryEntryEntity";
+export * from "./AppSummaryEntity";
 export * from "./ContestEntity";
 export * from "./ContestEntryEntity";
 export * from "./ExerciseCommentEntity";
@@ -103,6 +107,8 @@ export * from "./UserSessionEntity";
 export * from "./UserSummaryEntity";
 
 export type Entity =
+  | AppDiaryEntryEntity
+  | AppSummaryEntity
   | ContestEntity
   | ContestEntryEntity
   | ExerciseCommentEntity
@@ -157,6 +163,8 @@ export type Entity =
 export const entities = [
   RateLimitEntity,
   ...Object.values({
+    AppDiaryEntry: AppDiaryEntryEntity,
+    AppSummary: AppSummaryEntity,
     Contest: ContestEntity,
     ContestEntry: ContestEntryEntity,
     Exercise: ExerciseEntity,

@@ -3,6 +3,8 @@ import { createEntityTypeToObject, EntityType } from "../../../shared/api/entiti
 import { BaseEntityObject } from "../../../shared/api/entities/BaseEntityObject";
 import { EntityStore } from "../../../shared/api/response/get";
 import {
+  AppDiaryEntryEntity,
+  AppSummaryEntity,
   ContestEntity,
   ContestEntryEntity,
   Entity,
@@ -101,6 +103,27 @@ const base = ({ id, createdAt, updatedAt }: BaseEntityClass): BaseEntityObject =
 });
 
 type Normalizer<E> = (context: RequestContext, store: EntityStore, entity: E) => void;
+
+const normalizeAppDiaryEntry: Normalizer<AppDiaryEntryEntity> = (_, store, entity) => {
+  const { id, date, submittedCount, typedCount } = entity;
+
+  store.AppDiaryEntry[id] = {
+    ...base(entity),
+    date,
+    submittedCount,
+    typedCount
+  };
+};
+
+const normalizeAppSummary: Normalizer<AppSummaryEntity> = (_, store, entity) => {
+  const { id, submittedCount, typedCount } = entity;
+
+  store.AppSummary[id] = {
+    ...base(entity),
+    submittedCount,
+    typedCount
+  };
+};
 
 const normalizeContest: Normalizer<ContestEntity> = (_, store, entity) => {
   const { id, exerciseId, title, startAt, finishAt } = entity;
@@ -1017,6 +1040,8 @@ const normalizeUserSummary: Normalizer<UserSummaryEntity> = (_, store, entity) =
 };
 
 const normalizers: { [T in EntityType]: Normalizer<any> } = {
+  AppDiaryEntry: normalizeAppDiaryEntry,
+  AppSummary: normalizeAppSummary,
   Contest: normalizeContest,
   ContestEntry: normalizeContestEntry,
   Exercise: normalizeExercise,

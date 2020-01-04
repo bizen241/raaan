@@ -1,5 +1,7 @@
 import { AuthProviderName } from "../../auth";
 import {
+  AppDiaryEntry,
+  AppSummary,
   Contest,
   ContestEntry,
   EntityObject,
@@ -79,6 +81,18 @@ const base = <E extends EntityObject>(query: SearchQuery<E>) => ({
 });
 
 type Parser<E extends EntityObject> = (query: SearchQuery<E>) => Params<E>;
+
+const parseAppDiaryEntry: Parser<AppDiaryEntry> = query => {
+  return {
+    ...base(query)
+  };
+};
+
+const parseAppSummary: Parser<AppSummary> = query => {
+  return {
+    ...base(query)
+  };
+};
 
 const parseContest: Parser<Contest> = query => {
   const { groupId } = query;
@@ -515,6 +529,8 @@ const parseUserSummary: Parser<UserSummary> = query => {
 };
 
 const parsers: { [T in EntityType]: Parser<EntityTypeToEntity[T]> } = {
+  AppDiaryEntry: parseAppDiaryEntry,
+  AppSummary: parseAppSummary,
   Contest: parseContest,
   ContestEntry: parseContestEntry,
   Exercise: parseExercise,
