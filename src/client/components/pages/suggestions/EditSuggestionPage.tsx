@@ -3,7 +3,7 @@ import { SuggestionEditor } from "../../editor/SuggestionEditor";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui/Page";
 
-export const EditSuggestionPage = React.memo<PageProps>(({ match }) => {
+const EditSuggestionPage = React.memo<PageProps>(({ match }) => {
   const suggestionId = match.params.id;
 
   return (
@@ -12,3 +12,5 @@ export const EditSuggestionPage = React.memo<PageProps>(({ match }) => {
     </Page>
   );
 });
+
+export default EditSuggestionPage;

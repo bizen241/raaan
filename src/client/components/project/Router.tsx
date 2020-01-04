@@ -62,7 +62,6 @@ import { RevisionPage } from "../pages/revisions/RevisionPage";
 import { ReviewPage } from "../pages/submissions/ReviewPage";
 import { SubmissionsPage } from "../pages/submissions/SubmissionsPage";
 import { SuggestionSuggestionCommentsPage } from "../pages/suggestion-comments/SuggestionSuggestionCommentsPage";
-import { EditSuggestionPage } from "../pages/suggestions/EditSuggestionPage";
 import { EditSuggestionsPage } from "../pages/suggestions/EditSuggestionsPage";
 import { SuggestionPage } from "../pages/suggestions/SuggestionPage";
 import { UserReceivedSuggestionsPage } from "../pages/suggestions/UserReceivedSuggestionsPage";
@@ -96,6 +95,7 @@ export type PageProps = RouteComponentProps<{ id: string; name: string; secret: 
 
 const EditExercisePage = React.lazy(() => import("../pages/exercises/EditExercisePage"));
 const EditPlaylistPage = React.lazy(() => import("../pages/playlists/EditPlaylistPage"));
+const EditSuggestionPage = React.lazy(() => import("../pages/suggestions/EditSuggestionPage"));
 
 export const Router = React.memo(() => {
   const { location } = useSelector((state: RootState) => ({
