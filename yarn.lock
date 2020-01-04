@@ -954,13 +954,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/webpack-bundle-analyzer@2.13.1":
-  version "2.13.1"
-  resolved "https://registry.yarnpkg.com/@types/webpack-bundle-analyzer/-/webpack-bundle-analyzer-2.13.1.tgz#25154f36585c0abc90f7e58fd3197c83fced789a"
-  integrity sha512-9M9jingj0izx1VfglYYJ+dvd0YCMlFgtrSCeb+C3VIQP8hmTXGJ5qqVeqiBnv0ffMyeKWqyij4K2F4VBcazQNw==
-  dependencies:
-    "@types/webpack" "*"
-
 "@types/webpack-dev-server@3.1.5":
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/@types/webpack-dev-server/-/webpack-dev-server-3.1.5.tgz#cf1f2a19ae07983a7c80c7b7f57548c81949b9b3"
