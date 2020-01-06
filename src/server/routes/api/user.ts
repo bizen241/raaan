@@ -1,50 +1,27 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseFindResult } from "../../api/response";
+import { createDeleteOperation, createGetOperation } from "../../api/operation";
 import { setClearSiteData } from "../../auth";
 import { UserEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
-  const userId = currentUser.id;
-
-  const user = await getManager()
-    .createQueryBuilder(UserEntity, "user")
-    .leftJoinAndSelect("user.account", "account")
-    .leftJoinAndSelect("user.config", "config")
-    .leftJoinAndSelect("user.summary", "summary")
-    .where("user.id = :userId", { userId })
-    .getOne();
+export const GET = createGetOperation("User", "Read", async ({ currentUser, manager }) => {
+  const user = await manager.findOne(UserEntity, currentUser.id, {
+    relations: ["summary", "account", "config"]
+  });
   if (user === undefined) {
     throw createError(500);
   }
 
-  responseFindResult(req, res, user);
+  return [user];
 });
 
-GET.apiDoc = createOperationDoc({
-  entityType: "User",
-  permission: "Read",
-  tag: "user"
-});
-
-export const DELETE: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
+export const DELETE = createDeleteOperation("User", "Read", async ({ res, currentUser, manager }) => {
   if (currentUser.permission === "Owner") {
     throw createError(403);
   }
 
-  await getManager().transaction(async manager => {
-    await manager.remove(currentUser);
+  await manager.remove(currentUser);
 
-    setClearSiteData(res);
+  setClearSiteData(res);
 
-    responseFindResult(req, res);
-  });
-});
-
-DELETE.apiDoc = createOperationDoc({
-  entityType: "User",
-  permission: "Read",
-  tag: "user"
+  return [];
 });

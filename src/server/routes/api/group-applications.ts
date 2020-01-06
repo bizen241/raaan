@@ -1,17 +1,11 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { GroupApplication } from "../../../shared/api/entities";
-import { Params } from "../../../shared/api/request/params";
-import { parseQuery } from "../../../shared/api/request/parse";
-import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseFindResult, responseSearchResult } from "../../api/response";
+import { createPostOperation, createSearchOperation } from "../../api/operation";
 import { GroupApplicationEntity, GroupEntity, GroupSecretEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { groupId, applicantId, searchLimit, searchOffset } = parseQuery("GroupApplication", req.query);
+export const GET = createSearchOperation("GroupApplication", "Read", async ({ manager, params }) => {
+  const { groupId, applicantId, searchLimit, searchOffset } = params;
 
-  const query = getManager()
+  const query = manager
     .createQueryBuilder(GroupApplicationEntity, "groupApplication")
     .leftJoinAndSelect("groupApplication.group", "group")
     .leftJoinAndSelect("groupApplication.applicant", "applicant")
@@ -27,47 +21,30 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
     query.andWhere("groupApplication.applicantId = :applicantId", { applicantId });
   }
 
-  const [groupApplications, count] = await query.getManyAndCount();
-
-  responseSearchResult(req, res, groupApplications, count);
+  return query;
 });
 
-GET.apiDoc = createOperationDoc({
-  entityType: "GroupApplication",
-  permission: "Read",
-  hasQuery: true
-});
+export const POST = createPostOperation("GroupApplication", "Write", async ({ currentUser, manager, params }) => {
+  const { groupId, secret } = params;
 
-export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { groupId, secret }: Params<GroupApplication> = req.body;
+  const group = await manager.findOne(GroupEntity, groupId);
+  if (group === undefined) {
+    throw createError(400);
+  }
 
-  await getManager().transaction(async manager => {
-    const group = await manager.findOne(GroupEntity, groupId);
-    if (group === undefined) {
-      return next(createError(404));
-    }
+  const groupSecret = await manager
+    .createQueryBuilder(GroupSecretEntity, "groupSecret")
+    .andWhere("groupSecret.groupId = :groupId", { groupId })
+    .getOne();
+  if (groupSecret === undefined) {
+    throw createError(400);
+  }
+  if (groupSecret.value !== secret || groupSecret.expireAt.getTime() <= Date.now()) {
+    throw createError(403);
+  }
 
-    const groupSecret = await manager.findOne(GroupSecretEntity, {
-      group: {
-        id: groupId
-      }
-    });
-    if (groupSecret === undefined) {
-      return next(createError(404));
-    }
-    if (groupSecret.value !== secret || groupSecret.expireAt.getTime() <= Date.now()) {
-      return next(createError(403));
-    }
+  const groupApplication = new GroupApplicationEntity(group, currentUser);
+  await manager.save(groupApplication);
 
-    const groupApplication = new GroupApplicationEntity(group, currentUser);
-    await manager.save(groupApplication);
-
-    responseFindResult(req, res, groupApplication);
-  });
-});
-
-POST.apiDoc = createOperationDoc({
-  entityType: "GroupApplication",
-  permission: "Write",
-  hasBody: true
+  return [groupApplication];
 });

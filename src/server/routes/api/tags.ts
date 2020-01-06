@@ -1,29 +1,14 @@
-import { OperationFunction } from "express-openapi";
-import { getManager } from "typeorm";
-import { parseQuery } from "../../../shared/api/request/parse";
-import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseSearchResult } from "../../api/response";
+import { createSearchOperation } from "../../api/operation";
 import { TagEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { name, searchLimit, searchOffset } = parseQuery("Tag", req.query);
+export const GET = createSearchOperation("Tag", "Read", async ({ manager, params }) => {
+  const { name } = params;
 
-  const query = await getManager()
-    .createQueryBuilder(TagEntity, "tag")
-    .take(searchLimit)
-    .skip(searchOffset);
+  const query = manager.createQueryBuilder(TagEntity, "tag");
 
   if (name !== undefined) {
     query.andWhere("tag.name = :name", { name });
   }
 
-  const [tags, count] = await query.getManyAndCount();
-
-  responseSearchResult(req, res, tags, count);
-});
-
-GET.apiDoc = createOperationDoc({
-  entityType: "Tag",
-  permission: "Read",
-  hasQuery: true
+  return query;
 });

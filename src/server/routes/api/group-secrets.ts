@@ -1,33 +1,18 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { parseQuery } from "../../../shared/api/request/parse";
-import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseSearchResult } from "../../api/response";
+import { createSearchOperation } from "../../api/operation";
 import { GroupSecretEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
-  const { groupId, value, searchLimit, searchOffset } = parseQuery("GroupSecret", req.query);
+export const GET = createSearchOperation("GroupSecret", "Read", async ({ manager, params }) => {
+  const { groupId, value } = params;
   if (groupId === undefined || value === undefined) {
-    return next(createError(400));
+    throw createError(400);
   }
 
-  const query = getManager()
+  const query = manager
     .createQueryBuilder(GroupSecretEntity, "groupSecret")
     .leftJoinAndSelect("groupSecret.group", "group")
-    .take(searchLimit)
-    .skip(searchOffset);
+    .andWhere("groupSecret.groupId = :groupId", { groupId })
+    .andWhere("groupSecret.value = :value", { value });
 
-  query.andWhere("groupSecret.groupId = :groupId", { groupId });
-  query.andWhere("groupSecret.value = :value", { value });
-
-  const [groupSecrets, count] = await query.getManyAndCount();
-
-  responseSearchResult(req, res, groupSecrets, count);
-});
-
-GET.apiDoc = createOperationDoc({
-  entityType: "GroupSecret",
-  permission: "Read",
-  hasQuery: true
+  return query;
 });

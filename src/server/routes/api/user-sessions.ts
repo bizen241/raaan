@@ -1,13 +1,9 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { parseQuery } from "../../../shared/api/request/parse";
-import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseSearchResult } from "../../api/response";
+import { createSearchOperation } from "../../api/operation";
 import { UserSessionEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
-  const { userId, searchLimit, searchOffset } = parseQuery("UserSession", req.query);
+export const GET = createSearchOperation("UserSession", "Read", async ({ currentUser, manager, params }) => {
+  const { userId } = params;
   if (userId === undefined) {
     throw createError(400);
   }
@@ -17,22 +13,11 @@ export const GET: OperationFunction = errorBoundary(async (req, res, _, currentU
     throw createError(403);
   }
 
-  const query = await getManager()
+  const query = manager
     .createQueryBuilder(UserSessionEntity, "userSession")
     .leftJoinAndSelect("userSession.user", "user")
     .leftJoinAndSelect("user.summary", "summary")
-    .take(searchLimit)
-    .skip(searchOffset);
+    .andWhere("user.id = :userId", { userId });
 
-  query.andWhere("user.id = :userId", { userId });
-
-  const [userSessions, count] = await query.getManyAndCount();
-
-  responseSearchResult(req, res, userSessions, count);
-});
-
-GET.apiDoc = createOperationDoc({
-  entityType: "UserSession",
-  permission: "Read",
-  hasQuery: true
+  return query;
 });

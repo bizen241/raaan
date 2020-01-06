@@ -1,23 +1,16 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { parseQuery } from "../../../shared/api/request/parse";
-import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseSearchResult } from "../../api/response";
+import { createSearchOperation } from "../../api/operation";
 import { SubmissionSummaryEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { submitterId, exerciseId, searchSort = "createdAt", searchOrder, searchLimit, searchOffset } = parseQuery(
-    "SubmissionSummary",
-    req.query
-  );
+export const GET = createSearchOperation("SubmissionSummary", "Read", async ({ currentUser, manager, params }) => {
+  const { submitterId, exerciseId, searchSort = "createdAt", searchOrder } = params;
 
   const isOwnSubmissions = submitterId === currentUser.id;
   if (!isOwnSubmissions) {
-    return next(createError(403));
+    throw createError(403);
   }
 
-  const query = await getManager()
+  const query = manager
     .createQueryBuilder(SubmissionSummaryEntity, "submissionSummary")
     .leftJoinAndSelect("submissionSummary.submitter", "submitter")
     .leftJoinAndSelect("submissionSummary.exercise", "exercise")
@@ -25,9 +18,7 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     .leftJoinAndSelect("exercise.summary", "summary")
     .leftJoinAndSelect("exercise.author", "author")
     .leftJoinAndSelect("exercise.draft", "draft")
-    .orderBy(`submissionSummary.${searchSort}`, searchOrder)
-    .take(searchLimit)
-    .skip(searchOffset);
+    .orderBy(`submissionSummary.${searchSort}`, searchOrder);
 
   if (submitterId !== undefined) {
     query.andWhere("submitter.id = :submitterId", { submitterId });
@@ -36,13 +27,5 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     query.andWhere("exercise.id = :exerciseId", { exerciseId });
   }
 
-  const [submissionSummaries, count] = await query.getManyAndCount();
-
-  responseSearchResult(req, res, submissionSummaries, count);
-});
-
-GET.apiDoc = createOperationDoc({
-  entityType: "SubmissionSummary",
-  permission: "Read",
-  hasQuery: true
+  return query;
 });

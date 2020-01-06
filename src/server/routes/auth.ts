@@ -13,7 +13,7 @@ authRouter.get("/:provider", async (req, res, next) => {
   const { provider } = req.params;
 
   if (req.session === undefined || req.sessionID === undefined) {
-    return next(createError(500));
+    throw createError(500);
   }
 
   const session = await getManager().findOne(UserSessionEntity, {
@@ -40,13 +40,13 @@ authRouter.get("/:provider/callback", (req, res, next) => {
     },
     async (authError: Error | null, user: UserEntity | false, reason?: AuthStrategyFailureReason) => {
       if (authError != null || req.session === undefined) {
-        return next(createError(500));
+        throw createError(500);
       }
       if (user === false) {
         if (reason !== undefined && reason.provider !== undefined) {
           return res.redirect(`/auth/${reason.provider}`);
         } else {
-          return next(createError(500));
+          throw createError(500);
         }
       }
       if (req.user !== undefined) {
@@ -55,7 +55,7 @@ authRouter.get("/:provider/callback", (req, res, next) => {
 
       req.session.regenerate(async (sessionError?: Error) => {
         if (sessionError || req.session === undefined) {
-          return next(createError(500));
+          throw createError(500);
         }
 
         await login(req, res, next, user);
@@ -66,7 +66,7 @@ authRouter.get("/:provider/callback", (req, res, next) => {
 
 const login = async (req: Request, res: Response, next: NextFunction, user: UserEntity) => {
   if (req.sessionID === undefined) {
-    return next(createError(500));
+    throw createError(500);
   }
 
   const userAgentParser = new UAParser(req.headers["user-agent"]);
@@ -85,7 +85,7 @@ const login = async (req: Request, res: Response, next: NextFunction, user: User
 
   req.login(user, (loginError: Error | null) => {
     if (loginError) {
-      return next(createError(500));
+      throw createError(500);
     }
 
     res.redirect("/");

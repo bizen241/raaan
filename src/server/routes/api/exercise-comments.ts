@@ -1,32 +1,19 @@
-import { OperationFunction } from "express-openapi";
 import { getManager } from "typeorm";
-import { parseQuery } from "../../../shared/api/request/parse";
-import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseSearchResult } from "../../api/response";
+import { createSearchOperation } from "../../api/operation";
 import { ExerciseCommentEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { targetId, searchLimit, searchOffset } = parseQuery("ExerciseComment", req.query);
+export const GET = createSearchOperation("ExerciseComment", "Read", async ({ params }) => {
+  const { targetId } = params;
 
   const query = getManager()
     .createQueryBuilder(ExerciseCommentEntity, "exerciseComment")
     .leftJoinAndSelect("exerciseComment.summary", "summary")
     .leftJoinAndSelect("exerciseComment.target", "target")
-    .leftJoinAndSelect("exerciseComment.author", "author")
-    .take(searchLimit)
-    .skip(searchOffset);
+    .leftJoinAndSelect("exerciseComment.author", "author");
 
   if (targetId !== undefined) {
     query.andWhere("exerciseComment.targetId = :targetId", { targetId });
   }
 
-  const [exerciseCommentSummaries, count] = await query.getManyAndCount();
-
-  responseSearchResult(req, res, exerciseCommentSummaries, count);
-});
-
-GET.apiDoc = createOperationDoc({
-  entityType: "ExerciseComment",
-  permission: "Read",
-  hasQuery: true
+  return query;
 });

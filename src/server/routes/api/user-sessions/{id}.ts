@@ -1,28 +1,17 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
-import { responseFindResult } from "../../../api/response";
+import { createDeleteOperation } from "../../../api/operation";
 import { setClearSiteData } from "../../../auth";
 import { UserSessionEntity } from "../../../database/entities";
 
-export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { id: userSessionId }: PathParams = req.params;
-
-  const manager = getManager();
-
-  const userSession = await getManager()
-    .createQueryBuilder(UserSessionEntity, "userSession")
-    .leftJoinAndSelect("userSession.user", "user")
-    .where("userSession.id = :userSessionId", { userSessionId })
-    .getOne();
+export const DELETE = createDeleteOperation("UserSession", "Read", async ({ req, res, currentUser, manager, id }) => {
+  const userSession = await manager.findOne(UserSessionEntity, id);
   if (userSession === undefined) {
-    return next(createError(404));
+    throw createError(404);
   }
 
   const isOwn = userSession.userId !== currentUser.id;
   if (isOwn) {
-    return next(createError(403));
+    throw createError(403);
   }
 
   await manager.remove(userSession);
@@ -31,11 +20,5 @@ export const DELETE: OperationFunction = errorBoundary(async (req, res, next, cu
     setClearSiteData(res);
   }
 
-  responseFindResult(req, res);
-});
-
-DELETE.apiDoc = createOperationDoc({
-  entityType: "UserSession",
-  permission: "Read",
-  hasId: true
+  return [];
 });

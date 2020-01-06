@@ -1,104 +1,69 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { Report } from "../../../../shared/api/entities";
-import { Params } from "../../../../shared/api/request/params";
-import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
-import { responseFindResult } from "../../../api/response";
+import { createDeleteOperation, createGetOperation, createPatchOperation } from "../../../api/operation";
 import { hasPermission } from "../../../api/security";
 import { ReportCommentEntity, ReportEntity } from "../../../database/entities";
 import { lockReportTarget } from "../../../services/reports";
 
-export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { id: exerciseId }: PathParams = req.params;
-
-  const report = await getManager().findOne(ReportEntity, exerciseId, {
+export const GET = createGetOperation("Report", "Read", async ({ manager, id }) => {
+  const report = await manager.findOne(ReportEntity, id, {
     relations: ["summary"]
   });
   if (report === undefined) {
     throw createError(404);
   }
 
-  responseFindResult(req, res, report);
+  return [report];
 });
 
-GET.apiDoc = createOperationDoc({
-  entityType: "Report",
-  permission: "Read",
-  hasId: true
+export const PATCH = createPatchOperation("Report", "Write", async ({ currentUser, manager, id, params }) => {
+  const report = await manager.findOne(ReportEntity, id);
+  if (report === undefined) {
+    throw createError(404);
+  }
+
+  const isReporter = report.reporterId === currentUser.id;
+  if (!isReporter && !hasPermission(currentUser, "Admin")) {
+    throw createError(403);
+  }
+
+  if (isReporter) {
+    if (params.reason !== undefined) {
+      report.reason = params.reason;
+    }
+    if (params.description !== undefined) {
+      report.description = params.description;
+    }
+  } else {
+    if (report.state !== "accepted" && params.state === "accepted") {
+      await lockReportTarget(manager, report);
+    }
+
+    if (params.state !== undefined) {
+      report.state = params.state;
+    }
+    if (params.comment !== undefined) {
+      const reportComment = new ReportCommentEntity(report, currentUser, params.comment);
+      await manager.save(reportComment);
+    }
+  }
+
+  await manager.save(report);
+
+  return [report];
 });
 
-export const PATCH: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
-  const { id: reportId }: PathParams = req.params;
-  const params: Params<Report> = req.body;
+export const DELETE = createDeleteOperation("Report", "Read", async ({ currentUser, manager, id }) => {
+  const report = await manager.findOne(ReportEntity, id);
+  if (report === undefined) {
+    throw createError(404);
+  }
 
-  await getManager().transaction(async manager => {
-    const report = await manager.findOne(ReportEntity, reportId);
-    if (report === undefined) {
-      throw createError(404);
-    }
+  const isOwn = report.reporterId === currentUser.id;
+  if (!isOwn) {
+    throw createError(403);
+  }
 
-    const isReporter = report.reporterId === currentUser.id;
-    if (!isReporter && !hasPermission(currentUser, "Admin")) {
-      throw createError(403);
-    }
+  await manager.remove(report);
 
-    if (isReporter) {
-      if (params.reason !== undefined) {
-        report.reason = params.reason;
-      }
-      if (params.description !== undefined) {
-        report.description = params.description;
-      }
-    } else {
-      if (report.state !== "accepted" && params.state === "accepted") {
-        await lockReportTarget(manager, report);
-      }
-
-      if (params.state !== undefined) {
-        report.state = params.state;
-      }
-      if (params.comment !== undefined) {
-        const reportComment = new ReportCommentEntity(report, currentUser, params.comment);
-        await manager.save(reportComment);
-      }
-    }
-
-    await manager.save(report);
-
-    responseFindResult(req, res, report);
-  });
-});
-
-PATCH.apiDoc = createOperationDoc({
-  entityType: "Report",
-  permission: "Admin",
-  hasId: true,
-  hasBody: true
-});
-
-export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { id: reportId }: PathParams = req.params;
-
-  await getManager().transaction(async manager => {
-    const report = await manager.findOne(ReportEntity, reportId);
-    if (report === undefined) {
-      return next(createError(404));
-    }
-
-    const isOwn = report.reporterId === currentUser.id;
-    if (!isOwn) {
-      return next(createError(403));
-    }
-
-    await manager.remove(report);
-
-    responseFindResult(req, res);
-  });
-});
-
-DELETE.apiDoc = createOperationDoc({
-  entityType: "Report",
-  permission: "Read",
-  hasId: true
+  return [];
 });

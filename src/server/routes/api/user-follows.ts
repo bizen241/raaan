@@ -1,24 +1,16 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { UserFollow } from "../../../shared/api/entities";
-import { Params } from "../../../shared/api/request/params";
-import { parseQuery } from "../../../shared/api/request/parse";
-import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseFindResult, responseSearchResult } from "../../api/response";
+import { createPostOperation, createSearchOperation } from "../../api/operation";
 import { UserEntity, UserFollowEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { followerId, targetId, searchLimit, searchOffset } = parseQuery("UserFollow", req.query);
+export const GET = createSearchOperation("UserFollow", "Read", async ({ manager, params }) => {
+  const { followerId, targetId } = params;
 
-  const query = getManager()
+  const query = manager
     .createQueryBuilder(UserFollowEntity, "userFollow")
     .leftJoinAndSelect("userFollow.follower", "follower")
     .leftJoinAndSelect("userFollow.target", "target")
     .leftJoinAndMapOne("follower.summary", "follower.summary", "followerSummary")
-    .leftJoinAndMapOne("target.summary", "target.summary", "targetSummary")
-    .take(searchLimit)
-    .skip(searchOffset);
+    .leftJoinAndMapOne("target.summary", "target.summary", "targetSummary");
 
   if (followerId !== undefined) {
     query.andWhere("userFollow.followerId = :followerId", { followerId });
@@ -27,43 +19,32 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
     query.andWhere("userFollow.targetId = :targetId", { targetId });
   }
 
-  const [userFollows, count] = await query.getManyAndCount();
-
-  responseSearchResult(req, res, userFollows, count);
+  return query;
 });
 
-GET.apiDoc = createOperationDoc({
-  entityType: "UserFollow",
-  permission: "Read",
-  hasQuery: true
-});
+export const POST = createPostOperation("UserFollow", "Read", async ({ currentUser, manager, params }) => {
+  const { targetId } = params;
+  if (targetId === undefined) {
+    throw createError(400);
+  }
 
-export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { targetId }: Params<UserFollow> = req.body;
-
-  await getManager().transaction(async manager => {
-    const target = await manager.findOne(UserEntity, targetId, {
-      relations: ["summary"]
-    });
-    if (target === undefined) {
-      return next(createError(404));
-    }
-    if (target.summary === undefined) {
-      return next(createError(500));
-    }
-
-    const userFollow = new UserFollowEntity(target, currentUser);
-    await manager.save(userFollow);
-
-    target.summary.followerCount += 1;
-    await manager.save(target.summary);
-
-    responseFindResult(req, res, userFollow, target.summary);
+  const target = await manager.findOne(UserEntity, targetId, {
+    relations: ["summary"]
   });
-});
+  if (target === undefined) {
+    throw createError(404);
+  }
+  if (target.summary === undefined) {
+    throw createError(500);
+  }
 
-POST.apiDoc = createOperationDoc({
-  entityType: "UserFollow",
-  permission: "Read",
-  hasBody: true
+  const userFollow = new UserFollowEntity(target, currentUser);
+  await manager.save(userFollow);
+
+  const targetSummary = target.summary;
+
+  targetSummary.followerCount += 1;
+  await manager.save(targetSummary);
+
+  return [userFollow, targetSummary];
 });

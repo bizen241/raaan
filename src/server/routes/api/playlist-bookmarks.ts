@@ -1,22 +1,13 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { PlaylistBookmark } from "../../../shared/api/entities";
-import { Params } from "../../../shared/api/request/params";
-import { parseQuery } from "../../../shared/api/request/parse";
-import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseFindResult, responseSearchResult } from "../../api/response";
+import { createPostOperation, createSearchOperation } from "../../api/operation";
 import { PlaylistBookmarkEntity, PlaylistEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
-  const { userId, playlistId, searchLimit, searchOffset } = parseQuery("PlaylistBookmark", req.query);
+export const GET = createSearchOperation("PlaylistBookmark", "Read", async ({ currentUser, manager, params }) => {
+  const { userId, playlistId } = params;
 
   const isOwn = userId === currentUser.id;
 
-  const query = await getManager()
-    .createQueryBuilder(PlaylistBookmarkEntity, "playlistBookmark")
-    .take(searchLimit)
-    .skip(searchOffset);
+  const query = manager.createQueryBuilder(PlaylistBookmarkEntity, "playlistBookmark");
 
   if (userId !== undefined) {
     query.andWhere("playlistBookmark.userId = :userId", { userId });
@@ -28,35 +19,22 @@ export const GET: OperationFunction = errorBoundary(async (req, res, _, currentU
     query.andWhere("playlistBookmark.isPrivate = true");
   }
 
-  const [playlistBookmarks, count] = await query.getManyAndCount();
-
-  responseSearchResult(req, res, playlistBookmarks, count);
+  return query;
 });
 
-GET.apiDoc = createOperationDoc({
-  entityType: "PlaylistBookmark",
-  permission: "Read",
-  hasQuery: true
-});
+export const POST = createPostOperation("PlaylistBookmark", "Read", async ({ currentUser, manager, params }) => {
+  const { playlistId } = params;
+  if (playlistId === undefined) {
+    throw createError(400);
+  }
 
-export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { playlistId }: Params<PlaylistBookmark> = req.body;
+  const playlist = await manager.findOne(PlaylistEntity, playlistId);
+  if (playlist === undefined) {
+    throw createError(400);
+  }
 
-  await getManager().transaction(async manager => {
-    const playlist = await manager.findOne(PlaylistEntity, playlistId);
-    if (playlist === undefined) {
-      return next(createError(400));
-    }
+  const playlistBookmark = new PlaylistBookmarkEntity(currentUser, playlist, true);
+  await manager.save(playlistBookmark);
 
-    const playlistBookmark = new PlaylistBookmarkEntity(currentUser, playlist, true);
-    await manager.save(playlistBookmark);
-
-    responseFindResult(req, res, playlistBookmark);
-  });
-});
-
-POST.apiDoc = createOperationDoc({
-  entityType: "PlaylistBookmark",
-  permission: "Read",
-  hasBody: true
+  return [playlistBookmark];
 });

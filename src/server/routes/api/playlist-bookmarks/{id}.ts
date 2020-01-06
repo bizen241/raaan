@@ -1,32 +1,19 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
-import { responseFindResult } from "../../../api/response";
+import { createDeleteOperation } from "../../../api/operation";
 import { PlaylistBookmarkEntity } from "../../../database/entities";
 
-export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { id: playlistBookmarkId }: PathParams = req.params;
+export const DELETE = createDeleteOperation("PlaylistBookmark", "Read", async ({ currentUser, manager, id }) => {
+  const playlistBookmark = await manager.findOne(PlaylistBookmarkEntity, id);
+  if (playlistBookmark === undefined) {
+    throw createError(404);
+  }
 
-  await getManager().transaction(async manager => {
-    const playlistBookmark = await manager.findOne(PlaylistBookmarkEntity, playlistBookmarkId);
-    if (playlistBookmark === undefined) {
-      return next(createError(404));
-    }
+  const isOwn = playlistBookmark.userId === currentUser.id;
+  if (!isOwn) {
+    throw createError(403);
+  }
 
-    const isOwn = playlistBookmark.userId === currentUser.id;
-    if (!isOwn) {
-      return next(createError(403));
-    }
+  await manager.remove(playlistBookmark);
 
-    await manager.remove(playlistBookmark);
-
-    responseFindResult(req, res);
-  });
-});
-
-DELETE.apiDoc = createOperationDoc({
-  entityType: "PlaylistBookmark",
-  permission: "Read",
-  hasId: true
+  return [];
 });

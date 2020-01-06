@@ -1,10 +1,15 @@
 import { NextFunction } from "connect";
 import { Request, RequestHandler, Response } from "express";
+import { OperationFunction } from "express-openapi";
 import { OpenAPIV3 } from "openapi-types";
+import { EntityManager, getManager, SelectQueryBuilder } from "typeorm";
 import { endpoints } from "../../shared/api/endpoint";
 import { EntityType, Permission } from "../../shared/api/entities";
-import { UserEntity } from "../database/entities";
+import { EntityTypeToParams } from "../../shared/api/request/params";
+import { parseQuery } from "../../shared/api/request/parse";
+import { Entity, UserEntity } from "../database/entities";
 import { getGuestUser } from "../database/setup/guest";
+import { responseFindResult, responseSearchResult } from "./response";
 import { entityTypeToParamsSchema } from "./schema";
 
 export interface PathParams {
@@ -100,4 +105,145 @@ export const errorBoundary = (
 
     next(e);
   });
+};
+
+interface OperationFunctionParams {
+  req: Request;
+  res: Response;
+  currentUser: UserEntity;
+  manager: EntityManager;
+}
+
+type GetOperationFunction = (params: OperationFunctionParams & { id: string }) => Promise<Entity[]>;
+
+export const createGetOperation = (entityType: EntityType, permission: Permission, fn: GetOperationFunction) => {
+  const operation: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
+    const manager = getManager();
+    const id = req.params.id;
+
+    const entities = await fn({ req, res, currentUser, manager, id });
+
+    responseFindResult(req, res, ...entities);
+  });
+
+  operation.apiDoc = createOperationDoc({
+    entityType,
+    permission,
+    hasId: true
+  });
+
+  return operation;
+};
+
+type SearchOperationFunction<T extends EntityType> = (
+  params: OperationFunctionParams & { params: EntityTypeToParams[T] }
+) => Promise<SelectQueryBuilder<Entity>>;
+
+export const createSearchOperation = <T extends EntityType>(
+  entityType: T,
+  permission: Permission,
+  fn: SearchOperationFunction<T>
+) => {
+  const operation: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
+    const manager = getManager();
+    const params = parseQuery(entityType, req.query);
+
+    const query = await fn({ req, res, currentUser, manager, params });
+
+    const { searchLimit, searchOffset } = params;
+
+    query.take(searchLimit);
+    query.skip(searchOffset);
+
+    const [entities, count] = await query.getManyAndCount();
+
+    responseSearchResult(req, res, entities, count);
+  });
+
+  operation.apiDoc = createOperationDoc({
+    entityType,
+    permission,
+    hasQuery: true
+  });
+
+  return operation;
+};
+
+type PostOperationFunction<T extends EntityType> = (
+  params: OperationFunctionParams & { params: EntityTypeToParams[T] }
+) => Promise<Entity[]>;
+
+export const createPostOperation = <T extends EntityType>(
+  entityType: T,
+  permission: Permission,
+  fn: PostOperationFunction<T>
+) => {
+  const operation: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
+    getManager().transaction(async manager => {
+      const params = req.body;
+
+      const entities = await fn({ req, res, currentUser, manager, params });
+
+      responseFindResult(req, res, ...entities);
+    });
+  });
+
+  operation.apiDoc = createOperationDoc({
+    entityType,
+    permission,
+    hasBody: true
+  });
+
+  return operation;
+};
+
+type PatchOperationFunction<T extends EntityType> = (
+  params: OperationFunctionParams & { id: string; params: EntityTypeToParams[T] }
+) => Promise<Entity[]>;
+
+export const createPatchOperation = <T extends EntityType>(
+  entityType: T,
+  permission: Permission,
+  fn: PatchOperationFunction<T>
+) => {
+  const operation: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
+    getManager().transaction(async manager => {
+      const id = req.params.id;
+      const params = req.body;
+
+      const entities = await fn({ req, res, currentUser, manager, id, params });
+
+      responseFindResult(req, res, ...entities);
+    });
+  });
+
+  operation.apiDoc = createOperationDoc({
+    entityType,
+    permission,
+    hasId: true,
+    hasBody: true
+  });
+
+  return operation;
+};
+
+type DeleteOperationFunction = (params: OperationFunctionParams & { id: string }) => Promise<Entity[]>;
+
+export const createDeleteOperation = (entityType: EntityType, permission: Permission, fn: DeleteOperationFunction) => {
+  const operation: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
+    const manager = getManager();
+    const id = req.params.id;
+
+    const entities = await fn({ req, res, currentUser, manager, id });
+
+    responseFindResult(req, res, ...entities);
+  });
+
+  operation.apiDoc = createOperationDoc({
+    entityType,
+    permission,
+    hasId: true
+  });
+
+  return operation;
 };

@@ -1,101 +1,66 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { Objection } from "../../../../shared/api/entities";
-import { Params } from "../../../../shared/api/request/params";
-import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
-import { responseFindResult } from "../../../api/response";
+import { createDeleteOperation, createGetOperation, createPatchOperation } from "../../../api/operation";
 import { hasPermission } from "../../../api/security";
 import { ObjectionCommentEntity, ObjectionEntity } from "../../../database/entities";
 import { unlockObjectionTarget } from "../../../services/objections";
 
-export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { id: exerciseId }: PathParams = req.params;
-
-  const objection = await getManager().findOne(ObjectionEntity, exerciseId, {
+export const GET = createGetOperation("Objection", "Read", async ({ manager, id }) => {
+  const objection = await manager.findOne(ObjectionEntity, id, {
     relations: ["summary"]
   });
   if (objection === undefined) {
     throw createError(404);
   }
 
-  responseFindResult(req, res, objection);
+  return [objection];
 });
 
-GET.apiDoc = createOperationDoc({
-  entityType: "Objection",
-  permission: "Read",
-  hasId: true
+export const PATCH = createPatchOperation("Objection", "Write", async ({ currentUser, manager, id, params }) => {
+  const objection = await manager.findOne(ObjectionEntity, id);
+  if (objection === undefined) {
+    throw createError(404);
+  }
+
+  const isObjector = objection.objectorId === currentUser.id;
+  if (!isObjector && !hasPermission(currentUser, "Admin")) {
+    throw createError(403);
+  }
+
+  if (isObjector) {
+    if (params.description !== undefined) {
+      objection.description = params.description;
+    }
+  } else {
+    if (objection.state !== "accepted" && params.state === "accepted") {
+      await unlockObjectionTarget(manager, objection);
+    }
+
+    if (params.state !== undefined) {
+      objection.state = params.state;
+    }
+    if (params.comment !== undefined) {
+      const objectionComment = new ObjectionCommentEntity(objection, currentUser, params.comment);
+      await manager.save(objectionComment);
+    }
+  }
+
+  await manager.save(objection);
+
+  return [objection];
 });
 
-export const PATCH: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
-  const { id: objectionId }: PathParams = req.params;
-  const params: Params<Objection> = req.body;
+export const DELETE = createDeleteOperation("Objection", "Read", async ({ currentUser, manager, id }) => {
+  const objection = await manager.findOne(ObjectionEntity, id);
+  if (objection === undefined) {
+    throw createError(404);
+  }
 
-  await getManager().transaction(async manager => {
-    const objection = await manager.findOne(ObjectionEntity, objectionId);
-    if (objection === undefined) {
-      throw createError(404);
-    }
+  const isOwn = objection.objectorId === currentUser.id;
+  if (!isOwn) {
+    throw createError(403);
+  }
 
-    const isObjector = objection.objectorId === currentUser.id;
-    if (!isObjector && !hasPermission(currentUser, "Admin")) {
-      throw createError(403);
-    }
+  await manager.remove(objection);
 
-    if (isObjector) {
-      if (params.description !== undefined) {
-        objection.description = params.description;
-      }
-    } else {
-      if (objection.state !== "accepted" && params.state === "accepted") {
-        await unlockObjectionTarget(manager, objection);
-      }
-
-      if (params.state !== undefined) {
-        objection.state = params.state;
-      }
-      if (params.comment !== undefined) {
-        const objectionComment = new ObjectionCommentEntity(objection, currentUser, params.comment);
-        await manager.save(objectionComment);
-      }
-    }
-
-    await manager.save(objection);
-
-    responseFindResult(req, res, objection);
-  });
-});
-
-PATCH.apiDoc = createOperationDoc({
-  entityType: "Objection",
-  permission: "Admin",
-  hasId: true,
-  hasBody: true
-});
-
-export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { id: objectionId }: PathParams = req.params;
-
-  await getManager().transaction(async manager => {
-    const objection = await manager.findOne(ObjectionEntity, objectionId);
-    if (objection === undefined) {
-      return next(createError(404));
-    }
-
-    const isOwn = objection.objectorId === currentUser.id;
-    if (!isOwn) {
-      return next(createError(403));
-    }
-
-    await manager.remove(objection);
-
-    responseFindResult(req, res);
-  });
-});
-
-DELETE.apiDoc = createOperationDoc({
-  entityType: "Objection",
-  permission: "Read",
-  hasId: true
+  return [];
 });

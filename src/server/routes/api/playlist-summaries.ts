@@ -1,20 +1,14 @@
-import { OperationFunction } from "express-openapi";
-import { getManager } from "typeorm";
-import { parseQuery } from "../../../shared/api/request/parse";
-import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseSearchResult } from "../../api/response";
+import { createSearchOperation } from "../../api/operation";
 import { PlaylistSummaryEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
-  const { authorId, tags, searchLimit, searchOffset } = parseQuery("PlaylistSummary", req.query);
+export const GET = createSearchOperation("PlaylistSummary", "Guest", async ({ currentUser, manager, params }) => {
+  const { authorId, tags } = params;
 
-  const query = await getManager()
+  const query = manager
     .createQueryBuilder(PlaylistSummaryEntity, "playlistSummary")
     .leftJoinAndSelect("playlistSummary.playlist", "playlist")
     .leftJoinAndSelect("playlistSummary.tags", "tags")
-    .leftJoinAndSelect("playlist.author", "author")
-    .take(searchLimit)
-    .skip(searchOffset);
+    .leftJoinAndSelect("playlist.author", "author");
 
   if (authorId !== undefined) {
     query.andWhere("author.id = :authorId", { authorId });
@@ -30,13 +24,5 @@ export const GET: OperationFunction = errorBoundary(async (req, res, _, currentU
     query.andWhere("playlist.isPrivate = false");
   }
 
-  const [playlistSummaries, count] = await query.getManyAndCount();
-
-  responseSearchResult(req, res, playlistSummaries, count);
-});
-
-GET.apiDoc = createOperationDoc({
-  entityType: "PlaylistSummary",
-  permission: "Guest",
-  hasQuery: true
+  return query;
 });

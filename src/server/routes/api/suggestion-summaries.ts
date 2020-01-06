@@ -1,23 +1,14 @@
-import { OperationFunction } from "express-openapi";
-import { getManager } from "typeorm";
-import { parseQuery } from "../../../shared/api/request/parse";
-import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseSearchResult } from "../../api/response";
+import { createSearchOperation } from "../../api/operation";
 import { SuggestionSummaryEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { authorId, exerciseId, exerciseAuthorId, searchLimit, searchOffset } = parseQuery(
-    "SuggestionSummary",
-    req.query
-  );
+export const GET = createSearchOperation("SuggestionSummary", "Read", async ({ manager, params }) => {
+  const { authorId, exerciseId, exerciseAuthorId } = params;
 
-  const query = getManager()
+  const query = manager
     .createQueryBuilder(SuggestionSummaryEntity, "suggestionSummary")
     .leftJoinAndSelect("suggestionSummary.suggestion", "suggestion")
     .leftJoinAndSelect("suggestion.revision", "revision")
-    .leftJoinAndSelect("revision.exercise", "exercise")
-    .take(searchLimit)
-    .skip(searchOffset);
+    .leftJoinAndSelect("revision.exercise", "exercise");
 
   if (authorId !== undefined) {
     query.andWhere("suggestion.authorId = :authorId", { authorId });
@@ -29,13 +20,5 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
     query.andWhere("exercise.authorId = :authorId", { authorId: exerciseAuthorId });
   }
 
-  const [suggestionSummaries, count] = await query.getManyAndCount();
-
-  responseSearchResult(req, res, suggestionSummaries, count);
-});
-
-GET.apiDoc = createOperationDoc({
-  entityType: "SuggestionSummary",
-  permission: "Read",
-  hasQuery: true
+  return query;
 });

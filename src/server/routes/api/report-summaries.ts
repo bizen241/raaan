@@ -1,28 +1,19 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { parseQuery } from "../../../shared/api/request/parse";
-import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseSearchResult } from "../../api/response";
+import { createSearchOperation } from "../../api/operation";
 import { hasPermission } from "../../api/security";
 import { ReportSummaryEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { reporterId, defendantId, targetType, targetId, searchLimit, searchOffset } = parseQuery(
-    "ReportSummary",
-    req.query
-  );
+export const GET = createSearchOperation("ReportSummary", "Read", async ({ currentUser, manager, params }) => {
+  const { reporterId, defendantId, targetType, targetId } = params;
 
   const isReporter = reporterId === currentUser.id;
   if (!isReporter && !hasPermission(currentUser, "Admin")) {
-    return next(createError(403));
+    throw createError(403);
   }
 
-  const query = getManager()
+  const query = manager
     .createQueryBuilder(ReportSummaryEntity, "reportSummary")
-    .leftJoinAndSelect("reportSummary.parent", "parent")
-    .take(searchLimit)
-    .skip(searchOffset);
+    .leftJoinAndSelect("reportSummary.parent", "parent");
 
   if (reporterId !== undefined) {
     query.andWhere("parent.reporterId = :reporterId", { reporterId });
@@ -38,13 +29,5 @@ export const GET: OperationFunction = errorBoundary(async (req, res, next, curre
     }
   }
 
-  const [reportSummaries, count] = await query.getManyAndCount();
-
-  responseSearchResult(req, res, reportSummaries, count);
-});
-
-GET.apiDoc = createOperationDoc({
-  entityType: "ReportSummary",
-  permission: "Read",
-  hasQuery: true
+  return query;
 });

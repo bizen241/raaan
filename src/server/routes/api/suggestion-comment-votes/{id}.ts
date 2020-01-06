@@ -1,44 +1,33 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
-import { responseFindResult } from "../../../api/response";
+import { createDeleteOperation } from "../../../api/operation";
 import { SuggestionCommentVoteEntity } from "../../../database/entities";
 
-export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { id: suggestionCommentVoteId }: PathParams = req.params;
-
-  await getManager().transaction(async manager => {
-    const suggestionCommentVote = await manager.findOne(SuggestionCommentVoteEntity, suggestionCommentVoteId, {
-      relations: ["target", "target.summary"]
-    });
-    if (suggestionCommentVote === undefined) {
-      return next(createError(404));
-    }
-    if (suggestionCommentVote.target === undefined || suggestionCommentVote.target.summary === undefined) {
-      return next(createError(500));
-    }
-
-    const isVoter = suggestionCommentVote.voterId === currentUser.id;
-    if (!isVoter) {
-      return next(createError(403));
-    }
-
-    if (suggestionCommentVote.isUp) {
-      suggestionCommentVote.target.summary.upvoteCount -= 1;
-    } else {
-      suggestionCommentVote.target.summary.downvoteCount -= 1;
-    }
-    await manager.save(suggestionCommentVote.target.summary);
-
-    await manager.remove(suggestionCommentVote);
-
-    responseFindResult(req, res, suggestionCommentVote.target.summary);
+export const DELETE = createDeleteOperation("SuggestionCommentVote", "Read", async ({ currentUser, manager, id }) => {
+  const suggestionCommentVote = await manager.findOne(SuggestionCommentVoteEntity, id, {
+    relations: ["target", "target.summary"]
   });
-});
+  if (suggestionCommentVote === undefined) {
+    throw createError(404);
+  }
+  if (suggestionCommentVote.target === undefined || suggestionCommentVote.target.summary === undefined) {
+    throw createError(500);
+  }
 
-DELETE.apiDoc = createOperationDoc({
-  entityType: "SuggestionCommentVote",
-  permission: "Read",
-  hasId: true
+  const isVoter = suggestionCommentVote.voterId === currentUser.id;
+  if (!isVoter) {
+    throw createError(403);
+  }
+
+  const targetSummary = suggestionCommentVote.target.summary;
+
+  if (suggestionCommentVote.isUp) {
+    targetSummary.upvoteCount -= 1;
+  } else {
+    targetSummary.downvoteCount -= 1;
+  }
+  await manager.save(targetSummary);
+
+  await manager.remove(suggestionCommentVote);
+
+  return [targetSummary];
 });

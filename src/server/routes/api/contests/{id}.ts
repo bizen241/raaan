@@ -1,39 +1,23 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
-import { responseFindResult } from "../../../api/response";
+import { createDeleteOperation } from "../../../api/operation";
 import { ContestEntity, GroupMemberEntity } from "../../../database/entities";
 
-export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { id: contestId }: PathParams = req.params;
-
-  const manager = getManager();
-
-  const contest = await manager.findOne(ContestEntity, contestId);
+export const DELETE = createDeleteOperation("Contest", "Read", async ({ currentUser, manager, id }) => {
+  const contest = await manager.findOne(ContestEntity, id);
   if (contest === undefined) {
-    return next(createError(404));
+    throw createError(404);
   }
 
-  const groupMember = await manager.findOne(GroupMemberEntity, {
-    group: {
-      id: contest.groupId
-    },
-    user: {
-      id: currentUser.id
-    }
-  });
+  const groupMember = await manager
+    .createQueryBuilder(GroupMemberEntity, "groupMember")
+    .andWhere("groupMember.groupId = :groupId", { groupId: contest.groupId })
+    .andWhere("groupMember.userId = :userId", { userId: currentUser.id })
+    .getOne();
   if (groupMember === undefined || groupMember.permission === "read") {
-    return next(createError(403));
+    throw createError(403);
   }
 
   await manager.remove(contest);
 
-  responseFindResult(req, res);
-});
-
-DELETE.apiDoc = createOperationDoc({
-  entityType: "Contest",
-  permission: "Write",
-  hasId: true
+  return [];
 });

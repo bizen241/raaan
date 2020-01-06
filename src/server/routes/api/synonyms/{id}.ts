@@ -1,44 +1,23 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
-import { responseFindResult } from "../../../api/response";
+import { createDeleteOperation, createGetOperation } from "../../../api/operation";
 import { SynonymEntity } from "../../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
-  const { id: synonymId }: PathParams = req.params;
-
-  const synonym = await getManager().findOne(SynonymEntity, synonymId);
+export const GET = createGetOperation("Synonym", "Guest", async ({ manager, id }) => {
+  const synonym = await manager.findOne(SynonymEntity, id);
   if (synonym === undefined) {
-    return next(createError(404));
+    throw createError(404);
   }
 
-  responseFindResult(req, res, synonym);
+  return [synonym];
 });
 
-GET.apiDoc = createOperationDoc({
-  entityType: "Synonym",
-  permission: "Guest",
-  hasId: true
-});
+export const DELETE = createDeleteOperation("Synonym", "Admin", async ({ manager, id }) => {
+  const synonym = await manager.findOne(SynonymEntity, id);
+  if (synonym === undefined) {
+    throw createError(404);
+  }
 
-export const DELETE: OperationFunction = errorBoundary(async (req, res, next) => {
-  const { id: synonymId }: PathParams = req.params;
+  await manager.remove(synonym);
 
-  await getManager().transaction(async manager => {
-    const synonym = await manager.findOne(SynonymEntity, synonymId);
-    if (synonym === undefined) {
-      return next(createError(404));
-    }
-
-    await manager.remove(synonym);
-
-    responseFindResult(req, res);
-  });
-});
-
-DELETE.apiDoc = createOperationDoc({
-  entityType: "Synonym",
-  permission: "Admin",
-  hasId: true
+  return [];
 });

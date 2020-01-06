@@ -1,40 +1,29 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
-import { responseFindResult } from "../../../api/response";
+import { createDeleteOperation } from "../../../api/operation";
 import { TagFollowEntity } from "../../../database/entities";
 
-export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { id: tagFollowId }: PathParams = req.params;
-
-  await getManager().transaction(async manager => {
-    const tagFollow = await manager.findOne(TagFollowEntity, tagFollowId, {
-      relations: ["target", "target.summary"]
-    });
-    if (tagFollow === undefined) {
-      return next(createError(404));
-    }
-    if (tagFollow.target === undefined || tagFollow.target.summary === undefined) {
-      return next(createError(500));
-    }
-
-    const isFollower = tagFollow.followerId === currentUser.id;
-    if (!isFollower) {
-      return next(createError(403));
-    }
-
-    tagFollow.target.summary.followerCount -= 1;
-    await manager.save(tagFollow.target.summary);
-
-    await manager.remove(tagFollow);
-
-    responseFindResult(req, res, tagFollow.target.summary);
+export const DELETE = createDeleteOperation("TagFollow", "Read", async ({ currentUser, manager, id }) => {
+  const tagFollow = await manager.findOne(TagFollowEntity, id, {
+    relations: ["target", "target.summary"]
   });
-});
+  if (tagFollow === undefined) {
+    throw createError(404);
+  }
+  if (tagFollow.target === undefined || tagFollow.target.summary === undefined) {
+    throw createError(500);
+  }
 
-DELETE.apiDoc = createOperationDoc({
-  entityType: "TagFollow",
-  permission: "Read",
-  hasId: true
+  const isFollower = tagFollow.followerId === currentUser.id;
+  if (!isFollower) {
+    throw createError(403);
+  }
+
+  const targetSummary = tagFollow.target.summary;
+
+  targetSummary.followerCount -= 1;
+  await manager.save(targetSummary);
+
+  await manager.remove(tagFollow);
+
+  return [targetSummary];
 });

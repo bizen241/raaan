@@ -1,83 +1,52 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { Contest } from "../../../shared/api/entities";
-import { Params } from "../../../shared/api/request/params";
-import { parseQuery } from "../../../shared/api/request/parse";
-import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseFindResult, responseSearchResult } from "../../api/response";
-import { ContestEntity, ExerciseEntity, GroupMemberEntity } from "../../database/entities";
+import { createPostOperation, createSearchOperation } from "../../api/operation";
+import { ContestEntity, ExerciseEntity, GroupEntity, GroupMemberEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { groupId, searchLimit, searchOffset } = parseQuery("Contest", req.query);
-
-  const manager = getManager();
+export const GET = createSearchOperation("Contest", "Read", async ({ manager, params }) => {
+  const { groupId } = params;
 
   const query = manager
     .createQueryBuilder(ContestEntity, "contest")
     .leftJoinAndSelect("contest.group", "group")
-    .leftJoinAndSelect("contest.exercise", "exercise")
-    .take(searchLimit)
-    .skip(searchOffset);
+    .leftJoinAndSelect("contest.exercise", "exercise");
 
   if (groupId !== undefined) {
     query.andWhere("contest.groupId = :groupId", { groupId });
   }
 
-  const [contests, count] = await query.getManyAndCount();
-
-  responseSearchResult(req, res, contests, count);
+  return query;
 });
 
-GET.apiDoc = createOperationDoc({
-  entityType: "Contest",
-  permission: "Read",
-  hasQuery: true
-});
+export const POST = createPostOperation("Contest", "Write", async ({ currentUser, manager, params }) => {
+  const { groupId, exerciseId } = params;
+  if (params.startAt === undefined || params.finishAt === undefined) {
+    throw createError(400);
+  }
 
-export const POST: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { groupId, exerciseId, ...params }: Params<Contest> = req.body;
+  const groupMember = await manager
+    .createQueryBuilder(GroupMemberEntity, "groupMember")
+    .andWhere("groupMember.groupId = :groupId", { groupId })
+    .andWhere("groupMember.userId = :userId", { userId: currentUser.id })
+    .getOne();
+  if (groupMember === undefined || groupMember.permission === "read") {
+    throw createError(403);
+  }
 
-  await getManager().transaction(async manager => {
-    const groupMember = await manager.findOne(GroupMemberEntity, {
-      where: {
-        group: {
-          id: groupId
-        },
-        user: {
-          id: currentUser.id
-        }
-      },
-      relations: ["group"]
-    });
-    if (groupMember === undefined || groupMember.permission === "read") {
-      return next(createError(403));
-    }
-    if (groupMember.group === undefined) {
-      return next(createError(500));
-    }
+  const group = await manager.findOne(GroupEntity, groupId);
+  if (group === undefined) {
+    throw createError(500);
+  }
 
-    const exercise = await manager.findOne(ExerciseEntity, exerciseId);
-    if (exercise === undefined) {
-      return next(createError(404));
-    }
+  const exercise = await manager.findOne(ExerciseEntity, exerciseId);
+  if (exercise === undefined) {
+    throw createError(400);
+  }
 
-    if (params.startAt === undefined || params.finishAt === undefined) {
-      return next(createError(400));
-    }
+  const startAt = new Date(params.startAt);
+  const finishAt = new Date(params.finishAt);
 
-    const startAt = new Date(params.startAt);
-    const finishAt = new Date(params.finishAt);
+  const contest = new ContestEntity(group, exercise, "", startAt, finishAt);
+  await manager.save(contest);
 
-    const contest = new ContestEntity(groupMember.group, exercise, "", startAt, finishAt);
-    await manager.save(contest);
-
-    responseFindResult(req, res, contest);
-  });
-});
-
-POST.apiDoc = createOperationDoc({
-  entityType: "Contest",
-  permission: "Write",
-  hasBody: true
+  return contest;
 });

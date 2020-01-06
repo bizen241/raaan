@@ -1,24 +1,14 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { GroupExercise } from "../../../shared/api/entities";
-import { Params } from "../../../shared/api/request/params";
-import { parseQuery } from "../../../shared/api/request/parse";
-import { createOperationDoc, errorBoundary } from "../../api/operation";
-import { responseFindResult, responseSearchResult } from "../../api/response";
+import { createPostOperation, createSearchOperation } from "../../api/operation";
 import { ExerciseEntity, GroupEntity, GroupExerciseEntity } from "../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res) => {
-  const { groupId, exerciseId, searchLimit, searchOffset } = parseQuery("GroupExercise", req.query);
+export const GET = createSearchOperation("GroupExercise", "Read", async ({ manager, params }) => {
+  const { groupId, exerciseId } = params;
 
-  const manager = getManager();
-
-  const query = await manager
+  const query = manager
     .createQueryBuilder(GroupExerciseEntity, "groupExercise")
     .leftJoinAndSelect("groupExercise.group", "group")
-    .leftJoinAndSelect("groupExercise.exercise", "exercise")
-    .take(searchLimit)
-    .skip(searchOffset);
+    .leftJoinAndSelect("groupExercise.exercise", "exercise");
 
   if (groupId !== undefined) {
     query.andWhere("groupExercise.groupId = :groupId", { groupId });
@@ -27,42 +17,26 @@ export const GET: OperationFunction = errorBoundary(async (req, res) => {
     query.andWhere("groupExercise.exerciseId = :exerciseId", { exerciseId });
   }
 
-  const [groupExercises, count] = await query.getManyAndCount();
-
-  responseSearchResult(req, res, groupExercises, count);
+  return query;
 });
 
-GET.apiDoc = createOperationDoc({
-  entityType: "GroupExercise",
-  permission: "Read",
-  hasQuery: true
-});
-
-export const POST: OperationFunction = errorBoundary(async (req, res, next) => {
-  const { groupId, exerciseId }: Params<GroupExercise> = req.body;
+export const POST = createPostOperation("GroupExercise", "Write", async ({ manager, params }) => {
+  const { groupId, exerciseId } = params;
   if (groupId === undefined || exerciseId === undefined) {
-    return next(createError(400));
+    throw createError(400);
   }
 
-  await getManager().transaction(async manager => {
-    const group = await manager.findOne(GroupEntity, groupId);
-    if (group === undefined) {
-      return next(createError(404));
-    }
-    const exercise = await manager.findOne(ExerciseEntity, exerciseId);
-    if (exercise === undefined) {
-      return next(createError(404));
-    }
+  const group = await manager.findOne(GroupEntity, groupId);
+  if (group === undefined) {
+    throw createError(400);
+  }
+  const exercise = await manager.findOne(ExerciseEntity, exerciseId);
+  if (exercise === undefined) {
+    throw createError(400);
+  }
 
-    const groupExercise = new GroupExerciseEntity(group, exercise);
-    await manager.save(groupExercise);
+  const groupExercise = new GroupExerciseEntity(group, exercise);
+  await manager.save(groupExercise);
 
-    responseFindResult(req, res, groupExercise);
-  });
-});
-
-POST.apiDoc = createOperationDoc({
-  entityType: "GroupExercise",
-  permission: "Write",
-  hasBody: true
+  return [groupExercise];
 });

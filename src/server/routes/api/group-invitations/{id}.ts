@@ -1,38 +1,25 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
-import { responseFindResult } from "../../../api/response";
+import { createDeleteOperation } from "../../../api/operation";
 import { GroupInvitationEntity } from "../../../database/entities";
 
-export const DELETE: OperationFunction = errorBoundary(async (req, res, next, currentUser) => {
-  const { id: groupInvitationId }: PathParams = req.params;
-
-  await getManager().transaction(async manager => {
-    const groupInvitation = await manager.findOne(GroupInvitationEntity, groupInvitationId, {
-      relations: ["group"]
-    });
-    if (groupInvitation === undefined) {
-      return next(createError(404));
-    }
-    if (groupInvitation.group === undefined) {
-      return next(createError(500));
-    }
-
-    const isOwn = groupInvitation.targetId === currentUser.id;
-    const isOwner = groupInvitation.group.ownerId === currentUser.id;
-    if (!isOwn && !isOwner) {
-      return next(createError(403));
-    }
-
-    await manager.remove(groupInvitation);
-
-    responseFindResult(req, res);
+export const DELETE = createDeleteOperation("GroupInvitation", "Read", async ({ currentUser, manager, id }) => {
+  const groupInvitation = await manager.findOne(GroupInvitationEntity, id, {
+    relations: ["group"]
   });
-});
+  if (groupInvitation === undefined) {
+    throw createError(404);
+  }
+  if (groupInvitation.group === undefined) {
+    throw createError(500);
+  }
 
-DELETE.apiDoc = createOperationDoc({
-  entityType: "GroupInvitation",
-  permission: "Read",
-  hasId: true
+  const isOwn = groupInvitation.targetId === currentUser.id;
+  const isOwner = groupInvitation.group.ownerId === currentUser.id;
+  if (!isOwn && !isOwner) {
+    throw createError(403);
+  }
+
+  await manager.remove(groupInvitation);
+
+  return [];
 });

@@ -1,25 +1,14 @@
-import { OperationFunction } from "express-openapi";
 import * as createError from "http-errors";
-import { getManager } from "typeorm";
-import { createOperationDoc, errorBoundary, PathParams } from "../../../api/operation";
-import { responseFindResult } from "../../../api/response";
+import { createGetOperation } from "../../../api/operation";
 import { RevisionEntity } from "../../../database/entities";
 
-export const GET: OperationFunction = errorBoundary(async (req, res, next) => {
-  const { id: revisionId }: PathParams = req.params;
-
-  const revision = await getManager().findOne(RevisionEntity, revisionId, {
+export const GET = createGetOperation("Revision", "Read", async ({ manager, id }) => {
+  const revision = await manager.findOne(RevisionEntity, id, {
     relations: ["summary"]
   });
   if (revision === undefined) {
-    return next(createError(404));
+    throw createError(404);
   }
 
-  responseFindResult(req, res, revision);
-});
-
-GET.apiDoc = createOperationDoc({
-  entityType: "Revision",
-  permission: "Read",
-  hasId: true
+  return [revision];
 });
