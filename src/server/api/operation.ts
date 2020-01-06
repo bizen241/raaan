@@ -12,10 +12,6 @@ import { getGuestUser } from "../database/setup/guest";
 import { responseFindResult, responseSearchResult } from "./response";
 import { entityTypeToParamsSchema } from "./schema";
 
-export interface PathParams {
-  id: string;
-}
-
 interface OperationDocument {
   entityType: EntityType;
   permission: Permission;

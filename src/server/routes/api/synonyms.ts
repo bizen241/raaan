@@ -17,5 +17,5 @@ export const POST = createPostOperation("Synonym", "Admin", async ({ manager, pa
   const synonym = new SynonymEntity(name, target);
   await manager.save(synonym);
 
-  return synonym;
+  return [synonym];
 });

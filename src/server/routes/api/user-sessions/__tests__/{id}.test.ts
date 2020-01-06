@@ -10,7 +10,6 @@ import {
   insertUser,
   reset
 } from "../../../../__tests__/helpers";
-import { PathParams } from "../../../../api/operation";
 import { UserSessionEntity } from "../../../../database/entities";
 import { DELETE } from "../{id}";
 
@@ -37,9 +36,6 @@ test("DELETE /api/user-sessions/{id} -> 200", async () => {
 test("DELETE /api/user-sessions/{id} -> 404", async () => {
   const { req, res, next } = await createMocks("Read");
 
-  (req.params as PathParams) = {
-    id: uuid()
-  };
   req.params = createParams(uuid());
 
   await DELETE(req, res, next);

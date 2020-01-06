@@ -48,5 +48,5 @@ export const POST = createPostOperation("Contest", "Write", async ({ currentUser
   const contest = new ContestEntity(group, exercise, "", startAt, finishAt);
   await manager.save(contest);
 
-  return contest;
+  return [contest];
 });

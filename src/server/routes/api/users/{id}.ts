@@ -2,7 +2,7 @@ import * as createError from "http-errors";
 import { createGetOperation } from "../../../api/operation";
 import { UserEntity } from "../../../database/entities";
 
-export const GET = createGetOperation("User", "Guest", async ({ id, manager }) => {
+export const GET = createGetOperation("User", "Guest", async ({ manager, id }) => {
   const user = await manager.findOne(UserEntity, id, {
     relations: ["summary"]
   });
@@ -10,5 +10,5 @@ export const GET = createGetOperation("User", "Guest", async ({ id, manager }) =
     throw createError(404);
   }
 
-  return user;
+  return [user];
 });

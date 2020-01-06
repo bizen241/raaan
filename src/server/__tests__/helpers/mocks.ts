@@ -7,7 +7,6 @@ import { EntityObject, Permission } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { SearchQuery } from "../../../shared/api/request/parse";
 import { EntityStore } from "../../../shared/api/response/get";
-import { PathParams } from "../../api/operation";
 import { insertUser } from "./entities";
 
 export const createMocks = async (permission: Permission) => {
@@ -48,4 +47,4 @@ export const createQuery = <E extends EntityObject>(params: Params<E>) => {
   );
 };
 
-export const createParams = (id: string): PathParams => ({ id });
+export const createParams = (id: string) => ({ id });

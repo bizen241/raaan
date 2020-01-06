@@ -66,7 +66,7 @@ authRouter.get("/:provider/callback", (req, res, next) => {
 
 const login = async (req: Request, res: Response, next: NextFunction, user: UserEntity) => {
   if (req.sessionID === undefined) {
-    throw createError(500);
+    return next(createError(500));
   }
 
   const userAgentParser = new UAParser(req.headers["user-agent"]);
@@ -85,7 +85,7 @@ const login = async (req: Request, res: Response, next: NextFunction, user: User
 
   req.login(user, (loginError: Error | null) => {
     if (loginError) {
-      throw createError(500);
+      return next(createError(500));
     }
 
     res.redirect("/");
