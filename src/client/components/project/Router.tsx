@@ -48,6 +48,7 @@ import { ObjectionPage } from "../pages/objections/ObjectionPage";
 import { ObjectionsPage } from "../pages/objections/ObjectionsPage";
 import { UserObjectionsPage } from "../pages/objections/UserObjectionsPage";
 import { UserPlaylistBookmarksPage } from "../pages/playlist-bookmarks/UserPlaylistBookmarksPage";
+import { PlaylistDiaryPage } from "../pages/playlist-diary-entries/PlaylistDiaryPage";
 import { EditPlaylistsPage } from "../pages/playlists/EditPlaylistsPage";
 import { PlaylistPage } from "../pages/playlists/PlaylistPage";
 import { PlaylistsPage } from "../pages/playlists/PlaylistsPage";
@@ -171,6 +172,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/playlists/edit" component={EditPlaylistsPage} />
         <Route exact={true} path="/playlists/:id" component={PlaylistPage} />
         <Route exact={true} path="/playlists/:id/edit" component={EditPlaylistPage} />
+        <Route exact={true} path="/playlists/:id/diary" component={PlaylistDiaryPage} />
 
         <Route exact={true} path="/tags" component={TagsPage} />
         <Route exact={true} path="/tags/edit" component={EditTagsPage} />
