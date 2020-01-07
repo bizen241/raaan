@@ -6,7 +6,7 @@ import { getTags } from "../../../services/tags";
 
 export const GET = createGetOperation("Playlist", "Guest", async ({ currentUser, manager, id }) => {
   const playlist = await manager.findOne(PlaylistEntity, id, {
-    relations: ["author"]
+    relations: ["summary", "author"]
   });
   if (playlist === undefined) {
     throw createError(404);

@@ -520,7 +520,10 @@ const normalizeObjectionSummary: Normalizer<ObjectionSummaryEntity> = (_, store,
 };
 
 const normalizePlaylist: Normalizer<PlaylistEntity> = (context, store, entity) => {
-  const { id, authorId, summaryId, title, tags, description, orderBy, isPrivate, isLocked } = entity;
+  const { id, summary, summaryId, authorId, title, tags, description, orderBy, isPrivate, isLocked } = entity;
+  if (summary === undefined) {
+    throw createError(500, "playlist.summary is not defined");
+  }
 
   store.Playlist[id] = {
     ...base(entity),
@@ -534,12 +537,9 @@ const normalizePlaylist: Normalizer<PlaylistEntity> = (context, store, entity) =
     isLocked
   };
 
-  if (entity.summary !== undefined) {
-    entity.summary.playlist = entity;
-    entity.summary.playlistId = entity.id;
+  summary.playlist = entity;
 
-    normalizeEntity(context, store, entity.summary);
-  }
+  normalizeEntity(context, store, summary);
 };
 
 const normalizePlaylistBookmark: Normalizer<PlaylistBookmarkEntity> = (context, store, entity) => {
@@ -592,7 +592,7 @@ const normalizePlaylistItem: Normalizer<PlaylistItemEntity> = (context, store, e
 };
 
 const normalizePlaylistSummary: Normalizer<PlaylistSummaryEntity> = (_, store, entity) => {
-  const { id, playlist, playlistId, tags = [], itemCount } = entity;
+  const { id, playlist, playlistId, tags = [], itemCount, submittedCount, typedCount } = entity;
   if (playlist === undefined) {
     return;
   }
@@ -611,6 +611,8 @@ const normalizePlaylistSummary: Normalizer<PlaylistSummaryEntity> = (_, store, e
     tags: tags.map(tag => tag.name).join(" "),
     description,
     itemCount,
+    submittedCount,
+    typedCount,
     isPrivate
   };
 };

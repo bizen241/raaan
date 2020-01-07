@@ -1,20 +1,19 @@
-import { Link, MenuItem } from "@material-ui/core";
-import { Delete, Edit, HowToVote, Lock, PlaylistPlay, Public } from "@material-ui/icons";
+import { Link } from "@material-ui/core";
+import { Delete, Edit, HowToVote, Lock, PlaylistPlay, Public, Refresh } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { withEntity } from "../../enhancers/withEntity";
+import { useEntity } from "../../hooks/useEntity";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeletePlaylistDialog } from "../dialogs/playlists/DeletePlaylistDialog";
 import { PublishPlaylistDialog } from "../dialogs/playlists/PublishPlaylistDialog";
 import { UnpublishPlaylistDialog } from "../dialogs/playlists/UnpublishPlaylistDialog";
 import { UserContext } from "../project/Context";
-import { Card, Menu, Property, Row } from "../ui";
-import { useStyles } from "../ui/styles";
+import { Card, Menu, MenuItem, Property, Row } from "../ui";
 
 export const PlaylistSummaryViewer = withEntity("PlaylistSummary")(
   React.memo(({ entity: playlistSummary }) => {
-    const classes = useStyles();
     const currentUser = useContext(UserContext);
 
     const { playlistId } = playlistSummary;
@@ -22,6 +21,8 @@ export const PlaylistSummaryViewer = withEntity("PlaylistSummary")(
     const [isPublishPlaylistDialogOpen, onTogglePublishPlaylistDialog] = useToggleState();
     const [isUnpublishPlaylistDialogOpen, onToggleUnpublishPlaylistDialog] = useToggleState();
     const [isDeletePlaylistDialogOpen, onToggleDeletePlaylistDialog] = useToggleState();
+
+    const { onReload } = useEntity("Playlist", playlistId, false);
 
     const isAuthor = playlistSummary.authorId === currentUser.id;
 
@@ -32,36 +33,28 @@ export const PlaylistSummaryViewer = withEntity("PlaylistSummary")(
         action={
           isAuthor ? (
             <Menu>
-              <MenuItem component={RouterLink} to={`/playlists/${playlistId}/edit`}>
-                <Edit className={classes.leftIcon} />
-                編集する
-              </MenuItem>
+              <MenuItem icon={<Edit />} label="編集する" to={`/playlists/${playlistId}/edit`} />
               {playlistSummary.isPrivate ? (
-                <MenuItem onClick={onTogglePublishPlaylistDialog}>
-                  <Public className={classes.leftIcon} />
-                  公開する
-                </MenuItem>
+                <MenuItem icon={<Public />} label="公開する" onClick={onTogglePublishPlaylistDialog} />
               ) : (
-                <MenuItem onClick={onToggleUnpublishPlaylistDialog}>
-                  <Lock className={classes.leftIcon} />
-                  非公開にする
-                </MenuItem>
+                <MenuItem icon={<Lock />} label="非公開にする" onClick={onToggleUnpublishPlaylistDialog} />
               )}
-              <MenuItem onClick={onToggleDeletePlaylistDialog}>
-                <Delete className={classes.leftIcon} />
-                削除
-              </MenuItem>
+              <MenuItem icon={<Delete />} label="削除" onClick={onToggleDeletePlaylistDialog} />
+              <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReload} />
             </Menu>
           ) : (
             <Menu>
-              <MenuItem>
-                <HowToVote className={classes.leftIcon} />
-                投票する
-              </MenuItem>
+              <MenuItem icon={<HowToVote />} label="投票する" />
+              <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReload} />
             </Menu>
           )
         }
       >
+        <Property label="提出回数">
+          <Link underline="always" color="textPrimary" component={RouterLink} to={`/playlists/${playlistId}/diary`}>
+            {playlistSummary.submittedCount}
+          </Link>
+        </Property>
         {playlistSummary.tags && (
           <Property label="タグ">
             <Row>
