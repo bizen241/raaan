@@ -4,9 +4,9 @@ import { withEntity } from "../../enhancers/withEntity";
 import { useDiary } from "../../hooks/useDiary";
 import { getToday, HeatMap, HeatMapContents } from "../ui";
 
-export const UserDiaryGraph = withEntity("User")(({ entityId: userId }) => {
+export const ExerciseDiaryGraph = withEntity("Exercise")(({ entityId: exerciseId }) => {
   const [firstDate] = useState(getToday());
-  const diaryEntries = useDiary("UserDiaryEntry", firstDate, { userId });
+  const diaryEntries = useDiary("ExerciseDiaryEntry", firstDate, { exerciseId });
 
   const contents = useMemo(
     () =>
@@ -15,7 +15,7 @@ export const UserDiaryGraph = withEntity("User")(({ entityId: userId }) => {
           return previousValue;
         }
 
-        return { ...previousValue, [date]: diaryEntry.submitCount + diaryEntry.submittedCount };
+        return { ...previousValue, [date]: diaryEntry.submittedCount };
       }, {} as HeatMapContents),
     [diaryEntries]
   );

@@ -2,6 +2,9 @@ import { makeStyles } from "@material-ui/core";
 import * as React from "react";
 import { Row } from "./Row";
 
+export const getToday = () =>
+  new Date(new Date().setUTCHours(0, 0, 0, 0)).getTime() - (51 * 7 + new Date().getDay()) * 24 * 60 * 60 * 1000;
+
 export type HeatMapContents = { [date: string]: number | undefined };
 
 export const HeatMap = React.memo<{
