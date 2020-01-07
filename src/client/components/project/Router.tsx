@@ -15,6 +15,7 @@ import { EditContestPage } from "../pages/contests/EditContestPage";
 import { EditContestsPage } from "../pages/contests/EditContestsPage";
 import { GroupContestsPage } from "../pages/contests/GroupContestsPage";
 import { ExerciseExerciseCommentsPage } from "../pages/exercise-comments/ExerciseExerciseCommentsPage";
+import { ExerciseDiaryPage } from "../pages/exercise-diary-entries/ExerciseDiaryPage";
 import { UserExerciseDraftsPage } from "../pages/exercise-drafts/UserExerciseDraftsPage";
 import { UserDownVotesPage } from "../pages/exercise-votes/UserDownVotesPage";
 import { UserUpVotesPage } from "../pages/exercise-votes/UserUpVotesPage";
@@ -155,6 +156,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/exercises/:id/edit" component={EditExercisePage} />
         <Route exact={true} path="/exercises/:id/revisions" component={ExerciseRevisionsPage} />
         <Route exact={true} path="/exercises/:id/comments" component={ExerciseExerciseCommentsPage} />
+        <Route exact={true} path="/exercises/:id/diary" component={ExerciseDiaryPage} />
 
         <Route exact={true} path="/revisions/:id" component={RevisionPage} />
 

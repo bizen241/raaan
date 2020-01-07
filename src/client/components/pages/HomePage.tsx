@@ -3,7 +3,7 @@ import * as React from "react";
 import { useContext } from "react";
 import { UserDiaryGraph } from "../graphs/UserDiaryGraph";
 import { UserContext } from "../project/Context";
-import { Button, Card, Page } from "../ui";
+import { Button, Page } from "../ui";
 
 export const HomePage = React.memo(() => {
   const currentUser = useContext(UserContext);
@@ -20,9 +20,7 @@ export const HomePage = React.memo(() => {
       <Button icon={<Keyboard />} label="問題集" to="/exercises" />
       <Button icon={<PlaylistPlay />} label="プレイリスト" to="/playlists" />
       <Button icon={<LocalOffer />} label="タグ" to="/tags" />
-      <Card icon={<Timeline />} title="活動記録">
-        <UserDiaryGraph entityId={currentUser.id} />
-      </Card>
+      <UserDiaryGraph entityId={currentUser.id} />
     </Page>
   );
 });

@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import * as React from "react";
+import { useCallback } from "react";
 import { Row } from "./Row";
 
 export const getToday = () =>
@@ -10,12 +11,22 @@ export type HeatMapContents = { [date: string]: number | undefined };
 export const HeatMap = React.memo<{
   firstDate: number;
   contents: HeatMapContents;
-}>(({ firstDate, contents }) => {
+  onClick: (date: string) => void;
+}>(({ firstDate, contents, onClick }) => {
   const heatMapClasses = useHeatMapStyles();
 
+  const onClickRect = useCallback((e: React.MouseEvent<SVGRectElement>) => {
+    const date = e.currentTarget.dataset.date;
+    if (date === undefined) {
+      return;
+    }
+
+    onClick(date);
+  }, []);
+
   return (
-    <Row justifyContent="center">
-      <Row style={{ overflowX: "auto" }} dir="rtl">
+    <Row justifyContent="center" pb={1}>
+      <Row style={{ overflowX: "auto", cursor: "pointer" }} dir="rtl">
         <Row dir="ltr" padding="2px">
           <svg width={937} height={127}>
             {year.map((_, weekIndex) => (
@@ -30,8 +41,10 @@ export const HeatMap = React.memo<{
                       className={count !== undefined ? heatMapClasses.heatMapBusyItem : heatMapClasses.heatMapBlankItem}
                       width={17}
                       height={17}
+                      data-date={date}
                       x={0}
                       y={dateIndex * 18}
+                      onClick={onClickRect}
                     />
                   );
                 })}

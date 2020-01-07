@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { EntityObject, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { useSearch } from "./useSearch";
@@ -16,7 +16,7 @@ export const useDiary = <T extends DiaryEntryType>(
 ) => {
   const [diaryEntries, setDiaryEntries] = useState<DateToDiaryEntry<EntityTypeToEntity[T]>>({});
 
-  const { entities, count, params, status, onChange } = useSearch(entityType, {
+  const { entities, count, params, status, onChange, onReload } = useSearch(entityType, {
     ...condition,
     searchLimit: 100,
     searchOffset: 0
@@ -48,5 +48,8 @@ export const useDiary = <T extends DiaryEntryType>(
     }
   }, [entities]);
 
-  return diaryEntries;
+  return {
+    diaryEntries,
+    onReload: useCallback(() => onReload(), [])
+  };
 };

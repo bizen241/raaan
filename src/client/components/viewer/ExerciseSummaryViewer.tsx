@@ -189,7 +189,16 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
           )
         }
       >
-        <Property label="提出回数">{exerciseSummary.submitCount}</Property>
+        <Property label="提出回数">
+          <Link
+            underline="always"
+            color="textPrimary"
+            component={RouterLink}
+            to={`/exercises/${exerciseSummary.exerciseId}/diary`}
+          >
+            {exerciseSummary.submitCount}
+          </Link>
+        </Property>
         <Property label="評価">{exerciseSummary.upvoteCount - exerciseSummary.downvoteCount}</Property>
         {exerciseSummary.tags && (
           <Property label="タグ">
