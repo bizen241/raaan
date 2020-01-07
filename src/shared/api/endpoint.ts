@@ -1,7 +1,7 @@
 import { EntityType } from "./entities";
 
 export const endpoints: { [P in EntityType]: string } = {
-  AppDiaryEntry: "app-diary-summaries",
+  AppDiaryEntry: "app-diary-entries",
   AppSummary: "app-summaries",
   Contest: "contests",
   ContestEntry: "contest-entries",
