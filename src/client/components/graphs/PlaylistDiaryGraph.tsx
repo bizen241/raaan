@@ -6,11 +6,11 @@ import { withEntity } from "../../enhancers/withEntity";
 import { useDiary } from "../../hooks/useDiary";
 import { Card, getToday, HeatMap, HeatMapContents, Property } from "../ui";
 
-export const PlaylistDiaryGraph = withEntity("Playlist")(({ entityId: exerciseId }) => {
+export const PlaylistDiaryGraph = withEntity("Playlist")(({ entityId: playlistId }) => {
   const [firstDate] = useState(getToday());
   const [selectedDate, selectDate] = useState(firstDate.toString());
 
-  const { diaryEntries, onReload } = useDiary("PlaylistDiaryEntry", firstDate, { exerciseId });
+  const { diaryEntries, onReload } = useDiary("PlaylistDiaryEntry", firstDate, { playlistId });
 
   const contents = useMemo(
     () =>

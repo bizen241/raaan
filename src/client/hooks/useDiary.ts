@@ -3,7 +3,7 @@ import { EntityObject, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { useSearch } from "./useSearch";
 
-type DiaryEntryType = "AppDiaryEntry" | "ExerciseDiaryEntry" | "UserDiaryEntry";
+type DiaryEntryType = "AppDiaryEntry" | "ExerciseDiaryEntry" | "PlaylistDiaryEntry" | "UserDiaryEntry";
 
 interface DateToDiaryEntry<E extends EntityObject> {
   [date: string]: E | undefined;
