@@ -1,4 +1,4 @@
-import { AddAlert, Dns, Edit, Keyboard, LocalOffer, Person } from "@material-ui/icons";
+import { AddAlert, Keyboard, Person } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { withEntity } from "../../enhancers/withEntity";
@@ -7,7 +7,8 @@ import { useToggleState } from "../../hooks/useToggleState";
 import { DeleteTagFollowDialog } from "../dialogs/tags/DeleteTagFollowDialog";
 import { UploadTagFollowDialog } from "../dialogs/tags/UploadTagFollowDialog";
 import { UserContext } from "../project/Context";
-import { Button, Card, Column, Menu, MenuItem, Property } from "../ui";
+import { Button, Column } from "../ui";
+import { TagSummaryViewer } from "./TagSummaryViewer";
 
 export const TagViewer = withEntity("Tag")(
   React.memo(({ entityId: tagId, entity: tag }) => {
@@ -22,8 +23,6 @@ export const TagViewer = withEntity("Tag")(
     const follow = follows[0];
     const isFollowed = follow !== undefined;
 
-    const isOwner = currentUser.permission === "Owner";
-
     return (
       <Column>
         <Button icon={<Keyboard />} label="問題集" to={`/exercises?tags=${tag.name}`} />
@@ -33,19 +32,7 @@ export const TagViewer = withEntity("Tag")(
         ) : (
           <Button icon={<AddAlert />} label="フォロー中" onClick={onToggleDeleteTagFollowDialog} />
         )}
-        <Card
-          icon={<LocalOffer />}
-          title={tag.name}
-          action={
-            <Menu>
-              {isOwner && <MenuItem icon={<Edit />} label="編集する" to={`/tags/${tagId}/edit`} />}
-              <MenuItem icon={<Dns />} label="タグの別名" to={`/tags/${tag.name}/synonyms`} />
-            </Menu>
-          }
-        >
-          <Property label="説明">{tag.description}</Property>
-          <Property label="更新日時">{new Date(tag.updatedAt).toLocaleDateString()}</Property>
-        </Card>
+        <TagSummaryViewer entityId={tag.summaryId} />
         <UploadTagFollowDialog
           targetId={tagId}
           isOpen={isUploadTagFollowDialogOpen}
