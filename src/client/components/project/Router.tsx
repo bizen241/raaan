@@ -72,6 +72,7 @@ import { UserUploadedSuggestionsPage } from "../pages/suggestions/UserUploadedSu
 import { SynonymPage } from "../pages/synonyms/SynonymPage";
 import { SynonymsPage } from "../pages/synonyms/SynonymsPage";
 import { TagSynonymsPage } from "../pages/synonyms/TagSynonymsPage";
+import { TagDiaryPage } from "../pages/tag-diary-entries/TagDiaryPage";
 import { FollowingTagsPage } from "../pages/tag-follows/FollowingTagsPage";
 import { TagFollowersPage } from "../pages/tag-follows/TagFollowersPage";
 import { EditTagPage } from "../pages/tags/EditTagPage";
@@ -180,6 +181,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/tags/:name/synonyms" component={TagSynonymsPage} />
         <Route exact={true} path="/tags/:id/edit" component={EditTagPage} />
         <Route exact={true} path="/tags/:id/followers" component={TagFollowersPage} />
+        <Route exact={true} path="/tags/:id/diary" component={TagDiaryPage} />
 
         <Route exact={true} path="/synonyms" component={SynonymsPage} />
         <Route exact={true} path="/synonyms/:id" component={SynonymPage} />
