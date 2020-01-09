@@ -1,4 +1,4 @@
-import { AccountCircle, Keyboard, LocalOffer, PlaylistPlay, Timeline } from "@material-ui/icons";
+import { AccountCircle, Keyboard, LocalOffer, PlaylistPlay } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
 import { UserDiaryGraph } from "../graphs/UserDiaryGraph";

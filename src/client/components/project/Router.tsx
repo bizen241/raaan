@@ -60,6 +60,7 @@ import { ReportPage } from "../pages/reports/ReportPage";
 import { ReportsPage } from "../pages/reports/ReportsPage";
 import { UserReceivedReportsPage } from "../pages/reports/UserReceivedReportsPage";
 import { UserUploadedReportsPage } from "../pages/reports/UserUploadedReportsPage";
+import { EditRevisionPage } from "../pages/revisions/EditRevisionPage";
 import { ExerciseRevisionsPage } from "../pages/revisions/ExerciseRevisionsPage";
 import { RevisionPage } from "../pages/revisions/RevisionPage";
 import { ReviewPage } from "../pages/submissions/ReviewPage";
@@ -163,6 +164,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/exercises/:id/diary" component={ExerciseDiaryPage} />
 
         <Route exact={true} path="/revisions/:id" component={RevisionPage} />
+        <Route exact={true} path="/revisions/:id/edit" component={EditRevisionPage} />
 
         <Route exact={true} path="/suggestions/edit" component={EditSuggestionsPage} />
         <Route exact={true} path="/suggestions/:id" component={SuggestionPage} />
