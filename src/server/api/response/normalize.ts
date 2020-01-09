@@ -675,11 +675,24 @@ const normalizeReportSummary: Normalizer<ReportSummaryEntity> = (_, store, entit
 };
 
 const normalizeRevision: Normalizer<RevisionEntity> = (_, store, entity) => {
-  const { id, summaryId, messageSubject, messageBody, lang, title, tags, description, questions, isRandom } = entity;
+  const {
+    id,
+    summaryId,
+    exerciseId,
+    messageSubject,
+    messageBody,
+    lang,
+    title,
+    tags,
+    description,
+    questions,
+    isRandom
+  } = entity;
 
   store.Revision[id] = {
     ...base(entity),
     summaryId,
+    exerciseId,
     messageSubject,
     messageBody,
     lang,
