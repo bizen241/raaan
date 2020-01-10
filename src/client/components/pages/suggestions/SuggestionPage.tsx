@@ -7,7 +7,7 @@ export const SuggestionPage = React.memo<PageProps>(props => {
   const suggestionId = props.match.params.id;
 
   return (
-    <Page title="編集履歴の詳細">
+    <Page title="提案の詳細">
       <SuggestionViewer entityId={suggestionId} />
     </Page>
   );
