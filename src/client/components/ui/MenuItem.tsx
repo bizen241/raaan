@@ -40,6 +40,7 @@ export const MenuItem = React.forwardRef<
 const useMenuItemStyles = makeStyles(() => ({
   label: {
     minWidth: "100px",
-    marginLeft: "8px"
+    marginLeft: "8px",
+    padding: "4px 0"
   }
 }));
