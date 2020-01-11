@@ -1,8 +1,7 @@
 import * as React from "react";
 import { createContext, useMemo } from "react";
-import { useSelector } from "react-redux";
 import { Lang, User, UserAccount, UserConfig, UserSettings } from "../../../shared/api/entities";
-import { RootState } from "../../reducers";
+import { Params } from "../../../shared/api/request/params";
 
 const guestUserId = Date.now().toString();
 const guestUserAccountId = Date.now().toString();
@@ -45,17 +44,11 @@ export const UserContext = createContext<User>(guestUser);
 export const SettingsContext = createContext<UserSettings>(defaultSettings);
 
 export const Context = React.memo<{
+  user: User;
+  userConfig: UserConfig;
+  userConfigBuffer: Params<UserConfig> | undefined;
   children: React.ReactNode;
-}>(({ children }) => {
-  const { user, userConfig, userConfigBuffer } = useSelector(({ app, cache, buffers }: RootState) => ({
-    user: cache.get.User[app.userId],
-    userConfig: cache.get.UserConfig[app.userConfigId],
-    userConfigBuffer: buffers.UserConfig[app.userConfigId]
-  }));
-  if (user === undefined || userConfig === undefined) {
-    throw new Error("ユーザーの取得に失敗しました");
-  }
-
+}>(({ user, userConfig, userConfigBuffer, children }) => {
   const userSettings = useMemo(
     (): UserSettings => ({
       ...defaultSettings,
