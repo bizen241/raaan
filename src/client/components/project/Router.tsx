@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { RootState } from "../../reducers";
 import { AppDiaryPage } from "../pages/app-diary-entries/AppDiaryPage";
+import { CachePage } from "../pages/app/CachePage";
 import { AppPage } from "../pages/AppPage";
 import { CommunityPage } from "../pages/community/CommunityPage";
 import { UserCommunityPage } from "../pages/community/UserCommunityPage";
@@ -114,8 +115,9 @@ export const Router = React.memo(() => {
 
         <Route exact={true} path="/app" component={AppPage} />
         <Route exact={true} path="/app/community" component={CommunityPage} />
-        <Route exact={true} path="/app/version" component={VersionPage} />
         <Route exact={true} path="/app/diary" component={AppDiaryPage} />
+        <Route exact={true} path="/app/version" component={VersionPage} />
+        <Route exact={true} path="/app/cache" component={CachePage} />
 
         <Route exact={true} path="/user/account" component={UserAccountPage} />
         <Route exact={true} path="/user/account/edit" component={EditUserAccountPage} />

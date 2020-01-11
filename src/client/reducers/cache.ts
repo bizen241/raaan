@@ -38,7 +38,7 @@ export const cacheActions = {
       params,
       response
     }),
-  purge: (type: EntityType, id: string) =>
+  purge: (type: EntityType | undefined, id: string | undefined) =>
     createAction(CacheActionType.Purge, {
       type,
       id
@@ -115,6 +115,22 @@ export const cacheReducer: Reducer<CacheState, CacheActions> = (state = initialC
     }
     case CacheActionType.Purge: {
       const { type, id } = action.payload;
+
+      if (type === undefined) {
+        return initialCacheState;
+      }
+      if (id === undefined) {
+        return {
+          get: {
+            ...state.get,
+            [type]: initialCacheState.get[type]
+          },
+          search: {
+            ...state.search,
+            [type]: initialCacheState.search[type]
+          }
+        };
+      }
 
       const get = { ...state.get[type] };
       delete get[id];
