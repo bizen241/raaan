@@ -1,11 +1,11 @@
 import { Typography } from "@material-ui/core";
 import { Check } from "@material-ui/icons";
 import { push } from "connected-react-router";
-import { useCallback } from "react";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { Suggestion } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
+import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
 import { Button, Card, DialogContent } from "../../ui";
 
@@ -15,11 +15,14 @@ export const ConfirmAcceptSuggestionDialog = createDialog<{
   React.memo(({ suggestion, onClose }) => {
     const dispatch = useDispatch();
 
-    const { exerciseId } = suggestion;
+    const { entity: exercise } = useEntity("Exercise", suggestion.exerciseId);
+    if (exercise === undefined) {
+      return null;
+    }
 
-    const onCreate = useCallback(() => {
+    const onCreate = () => {
       dispatch(
-        actions.buffers.update("ExerciseDraft", exerciseId, {
+        actions.buffers.update("ExerciseDraft", exercise.draftId, {
           title: suggestion.title,
           tags: suggestion.tags,
           description: suggestion.description,
@@ -28,8 +31,8 @@ export const ConfirmAcceptSuggestionDialog = createDialog<{
           suggestionId: suggestion.id
         })
       );
-      dispatch(push(`/exercises/${exerciseId}/edit`));
-    }, []);
+      dispatch(push(`/exercises/${exercise.draftId}/edit`));
+    };
 
     return (
       <DialogContent title="提案の採用" onClose={onClose}>

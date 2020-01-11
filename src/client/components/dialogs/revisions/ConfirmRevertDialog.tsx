@@ -1,11 +1,11 @@
 import { Typography } from "@material-ui/core";
 import { FastRewind } from "@material-ui/icons";
 import { push } from "connected-react-router";
-import { useCallback } from "react";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { Revision } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
+import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
 import { Button, Card, DialogContent } from "../../ui";
 
@@ -15,11 +15,14 @@ export const ConfirmRevertDialog = createDialog<{
   React.memo(({ revision, onClose }) => {
     const dispatch = useDispatch();
 
-    const { exerciseId } = revision;
+    const { entity: exercise } = useEntity("Exercise", revision.exerciseId);
+    if (exercise === undefined) {
+      return null;
+    }
 
-    const onCreate = useCallback(() => {
+    const onCreate = () => {
       dispatch(
-        actions.buffers.update("ExerciseDraft", exerciseId, {
+        actions.buffers.update("ExerciseDraft", exercise.draftId, {
           title: revision.title,
           tags: revision.tags,
           description: revision.description,
@@ -28,8 +31,8 @@ export const ConfirmRevertDialog = createDialog<{
           revisionId: revision.id
         })
       );
-      dispatch(push(`/exercises/${exerciseId}/edit`));
-    }, []);
+      dispatch(push(`/exercises/${exercise.draftId}/edit`));
+    };
 
     return (
       <DialogContent title="この版に戻す" onClose={onClose}>
