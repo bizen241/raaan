@@ -1,17 +1,19 @@
 import { AccountCircle, Keyboard, LocalOffer, PlaylistPlay } from "@material-ui/icons";
 import * as React from "react";
 import { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { UserDiaryGraph } from "../graphs/UserDiaryGraph";
 import { UserContext } from "../project/Context";
 import { Button, Page } from "../ui";
 
 export const HomePage = React.memo(() => {
+  const { t } = useTranslation();
   const currentUser = useContext(UserContext);
 
   const isGuest = currentUser.permission === "Guest";
 
   return (
-    <Page title="ホーム">
+    <Page title={t("pages.HomePage.title")}>
       {isGuest ? (
         <Button color="primary" icon={<AccountCircle />} label="ログイン" to="/user/account" />
       ) : (

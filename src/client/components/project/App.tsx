@@ -2,6 +2,7 @@ import { ConnectedRouter } from "connected-react-router";
 import * as React from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import "../../intl";
 import { configureStore } from "../../store";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { Initializer } from "./Initializer";
