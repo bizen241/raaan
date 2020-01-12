@@ -135,6 +135,18 @@
     "@babel/types" "^7.8.0"
     esutils "^2.0.0"
 
+"@babel/helper-create-class-features-plugin@^7.8.0":
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/@babel/helper-create-class-features-plugin/-/helper-create-class-features-plugin-7.8.0.tgz#b3ddf557ed4656e0d296c3b0f3fcd381ea8de72c"
+  integrity sha512-ctCvqYBTlwEl2uF4hCxE0cd/sSw71Zfag0jKa39y4HDLh0BQ4PVBX1384Ye8GqrEZ69xgLp9fwPbv3GgIDDF2Q==
+  dependencies:
+    "@babel/helper-function-name" "^7.8.0"
+    "@babel/helper-member-expression-to-functions" "^7.8.0"
+    "@babel/helper-optimise-call-expression" "^7.8.0"
+    "@babel/helper-plugin-utils" "^7.8.0"
+    "@babel/helper-replace-supers" "^7.8.0"
+    "@babel/helper-split-export-declaration" "^7.8.0"
+
 "@babel/helper-function-name@^7.1.0":
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/@babel/helper-function-name/-/helper-function-name-7.1.0.tgz#a0ceb01685f73355d4360c1247f582bfafc8ff53"
@@ -167,6 +179,20 @@
   dependencies:
     "@babel/types" "^7.8.0"
 
+"@babel/helper-member-expression-to-functions@^7.8.0":
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/@babel/helper-member-expression-to-functions/-/helper-member-expression-to-functions-7.8.0.tgz#50d0ed445d2da11beb60e2dbc2c428254bd5a4ae"
+  integrity sha512-0m1QabGrdXuoxX/g+KOAGndoHwskC70WweqHRQyCsaO67KOEELYh4ECcGw6ZGKjDKa5Y7SW4Qbhw6ly4Fah/jQ==
+  dependencies:
+    "@babel/types" "^7.8.0"
+
+"@babel/helper-optimise-call-expression@^7.8.0":
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/@babel/helper-optimise-call-expression/-/helper-optimise-call-expression-7.8.0.tgz#3df62773cf210db9ed34c2bb39fece5acd1e1733"
+  integrity sha512-aiJt1m+K57y0n10fTw+QXcCXzmpkG+o+NoQmAZqlZPstkTE0PZT+Z27QSd/6Gf00nuXJQO4NiJ0/YagSW5kC2A==
+  dependencies:
+    "@babel/types" "^7.8.0"
+
 "@babel/helper-plugin-utils@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@babel/helper-plugin-utils/-/helper-plugin-utils-7.0.0.tgz#bbb3fbee98661c569034237cc03967ba99b4f250"
@@ -176,6 +202,16 @@
   version "7.8.0"
   resolved "https://registry.yarnpkg.com/@babel/helper-plugin-utils/-/helper-plugin-utils-7.8.0.tgz#59ec882d43c21c544ccb51decaecb306b34a8231"
   integrity sha512-+hAlRGdf8fHQAyNnDBqTHQhwdLURLdrCROoWaEQYiQhk2sV9Rhs+GoFZZfMJExTq9HG8o2NX3uN2G90bFtmFdA==
+
+"@babel/helper-replace-supers@^7.8.0":
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/@babel/helper-replace-supers/-/helper-replace-supers-7.8.0.tgz#d83cb117edb820eebe9ae6c970a8ad5eac09d19f"
+  integrity sha512-R2CyorW4tcO3YzdkClLpt6MS84G+tPkOi0MmiCn1bvYVnmDpdl9R15XOi3NQW2mhOAEeBnuQ4g1Bh7pT2sX8fg==
+  dependencies:
+    "@babel/helper-member-expression-to-functions" "^7.8.0"
+    "@babel/helper-optimise-call-expression" "^7.8.0"
+    "@babel/traverse" "^7.8.0"
+    "@babel/types" "^7.8.0"
 
 "@babel/helper-split-export-declaration@^7.0.0":
   version "7.0.0"
@@ -271,6 +307,13 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
 
+"@babel/plugin-syntax-typescript@^7.8.0":
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-typescript/-/plugin-syntax-typescript-7.8.0.tgz#8bdf202f573cd0e1231caea970f41fdf104f69d7"
+  integrity sha512-LrvVrabb993Ve5fzXsyEkfYCuhpXBwsUFjlvgD8UmXXg3r/8/ceooSdRvjdmtPXXz+lHaqZHZooV1jMWer2qkA==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.8.0"
+
 "@babel/plugin-transform-react-display-name@^7.8.0":
   version "7.8.0"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-react-display-name/-/plugin-transform-react-display-name-7.8.0.tgz#4aa02b070a83bb12033f483bf65ab2444ba1832a"
@@ -303,6 +346,15 @@
     "@babel/helper-plugin-utils" "^7.8.0"
     "@babel/plugin-syntax-jsx" "^7.8.0"
 
+"@babel/plugin-transform-typescript@^7.8.0":
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-typescript/-/plugin-transform-typescript-7.8.0.tgz#485c9d12f011697e0a762d683897711c3daad9c9"
+  integrity sha512-RhMZnNWcyvX+rM6mk888MaeoVl5pGfmYP3as709n4+0d15SRedz4r+LPRg2a9s4z+t+DM+gy8uz/rmM3Cb8JBw==
+  dependencies:
+    "@babel/helper-create-class-features-plugin" "^7.8.0"
+    "@babel/helper-plugin-utils" "^7.8.0"
+    "@babel/plugin-syntax-typescript" "^7.8.0"
+
 "@babel/preset-react@7.8.0":
   version "7.8.0"
   resolved "https://registry.yarnpkg.com/@babel/preset-react/-/preset-react-7.8.0.tgz#fe3bdecfc94e9b4eb3aa2751cfb284e739e810be"
@@ -313,6 +365,14 @@
     "@babel/plugin-transform-react-jsx" "^7.8.0"
     "@babel/plugin-transform-react-jsx-self" "^7.8.0"
     "@babel/plugin-transform-react-jsx-source" "^7.8.0"
+
+"@babel/preset-typescript@7.8.0":
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/@babel/preset-typescript/-/preset-typescript-7.8.0.tgz#f3bcb241e530e5acd424659e641189f06401a7ad"
+  integrity sha512-mvu4OmrLK6qRPiXlOkE4yOeOszHzk9itwe6aiMN0RL9Bc5uAwAotVTy4kKl17evLMd1WsvWT1O3mZltynuqxXg==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.8.0"
+    "@babel/plugin-transform-typescript" "^7.8.0"
 
 "@babel/runtime@^7.0.0", "@babel/runtime@^7.3.4":
   version "7.4.3"
