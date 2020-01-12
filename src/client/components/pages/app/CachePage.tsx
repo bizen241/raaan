@@ -15,9 +15,17 @@ export const CachePage = React.memo(() => {
     <Page title="キャッシュ">
       <Button
         icon={<Delete />}
-        label="すべてのキャッシュを削除"
+        label="キャッシュを削除"
         onClick={() => {
           dispatch(actions.cache.purge(undefined, undefined));
+        }}
+      />
+      <Button
+        icon={<Delete />}
+        label="ストレージをクリア"
+        onClick={() => {
+          localStorage.clear();
+          location.reload();
         }}
       />
       <Card padding={false}>
