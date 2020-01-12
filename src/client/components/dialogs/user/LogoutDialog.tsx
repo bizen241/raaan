@@ -6,7 +6,6 @@ import { deleteEntity } from "../../../api/client";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
 import { UserContext } from "../../project/Context";
-import { Message } from "../../project/Message";
 import { Button, Card, DialogContent } from "../../ui";
 
 export const LogoutDialog = createDialog<{}>(
@@ -35,7 +34,7 @@ export const LogoutDialog = createDialog<{}>(
     }, [userSessions]);
 
     return (
-      <DialogContent title={<Message id="logout" />} onClose={onClose}>
+      <DialogContent title="ログアウト" onClose={onClose}>
         {!isFailed ? (
           <>
             <Card>

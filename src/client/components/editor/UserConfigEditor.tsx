@@ -1,13 +1,13 @@
 import { CloudUpload } from "@material-ui/icons";
 import * as React from "react";
 import { useCallback, useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { UserSettings } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
 import { mergeBuffer } from "../../reducers/buffers";
 import { UploadUserConfigDialog } from "../dialogs/user-configs/UploadUserConfigDialog";
 import { UserContext } from "../project/Context";
-import { Message } from "../project/Message";
 import { Button, Card, Column, Select, SelectOptions } from "../ui";
 
 const selectLangOptions: SelectOptions<UserSettings["ui.lang"]> = {
@@ -33,6 +33,7 @@ const selectColorSchemeOptions: SelectOptions<UserSettings["ui.colorScheme"]> = 
 
 export const UserConfigEditor = withBuffer("UserConfig")(
   React.memo(({ bufferId, buffer, source, onChange }) => {
+    const { t } = useTranslation();
     const currentUser = useContext(UserContext);
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
@@ -61,13 +62,13 @@ export const UserConfigEditor = withBuffer("UserConfig")(
         <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
         <Card>
           <Select<UserSettings["ui.lang"]>
-            label={<Message id="language" />}
+            label={t("editor.UserConfigEditor.label.language")}
             options={selectLangOptions}
             defaultValue={settings["ui.lang"]}
             onChange={value => onChangeSettings("ui.lang", value)}
           />
           <Select<UserSettings["ui.colorScheme"]>
-            label={<Message id="theme" />}
+            label={t("editor.UserConfigEditor.label.theme")}
             options={selectColorSchemeOptions}
             defaultValue={settings["ui.colorScheme"]}
             onChange={value => onChangeSettings("ui.colorScheme", value)}
