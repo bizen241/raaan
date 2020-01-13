@@ -44,21 +44,19 @@ if (!isDevelopment) {
 }
 
 /**
- * @type webpackDevServer.Configuration | undefined
+ * @type webpackDevServer.Configuration
  */
-const webpackDevServerConfiguration = isDevelopment
-  ? {
-      historyApiFallback: true,
-      proxy: [
-        {
-          context: ["/api", "/auth", "/logout"],
-          target: "http://localhost:3000"
-        }
-      ],
-      host: "0.0.0.0",
-      port: 8080
+const webpackDevServerConfiguration = {
+  historyApiFallback: true,
+  proxy: [
+    {
+      context: ["/api", "/auth", "/logout"],
+      target: "http://localhost:3000"
     }
-  : undefined;
+  ],
+  host: "0.0.0.0",
+  port: 8080
+};
 
 /**
  * @type webpack.Configuration
