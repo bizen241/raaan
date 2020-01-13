@@ -1,7 +1,6 @@
 import { makeStyles, TextField, Theme } from "@material-ui/core";
 import { Delete, PlayArrow, Settings, SpaceBar, Translate } from "@material-ui/icons";
-import * as React from "react";
-import { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Question } from "../../../../shared/api/entities";
 import { maskAnchor, maskTerminator } from "../../../../shared/exercise/mask/characters";
 import { addRuby } from "../../../domain/exercise/ruby";

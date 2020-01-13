@@ -1,6 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import * as React from "react";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { Row } from "./Row";
 
 export const getToday = () =>

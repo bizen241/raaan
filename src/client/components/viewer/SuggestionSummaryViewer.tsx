@@ -1,6 +1,6 @@
 import { Link } from "@material-ui/core";
 import { Refresh, WbIncandescent } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { withEntity } from "../../enhancers/withEntity";
 import { useEntity } from "../../hooks/useEntity";

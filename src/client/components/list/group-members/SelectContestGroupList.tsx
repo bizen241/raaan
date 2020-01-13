@@ -11,8 +11,7 @@ import {
 } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons";
 import { push } from "connected-react-router";
-import * as React from "react";
-import { useCallback, useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { GroupMember } from "../../../../shared/api/entities";
 import { useEntity } from "../../../hooks/useEntity";

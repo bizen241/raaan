@@ -1,6 +1,6 @@
 import { IconButton, InputAdornment, TextField, Typography } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { Column } from "./Column";
 
 export const Search = React.memo<{

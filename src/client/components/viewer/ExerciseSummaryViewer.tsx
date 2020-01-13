@@ -14,8 +14,7 @@ import {
   SmsFailed,
   WbIncandescent
 } from "@material-ui/icons";
-import * as React from "react";
-import { useCallback, useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { withEntity } from "../../enhancers/withEntity";

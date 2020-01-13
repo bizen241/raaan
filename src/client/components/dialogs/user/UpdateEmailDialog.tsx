@@ -1,6 +1,6 @@
 import { Typography } from "@material-ui/core";
 import { Email } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useEntity } from "../../../hooks/useEntity";

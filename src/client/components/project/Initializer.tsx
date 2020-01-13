@@ -1,7 +1,6 @@
 import { Typography } from "@material-ui/core";
 import { HourglassEmpty } from "@material-ui/icons";
-import * as React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useToggleState } from "../../hooks/useToggleState";
 import { actions, RootState } from "../../reducers";

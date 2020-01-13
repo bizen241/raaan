@@ -1,4 +1,4 @@
-import * as createError from "http-errors";
+import createError from "http-errors";
 import { createSearchOperation } from "../../api/operation";
 import { hasPermission } from "../../api/security";
 import { ReportSummaryEntity } from "../../database/entities";

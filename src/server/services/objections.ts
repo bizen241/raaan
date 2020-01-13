@@ -1,4 +1,4 @@
-import * as createError from "http-errors";
+import createError from "http-errors";
 import { EntityManager } from "typeorm";
 import { ObjectionTargetType } from "../../shared/api/entities";
 import { ExerciseEntity, ObjectionEntity, PlaylistEntity, UserEntity } from "../database/entities";

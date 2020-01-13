@@ -1,6 +1,5 @@
 import { Email } from "@material-ui/icons";
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { UserMessageList } from "../../list/user-messages/UserMessageList";
 import { UserContext } from "../../project/Context";
 import { Button } from "../../ui";

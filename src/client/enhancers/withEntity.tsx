@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { useEntity } from "../hooks/useEntity";
 

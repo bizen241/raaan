@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { SynonymList } from "../../list/synonyms/SynonymList";
 import { Page } from "../../ui";
 

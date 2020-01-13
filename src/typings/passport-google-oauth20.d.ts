@@ -1,6 +1,6 @@
 declare module "passport-google-oauth20" {
   import * as express from "express";
-  import * as passport from "passport";
+  import passport from "passport";
 
   interface StrategyOption {
     clientID: string;

@@ -1,4 +1,4 @@
-import * as createError from "http-errors";
+import createError from "http-errors";
 import { createPostOperation, createSearchOperation } from "../../api/operation";
 import { GroupApplicationEntity, GroupEntity, GroupInvitationEntity, GroupMemberEntity } from "../../database/entities";
 

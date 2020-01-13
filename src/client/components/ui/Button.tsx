@@ -1,7 +1,7 @@
 import { Button as MuiButton, makeStyles, Typography } from "@material-ui/core";
 import { ButtonProps } from "@material-ui/core/Button";
 import { TypographyProps } from "@material-ui/core/Typography";
-import * as React from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Column } from "./Column";
 

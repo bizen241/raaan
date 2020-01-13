@@ -1,7 +1,6 @@
 import { Typography } from "@material-ui/core";
 import { Delete, Warning } from "@material-ui/icons";
-import * as React from "react";
-import { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { deleteCurrentUser } from "../../../api/client";
 import { createDialog } from "../../../enhancers/createDialog";
 import { UserContext } from "../../project/Context";

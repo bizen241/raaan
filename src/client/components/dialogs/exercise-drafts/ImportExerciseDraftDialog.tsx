@@ -1,8 +1,7 @@
 import { Typography } from "@material-ui/core";
 import { InsertDriveFile } from "@material-ui/icons";
 import { push } from "connected-react-router";
-import * as React from "react";
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { ExerciseDraft } from "../../../../shared/api/entities";
 import { Params } from "../../../../shared/api/request/params";

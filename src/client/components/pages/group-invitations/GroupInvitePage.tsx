@@ -1,5 +1,5 @@
 import { Email, Inbox, Link, Send } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { GroupInvitationsDialog } from "../../dialogs/groups/GroupInvitationsDialog";
 import { PageProps } from "../../project/Router";

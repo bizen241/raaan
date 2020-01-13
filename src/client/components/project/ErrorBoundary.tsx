@@ -1,5 +1,5 @@
 import { Delete, Error as ErrorIcon, Refresh } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { Button, Card, Column } from "../ui";
 
 interface ErrorBoundaryState {

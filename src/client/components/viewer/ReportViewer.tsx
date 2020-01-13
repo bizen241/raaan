@@ -1,6 +1,5 @@
 import { Gavel } from "@material-ui/icons";
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { withEntity } from "../../enhancers/withEntity";
 import { UserContext } from "../project/Context";
 import { Button, Card, Column, Property } from "../ui";

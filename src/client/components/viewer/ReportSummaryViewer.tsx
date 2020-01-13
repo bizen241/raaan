@@ -1,7 +1,6 @@
 import { Link } from "@material-ui/core";
 import { Delete, Report as ReportIcon } from "@material-ui/icons";
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { withEntity } from "../../enhancers/withEntity";
 import { useToggleState } from "../../hooks/useToggleState";

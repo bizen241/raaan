@@ -1,5 +1,5 @@
 import { useCallback, useContext, useState } from "react";
-import * as React from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { Exercise, SubmissionSummary } from "../../../../shared/api/entities";
 import { QuestionResult, summarizeResults } from "../../../domain/exercise/attempt";

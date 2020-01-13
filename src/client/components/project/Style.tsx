@@ -2,8 +2,7 @@ import { CssBaseline } from "@material-ui/core";
 import grey from "@material-ui/core/colors/grey";
 import teal from "@material-ui/core/colors/teal";
 import { createMuiTheme, makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
-import * as React from "react";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "./Context";
 
 export const Style = React.memo<{ children: React.ReactNode }>(({ children }) => {

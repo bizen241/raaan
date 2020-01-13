@@ -1,6 +1,6 @@
 import { IconButton, useTheme } from "@material-ui/core";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { Column } from "./Column";
 import { Row } from "./Row";
 import { Select } from "./Select";

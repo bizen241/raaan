@@ -1,7 +1,6 @@
 import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
-import * as React from "react";
-import { createContext, useContext } from "react";
+import React, { createContext, useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { GroupMemberPermission } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";

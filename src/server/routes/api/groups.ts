@@ -1,4 +1,4 @@
-import * as uuid from "uuid/v4";
+import uuid from "uuid/v4";
 import { createPostOperation } from "../../api/operation";
 import { GroupEntity, GroupMemberEntity, GroupSecretEntity, GroupSummaryEntity } from "../../database/entities";
 

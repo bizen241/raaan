@@ -1,6 +1,6 @@
 import { AppBar, IconButton, Toolbar } from "@material-ui/core";
 import { Close, Settings } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { createDialog, DialogProps } from "../../../enhancers/createDialog";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { Column, Row } from "../../ui";

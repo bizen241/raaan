@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { createDialog } from "../../../enhancers/createDialog";
 import { SelectContestGroupList } from "../../list/group-members/SelectContestGroupList";
 import { DialogContent } from "../../ui";

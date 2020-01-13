@@ -1,6 +1,6 @@
 import { TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
 import { useToggleState } from "../../../hooks/useToggleState";

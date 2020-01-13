@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
-import * as createError from "http-errors";
-import * as passport from "passport";
+import createError from "http-errors";
+import passport from "passport";
 import { getManager } from "typeorm";
 import { UAParser } from "ua-parser-js";
 import { AuthStrategyFailureReason } from "../auth/strategies";

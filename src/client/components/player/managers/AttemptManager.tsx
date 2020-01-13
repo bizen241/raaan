@@ -1,7 +1,7 @@
 import { CircularProgress } from "@material-ui/core";
 import { Error } from "@material-ui/icons";
 import { useCallback, useEffect, useState } from "react";
-import * as React from "react";
+import React from "react";
 import { Exercise, SubmissionSummary } from "../../../../shared/api/entities";
 import { Params } from "../../../../shared/api/request/params";
 import { Attempt, createAttempt, QuestionResult } from "../../../domain/exercise/attempt";

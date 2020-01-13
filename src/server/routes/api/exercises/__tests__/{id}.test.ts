@@ -1,5 +1,5 @@
 import { strict as assert } from "assert";
-import * as uuid from "uuid/v4";
+import uuid from "uuid/v4";
 import {
   close,
   connect,

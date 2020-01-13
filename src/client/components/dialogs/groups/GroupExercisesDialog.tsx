@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
 import { GroupContext, ToggleGroupExerciseList } from "../../list/exercise-summaries/ToggleGroupExerciseList";

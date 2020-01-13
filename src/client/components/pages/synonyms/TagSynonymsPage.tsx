@@ -1,6 +1,5 @@
 import { Add } from "@material-ui/icons";
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { UploadSynonymDialog } from "../../dialogs/synonyms/UploadSynonymDialog";
 import { SynonymList } from "../../list/synonyms/SynonymList";

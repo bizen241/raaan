@@ -1,4 +1,4 @@
-import * as createError from "http-errors";
+import createError from "http-errors";
 import { createPostOperation } from "../../api/operation";
 import { ExerciseEntity, SubmissionEntity } from "../../database/entities";
 import { updateContestEntry } from "../../services/contest-entries";

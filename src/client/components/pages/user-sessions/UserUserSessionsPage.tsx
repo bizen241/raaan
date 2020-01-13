@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { UserSessionList } from "../../list/user-sessions/UserSessionList";
 import { UserContext } from "../../project/Context";
 import { Page } from "../../ui/Page";

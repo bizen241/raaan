@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { GroupSummaryList } from "../../list/group-summaries/GroupSummaryList";
 import { Page } from "../../ui";
 

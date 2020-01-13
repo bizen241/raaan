@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CompiledQuestion } from "../../../../shared/exercise/compiler";
 import { QuestionResult, Typo } from "../../../domain/exercise/attempt";
 import { QuestionRenderer } from "../renderers/QuestionRenderer";

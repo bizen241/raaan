@@ -1,6 +1,5 @@
 import { Comment } from "@material-ui/icons";
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { useDispatch } from "react-redux";
 import { useBuffers } from "../../../hooks/useBuffers";
 import { useEntity } from "../../../hooks/useEntity";

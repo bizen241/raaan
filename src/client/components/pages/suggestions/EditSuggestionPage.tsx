@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { SuggestionEditor } from "../../editor/SuggestionEditor";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui/Page";

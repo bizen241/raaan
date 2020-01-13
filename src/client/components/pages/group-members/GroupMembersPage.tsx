@@ -1,6 +1,5 @@
 import { Email } from "@material-ui/icons";
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { useSearch } from "../../../hooks/useSearch";
 import { GroupMemberList, GroupMemberPermissionContext } from "../../list/group-members/GroupMemberList";
 import { UserContext } from "../../project/Context";

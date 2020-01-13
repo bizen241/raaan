@@ -1,6 +1,5 @@
 import { Dns, Edit, LocalOffer, Timeline } from "@material-ui/icons";
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { withEntity } from "../../enhancers/withEntity";
 import { useEntity } from "../../hooks/useEntity";
 import { UserContext } from "../project/Context";

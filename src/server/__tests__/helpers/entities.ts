@@ -1,5 +1,5 @@
 import { getManager } from "typeorm";
-import * as uuid from "uuid/v4";
+import uuid from "uuid/v4";
 import { Permission } from "../../../shared/api/entities";
 import {
   ExerciseDraftEntity,

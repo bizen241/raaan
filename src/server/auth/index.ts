@@ -1,6 +1,6 @@
 import { Express, Response } from "express";
-import * as createError from "http-errors";
-import * as passport from "passport";
+import createError from "http-errors";
+import passport from "passport";
 import { getManager } from "typeorm";
 import { UserEntity } from "../database/entities";
 import { Env } from "../env";

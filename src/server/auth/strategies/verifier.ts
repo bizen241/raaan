@@ -1,4 +1,4 @@
-import * as createError from "http-errors";
+import createError from "http-errors";
 import { Verifier } from "passport-github";
 import { AuthStrategyCallback } from ".";
 import { AuthProviderName } from "../../../shared/auth";

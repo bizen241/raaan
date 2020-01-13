@@ -1,5 +1,5 @@
 import { Cloud } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { AuthProviderName } from "../../../../shared/auth";
 import { createDialog } from "../../../enhancers/createDialog";

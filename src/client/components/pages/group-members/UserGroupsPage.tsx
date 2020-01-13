@@ -1,7 +1,6 @@
 import { Add, Edit, Inbox } from "@material-ui/icons";
 import { push } from "connected-react-router";
-import * as React from "react";
-import { useCallback, useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { generateBufferId } from "../../../reducers/buffers";
 import { UserGroupMemberList } from "../../list/group-members/UserGroupMemberList";

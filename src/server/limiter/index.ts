@@ -1,5 +1,5 @@
 import { Express } from "express";
-import * as rateLimit from "express-rate-limit";
+import rateLimit from "express-rate-limit";
 import { RateLimitStore } from "./store";
 
 export const useLimiter = (app: Express) => {

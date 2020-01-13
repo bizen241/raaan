@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ObjectionBufferList } from "../../list/objections/ObjectionBufferList";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui/Page";

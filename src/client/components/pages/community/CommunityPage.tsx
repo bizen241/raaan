@@ -1,6 +1,5 @@
 import { Group, Person, Report, SmsFailed } from "@material-ui/icons";
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { UserContext } from "../../project/Context";
 import { Button, Page } from "../../ui";
 

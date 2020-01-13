@@ -1,6 +1,5 @@
 import { PlayArrow } from "@material-ui/icons";
-import * as React from "react";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { BaseExerciseObject, Question } from "../../../../shared/api/entities";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { ExercisePreviewer } from "../../player/dialogs/ExercisePreviewer";

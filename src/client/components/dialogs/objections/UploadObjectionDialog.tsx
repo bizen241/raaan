@@ -1,7 +1,7 @@
 import { Typography } from "@material-ui/core";
 import { ReportProblem } from "@material-ui/icons";
 import { replace } from "connected-react-router";
-import * as React from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { endpoints } from "../../../../shared/api/endpoint";
 import { ObjectionTargetType } from "../../../../shared/api/entities";

@@ -1,4 +1,4 @@
-import * as createError from "http-errors";
+import createError from "http-errors";
 import { createPostOperation } from "../../api/operation";
 import { ExerciseEntity, PlaylistEntity, PlaylistItemEntity, PlaylistSummaryEntity } from "../../database/entities";
 import { getTags } from "../../services/tags";

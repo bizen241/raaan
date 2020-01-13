@@ -2,7 +2,7 @@ import { Typography } from "@material-ui/core";
 import { WbIncandescent } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import { useCallback } from "react";
-import * as React from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { Exercise } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";

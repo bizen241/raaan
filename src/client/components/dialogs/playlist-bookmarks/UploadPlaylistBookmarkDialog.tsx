@@ -1,6 +1,5 @@
 import { Add, Bookmark } from "@material-ui/icons";
-import * as React from "react";
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { useEntity } from "../../../hooks/useEntity";
 import { SubmissionManager } from "../managers/SubmissionManager";
 import { createPlayerDialog } from "./PlayerDialog";

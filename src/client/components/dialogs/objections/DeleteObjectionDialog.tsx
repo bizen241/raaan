@@ -1,6 +1,6 @@
 import { Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";

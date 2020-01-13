@@ -1,8 +1,8 @@
-import * as compression from "compression";
-import * as express from "express";
-import * as helmet from "helmet";
+import compression from "compression";
+import express from "express";
+import helmet from "helmet";
 import { join } from "path";
-import * as serveStatic from "serve-static";
+import serveStatic from "serve-static";
 import { useApi } from "./api";
 import { useAuth } from "./auth";
 import { Env } from "./env";

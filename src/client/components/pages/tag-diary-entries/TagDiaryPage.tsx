@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { TagDiaryGraph } from "../../graphs/TagDiaryGraph";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui";

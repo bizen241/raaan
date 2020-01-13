@@ -1,7 +1,6 @@
 import { Card, CardContent } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
-import * as React from "react";
-import { useCallback, useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { AvatarType } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";

@@ -1,7 +1,6 @@
 import { IconButton, Menu as MuiMenu } from "@material-ui/core";
 import { MoreVert } from "@material-ui/icons";
-import * as React from "react";
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 
 export const Menu: React.FunctionComponent<{
   icon?: React.ReactNode;

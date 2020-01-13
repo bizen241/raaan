@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
 import { PlaylistContext, TogglePlaylistItemList } from "../../list/exercise-summaries/TogglePlaylistItemList";

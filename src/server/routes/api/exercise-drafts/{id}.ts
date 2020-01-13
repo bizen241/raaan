@@ -1,4 +1,4 @@
-import * as createError from "http-errors";
+import createError from "http-errors";
 import { getMinMaxTypeCount } from "../../../../shared/exercise";
 import { createGetOperation, createPatchOperation } from "../../../api/operation";
 import { ExerciseDraftEntity, ExerciseEntity, RevisionEntity, RevisionSummaryEntity } from "../../../database/entities";

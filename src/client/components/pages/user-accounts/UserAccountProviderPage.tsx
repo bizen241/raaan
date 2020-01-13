@@ -1,5 +1,5 @@
 import { Email, Lock } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { RootState } from "../../../reducers";

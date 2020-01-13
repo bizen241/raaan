@@ -1,6 +1,6 @@
 import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
 import { Clear, Close } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { Button } from "./Button";
 import { Column } from "./Column";
 import { Row } from "./Row";

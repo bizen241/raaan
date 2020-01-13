@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { GroupGroupApplicationList } from "../../list/group-applications/GroupGroupApplicationList";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui/Page";

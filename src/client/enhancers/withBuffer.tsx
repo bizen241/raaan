@@ -1,6 +1,5 @@
 import { Typography } from "@material-ui/core";
-import * as React from "react";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";

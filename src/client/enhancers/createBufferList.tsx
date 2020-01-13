@@ -1,6 +1,5 @@
 import { Card, Table, TableBody, TableCell, TableRow } from "@material-ui/core";
-import * as React from "react";
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";

@@ -1,5 +1,5 @@
 import { createHash } from "crypto";
-import * as createError from "http-errors";
+import createError from "http-errors";
 import { createPatchOperation } from "../../../api/operation";
 import { UserAccountEntity } from "../../../database/entities";
 

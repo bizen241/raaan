@@ -1,6 +1,5 @@
 import { Checkbox, TableCell, TableRow, Typography } from "@material-ui/core";
-import * as React from "react";
-import { createContext, useCallback, useContext } from "react";
+import React, { createContext, useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useSearch } from "../../../hooks/useSearch";

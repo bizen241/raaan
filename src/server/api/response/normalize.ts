@@ -1,4 +1,4 @@
-import * as createError from "http-errors";
+import createError from "http-errors";
 import { createEntityTypeToObject, EntityType } from "../../../shared/api/entities";
 import { BaseEntityObject } from "../../../shared/api/entities/BaseEntityObject";
 import { EntityStore } from "../../../shared/api/response/get";

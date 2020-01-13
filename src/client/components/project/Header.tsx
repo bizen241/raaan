@@ -1,8 +1,7 @@
 import { AppBar, Avatar, Box, IconButton, Toolbar, Typography } from "@material-ui/core";
 import { ArrowBack, Home, Mail, Person, Settings, Web } from "@material-ui/icons";
 import { goBack } from "connected-react-router";
-import * as React from "react";
-import { useCallback, useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEntity } from "../../hooks/useEntity";
 import { RootState } from "../../reducers";

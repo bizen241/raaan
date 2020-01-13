@@ -1,7 +1,6 @@
 import { Box, IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete, PlayArrow, SwapVert } from "@material-ui/icons";
-import * as React from "react";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Playlist, PlaylistItem } from "../../../shared/api/entities";
 import { withEntity } from "../../enhancers/withEntity";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { UserExerciseVoteList } from "../../list/exercise-votes/UserExerciseVoteList";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui/Page";

@@ -1,6 +1,6 @@
 import { Divider, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
 import { ArrowForward } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { Playlist, PlaylistItem } from "../../../../shared/api/entities";
 import { sortPlaylistItems } from "../../../domain/playlist";

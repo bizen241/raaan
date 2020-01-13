@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { useSearch } from "../hooks/useSearch";

@@ -1,8 +1,7 @@
 import { Typography } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
 import { push } from "connected-react-router";
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";

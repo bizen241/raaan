@@ -1,4 +1,4 @@
-import * as createError from "http-errors";
+import createError from "http-errors";
 import { EntityManager } from "typeorm";
 import { SubmissionEntity, UserDiaryEntryEntity, UserEntity } from "../database/entities";
 import { getSubmittedDateString } from "./submissions";

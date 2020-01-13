@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { Question } from "../../../../shared/api/entities";
 import { AttemptManager } from "../managers/AttemptManager";
 import { createPlayerDialog } from "./PlayerDialog";

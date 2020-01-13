@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { PlaylistBookmarkList } from "../../list/playlist-bookmarks/PlaylistBookmarkList";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui";

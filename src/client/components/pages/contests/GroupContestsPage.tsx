@@ -1,5 +1,5 @@
 import { Add, Edit } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { ContestList } from "../../list/contests/ContestList";
 import { PageProps } from "../../project/Router";
 import { Button, Page } from "../../ui";

@@ -1,6 +1,6 @@
 import { AppBar, Card, CardHeader, DialogContent, IconButton, Toolbar } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 
 export const AttemptMessage = React.memo<{
   icon: React.ReactNode;

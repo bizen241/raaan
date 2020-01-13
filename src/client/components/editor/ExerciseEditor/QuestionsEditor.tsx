@@ -1,6 +1,6 @@
 import { Add } from "@material-ui/icons";
 import { useCallback, useState } from "react";
-import * as React from "react";
+import React from "react";
 import { Question } from "../../../../shared/api/entities";
 import { Button, Column } from "../../ui";
 import { QuestionEditor } from "./QuestionEditor";

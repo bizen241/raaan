@@ -1,4 +1,4 @@
-import * as createError from "http-errors";
+import createError from "http-errors";
 import { createPostOperation } from "../../api/operation";
 import { ObjectionEntity } from "../../database/entities";
 import { checkObjectionTarget } from "../../services/objections";

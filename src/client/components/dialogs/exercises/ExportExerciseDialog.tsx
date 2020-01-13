@@ -1,6 +1,6 @@
 import { Typography } from "@material-ui/core";
 import { CloudDownload } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { Exercise } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { Button, Card, DialogContent } from "../../ui";

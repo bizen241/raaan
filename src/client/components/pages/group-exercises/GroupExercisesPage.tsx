@@ -1,5 +1,5 @@
 import { Add } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { GroupExercisesDialog } from "../../dialogs/groups/GroupExercisesDialog";
 import { GroupExerciseList } from "../../list/group-exercises/GroupExerciseList";

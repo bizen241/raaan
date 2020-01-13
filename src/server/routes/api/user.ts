@@ -1,4 +1,4 @@
-import * as createError from "http-errors";
+import createError from "http-errors";
 import { createDeleteOperation, createGetOperation } from "../../api/operation";
 import { setClearSiteData } from "../../auth";
 import { UserEntity } from "../../database/entities";

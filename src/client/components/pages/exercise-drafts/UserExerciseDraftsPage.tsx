@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import * as React from "react";
+import React from "react";
 import { ExerciseSummaryList } from "../../list/exercise-summaries/ExerciseSummaryList";
 import { UserContext } from "../../project/Context";
 import { PageProps } from "../../project/Router";

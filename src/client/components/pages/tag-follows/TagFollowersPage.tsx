@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { TagFollowerList } from "../../list/tag-follows/TagFollowerList";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui/Page";

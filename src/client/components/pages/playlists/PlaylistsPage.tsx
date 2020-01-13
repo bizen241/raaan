@@ -1,6 +1,5 @@
 import { Bookmarks, Person } from "@material-ui/icons";
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { PlaylistSummaryList } from "../../list/playlist-summaries/PlaylistSummaryList";
 import { UserContext } from "../../project/Context";
 import { Button, Page } from "../../ui";

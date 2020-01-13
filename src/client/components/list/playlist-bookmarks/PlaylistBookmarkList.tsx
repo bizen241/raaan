@@ -1,7 +1,6 @@
 import { IconButton, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { DeletePlaylistBookmarkDialog } from "../../dialogs/playlist-bookmarks/DeletePlaylistBookmarkDialog";

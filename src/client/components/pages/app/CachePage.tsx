@@ -1,6 +1,6 @@
 import { IconButton, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { createEntityTypeToObject, EntityType } from "../../../../shared/api/entities";
 import { actions } from "../../../reducers";

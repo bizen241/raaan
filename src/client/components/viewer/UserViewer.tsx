@@ -1,6 +1,6 @@
 import { Group, History, Keyboard, PersonAdd, PlaylistPlay } from "@material-ui/icons";
 import { useContext } from "react";
-import * as React from "react";
+import React from "react";
 import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";

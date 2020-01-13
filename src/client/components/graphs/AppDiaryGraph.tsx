@@ -1,7 +1,6 @@
 import { IconButton } from "@material-ui/core";
 import { Refresh, Timeline } from "@material-ui/icons";
-import * as React from "react";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useDiary } from "../../hooks/useDiary";
 import { Card, getToday, HeatMap, HeatMapContents, Property } from "../ui";
 

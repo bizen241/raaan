@@ -1,7 +1,7 @@
 import { Typography } from "@material-ui/core";
 import { CloudUpload, Person } from "@material-ui/icons";
 import { replace } from "connected-react-router";
-import * as React from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";

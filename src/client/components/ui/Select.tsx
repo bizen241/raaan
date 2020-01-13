@@ -1,6 +1,5 @@
 import { NativeSelect, OutlinedInput, Typography } from "@material-ui/core";
-import * as React from "react";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { Column } from "./Column";
 
 interface SelectOption {

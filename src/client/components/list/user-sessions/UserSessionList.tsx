@@ -1,7 +1,6 @@
 import { Box, IconButton, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Computer, Delete, Smartphone } from "@material-ui/icons";
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { DeleteUserSessionDialog } from "../../dialogs/user-sessions/DeleteUserSessionDialog";

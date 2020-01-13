@@ -1,7 +1,6 @@
 import { Card, CardContent, Divider, IconButton, Table, TableBody } from "@material-ui/core";
 import { Add, Bookmark, PlayArrow, Refresh } from "@material-ui/icons";
-import * as React from "react";
-import { useCallback, useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { PlaylistItem } from "../../../shared/api/entities";
 import { sortPlaylistItems } from "../../domain/playlist";
 import { withEntity } from "../../enhancers/withEntity";

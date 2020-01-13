@@ -1,4 +1,4 @@
-import * as createError from "http-errors";
+import createError from "http-errors";
 import { getManager } from "typeorm";
 import { UserAccountEntity, UserConfigEntity, UserEntity, UserSummaryEntity } from "../entities";
 

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { withEntity } from "../../../enhancers/withEntity";
 import { isLocalOnly } from "../../../reducers/api";
 import { ExerciseDraftEditor } from "../../editor/ExerciseDraftEditor";

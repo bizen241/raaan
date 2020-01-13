@@ -1,6 +1,6 @@
 import { IconButton, Link, TableCell, TableRow } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createBufferList } from "../../../enhancers/createBufferList";
 import { useToggleState } from "../../../hooks/useToggleState";

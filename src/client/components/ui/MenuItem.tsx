@@ -1,6 +1,6 @@
 import { makeStyles, MenuItem as MuiMenuItem, Typography } from "@material-ui/core";
 import { TypographyProps } from "@material-ui/core/Typography";
-import * as React from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 export const MenuItem = React.forwardRef<

@@ -1,7 +1,6 @@
 import { IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Edit } from "@material-ui/icons";
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { UserContext } from "../../project/Context";

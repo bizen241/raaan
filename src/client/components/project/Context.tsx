@@ -1,5 +1,4 @@
-import * as React from "react";
-import { createContext, useEffect, useMemo } from "react";
+import React, { createContext, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Lang, User, UserAccount, UserConfig, UserSettings } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";

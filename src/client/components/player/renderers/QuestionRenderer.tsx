@@ -1,6 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import * as React from "react";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { CompiledQuestion } from "../../../../shared/exercise/compiler";
 import { Column, Row } from "../../ui";
 import { QuestionPlayerState } from "../managers/QuestionManager";

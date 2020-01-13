@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { UserContext } from "../../project/Context";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui";

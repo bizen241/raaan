@@ -1,6 +1,5 @@
 import { CloudUpload } from "@material-ui/icons";
-import * as React from "react";
-import { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { UserSettings } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";

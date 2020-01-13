@@ -1,6 +1,5 @@
 import { CloudUpload, Message } from "@material-ui/icons";
-import * as React from "react";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
 import { mergeBuffer } from "../../reducers/buffers";

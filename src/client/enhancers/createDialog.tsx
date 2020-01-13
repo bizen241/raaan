@@ -1,6 +1,6 @@
 import { Dialog, makeStyles, Slide } from "@material-ui/core";
 import { TransitionProps } from "@material-ui/core/transitions/transition";
-import * as React from "react";
+import React from "react";
 
 export interface DialogProps {
   isOpen: boolean;

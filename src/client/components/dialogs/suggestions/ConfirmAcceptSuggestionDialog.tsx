@@ -1,7 +1,7 @@
 import { Typography } from "@material-ui/core";
 import { Check } from "@material-ui/icons";
 import { push } from "connected-react-router";
-import * as React from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { Suggestion } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";

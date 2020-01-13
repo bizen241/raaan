@@ -1,7 +1,6 @@
 import { Add, Edit, InsertDriveFile } from "@material-ui/icons";
 import { push } from "connected-react-router";
-import * as React from "react";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { generateBufferId } from "../../../reducers/buffers";

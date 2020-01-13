@@ -1,5 +1,5 @@
 import { Event, Keyboard, Person } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { withEntity } from "../../enhancers/withEntity";
 import { Button, Column } from "../ui";
 import { GroupSummaryViewer } from "./GroupSummaryViewer";

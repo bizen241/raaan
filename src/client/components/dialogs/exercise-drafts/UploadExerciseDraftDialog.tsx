@@ -1,7 +1,6 @@
 import { CloudUpload, Message } from "@material-ui/icons";
 import { replace } from "connected-react-router";
-import * as React from "react";
-import { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ExerciseDraft } from "../../../../shared/api/entities";
 import { Params } from "../../../../shared/api/request/params";

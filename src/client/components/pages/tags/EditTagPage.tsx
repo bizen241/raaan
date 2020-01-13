@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { TagEditor } from "../../editor/TagEditor";
 import { PageProps } from "../../project/Router";
 import { Page } from "../../ui/Page";

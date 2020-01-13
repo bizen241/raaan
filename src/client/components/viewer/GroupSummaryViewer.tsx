@@ -1,6 +1,5 @@
 import { Group, RemoveCircle } from "@material-ui/icons";
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { withEntity } from "../../enhancers/withEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";

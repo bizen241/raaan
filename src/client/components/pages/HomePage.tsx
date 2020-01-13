@@ -1,6 +1,5 @@
 import { AccountCircle, Keyboard, LocalOffer, PlaylistPlay } from "@material-ui/icons";
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { UserDiaryGraph } from "../graphs/UserDiaryGraph";
 import { UserContext } from "../project/Context";

@@ -1,4 +1,4 @@
-import * as createError from "http-errors";
+import createError from "http-errors";
 import { EntityManager } from "typeorm";
 import { Entity, SubmissionEntity, UserEntity } from "../database/entities";
 import { updateExerciseDiaryEntrySubmittedCount } from "./exercise-diaries";

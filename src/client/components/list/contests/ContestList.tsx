@@ -1,5 +1,5 @@
 import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
-import * as React from "react";
+import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { Column } from "../../ui";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ObjectionSummaryList } from "../../list/objection-summaries/ObjectionSummaryList";
 import { Page } from "../../ui";
 

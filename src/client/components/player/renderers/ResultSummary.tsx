@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import { ArrowForward, Keyboard, Replay, TrendingDown, TrendingFlat, TrendingUp } from "@material-ui/icons";
-import * as React from "react";
+import React from "react";
 import { AttemptResult, SubmissionSummary } from "../../../../shared/api/entities";
 import { Attempt, summarizeResults } from "../../../domain/exercise/attempt";
 import { Button, Card, Column, Row } from "../../ui";

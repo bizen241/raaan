@@ -1,6 +1,5 @@
 import { Devices, Warning } from "@material-ui/icons";
-import * as React from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { DeleteAccountDialog } from "../../dialogs/user/DeleteAccountDialog";
 import { LogoutDialog } from "../../dialogs/user/LogoutDialog";

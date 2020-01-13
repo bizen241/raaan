@@ -1,4 +1,4 @@
-import * as createError from "http-errors";
+import createError from "http-errors";
 import { createGetOperation } from "../../../api/operation";
 import { RevisionEntity } from "../../../database/entities";
 

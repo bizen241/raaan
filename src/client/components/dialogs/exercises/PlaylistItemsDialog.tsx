@@ -1,6 +1,5 @@
 import { Add, CloudUpload, PlaylistPlay } from "@material-ui/icons";
-import * as React from "react";
-import { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";

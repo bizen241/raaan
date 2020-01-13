@@ -1,4 +1,4 @@
-import * as createError from "http-errors";
+import createError from "http-errors";
 import { SecurityHandler } from "openapi-security-handler";
 import { OpenAPIV3 } from "openapi-types";
 import { Permission } from "../../shared/api/entities";

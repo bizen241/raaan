@@ -1,7 +1,7 @@
 import { Typography } from "@material-ui/core";
 import { FastRewind } from "@material-ui/icons";
 import { push } from "connected-react-router";
-import * as React from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { Revision } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";

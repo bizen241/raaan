@@ -1,6 +1,5 @@
 import { TextField, Typography } from "@material-ui/core";
-import * as React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Column } from "./Column";
 
 export const DateTimeField = React.memo<{

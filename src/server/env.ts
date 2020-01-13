@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import * as getenv from "getenv";
+import getenv from "getenv";
 import { resolve } from "path";
 import { isAuthProviderName } from "../shared/auth";
 
