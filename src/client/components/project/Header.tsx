@@ -14,9 +14,7 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
 
   const { entity: currentUserSummary } = useEntity("UserSummary", currentUser.summaryId);
 
-  const { pathname } = useSelector((state: RootState) => ({
-    pathname: state.router.location.pathname
-  }));
+  const pathname = useSelector((state: RootState) => state.router.location.pathname);
 
   return (
     <AppBar position="static" color="default">

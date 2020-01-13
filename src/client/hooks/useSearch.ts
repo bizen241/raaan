@@ -15,11 +15,9 @@ export const useSearch = <T extends EntityType>(
   const [params, setParams] = useState<Params<EntityTypeToEntity[T]>>(initialParams);
   const { searchLimit = defaultSearchLimit, searchOffset = defaultSearchOffset } = params;
 
-  const { statusMap, resultMap, entityMap } = useSelector((state: RootState) => ({
-    statusMap: state.api.search[entityType],
-    resultMap: state.cache.search[entityType],
-    entityMap: state.cache.get[entityType]
-  }));
+  const statusMap = useSelector((state: RootState) => state.api.search[entityType]);
+  const resultMap = useSelector((state: RootState) => state.cache.search[entityType]);
+  const entityMap = useSelector((state: RootState) => state.cache.get[entityType]);
 
   const status = statusMap[stringifyParams(params)];
   const result = resultMap[stringifyParams(params, true)];

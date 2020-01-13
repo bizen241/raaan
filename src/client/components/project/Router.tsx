@@ -103,9 +103,7 @@ const EditPlaylistPage = React.lazy(() => import("../pages/playlists/EditPlaylis
 const EditSuggestionPage = React.lazy(() => import("../pages/suggestions/EditSuggestionPage"));
 
 export const Router = React.memo(() => {
-  const { location } = useSelector((state: RootState) => ({
-    location: state.router.location
-  }));
+  const location = useSelector((state: RootState) => state.router.location);
 
   return (
     <Suspense fallback={<LoadingPage />}>
