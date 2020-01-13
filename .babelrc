@@ -1,4 +1,13 @@
 {
   "presets": ["@babel/preset-typescript", "@babel/preset-react"],
-  "plugins": ["i18next-extract"]
+  "plugins": [
+    [
+      "i18next-extract",
+      {
+        "locales": ["ja", "en"],
+        "outputPath": "./assets/locales/{{locale}}.json",
+        "keySeparator": false
+      }
+    ]
+  ]
 }
