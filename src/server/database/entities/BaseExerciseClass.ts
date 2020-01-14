@@ -1,5 +1,5 @@
 import { Column } from "typeorm";
-import { Exercise, Question } from "../../../shared/api/entities";
+import { Exercise, Question, Reference } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { BaseEntityClass } from "./BaseEntityClass";
 
@@ -18,6 +18,9 @@ export abstract class BaseExerciseClass extends BaseEntityClass {
 
   @Column("json")
   questions!: Question[];
+
+  @Column("json")
+  references!: Reference[];
 
   @Column()
   isRandom!: boolean;

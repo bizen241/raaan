@@ -184,7 +184,7 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) =
   }
 
   const content = isDraft ? draft : latest;
-  const { lang, title, tags, description, questions, isRandom } = content;
+  const { lang, title, tags, description, questions, references, isRandom } = content;
 
   store.Exercise[id] = {
     ...base(entity),
@@ -197,6 +197,7 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) =
     tags,
     description,
     questions,
+    references,
     isDraft,
     isRandom,
     isLocked,
@@ -262,7 +263,7 @@ const normalizeExerciseDiaryEntry: Normalizer<ExerciseDiaryEntryEntity> = (_, st
 };
 
 const normalizeExerciseDraft: Normalizer<ExerciseDraftEntity> = (_, store, entity) => {
-  const { id, exerciseId, lang, title, tags, description, questions, isRandom, isMerged } = entity;
+  const { id, exerciseId, lang, title, tags, description, questions, references, isRandom, isMerged } = entity;
 
   store.ExerciseDraft[id] = {
     ...base(entity),
@@ -272,6 +273,7 @@ const normalizeExerciseDraft: Normalizer<ExerciseDraftEntity> = (_, store, entit
     tags,
     description,
     questions,
+    references,
     isRandom,
     isMerged
   };
@@ -686,6 +688,7 @@ const normalizeRevision: Normalizer<RevisionEntity> = (_, store, entity) => {
     tags,
     description,
     questions,
+    references,
     isRandom
   } = entity;
 
@@ -700,6 +703,7 @@ const normalizeRevision: Normalizer<RevisionEntity> = (_, store, entity) => {
     tags,
     description,
     questions,
+    references,
     isRandom
   };
 };
@@ -778,6 +782,7 @@ const normalizeSuggestion: Normalizer<SuggestionEntity> = (context, store, entit
     tags,
     description,
     questions,
+    references,
     isRandom
   } = entity;
   if (summary === undefined) {
@@ -801,6 +806,7 @@ const normalizeSuggestion: Normalizer<SuggestionEntity> = (context, store, entit
     tags,
     description,
     questions,
+    references,
     isRandom
   };
 
