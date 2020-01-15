@@ -12,7 +12,7 @@ const history = createBrowserHistory();
 
 const persistConfig: PersistConfig<RootState> = {
   key: "root",
-  version: 0,
+  version: 1,
   storage,
   migrate,
   blacklist: ["router"],

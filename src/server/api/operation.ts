@@ -7,6 +7,7 @@ import { endpoints } from "../../shared/api/endpoint";
 import { EntityType, Permission } from "../../shared/api/entities";
 import { EntityTypeToParams } from "../../shared/api/request/params";
 import { parseQuery } from "../../shared/api/request/parse";
+import { apiVersion } from "../../shared/api/version";
 import { Entity, UserEntity } from "../database/entities";
 import { getGuestUser } from "../database/setup/guest";
 import { responseFindResult, responseSearchResult } from "./response";
@@ -31,6 +32,15 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
       schema: {
         type: "string",
         default: "Fetch"
+      },
+      required: true
+    },
+    {
+      in: "header",
+      name: "X-Api-Version",
+      schema: {
+        type: "string",
+        default: apiVersion.toString()
       },
       required: true
     }
@@ -93,6 +103,8 @@ export const errorBoundary = (
   fn: (req: Request, res: Response, next: NextFunction, currentUser: UserEntity) => Promise<any>
 ): RequestHandler => async (req, res, next) => {
   const currentUser = req.user || (await getGuestUser());
+
+  res.setHeader("X-Api-Version", apiVersion);
 
   await fn(req, res, next, currentUser).catch(e => {
     if (e.status === undefined) {
