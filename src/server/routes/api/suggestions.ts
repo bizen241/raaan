@@ -19,7 +19,10 @@ export const POST = createPostOperation("Suggestion", "Write", async ({ currentU
     suggestionSummary,
     currentUser,
     revision,
-    params,
+    {
+      ...revision,
+      ...params
+    },
     messageSubject,
     messageBody
   );

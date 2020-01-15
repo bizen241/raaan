@@ -1,6 +1,6 @@
 import { getManager } from "typeorm";
 import uuid from "uuid/v4";
-import { Permission } from "../../../shared/api/entities";
+import { ExerciseContent, Permission } from "../../../shared/api/entities";
 import {
   ExerciseDraftEntity,
   ExerciseEntity,
@@ -51,6 +51,16 @@ export const insertSession = async (user: UserEntity) => {
 export const insertExercise = async (user: UserEntity) => {
   const manager = getManager();
 
+  const exerciseContent: ExerciseContent = {
+    lang: "en",
+    title: "",
+    tags: [],
+    description: "",
+    questions: [],
+    references: [],
+    isRandom: true
+  };
+
   const isMerged = true;
   const isPrivate = false;
 
@@ -59,7 +69,7 @@ export const insertExercise = async (user: UserEntity) => {
   exerciseSummary.minTypeCount = 0;
   exerciseSummary.tags = [];
 
-  const exerciseDraft = new ExerciseDraftEntity({});
+  const exerciseDraft = new ExerciseDraftEntity(exerciseContent);
   exerciseDraft.isMerged = isMerged;
 
   const exercise = new ExerciseEntity(exerciseSummary, user, exerciseDraft);
@@ -68,7 +78,7 @@ export const insertExercise = async (user: UserEntity) => {
   await manager.save(exercise);
 
   const revisionSummary = new RevisionSummaryEntity();
-  const revision = new RevisionEntity(revisionSummary, exercise, {}, "", "", isPrivate);
+  const revision = new RevisionEntity(revisionSummary, exercise, exerciseContent, "", "", isPrivate);
   await manager.save(revision);
 
   exercise.latest = revision;

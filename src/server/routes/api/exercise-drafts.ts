@@ -34,7 +34,7 @@ export const POST = createPostOperation("ExerciseDraft", "Read", async ({ curren
   const revision = new RevisionEntity(
     revisionSummary,
     exercise,
-    isMerged ? params : {},
+    exerciseDraft,
     params.messageSubject || "",
     params.messageBody || "",
     isPrivate

@@ -1,6 +1,5 @@
 import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
-import { Exercise, SuggestionState } from "../../../shared/api/entities";
-import { Params } from "../../../shared/api/request/params";
+import { ExerciseContent, SuggestionState } from "../../../shared/api/entities";
 import { BaseExerciseClass } from "./BaseExerciseClass";
 import { RevisionEntity } from "./RevisionEntity";
 import { SuggestionSummaryEntity } from "./SuggestionSummaryEntity";
@@ -48,7 +47,7 @@ export class SuggestionEntity extends BaseExerciseClass {
     summary: SuggestionSummaryEntity,
     author: UserEntity,
     revision: RevisionEntity,
-    params: Params<Exercise>,
+    params: ExerciseContent,
     messageSubject: string,
     messageBody: string
   ) {

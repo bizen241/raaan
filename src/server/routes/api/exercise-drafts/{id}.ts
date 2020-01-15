@@ -2,6 +2,7 @@ import createError from "http-errors";
 import { getMinMaxTypeCount } from "../../../../shared/exercise";
 import { createGetOperation, createPatchOperation } from "../../../api/operation";
 import { ExerciseDraftEntity, ExerciseEntity, RevisionEntity, RevisionSummaryEntity } from "../../../database/entities";
+import { updateExerciseContent } from "../../../database/entities/BaseExerciseClass";
 import { getTags } from "../../../services/tags";
 
 export const GET = createGetOperation("ExerciseDraft", "Read", async ({ currentUser, manager, id }) => {
@@ -51,21 +52,14 @@ export const PATCH = createPatchOperation("ExerciseDraft", "Read", async ({ curr
     throw createError(403);
   }
 
-  if (params.title !== undefined) {
-    exercise.draft.title = params.title;
-  }
-  if (params.tags !== undefined) {
-    exercise.draft.tags = params.tags;
-  }
-  if (params.questions !== undefined) {
-    exercise.draft.questions = params.questions;
-  }
+  updateExerciseContent(exercise.draft, params);
 
   if (isMerged) {
     if (exercise.isDraft) {
-      exercise.latest.title = params.title || exercise.draft.title;
-      exercise.latest.tags = params.tags || exercise.draft.tags;
-      exercise.latest.questions = params.questions || exercise.draft.questions;
+      updateExerciseContent(exercise.latest, {
+        ...exercise.draft,
+        ...params
+      });
       await manager.save(exercise.latest);
     } else {
       const revisionSummary = new RevisionSummaryEntity();
@@ -73,9 +67,8 @@ export const PATCH = createPatchOperation("ExerciseDraft", "Read", async ({ curr
         revisionSummary,
         exercise,
         {
-          title: params.title || exercise.draft.title,
-          tags: params.tags || exercise.draft.tags,
-          questions: params.questions || exercise.draft.questions
+          ...exercise.draft,
+          ...params
         },
         params.messageSubject || "",
         params.messageBody || "",

@@ -1,6 +1,7 @@
 import createError from "http-errors";
 import { createDeleteOperation, createGetOperation, createPatchOperation } from "../../../api/operation";
 import { SuggestionEntity } from "../../../database/entities";
+import { updateExerciseContent } from "../../../database/entities/BaseExerciseClass";
 
 export const GET = createGetOperation("Suggestion", "Read", async ({ manager, id }) => {
   const suggestion = await manager.findOne(SuggestionEntity, id, {
@@ -31,15 +32,7 @@ export const PATCH = createPatchOperation("Suggestion", "Write", async ({ curren
   }
 
   if (isSuggestionAuthor) {
-    if (params.title !== undefined) {
-      suggestion.title = params.title;
-    }
-    if (params.tags !== undefined) {
-      suggestion.tags = params.tags;
-    }
-    if (params.questions !== undefined) {
-      suggestion.questions = params.questions;
-    }
+    updateExerciseContent(suggestion, params);
   } else {
     const state = params.state;
 

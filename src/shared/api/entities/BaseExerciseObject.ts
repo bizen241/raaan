@@ -1,6 +1,8 @@
 import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface BaseExerciseObject extends BaseEntityObject {
+export interface BaseExerciseObject extends BaseEntityObject, ExerciseContent {}
+
+export interface ExerciseContent {
   lang: string;
   title: string;
   tags: string[];

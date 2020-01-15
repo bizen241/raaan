@@ -1,6 +1,5 @@
 import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
-import { Exercise } from "../../../shared/api/entities";
-import { Params } from "../../../shared/api/request/params";
+import { ExerciseContent } from "../../../shared/api/entities";
 import { BaseExerciseClass } from "./BaseExerciseClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { RevisionSummaryEntity } from "./RevisionSummaryEntity";
@@ -39,7 +38,7 @@ export class RevisionEntity extends BaseExerciseClass {
   constructor(
     summary: RevisionSummaryEntity,
     exercise: ExerciseEntity,
-    params: Params<Exercise> | undefined,
+    params: ExerciseContent | undefined,
     messageSubject: string,
     messageBody: string,
     isPrivate: boolean
