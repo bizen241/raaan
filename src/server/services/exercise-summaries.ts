@@ -1,6 +1,7 @@
 import createError from "http-errors";
 import { EntityManager } from "typeorm";
-import { SubmissionEntity } from "../database/entities";
+import { ExerciseContent } from "../../shared/api/entities";
+import { ExerciseSummaryEntity, SubmissionEntity } from "../database/entities";
 
 export const updateExerciseSummarySubmittedCount = async (params: {
   manager: EntityManager;
@@ -25,4 +26,10 @@ export const updateExerciseSummarySubmittedCount = async (params: {
   exerciseSummary.exercise = submission.exercise;
 
   return exerciseSummary;
+};
+
+export const updateExerciseSummaryTexts = (entity: ExerciseSummaryEntity, params: Partial<ExerciseContent>) => {
+  entity.text = "";
+  entity.title = params.title || entity.title || "";
+  entity.questions = "";
 };

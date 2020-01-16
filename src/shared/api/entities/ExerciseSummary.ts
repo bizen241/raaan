@@ -16,5 +16,7 @@ export interface ExerciseSummary extends BaseEntityObject {
   isEditing: boolean;
   isPrivate: boolean;
   isLocked: boolean;
+  text?: string;
+  questions?: string;
   searchSort?: "createdAt";
 }

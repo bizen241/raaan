@@ -2,7 +2,7 @@ import { createSearchOperation } from "../../api/operation";
 import { ExerciseSummaryEntity } from "../../database/entities";
 
 export const GET = createSearchOperation("ExerciseSummary", "Guest", async ({ currentUser, manager, params }) => {
-  const { authorId, tags, isEditing } = params;
+  const { authorId, tags, text, title, questions, isEditing } = params;
 
   const query = manager
     .createQueryBuilder(ExerciseSummaryEntity, "exerciseSummary")
@@ -19,6 +19,15 @@ export const GET = createSearchOperation("ExerciseSummary", "Guest", async ({ cu
     query.innerJoinAndSelect("exerciseSummary.tags", "searchTags", "searchTags.name IN (:...tags)", {
       tags: tags.split(/\s/)
     });
+  }
+  if (text !== undefined) {
+    query.andWhere("MATCH(exerciseSummary.text) AGAINST (:text)", { text });
+  }
+  if (title !== undefined) {
+    query.andWhere("MATCH(exerciseSummary.title) AGAINST (:title)", { title });
+  }
+  if (questions !== undefined) {
+    query.andWhere("MATCH(exerciseSummary.questions) AGAINST (:questions)", { questions });
   }
   if (isEditing !== undefined) {
     query.andWhere("draft.isMerged = :isMerged", { isMerged: !isEditing });

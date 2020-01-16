@@ -1,4 +1,6 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, RelationId } from "typeorm";
+import { ExerciseContent } from "../../../shared/api/entities";
+import { updateExerciseSummaryTexts } from "../../services/exercise-summaries";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { TagEntity } from "./TagEntity";
@@ -28,6 +30,15 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
   tags?: TagEntity[];
 
   @Column()
+  text!: string;
+
+  @Column()
+  title!: string;
+
+  @Column()
+  questions!: string;
+
+  @Column()
   maxTypeCount: number = 0;
 
   @Column()
@@ -47,4 +58,12 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
 
   @Column()
   typedCount: number = 0;
+
+  constructor(params: Partial<ExerciseContent>) {
+    super();
+
+    if (params !== undefined) {
+      updateExerciseSummaryTexts(this, params);
+    }
+  }
 }

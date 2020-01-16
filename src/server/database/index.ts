@@ -14,6 +14,7 @@ export const connect = (env: Env) => {
     password,
     database,
     entities,
+    migrationsRun: true,
     migrations
   });
 };

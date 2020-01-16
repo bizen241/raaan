@@ -6,9 +6,8 @@ import { setOwnerUser } from "./database/setup/owner";
 import { Env } from "./env";
 
 export const startServer = async (env: Env) => {
-  const database = await connect(env);
+  await connect(env);
 
-  await database.synchronize();
   await setGuestUser();
   await setOwnerUser(env);
 

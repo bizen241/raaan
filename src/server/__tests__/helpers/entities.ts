@@ -64,7 +64,7 @@ export const insertExercise = async (user: UserEntity) => {
   const isMerged = true;
   const isPrivate = false;
 
-  const exerciseSummary = new ExerciseSummaryEntity();
+  const exerciseSummary = new ExerciseSummaryEntity(exerciseContent);
   exerciseSummary.maxTypeCount = 0;
   exerciseSummary.minTypeCount = 0;
   exerciseSummary.tags = [];

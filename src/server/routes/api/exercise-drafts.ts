@@ -13,7 +13,7 @@ import { getTags } from "../../services/tags";
 export const POST = createPostOperation("ExerciseDraft", "Read", async ({ currentUser, manager, params }) => {
   const { isMerged = true, isPrivate = true } = params;
 
-  const exerciseSummary = new ExerciseSummaryEntity();
+  const exerciseSummary = new ExerciseSummaryEntity(params);
   if (isMerged) {
     const { maxTypeCount, minTypeCount } = getMinMaxTypeCount(params.questions);
 
