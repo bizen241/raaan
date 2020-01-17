@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, RelationId } from "typeorm";
+import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, OneToOne, RelationId } from "typeorm";
 import { ExerciseContent } from "../../../shared/api/entities";
 import { updateExerciseSummaryTexts } from "../../services/exercise-summaries";
 import { BaseEntityClass } from "./BaseEntityClass";
@@ -29,12 +29,15 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
   })
   tags?: TagEntity[];
 
+  @Index({ fulltext: true })
   @Column()
   text!: string;
 
+  @Index({ fulltext: true })
   @Column()
   title!: string;
 
+  @Index({ fulltext: true })
   @Column()
   questions!: string;
 
