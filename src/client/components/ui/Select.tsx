@@ -1,5 +1,5 @@
 import { NativeSelect, OutlinedInput, Typography } from "@material-ui/core";
-import React, { useCallback } from "react";
+import React from "react";
 import { Column } from "./Column";
 
 interface SelectOption {
@@ -21,7 +21,7 @@ export const Select = <T extends string | number>({
   onChange: (value: T) => void;
   options: SelectOptions<T>;
 }) => {
-  const onSelect = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => onChange(e.target.value as T), []);
+  const onSelect = (e: React.ChangeEvent<HTMLSelectElement>) => onChange(e.target.value as T);
 
   return (
     <Column component="label" pb={1}>

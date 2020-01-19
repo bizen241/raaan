@@ -85,7 +85,7 @@ export const ExerciseSummaryList = createEntityList("ExerciseSummary")(
           <Search
             label="キーワード"
             defaultValue={searchText}
-            onChange={e => setSearchText(e.target.value)}
+            onChange={setSearchText}
             onSearch={() => onChange({ [searchTarget]: searchText })}
           />
         </Column>
