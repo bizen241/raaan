@@ -1,14 +1,6 @@
 import { strict as assert } from "assert";
 import { AppDiaryEntry } from "../../../../shared/api/entities";
-import {
-  close,
-  connect,
-  createMocks,
-  createQuery,
-  getSearchResult,
-  hasSecurity,
-  reset
-} from "../../../__tests__/helpers";
+import { close, connect, createMocks, createQuery, getSearchResult, reset } from "../../../__tests__/helpers";
 import { AppDiaryEntryEntity } from "../../../database/entities";
 import { GET } from "../app-diary-entries";
 
@@ -18,10 +10,8 @@ describe("app-diary-entries", () => {
   afterAll(async () => close());
 
   describe("GET", () => {
-    test("security", () => assert(hasSecurity(GET.apiDoc, "Read")));
-
     test("200", async () => {
-      const { req, res, next, manager } = await createMocks("Read");
+      const { req, res, next, manager } = await createMocks("Guest");
 
       const appDiaryEntry = new AppDiaryEntryEntity(new Date());
       await manager.save(appDiaryEntry);
