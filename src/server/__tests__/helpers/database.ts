@@ -1,5 +1,5 @@
 import { createConnection, getConnection, getManager } from "typeorm";
-import { entities, TagEntity, UserEntity } from "../../database/entities";
+import { AppDiaryEntryEntity, entities, TagEntity, UserEntity } from "../../database/entities";
 import { testEnv } from "./env";
 
 export const connect = async () => {
@@ -16,20 +16,18 @@ export const connect = async () => {
     password,
     database,
     entities,
-    synchronize: true,
-    dropSchema: true
+    synchronize: true
   });
 };
 
 export const reset = async () => {
   const manager = getManager();
 
-  const users = await manager.find(UserEntity);
-  await manager.remove(users);
-  const tags = await manager.find(TagEntity);
-  await manager.remove(tags);
+  await manager.remove(await manager.find(AppDiaryEntryEntity));
+  await manager.remove(await manager.find(UserEntity));
+  await manager.remove(await manager.find(TagEntity));
 };
 
 export const close = async () => {
-  await getConnection().close();
+  await getConnection("default").close();
 };
