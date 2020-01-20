@@ -4,7 +4,7 @@ import { close, connect, createMocks, createQuery, getSearchResult, reset } from
 import { AppDiaryEntryEntity } from "../../../database/entities";
 import { GET } from "../app-diary-entries";
 
-describe("app-diary-entries", () => {
+describe("api > app-diary-entries", () => {
   beforeAll(async () => connect());
   beforeEach(async () => reset());
   afterAll(async () => close());

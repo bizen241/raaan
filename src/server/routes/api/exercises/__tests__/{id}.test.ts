@@ -6,63 +6,64 @@ import {
   createMocks,
   createParams,
   getFindResult,
-  hasSecurity,
   insertExercise,
   reset
 } from "../../../../__tests__/helpers";
 import { ExerciseEntity } from "../../../../database/entities";
-import { DELETE, GET, PATCH } from "../{id}";
+import { DELETE, GET } from "../{id}";
 
-beforeAll(async () => connect());
-beforeEach(async () => reset());
-afterAll(async () => close());
+describe("api > exercises > {id}", () => {
+  beforeAll(async () => connect());
+  beforeEach(async () => reset());
+  afterAll(async () => close());
 
-test("GET /api/exercises/{id}", () => assert(hasSecurity(GET.apiDoc, "Guest")));
-test("PATCH /api/exercises/{id}", () => assert(hasSecurity(PATCH.apiDoc, "Read")));
-test("DELETE /api/exercises/{id}", () => assert(hasSecurity(DELETE.apiDoc, "Read")));
+  describe("GET", () => {
+    test("404", async () => {
+      const { req, res, next } = await createMocks("Guest");
 
-test("GET /api/exercises/{id} -> 200", async () => {
-  const { req, res, next, user } = await createMocks("Guest");
+      req.params = createParams(uuid());
 
-  const { exercise } = await insertExercise(user);
+      await GET(req, res, next);
+      assert.equal(res.statusCode, 404);
+    });
 
-  req.params = createParams(exercise.id);
+    test("200", async () => {
+      const { req, res, next, user } = await createMocks("Guest");
 
-  await GET(req, res, next);
-  assert.equal(res.statusCode, 200);
+      const { exercise } = await insertExercise(user);
 
-  const entities = getFindResult(res);
-  assert(entities.Exercise[exercise.id]);
-});
+      req.params = createParams(exercise.id);
 
-test("GET /api/exercises/{id} -> 404", async () => {
-  const { req, res, next } = await createMocks("Guest");
+      await GET(req, res, next);
+      assert.equal(res.statusCode, 200);
 
-  req.params = createParams(uuid());
+      const entities = getFindResult(res);
+      assert(entities.Exercise[exercise.id]);
+    });
+  });
 
-  await GET(req, res, next);
-  assert.equal(res.statusCode, 404);
-});
+  describe("DELETE", () => {
+    test("404", async () => {
+      const { req, res, next } = await createMocks("Read");
 
-test("DELETE /api/exercises/{id} -> 200", async () => {
-  const { req, res, next, manager, user } = await createMocks("Read");
+      req.params = createParams(uuid());
 
-  const { exercise } = await insertExercise(user);
+      await DELETE(req, res, next);
+      assert.equal(res.statusCode, 404);
+    });
 
-  req.params = createParams(exercise.id);
+    test("200", async () => {
+      const { req, res, next, manager, user } = await createMocks("Read");
 
-  await DELETE(req, res, next);
-  assert.equal(res.statusCode, 200);
+      const { exercise } = await insertExercise(user);
 
-  const deletedExercise = await manager.findOne(ExerciseEntity, exercise.id);
-  assert.equal(deletedExercise, undefined);
-});
+      req.params = createParams(exercise.id);
 
-test("DELETE /api/exercises/{id} -> 404", async () => {
-  const { req, res, next } = await createMocks("Admin");
+      await DELETE(req, res, next);
+      assert.equal(res.statusCode, 200);
 
-  req.params = createParams(uuid());
-
-  await DELETE(req, res, next);
-  assert.equal(res.statusCode, 404);
+      const deletedExercise = await manager.findOne(ExerciseEntity, exercise.id);
+      assert.equal(deletedExercise, undefined);
+    });
+  });
 });

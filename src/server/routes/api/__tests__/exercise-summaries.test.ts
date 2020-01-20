@@ -6,32 +6,33 @@ import {
   createMocks,
   createQuery,
   getSearchResult,
-  hasSecurity,
   insertExercise,
   insertUser,
   reset
 } from "../../../__tests__/helpers";
 import { GET } from "../exercise-summaries";
 
-beforeAll(async () => connect());
-beforeEach(async () => reset());
-afterAll(async () => close());
+describe("api > exercise-summaries", () => {
+  beforeAll(async () => connect());
+  beforeEach(async () => reset());
+  afterAll(async () => close());
 
-test("GET /api/exercise-summaries", () => assert(hasSecurity(GET.apiDoc, "Guest")));
+  describe("GET", () => {
+    test("200", async () => {
+      const { req, res, next } = await createMocks("Guest");
 
-test("GET /api/exercise-summaries -> 200", async () => {
-  const { req, res, next } = await createMocks("Guest");
+      const { user: author } = await insertUser("Write");
+      const { exerciseSummary } = await insertExercise(author);
 
-  const { user: author } = await insertUser("Write");
-  const { exerciseSummary } = await insertExercise(author);
+      req.query = createQuery<ExerciseSummary>({
+        authorId: author.id
+      });
 
-  req.query = createQuery<ExerciseSummary>({
-    authorId: author.id
+      await GET(req, res, next);
+      assert.equal(res.statusCode, 200);
+
+      const response = getSearchResult(res);
+      assert(response.entities.ExerciseSummary[exerciseSummary.id]);
+    });
   });
-
-  await GET(req, res, next);
-  assert.equal(res.statusCode, 200);
-
-  const response = getSearchResult(res);
-  assert(response.entities.ExerciseSummary[exerciseSummary.id]);
 });
