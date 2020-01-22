@@ -187,7 +187,7 @@ export const createPostOperation = <T extends EntityType>(
   fn: PostOperationFunction<T>
 ) => {
   const operation: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
-    getManager().transaction(async manager => {
+    await getManager().transaction(async manager => {
       const params = req.body;
 
       const entities = await fn({ req, res, currentUser, manager, params });
@@ -215,7 +215,7 @@ export const createPatchOperation = <T extends EntityType>(
   fn: PatchOperationFunction<T>
 ) => {
   const operation: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
-    getManager().transaction(async manager => {
+    await getManager().transaction(async manager => {
       const id = req.params.id;
       const params = req.body;
 
