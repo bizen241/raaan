@@ -21,8 +21,12 @@ describe("api > exercise-summaries", () => {
     test("200", async () => {
       const { req, res, next } = await createMocks("Guest");
 
-      const { user: author } = await insertUser("Write");
-      const { exerciseSummary } = await insertExercise(author);
+      const { user: author } = await insertUser({
+        userPermission: "Write"
+      });
+      const { exerciseSummary } = await insertExercise({
+        exerciseAuthor: author
+      });
 
       req.query = createQuery<ExerciseSummary>({
         authorId: author.id

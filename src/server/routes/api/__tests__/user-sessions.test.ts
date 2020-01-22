@@ -41,7 +41,9 @@ describe("api > user-sessions", () => {
     test("200", async () => {
       const { req, res, next, user } = await createMocks("Read");
 
-      const session = await insertSession(user);
+      const session = await insertSession({
+        sessionUser: user
+      });
 
       req.query = createQuery<UserSession>({
         userId: user.id

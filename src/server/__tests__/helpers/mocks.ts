@@ -14,7 +14,9 @@ export const createMocks = async (permission: Permission) => {
   const req = createRequest();
   const res = createResponse();
 
-  const { account, config, user } = await insertUser(permission);
+  const { account, config, user } = await insertUser({
+    userPermission: permission
+  });
 
   req.user = user;
   req.session = {} as any;

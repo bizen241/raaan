@@ -30,7 +30,9 @@ describe("api > exercises > {id}", () => {
     test("200", async () => {
       const { req, res, next, user } = await createMocks("Guest");
 
-      const { exercise } = await insertExercise(user);
+      const { exercise } = await insertExercise({
+        exerciseAuthor: user
+      });
 
       req.params = createParams(exercise.id);
 
@@ -55,7 +57,9 @@ describe("api > exercises > {id}", () => {
     test("200", async () => {
       const { req, res, next, manager, user } = await createMocks("Read");
 
-      const { exercise } = await insertExercise(user);
+      const { exercise } = await insertExercise({
+        exerciseAuthor: user
+      });
 
       req.params = createParams(exercise.id);
 

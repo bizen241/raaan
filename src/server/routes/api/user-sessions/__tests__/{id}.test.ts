@@ -30,8 +30,12 @@ describe("api > user-sessions > {id}", () => {
     test("403", async () => {
       const { req, res, next } = await createMocks("Read");
 
-      const { user } = await insertUser("Read");
-      const session = await insertSession(user);
+      const { user } = await insertUser({
+        userPermission: "Read"
+      });
+      const session = await insertSession({
+        sessionUser: user
+      });
 
       req.params = createParams(session.id);
 
@@ -42,7 +46,9 @@ describe("api > user-sessions > {id}", () => {
     test("200", async () => {
       const { req, res, next, manager, user } = await createMocks("Read");
 
-      const session = await insertSession(user);
+      const session = await insertSession({
+        sessionUser: user
+      });
 
       req.params = createParams(session.id);
 
