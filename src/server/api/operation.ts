@@ -1,6 +1,7 @@
 import { NextFunction } from "connect";
 import { Request, RequestHandler, Response } from "express";
 import { OperationFunction } from "express-openapi";
+import createError, { HttpError } from "http-errors";
 import { OpenAPIV3 } from "openapi-types";
 import { EntityManager, getManager, SelectQueryBuilder } from "typeorm";
 import { endpoints } from "../../shared/api/endpoint";
@@ -106,13 +107,21 @@ export const errorBoundary = (
 
   res.setHeader("X-Api-Version", apiVersion);
 
-  await fn(req, res, next, currentUser).catch(e => {
+  await fn(req, res, next, currentUser).catch((e: HttpError) => {
     if (e.status === undefined) {
       console.log(e);
     }
 
     next(e);
   });
+};
+
+export const existOrFail = <T>(target: T | undefined) => {
+  if (target === undefined) {
+    throw createError(500);
+  }
+
+  return target;
 };
 
 interface OperationFunctionParams {

@@ -7,7 +7,7 @@ import { EntityObject, Permission } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { SearchQuery } from "../../../shared/api/request/parse";
 import { EntityStore } from "../../../shared/api/response/get";
-import { insertUser } from "./entities";
+import { insertSession, insertUser } from "./entities";
 
 export const createMocks = async (permission: Permission) => {
   const manager = getManager();
@@ -17,15 +17,28 @@ export const createMocks = async (permission: Permission) => {
   const { account, config, user } = await insertUser({
     userPermission: permission
   });
+  const { session } = await insertSession({
+    sessionUser: user
+  });
 
   req.user = user;
   req.session = {} as any;
+  req.sessionID = session.sessionId;
 
   const next = (error: HttpError) => {
     res.status(error.statusCode);
   };
 
-  return { req, res, next, manager, user, account, config };
+  return {
+    req,
+    res,
+    next,
+    manager,
+    user,
+    account,
+    config,
+    session
+  };
 };
 
 export const getFindResult = (res: MockResponse<Response>) => res._getJSONData() as EntityStore;

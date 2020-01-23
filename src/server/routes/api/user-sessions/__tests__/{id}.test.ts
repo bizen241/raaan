@@ -43,7 +43,7 @@ describe("api > user-sessions > {id}", () => {
       assert.equal(res.statusCode, 403);
     });
 
-    test("200", async () => {
+    test("200 > another session", async () => {
       const { req, res, next, manager, user } = await createMocks("Read");
 
       const { session } = await insertSession({
@@ -54,6 +54,22 @@ describe("api > user-sessions > {id}", () => {
 
       await DELETE(req, res, next);
       assert.equal(res.statusCode, 200);
+
+      assert.equal(res.getHeader("Clear-Site-Data"), undefined);
+
+      const deletedSession = await manager.findOne(UserSessionEntity, session.id);
+      assert.equal(deletedSession, undefined);
+    });
+
+    test("200 > current session", async () => {
+      const { req, res, next, manager, session } = await createMocks("Read");
+
+      setDeleteParams(req, session.id);
+
+      await DELETE(req, res, next);
+      assert.equal(res.statusCode, 200);
+
+      assert.equal(res.getHeader("Clear-Site-Data"), `"cache", "cookies", "storage", "executionContexts"`);
 
       const deletedSession = await manager.findOne(UserSessionEntity, session.id);
       assert.equal(deletedSession, undefined);

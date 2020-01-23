@@ -45,6 +45,9 @@ export const insertContest = async (
 export const insertExercise = async (
   params: {
     exerciseAuthor?: UserEntity;
+    exerciseIsPrivate?: boolean;
+    exerciseTitle?: string;
+    exerciseTags?: string[];
   } = {}
 ) => {
   const manager = getManager();
@@ -59,8 +62,8 @@ export const insertExercise = async (
 
   const exerciseContent: ExerciseContent = {
     lang: "en",
-    title: "",
-    tags: [],
+    title: params.exerciseTitle || "",
+    tags: params.exerciseTags || [],
     description: "",
     questions: [],
     references: [],
@@ -68,7 +71,7 @@ export const insertExercise = async (
   };
 
   const isMerged = true;
-  const isPrivate = false;
+  const isPrivate = params.exerciseIsPrivate || false;
 
   const exerciseSummary = new ExerciseSummaryEntity(exerciseContent);
   exerciseSummary.maxTypeCount = 0;

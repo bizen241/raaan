@@ -86,6 +86,7 @@ export const PATCH = createPatchOperation("ExerciseDraft", "Read", async ({ curr
     exercise.summary.maxTypeCount = maxTypeCount;
     exercise.summary.minTypeCount = minTypeCount;
     exercise.summary.tags = await getTags(exercise.summary, params, manager);
+    exercise.summary.title = exercise.draft.title;
 
     exercise.draft.isMerged = true;
   }

@@ -8,10 +8,11 @@ import {
   insertExercise,
   reset,
   setDeleteParams,
-  setGetParams
+  setGetParams,
+  setPatchParams
 } from "../../../../__tests__/helpers";
 import { ExerciseEntity } from "../../../../database/entities";
-import { DELETE, GET } from "../{id}";
+import { DELETE, GET, PATCH } from "../{id}";
 
 describe("api > exercises > {id}", () => {
   beforeAll(async () => connect());
@@ -26,6 +27,19 @@ describe("api > exercises > {id}", () => {
 
       await GET(req, res, next);
       assert.equal(res.statusCode, 404);
+    });
+
+    test("403", async () => {
+      const { req, res, next } = await createMocks("Guest");
+
+      const { exercise } = await insertExercise({
+        exerciseIsPrivate: true
+      });
+
+      setGetParams(req, exercise.id);
+
+      await GET(req, res, next);
+      assert.equal(res.statusCode, 403);
     });
 
     test("200", async () => {
@@ -45,6 +59,56 @@ describe("api > exercises > {id}", () => {
     });
   });
 
+  describe("PATCH", () => {
+    test("404", async () => {
+      const { req, res, next } = await createMocks("Guest");
+
+      setPatchParams(req, uuid(), {});
+
+      await PATCH(req, res, next);
+      assert.equal(res.statusCode, 404);
+    });
+
+    test("403", async () => {
+      const { req, res, next } = await createMocks("Guest");
+
+      const { exercise } = await insertExercise();
+
+      setPatchParams(req, exercise.id, {});
+
+      await PATCH(req, res, next);
+      assert.equal(res.statusCode, 403);
+    });
+
+    test("200 > by author", async () => {
+      const { req, res, next, user } = await createMocks("Read");
+
+      const { exercise } = await insertExercise({
+        exerciseAuthor: user
+      });
+
+      setPatchParams(req, exercise.id, {
+        isPrivate: false
+      });
+
+      await PATCH(req, res, next);
+      assert.equal(res.statusCode, 200);
+    });
+
+    test("200 > by admin", async () => {
+      const { req, res, next } = await createMocks("Admin");
+
+      const { exercise } = await insertExercise();
+
+      setPatchParams(req, exercise.id, {
+        isLocked: true
+      });
+
+      await PATCH(req, res, next);
+      assert.equal(res.statusCode, 200);
+    });
+  });
+
   describe("DELETE", () => {
     test("404", async () => {
       const { req, res, next } = await createMocks("Read");
@@ -53,6 +117,17 @@ describe("api > exercises > {id}", () => {
 
       await DELETE(req, res, next);
       assert.equal(res.statusCode, 404);
+    });
+
+    test("403", async () => {
+      const { req, res, next } = await createMocks("Read");
+
+      const { exercise } = await insertExercise();
+
+      setDeleteParams(req, exercise.id);
+
+      await DELETE(req, res, next);
+      assert.equal(res.statusCode, 403);
     });
 
     test("200", async () => {

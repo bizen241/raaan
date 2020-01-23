@@ -20,6 +20,7 @@ export const POST = createPostOperation("ExerciseDraft", "Read", async ({ curren
     exerciseSummary.maxTypeCount = maxTypeCount;
     exerciseSummary.minTypeCount = minTypeCount;
     exerciseSummary.tags = await getTags(exerciseSummary, params, manager);
+    exerciseSummary.title = params.title || "";
   }
 
   const exerciseDraft = new ExerciseDraftEntity(params);

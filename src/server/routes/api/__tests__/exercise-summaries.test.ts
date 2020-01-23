@@ -25,7 +25,9 @@ describe("api > exercise-summaries", () => {
         userPermission: "Write"
       });
       const { exerciseSummary } = await insertExercise({
-        exerciseAuthor: author
+        exerciseAuthor: author,
+        exerciseTitle: "test",
+        exerciseTags: ["test"]
       });
 
       setSearchParams<ExerciseSummary>(req, {
