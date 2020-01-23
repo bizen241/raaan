@@ -1,5 +1,5 @@
 import { strict as assert } from "assert";
-import { close, connect, createMocks, createParams, getFindResult, reset } from "../../../../__tests__/helpers";
+import { close, connect, createMocks, getFindResult, reset, setGetParams } from "../../../../__tests__/helpers";
 import { GET } from "../{id}";
 
 describe("api > users > {id}", () => {
@@ -11,7 +11,7 @@ describe("api > users > {id}", () => {
     test("404", async () => {
       const { req, res, next, manager, user } = await createMocks("Read");
 
-      req.params = createParams(user.id);
+      setGetParams(req, user.id);
 
       await manager.remove(user);
 
@@ -22,7 +22,7 @@ describe("api > users > {id}", () => {
     test("200", async () => {
       const { req, res, next, user } = await createMocks("Read");
 
-      req.params = createParams(user.id);
+      setGetParams(req, user.id);
 
       await GET(req, res, next);
       assert.equal(res.statusCode, 200);

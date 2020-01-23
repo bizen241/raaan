@@ -4,10 +4,11 @@ import {
   close,
   connect,
   createMocks,
-  createParams,
   getFindResult,
   insertExercise,
-  reset
+  reset,
+  setDeleteParams,
+  setGetParams
 } from "../../../../__tests__/helpers";
 import { ExerciseEntity } from "../../../../database/entities";
 import { DELETE, GET } from "../{id}";
@@ -21,7 +22,7 @@ describe("api > exercises > {id}", () => {
     test("404", async () => {
       const { req, res, next } = await createMocks("Guest");
 
-      req.params = createParams(uuid());
+      setGetParams(req, uuid());
 
       await GET(req, res, next);
       assert.equal(res.statusCode, 404);
@@ -34,7 +35,7 @@ describe("api > exercises > {id}", () => {
         exerciseAuthor: user
       });
 
-      req.params = createParams(exercise.id);
+      setGetParams(req, exercise.id);
 
       await GET(req, res, next);
       assert.equal(res.statusCode, 200);
@@ -48,7 +49,7 @@ describe("api > exercises > {id}", () => {
     test("404", async () => {
       const { req, res, next } = await createMocks("Read");
 
-      req.params = createParams(uuid());
+      setDeleteParams(req, uuid());
 
       await DELETE(req, res, next);
       assert.equal(res.statusCode, 404);
@@ -61,7 +62,7 @@ describe("api > exercises > {id}", () => {
         exerciseAuthor: user
       });
 
-      req.params = createParams(exercise.id);
+      setDeleteParams(req, exercise.id);
 
       await DELETE(req, res, next);
       assert.equal(res.statusCode, 200);

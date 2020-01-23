@@ -4,11 +4,11 @@ import {
   close,
   connect,
   createMocks,
-  createQuery,
   getSearchResult,
   insertExercise,
   insertUser,
-  reset
+  reset,
+  setSearchParams
 } from "../../../__tests__/helpers";
 import { GET } from "../exercise-summaries";
 
@@ -28,7 +28,7 @@ describe("api > exercise-summaries", () => {
         exerciseAuthor: author
       });
 
-      req.query = createQuery<ExerciseSummary>({
+      setSearchParams<ExerciseSummary>(req, {
         authorId: author.id
       });
 

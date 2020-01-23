@@ -1,6 +1,6 @@
 import { strict as assert } from "assert";
 import { AppDiaryEntry } from "../../../../shared/api/entities";
-import { close, connect, createMocks, createQuery, getSearchResult, reset } from "../../../__tests__/helpers";
+import { close, connect, createMocks, getSearchResult, reset, setSearchParams } from "../../../__tests__/helpers";
 import { AppDiaryEntryEntity } from "../../../database/entities";
 import { GET } from "../app-diary-entries";
 
@@ -16,7 +16,7 @@ describe("api > app-diary-entries", () => {
       const appDiaryEntry = new AppDiaryEntryEntity(new Date());
       await manager.save(appDiaryEntry);
 
-      req.query = createQuery<AppDiaryEntry>({});
+      setSearchParams<AppDiaryEntry>(req, {});
 
       await GET(req, res, next);
       assert.equal(res.statusCode, 200);

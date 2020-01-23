@@ -5,10 +5,10 @@ import {
   close,
   connect,
   createMocks,
-  createQuery,
   getSearchResult,
   insertSession,
-  reset
+  reset,
+  setSearchParams
 } from "../../../__tests__/helpers";
 import { GET } from "../user-sessions";
 
@@ -21,7 +21,7 @@ describe("api > user-sessions", () => {
     test("400", async () => {
       const { req, res, next } = await createMocks("Read");
 
-      req.query = createQuery<UserSession>({});
+      setSearchParams<UserSession>(req, {});
 
       await GET(req, res, next);
       assert.equal(res.statusCode, 400);
@@ -30,7 +30,7 @@ describe("api > user-sessions", () => {
     test("403", async () => {
       const { req, res, next } = await createMocks("Read");
 
-      req.query = createQuery<UserSession>({
+      setSearchParams<UserSession>(req, {
         userId: uuid()
       });
 
@@ -41,11 +41,11 @@ describe("api > user-sessions", () => {
     test("200", async () => {
       const { req, res, next, user } = await createMocks("Read");
 
-      const session = await insertSession({
+      const { session } = await insertSession({
         sessionUser: user
       });
 
-      req.query = createQuery<UserSession>({
+      setSearchParams<UserSession>(req, {
         userId: user.id
       });
 

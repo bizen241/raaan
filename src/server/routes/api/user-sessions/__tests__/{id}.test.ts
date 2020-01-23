@@ -4,10 +4,10 @@ import {
   close,
   connect,
   createMocks,
-  createParams,
   insertSession,
   insertUser,
-  reset
+  reset,
+  setDeleteParams
 } from "../../../../__tests__/helpers";
 import { UserSessionEntity } from "../../../../database/entities";
 import { DELETE } from "../{id}";
@@ -21,7 +21,7 @@ describe("api > user-sessions > {id}", () => {
     test("404", async () => {
       const { req, res, next } = await createMocks("Read");
 
-      req.params = createParams(uuid());
+      setDeleteParams(req, uuid());
 
       await DELETE(req, res, next);
       assert.equal(res.statusCode, 404);
@@ -33,11 +33,11 @@ describe("api > user-sessions > {id}", () => {
       const { user } = await insertUser({
         userPermission: "Read"
       });
-      const session = await insertSession({
+      const { session } = await insertSession({
         sessionUser: user
       });
 
-      req.params = createParams(session.id);
+      setDeleteParams(req, session.id);
 
       await DELETE(req, res, next);
       assert.equal(res.statusCode, 403);
@@ -46,11 +46,11 @@ describe("api > user-sessions > {id}", () => {
     test("200", async () => {
       const { req, res, next, manager, user } = await createMocks("Read");
 
-      const session = await insertSession({
+      const { session } = await insertSession({
         sessionUser: user
       });
 
-      req.params = createParams(session.id);
+      setDeleteParams(req, session.id);
 
       await DELETE(req, res, next);
       assert.equal(res.statusCode, 200);

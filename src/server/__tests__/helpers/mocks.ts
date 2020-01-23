@@ -1,6 +1,6 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { HttpError } from "http-errors";
-import { createRequest, createResponse, MockResponse } from "node-mocks-http";
+import { createRequest, createResponse, MockRequest, MockResponse } from "node-mocks-http";
 import { getManager } from "typeorm";
 import { stringifyParams } from "../../../client/api/request/search";
 import { EntityObject, Permission } from "../../../shared/api/entities";
@@ -29,6 +29,7 @@ export const createMocks = async (permission: Permission) => {
 };
 
 export const getFindResult = (res: MockResponse<Response>) => res._getJSONData() as EntityStore;
+
 export const getSearchResult = (res: MockResponse<Response>) =>
   res._getJSONData() as {
     ids: string[];
@@ -36,11 +37,15 @@ export const getSearchResult = (res: MockResponse<Response>) =>
     count: number;
   };
 
-export const createQuery = <E extends EntityObject>(params: Params<E>) => {
+export const setGetParams = (req: MockRequest<Request>, id: string) => {
+  req.params = { id };
+};
+
+export const setSearchParams = <E extends EntityObject>(req: MockRequest<Request>, params: Params<E>) => {
   const queryString = stringifyParams(params);
   const urlSearchParams = new URLSearchParams(queryString);
 
-  return [...urlSearchParams.entries()].reduce(
+  req.query = [...urlSearchParams.entries()].reduce(
     (query, [key, value]) => ({
       ...query,
       [key]: value
@@ -49,4 +54,15 @@ export const createQuery = <E extends EntityObject>(params: Params<E>) => {
   );
 };
 
-export const createParams = (id: string) => ({ id });
+export const setPostParams = <E extends EntityObject>(req: MockRequest<Request>, params: Params<E>) => {
+  req.body = params;
+};
+
+export const setPatchParams = <E extends EntityObject>(req: MockRequest<Request>, id: string, params: Params<E>) => {
+  req.params = { id };
+  req.body = params;
+};
+
+export const setDeleteParams = (req: MockRequest<Request>, id: string) => {
+  req.params = { id };
+};
