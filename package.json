@@ -8,7 +8,7 @@
     "start": "node out/server/index.js",
     "build": "run-s build:schema build:client build:server",
     "build:schema": "node scripts/schema.js",
-    "build:client": "rimraf dist && cross-env NODE_ENV=production webpack",
+    "build:client": "rimraf dist && cross-env NODE_ENV=production webpack && prettier --write --parser html \"src/**/*.hbs\"",
     "build:server": "rimraf out && tsc --project config/tsconfig.server.json",
     "watch": "run-p watch:client watch:server",
     "watch:client": "webpack-dev-server",

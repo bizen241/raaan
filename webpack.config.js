@@ -15,8 +15,8 @@ const isDevelopment = mode === "development";
  */
 const plugins = [
   new HtmlPlugin({
-    inject: false,
-    template: join(__dirname, "assets/index.ejs")
+    template: join(__dirname, "assets/index.ejs"),
+    filename: join(__dirname, "src/server/views/index.hbs")
   }),
   new CopyPlugin([
     {
@@ -68,8 +68,8 @@ const webpackConfiguration = {
     index: join(__dirname, "src/client/index.ts")
   },
   output: {
-    filename: "[name].js",
-    chunkFilename: "[name].bundle.js",
+    filename: "[name].[chunkhash].js",
+    chunkFilename: "[name].[chunkhash].js",
     path: join(__dirname, "dist"),
     publicPath: "/"
   },
