@@ -129,7 +129,7 @@ describe("api > exercise-summaries", () => {
       });
 
       setSearchParams<ExerciseSummary>(req, {
-        authorId: author.id,
+        authorId: user.id,
         isEditing: true
       });
 

@@ -72,8 +72,8 @@ export const insertExercise = async (
     isRandom: true
   };
 
-  const isMerged = params.exerciseIsMerged || true;
-  const isPrivate = params.exerciseIsPrivate || false;
+  const isMerged = params.exerciseIsMerged !== undefined ? params.exerciseIsMerged : true;
+  const isPrivate = params.exerciseIsPrivate !== undefined ? params.exerciseIsPrivate : false;
 
   const exerciseSummary = new ExerciseSummaryEntity(exerciseContent);
   exerciseSummary.maxTypeCount = 0;
