@@ -23,12 +23,13 @@ export const GET = createSearchOperation("ExerciseSummary", "Guest", async ({ cu
   if (title !== undefined) {
     query.andWhere("MATCH(exerciseSummary.title) AGAINST (:title)", { title });
   }
-  if (isEditing !== undefined) {
-    query.andWhere("draft.isMerged = :isMerged", { isMerged: !isEditing });
-  }
 
   const isAuthor = authorId !== undefined && authorId === currentUser.id;
-  if (!isAuthor) {
+  if (isAuthor) {
+    if (isEditing !== undefined) {
+      query.andWhere("draft.isMerged = :isMerged", { isMerged: !isEditing });
+    }
+  } else {
     query.andWhere("exercise.isPrivate = false");
   }
 

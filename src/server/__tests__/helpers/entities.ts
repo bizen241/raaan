@@ -18,6 +18,7 @@ import {
   UserSessionEntity,
   UserSummaryEntity
 } from "../../database/entities";
+import { getTags } from "../../services/tags";
 
 export const insertContest = async (
   params: {
@@ -46,6 +47,7 @@ export const insertExercise = async (
   params: {
     exerciseAuthor?: UserEntity;
     exerciseIsPrivate?: boolean;
+    exerciseIsMerged?: boolean;
     exerciseTitle?: string;
     exerciseTags?: string[];
   } = {}
@@ -70,13 +72,13 @@ export const insertExercise = async (
     isRandom: true
   };
 
-  const isMerged = true;
+  const isMerged = params.exerciseIsMerged || true;
   const isPrivate = params.exerciseIsPrivate || false;
 
   const exerciseSummary = new ExerciseSummaryEntity(exerciseContent);
   exerciseSummary.maxTypeCount = 0;
   exerciseSummary.minTypeCount = 0;
-  exerciseSummary.tags = [];
+  exerciseSummary.tags = await getTags(exerciseSummary, exerciseContent, manager);
 
   const exerciseDraft = new ExerciseDraftEntity(exerciseContent);
   exerciseDraft.isMerged = isMerged;
