@@ -1,6 +1,7 @@
 import * as bodyParser from "body-parser";
 import { Express } from "express";
 import { initialize } from "express-openapi";
+import createError from "http-errors";
 import { resolve } from "path";
 import * as swagger from "swagger-ui-express";
 import { Env } from "../env";
@@ -35,4 +36,6 @@ export const useApi = (env: Env, app: Express) => {
       })
     );
   }
+
+  app.use("/api/*", (_, __, next) => next(createError(404)));
 };
