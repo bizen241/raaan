@@ -75,7 +75,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
       !isAuthor
     );
     const { entities: reports, onReload: onReloadReports } = useSearch(
-      "Report",
+      "ReportSummary",
       {
         reporterId: currentUser.id,
         targetType: "Exercise",
