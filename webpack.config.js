@@ -16,7 +16,7 @@ const isDevelopment = mode === "development";
 const plugins = [
   new HtmlPlugin({
     template: join(__dirname, "assets/index.ejs"),
-    filename: join(__dirname, "src/server/views/index.hbs")
+    filename: join(__dirname, isDevelopment ? "dist/index.html" : "src/server/views/index.hbs")
   }),
   new CopyPlugin([
     {

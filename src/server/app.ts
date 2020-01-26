@@ -1,5 +1,6 @@
 import compression from "compression";
 import express from "express";
+import expressHandlebars from "express-handlebars";
 import helmet from "helmet";
 import { join } from "path";
 import serveStatic from "serve-static";
@@ -9,7 +10,7 @@ import { Env } from "./env";
 import { errorHandler } from "./error";
 import { useLimiter } from "./limiter";
 import { authRouter } from "./routes/auth";
-import { fallbackRouter } from "./routes/fallback";
+import { shellRouter } from "./routes/shell";
 import { useSession } from "./session";
 
 export const createApp = (env: Env, app: express.Express = express()) => {
@@ -33,11 +34,15 @@ export const createApp = (env: Env, app: express.Express = express()) => {
   app.use(compression());
   app.use(serveStatic(join(process.cwd(), "dist")));
 
+  app.engine("hbs", expressHandlebars());
+  app.set("view engine", "hbs");
+  app.set("views", join(process.cwd(), "src/server/views"));
+
   useLimiter(app);
   useApi(env, app);
 
   app.use("/auth", authRouter);
-  app.use("*", fallbackRouter);
+  app.use("*", shellRouter);
 
   app.use(errorHandler);
 
