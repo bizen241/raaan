@@ -42,7 +42,7 @@ export const createApp = (env: Env, app: express.Express = express()) => {
   useApi(env, app);
 
   app.use("/auth", authRouter);
-  app.use("*", shellRouter);
+  app.use("/", shellRouter);
 
   app.use(errorHandler);
 

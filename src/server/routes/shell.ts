@@ -27,7 +27,7 @@ shellRouter.get("/exercises/:id", async (req, res) => {
   const id = req.params.id;
 
   const exercise = await getManager().findOne(ExerciseEntity, id, {
-    relations: ["summary"]
+    relations: ["latest"]
   });
   if (exercise === undefined || exercise.latest === undefined) {
     renderShell(req, res);
@@ -42,4 +42,6 @@ shellRouter.get("/exercises/:id", async (req, res) => {
   });
 });
 
-shellRouter.get("*", (req, res) => renderShell(req, res));
+shellRouter.get("*", (req, res) => {
+  renderShell(req, res);
+});
