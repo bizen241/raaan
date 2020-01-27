@@ -1,4 +1,3 @@
-import { Card, CardContent } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
 import React, { useCallback, useContext } from "react";
 import { AvatarType } from "../../../shared/api/entities";
@@ -7,7 +6,7 @@ import { useToggleState } from "../../hooks/useToggleState";
 import { mergeBuffer } from "../../reducers/buffers";
 import { UploadUserAccountDialog } from "../dialogs/user-accounts/UploadUserAccountDialog";
 import { UserContext } from "../project/Context";
-import { Button, Column, Select, SelectOptions } from "../ui";
+import { Button, Card, Column, Select, SelectOptions } from "../ui";
 
 const selectAvatarTypeOptions: SelectOptions<AvatarType> = {
   identicon: {
@@ -35,14 +34,12 @@ export const UserAccountEditor = withBuffer("UserAccount")(
       <Column>
         <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
         <Card>
-          <CardContent>
-            <Select<AvatarType>
-              label="アバター"
-              options={selectAvatarTypeOptions}
-              defaultValue={params.avatar || "identicon"}
-              onChange={onUpdateAvatar}
-            />
-          </CardContent>
+          <Select<AvatarType>
+            label="アバター"
+            options={selectAvatarTypeOptions}
+            defaultValue={params.avatar || "identicon"}
+            onChange={onUpdateAvatar}
+          />
         </Card>
         <UploadUserAccountDialog userAccountId={bufferId} isOpen={isUploadDialogOpen} onClose={onToggleUploadDialog} />
       </Column>

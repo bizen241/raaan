@@ -1,14 +1,4 @@
-import {
-  Card,
-  CardContent,
-  Divider,
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  Typography
-} from "@material-ui/core";
+import { Divider, IconButton, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import React, { useCallback, useContext } from "react";
@@ -19,7 +9,7 @@ import { useSearch } from "../../../hooks/useSearch";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { UserContext } from "../../project/Context";
-import { Column, Row } from "../../ui";
+import { Card, Column, Row } from "../../ui";
 
 export const SelectContestGroupList = React.memo<{
   exerciseId: string;
@@ -48,15 +38,13 @@ export const SelectContestGroupList = React.memo<{
 
   return (
     <Card>
-      <CardContent>
-        <Column>
-          <Row>
-            <IconButton onClick={onReload}>
-              <Refresh />
-            </IconButton>
-          </Row>
-        </Column>
-      </CardContent>
+      <Column p={2}>
+        <Row>
+          <IconButton onClick={onReload}>
+            <Refresh />
+          </IconButton>
+        </Row>
+      </Column>
       <Divider />
       <Column pb={1}>
         <Table>
