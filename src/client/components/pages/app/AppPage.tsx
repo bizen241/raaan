@@ -1,6 +1,6 @@
 import { Group, Storage, SystemUpdate, Timeline } from "@material-ui/icons";
 import React from "react";
-import { Button, Page } from "../ui";
+import { Button, Page } from "../../ui";
 
 export const AppPage = React.memo(() => {
   return (
