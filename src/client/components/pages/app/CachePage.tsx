@@ -4,7 +4,8 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { createEntityTypeToObject, EntityType } from "../../../../shared/api/entities";
 import { actions } from "../../../reducers";
-import { Button, Card, Page } from "../../ui";
+import { Page } from "../../project/Page";
+import { Button, Card } from "../../ui";
 
 const entityTypes = Object.keys(createEntityTypeToObject()) as EntityType[];
 

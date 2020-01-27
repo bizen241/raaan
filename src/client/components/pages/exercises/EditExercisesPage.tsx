@@ -5,8 +5,9 @@ import { useDispatch } from "react-redux";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { generateBufferId } from "../../../reducers/buffers";
 import { ImportExerciseDraftDialog } from "../../dialogs/exercise-drafts/ImportExerciseDraftDialog";
-import { ExerciseDraftBufferList } from "../../list/exercise-drafts/ExerciseDraftBufferList";
-import { Button, Column, Page } from "../../ui";
+import { ExerciseDraftBufferList } from "../../lists/exercise-drafts/ExerciseDraftBufferList";
+import { Page } from "../../project/Page";
+import { Button, Column } from "../../ui";
 
 export const EditExercisesPage = React.memo(() => {
   const dispatch = useDispatch();

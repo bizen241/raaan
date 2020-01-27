@@ -1,7 +1,7 @@
 import React from "react";
-import { SuggestionBufferList } from "../../list/suggestions/SuggestionBufferList";
+import { SuggestionBufferList } from "../../lists/suggestions/SuggestionBufferList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const EditSuggestionsPage = React.memo<PageProps>(() => {
   return (

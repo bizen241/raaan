@@ -1,10 +1,11 @@
 import { Email } from "@material-ui/icons";
 import React, { useContext } from "react";
 import { useSearch } from "../../../hooks/useSearch";
-import { GroupMemberList, GroupMemberPermissionContext } from "../../list/group-members/GroupMemberList";
+import { GroupMemberList, GroupMemberPermissionContext } from "../../lists/group-members/GroupMemberList";
 import { UserContext } from "../../project/Context";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Button, Page } from "../../ui";
+import { Button } from "../../ui";
 
 export const GroupMembersPage = React.memo<PageProps>(props => {
   const groupId = props.match.params.id;

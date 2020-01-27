@@ -1,7 +1,7 @@
 import React from "react";
-import { RevisionSummaryList } from "../../list/revision-summaries/RevisionSummaryList";
+import { RevisionSummaryList } from "../../lists/revision-summaries/RevisionSummaryList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const ExerciseRevisionsPage = React.memo<PageProps>(({ match }) => {
   const exerciseId = match.params.id;

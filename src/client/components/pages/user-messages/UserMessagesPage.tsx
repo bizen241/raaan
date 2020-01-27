@@ -1,9 +1,9 @@
 import { Email } from "@material-ui/icons";
 import React, { useContext } from "react";
-import { UserMessageList } from "../../list/user-messages/UserMessageList";
+import { UserMessageList } from "../../lists/user-messages/UserMessageList";
 import { UserContext } from "../../project/Context";
+import { Page } from "../../project/Page";
 import { Button } from "../../ui";
-import { Page } from "../../ui/Page";
 
 export const UserMessagesPage = () => {
   const currentUser = useContext(UserContext);

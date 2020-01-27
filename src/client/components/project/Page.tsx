@@ -1,6 +1,6 @@
 import React from "react";
-import { Header } from "../project/Header";
-import { Column } from "./Column";
+import { Column } from "../ui/Column";
+import { Header } from "./Header";
 
 export const Page: React.FunctionComponent<{
   title?: React.ReactNode;

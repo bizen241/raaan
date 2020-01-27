@@ -1,7 +1,7 @@
 import React from "react";
-import { TagBufferList } from "../../list/tags/TagBufferList";
+import { TagBufferList } from "../../lists/tags/TagBufferList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const EditTagsPage = React.memo<PageProps>(() => {
   return (

@@ -7,7 +7,7 @@ import { withSearch } from "../../enhancers/withSearch";
 import { actions } from "../../reducers";
 import { generateBufferId } from "../../reducers/buffers";
 import { Button, Card } from "../ui";
-import { GroupSummaryViewer } from "../viewer/GroupSummaryViewer";
+import { GroupSummaryViewer } from "../viewers/GroupSummaryViewer";
 
 export const GroupApplicationEditor = withSearch("GroupSecret")(
   React.memo(({ entities: groupSecrets, params }) => {

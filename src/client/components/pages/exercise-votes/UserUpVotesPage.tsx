@@ -1,7 +1,7 @@
 import React from "react";
-import { UserExerciseVoteList } from "../../list/exercise-votes/UserExerciseVoteList";
+import { UserExerciseVoteList } from "../../lists/exercise-votes/UserExerciseVoteList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const UserUpVotesPage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;

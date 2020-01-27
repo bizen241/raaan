@@ -1,7 +1,7 @@
 import React from "react";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui";
-import { ObjectionViewer } from "../../viewer/ObjectionViewer";
+import { ObjectionViewer } from "../../viewers/ObjectionViewer";
 
 export const ObjectionPage = React.memo<PageProps>(props => {
   const objectionId = props.match.params.id;

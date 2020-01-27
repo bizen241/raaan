@@ -1,6 +1,7 @@
 import { CircularProgress } from "@material-ui/core";
 import React from "react";
-import { Column, Page } from "../../ui";
+import { Page } from "../../project/Page";
+import { Column } from "../../ui";
 
 export const LoadingPage = React.memo(() => {
   return (

@@ -1,7 +1,7 @@
 import React from "react";
-import { PlaylistBookmarkList } from "../../list/playlist-bookmarks/PlaylistBookmarkList";
+import { PlaylistBookmarkList } from "../../lists/playlist-bookmarks/PlaylistBookmarkList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui";
 
 export const UserPlaylistBookmarksPage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;

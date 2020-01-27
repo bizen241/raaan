@@ -5,11 +5,12 @@ import { useBuffers } from "../../../hooks/useBuffers";
 import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { ReportCommentEditor } from "../../editor/ReportCommentEditor";
-import { ReportCommentList } from "../../list/report-comments/ReportCommentList";
+import { ReportCommentEditor } from "../../editors/ReportCommentEditor";
+import { ReportCommentList } from "../../lists/report-comments/ReportCommentList";
 import { UserContext } from "../../project/Context";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Button, Page } from "../../ui";
+import { Button } from "../../ui";
 
 export const ReportReportCommentsPage = React.memo<PageProps>(props => {
   const reportId = props.match.params.id;

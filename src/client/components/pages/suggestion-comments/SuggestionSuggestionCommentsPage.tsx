@@ -5,10 +5,11 @@ import { useBuffers } from "../../../hooks/useBuffers";
 import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { SuggestionCommentEditor } from "../../editor/SuggestionCommentEditor";
-import { SuggestionCommentList } from "../../list/suggestion-comments/SuggestionCommentList";
+import { SuggestionCommentEditor } from "../../editors/SuggestionCommentEditor";
+import { SuggestionCommentList } from "../../lists/suggestion-comments/SuggestionCommentList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Button, Page } from "../../ui";
+import { Button } from "../../ui";
 
 export const SuggestionSuggestionCommentsPage = React.memo<PageProps>(props => {
   const suggestionId = props.match.params.id;

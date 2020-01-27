@@ -3,11 +3,11 @@ import { push } from "connected-react-router";
 import React, { useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { generateBufferId } from "../../../reducers/buffers";
-import { UserGroupMemberList } from "../../list/group-members/UserGroupMemberList";
+import { UserGroupMemberList } from "../../lists/group-members/UserGroupMemberList";
 import { UserContext } from "../../project/Context";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
 import { Button } from "../../ui";
-import { Page } from "../../ui/Page";
 
 export const UserGroupsPage = React.memo<PageProps>(() => {
   const dispatch = useDispatch();

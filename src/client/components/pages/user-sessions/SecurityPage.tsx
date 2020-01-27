@@ -4,7 +4,8 @@ import { useToggleState } from "../../../hooks/useToggleState";
 import { DeleteAccountDialog } from "../../dialogs/user/DeleteAccountDialog";
 import { LogoutDialog } from "../../dialogs/user/LogoutDialog";
 import { UserContext } from "../../project/Context";
-import { Button, Page } from "../../ui";
+import { Page } from "../../project/Page";
+import { Button } from "../../ui";
 
 export const SecurityPage = React.memo(() => {
   const currentUser = useContext(UserContext);

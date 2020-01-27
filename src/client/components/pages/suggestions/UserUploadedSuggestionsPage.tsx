@@ -1,7 +1,7 @@
 import React from "react";
-import { SuggestionSummaryList } from "../../list/suggestion-summaries/SuggestionSummaryList";
+import { SuggestionSummaryList } from "../../lists/suggestion-summaries/SuggestionSummaryList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui";
 
 export const UserUploadedSuggestionsPage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;

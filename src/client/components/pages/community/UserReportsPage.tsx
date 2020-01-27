@@ -1,7 +1,8 @@
 import { Inbox, Send } from "@material-ui/icons";
 import React from "react";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Button, Page } from "../../ui";
+import { Button } from "../../ui";
 
 export const UserReportsPage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;

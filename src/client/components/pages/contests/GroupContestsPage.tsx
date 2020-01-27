@@ -1,8 +1,9 @@
 import { Add, Edit } from "@material-ui/icons";
 import React from "react";
-import { ContestList } from "../../list/contests/ContestList";
+import { ContestList } from "../../lists/contests/ContestList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Button, Page } from "../../ui";
+import { Button } from "../../ui";
 
 export const GroupContestsPage = React.memo<PageProps>(({ match }) => {
   const groupId = match.params.id;

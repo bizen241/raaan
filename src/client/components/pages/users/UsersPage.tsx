@@ -1,6 +1,6 @@
 import React from "react";
-import { UserSummaryList } from "../../list/user-summaries/UserSummaryList";
-import { Page } from "../../ui";
+import { UserSummaryList } from "../../lists/user-summaries/UserSummaryList";
+import { Page } from "../../project/Page";
 
 export const UsersPage = React.memo(() => {
   return (

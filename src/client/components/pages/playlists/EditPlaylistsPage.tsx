@@ -1,7 +1,7 @@
 import React from "react";
-import { PlaylistBufferList } from "../../list/playlists/PlaylistBufferList";
+import { PlaylistBufferList } from "../../lists/playlists/PlaylistBufferList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const EditPlaylistsPage = React.memo<PageProps>(() => {
   return (

@@ -1,6 +1,6 @@
 import React from "react";
-import { ReportSummaryList } from "../../list/report-summaries/ReportSummaryList";
-import { Page } from "../../ui";
+import { ReportSummaryList } from "../../lists/report-summaries/ReportSummaryList";
+import { Page } from "../../project/Page";
 
 export const ReportsPage = React.memo(() => {
   return (

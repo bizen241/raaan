@@ -1,7 +1,7 @@
 import React from "react";
-import { TagFollowerList } from "../../list/tag-follows/TagFollowerList";
+import { TagFollowerList } from "../../lists/tag-follows/TagFollowerList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const TagFollowersPage = React.memo<PageProps>(({ match }) => {
   const tagId = match.params.id;

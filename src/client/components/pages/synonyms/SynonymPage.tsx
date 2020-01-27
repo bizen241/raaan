@@ -1,7 +1,7 @@
 import React from "react";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui";
-import { SynonymViewer } from "../../viewer/SynonymViewer";
+import { SynonymViewer } from "../../viewers/SynonymViewer";
 
 export const SynonymPage = React.memo<PageProps>(props => {
   const synonymId = props.match.params.id;

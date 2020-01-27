@@ -1,7 +1,7 @@
 import React from "react";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
-import { RevisionViewer } from "../../viewer/RevisionViewer";
+import { RevisionViewer } from "../../viewers/RevisionViewer";
 
 export const RevisionPage = React.memo<PageProps>(props => {
   const revisionId = props.match.params.id;

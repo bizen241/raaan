@@ -1,7 +1,7 @@
 import React from "react";
-import { SuggestionEditor } from "../../editor/SuggestionEditor";
+import { SuggestionEditor } from "../../editors/SuggestionEditor";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 const EditSuggestionPage = React.memo<PageProps>(({ match }) => {
   const suggestionId = match.params.id;

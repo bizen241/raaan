@@ -1,9 +1,9 @@
 import React from "react";
 import { withEntity } from "../../../enhancers/withEntity";
 import { isLocalOnly } from "../../../reducers/api";
-import { ExerciseDraftEditor } from "../../editor/ExerciseDraftEditor";
+import { ExerciseDraftEditor } from "../../editors/ExerciseDraftEditor";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 const EditExercisePage = React.memo<PageProps>(({ match }) => {
   const bufferId = match.params.id;

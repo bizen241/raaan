@@ -1,6 +1,6 @@
 import React from "react";
-import { SynonymList } from "../../list/synonyms/SynonymList";
-import { Page } from "../../ui";
+import { SynonymList } from "../../lists/synonyms/SynonymList";
+import { Page } from "../../project/Page";
 
 export const SynonymsPage = React.memo(() => {
   return (

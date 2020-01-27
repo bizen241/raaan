@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { UserSessionList } from "../../list/user-sessions/UserSessionList";
+import { UserSessionList } from "../../lists/user-sessions/UserSessionList";
 import { UserContext } from "../../project/Context";
-import { Page } from "../../ui/Page";
+import { Page } from "../../project/Page";
 
 export const UserSessionsPage = () => {
   const currentUser = useContext(UserContext);

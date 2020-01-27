@@ -1,7 +1,7 @@
 import React from "react";
-import { GroupBufferList } from "../../list/groups/GroupBufferList";
+import { GroupBufferList } from "../../lists/groups/GroupBufferList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const EditGroupsPage = React.memo<PageProps>(() => {
   return (

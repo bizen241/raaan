@@ -6,7 +6,6 @@ export * from "./DialogContent";
 export * from "./HeatMap";
 export * from "./Menu";
 export * from "./MenuItem";
-export * from "./Page";
 export * from "./Property";
 export * from "./Row";
 export * from "./Search";

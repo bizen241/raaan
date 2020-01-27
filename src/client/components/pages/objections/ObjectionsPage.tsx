@@ -1,6 +1,6 @@
 import React from "react";
-import { ObjectionSummaryList } from "../../list/objection-summaries/ObjectionSummaryList";
-import { Page } from "../../ui";
+import { ObjectionSummaryList } from "../../lists/objection-summaries/ObjectionSummaryList";
+import { Page } from "../../project/Page";
 
 export const ObjectionsPage = React.memo(() => {
   return (

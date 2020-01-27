@@ -1,7 +1,7 @@
 import React from "react";
-import { ContestEditor } from "../../editor/ContestEditor";
+import { ContestEditor } from "../../editors/ContestEditor";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const EditContestPage = React.memo<PageProps>(({ match }) => {
   const groupId = match.params.id;

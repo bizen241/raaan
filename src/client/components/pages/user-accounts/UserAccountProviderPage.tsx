@@ -4,9 +4,9 @@ import { useSelector } from "react-redux";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { RootState } from "../../../reducers";
 import { UpdateEmailDialog } from "../../dialogs/user/UpdateEmailDialog";
+import { Page } from "../../project/Page";
 import { Button } from "../../ui";
-import { Page } from "../../ui/Page";
-import { UserAccountViewer } from "../../viewer/UserAccountViewer";
+import { UserAccountViewer } from "../../viewers/UserAccountViewer";
 
 export const UserAccountProviderPage = () => {
   const currentUserAccountId = useSelector((state: RootState) => state.app.userAccountId);

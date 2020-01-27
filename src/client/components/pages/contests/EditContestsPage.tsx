@@ -1,7 +1,7 @@
 import React from "react";
-import { ContestBufferList } from "../../list/contests/ContestBufferList";
+import { ContestBufferList } from "../../lists/contests/ContestBufferList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const EditContestsPage = React.memo<PageProps>(() => {
   return (

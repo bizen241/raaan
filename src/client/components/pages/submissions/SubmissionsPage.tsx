@@ -1,10 +1,10 @@
 import { HourglassFull } from "@material-ui/icons";
 import React, { useContext } from "react";
-import { SubmissionSummaryList } from "../../list/submission-summaries/SubmissionSummaryList";
+import { SubmissionSummaryList } from "../../lists/submission-summaries/SubmissionSummaryList";
 import { UserContext } from "../../project/Context";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
 import { Button } from "../../ui";
-import { Page } from "../../ui/Page";
 
 export const SubmissionsPage = React.memo<PageProps>(() => {
   const currentUser = useContext(UserContext);

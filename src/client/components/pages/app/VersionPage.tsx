@@ -3,7 +3,8 @@ import { Sync, SystemUpdate } from "@material-ui/icons";
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../reducers";
-import { Button, Card, Page } from "../../ui";
+import { Page } from "../../project/Page";
+import { Button, Card } from "../../ui";
 
 export const VersionPage = React.memo(() => {
   const hasUpdate = useSelector((state: RootState) => state.app.hasUpdate);

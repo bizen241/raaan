@@ -2,8 +2,9 @@ import { Email, Inbox, Link, Send } from "@material-ui/icons";
 import React from "react";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { GroupInvitationsDialog } from "../../dialogs/groups/GroupInvitationsDialog";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Button, Page } from "../../ui";
+import { Button } from "../../ui";
 
 export const GroupInvitePage = React.memo<PageProps>(props => {
   const groupId = props.match.params.id;

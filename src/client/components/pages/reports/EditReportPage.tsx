@@ -1,7 +1,7 @@
 import React from "react";
-import { ReportEditor } from "../../editor/ReportEditor";
+import { ReportEditor } from "../../editors/ReportEditor";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const EditReportPage = React.memo<PageProps>(({ match }) => {
   const reportId = match.params.id;

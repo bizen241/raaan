@@ -1,8 +1,8 @@
 import React from "react";
 import { useEntity } from "../../../hooks/useEntity";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui";
-import { GroupSecretViewer } from "../../viewer/GroupSecretViewer";
+import { GroupSecretViewer } from "../../viewers/GroupSecretViewer";
 
 export const GroupSecretPage = React.memo<PageProps>(props => {
   const groupId = props.match.params.id;

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
-import { FollowerContext, ToggleGroupInvitationList } from "../../list/group-summaries/ToggleGroupInvitationList";
+import { FollowerContext, ToggleGroupInvitationList } from "../../lists/group-summaries/ToggleGroupInvitationList";
 import { UserContext } from "../../project/Context";
 import { DialogContent } from "../../ui";
 

@@ -1,7 +1,7 @@
 import React from "react";
-import { ObjectionBufferList } from "../../list/objections/ObjectionBufferList";
+import { ObjectionBufferList } from "../../lists/objections/ObjectionBufferList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const EditObjectionsPage = React.memo<PageProps>(() => {
   return (

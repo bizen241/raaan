@@ -1,7 +1,7 @@
 import React from "react";
-import { UserFollowList } from "../../list/user-follows/UserFollowList";
+import { UserFollowList } from "../../lists/user-follows/UserFollowList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const FollowingUsersPage = React.memo<PageProps>(({ match }) => {
   const userId = match.params.id;

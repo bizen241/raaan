@@ -1,7 +1,7 @@
 import React from "react";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui";
-import { GroupViewer } from "../../viewer/GroupViewer";
+import { GroupViewer } from "../../viewers/GroupViewer";
 
 export const GroupPage = React.memo<PageProps>(props => {
   const groupId = props.match.params.id;

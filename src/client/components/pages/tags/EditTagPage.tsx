@@ -1,7 +1,7 @@
 import React from "react";
-import { TagEditor } from "../../editor/TagEditor";
+import { TagEditor } from "../../editors/TagEditor";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const EditTagPage = React.memo<PageProps>(({ match }) => {
   const tagId = match.params.id;

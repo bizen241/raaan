@@ -1,8 +1,8 @@
 import React from "react";
 import { useSearch } from "../../../hooks/useSearch";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui";
-import { TagViewer } from "../../viewer/TagViewer";
+import { TagViewer } from "../../viewers/TagViewer";
 
 export const TagPage = React.memo<PageProps>(props => {
   const tagName = props.match.params.name;

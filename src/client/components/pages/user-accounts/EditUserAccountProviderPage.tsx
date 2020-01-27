@@ -4,7 +4,8 @@ import { useEntity } from "../../../hooks/useEntity";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { RootState } from "../../../reducers";
 import { ChangeProviderDialog } from "../../dialogs/user/ChangeProviderDialog";
-import { Button, Page } from "../../ui";
+import { Page } from "../../project/Page";
+import { Button } from "../../ui";
 
 export const EditUserAccountProviderPage = React.memo(() => {
   const [requestedProvider, setProvider] = useState();

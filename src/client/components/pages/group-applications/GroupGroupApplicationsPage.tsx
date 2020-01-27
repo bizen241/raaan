@@ -1,7 +1,7 @@
 import React from "react";
-import { GroupGroupApplicationList } from "../../list/group-applications/GroupGroupApplicationList";
+import { GroupGroupApplicationList } from "../../lists/group-applications/GroupGroupApplicationList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const GroupGroupApplicationsPage = React.memo<PageProps>(props => {
   const groupId = props.match.params.id;

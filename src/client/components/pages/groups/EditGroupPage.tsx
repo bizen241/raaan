@@ -1,7 +1,7 @@
 import React from "react";
-import { GroupEditor } from "../../editor/GroupEditor";
+import { GroupEditor } from "../../editors/GroupEditor";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const EditGroupPage = React.memo<PageProps>(({ match }) => {
   const groupId = match.params.id;

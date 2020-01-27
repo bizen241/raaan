@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { UserContext } from "../../project/Context";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui";
-import { UserViewer } from "../../viewer/UserViewer";
+import { UserViewer } from "../../viewers/UserViewer";
 
 export const UserPage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;

@@ -1,7 +1,7 @@
 import React from "react";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui";
-import { ReportViewer } from "../../viewer/ReportViewer";
+import { ReportViewer } from "../../viewers/ReportViewer";
 
 export const ReportPage = React.memo<PageProps>(props => {
   const reportId = props.match.params.id;

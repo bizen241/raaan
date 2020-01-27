@@ -1,7 +1,8 @@
 import { AccountCircle, Lock, Security } from "@material-ui/icons";
 import React, { useContext } from "react";
 import { UserContext } from "../../project/Context";
-import { Button, Page } from "../../ui";
+import { Page } from "../../project/Page";
+import { Button } from "../../ui";
 
 export const UserAccountPage = React.memo(() => {
   const currentUser = useContext(UserContext);

@@ -6,7 +6,7 @@ import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { ExerciseContext, TogglePlaylistItemList } from "../../list/playlist-summaries/TogglePlaylistItemList";
+import { ExerciseContext, TogglePlaylistItemList } from "../../lists/playlist-summaries/TogglePlaylistItemList";
 import { UserContext } from "../../project/Context";
 import { Button, Card, DialogContent, TextField } from "../../ui";
 

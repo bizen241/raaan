@@ -1,8 +1,9 @@
 import { Dns, Edit } from "@material-ui/icons";
 import React, { useContext } from "react";
-import { TagSummaryList } from "../../list/tag-summaries/TagSummaryList";
+import { TagSummaryList } from "../../lists/tag-summaries/TagSummaryList";
 import { UserContext } from "../../project/Context";
-import { Button, Page } from "../../ui";
+import { Page } from "../../project/Page";
+import { Button } from "../../ui";
 
 export const TagsPage = React.memo(() => {
   const currentUser = useContext(UserContext);

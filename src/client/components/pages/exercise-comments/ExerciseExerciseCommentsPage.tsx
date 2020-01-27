@@ -5,10 +5,11 @@ import { useBuffers } from "../../../hooks/useBuffers";
 import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { ExerciseCommentEditor } from "../../editor/ExerciseCommentEditor";
-import { ExerciseCommentList } from "../../list/exercise-comments/ExerciseCommentList";
+import { ExerciseCommentEditor } from "../../editors/ExerciseCommentEditor";
+import { ExerciseCommentList } from "../../lists/exercise-comments/ExerciseCommentList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Button, Page } from "../../ui";
+import { Button } from "../../ui";
 
 export const ExerciseExerciseCommentsPage = React.memo<PageProps>(props => {
   const exerciseId = props.match.params.id;

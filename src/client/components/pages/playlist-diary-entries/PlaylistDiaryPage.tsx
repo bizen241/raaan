@@ -1,7 +1,7 @@
 import React from "react";
 import { PlaylistDiaryGraph } from "../../graphs/PlaylistDiaryGraph";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui";
 
 export const PlaylistDiaryPage = React.memo<PageProps>(props => {
   const playlistId = props.match.params.id;

@@ -5,11 +5,12 @@ import { useBuffers } from "../../../hooks/useBuffers";
 import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { ObjectionCommentEditor } from "../../editor/ObjectionCommentEditor";
-import { ObjectionCommentList } from "../../list/objection-comments/ObjectionCommentList";
+import { ObjectionCommentEditor } from "../../editors/ObjectionCommentEditor";
+import { ObjectionCommentList } from "../../lists/objection-comments/ObjectionCommentList";
 import { UserContext } from "../../project/Context";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Button, Page } from "../../ui";
+import { Button } from "../../ui";
 
 export const ObjectionObjectionCommentsPage = React.memo<PageProps>(props => {
   const objectionId = props.match.params.id;

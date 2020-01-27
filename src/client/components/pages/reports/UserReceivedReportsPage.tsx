@@ -1,7 +1,7 @@
 import React from "react";
-import { ReportSummaryList } from "../../list/report-summaries/ReportSummaryList";
+import { ReportSummaryList } from "../../lists/report-summaries/ReportSummaryList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui";
 
 export const UserReceivedReportsPage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;

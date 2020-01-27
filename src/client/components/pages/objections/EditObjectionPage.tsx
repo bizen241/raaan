@@ -1,7 +1,7 @@
 import React from "react";
-import { ObjectionEditor } from "../../editor/ObjectionEditor";
+import { ObjectionEditor } from "../../editors/ObjectionEditor";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const EditObjectionPage = React.memo<PageProps>(({ match }) => {
   const objectionId = match.params.id;

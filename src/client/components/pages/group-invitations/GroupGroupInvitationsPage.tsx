@@ -1,7 +1,7 @@
 import React from "react";
-import { GroupGroupInvitationList } from "../../list/group-invitations/GroupGroupInvitationList";
+import { GroupGroupInvitationList } from "../../lists/group-invitations/GroupGroupInvitationList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const GroupGroupInvitationsPage = React.memo<PageProps>(props => {
   const groupId = props.match.params.id;

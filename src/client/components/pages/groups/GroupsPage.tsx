@@ -1,6 +1,6 @@
 import React from "react";
-import { GroupSummaryList } from "../../list/group-summaries/GroupSummaryList";
-import { Page } from "../../ui";
+import { GroupSummaryList } from "../../lists/group-summaries/GroupSummaryList";
+import { Page } from "../../project/Page";
 
 export const GroupsPage = React.memo(() => {
   return (

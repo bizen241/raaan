@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
-import { ExerciseContext, ToggleGroupExerciseList } from "../../list/groups/ToggleGroupExerciseList";
+import { ExerciseContext, ToggleGroupExerciseList } from "../../lists/groups/ToggleGroupExerciseList";
 import { UserContext } from "../../project/Context";
 import { DialogContent } from "../../ui";
 

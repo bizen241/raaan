@@ -1,8 +1,9 @@
 import { Bookmarks, Person } from "@material-ui/icons";
 import React, { useContext } from "react";
-import { PlaylistSummaryList } from "../../list/playlist-summaries/PlaylistSummaryList";
+import { PlaylistSummaryList } from "../../lists/playlist-summaries/PlaylistSummaryList";
 import { UserContext } from "../../project/Context";
-import { Button, Page } from "../../ui";
+import { Page } from "../../project/Page";
+import { Button } from "../../ui";
 
 export const PlaylistsPage = React.memo(() => {
   const currentUser = useContext(UserContext);

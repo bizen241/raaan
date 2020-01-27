@@ -1,7 +1,7 @@
 import React from "react";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
-import { PlaylistViewer } from "../../viewer/PlaylistViewer";
+import { PlaylistViewer } from "../../viewers/PlaylistViewer";
 
 export const PlaylistPage = React.memo<PageProps>(props => {
   const playlistId = props.match.params.id;

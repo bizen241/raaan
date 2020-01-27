@@ -1,7 +1,7 @@
 import React from "react";
 import { ExerciseDiaryGraph } from "../../graphs/ExerciseDiaryGraph";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui";
 
 export const ExerciseDiaryPage = React.memo<PageProps>(props => {
   const exerciseId = props.match.params.id;

@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { UserEditor } from "../../editor/UserEditor";
+import { UserEditor } from "../../editors/UserEditor";
 import { UserContext } from "../../project/Context";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui";
 
 export const EditUserPage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;

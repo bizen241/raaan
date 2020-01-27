@@ -1,8 +1,9 @@
 import { Group, Notifications, Report, SmsFailed, ThumbsUpDown, WbIncandescent } from "@material-ui/icons";
 import React, { useContext } from "react";
 import { UserContext } from "../../project/Context";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Button, Page } from "../../ui";
+import { Button } from "../../ui";
 
 export const UserCommunityPage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;

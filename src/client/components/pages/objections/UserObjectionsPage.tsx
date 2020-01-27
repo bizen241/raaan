@@ -1,7 +1,7 @@
 import React from "react";
-import { ObjectionSummaryList } from "../../list/objection-summaries/ObjectionSummaryList";
+import { ObjectionSummaryList } from "../../lists/objection-summaries/ObjectionSummaryList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui";
 
 export const UserObjectionsPage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;

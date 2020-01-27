@@ -1,10 +1,10 @@
 import { Edit } from "@material-ui/icons";
 import React, { useContext } from "react";
-import { ExerciseSummaryList } from "../../list/exercise-summaries/ExerciseSummaryList";
+import { ExerciseSummaryList } from "../../lists/exercise-summaries/ExerciseSummaryList";
 import { UserContext } from "../../project/Context";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
 import { Button } from "../../ui";
-import { Page } from "../../ui/Page";
 
 export const UserExercisesPage = React.memo<PageProps>(({ match }) => {
   const userId = match.params.id;

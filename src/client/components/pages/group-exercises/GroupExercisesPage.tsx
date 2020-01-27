@@ -2,10 +2,10 @@ import { Add } from "@material-ui/icons";
 import React from "react";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { GroupExercisesDialog } from "../../dialogs/groups/GroupExercisesDialog";
-import { GroupExerciseList } from "../../list/group-exercises/GroupExerciseList";
+import { GroupExerciseList } from "../../lists/group-exercises/GroupExerciseList";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
 import { Button } from "../../ui";
-import { Page } from "../../ui/Page";
 
 export const GroupExercisesPage = React.memo<PageProps>(({ match }) => {
   const groupId = match.params.id;

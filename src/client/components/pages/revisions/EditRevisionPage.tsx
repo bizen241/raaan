@@ -1,7 +1,7 @@
 import React from "react";
-import { RevisionEditor } from "../../editor/RevisionEditor";
+import { RevisionEditor } from "../../editors/RevisionEditor";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const EditRevisionPage = React.memo<PageProps>(({ match }) => {
   const reportId = match.params.id;

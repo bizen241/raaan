@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { ReminderList } from "../../list/submission-summaries/ReminderList";
+import { ReminderList } from "../../lists/submission-summaries/ReminderList";
 import { UserContext } from "../../project/Context";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
 
 export const ReviewPage = React.memo<PageProps>(() => {
   const currentUser = useContext(UserContext);

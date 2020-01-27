@@ -1,7 +1,7 @@
 import React from "react";
+import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
-import { Page } from "../../ui/Page";
-import { SuggestionViewer } from "../../viewer/SuggestionViewer";
+import { SuggestionViewer } from "../../viewers/SuggestionViewer";
 
 export const SuggestionPage = React.memo<PageProps>(props => {
   const suggestionId = props.match.params.id;
