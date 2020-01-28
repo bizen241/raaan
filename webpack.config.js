@@ -54,7 +54,10 @@ if (!isDevelopment) {
       swDest: "sw.js",
       clientsClaim: true,
       skipWaiting: true,
-      exclude: [/\.png$/, /\.txt$/, /\.gz$/],
+      exclude: [/\.png$/, /\.txt$/, /\.gz$/, /\.hbs$/],
+      templatedUrls: {
+        "/index.html": "./src/server/views/index.hbs"
+      },
       navigateFallback: "/index.html",
       navigateFallbackBlacklist: [/^\/api/, /^\/auth/, /^\/logout/]
     })
