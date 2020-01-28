@@ -11,4 +11,5 @@
 /coverage
 
 /src/server/api/schema.ts
+/src/server/api/schema.json
 /src/server/views/index.hbs

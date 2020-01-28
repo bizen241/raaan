@@ -12,7 +12,8 @@ import { apiVersion } from "../../shared/api/version";
 import { Entity, UserEntity } from "../database/entities";
 import { getGuestUser } from "../database/setup/guest";
 import { responseFindResult, responseSearchResult } from "./response";
-import { entityTypeToParamsSchema } from "./schema";
+
+import entityTypeToParamsSchema from "./schema.json";
 
 interface OperationDocument {
   entityType: EntityType;
@@ -62,7 +63,7 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
     parameters.push({
       in: "query",
       name: "query",
-      schema: entityTypeToParamsSchema[entityType]
+      schema: entityTypeToParamsSchema[entityType] as OpenAPIV3.SchemaObject
     });
   }
 
@@ -70,7 +71,7 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
     ? {
         content: {
           "application/json": {
-            schema: entityTypeToParamsSchema[entityType]
+            schema: entityTypeToParamsSchema[entityType] as OpenAPIV3.SchemaObject
           }
         },
         required: true
