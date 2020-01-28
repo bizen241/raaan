@@ -95,6 +95,7 @@ import { UserSessionsPage } from "../pages/user-sessions/UserUserSessionsPage";
 import { EditUserPage } from "../pages/users/EditUserPage";
 import { UserPage } from "../pages/users/UserPage";
 import { UsersPage } from "../pages/users/UsersPage";
+import { DependenciesPage } from "../pages/app/DependenciesPage";
 
 export type PageProps = RouteComponentProps<{ id: string; name: string; secret: string }>;
 
@@ -115,6 +116,7 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/app/diary" component={AppDiaryPage} />
         <Route exact={true} path="/app/version" component={VersionPage} />
         <Route exact={true} path="/app/cache" component={CachePage} />
+        <Route exact={true} path="/app/dependencies" component={DependenciesPage} />
 
         <Route exact={true} path="/user/account" component={UserAccountPage} />
         <Route exact={true} path="/user/account/edit" component={EditUserAccountPage} />
