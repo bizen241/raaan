@@ -5,6 +5,7 @@ const HtmlPlugin = require("html-webpack-plugin");
 const { join } = require("path");
 const webpack = require("webpack");
 const webpackDevServer = require("webpack-dev-server");
+const LicensePlugin = require("license-webpack-plugin").LicenseWebpackPlugin;
 const WorkboxPlugin = require("workbox-webpack-plugin");
 
 const mode = process.env.NODE_ENV === "production" ? "production" : "development";
@@ -27,7 +28,24 @@ const plugins = [
       from: join(__dirname, "node_modules/kuromoji/dict"),
       to: join(__dirname, "dist/dict")
     }
-  ])
+  ]),
+  new LicensePlugin({
+    outputFilename: "licenses.json",
+    renderLicenses: modules =>
+      modules.length === 0
+        ? ""
+        : JSON.stringify(
+            modules.map(({ packageJson, licenseId, licenseText }) => ({
+              name: packageJson.name,
+              version: packageJson.version,
+              url: packageJson.homepage,
+              licenseId,
+              licenseText
+            })),
+            null,
+            2
+          )
+  })
 ];
 
 if (!isDevelopment) {
