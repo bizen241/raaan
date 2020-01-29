@@ -5,6 +5,7 @@ import { RootState } from "../../reducers";
 import { AppDiaryPage } from "../pages/app-diary-entries/AppDiaryPage";
 import { AppPage } from "../pages/app/AppPage";
 import { CachePage } from "../pages/app/CachePage";
+import { DependenciesPage } from "../pages/app/DependenciesPage";
 import { HomePage } from "../pages/app/HomePage";
 import { LoadingPage } from "../pages/app/LoadingPage";
 import { NotFoundPage } from "../pages/app/NotFoundPage";
@@ -95,7 +96,6 @@ import { UserSessionsPage } from "../pages/user-sessions/UserUserSessionsPage";
 import { EditUserPage } from "../pages/users/EditUserPage";
 import { UserPage } from "../pages/users/UserPage";
 import { UsersPage } from "../pages/users/UsersPage";
-import { DependenciesPage } from "../pages/app/DependenciesPage";
 
 export type PageProps = RouteComponentProps<{ id: string; name: string; secret: string }>;
 

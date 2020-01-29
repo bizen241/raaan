@@ -5,7 +5,7 @@
       "i18next-extract",
       {
         "locales": ["ja", "en"],
-        "outputPath": "./src/client/intl/locales/{{locale}}.json",
+        "outputPath": "./src/assets/locales/{{locale}}.json",
         "keySeparator": false
       }
     ]

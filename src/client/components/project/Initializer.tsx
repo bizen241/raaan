@@ -1,10 +1,9 @@
-import { Typography } from "@material-ui/core";
-import { HourglassEmpty } from "@material-ui/icons";
-import React, { useEffect } from "react";
+import { CircularProgress } from "@material-ui/core";
+import React, { Suspense, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useToggleState } from "../../hooks/useToggleState";
 import { actions, RootState } from "../../reducers";
-import { Card, Column } from "../ui";
+import { Column } from "../ui";
 import { Context } from "./Context";
 
 export const Initializer = React.memo<{ children: React.ReactNode }>(({ children }) => {
@@ -28,22 +27,24 @@ export const Initializer = React.memo<{ children: React.ReactNode }>(({ children
   }, [user, userConfig]);
 
   if (!isReady || user === undefined || userConfig === undefined) {
-    return (
-      <Column alignItems="center" width="100%" position="absolute" top={0} left={0}>
-        <Column width="100%" maxWidth="1000px">
-          <Column p={1}>
-            <Card icon={<HourglassEmpty />} title="ロード中です">
-              <Typography>しばらくお待ちください。</Typography>
-            </Card>
-          </Column>
-        </Column>
-      </Column>
-    );
+    return <Loading />;
   }
 
   return (
-    <Context user={user} userConfig={userConfig} userConfigBuffer={userConfigBuffer}>
-      {children}
-    </Context>
+    <Suspense fallback={<Loading />}>
+      <Context user={user} userConfig={userConfig} userConfigBuffer={userConfigBuffer}>
+        {children}
+      </Context>
+    </Suspense>
   );
 });
+
+const Loading = () => (
+  <Column alignItems="center" width="100%" position="absolute" top={0} left={0}>
+    <Column width="100%" maxWidth="1000px" p={1}>
+      <Column justifyContent="center" alignItems="center">
+        <CircularProgress />
+      </Column>
+    </Column>
+  </Column>
+);

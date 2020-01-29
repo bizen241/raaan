@@ -1,22 +1,18 @@
-import i18n from "i18next";
+import i18next from "i18next";
+import i18nextXhrBackend from "i18next-xhr-backend";
 import { initReactI18next } from "react-i18next";
 
-import en from "./locales/en.json";
-import ja from "./locales/ja.json";
-
-i18n.use(initReactI18next).init({
-  resources: {
-    en: {
-      translation: en
+i18next
+  .use(i18nextXhrBackend)
+  .use(initReactI18next)
+  .init({
+    lng: "ja",
+    fallbackLng: false,
+    keySeparator: false,
+    interpolation: {
+      escapeValue: false
     },
-    ja: {
-      translation: ja
+    backend: {
+      loadPath: "/locales/{{lng}}.json"
     }
-  },
-  lng: "ja",
-  fallbackLng: false,
-  keySeparator: false,
-  interpolation: {
-    escapeValue: false
-  }
-});
+  });
