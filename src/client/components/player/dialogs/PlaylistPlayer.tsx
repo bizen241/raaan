@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { PlaylistItem } from "../../../../shared/api/entities";
 import { useEntity } from "../../../hooks/useEntity";
 import { SubmissionManager } from "../managers/SubmissionManager";
-import { createPlayerDialog } from "./PlayerDialog";
+import { createPlayerDialog } from "./createPlayerDialog";
 
 export const PlaylistPlayer = createPlayerDialog<{
   playlistItems: PlaylistItem[];

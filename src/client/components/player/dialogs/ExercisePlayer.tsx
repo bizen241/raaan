@@ -1,7 +1,7 @@
 import React from "react";
 import { useEntity } from "../../../hooks/useEntity";
 import { SubmissionManager } from "../managers/SubmissionManager";
-import { createPlayerDialog } from "./PlayerDialog";
+import { createPlayerDialog } from "./createPlayerDialog";
 
 export const ExercisePlayer = createPlayerDialog<{
   exerciseId: string;
