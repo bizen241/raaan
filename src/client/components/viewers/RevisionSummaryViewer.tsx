@@ -1,4 +1,4 @@
-import { Edit, History } from "@material-ui/icons";
+import { Edit, History, Refresh } from "@material-ui/icons";
 import React, { useContext } from "react";
 import { withEntity } from "../../enhancers/withEntity";
 import { useEntity } from "../../hooks/useEntity";
@@ -11,7 +11,7 @@ export const RevisionSummaryViewer = withEntity("RevisionSummary")(
 
     const { revisionId } = revisionSummary;
 
-    const { entity: revision } = useEntity("Revision", revisionId, false);
+    const { entity: revision, onReload } = useEntity("Revision", revisionId, false);
     const { entity: exercise } = useEntity("Exercise", revision && revision.exerciseId);
     if (revision === undefined || exercise === undefined) {
       return null;
@@ -25,7 +25,10 @@ export const RevisionSummaryViewer = withEntity("RevisionSummary")(
         icon={<History />}
         title={messageSubject || "件名なし"}
         action={
-          <Menu>{isOwn && <MenuItem icon={<Edit />} label="編集する" to={`/revisions/${revisionId}/edit`} />}</Menu>
+          <Menu>
+            {isOwn && <MenuItem icon={<Edit />} label="編集する" to={`/revisions/${revisionId}/edit`} />}
+            <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReload} />
+          </Menu>
         }
       >
         {messageBody && <Property label="メッセージ">{messageBody}</Property>}
