@@ -3,12 +3,12 @@ import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
 import { ExerciseContext, ToggleGroupExerciseList } from "../../lists/groups/ToggleGroupExerciseList";
 import { UserContext } from "../../project/Context";
-import { DialogContent } from "../../ui";
 
 export const GroupExercisesDialog = createDialog<{
   exerciseId: string;
-}>(
-  React.memo(({ exerciseId, onClose }) => {
+}>()(
+  React.memo(({ t }) => t("問題集をグループに公開")),
+  React.memo(({ exerciseId }) => {
     const currentUser = useContext(UserContext);
 
     const { onReload: onReloadGroupExercises } = useSearch("GroupExercise", {
@@ -16,7 +16,7 @@ export const GroupExercisesDialog = createDialog<{
     });
 
     return (
-      <DialogContent title="問題集をグループに公開" onClose={onClose}>
+      <>
         <ExerciseContext.Provider value={exerciseId}>
           <ToggleGroupExerciseList
             initialParams={{
@@ -25,7 +25,7 @@ export const GroupExercisesDialog = createDialog<{
             onReload={onReloadGroupExercises}
           />
         </ExerciseContext.Provider>
-      </DialogContent>
+      </>
     );
   })
 );

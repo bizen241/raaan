@@ -8,12 +8,13 @@ import { Exercise } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const ConfirmSuggestionDialog = createDialog<{
   exercise: Exercise;
-}>(
-  React.memo(({ exercise, onClose }) => {
+}>()(
+  React.memo(({ t }) => t("変更を提案する")),
+  React.memo(({ exercise }) => {
     const dispatch = useDispatch();
 
     const onCreate = useCallback(() => {
@@ -33,12 +34,12 @@ export const ConfirmSuggestionDialog = createDialog<{
     }, []);
 
     return (
-      <DialogContent title="変更を提案する" onClose={onClose}>
+      <>
         <Card>
           <Typography>変更を提案しますか？</Typography>
         </Card>
         <Button icon={<WbIncandescent />} label="変更を提案する" onClick={onCreate} />
-      </DialogContent>
+      </>
     );
   })
 );

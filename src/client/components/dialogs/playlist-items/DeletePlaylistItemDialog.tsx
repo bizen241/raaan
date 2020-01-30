@@ -4,11 +4,12 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const DeletePlaylistItemDialog = createDialog<{
   playlistItemId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("プレイリストのアイテムの削除")),
   React.memo(({ playlistItemId, onClose }) => {
     const dispatch = useDispatch();
 
@@ -17,7 +18,7 @@ export const DeletePlaylistItemDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="プレイリストのアイテムの削除" onClose={onClose}>
+      <>
         <Card>
           <Typography>プレイリストのアイテムがサーバーから削除されます。</Typography>
         </Card>
@@ -27,7 +28,7 @@ export const DeletePlaylistItemDialog = createDialog<{
           labelColor="error"
           onClick={onDelete}
         />
-      </DialogContent>
+      </>
     );
   })
 );

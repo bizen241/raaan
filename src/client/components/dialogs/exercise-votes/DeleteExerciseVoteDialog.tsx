@@ -4,11 +4,12 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const DeleteExerciseVoteDialog = createDialog<{
   exerciseVoteId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("投票の取り消し")),
   React.memo(({ exerciseVoteId, onClose }) => {
     const dispatch = useDispatch();
 
@@ -17,12 +18,12 @@ export const DeleteExerciseVoteDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="投票の取り消し" onClose={onClose}>
+      <>
         <Card>
           <Typography>投票を取り消します。</Typography>
         </Card>
         <Button icon={<HowToVote />} label="投票を取り消す" onClick={onDelete} />
-      </DialogContent>
+      </>
     );
   })
 );

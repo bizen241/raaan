@@ -7,14 +7,15 @@ import { endpoints } from "../../../../shared/api/endpoint";
 import { ObjectionTargetType } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const UploadObjectionDialog = createDialog<{
   reportId: string;
   targetType: ObjectionTargetType;
   targetId: string;
-}>(
-  React.memo(({ reportId, targetId, targetType, onClose }) => {
+}>()(
+  React.memo(({ t }) => t("抗議をアップロード")),
+  React.memo(({ reportId, targetId, targetType }) => {
     const dispatch = useDispatch();
 
     const onUpload = () => {
@@ -39,12 +40,12 @@ export const UploadObjectionDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="抗議をアップロード" onClose={onClose}>
+      <>
         <Card>
           <Typography>抗議をアップロードします。</Typography>
         </Card>
         <Button icon={<ReportProblem />} label="抗議をアップロード" onClick={onUpload} />
-      </DialogContent>
+      </>
     );
   })
 );

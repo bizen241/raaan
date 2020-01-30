@@ -4,12 +4,13 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const UploadReportCommentDialog = createDialog<{
   bufferId: string;
   targetId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("報告へのコメントをアップロード")),
   React.memo(({ bufferId, targetId, onClose }) => {
     const dispatch = useDispatch();
 
@@ -32,12 +33,12 @@ export const UploadReportCommentDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="報告へのコメントをアップロード" onClose={onClose}>
+      <>
         <Card>
           <Typography>報告へのコメントをアップロードします。</Typography>
         </Card>
         <Button icon={<ReportProblem />} label="報告へのコメントをアップロード" onClick={onUpload} />
-      </DialogContent>
+      </>
     );
   })
 );

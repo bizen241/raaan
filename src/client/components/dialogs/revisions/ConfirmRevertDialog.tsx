@@ -7,12 +7,13 @@ import { Revision } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const ConfirmRevertDialog = createDialog<{
   revision: Revision;
-}>(
-  React.memo(({ revision, onClose }) => {
+}>()(
+  React.memo(({ t }) => t("この版に戻す")),
+  React.memo(({ revision }) => {
     const dispatch = useDispatch();
 
     const { entity: exercise } = useEntity("Exercise", revision.exerciseId);
@@ -35,12 +36,12 @@ export const ConfirmRevertDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="この版に戻す" onClose={onClose}>
+      <>
         <Card>
           <Typography>この版を元に編集しますか？</Typography>
         </Card>
         <Button icon={<FastRewind />} label="この版に戻す" onClick={onCreate} />
-      </DialogContent>
+      </>
     );
   })
 );

@@ -1,16 +1,17 @@
 import { Typography } from "@material-ui/core";
-import { CloudUpload, Person } from "@material-ui/icons";
+import { CloudUpload } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const UploadTagDialog = createDialog<{
   tagId: string;
-}>(
-  React.memo(({ tagId: bufferId, onClose }) => {
+}>()(
+  React.memo(({ t }) => t("タグをアップロード")),
+  React.memo(({ tagId: bufferId }) => {
     const dispatch = useDispatch();
 
     const onUpload = () => {
@@ -28,12 +29,12 @@ export const UploadTagDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="タグをアップロード" onClose={onClose}>
-        <Card icon={<Person />} title="タグをアップロード">
+      <>
+        <Card>
           <Typography>タグをアップロードします。</Typography>
         </Card>
         <Button icon={<CloudUpload />} label="アップロード" onClick={onUpload} />
-      </DialogContent>
+      </>
     );
   })
 );

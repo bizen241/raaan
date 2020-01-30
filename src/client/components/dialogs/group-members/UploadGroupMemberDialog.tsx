@@ -7,13 +7,14 @@ import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { UserContext } from "../../project/Context";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const UploadGroupMemberDialog = createDialog<{
   groupId: string;
   groupInvitationId: string;
-}>(
-  React.memo(({ groupId, groupInvitationId, onClose }) => {
+}>()(
+  React.memo(({ t }) => t("グループに参加")),
+  React.memo(({ groupId, groupInvitationId }) => {
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);
 
@@ -46,12 +47,12 @@ export const UploadGroupMemberDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="グループに参加" onClose={onClose}>
-        <Card icon={<PersonAdd />} title="グループに参加">
+      <>
+        <Card>
           <Typography>グループに参加します。</Typography>
         </Card>
         <Button icon={<PersonAdd />} label="参加" onClick={onUpload} />
-      </DialogContent>
+      </>
     );
   })
 );

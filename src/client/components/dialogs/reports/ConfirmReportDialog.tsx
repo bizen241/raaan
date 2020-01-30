@@ -8,13 +8,14 @@ import { ReportTargetType } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const ConfirmReportDialog = createDialog<{
   targetType: ReportTargetType;
   targetId: string;
-}>(
-  React.memo(({ targetType, targetId, onClose }) => {
+}>()(
+  React.memo(({ t }) => t("違反を報告する")),
+  React.memo(({ targetType, targetId }) => {
     const dispatch = useDispatch();
 
     const onCreate = useCallback(() => {
@@ -30,12 +31,12 @@ export const ConfirmReportDialog = createDialog<{
     }, []);
 
     return (
-      <DialogContent title="違反を報告する" onClose={onClose}>
+      <>
         <Card>
           <Typography>本当に通報しますか？</Typography>
         </Card>
         <Button icon={<ReportProblem />} label="通報する" onClick={onCreate} />
-      </DialogContent>
+      </>
     );
   })
 );

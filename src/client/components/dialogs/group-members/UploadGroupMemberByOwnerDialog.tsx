@@ -5,13 +5,14 @@ import { useDispatch } from "react-redux";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const UploadGroupMemberByOwnerDialog = createDialog<{
   groupId: string;
   applicantId: string;
   groupApplicationId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("申請を受理")),
   React.memo(({ groupId, applicantId, groupApplicationId, onClose }) => {
     const dispatch = useDispatch();
 
@@ -44,12 +45,12 @@ export const UploadGroupMemberByOwnerDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="申請を受理" onClose={onClose}>
-        <Card icon={<PersonAdd />} title="申請を受理">
+      <>
+        <Card>
           <Typography>申請を受理します。</Typography>
         </Card>
         <Button icon={<PersonAdd />} label="受理" onClick={onUpload} />
-      </DialogContent>
+      </>
     );
   })
 );

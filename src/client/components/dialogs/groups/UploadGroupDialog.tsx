@@ -5,12 +5,13 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const UploadGroupDialog = createDialog<{
   groupId: string;
-}>(
-  React.memo(({ groupId: bufferId, onClose }) => {
+}>()(
+  React.memo(({ t }) => t("グループをアップロード")),
+  React.memo(({ groupId: bufferId }) => {
     const dispatch = useDispatch();
 
     const onUpload = () => {
@@ -24,12 +25,12 @@ export const UploadGroupDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="グループをアップロード" onClose={onClose}>
+      <>
         <Card>
           <Typography>グループをアップロードします。</Typography>
         </Card>
         <Button icon={<CloudUpload />} label="アップロード" onClick={onUpload} />
-      </DialogContent>
+      </>
     );
   })
 );

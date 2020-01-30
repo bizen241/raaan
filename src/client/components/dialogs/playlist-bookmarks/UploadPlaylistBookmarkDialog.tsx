@@ -1,17 +1,18 @@
-import { Add, Bookmark } from "@material-ui/icons";
+import { Add } from "@material-ui/icons";
 import React, { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { UserContext } from "../../project/Context";
-import { Button, Card, DialogContent, Select, SelectOptions } from "../../ui";
+import { Button, Card, Select, SelectOptions } from "../../ui";
 
 type UploadType = "public" | "private";
 
 export const UploadPlaylistBookmarkDialog = createDialog<{
   playlistId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("ブックマークに追加")),
   React.memo(({ playlistId, onClose }) => {
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);
@@ -59,8 +60,8 @@ export const UploadPlaylistBookmarkDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="ブックマークに追加" onClose={onClose}>
-        <Card icon={<Bookmark />} title="ブックマークに追加">
+      <>
+        <Card>
           <Select<UploadType>
             label="設定"
             options={selectUploadTypeOptions}
@@ -69,7 +70,7 @@ export const UploadPlaylistBookmarkDialog = createDialog<{
           />
         </Card>
         <Button icon={<Add />} label="ブックマークに追加する" onClick={() => onUpload()} />
-      </DialogContent>
+      </>
     );
   })
 );

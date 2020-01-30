@@ -4,11 +4,12 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const RegenerateGroupSecretDialog = createDialog<{
   groupSecretId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("招待用リンクを再生成")),
   React.memo(({ groupSecretId, onClose }) => {
     const dispatch = useDispatch();
 
@@ -26,12 +27,12 @@ export const RegenerateGroupSecretDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="招待用リンクを再生成" onClose={onClose}>
-        <Card icon={<Refresh />} title="招待用リンクを再生成">
+      <>
+        <Card>
           <Typography>招待用リンクを再生成します。</Typography>
         </Card>
         <Button icon={<Refresh />} label="招待用リンクを再生成" onClick={onUpload} />
-      </DialogContent>
+      </>
     );
   })
 );

@@ -4,11 +4,12 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const DeleteGroupMemberByOwnerDialog = createDialog<{
   groupMemberId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("メンバーの追放")),
   React.memo(({ groupMemberId, onClose }) => {
     const dispatch = useDispatch();
 
@@ -17,12 +18,12 @@ export const DeleteGroupMemberByOwnerDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="メンバーの追放" onClose={onClose}>
-        <Card icon={<RemoveCircle />} title="メンバーの追放">
+      <>
+        <Card>
           <Typography>メンバーを追放します。</Typography>
         </Card>
         <Button icon={<RemoveCircle color="error" />} label="メンバーを追放" labelColor="error" onClick={onDelete} />
-      </DialogContent>
+      </>
     );
   })
 );

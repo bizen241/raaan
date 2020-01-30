@@ -4,11 +4,12 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const DeleteUserFollowDialog = createDialog<{
   userFollowId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("ユーザーをフォロー解除")),
   React.memo(({ userFollowId, onClose }) => {
     const dispatch = useDispatch();
 
@@ -17,12 +18,12 @@ export const DeleteUserFollowDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="ユーザーをフォロー解除" onClose={onClose}>
+      <>
         <Card>
           <Typography>ユーザーのフォローを解除します。</Typography>
         </Card>
         <Button icon={<RemoveCircle />} label="フォローを解除する" onClick={onDelete} />
-      </DialogContent>
+      </>
     );
   })
 );

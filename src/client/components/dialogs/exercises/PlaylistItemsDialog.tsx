@@ -8,11 +8,12 @@ import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { ExerciseContext, TogglePlaylistItemList } from "../../lists/playlist-summaries/TogglePlaylistItemList";
 import { UserContext } from "../../project/Context";
-import { Button, Card, DialogContent, TextField } from "../../ui";
+import { Button, Card, TextField } from "../../ui";
 
 export const PlaylistItemsDialog = createDialog<{
   exerciseId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("プレイリストに追加")),
   React.memo(({ exerciseId, onClose }) => {
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);
@@ -60,29 +61,25 @@ export const PlaylistItemsDialog = createDialog<{
       );
     };
 
-    return (
-      <DialogContent title="プレイリストに追加" onClose={onClose}>
-        {!isEditoOpen ? (
-          <>
-            <Button icon={<Add />} label="新しいプレイリストを作る" onClick={onToggleEditor} />
-            <ExerciseContext.Provider value={exerciseId}>
-              <TogglePlaylistItemList
-                initialParams={{
-                  authorId: currentUser.id
-                }}
-                onReload={onReloadPlaylistItems}
-              />
-            </ExerciseContext.Provider>
-          </>
-        ) : (
-          <>
-            <Card icon={<PlaylistPlay />} title="プレイリストを作る">
-              <TextField label="題名" defaultValue={title} onChange={onUpdateTitle} />
-            </Card>
-            <Button icon={<CloudUpload />} label="プレイリストをアップロード" onClick={onUploadPlaylist} />
-          </>
-        )}
-      </DialogContent>
+    return !isEditoOpen ? (
+      <>
+        <Button icon={<Add />} label="新しいプレイリストを作る" onClick={onToggleEditor} />
+        <ExerciseContext.Provider value={exerciseId}>
+          <TogglePlaylistItemList
+            initialParams={{
+              authorId: currentUser.id
+            }}
+            onReload={onReloadPlaylistItems}
+          />
+        </ExerciseContext.Provider>
+      </>
+    ) : (
+      <>
+        <Card icon={<PlaylistPlay />} title="プレイリストを作る">
+          <TextField label="題名" defaultValue={title} onChange={onUpdateTitle} />
+        </Card>
+        <Button icon={<CloudUpload />} label="プレイリストをアップロード" onClick={onUploadPlaylist} />
+      </>
     );
   })
 );

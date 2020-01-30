@@ -7,14 +7,15 @@ import { sortPlaylistItems } from "../../../domain/playlist";
 import { createDialog } from "../../../enhancers/createDialog";
 import { withEntity } from "../../../enhancers/withEntity";
 import { actions } from "../../../reducers";
-import { Card, Column, DialogContent, Row } from "../../ui";
+import { Card, Column, Row } from "../../ui";
 
 export const MovePlaylistItemDialog = createDialog<{
   playlistItemId: string;
   playlistId: string;
   playlist: Playlist;
   playlistItems: PlaylistItem[];
-}>(
+}>()(
+  React.memo(({ t }) => t("プレイリストのアイテムの移動")),
   React.memo(({ playlistItemId, playlist, playlistItems, onClose }) => {
     const dispatch = useDispatch();
 
@@ -34,7 +35,7 @@ export const MovePlaylistItemDialog = createDialog<{
     const sortedPlaylistItems = sortPlaylistItems(playlistItems, playlist.orderBy);
 
     return (
-      <DialogContent title="プレイリストのアイテムの移動" onClose={onClose}>
+      <>
         <Card padding={false}>
           <Divider />
           <Column pb={1}>
@@ -47,7 +48,7 @@ export const MovePlaylistItemDialog = createDialog<{
             </Table>
           </Column>
         </Card>
-      </DialogContent>
+      </>
     );
   })
 );

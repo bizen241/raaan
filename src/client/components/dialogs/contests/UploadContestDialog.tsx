@@ -1,16 +1,17 @@
 import { Typography } from "@material-ui/core";
-import { CloudUpload, Event } from "@material-ui/icons";
+import { CloudUpload } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const UploadContestDialog = createDialog<{
   contestId: string;
-}>(
-  React.memo(({ contestId: bufferId, onClose }) => {
+}>()(
+  React.memo(({ t }) => t("セッションのアップロード")),
+  React.memo(({ contestId: bufferId }) => {
     const dispatch = useDispatch();
 
     const onUpload = () => {
@@ -24,12 +25,12 @@ export const UploadContestDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="セッションをアップロード" onClose={onClose}>
-        <Card icon={<Event />} title="セッションをアップロード">
+      <>
+        <Card>
           <Typography>セッションをアップロードします。</Typography>
         </Card>
         <Button icon={<CloudUpload />} label="アップロード" onClick={onUpload} />
-      </DialogContent>
+      </>
     );
   })
 );

@@ -7,12 +7,13 @@ import { Suggestion } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const ConfirmAcceptSuggestionDialog = createDialog<{
   suggestion: Suggestion;
-}>(
-  React.memo(({ suggestion, onClose }) => {
+}>()(
+  React.memo(({ t }) => t("提案の採用")),
+  React.memo(({ suggestion }) => {
     const dispatch = useDispatch();
 
     const { entity: exercise } = useEntity("Exercise", suggestion.exerciseId);
@@ -35,12 +36,12 @@ export const ConfirmAcceptSuggestionDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="提案の採用" onClose={onClose}>
+      <>
         <Card>
           <Typography>提案を採用しますか？</Typography>
         </Card>
         <Button icon={<Check />} label="提案を採用する" onClick={onCreate} />
-      </DialogContent>
+      </>
     );
   })
 );

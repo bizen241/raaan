@@ -4,11 +4,12 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const UnpublishExerciseDialog = createDialog<{
   exerciseId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("問題集の公開を終了")),
   React.memo(({ exerciseId, onClose }) => {
     const dispatch = useDispatch();
 
@@ -25,12 +26,12 @@ export const UnpublishExerciseDialog = createDialog<{
       );
 
     return (
-      <DialogContent title="問題集の公開を終了" onClose={onClose}>
+      <>
         <Card>
           <Typography>問題集が非公開に設定されます。</Typography>
         </Card>
         <Button icon={<Lock />} label="問題集の公開を終了" onClick={onUnpublish} />
-      </DialogContent>
+      </>
     );
   })
 );

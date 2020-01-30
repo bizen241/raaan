@@ -1,16 +1,12 @@
 import React from "react";
 import { createDialog } from "../../../enhancers/createDialog";
 import { SelectContestGroupList } from "../../lists/group-members/SelectContestGroupList";
-import { DialogContent } from "../../ui";
 
 export const SelectContestGroupDialog = createDialog<{
   exerciseId: string;
-}>(
-  React.memo(({ exerciseId, onClose }) => {
-    return (
-      <DialogContent title="セッションのグループを選択" onClose={onClose}>
-        <SelectContestGroupList exerciseId={exerciseId} />
-      </DialogContent>
-    );
+}>()(
+  React.memo(({ t }) => t("セッションのグループを選択")),
+  React.memo(({ exerciseId }) => {
+    return <SelectContestGroupList exerciseId={exerciseId} />;
   })
 );

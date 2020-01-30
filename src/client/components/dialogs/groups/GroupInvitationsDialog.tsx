@@ -3,12 +3,12 @@ import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
 import { GroupContext, ToggleGroupInvitationList } from "../../lists/user-follows/ToggleGroupInvitationList";
 import { UserContext } from "../../project/Context";
-import { DialogContent } from "../../ui";
 
 export const GroupInvitationsDialog = createDialog<{
   groupId: string;
-}>(
-  React.memo(({ groupId, onClose }) => {
+}>()(
+  React.memo(({ t }) => t("フォロワーを招待")),
+  React.memo(({ groupId }) => {
     const currentUser = useContext(UserContext);
 
     const { onReload: onReloadGroupInvitations } = useSearch("GroupInvitation", {
@@ -16,7 +16,7 @@ export const GroupInvitationsDialog = createDialog<{
     });
 
     return (
-      <DialogContent title="フォロワーを招待" onClose={onClose}>
+      <>
         <GroupContext.Provider value={groupId}>
           <ToggleGroupInvitationList
             initialParams={{
@@ -25,7 +25,7 @@ export const GroupInvitationsDialog = createDialog<{
             onReload={onReloadGroupInvitations}
           />
         </GroupContext.Provider>
-      </DialogContent>
+      </>
     );
   })
 );

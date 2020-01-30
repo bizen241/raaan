@@ -8,14 +8,15 @@ import { ReportTargetType } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { UserContext } from "../../project/Context";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const UploadReportDialog = createDialog<{
   reportId: string;
   targetType: ReportTargetType;
   targetId: string;
-}>(
-  React.memo(({ reportId, targetId, targetType, onClose }) => {
+}>()(
+  React.memo(({ t }) => t("報告をアップロードする")),
+  React.memo(({ reportId, targetId, targetType }) => {
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);
 
@@ -42,12 +43,12 @@ export const UploadReportDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="報告をアップロードする" onClose={onClose}>
+      <>
         <Card>
           <Typography>報告をアップロードします。</Typography>
         </Card>
         <Button icon={<ReportProblem />} label="報告をアップロード" onClick={onUpload} />
-      </DialogContent>
+      </>
     );
   })
 );

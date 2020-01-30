@@ -8,13 +8,14 @@ import { ObjectionTargetType } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const ConfirmObjectionDialog = createDialog<{
   targetType: ObjectionTargetType;
   targetId: string;
-}>(
-  React.memo(({ targetType, targetId, onClose }) => {
+}>()(
+  React.memo(({ t }) => t("抗議する")),
+  React.memo(({ targetType, targetId }) => {
     const dispatch = useDispatch();
 
     const onCreate = useCallback(() => {
@@ -30,12 +31,12 @@ export const ConfirmObjectionDialog = createDialog<{
     }, []);
 
     return (
-      <DialogContent title="抗議する" onClose={onClose}>
+      <>
         <Card>
           <Typography>本当に抗議しますか？</Typography>
         </Card>
         <Button icon={<SmsFailed />} label="抗議する" onClick={onCreate} />
-      </DialogContent>
+      </>
     );
   })
 );

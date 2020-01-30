@@ -1,14 +1,15 @@
 import { Typography } from "@material-ui/core";
-import { Lock, Warning } from "@material-ui/icons";
+import { Lock } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const UnpublishPlaylistDialog = createDialog<{
   playlistId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("プレイリストの公開を終了")),
   React.memo(({ playlistId, onClose }) => {
     const dispatch = useDispatch();
 
@@ -25,12 +26,12 @@ export const UnpublishPlaylistDialog = createDialog<{
       );
 
     return (
-      <DialogContent title="プレイリストの公開を終了" onClose={onClose}>
-        <Card icon={<Warning />} title="プレイリストの公開を終了">
+      <>
+        <Card>
           <Typography>プレイリストが非公開に設定されます。</Typography>
         </Card>
         <Button icon={<Lock />} label="プレイリストの公開を終了" onClick={onUnpublish} />
-      </DialogContent>
+      </>
     );
   })
 );

@@ -1,14 +1,15 @@
 import { Typography } from "@material-ui/core";
-import { Public, Warning } from "@material-ui/icons";
+import { Public } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const PublishPlaylistDialog = createDialog<{
   playlistId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("プレイリストを公開")),
   React.memo(({ playlistId, onClose }) => {
     const dispatch = useDispatch();
 
@@ -25,12 +26,12 @@ export const PublishPlaylistDialog = createDialog<{
       );
 
     return (
-      <DialogContent title="プレイリストを公開" onClose={onClose}>
-        <Card icon={<Warning />} title="プレイリストを公開">
+      <>
+        <Card>
           <Typography>プレイリストが公開されます。</Typography>
         </Card>
         <Button icon={<Public />} label="プレイリストを公開" onClick={onUnpublish} />
-      </DialogContent>
+      </>
     );
   })
 );

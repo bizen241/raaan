@@ -1,14 +1,15 @@
-import { CloudUpload, Dns } from "@material-ui/icons";
+import { CloudUpload } from "@material-ui/icons";
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { Button, Card, DialogContent, TextField } from "../../ui";
+import { Button, Card, TextField } from "../../ui";
 
 export const UploadSynonymDialog = createDialog<{
   target: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("タグの別名を作成")),
   React.memo(({ target, onClose }) => {
     const dispatch = useDispatch();
 
@@ -36,12 +37,12 @@ export const UploadSynonymDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="タグの別名を作成" onClose={onClose}>
-        <Card icon={<Dns />} title="タグの別名">
+      <>
+        <Card>
           <TextField label="別名" defaultValue={name} onChange={onUpdateName} />
         </Card>
         <Button icon={<CloudUpload />} label="タグの別名をアップロード" onClick={onUploadSynonym} />
-      </DialogContent>
+      </>
     );
   })
 );

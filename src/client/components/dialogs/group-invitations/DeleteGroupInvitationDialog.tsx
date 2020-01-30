@@ -4,11 +4,12 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const RejectGroupInvitationDialog = createDialog<{
   groupInvitationId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("グループへの参加を辞退")),
   React.memo(({ groupInvitationId, onClose }) => {
     const dispatch = useDispatch();
 
@@ -17,12 +18,12 @@ export const RejectGroupInvitationDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="グループへの参加を辞退" onClose={onClose}>
+      <>
         <Card>
           <Typography>グループへの参加を辞退します。</Typography>
         </Card>
         <Button icon={<RemoveCircle color="error" />} label="参加を辞退" labelColor="error" onClick={onDelete} />
-      </DialogContent>
+      </>
     );
   })
 );

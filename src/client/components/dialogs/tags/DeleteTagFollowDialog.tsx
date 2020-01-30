@@ -4,11 +4,12 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const DeleteTagFollowDialog = createDialog<{
   tagFollowId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("タグのフォロー解除")),
   React.memo(({ tagFollowId, onClose }) => {
     const dispatch = useDispatch();
 
@@ -17,7 +18,7 @@ export const DeleteTagFollowDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="タグのフォロー解除" onClose={onClose}>
+      <>
         <Card>
           <Typography>タグのフォローを解除します。</Typography>
         </Card>
@@ -27,7 +28,7 @@ export const DeleteTagFollowDialog = createDialog<{
           labelColor="error"
           onClick={onDelete}
         />
-      </DialogContent>
+      </>
     );
   })
 );

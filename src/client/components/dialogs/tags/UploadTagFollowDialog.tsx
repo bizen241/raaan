@@ -6,11 +6,12 @@ import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { UserContext } from "../../project/Context";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const UploadTagFollowDialog = createDialog<{
   targetId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("タグをフォロー")),
   React.memo(({ targetId, onClose }) => {
     const dispatch = useDispatch();
     const currentTag = useContext(UserContext);
@@ -43,12 +44,12 @@ export const UploadTagFollowDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="タグをフォロー" onClose={onClose}>
+      <>
         <Card>
           <Typography>タグをフォローします。</Typography>
         </Card>
         <Button icon={<AddAlert />} label="タグをフォロー" onClick={onUpload} />
-      </DialogContent>
+      </>
     );
   })
 );

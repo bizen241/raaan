@@ -5,12 +5,13 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const UploadUserConfigDialog = createDialog<{
   userConfigId: string;
-}>(
-  React.memo(({ userConfigId, onClose }) => {
+}>()(
+  React.memo(({ t }) => t("設定をアップロード")),
+  React.memo(({ userConfigId }) => {
     const dispatch = useDispatch();
 
     const onUpload = () => {
@@ -22,12 +23,12 @@ export const UploadUserConfigDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="設定をアップロード" onClose={onClose}>
-        <Card icon={<CloudUpload />} title="設定をアップロード">
+      <>
+        <Card>
           <Typography>設定をアップロードします。</Typography>
         </Card>
         <Button icon={<CloudUpload />} label="アップロード" onClick={onUpload} />
-      </DialogContent>
+      </>
     );
   })
 );

@@ -1,16 +1,17 @@
 import { Typography } from "@material-ui/core";
-import { Delete, Warning } from "@material-ui/icons";
+import { Delete } from "@material-ui/icons";
 import React from "react";
 import { createDialog } from "../../../enhancers/createDialog";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const DeleteQuestionDialog = createDialog<{
   onDelete: () => void;
-}>(
+}>()(
+  React.memo(({ t }) => t("問題の削除")),
   React.memo(({ onDelete, onClose }) => {
     return (
-      <DialogContent title="問題の削除" onClose={onClose}>
-        <Card icon={<Warning />} title="問題の削除">
+      <>
+        <Card>
           <Typography>問題が問題集から削除されます。</Typography>
         </Card>
         <Button
@@ -22,7 +23,7 @@ export const DeleteQuestionDialog = createDialog<{
             onClose();
           }}
         />
-      </DialogContent>
+      </>
     );
   })
 );

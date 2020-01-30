@@ -9,7 +9,7 @@ import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
 import { isNumber } from "../../../reducers/buffers";
 import { UserContext } from "../../project/Context";
-import { Button, Card, DialogContent, Select, SelectOptions, TextField } from "../../ui";
+import { Button, Card, Select, SelectOptions, TextField } from "../../ui";
 
 type UploadType = "public" | "private" | "update" | "draft";
 
@@ -18,8 +18,9 @@ export const UploadExerciseDraftDialog = createDialog<{
   exerciseDraft: Params<ExerciseDraft> | undefined;
   exerciseId: string | undefined;
   onChange: (exerciseDraft: Partial<ExerciseDraft>) => void;
-}>(
-  React.memo(({ exerciseDraftId, exerciseDraft = {}, exerciseId, onChange, onClose }) => {
+}>()(
+  React.memo(({ t }) => t("問題集をアップロード")),
+  React.memo(({ exerciseDraftId, exerciseDraft = {}, exerciseId, onChange }) => {
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);
 
@@ -71,7 +72,7 @@ export const UploadExerciseDraftDialog = createDialog<{
     const canUpload = exerciseId !== undefined ? exercise !== undefined : true;
 
     return (
-      <DialogContent title="問題集をアップロード" onClose={onClose}>
+      <>
         <Card>
           <Select<UploadType>
             label="設定"
@@ -96,7 +97,7 @@ export const UploadExerciseDraftDialog = createDialog<{
           </Card>
         )}
         <Button disabled={!canUpload} color="primary" icon={<CloudUpload />} label="アップロード" onClick={onUpload} />
-      </DialogContent>
+      </>
     );
   })
 );

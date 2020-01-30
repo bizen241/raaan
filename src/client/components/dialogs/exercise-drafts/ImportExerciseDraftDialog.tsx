@@ -8,10 +8,11 @@ import { Params } from "../../../../shared/api/request/params";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
-export const ImportExerciseDraftDialog = createDialog<{}>(
-  React.memo(({ onClose }) => {
+export const ImportExerciseDraftDialog = createDialog<{}>()(
+  React.memo(({ t }) => t("問題集のインポート")),
+  React.memo(() => {
     const dispatch = useDispatch();
 
     const fileInput = useRef<HTMLInputElement>(null);
@@ -52,13 +53,13 @@ export const ImportExerciseDraftDialog = createDialog<{}>(
     };
 
     return (
-      <DialogContent title="問題集のインポート" onClose={onClose}>
+      <>
         <Card>
           <Typography>問題集をファイルから読み込みます。</Typography>
         </Card>
         <input ref={fileInput} type="file" hidden accept="application/json" onChange={onSelect} />
         <Button icon={<InsertDriveFile />} label="問題集をインポート" onClick={onRequest} />
-      </DialogContent>
+      </>
     );
   })
 );

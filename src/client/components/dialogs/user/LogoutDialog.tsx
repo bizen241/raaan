@@ -5,10 +5,11 @@ import { deleteEntity } from "../../../api/client";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
 import { UserContext } from "../../project/Context";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
-export const LogoutDialog = createDialog<{}>(
-  React.memo(({ onClose }) => {
+export const LogoutDialog = createDialog<{}>()(
+  React.memo(({ t }) => t("ログアウト")),
+  React.memo(({}) => {
     const currentUser = useContext(UserContext);
 
     const { entities: userSessions } = useSearch("UserSession", {
@@ -32,24 +33,20 @@ export const LogoutDialog = createDialog<{}>(
       }
     }, [userSessions]);
 
-    return (
-      <DialogContent title="ログアウト" onClose={onClose}>
-        {!isFailed ? (
-          <>
-            <Card>
-              <Typography>すべての下書きがブラウザから削除されます。</Typography>
-            </Card>
-            <Button icon={<Delete color="error" />} label="ログアウトする" labelColor="error" onClick={onLogout} />
-          </>
-        ) : (
-          <>
-            <Card icon={<Warning />} title="ログアウトの失敗">
-              <Typography>ログアウトに失敗しました。</Typography>
-            </Card>
-            <Button icon={<Delete color="error" />} label="ログアウトする" labelColor="error" onClick={onLogout} />
-          </>
-        )}
-      </DialogContent>
+    return !isFailed ? (
+      <>
+        <Card>
+          <Typography>すべての下書きがブラウザから削除されます。</Typography>
+        </Card>
+        <Button icon={<Delete color="error" />} label="ログアウトする" labelColor="error" onClick={onLogout} />
+      </>
+    ) : (
+      <>
+        <Card icon={<Warning />} title="ログアウトの失敗">
+          <Typography>ログアウトに失敗しました。</Typography>
+        </Card>
+        <Button icon={<Delete color="error" />} label="ログアウトする" labelColor="error" onClick={onLogout} />
+      </>
     );
   })
 );

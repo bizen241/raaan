@@ -3,11 +3,12 @@ import { CloudDownload } from "@material-ui/icons";
 import React from "react";
 import { Exercise } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const ExportExerciseDialog = createDialog<{
   exercise: Exercise;
-}>(
+}>()(
+  React.memo(({ t }) => t("問題集のエクスポート")),
   React.memo(({ exercise, onClose }) => {
     const { title, tags, questions } = exercise;
 
@@ -28,12 +29,12 @@ export const ExportExerciseDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="問題集のエクスポート" onClose={onClose}>
+      <>
         <Card>
           <Typography>問題集をファイルに保存します。</Typography>
         </Card>
         <Button icon={<CloudDownload />} label="問題集をエクスポート" onClick={onExport} />
-      </DialogContent>
+      </>
     );
   })
 );

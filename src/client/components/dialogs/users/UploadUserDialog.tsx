@@ -1,16 +1,17 @@
 import { Typography } from "@material-ui/core";
-import { CloudUpload, Person } from "@material-ui/icons";
+import { CloudUpload } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const UploadUserDialog = createDialog<{
   userId: string;
-}>(
-  React.memo(({ userId: bufferId, onClose }) => {
+}>()(
+  React.memo(({ t }) => t("プロフィールをアップロード")),
+  React.memo(({ userId: bufferId }) => {
     const dispatch = useDispatch();
 
     const onUpload = () => {
@@ -24,12 +25,12 @@ export const UploadUserDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="プロフィールをアップロード" onClose={onClose}>
-        <Card icon={<Person />} title="プロフィールをアップロード">
+      <>
+        <Card>
           <Typography>プロフィールをアップロードします。</Typography>
         </Card>
         <Button icon={<CloudUpload />} label="アップロード" onClick={onUpload} />
-      </DialogContent>
+      </>
     );
   })
 );

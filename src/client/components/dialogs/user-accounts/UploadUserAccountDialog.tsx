@@ -4,11 +4,12 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const UploadUserAccountDialog = createDialog<{
   userAccountId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("アバターの設定をアップロード")),
   React.memo(({ userAccountId, onClose }) => {
     const dispatch = useDispatch();
 
@@ -17,12 +18,12 @@ export const UploadUserAccountDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="アバターの設定をアップロード" onClose={onClose}>
-        <Card icon={<CloudUpload />} title="アバターの設定をアップロード">
+      <>
+        <Card>
           <Typography>アバターの設定をアップロードします。</Typography>
         </Card>
         <Button icon={<CloudUpload />} label="アップロード" onClick={onUpload} />
-      </DialogContent>
+      </>
     );
   })
 );

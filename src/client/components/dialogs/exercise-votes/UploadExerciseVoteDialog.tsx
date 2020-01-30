@@ -6,11 +6,12 @@ import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { UserContext } from "../../project/Context";
-import { Button, Card, DialogContent } from "../../ui";
+import { Button, Card } from "../../ui";
 
 export const UploadExerciseVoteDialog = createDialog<{
   exerciseId: string;
-}>(
+}>()(
+  React.memo(({ t }) => t("投票する")),
   React.memo(({ exerciseId: targetId, onClose }) => {
     const dispatch = useDispatch();
     const currentUser = useContext(UserContext);
@@ -45,7 +46,7 @@ export const UploadExerciseVoteDialog = createDialog<{
     };
 
     return (
-      <DialogContent title="投票する" onClose={onClose}>
+      <>
         <Card icon={<HowToVote />} title="投票する">
           <Typography>内容を選んでください。</Typography>
         </Card>
@@ -56,7 +57,7 @@ export const UploadExerciseVoteDialog = createDialog<{
           labelColor="error"
           onClick={() => onUpload(false)}
         />
-      </DialogContent>
+      </>
     );
   })
 );
