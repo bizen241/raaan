@@ -3,8 +3,8 @@ import React, { useCallback, useContext } from "react";
 import { ObjectionState } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
-import { mergeBuffer } from "../../reducers/buffers";
 import { UploadObjectionDialog } from "../dialogs/objections/UploadObjectionDialog";
+import { BrokenBuffer } from "../project/BrokenBuffer";
 import { UserContext } from "../project/Context";
 import { Button, Card, Column, Select, SelectOptions, TextField } from "../ui";
 
@@ -21,7 +21,7 @@ const selectObjectionStateOptions: SelectOptions<ObjectionState> = {
 };
 
 export const ObjectionEditor = withBuffer("Objection")(
-  React.memo(({ bufferId, buffer, source, onChange }) => {
+  React.memo(({ bufferType, bufferId, buffer, params, onChange }) => {
     const currentUser = useContext(UserContext);
 
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
@@ -36,9 +36,8 @@ export const ObjectionEditor = withBuffer("Objection")(
       onChange({ comment });
     }, []);
 
-    const params = mergeBuffer(source, buffer);
     if (params.targetType === undefined || params.targetId === undefined) {
-      return null;
+      return <BrokenBuffer bufferType={bufferType} bufferId={bufferId} />;
     }
 
     const isOwner = currentUser.permission === "Owner";

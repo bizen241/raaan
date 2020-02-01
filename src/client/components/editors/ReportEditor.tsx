@@ -3,8 +3,8 @@ import React, { useCallback, useContext } from "react";
 import { ReportReason, ReportState } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
-import { mergeBuffer } from "../../reducers/buffers";
 import { UploadReportDialog } from "../dialogs/reports/UploadReportDialog";
+import { BrokenBuffer } from "../project/BrokenBuffer";
 import { UserContext } from "../project/Context";
 import { Button, Card, Column, Select, SelectOptions, TextField } from "../ui";
 
@@ -33,7 +33,7 @@ const selectReportStateOptions: SelectOptions<ReportState> = {
 };
 
 export const ReportEditor = withBuffer("Report")(
-  React.memo(({ bufferId, buffer, source, onChange }) => {
+  React.memo(({ bufferType, bufferId, buffer, source, params, onChange }) => {
     const currentUser = useContext(UserContext);
 
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
@@ -43,9 +43,8 @@ export const ReportEditor = withBuffer("Report")(
     const onUpdateState = useCallback((state: ReportState) => onChange({ state }), []);
     const onUpdateComment = useCallback((comment: string) => onChange({ comment }), []);
 
-    const params = mergeBuffer(source, buffer);
     if (params.targetType === undefined || params.targetId === undefined) {
-      return null;
+      return <BrokenBuffer bufferType={bufferType} bufferId={bufferId} />;
     }
 
     const canUpload =
