@@ -1,6 +1,6 @@
 import createError from "http-errors";
+import { hasPermission } from "../../../shared/api/security";
 import { createSearchOperation } from "../../api/operation";
-import { hasPermission } from "../../api/security";
 import { ReportSummaryEntity } from "../../database/entities";
 
 export const GET = createSearchOperation("ReportSummary", "Read", async ({ currentUser, manager, params }) => {

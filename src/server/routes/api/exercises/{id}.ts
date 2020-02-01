@@ -1,6 +1,6 @@
 import createError from "http-errors";
+import { hasPermission } from "../../../../shared/api/security";
 import { createDeleteOperation, createGetOperation, createPatchOperation } from "../../../api/operation";
-import { hasPermission } from "../../../api/security";
 import { ExerciseEntity } from "../../../database/entities";
 
 export const GET = createGetOperation("Exercise", "Guest", async ({ currentUser, manager, id }) => {

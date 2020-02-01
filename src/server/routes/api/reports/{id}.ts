@@ -1,6 +1,6 @@
 import createError from "http-errors";
+import { hasPermission } from "../../../../shared/api/security";
 import { createDeleteOperation, createGetOperation, createPatchOperation } from "../../../api/operation";
-import { hasPermission } from "../../../api/security";
 import { ReportCommentEntity, ReportEntity } from "../../../database/entities";
 import { lockReportTarget } from "../../../services/reports";
 

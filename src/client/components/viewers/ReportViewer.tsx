@@ -1,7 +1,9 @@
 import { Gavel } from "@material-ui/icons";
 import React, { useContext } from "react";
+import { hasPermission } from "../../../shared/api/security";
 import { withEntity } from "../../enhancers/withEntity";
 import { UserContext } from "../project/Context";
+import { PermissionDenied } from "../project/PermissionDenied";
 import { Button, Card, Column, Property } from "../ui";
 import { ReportSummaryViewer } from "./ReportSummaryViewer";
 
@@ -13,8 +15,8 @@ export const ReportViewer = withEntity("Report")(({ entity: report }) => {
   const isOwner = currentUser.permission === "Owner";
   const isOwn = report.reporterId === currentUser.id;
 
-  if (!isOwner && !isOwn) {
-    return null;
+  if (!isOwn && hasPermission(currentUser, "Admin")) {
+    return <PermissionDenied />;
   }
 
   return (

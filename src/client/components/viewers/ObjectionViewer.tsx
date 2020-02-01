@@ -1,7 +1,9 @@
 import { Gavel } from "@material-ui/icons";
 import React, { useContext } from "react";
+import { hasPermission } from "../../../shared/api/security";
 import { withEntity } from "../../enhancers/withEntity";
 import { UserContext } from "../project/Context";
+import { PermissionDenied } from "../project/PermissionDenied";
 import { Button, Card, Column, Property } from "../ui";
 import { ObjectionSummaryViewer } from "./ObjectionSummaryViewer";
 
@@ -13,8 +15,8 @@ export const ObjectionViewer = withEntity("Objection")(({ entity: objection }) =
   const isOwner = currentUser.permission === "Owner";
   const isOwn = objection.objectorId === currentUser.id;
 
-  if (!isOwner && !isOwn) {
-    return null;
+  if (!isOwn && hasPermission(currentUser, "Admin")) {
+    return <PermissionDenied />;
   }
 
   return (
