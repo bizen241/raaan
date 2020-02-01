@@ -7,6 +7,7 @@ import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { SuggestionCommentEditor } from "../../editors/SuggestionCommentEditor";
 import { SuggestionCommentList } from "../../lists/suggestion-comments/SuggestionCommentList";
+import { Loading } from "../../project/Loading";
 import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
 import { Button } from "../../ui";
@@ -31,9 +32,9 @@ export const SuggestionSuggestionCommentsPage = React.memo<PageProps>(props => {
     );
   };
 
-  const { entity: suggestion } = useEntity("Suggestion", suggestionId);
+  const { entity: suggestion, ...suggestionProps } = useEntity("Suggestion", suggestionId);
   if (suggestion === undefined) {
-    return null;
+    return <Loading {...suggestionProps} />;
   }
 
   return (

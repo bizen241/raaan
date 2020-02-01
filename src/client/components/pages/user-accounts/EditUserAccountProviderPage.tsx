@@ -4,6 +4,7 @@ import { useEntity } from "../../../hooks/useEntity";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { RootState } from "../../../reducers";
 import { ChangeProviderDialog } from "../../dialogs/user/ChangeProviderDialog";
+import { Loading } from "../../project/Loading";
 import { Page } from "../../project/Page";
 import { Button } from "../../ui";
 
@@ -11,13 +12,13 @@ export const EditUserAccountProviderPage = React.memo(() => {
   const [requestedProvider, setProvider] = useState();
   const [isChangeProviderDialogOpen, onToggleChangeProviderDialog] = useToggleState();
 
-  const currentUserAccountId = useSelector((state: RootState) => state.app.userAccountId);
-  const { entity: currentUserAccount } = useEntity("UserAccount", currentUserAccountId);
-  if (currentUserAccount === undefined) {
-    return null;
+  const userAccountId = useSelector((state: RootState) => state.app.userAccountId);
+  const { entity: userAccount, ...userAccountProps } = useEntity("UserAccount", userAccountId);
+  if (userAccount === undefined) {
+    return <Loading {...userAccountProps} />;
   }
 
-  const { provider } = currentUserAccount;
+  const { provider } = userAccount;
 
   return (
     <Page title="プロバイダの変更">

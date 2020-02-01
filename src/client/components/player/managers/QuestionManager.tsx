@@ -65,6 +65,12 @@ export const QuestionManager: React.FunctionComponent<{
 
   const isEmptyQuestion = question.roman[0].length === 0;
   if (isEmptyQuestion) {
+    onFinish({
+      totalTime: 0,
+      typos,
+      typedLines
+    });
+
     return null;
   }
 

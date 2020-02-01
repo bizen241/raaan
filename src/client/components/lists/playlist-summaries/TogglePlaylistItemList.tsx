@@ -18,7 +18,7 @@ export const TogglePlaylistItemList = createEntityList("PlaylistSummary")(
     const currentUser = useContext(UserContext);
     const exerciseId = useContext(ExerciseContext);
     if (exerciseId === undefined) {
-      return null;
+      throw new Error("exerciseId is not defined");
     }
 
     const [isRequested, toggleRequestState] = useToggleState();

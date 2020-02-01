@@ -50,7 +50,12 @@ export const SelectContestGroupList = React.memo<{
         <Table>
           <TableBody>
             {selectableGroups.map(groupMember => (
-              <SelectContestGroupListItem key={groupMember.id} groupMember={groupMember} onSelect={onSelect} />
+              <SelectContestGroupListItem
+                key={groupMember.id}
+                groupMember={groupMember}
+                onSelect={onSelect}
+                onReload={onReload}
+              />
             ))}
           </TableBody>
         </Table>
@@ -62,10 +67,17 @@ export const SelectContestGroupList = React.memo<{
 const SelectContestGroupListItem = React.memo<{
   groupMember: GroupMember;
   onSelect: (groupId: string) => void;
-}>(({ groupMember, onSelect }) => {
+  onReload: () => void;
+}>(({ groupMember, onSelect, onReload }) => {
   const { entity: groupSummary } = useEntity("GroupSummary", groupMember.groupSummaryId);
   if (groupSummary === undefined) {
-    return null;
+    return (
+      <Column>
+        <IconButton onClick={onReload}>
+          <Refresh />
+        </IconButton>
+      </Column>
+    );
   }
 
   return (

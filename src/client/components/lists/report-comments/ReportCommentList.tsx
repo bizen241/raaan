@@ -1,4 +1,5 @@
-import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Refresh } from "@material-ui/icons";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createEntityList } from "../../../enhancers/createEntityList";
@@ -6,10 +7,16 @@ import { useEntity } from "../../../hooks/useEntity";
 import { Column } from "../../ui";
 
 export const ReportCommentList = createEntityList("ReportComment")(
-  React.memo(({ entity: reportComment }) => {
-    const { entity: authorSummary } = useEntity("UserSummary", reportComment.authorId);
+  React.memo(({ entity: reportComment, onReload }) => {
+    const { entity: authorSummary } = useEntity("UserSummary", reportComment.authorId, false);
     if (authorSummary === undefined) {
-      return null;
+      return (
+        <Column>
+          <IconButton onClick={onReload}>
+            <Refresh />
+          </IconButton>
+        </Column>
+      );
     }
 
     return (

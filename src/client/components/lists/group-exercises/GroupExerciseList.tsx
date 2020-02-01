@@ -1,5 +1,5 @@
-import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
-import { Event } from "@material-ui/icons";
+import { IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Event, Refresh } from "@material-ui/icons";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createEntityList } from "../../../enhancers/createEntityList";
@@ -9,12 +9,18 @@ import { SelectContestGroupDialog } from "../../dialogs/contests/SelectContestGr
 import { Column, Menu, MenuItem } from "../../ui";
 
 export const GroupExerciseList = createEntityList("GroupExercise")(
-  React.memo(({ entity: groupExercise }) => {
+  React.memo(({ entity: groupExercise, onReload }) => {
     const [isContestDialogOpen, onToggleContestDialog] = useToggleState();
 
-    const { entity: exerciseSummary } = useEntity("ExerciseSummary", groupExercise.exerciseSummaryId);
+    const { entity: exerciseSummary } = useEntity("ExerciseSummary", groupExercise.exerciseSummaryId, false);
     if (exerciseSummary === undefined) {
-      return null;
+      return (
+        <Column>
+          <IconButton onClick={onReload}>
+            <Refresh />
+          </IconButton>
+        </Column>
+      );
     }
 
     return (

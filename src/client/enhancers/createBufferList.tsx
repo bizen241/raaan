@@ -11,9 +11,11 @@ interface BufferListProps {
 }
 
 interface BufferListItemProps<E extends EntityObject> {
+  bufferType: EntityType;
   bufferId: string;
   buffer: Params<E>;
   source: E | undefined;
+  params: Params<E>;
 }
 
 export const createBufferList = <T extends EntityType>(entityType: T) => (
@@ -36,9 +38,23 @@ export const createBufferList = <T extends EntityType>(entityType: T) => (
         <Card>
           <Table>
             <TableBody>
-              {bufferEntries.slice(offset, offset + limit).map(([bufferId, buffer]) => (
-                <ListItem key={bufferId} bufferId={bufferId} buffer={buffer} source={entityMap[bufferId]} />
-              ))}
+              {bufferEntries.slice(offset, offset + limit).map(([bufferId, buffer]) => {
+                const source = entityMap[bufferId];
+
+                return (
+                  <ListItem
+                    key={bufferId}
+                    bufferType={entityType}
+                    bufferId={bufferId}
+                    buffer={buffer}
+                    source={source}
+                    params={{
+                      ...source,
+                      ...buffer
+                    }}
+                  />
+                );
+              })}
               {emptyRows && (
                 <TableRow style={{ height: 53 * emptyRows }}>
                   <TableCell colSpan={3} />

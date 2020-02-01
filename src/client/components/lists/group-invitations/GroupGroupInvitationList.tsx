@@ -1,5 +1,5 @@
-import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
-import { Delete } from "@material-ui/icons";
+import { IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Delete, Refresh } from "@material-ui/icons";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createEntityList } from "../../../enhancers/createEntityList";
@@ -9,12 +9,18 @@ import { CancelGroupInvitationDialog } from "../../dialogs/group-invitations/Del
 import { Column, Menu, MenuItem } from "../../ui";
 
 export const GroupGroupInvitationList = createEntityList("GroupInvitation")(
-  React.memo(({ entity: groupInvitation }) => {
+  React.memo(({ entity: groupInvitation, onReload }) => {
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-    const { entity: userSummary } = useEntity("UserSummary", groupInvitation.targetSummaryId);
+    const { entity: userSummary } = useEntity("UserSummary", groupInvitation.targetSummaryId, false);
     if (userSummary === undefined) {
-      return null;
+      return (
+        <Column>
+          <IconButton onClick={onReload}>
+            <Refresh />
+          </IconButton>
+        </Column>
+      );
     }
 
     return (

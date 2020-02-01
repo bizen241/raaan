@@ -1,5 +1,5 @@
-import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
-import { Email } from "@material-ui/icons";
+import { IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Email, Refresh } from "@material-ui/icons";
 import React, { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createEntityList } from "../../../enhancers/createEntityList";
@@ -10,14 +10,20 @@ import { UserContext } from "../../project/Context";
 import { Column, Menu, MenuItem } from "../../ui";
 
 export const UserFollowerList = createEntityList("UserFollow")(
-  React.memo(({ entity: userFollow, params }) => {
+  React.memo(({ entity: userFollow, params, onReload }) => {
     const currentUser = useContext(UserContext);
 
     const [isGroupInvitationsDialogOpen, toggleGroupInvitationsDialog] = useToggleState();
 
-    const { entity: userSummary } = useEntity("UserSummary", userFollow.followerSummaryId);
+    const { entity: userSummary } = useEntity("UserSummary", userFollow.followerSummaryId, false);
     if (userSummary === undefined) {
-      return null;
+      return (
+        <Column>
+          <IconButton onClick={onReload}>
+            <Refresh />
+          </IconButton>
+        </Column>
+      );
     }
 
     const isTarget = currentUser.id === params.targetId;

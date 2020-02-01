@@ -1,19 +1,23 @@
 import { IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { createBufferList } from "../../../enhancers/createBufferList";
 import { useToggleState } from "../../../hooks/useToggleState";
-import { mergeBuffer } from "../../../reducers/buffers";
+import { actions } from "../../../reducers";
 import { DeleteReportCommentBufferDialog } from "../../dialogs/report-comments/DeleteReportCommentBufferDialog";
 import { Column } from "../../ui";
 
 export const ReportCommentBufferList = createBufferList("ReportComment")(
-  React.memo(({ bufferId, buffer, source }) => {
+  React.memo(({ bufferType, bufferId, params }) => {
+    const dispatch = useDispatch();
+
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-    const params = mergeBuffer(source, buffer);
     if (params.targetId === undefined) {
+      dispatch(actions.buffers.delete(bufferType, bufferId));
+
       return null;
     }
 

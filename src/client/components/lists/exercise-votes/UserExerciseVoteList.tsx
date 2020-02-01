@@ -1,5 +1,5 @@
-import { TableCell, TableRow, Typography } from "@material-ui/core";
-import { Delete } from "@material-ui/icons";
+import { IconButton, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Delete, Refresh } from "@material-ui/icons";
 import React from "react";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
@@ -8,12 +8,18 @@ import { DeleteExerciseVoteDialog } from "../../dialogs/exercise-votes/DeleteExe
 import { Column, Menu, MenuItem } from "../../ui";
 
 export const UserExerciseVoteList = createEntityList("ExerciseVote")(
-  React.memo(({ entity: exerciseVote }) => {
+  React.memo(({ entity: exerciseVote, onReload }) => {
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-    const { entity: exerciseSummary } = useEntity("ExerciseSummary", exerciseVote.targetSummaryId);
+    const { entity: exerciseSummary } = useEntity("ExerciseSummary", exerciseVote.targetSummaryId, false);
     if (exerciseSummary === undefined) {
-      return null;
+      return (
+        <Column>
+          <IconButton onClick={onReload}>
+            <Refresh />
+          </IconButton>
+        </Column>
+      );
     }
 
     return (

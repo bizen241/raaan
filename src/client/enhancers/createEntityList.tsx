@@ -19,6 +19,7 @@ interface EntityListProps<E extends EntityObject> {
 interface EntityListItemProps<E extends EntityObject> {
   entity: E;
   params: Params<E>;
+  onReload: () => void;
 }
 
 interface EntityListParamsProps<E extends EntityObject> {
@@ -79,7 +80,14 @@ export const createEntityList = <T extends EntityType>(entityType: T, options: E
               {!isLoading &&
                 entities.map(
                   entity =>
-                    entity && <ItemComponent key={entity.id} entity={entity as EntityTypeToEntity[T]} params={params} />
+                    entity && (
+                      <ItemComponent
+                        key={entity.id}
+                        entity={entity as EntityTypeToEntity[T]}
+                        params={params}
+                        onReload={onReload}
+                      />
+                    )
                 )}
               {emptyRows && (
                 <TableRow style={{ height: itemHeight * emptyRows }}>

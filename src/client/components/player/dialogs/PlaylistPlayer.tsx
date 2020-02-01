@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { PlaylistItem } from "../../../../shared/api/entities";
 import { useEntity } from "../../../hooks/useEntity";
+import { Loading } from "../../project/Loading";
 import { SubmissionManager } from "../managers/SubmissionManager";
 import { createPlayerDialog } from "./createPlayerDialog";
 
@@ -20,7 +21,7 @@ export const PlaylistPlayer = createPlayerDialog<{
     const currentExerciseId = exerciseIds[cursor];
     const nextExerciseId = exerciseIds[cursor + 1];
 
-    const { entity: currentExercise } = useEntity("Exercise", currentExerciseId);
+    const { entity: currentExercise, ...currentExerciseProps } = useEntity("Exercise", currentExerciseId);
     useEntity("Exercise", nextExerciseId || currentExerciseId);
 
     const hasNext = exerciseIds[cursor + 1] !== undefined;
@@ -29,7 +30,11 @@ export const PlaylistPlayer = createPlayerDialog<{
     };
 
     if (currentExercise === undefined) {
-      return null;
+      if (currentExerciseProps.getStatus === 404) {
+        onNext();
+      }
+
+      return <Loading {...currentExerciseProps} />;
     }
 
     return <SubmissionManager exercise={currentExercise} hasNext={hasNext} onNext={onNext} onClose={onClose} />;

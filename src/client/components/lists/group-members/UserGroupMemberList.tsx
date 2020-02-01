@@ -1,4 +1,5 @@
-import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Refresh } from "@material-ui/icons";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createEntityList } from "../../../enhancers/createEntityList";
@@ -6,10 +7,16 @@ import { useEntity } from "../../../hooks/useEntity";
 import { Column } from "../../ui";
 
 export const UserGroupMemberList = createEntityList("GroupMember")(
-  React.memo(({ entity: groupMember }) => {
-    const { entity: groupSummary } = useEntity("GroupSummary", groupMember.groupSummaryId);
+  React.memo(({ entity: groupMember, onReload }) => {
+    const { entity: groupSummary } = useEntity("GroupSummary", groupMember.groupSummaryId, false);
     if (groupSummary === undefined) {
-      return null;
+      return (
+        <Column>
+          <IconButton onClick={onReload}>
+            <Refresh />
+          </IconButton>
+        </Column>
+      );
     }
 
     return (

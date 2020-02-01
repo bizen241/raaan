@@ -17,7 +17,7 @@ export const ToggleGroupInvitationList = createEntityList("UserFollow")(
     const dispatch = useDispatch();
     const groupId = useContext(GroupContext);
     if (groupId === undefined) {
-      return null;
+      throw new Error("groupId is not defined");
     }
 
     const [isRequested, toggleRequestState] = useToggleState();

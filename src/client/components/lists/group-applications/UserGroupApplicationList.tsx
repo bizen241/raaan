@@ -1,5 +1,5 @@
-import { TableCell, TableRow, Typography } from "@material-ui/core";
-import { Delete } from "@material-ui/icons";
+import { IconButton, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Delete, Refresh } from "@material-ui/icons";
 import React from "react";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
@@ -8,12 +8,18 @@ import { DeleteGroupApplicationDialog } from "../../dialogs/group-applications/D
 import { Column, Menu, MenuItem } from "../../ui";
 
 export const UserGroupApplicationList = createEntityList("GroupApplication")(
-  React.memo(({ entity: groupApplication }) => {
+  React.memo(({ entity: groupApplication, onReload }) => {
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-    const { entity: groupSummary } = useEntity("GroupSummary", groupApplication.groupSummaryId);
+    const { entity: groupSummary } = useEntity("GroupSummary", groupApplication.groupSummaryId, false);
     if (groupSummary === undefined) {
-      return null;
+      return (
+        <Column>
+          <IconButton onClick={onReload}>
+            <Refresh />
+          </IconButton>
+        </Column>
+      );
     }
 
     return (

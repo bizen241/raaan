@@ -16,7 +16,7 @@ export const ToggleGroupExerciseList = createEntityList("GroupMember")(
     const dispatch = useDispatch();
     const exerciseId = useContext(ExerciseContext);
     if (exerciseId === undefined) {
-      return null;
+      throw new Error("exerciseId is not defined");
     }
 
     const [isRequested, toggleRequestState] = useToggleState();

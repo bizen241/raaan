@@ -1,5 +1,6 @@
 import React from "react";
 import { useEntity } from "../../../hooks/useEntity";
+import { Loading } from "../../project/Loading";
 import { SubmissionManager } from "../managers/SubmissionManager";
 import { createPlayerDialog } from "./createPlayerDialog";
 
@@ -8,10 +9,9 @@ export const ExercisePlayer = createPlayerDialog<{
   contestId?: string;
 }>(
   React.memo(({ exerciseId, contestId, onClose }) => {
-    const { entity: exercise } = useEntity("Exercise", exerciseId);
-
+    const { entity: exercise, ...exerciseProps } = useEntity("Exercise", exerciseId);
     if (exercise === undefined) {
-      return null;
+      return <Loading {...exerciseProps} />;
     }
 
     return <SubmissionManager exercise={exercise} contestId={contestId} onClose={onClose} />;
