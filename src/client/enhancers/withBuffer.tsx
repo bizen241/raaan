@@ -8,10 +8,12 @@ import { actions, RootState } from "../reducers";
 import { isLocalOnly } from "../reducers/api";
 
 interface Props<E extends EntityObject> {
+  bufferType: EntityType;
   bufferId: string;
   buffer: Params<E> | undefined;
   source: E | undefined;
-  onChange: (params: Params<E>) => void;
+  params: Params<E>;
+  onChange: (updatedParams: Params<E>) => void;
 }
 
 export const withBuffer = <T extends EntityType>(entityType: T) => (
@@ -26,7 +28,8 @@ export const withBuffer = <T extends EntityType>(entityType: T) => (
     );
 
     const onChange = useCallback(
-      (params: Params<EntityTypeToEntity[T]>) => dispatch(actions.buffers.update(entityType, bufferId, params)),
+      (updatedParams: Params<EntityTypeToEntity[T]>) =>
+        dispatch(actions.buffers.update(entityType, bufferId, updatedParams)),
       []
     );
 
@@ -34,5 +37,21 @@ export const withBuffer = <T extends EntityType>(entityType: T) => (
       return <Typography>ロード中です</Typography>;
     }
 
-    return <BaseComponent bufferId={bufferId} buffer={buffer} source={entity} onChange={onChange} />;
+    const params = mergeBuffer(entity, buffer);
+
+    return (
+      <BaseComponent
+        bufferType={entityType}
+        bufferId={bufferId}
+        buffer={buffer}
+        source={entity}
+        params={params}
+        onChange={onChange}
+      />
+    );
   });
+
+const mergeBuffer = <E extends EntityObject>(source: E | undefined, buffer: Params<E> | undefined = {}): Params<E> => ({
+  ...source,
+  ...buffer
+});
