@@ -5,6 +5,7 @@ export * from "./DateTimeField";
 export * from "./DialogHeader";
 export * from "./DialogContent";
 export * from "./HeatMap";
+export * from "./IconButton";
 export * from "./Menu";
 export * from "./MenuItem";
 export * from "./PageContent";
