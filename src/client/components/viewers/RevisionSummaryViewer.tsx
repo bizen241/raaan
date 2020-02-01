@@ -1,39 +1,39 @@
 import { Edit, History, Refresh } from "@material-ui/icons";
 import React, { useContext } from "react";
-import { withEntity } from "../../enhancers/withEntity";
+import { Revision, RevisionSummary } from "../../../shared/api/entities";
 import { useEntity } from "../../hooks/useEntity";
 import { UserContext } from "../project/Context";
+import { Loading } from "../project/Loading";
 import { Card, Menu, MenuItem, Property } from "../ui";
 
-export const RevisionSummaryViewer = withEntity("RevisionSummary")(
-  React.memo(({ entity: revisionSummary }) => {
-    const currentUser = useContext(UserContext);
+export const RevisionSummaryViewer = React.memo<{
+  revision: Revision;
+  revisionSummary: RevisionSummary;
+}>(({ revision }) => {
+  const currentUser = useContext(UserContext);
 
-    const { revisionId } = revisionSummary;
+  const { onReload } = useEntity("Revision", revision.id);
+  const { entity: exercise, ...exerciseProps } = useEntity("Exercise", revision.exerciseId);
+  if (exercise === undefined) {
+    return <Loading {...exerciseProps} />;
+  }
 
-    const { entity: revision, onReload } = useEntity("Revision", revisionId, false);
-    const { entity: exercise } = useEntity("Exercise", revision && revision.exerciseId);
-    if (revision === undefined || exercise === undefined) {
-      return null;
-    }
+  const { messageSubject, messageBody } = revision;
+  const isOwn = exercise.authorId === currentUser.id;
 
-    const { messageSubject, messageBody } = revision;
-    const isOwn = exercise.authorId === currentUser.id;
-
-    return (
-      <Card
-        icon={<History />}
-        title={messageSubject || "件名なし"}
-        action={
-          <Menu>
-            {isOwn && <MenuItem icon={<Edit />} label="編集する" to={`/revisions/${revisionId}/edit`} />}
-            <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReload} />
-          </Menu>
-        }
-      >
-        {messageBody && <Property label="メッセージ">{messageBody}</Property>}
-        <Property label="作成日時">{new Date(revision.updatedAt).toLocaleDateString()}</Property>
-      </Card>
-    );
-  })
-);
+  return (
+    <Card
+      icon={<History />}
+      title={messageSubject || "件名なし"}
+      action={
+        <Menu>
+          {isOwn && <MenuItem icon={<Edit />} label="編集する" to={`/revisions/${revision.id}/edit`} />}
+          <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReload} />
+        </Menu>
+      }
+    >
+      {messageBody && <Property label="メッセージ">{messageBody}</Property>}
+      <Property label="作成日時">{new Date(revision.updatedAt).toLocaleDateString()}</Property>
+    </Card>
+  );
+});

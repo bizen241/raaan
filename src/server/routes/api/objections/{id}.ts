@@ -4,12 +4,17 @@ import { hasPermission } from "../../../api/security";
 import { ObjectionCommentEntity, ObjectionEntity } from "../../../database/entities";
 import { unlockObjectionTarget } from "../../../services/objections";
 
-export const GET = createGetOperation("Objection", "Read", async ({ manager, id }) => {
+export const GET = createGetOperation("Objection", "Read", async ({ currentUser, manager, id }) => {
   const objection = await manager.findOne(ObjectionEntity, id, {
     relations: ["summary"]
   });
   if (objection === undefined) {
     throw createError(404);
+  }
+
+  const isObjector = objection.objectorId === currentUser.id;
+  if (!isObjector && !hasPermission(currentUser, "Admin")) {
+    throw createError(403);
   }
 
   return [objection];

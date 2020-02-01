@@ -1,14 +1,19 @@
 import React from "react";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
+import { createPage } from "../../../enhancers/createPage";
+import { useEntity } from "../../../hooks/useEntity";
+import { Loading } from "../../project/Loading";
 import { RevisionViewer } from "../../viewers/RevisionViewer";
 
-export const RevisionPage = React.memo<PageProps>(props => {
-  const revisionId = props.match.params.id;
+export const RevisionPage = createPage()(
+  React.memo(({ t }) => t("編集履歴の詳細")),
+  React.memo(props => {
+    const revisionId = props.match.params.id;
 
-  return (
-    <Page title="編集履歴の詳細">
-      <RevisionViewer entityId={revisionId} />
-    </Page>
-  );
-});
+    const { entity: revision, ...revisionProps } = useEntity("Revision", revisionId);
+    if (revision === undefined) {
+      return <Loading {...revisionProps} />;
+    }
+
+    return <RevisionViewer revision={revision} />;
+  })
+);
