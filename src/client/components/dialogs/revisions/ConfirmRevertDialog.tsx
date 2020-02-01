@@ -7,6 +7,7 @@ import { Revision } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
+import { Loading } from "../../project/Loading";
 import { Button, Card } from "../../ui";
 
 export const ConfirmRevertDialog = createDialog<{
@@ -16,9 +17,9 @@ export const ConfirmRevertDialog = createDialog<{
   React.memo(({ revision }) => {
     const dispatch = useDispatch();
 
-    const { entity: exercise } = useEntity("Exercise", revision.exerciseId);
+    const { entity: exercise, ...exerciseProps } = useEntity("Exercise", revision.exerciseId);
     if (exercise === undefined) {
-      return null;
+      return <Loading {...exerciseProps} />;
     }
 
     const onCreate = () => {

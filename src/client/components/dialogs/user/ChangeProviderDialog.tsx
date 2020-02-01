@@ -5,6 +5,7 @@ import { AuthProviderName } from "../../../../shared/auth";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useEntity } from "../../../hooks/useEntity";
 import { RootState } from "../../../reducers";
+import { Loading } from "../../project/Loading";
 import { Button, Card, Property } from "../../ui";
 
 export const ChangeProviderDialog = createDialog<{
@@ -12,13 +13,14 @@ export const ChangeProviderDialog = createDialog<{
 }>()(
   React.memo(({ t }) => t("プロバイダの変更")),
   React.memo(({ requestedProvider }) => {
-    const currentUserAccountId = useSelector((state: RootState) => state.app.userAccountId);
-    const { entity: currentUserAccount } = useEntity("UserAccount", currentUserAccountId);
-    if (currentUserAccount === undefined) {
-      return null;
+    const userAccountId = useSelector((state: RootState) => state.app.userAccountId);
+
+    const { entity: userAccount, ...userAccountProps } = useEntity("UserAccount", userAccountId);
+    if (userAccount === undefined) {
+      return <Loading {...userAccountProps} />;
     }
 
-    const { provider: currentProvider } = currentUserAccount;
+    const { provider: currentProvider } = userAccount;
 
     return (
       <>

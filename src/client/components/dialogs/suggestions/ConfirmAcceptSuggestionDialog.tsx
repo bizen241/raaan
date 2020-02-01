@@ -7,6 +7,7 @@ import { Suggestion } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
+import { Loading } from "../../project/Loading";
 import { Button, Card } from "../../ui";
 
 export const ConfirmAcceptSuggestionDialog = createDialog<{
@@ -16,9 +17,9 @@ export const ConfirmAcceptSuggestionDialog = createDialog<{
   React.memo(({ suggestion }) => {
     const dispatch = useDispatch();
 
-    const { entity: exercise } = useEntity("Exercise", suggestion.exerciseId);
+    const { entity: exercise, ...exerciseProps } = useEntity("Exercise", suggestion.exerciseId);
     if (exercise === undefined) {
-      return null;
+      return <Loading {...exerciseProps} />;
     }
 
     const onCreate = () => {
