@@ -1,4 +1,4 @@
-import { Box, Collapse, Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Box, Collapse, Link, Typography } from "@material-ui/core";
 import { Edit, Refresh, Tune } from "@material-ui/icons";
 import React, { useContext, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -7,26 +7,19 @@ import { Params } from "../../../../shared/api/request/params";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { UserContext } from "../../project/Context";
-import { Column, IconButton, Row, Search, Select } from "../../ui";
+import { Column, IconButton, Row, Search, Select, TableRow } from "../../ui";
 
 export const ExerciseSummaryList = createEntityList("ExerciseSummary")(
   React.memo(({ entity: exerciseSummary }) => {
     const currentUser = useContext(UserContext);
 
+    const isAuthor = exerciseSummary.authorId === currentUser.id;
+
     return (
-      <TableRow>
-        <TableCell>
-          <Column>
-            <Link color="textPrimary" component={RouterLink} to={`/exercises/${exerciseSummary.exerciseId}`}>
-              <Typography>{exerciseSummary.title || "無題"}</Typography>
-            </Link>
-          </Column>
-        </TableCell>
-        {exerciseSummary.authorId === currentUser.id ? (
-          <TableCell padding="checkbox">
-            <IconButton icon={Edit} to={`/exercises/${exerciseSummary.exerciseId}/edit`} />
-          </TableCell>
-        ) : null}
+      <TableRow action={isAuthor && <IconButton icon={Edit} to={`/exercises/${exerciseSummary.exerciseId}/edit`} />}>
+        <Link color="textPrimary" component={RouterLink} to={`/exercises/${exerciseSummary.exerciseId}`}>
+          <Typography>{exerciseSummary.title || "無題"}</Typography>
+        </Link>
       </TableRow>
     );
   }),
