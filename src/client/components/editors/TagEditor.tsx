@@ -2,17 +2,14 @@ import { CloudUpload } from "@material-ui/icons";
 import React, { useCallback } from "react";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
-import { mergeBuffer } from "../../reducers/buffers";
 import { UploadTagDialog } from "../dialogs/tags/UploadTagDialog";
 import { Button, Card, Column, TextField } from "../ui";
 
 export const TagEditor = withBuffer("Tag")(
-  React.memo(({ bufferId, buffer, source, onChange }) => {
+  React.memo(({ bufferId, buffer, params, onChange }) => {
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
     const onUpdateDescription = useCallback((description: string) => onChange({ description }), []);
-
-    const params = mergeBuffer(source, buffer);
 
     const canUpload = buffer !== undefined;
 

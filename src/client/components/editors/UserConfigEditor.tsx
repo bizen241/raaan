@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { UserSettings } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
-import { mergeBuffer } from "../../reducers/buffers";
 import { UploadUserConfigDialog } from "../dialogs/user-configs/UploadUserConfigDialog";
 import { UserContext } from "../project/Context";
 import { Button, Card, Column, Select, SelectOptions } from "../ui";
@@ -31,12 +30,10 @@ const selectColorSchemeOptions: SelectOptions<UserSettings["ui.colorScheme"]> = 
 };
 
 export const UserConfigEditor = withBuffer("UserConfig")(
-  React.memo(({ bufferId, buffer, source, onChange }) => {
+  React.memo(({ bufferId, buffer, params, onChange }) => {
     const { t } = useTranslation();
     const currentUser = useContext(UserContext);
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
-
-    const params = mergeBuffer(source, buffer);
 
     const [settings, setSettings] = useState(params.settings || {});
 

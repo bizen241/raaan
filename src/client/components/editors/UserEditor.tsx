@@ -2,17 +2,14 @@ import { CloudUpload } from "@material-ui/icons";
 import React, { useCallback } from "react";
 import { withBuffer } from "../../enhancers/withBuffer";
 import { useToggleState } from "../../hooks/useToggleState";
-import { mergeBuffer } from "../../reducers/buffers";
 import { UploadUserDialog } from "../dialogs/users/UploadUserDialog";
 import { Button, Card, Column, TextField } from "../ui";
 
 export const UserEditor = withBuffer("User")(
-  React.memo(({ bufferId, buffer, source, onChange }) => {
+  React.memo(({ bufferId, buffer, params, onChange }) => {
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
     const onUpdateName = useCallback((name: string) => onChange({ name }), []);
-
-    const params = mergeBuffer(source, buffer);
 
     const canUpload = buffer !== undefined;
 
