@@ -1,9 +1,9 @@
-import { Card, CircularProgress, Divider, IconButton, Table, TableBody, TableCell, TableRow } from "@material-ui/core";
+import { Card, CircularProgress, Divider, Table, TableBody, TableCell, TableRow } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons";
 import React, { useCallback } from "react";
 import { EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
-import { Column, Row, TablePagination } from "../components/ui";
+import { Column, IconButton, Row, TablePagination } from "../components/ui";
 import { useSearch } from "../hooks/useSearch";
 
 interface EntityListOptions {
@@ -57,9 +57,7 @@ export const createEntityList = <T extends EntityType>(entityType: T, options: E
             {ParamsComponent === undefined ? (
               <Row>
                 <Row flex={1} />
-                <IconButton onClick={onReload}>
-                  <Refresh />
-                </IconButton>
+                <IconButton icon={Refresh} onClick={onReload} />
               </Row>
             ) : (
               <ParamsComponent params={params} onReload={onReload} onChange={onChange} />

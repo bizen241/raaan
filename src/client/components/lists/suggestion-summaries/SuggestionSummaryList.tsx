@@ -1,10 +1,10 @@
-import { IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Edit } from "@material-ui/icons";
 import React, { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { UserContext } from "../../project/Context";
-import { Column } from "../../ui";
+import { Column, IconButton } from "../../ui";
 
 export const SuggestionSummaryList = createEntityList("SuggestionSummary")(
   React.memo(({ entity: suggestionSummary }) => {
@@ -21,9 +21,7 @@ export const SuggestionSummaryList = createEntityList("SuggestionSummary")(
         </TableCell>
         {suggestionSummary.authorId === currentUser.id ? (
           <TableCell padding="checkbox">
-            <IconButton component={RouterLink} to={`/suggestions/${suggestionSummary.suggestionId}/edit`}>
-              <Edit />
-            </IconButton>
+            <IconButton icon={Edit} to={`/suggestions/${suggestionSummary.suggestionId}/edit`} />
           </TableCell>
         ) : null}
       </TableRow>

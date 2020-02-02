@@ -1,11 +1,11 @@
-import { IconButton, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { createEntityTypeToObject, EntityType } from "../../../../shared/api/entities";
 import { actions } from "../../../reducers";
 import { Page } from "../../project/Page";
-import { Button, Card } from "../../ui";
+import { Button, Card, IconButton } from "../../ui";
 
 const entityTypes = Object.keys(createEntityTypeToObject()) as EntityType[];
 
@@ -38,9 +38,7 @@ export const CachePage = React.memo(() => {
                   <Typography>{entityType}</Typography>
                 </TableCell>
                 <TableCell padding="checkbox">
-                  <IconButton onClick={() => dispatch(actions.cache.purge(entityType, undefined))}>
-                    <Delete />
-                  </IconButton>
+                  <IconButton icon={Delete} onClick={() => dispatch(actions.cache.purge(entityType, undefined))} />
                 </TableCell>
               </TableRow>
             ))}

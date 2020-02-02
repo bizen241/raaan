@@ -1,6 +1,7 @@
-import { AppBar, Card, CardHeader, DialogContent, IconButton, Toolbar } from "@material-ui/core";
+import { AppBar, Card, CardHeader, DialogContent, Toolbar } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import React from "react";
+import { IconButton } from "../../ui";
 
 export const AttemptMessage = React.memo<{
   icon: React.ReactNode;
@@ -10,9 +11,7 @@ export const AttemptMessage = React.memo<{
   <>
     <AppBar position="relative">
       <Toolbar variant="dense">
-        <IconButton edge="start" color="inherit" onClick={onClose}>
-          <Close />
-        </IconButton>
+        <IconButton icon={Close} edge="start" onClick={onClose} />
       </Toolbar>
     </AppBar>
     <DialogContent>

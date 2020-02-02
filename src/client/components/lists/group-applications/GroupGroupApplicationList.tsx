@@ -1,4 +1,4 @@
-import { IconButton, TableCell, TableRow, Typography } from "@material-ui/core";
+import { TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete, Refresh } from "@material-ui/icons";
 import React from "react";
 import { createEntityList } from "../../../enhancers/createEntityList";
@@ -6,7 +6,7 @@ import { useEntity } from "../../../hooks/useEntity";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { DeleteGroupApplicationByOwnerDialog } from "../../dialogs/group-applications/DeleteGroupApplicationByOwnerDialog";
 import { UploadGroupMemberByOwnerDialog } from "../../dialogs/group-members/UploadGroupMemberByOwnerDialog";
-import { Column, Menu, MenuItem } from "../../ui";
+import { Column, IconButton, Menu, MenuItem } from "../../ui";
 
 export const GroupGroupApplicationList = createEntityList("GroupApplication")(
   React.memo(({ entity: groupApplication, onReload }) => {
@@ -17,9 +17,7 @@ export const GroupGroupApplicationList = createEntityList("GroupApplication")(
     if (userSummary === undefined) {
       return (
         <Column>
-          <IconButton onClick={onReload}>
-            <Refresh />
-          </IconButton>
+          <IconButton icon={Refresh} onClick={onReload} />
         </Column>
       );
     }

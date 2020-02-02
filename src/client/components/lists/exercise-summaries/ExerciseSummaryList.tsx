@@ -1,4 +1,4 @@
-import { Box, Collapse, IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Box, Collapse, Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Edit, Refresh, Tune } from "@material-ui/icons";
 import React, { useContext, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -7,7 +7,7 @@ import { Params } from "../../../../shared/api/request/params";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { UserContext } from "../../project/Context";
-import { Column, Row, Search, Select } from "../../ui";
+import { Column, IconButton, Row, Search, Select } from "../../ui";
 
 export const ExerciseSummaryList = createEntityList("ExerciseSummary")(
   React.memo(({ entity: exerciseSummary }) => {
@@ -24,9 +24,7 @@ export const ExerciseSummaryList = createEntityList("ExerciseSummary")(
         </TableCell>
         {exerciseSummary.authorId === currentUser.id ? (
           <TableCell padding="checkbox">
-            <IconButton component={RouterLink} to={`/exercises/${exerciseSummary.exerciseId}/edit`}>
-              <Edit />
-            </IconButton>
+            <IconButton icon={Edit} to={`/exercises/${exerciseSummary.exerciseId}/edit`} />
           </TableCell>
         ) : null}
       </TableRow>
@@ -41,13 +39,9 @@ export const ExerciseSummaryList = createEntityList("ExerciseSummary")(
     return (
       <>
         <Row pb={1}>
-          <IconButton onClick={onReload}>
-            <Refresh />
-          </IconButton>
+          <IconButton icon={Refresh} onClick={onReload} />
           <Box flex={1} />
-          <IconButton onClick={onToggleSearchCondition}>
-            <Tune />
-          </IconButton>
+          <IconButton icon={Tune} onClick={onToggleSearchCondition} />
         </Row>
         <Collapse in={isSearchConditionOpen} timeout="auto" unmountOnExit>
           <Column>

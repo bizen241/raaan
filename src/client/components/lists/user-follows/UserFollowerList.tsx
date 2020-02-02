@@ -1,4 +1,4 @@
-import { IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Email, Refresh } from "@material-ui/icons";
 import React, { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -7,7 +7,7 @@ import { useEntity } from "../../../hooks/useEntity";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { GroupInvitationsDialog } from "../../dialogs/user-follows/GroupInvitationsDialog";
 import { UserContext } from "../../project/Context";
-import { Column, Menu, MenuItem } from "../../ui";
+import { Column, IconButton, Menu, MenuItem } from "../../ui";
 
 export const UserFollowerList = createEntityList("UserFollow")(
   React.memo(({ entity: userFollow, params, onReload }) => {
@@ -19,9 +19,7 @@ export const UserFollowerList = createEntityList("UserFollow")(
     if (userSummary === undefined) {
       return (
         <Column>
-          <IconButton onClick={onReload}>
-            <Refresh />
-          </IconButton>
+          <IconButton icon={Refresh} onClick={onReload} />
         </Column>
       );
     }

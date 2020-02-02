@@ -1,4 +1,4 @@
-import { Box, IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Box, Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete, PlayArrow, SwapVert } from "@material-ui/icons";
 import React, { useCallback } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -7,7 +7,7 @@ import { withEntity } from "../../enhancers/withEntity";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeletePlaylistItemDialog } from "../dialogs/playlist-items/DeletePlaylistItemDialog";
 import { MovePlaylistItemDialog } from "../dialogs/playlist-items/MovePlaylistItemDialog";
-import { Column, Menu, MenuItem } from "../ui";
+import { Column, IconButton, Menu, MenuItem } from "../ui";
 
 export const PlaylistItemViewer = React.memo<{
   index: number;
@@ -31,9 +31,7 @@ export const PlaylistItemViewer = React.memo<{
         </Column>
       </TableCell>
       <TableCell padding="checkbox">
-        <IconButton onClick={useCallback(() => onPlay(index), [index])}>
-          <PlayArrow />
-        </IconButton>
+        <IconButton icon={PlayArrow} onClick={useCallback(() => onPlay(index), [index])} />
       </TableCell>
       <TableCell padding="checkbox">
         <Menu>

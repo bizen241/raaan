@@ -1,7 +1,8 @@
-import { IconButton, useTheme } from "@material-ui/core";
+import { useTheme } from "@material-ui/core";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
 import React from "react";
 import { Column } from "./Column";
+import { IconButton } from "./IconButton";
 import { Row } from "./Row";
 import { Select } from "./Select";
 
@@ -22,12 +23,16 @@ export const TablePagination = React.memo<{
     <Column>
       <Row pb={1} alignItems="center">
         <Row flex={1} />
-        <IconButton disabled={page === 0} onClick={() => onChangePage(page - 1)}>
-          {theme.direction === "rtl" ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-        </IconButton>
-        <IconButton disabled={page >= lastPage} onClick={() => onChangePage(page + 1)}>
-          {theme.direction === "rtl" ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-        </IconButton>
+        <IconButton
+          icon={theme.direction === "rtl" ? KeyboardArrowRight : KeyboardArrowLeft}
+          disabled={page === 0}
+          onClick={() => onChangePage(page - 1)}
+        />
+        <IconButton
+          icon={theme.direction === "rtl" ? KeyboardArrowLeft : KeyboardArrowRight}
+          disabled={page >= lastPage}
+          onClick={() => onChangePage(page + 1)}
+        />
       </Row>
       <Select<RowsPerPage>
         label="表示件数"

@@ -1,6 +1,7 @@
-import { AppBar, AppBarProps, IconButton, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, AppBarProps, Toolbar, Typography } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import React from "react";
+import { IconButton } from ".";
 import { Column } from "./Column";
 import { Row } from "./Row";
 
@@ -16,9 +17,7 @@ export const DialogHeader = React.memo<{
       <Column height="100%" alignItems="center">
         <Column flex={1} width="100%" maxWidth={maxWidth}>
           <Toolbar variant="dense">
-            <IconButton edge="start" color="inherit" onClick={onClose}>
-              <Close />
-            </IconButton>
+            <IconButton icon={Close} edge="start" onClick={onClose} />
             <Row flex={1}>
               <Typography>{children}</Typography>
             </Row>

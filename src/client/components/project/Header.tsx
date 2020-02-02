@@ -1,11 +1,11 @@
-import { AppBar, Avatar, Box, IconButton, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Avatar, Box, Toolbar, Typography } from "@material-ui/core";
 import { ArrowBack, Home, Mail, Person, Settings, Web } from "@material-ui/icons";
 import { goBack } from "connected-react-router";
 import React, { useCallback, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEntity } from "../../hooks/useEntity";
 import { RootState } from "../../reducers";
-import { Column, Menu, MenuItem } from "../ui";
+import { Column, IconButton, Menu, MenuItem } from "../ui";
 import { UserContext } from "./Context";
 
 export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) => {
@@ -21,9 +21,7 @@ export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) =
       <Column alignItems="center">
         <Column width="100%" maxWidth="1000px" px={1}>
           <Toolbar variant="dense" disableGutters>
-            <IconButton onClick={useCallback(() => dispatch(goBack()), [])} style={{ padding: "16px" }}>
-              <ArrowBack />
-            </IconButton>
+            <IconButton icon={ArrowBack} onClick={useCallback(() => dispatch(goBack()), [])} />
             <Typography component="span">{title}</Typography>
             <Box flex={1} />
             <Menu

@@ -1,11 +1,11 @@
-import { IconButton, TableCell, TableRow, Typography } from "@material-ui/core";
+import { TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import React, { useContext } from "react";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { DeletePlaylistBookmarkDialog } from "../../dialogs/playlist-bookmarks/DeletePlaylistBookmarkDialog";
 import { UserContext } from "../../project/Context";
-import { Column } from "../../ui";
+import { Column, IconButton } from "../../ui";
 
 export const PlaylistBookmarkList = createEntityList("PlaylistBookmark", {
   itemHeight: 77
@@ -24,9 +24,7 @@ export const PlaylistBookmarkList = createEntityList("PlaylistBookmark", {
         </TableCell>
         <TableCell padding="checkbox">
           {playlistBookmark.userId === currentUser.id ? (
-            <IconButton onClick={onToggleDeleteDialog}>
-              <Delete />
-            </IconButton>
+            <IconButton icon={Delete} onClick={onToggleDeleteDialog} />
           ) : null}
         </TableCell>
         <DeletePlaylistBookmarkDialog

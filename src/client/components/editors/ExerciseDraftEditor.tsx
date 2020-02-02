@@ -42,17 +42,3 @@ export const ExerciseDraftEditor = withBuffer("ExerciseDraft")(
     );
   })
 );
-
-/*
-<IconButton icon={Hoge} onClick={onClick} />
-
-バグの報告
-
-useEntity
-
-UndefinedError
-
-<TableRow><TableCell>廃止
-
-withEntity廃止
-*/

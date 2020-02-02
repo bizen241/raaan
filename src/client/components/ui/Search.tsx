@@ -1,7 +1,8 @@
-import { IconButton, InputAdornment, TextField, Typography } from "@material-ui/core";
+import { InputAdornment, TextField, Typography } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
 import React from "react";
 import { Column } from "./Column";
+import { IconButton } from "./IconButton";
 
 export const Search = React.memo<{
   label: string;
@@ -21,9 +22,7 @@ export const Search = React.memo<{
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton edge="end" onClick={onSearch}>
-                <SearchIcon />
-              </IconButton>
+              <IconButton icon={SearchIcon} edge="end" onClick={onSearch} />
             </InputAdornment>
           )
         }}

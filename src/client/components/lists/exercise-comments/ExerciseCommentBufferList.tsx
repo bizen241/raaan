@@ -1,4 +1,4 @@
-import { IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -7,7 +7,7 @@ import { createBufferList } from "../../../enhancers/createBufferList";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
 import { DeleteExerciseCommentBufferDialog } from "../../dialogs/exercise-comments/DeleteExerciseCommentBufferDialog";
-import { Column } from "../../ui";
+import { Column, IconButton } from "../../ui";
 
 export const ExerciseCommentBufferList = createBufferList("ExerciseComment")(
   React.memo(({ bufferType, bufferId, params }) => {
@@ -31,9 +31,7 @@ export const ExerciseCommentBufferList = createBufferList("ExerciseComment")(
           </Column>
         </TableCell>
         <TableCell padding="checkbox">
-          <IconButton onClick={onToggleDeleteDialog}>
-            <Delete />
-          </IconButton>
+          <IconButton icon={Delete} onClick={onToggleDeleteDialog} />
         </TableCell>
         <DeleteExerciseCommentBufferDialog
           bufferId={bufferId}

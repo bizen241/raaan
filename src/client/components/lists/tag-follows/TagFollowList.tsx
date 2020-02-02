@@ -1,10 +1,10 @@
-import { IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
-import { Column } from "../../ui";
+import { Column, IconButton } from "../../ui";
 
 export const TagFollowList = createEntityList("TagFollow")(
   React.memo(({ entity: userFollow, onReload }) => {
@@ -12,9 +12,7 @@ export const TagFollowList = createEntityList("TagFollow")(
     if (tagSummary === undefined) {
       return (
         <Column>
-          <IconButton onClick={onReload}>
-            <Refresh />
-          </IconButton>
+          <IconButton icon={Refresh} onClick={onReload} />
         </Column>
       );
     }

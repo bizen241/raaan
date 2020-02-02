@@ -1,4 +1,4 @@
-import { IconButton, TableCell, TableRow, Typography } from "@material-ui/core";
+import { TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete, Refresh } from "@material-ui/icons";
 import React from "react";
 import { createEntityList } from "../../../enhancers/createEntityList";
@@ -6,7 +6,7 @@ import { useEntity } from "../../../hooks/useEntity";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { RejectGroupInvitationDialog } from "../../dialogs/group-invitations/DeleteGroupInvitationDialog";
 import { UploadGroupMemberDialog } from "../../dialogs/group-members/UploadGroupMemberDialog";
-import { Column, Menu, MenuItem } from "../../ui";
+import { Column, IconButton, Menu, MenuItem } from "../../ui";
 
 export const UserGroupInvitationList = createEntityList("GroupInvitation")(
   React.memo(({ entity: groupInvitation, onReload }) => {
@@ -17,9 +17,7 @@ export const UserGroupInvitationList = createEntityList("GroupInvitation")(
     if (groupSummary === undefined) {
       return (
         <Column>
-          <IconButton onClick={onReload}>
-            <Refresh />
-          </IconButton>
+          <IconButton icon={Refresh} onClick={onReload} />
         </Column>
       );
     }

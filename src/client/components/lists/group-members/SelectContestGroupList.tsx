@@ -1,4 +1,4 @@
-import { Divider, IconButton, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Divider, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import React, { useCallback, useContext } from "react";
@@ -9,7 +9,7 @@ import { useSearch } from "../../../hooks/useSearch";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { UserContext } from "../../project/Context";
-import { Card, Column, Row } from "../../ui";
+import { Card, Column, IconButton, Row } from "../../ui";
 
 export const SelectContestGroupList = React.memo<{
   exerciseId: string;
@@ -40,9 +40,7 @@ export const SelectContestGroupList = React.memo<{
     <Card>
       <Column p={2}>
         <Row>
-          <IconButton onClick={onReload}>
-            <Refresh />
-          </IconButton>
+          <IconButton icon={Refresh} onClick={onReload} />
         </Row>
       </Column>
       <Divider />
@@ -73,9 +71,7 @@ const SelectContestGroupListItem = React.memo<{
   if (groupSummary === undefined) {
     return (
       <Column>
-        <IconButton onClick={onReload}>
-          <Refresh />
-        </IconButton>
+        <IconButton icon={Refresh} onClick={onReload} />
       </Column>
     );
   }

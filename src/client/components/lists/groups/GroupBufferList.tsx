@@ -1,11 +1,11 @@
-import { IconButton, Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createBufferList } from "../../../enhancers/createBufferList";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { DeleteGroupBufferDialog } from "../../dialogs/groups/DeleteGroupBufferDialog";
-import { Column } from "../../ui";
+import { Column, IconButton } from "../../ui";
 
 export const GroupBufferList = createBufferList("Group")(
   React.memo(({ bufferId, buffer, source }) => {
@@ -21,9 +21,7 @@ export const GroupBufferList = createBufferList("Group")(
           </Column>
         </TableCell>
         <TableCell padding="checkbox">
-          <IconButton onClick={onToggleDeleteDialog}>
-            <Delete />
-          </IconButton>
+          <IconButton icon={Delete} onClick={onToggleDeleteDialog} />
         </TableCell>
         <DeleteGroupBufferDialog bufferId={bufferId} isOpen={isDeleteDialogOpen} onClose={onToggleDeleteDialog} />
       </TableRow>

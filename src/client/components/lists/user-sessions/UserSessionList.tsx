@@ -1,11 +1,11 @@
-import { Box, IconButton, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Box, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Computer, Delete, Smartphone } from "@material-ui/icons";
 import React, { useContext } from "react";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { DeleteUserSessionDialog } from "../../dialogs/user-sessions/DeleteUserSessionDialog";
 import { UserContext } from "../../project/Context";
-import { Column } from "../../ui";
+import { Column, IconButton } from "../../ui";
 
 export const UserSessionList = createEntityList("UserSession", { itemHeight: 77 })(
   React.memo(({ entity: userSession }) => {
@@ -27,9 +27,7 @@ export const UserSessionList = createEntityList("UserSession", { itemHeight: 77 
         </TableCell>
         <TableCell padding="checkbox">
           {userSession.userId === currentUser.id && !userSession.isCurrent ? (
-            <IconButton onClick={onToggleDeleteDialog}>
-              <Delete />
-            </IconButton>
+            <IconButton icon={Delete} onClick={onToggleDeleteDialog} />
           ) : null}
         </TableCell>
         <DeleteUserSessionDialog
