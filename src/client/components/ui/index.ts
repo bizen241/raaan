@@ -14,5 +14,6 @@ export * from "./Property";
 export * from "./Row";
 export * from "./Search";
 export * from "./Select";
+export * from "./Table";
 export * from "./TablePagination";
 export * from "./TextField";

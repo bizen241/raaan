@@ -1,4 +1,4 @@
-import { Divider, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Divider, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import React, { useCallback, useContext } from "react";
@@ -9,7 +9,7 @@ import { useSearch } from "../../../hooks/useSearch";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { UserContext } from "../../project/Context";
-import { Card, Column, IconButton, Row } from "../../ui";
+import { Card, Column, IconButton, Row, Table } from "../../ui";
 
 export const SelectContestGroupList = React.memo<{
   exerciseId: string;
@@ -46,16 +46,14 @@ export const SelectContestGroupList = React.memo<{
       <Divider />
       <Column pb={1}>
         <Table>
-          <TableBody>
-            {selectableGroups.map(groupMember => (
-              <SelectContestGroupListItem
-                key={groupMember.id}
-                groupMember={groupMember}
-                onSelect={onSelect}
-                onReload={onReload}
-              />
-            ))}
-          </TableBody>
+          {selectableGroups.map(groupMember => (
+            <SelectContestGroupListItem
+              key={groupMember.id}
+              groupMember={groupMember}
+              onSelect={onSelect}
+              onReload={onReload}
+            />
+          ))}
         </Table>
       </Column>
     </Card>

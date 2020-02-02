@@ -1,9 +1,9 @@
-import { Card, CircularProgress, Divider, Table, TableBody, TableCell, TableRow } from "@material-ui/core";
+import { Card, CircularProgress, Divider, TableCell, TableRow } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons";
 import React, { useCallback } from "react";
 import { EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
-import { Column, IconButton, Row, TablePagination } from "../components/ui";
+import { Column, IconButton, Row, Table, TablePagination } from "../components/ui";
 import { useSearch } from "../hooks/useSearch";
 
 interface EntityListOptions {
@@ -65,34 +65,32 @@ export const createEntityList = <T extends EntityType>(entityType: T, options: E
           </Column>
           <Divider />
           <Table>
-            <TableBody>
-              {isLoading && (
-                <TableRow style={{ height: itemHeight * limit }}>
-                  <TableCell>
-                    <Row alignItems="center" justifyContent="center">
-                      <CircularProgress />
-                    </Row>
-                  </TableCell>
-                </TableRow>
+            {isLoading && (
+              <TableRow style={{ height: itemHeight * limit }}>
+                <TableCell>
+                  <Row alignItems="center" justifyContent="center">
+                    <CircularProgress />
+                  </Row>
+                </TableCell>
+              </TableRow>
+            )}
+            {!isLoading &&
+              entities.map(
+                entity =>
+                  entity && (
+                    <ItemComponent
+                      key={entity.id}
+                      entity={entity as EntityTypeToEntity[T]}
+                      params={params}
+                      onReload={onReload}
+                    />
+                  )
               )}
-              {!isLoading &&
-                entities.map(
-                  entity =>
-                    entity && (
-                      <ItemComponent
-                        key={entity.id}
-                        entity={entity as EntityTypeToEntity[T]}
-                        params={params}
-                        onReload={onReload}
-                      />
-                    )
-                )}
-              {emptyRows && (
-                <TableRow style={{ height: itemHeight * emptyRows }}>
-                  <TableCell colSpan={3} />
-                </TableRow>
-              )}
-            </TableBody>
+            {emptyRows && (
+              <TableRow style={{ height: itemHeight * emptyRows }}>
+                <TableCell colSpan={3} />
+              </TableRow>
+            )}
           </Table>
           <Column p={2}>
             <TablePagination

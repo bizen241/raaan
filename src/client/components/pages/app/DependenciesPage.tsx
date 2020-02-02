@@ -1,7 +1,7 @@
-import { Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
+import { TableCell, TableRow, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Page } from "../../project/Page";
-import { Card } from "../../ui";
+import { Card, Table } from "../../ui";
 
 interface Dependency {
   name: string;
@@ -20,15 +20,13 @@ export const DependenciesPage = React.memo(() => {
     <Page title="ライセンス">
       <Card padding={false}>
         <Table>
-          <TableBody>
-            {dependencies.map(dependency => (
-              <TableRow key={dependency.name}>
-                <TableCell>
-                  <Typography>{dependency.name}</Typography>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+          {dependencies.map(dependency => (
+            <TableRow key={dependency.name}>
+              <TableCell>
+                <Typography>{dependency.name}</Typography>
+              </TableCell>
+            </TableRow>
+          ))}
         </Table>
       </Card>
     </Page>

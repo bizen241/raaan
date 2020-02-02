@@ -1,4 +1,4 @@
-import { Divider, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Divider, TableCell, TableRow, Typography } from "@material-ui/core";
 import { ArrowForward } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -7,7 +7,7 @@ import { sortPlaylistItems } from "../../../domain/playlist";
 import { createDialog } from "../../../enhancers/createDialog";
 import { withEntity } from "../../../enhancers/withEntity";
 import { actions } from "../../../reducers";
-import { Card, Column, Row } from "../../ui";
+import { Card, Column, Row, Table } from "../../ui";
 
 export const MovePlaylistItemDialog = createDialog<{
   playlistItemId: string;
@@ -40,11 +40,9 @@ export const MovePlaylistItemDialog = createDialog<{
           <Divider />
           <Column pb={1}>
             <Table>
-              <TableBody>
-                {sortedPlaylistItems.map(playlistItem => (
-                  <PlaylistItemWithButton key={playlistItem.id} playlistItem={playlistItem} onSelect={onSelect} />
-                ))}
-              </TableBody>
+              {sortedPlaylistItems.map(playlistItem => (
+                <PlaylistItemWithButton key={playlistItem.id} playlistItem={playlistItem} onSelect={onSelect} />
+              ))}
             </Table>
           </Column>
         </Card>

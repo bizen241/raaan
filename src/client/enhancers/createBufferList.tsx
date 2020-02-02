@@ -1,9 +1,9 @@
-import { Card, Table, TableBody, TableCell, TableRow } from "@material-ui/core";
+import { Card, TableCell, TableRow } from "@material-ui/core";
 import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
-import { Column, TablePagination } from "../components/ui";
+import { Column, Table, TablePagination } from "../components/ui";
 import { RootState } from "../reducers";
 
 interface BufferListProps {
@@ -37,30 +37,28 @@ export const createBufferList = <T extends EntityType>(entityType: T) => (
       <Column pb={1}>
         <Card>
           <Table>
-            <TableBody>
-              {bufferEntries.slice(offset, offset + limit).map(([bufferId, buffer]) => {
-                const source = entityMap[bufferId];
+            {bufferEntries.slice(offset, offset + limit).map(([bufferId, buffer]) => {
+              const source = entityMap[bufferId];
 
-                return (
-                  <ListItem
-                    key={bufferId}
-                    bufferType={entityType}
-                    bufferId={bufferId}
-                    buffer={buffer}
-                    source={source}
-                    params={{
-                      ...source,
-                      ...buffer
-                    }}
-                  />
-                );
-              })}
-              {emptyRows && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={3} />
-                </TableRow>
-              )}
-            </TableBody>
+              return (
+                <ListItem
+                  key={bufferId}
+                  bufferType={entityType}
+                  bufferId={bufferId}
+                  buffer={buffer}
+                  source={source}
+                  params={{
+                    ...source,
+                    ...buffer
+                  }}
+                />
+              );
+            })}
+            {emptyRows && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={3} />
+              </TableRow>
+            )}
           </Table>
           <Column p={2}>
             <TablePagination

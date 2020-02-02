@@ -1,4 +1,4 @@
-import { Card, CardContent, Divider, Table, TableBody } from "@material-ui/core";
+import { Card, CardContent, Divider } from "@material-ui/core";
 import { Add, Bookmark, PlayArrow, Refresh } from "@material-ui/icons";
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { PlaylistItem } from "../../../shared/api/entities";
@@ -11,7 +11,7 @@ import { UploadPlaylistBookmarkDialog } from "../dialogs/playlist-bookmarks/Uplo
 import { PlaylistItemsDialog } from "../dialogs/playlist-items/PlaylistItemsDialog";
 import { PlaylistPlayer } from "../player/dialogs/PlaylistPlayer";
 import { UserContext } from "../project/Context";
-import { Button, Column, IconButton, Row } from "../ui";
+import { Button, Column, IconButton, Row, Table } from "../ui";
 import { PlaylistItemViewer } from "./PlaylistItemViewer";
 import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 
@@ -74,19 +74,17 @@ export const PlaylistViewer = withEntity("Playlist")(
           <Divider />
           <Column pb={1}>
             <Table>
-              <TableBody>
-                {sortedPlaylistItems.map((playlistItem, index) => (
-                  <PlaylistItemViewer
-                    key={playlistItem.id}
-                    index={index}
-                    playlistItem={playlistItem}
-                    playlistId={playlistId}
-                    playlist={playlist}
-                    playlistItems={playlistItems}
-                    onPlay={onPartialPlay}
-                  />
-                ))}
-              </TableBody>
+              {sortedPlaylistItems.map((playlistItem, index) => (
+                <PlaylistItemViewer
+                  key={playlistItem.id}
+                  index={index}
+                  playlistItem={playlistItem}
+                  playlistId={playlistId}
+                  playlist={playlist}
+                  playlistItems={playlistItems}
+                  onPlay={onPartialPlay}
+                />
+              ))}
             </Table>
           </Column>
         </Card>
