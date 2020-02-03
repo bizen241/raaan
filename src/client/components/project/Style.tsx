@@ -56,9 +56,6 @@ export const Style = React.memo<{ children: React.ReactNode }>(({ children }) =>
 
 const useStyles = makeStyles({
   "@global": {
-    html: {
-      overflowY: "scroll"
-    },
     ".MuiTableCell-root.MuiTableCell-footer.MuiTablePagination-root": {
       border: "none"
     }
