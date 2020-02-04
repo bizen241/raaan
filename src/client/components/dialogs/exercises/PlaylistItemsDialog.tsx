@@ -1,13 +1,13 @@
 import { Add, CloudUpload, PlaylistPlay } from "@material-ui/icons";
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { ExerciseContext, TogglePlaylistItemList } from "../../lists/playlist-summaries/TogglePlaylistItemList";
-import { UserContext } from "../../project/Context";
 import { Button, Card, TextField } from "../../ui";
 
 export const PlaylistItemsDialog = createDialog<{
@@ -16,7 +16,7 @@ export const PlaylistItemsDialog = createDialog<{
   React.memo(({ t }) => t("プレイリストに追加")),
   React.memo(({ exerciseId, onClose }) => {
     const dispatch = useDispatch();
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const [isEditoOpen, onToggleEditor] = useToggleState();
     const [title, setTitle] = useState("新しいプレイリスト");

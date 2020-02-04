@@ -1,11 +1,11 @@
 import { AccountCircle, Lock, Security } from "@material-ui/icons";
-import React, { useContext } from "react";
-import { UserContext } from "../../project/Context";
+import React from "react";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { Page } from "../../project/Page";
 import { Button } from "../../ui";
 
 export const UserAccountPage = React.memo(() => {
-  const currentUser = useContext(UserContext);
+  const currentUser = useCurrentUser();
   const isGuest = currentUser.permission === "Guest";
 
   if (!isGuest) {

@@ -1,16 +1,16 @@
 import { AppBar, Avatar, Box, Toolbar, Typography } from "@material-ui/core";
 import { ArrowBack, Home, Mail, Person, Settings, Web } from "@material-ui/icons";
 import { goBack } from "connected-react-router";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useEntity } from "../../hooks/useEntity";
 import { RootState } from "../../reducers";
 import { Column, IconButton, Menu, MenuItem } from "../ui";
-import { UserContext } from "./Context";
 
 export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) => {
   const dispatch = useDispatch();
-  const currentUser = useContext(UserContext);
+  const currentUser = useCurrentUser();
 
   const { entity: currentUserSummary } = useEntity("UserSummary", currentUser.summaryId);
 

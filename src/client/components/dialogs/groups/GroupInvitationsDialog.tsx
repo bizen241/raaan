@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
+import React from "react";
 import { createDialog } from "../../../enhancers/createDialog";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useSearch } from "../../../hooks/useSearch";
 import { GroupContext, ToggleGroupInvitationList } from "../../lists/user-follows/ToggleGroupInvitationList";
-import { UserContext } from "../../project/Context";
 
 export const GroupInvitationsDialog = createDialog<{
   groupId: string;
 }>()(
   React.memo(({ t }) => t("フォロワーを招待")),
   React.memo(({ groupId }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const { onReload: onReloadGroupInvitations } = useSearch("GroupInvitation", {
       groupId

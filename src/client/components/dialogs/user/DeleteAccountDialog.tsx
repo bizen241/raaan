@@ -1,15 +1,15 @@
 import { Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { deleteCurrentUser } from "../../../api/client";
 import { createDialog } from "../../../enhancers/createDialog";
-import { UserContext } from "../../project/Context";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { Button, Card, TextField } from "../../ui";
 
 export const DeleteAccountDialog = createDialog<{}>()(
   React.memo(({ t }) => t("アカウントの削除")),
   React.memo(({}) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const [userName, setUserName] = useState("");
     const [isFailed, setStatus] = useState(false);

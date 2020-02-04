@@ -1,11 +1,11 @@
 import { CloudUpload } from "@material-ui/icons";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import { ReportReason, ReportState } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadReportDialog } from "../dialogs/reports/UploadReportDialog";
 import { BrokenBuffer } from "../project/BrokenBuffer";
-import { UserContext } from "../project/Context";
 import { Button, Card, Column, Select, SelectOptions, TextField } from "../ui";
 
 const selectReportReasonOptions: SelectOptions<ReportReason> = {
@@ -34,7 +34,7 @@ const selectReportStateOptions: SelectOptions<ReportState> = {
 
 export const ReportEditor = withBuffer("Report")(
   React.memo(({ bufferType, bufferId, buffer, source, params, onChange }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 

@@ -2,12 +2,12 @@ import { Avatar, Typography } from "@material-ui/core";
 import { ArrowBack, Home, Mail, Person, Settings, Web } from "@material-ui/icons";
 import { goBack } from "connected-react-router";
 import { TFunction } from "i18next";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { UserContext } from "../components/project/Context";
 import { PageProps } from "../components/project/Router";
 import { Column, IconButton, Menu, MenuItem, PageContent, PageHeader, Row } from "../components/ui";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useEntity } from "../hooks/useEntity";
 import { RootState } from "../reducers";
 
@@ -18,7 +18,7 @@ export const createPage = () => (
   React.memo<PageProps>(props => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const { entity: currentUserSummary } = useEntity("UserSummary", currentUser.summaryId);
     const pathname = useSelector((state: RootState) => state.router.location.pathname);

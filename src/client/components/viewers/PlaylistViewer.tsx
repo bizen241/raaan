@@ -1,23 +1,23 @@
 import { Card, CardContent, Divider } from "@material-ui/core";
 import { Add, Bookmark, PlayArrow, Refresh } from "@material-ui/icons";
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { PlaylistItem } from "../../../shared/api/entities";
 import { sortPlaylistItems } from "../../domain/playlist";
 import { withEntity } from "../../enhancers/withEntity";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeletePlaylistBookmarkDialog } from "../dialogs/playlist-bookmarks/DeletePlaylistBookmarkDialog";
 import { UploadPlaylistBookmarkDialog } from "../dialogs/playlist-bookmarks/UploadPlaylistBookmarkDialog";
 import { PlaylistItemsDialog } from "../dialogs/playlist-items/PlaylistItemsDialog";
 import { PlaylistPlayer } from "../player/dialogs/PlaylistPlayer";
-import { UserContext } from "../project/Context";
 import { Button, Column, IconButton, Row, Table } from "../ui";
 import { PlaylistItemViewer } from "./PlaylistItemViewer";
 import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 
 export const PlaylistViewer = withEntity("Playlist")(
   React.memo(({ entity: playlist, entityId: playlistId }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const [isPlaylistItemsDialogOpen, onTogglePlaylistItemsDialog] = useToggleState();
 

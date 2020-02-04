@@ -1,8 +1,8 @@
 import { Edit, History, Refresh } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { Revision, RevisionSummary } from "../../../shared/api/entities";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useEntity } from "../../hooks/useEntity";
-import { UserContext } from "../project/Context";
 import { Loading } from "../project/Loading";
 import { Card, Menu, MenuItem, Property } from "../ui";
 
@@ -10,7 +10,7 @@ export const RevisionSummaryViewer = React.memo<{
   revision: Revision;
   revisionSummary: RevisionSummary;
 }>(({ revision }) => {
-  const currentUser = useContext(UserContext);
+  const currentUser = useCurrentUser();
 
   const { onReload } = useEntity("Revision", revision.id);
   const { entity: exercise, ...exerciseProps } = useEntity("Exercise", revision.exerciseId);

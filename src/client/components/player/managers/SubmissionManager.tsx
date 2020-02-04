@@ -1,11 +1,10 @@
-import { useCallback, useContext, useState } from "react";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Exercise, SubmissionSummary } from "../../../../shared/api/entities";
 import { QuestionResult, summarizeResults } from "../../../domain/exercise/attempt";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useSearch } from "../../../hooks/useSearch";
 import { actions } from "../../../reducers";
-import { UserContext } from "../../project/Context";
 import { AttemptManager } from "./AttemptManager";
 
 export const SubmissionManager = React.memo<{
@@ -16,7 +15,7 @@ export const SubmissionManager = React.memo<{
   onClose: () => void;
 }>(({ exercise, contestId, hasNext, onNext, onClose }) => {
   const dispatch = useDispatch();
-  const currentUser = useContext(UserContext);
+  const currentUser = useCurrentUser();
 
   const { entities: submissionSummaries } = useSearch("SubmissionSummary", {
     submitterId: currentUser.id,

@@ -1,8 +1,7 @@
 import { Bookmarks, Edit } from "@material-ui/icons";
-import { useContext } from "react";
 import React from "react";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { PlaylistSummaryList } from "../../lists/playlist-summaries/PlaylistSummaryList";
-import { UserContext } from "../../project/Context";
 import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
 import { Button, Column } from "../../ui";
@@ -10,7 +9,7 @@ import { Button, Column } from "../../ui";
 export const UserPlaylistsPage = React.memo<PageProps>(({ match }) => {
   const userId = match.params.id;
 
-  const currentUser = useContext(UserContext);
+  const currentUser = useCurrentUser();
 
   const isOwn = userId === currentUser.id;
 

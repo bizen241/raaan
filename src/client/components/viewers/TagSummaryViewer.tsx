@@ -1,14 +1,14 @@
 import { Dns, Edit, LocalOffer, Timeline } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { Tag, TagSummary } from "../../../shared/api/entities";
-import { UserContext } from "../project/Context";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { Card, Menu, MenuItem, Property } from "../ui";
 
 export const TagSummaryViewer = React.memo<{
   tag: Tag;
   tagSummary: TagSummary;
 }>(({ tag, tagSummary }) => {
-  const currentUser = useContext(UserContext);
+  const currentUser = useCurrentUser();
 
   const { tagId, name } = tagSummary;
 

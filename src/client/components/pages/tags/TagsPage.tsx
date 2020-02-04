@@ -1,12 +1,12 @@
 import { Dns, Edit } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { TagSummaryList } from "../../lists/tag-summaries/TagSummaryList";
-import { UserContext } from "../../project/Context";
 import { Page } from "../../project/Page";
 import { Button } from "../../ui";
 
 export const TagsPage = React.memo(() => {
-  const currentUser = useContext(UserContext);
+  const currentUser = useCurrentUser();
 
   const isOwner = currentUser.permission === "Owner";
 

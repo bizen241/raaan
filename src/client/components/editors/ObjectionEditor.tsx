@@ -1,11 +1,11 @@
 import { CloudUpload } from "@material-ui/icons";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import { ObjectionState } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadObjectionDialog } from "../dialogs/objections/UploadObjectionDialog";
 import { BrokenBuffer } from "../project/BrokenBuffer";
-import { UserContext } from "../project/Context";
 import { Button, Card, Column, Select, SelectOptions, TextField } from "../ui";
 
 const selectObjectionStateOptions: SelectOptions<ObjectionState> = {
@@ -22,7 +22,7 @@ const selectObjectionStateOptions: SelectOptions<ObjectionState> = {
 
 export const ObjectionEditor = withBuffer("Objection")(
   React.memo(({ bufferType, bufferId, buffer, params, onChange }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 

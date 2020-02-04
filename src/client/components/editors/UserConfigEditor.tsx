@@ -1,11 +1,11 @@
 import { CloudUpload } from "@material-ui/icons";
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { UserSettings } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadUserConfigDialog } from "../dialogs/user-configs/UploadUserConfigDialog";
-import { UserContext } from "../project/Context";
 import { Button, Card, Column, Select, SelectOptions } from "../ui";
 
 const selectLangOptions: SelectOptions<UserSettings["ui.lang"]> = {
@@ -32,7 +32,7 @@ const selectColorSchemeOptions: SelectOptions<UserSettings["ui.colorScheme"]> = 
 export const UserConfigEditor = withBuffer("UserConfig")(
   React.memo(({ bufferId, buffer, params, onChange }) => {
     const { t } = useTranslation();
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
     const [settings, setSettings] = useState(params.settings || {});

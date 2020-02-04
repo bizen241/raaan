@@ -1,17 +1,17 @@
 import { Box, Collapse, Link, Typography } from "@material-ui/core";
 import { Edit, Refresh, Tune } from "@material-ui/icons";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { ExerciseSummary } from "../../../../shared/api/entities";
 import { Params } from "../../../../shared/api/request/params";
 import { createEntityList } from "../../../enhancers/createEntityList";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useToggleState } from "../../../hooks/useToggleState";
-import { UserContext } from "../../project/Context";
 import { Column, IconButton, Row, Search, Select, TableRow } from "../../ui";
 
 export const ExerciseSummaryList = createEntityList("ExerciseSummary")(
   React.memo(({ entity: exerciseSummary }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const isAuthor = exerciseSummary.authorId === currentUser.id;
 

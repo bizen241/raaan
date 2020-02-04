@@ -1,12 +1,12 @@
 import { Bookmarks, Person } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { PlaylistSummaryList } from "../../lists/playlist-summaries/PlaylistSummaryList";
-import { UserContext } from "../../project/Context";
 import { Page } from "../../project/Page";
 import { Button } from "../../ui";
 
 export const PlaylistsPage = React.memo(() => {
-  const currentUser = useContext(UserContext);
+  const currentUser = useCurrentUser();
 
   return (
     <Page title="プレイリストを探す">
