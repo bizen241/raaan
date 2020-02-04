@@ -1,11 +1,11 @@
 import { Typography } from "@material-ui/core";
 import { ArrowDownward, ArrowUpward, HowToVote } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { UserContext } from "../../project/Context";
 import { Button, Card } from "../../ui";
 
 export const UploadExerciseVoteDialog = createDialog<{
@@ -14,7 +14,7 @@ export const UploadExerciseVoteDialog = createDialog<{
   React.memo(({ t }) => t("投票する")),
   React.memo(({ exerciseId: targetId, onClose }) => {
     const dispatch = useDispatch();
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const onUpload = (isUp: boolean) => {
       const bufferId = generateBufferId();

@@ -1,10 +1,10 @@
 import { Add } from "@material-ui/icons";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { UserContext } from "../../project/Context";
 import { Button, Card, Select, SelectOptions } from "../../ui";
 
 type UploadType = "public" | "private";
@@ -15,7 +15,7 @@ export const UploadPlaylistBookmarkDialog = createDialog<{
   React.memo(({ t }) => t("ブックマークに追加")),
   React.memo(({ playlistId, onClose }) => {
     const dispatch = useDispatch();
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
     const isReadOnly = currentUser.permission === "Read";
 
     const [uploadType, setUploadType] = useState<UploadType>(isReadOnly ? "private" : "public");

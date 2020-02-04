@@ -1,17 +1,17 @@
 import { TableCell, TableRow, Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { createEntityList } from "../../../enhancers/createEntityList";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { DeletePlaylistBookmarkDialog } from "../../dialogs/playlist-bookmarks/DeletePlaylistBookmarkDialog";
-import { UserContext } from "../../project/Context";
 import { Column, IconButton } from "../../ui";
 
 export const PlaylistBookmarkList = createEntityList("PlaylistBookmark", {
   itemHeight: 77
 })(
   React.memo(({ entity: playlistBookmark }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 

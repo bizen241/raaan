@@ -1,19 +1,19 @@
 import { AddAlert, Keyboard, Person } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { withEntity } from "../../enhancers/withEntity";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useEntity } from "../../hooks/useEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeleteTagFollowDialog } from "../dialogs/tags/DeleteTagFollowDialog";
 import { UploadTagFollowDialog } from "../dialogs/tags/UploadTagFollowDialog";
-import { UserContext } from "../project/Context";
 import { Loading } from "../project/Loading";
 import { Button, Column } from "../ui";
 import { TagSummaryViewer } from "./TagSummaryViewer";
 
 export const TagViewer = withEntity("Tag")(
   React.memo(({ entity: tag }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const [isUploadTagFollowDialogOpen, onToggleUploadTagFollowDialog] = useToggleState();
     const [isDeleteTagFollowDialogOpen, onToggleDeleteTagFollowDialog] = useToggleState();

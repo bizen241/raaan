@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { UserEditor } from "../../editors/UserEditor";
-import { UserContext } from "../../project/Context";
 import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
 
 export const EditUserPage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;
 
-  const currentUser = useContext(UserContext);
+  const currentUser = useCurrentUser();
 
   const isOwn = userId === currentUser.id;
 

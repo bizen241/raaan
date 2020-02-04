@@ -4,15 +4,44 @@ import {
   EntityObject,
   EntityType,
   EntityTypeToEntity,
-  mergeEntityTypeToObject
+  mergeEntityTypeToObject,
+  User,
+  UserAccount,
+  UserConfig
 } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { EntityStore } from "../../shared/api/response/get";
 import { SearchResponse } from "../../shared/api/response/search";
 import { stringifyParams } from "../api/request/search";
 import { IdMap, mergeSearchResultStore, SearchResultMap, SearchResultStore } from "../api/response/search";
-import { guestUser, guestUserAccount, guestUserConfig } from "../components/project/Context";
 import { ActionUnion, createAction } from "./action";
+
+export const guestUser: User = {
+  id: "1",
+  name: "",
+  permission: "Guest",
+  summaryId: "",
+  createdAt: 0,
+  updatedAt: 0,
+  fetchedAt: 0
+};
+export const guestUserAccount: UserAccount = {
+  id: "1",
+  provider: "github",
+  accountId: "",
+  email: "guest@example.com",
+  avatar: "identicon",
+  createdAt: 0,
+  updatedAt: 0,
+  fetchedAt: 0
+};
+export const guestUserConfig: UserConfig = {
+  id: "1",
+  settings: {},
+  createdAt: 0,
+  updatedAt: 0,
+  fetchedAt: 0
+};
 
 export enum CacheActionType {
   Get = "cache/get",

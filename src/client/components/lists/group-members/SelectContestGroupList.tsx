@@ -1,20 +1,20 @@
 import { Divider, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons";
 import { push } from "connected-react-router";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { GroupMember } from "../../../../shared/api/entities";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useEntity } from "../../../hooks/useEntity";
 import { useSearch } from "../../../hooks/useSearch";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { UserContext } from "../../project/Context";
 import { Card, Column, IconButton, Row, Table } from "../../ui";
 
 export const SelectContestGroupList = React.memo<{
   exerciseId: string;
 }>(({ exerciseId }) => {
-  const currentUser = useContext(UserContext);
+  const currentUser = useCurrentUser();
   const dispatch = useDispatch();
 
   const { entities: groupMembers, onReload } = useSearch("GroupMember", {

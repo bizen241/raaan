@@ -1,13 +1,13 @@
 import { Typography } from "@material-ui/core";
 import { ReportProblem } from "@material-ui/icons";
 import { replace } from "connected-react-router";
-import React, { useContext } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { endpoints } from "../../../../shared/api/endpoint";
 import { ReportTargetType } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { actions } from "../../../reducers";
-import { UserContext } from "../../project/Context";
 import { Button, Card } from "../../ui";
 
 export const UploadReportDialog = createDialog<{
@@ -18,7 +18,7 @@ export const UploadReportDialog = createDialog<{
   React.memo(({ t }) => t("報告をアップロードする")),
   React.memo(({ reportId, targetId, targetType }) => {
     const dispatch = useDispatch();
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const onUpload = () => {
       dispatch(

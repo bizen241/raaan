@@ -1,14 +1,14 @@
 import { AccountCircle, Keyboard, LocalOffer, PlaylistPlay } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { createPage } from "../../../enhancers/createPage";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { UserDiaryGraph } from "../../graphs/UserDiaryGraph";
-import { UserContext } from "../../project/Context";
 import { Button } from "../../ui";
 
 export const HomePage = createPage()(
   React.memo(({ t }) => t("pages.HomePage.title")),
   React.memo(() => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const isGuest = currentUser.permission === "Guest";
 

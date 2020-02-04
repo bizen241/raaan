@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { UserSessionList } from "../../lists/user-sessions/UserSessionList";
-import { UserContext } from "../../project/Context";
 import { Page } from "../../project/Page";
 
 export const UserSessionsPage = () => {
-  const currentUser = useContext(UserContext);
+  const currentUser = useCurrentUser();
 
   return (
     <Page title="セッション一覧">

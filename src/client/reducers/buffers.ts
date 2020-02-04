@@ -2,8 +2,8 @@ import { Reducer } from "redux";
 import { Actions } from ".";
 import { createEntityTypeToObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
-import { guestUserConfig } from "../components/project/Context";
 import { ActionUnion, createAction } from "./action";
+import { guestUserConfig } from "./cache";
 
 export enum BuffersActionType {
   Update = "buffers/update",

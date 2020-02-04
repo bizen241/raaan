@@ -1,14 +1,14 @@
 import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Edit } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createEntityList } from "../../../enhancers/createEntityList";
-import { UserContext } from "../../project/Context";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { Column, IconButton } from "../../ui";
 
 export const SuggestionSummaryList = createEntityList("SuggestionSummary")(
   React.memo(({ entity: suggestionSummary }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     return (
       <TableRow>

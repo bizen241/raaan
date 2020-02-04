@@ -1,15 +1,15 @@
 import { Group, RemoveCircle } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { withEntity } from "../../enhancers/withEntity";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeleteGroupMemberDialog } from "../dialogs/group-members/DeleteGroupMemberDialog";
-import { UserContext } from "../project/Context";
 import { Card, Menu, MenuItem, Property } from "../ui";
 
 export const GroupSummaryViewer = withEntity("GroupSummary")(
   React.memo(({ entity: groupSummary }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 

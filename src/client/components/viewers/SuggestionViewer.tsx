@@ -1,19 +1,19 @@
 import { Check, Clear, PlayArrow } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { withEntity } from "../../enhancers/withEntity";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useEntity } from "../../hooks/useEntity";
 import { useToggleState } from "../../hooks/useToggleState";
 import { ConfirmAcceptSuggestionDialog } from "../dialogs/suggestions/ConfirmAcceptSuggestionDialog";
 import { RejectSuggestionDialog } from "../dialogs/suggestions/RejectSuggestionDialog";
 import { ExercisePreviewer } from "../player/dialogs/ExercisePreviewer";
-import { UserContext } from "../project/Context";
 import { Loading } from "../project/Loading";
 import { Button, Column } from "../ui";
 import { SuggestionSummaryViewer } from "./SuggestionSummaryViewer";
 
 export const SuggestionViewer = withEntity("Suggestion")(
   React.memo(({ entity: suggestion }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const [isAcceptDialogOpen, onToggleAcceptDialog] = useToggleState();
     const [isRejectDialogOpen, onToggleRejectDialog] = useToggleState();

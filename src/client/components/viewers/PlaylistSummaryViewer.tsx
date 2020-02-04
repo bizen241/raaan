@@ -1,19 +1,19 @@
 import { Link } from "@material-ui/core";
 import { Delete, Edit, HowToVote, Lock, PlaylistPlay, Public, Refresh } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { withEntity } from "../../enhancers/withEntity";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useEntity } from "../../hooks/useEntity";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeletePlaylistDialog } from "../dialogs/playlists/DeletePlaylistDialog";
 import { PublishPlaylistDialog } from "../dialogs/playlists/PublishPlaylistDialog";
 import { UnpublishPlaylistDialog } from "../dialogs/playlists/UnpublishPlaylistDialog";
-import { UserContext } from "../project/Context";
 import { Card, Menu, MenuItem, Property, Row } from "../ui";
 
 export const PlaylistSummaryViewer = withEntity("PlaylistSummary")(
   React.memo(({ entity: playlistSummary }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const { playlistId } = playlistSummary;
 

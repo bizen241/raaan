@@ -1,17 +1,17 @@
 import { Add, Edit, Inbox } from "@material-ui/icons";
 import { push } from "connected-react-router";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { generateBufferId } from "../../../reducers/buffers";
 import { UserGroupMemberList } from "../../lists/group-members/UserGroupMemberList";
-import { UserContext } from "../../project/Context";
 import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
 import { Button } from "../../ui";
 
 export const UserGroupsPage = React.memo<PageProps>(() => {
   const dispatch = useDispatch();
-  const currentUser = useContext(UserContext);
+  const currentUser = useCurrentUser();
 
   const onCreate = useCallback(() => {
     const bufferId = generateBufferId();

@@ -1,11 +1,11 @@
 import { Typography } from "@material-ui/core";
 import { AddAlert } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { UserContext } from "../../project/Context";
 import { Button, Card } from "../../ui";
 
 export const UploadTagFollowDialog = createDialog<{
@@ -14,7 +14,7 @@ export const UploadTagFollowDialog = createDialog<{
   React.memo(({ t }) => t("タグをフォロー")),
   React.memo(({ targetId, onClose }) => {
     const dispatch = useDispatch();
-    const currentTag = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const onUpload = () => {
       dispatch(
@@ -22,7 +22,7 @@ export const UploadTagFollowDialog = createDialog<{
           "TagFollow",
           generateBufferId(),
           {
-            followerId: currentTag.id,
+            followerId: currentUser.id,
             targetId
           },
           uploadResponse => {
@@ -30,7 +30,7 @@ export const UploadTagFollowDialog = createDialog<{
               actions.cache.add(
                 "TagFollow",
                 {
-                  followerId: currentTag.id,
+                  followerId: currentUser.id,
                   targetId
                 },
                 uploadResponse

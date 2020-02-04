@@ -3,18 +3,18 @@ import { createContext, useCallback, useContext } from "react";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { createEntityList } from "../../../enhancers/createEntityList";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { UserContext } from "../../project/Context";
 
 export const FollowerContext = createContext<string | undefined>(undefined);
 
 export const ToggleGroupInvitationList = createEntityList("GroupSummary")(
   React.memo(({ entity: { groupId, name } }) => {
     const dispatch = useDispatch();
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
     const followerId = useContext(FollowerContext);
 
     const [isRequested, toggleRequestState] = useToggleState();

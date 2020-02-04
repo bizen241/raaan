@@ -1,13 +1,15 @@
 import { ConnectedRouter } from "connected-react-router";
-import React from "react";
+import React, { Suspense } from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import "../../intl";
 import { configureStore } from "../../store";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { Initializer } from "./Initializer";
+import { IntlProvider } from "./IntlProvider";
+import { LoadingApp } from "./LoadingApp";
 import { Router } from "./Router";
-import { Style } from "./Style";
+import { ThemeProvider } from "./ThemeProvider";
 
 export const App: React.FunctionComponent = () => {
   const { store, history, persistor } = configureStore();
@@ -17,11 +19,15 @@ export const App: React.FunctionComponent = () => {
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <ConnectedRouter history={history}>
-            <Initializer>
-              <Style>
-                <Router />
-              </Style>
-            </Initializer>
+            <Suspense fallback={<LoadingApp />}>
+              <ThemeProvider>
+                <IntlProvider>
+                  <Initializer>
+                    <Router />
+                  </Initializer>
+                </IntlProvider>
+              </ThemeProvider>
+            </Suspense>
           </ConnectedRouter>
         </PersistGate>
       </Provider>

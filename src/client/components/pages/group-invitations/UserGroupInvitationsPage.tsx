@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { UserGroupInvitationList } from "../../lists/group-invitations/UserGroupInvitationList";
-import { UserContext } from "../../project/Context";
 import { Page } from "../../project/Page";
 
 export const UserGroupInvitationsPage = () => {
-  const currentUser = useContext(UserContext);
+  const currentUser = useCurrentUser();
 
   return (
     <Page title="招待一覧">

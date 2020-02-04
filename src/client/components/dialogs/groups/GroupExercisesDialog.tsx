@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
+import React from "react";
 import { createDialog } from "../../../enhancers/createDialog";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useSearch } from "../../../hooks/useSearch";
 import { GroupContext, ToggleGroupExerciseList } from "../../lists/exercise-summaries/ToggleGroupExerciseList";
-import { UserContext } from "../../project/Context";
 
 export const GroupExercisesDialog = createDialog<{
   groupId: string;
 }>()(
   React.memo(({ t }) => t("問題集をグループに公開")),
   React.memo(({ groupId }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const { onReload: onReloadGroupExercises } = useSearch("GroupExercise", {
       groupId

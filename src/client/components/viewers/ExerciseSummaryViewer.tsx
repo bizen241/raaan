@@ -14,10 +14,11 @@ import {
   SmsFailed,
   WbIncandescent
 } from "@material-ui/icons";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { withEntity } from "../../enhancers/withEntity";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useEntity } from "../../hooks/useEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
@@ -32,12 +33,11 @@ import { UnpublishExerciseDialog } from "../dialogs/exercises/UnpublishExerciseD
 import { ConfirmObjectionDialog } from "../dialogs/objections/ConfirmObjectionDialog";
 import { ConfirmReportDialog } from "../dialogs/reports/ConfirmReportDialog";
 import { ConfirmSuggestionDialog } from "../dialogs/suggestions/ConfirmSuggestionDialog";
-import { UserContext } from "../project/Context";
 import { Card, Menu, MenuItem, Property, Row } from "../ui";
 
 export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
   React.memo(({ entity: exerciseSummary }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const isOwner = currentUser.permission === "Owner";
     const isAuthor = exerciseSummary.authorId === currentUser.id;

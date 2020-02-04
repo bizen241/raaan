@@ -2,12 +2,12 @@ import { CssBaseline } from "@material-ui/core";
 import grey from "@material-ui/core/colors/grey";
 import teal from "@material-ui/core/colors/teal";
 import { createMuiTheme, makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
-import React, { useContext, useEffect, useState } from "react";
-import { SettingsContext } from "./Context";
+import React, { useEffect, useState } from "react";
+import { useUserSettings } from "../../hooks/useUserSettings";
 
-export const Style = React.memo<{ children: React.ReactNode }>(({ children }) => {
-  const settings = useContext(SettingsContext);
-  const colorScheme = settings["ui.colorScheme"];
+export const ThemeProvider = React.memo<{ children: React.ReactNode }>(({ children }) => {
+  const userSettings = useUserSettings();
+  const colorScheme = userSettings["ui.colorScheme"];
 
   const [isDarkMode, setMode] = useState(false);
 
@@ -56,9 +56,6 @@ export const Style = React.memo<{ children: React.ReactNode }>(({ children }) =>
 
 const useStyles = makeStyles({
   "@global": {
-    html: {
-      overflowY: "scroll"
-    },
     ".MuiTableCell-root.MuiTableCell-footer.MuiTablePagination-root": {
       border: "none"
     }

@@ -1,14 +1,14 @@
 import { Email, Person, ViewComfy } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { withEntity } from "../../enhancers/withEntity";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useToggleState } from "../../hooks/useToggleState";
 import { GroupInvitationsDialog } from "../dialogs/user-follows/GroupInvitationsDialog";
-import { UserContext } from "../project/Context";
 import { Card, Menu, MenuItem, Property } from "../ui";
 
 export const UserSummaryViewer = withEntity("UserSummary")(
   React.memo(({ entity: userSummary }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const { userId } = userSummary;
 

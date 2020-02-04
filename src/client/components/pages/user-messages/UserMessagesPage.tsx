@@ -1,12 +1,12 @@
 import { Email } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { UserMessageList } from "../../lists/user-messages/UserMessageList";
-import { UserContext } from "../../project/Context";
 import { Page } from "../../project/Page";
 import { Button } from "../../ui";
 
 export const UserMessagesPage = () => {
-  const currentUser = useContext(UserContext);
+  const currentUser = useCurrentUser();
 
   return (
     <Page title="通知一覧">

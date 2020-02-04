@@ -3,11 +3,11 @@ import { createContext, useCallback, useContext } from "react";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { createEntityList } from "../../../enhancers/createEntityList";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { UserContext } from "../../project/Context";
 import { Column } from "../../ui";
 
 export const ExerciseContext = createContext<string | undefined>(undefined);
@@ -15,7 +15,7 @@ export const ExerciseContext = createContext<string | undefined>(undefined);
 export const TogglePlaylistItemList = createEntityList("PlaylistSummary")(
   React.memo(({ entity: { playlistId, title } }) => {
     const dispatch = useDispatch();
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
     const exerciseId = useContext(ExerciseContext);
     if (exerciseId === undefined) {
       throw new Error("exerciseId is not defined");

@@ -1,10 +1,10 @@
 import { CloudUpload } from "@material-ui/icons";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import { AvatarType } from "../../../shared/api/entities";
 import { withBuffer } from "../../enhancers/withBuffer";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadUserAccountDialog } from "../dialogs/user-accounts/UploadUserAccountDialog";
-import { UserContext } from "../project/Context";
 import { Button, Card, Column, Select, SelectOptions } from "../ui";
 
 const selectAvatarTypeOptions: SelectOptions<AvatarType> = {
@@ -18,7 +18,7 @@ const selectAvatarTypeOptions: SelectOptions<AvatarType> = {
 
 export const UserAccountEditor = withBuffer("UserAccount")(
   React.memo(({ bufferId, buffer, params, onChange }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
     const onUpdateAvatar = useCallback((avatar: AvatarType) => {

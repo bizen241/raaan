@@ -1,9 +1,9 @@
 import { Message } from "@material-ui/icons";
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Exercise, ExerciseDraft } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { isNumber } from "../../reducers/buffers";
-import { UserContext } from "../project/Context";
 import { Card, Select, SelectOptions, TextField } from "../ui";
 
 type UploadType = "public" | "private" | "update" | "draft";
@@ -14,7 +14,7 @@ export const ExerciseDraftUploadEditor = React.memo<{
   params: Params<ExerciseDraft>;
   onChange: (exerciseDraft: Partial<ExerciseDraft>) => void;
 }>(({ bufferId, exercise, params, onChange }) => {
-  const currentUser = useContext(UserContext);
+  const currentUser = useCurrentUser();
 
   const isReadOnly = currentUser.permission === "Read";
   const isLocalOnly = isNumber(bufferId);

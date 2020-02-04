@@ -1,17 +1,16 @@
 import { Group, History, Keyboard, PersonAdd, PlaylistPlay } from "@material-ui/icons";
-import { useContext } from "react";
 import React from "react";
 import { withEntity } from "../../enhancers/withEntity";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeleteUserFollowDialog } from "../dialogs/users/DeleteUserFollowDialog";
 import { UploadUserFollowDialog } from "../dialogs/users/UploadUserFollowDialog";
-import { UserContext } from "../project/Context";
 import { Button, Column } from "../ui";
 import { UserSummaryViewer } from "./UserSummaryViewer";
 
 export const UserViewer = withEntity("User")(({ entityId: userId, entity: user }) => {
-  const currentUser = useContext(UserContext);
+  const currentUser = useCurrentUser();
 
   const [isUploadUserFollowDialogOpen, onToggleUploadUserFollowDialog] = useToggleState();
   const [isDeleteUserFollowDialogOpen, onToggleDeleteUserFollowDialog] = useToggleState();

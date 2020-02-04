@@ -1,16 +1,16 @@
 import { CloudUpload } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { withBuffer } from "../../enhancers/withBuffer";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useToggleState } from "../../hooks/useToggleState";
 import { PostExerciseDraftDialog } from "../dialogs/exercise-drafts/PostExerciseDraftDialog";
 import { UpdateExerciseDraftDialog } from "../dialogs/exercise-drafts/UpdateExerciseDraftDialog";
-import { UserContext } from "../project/Context";
 import { Button, Column } from "../ui";
 import { ExerciseEditor } from "./ExerciseEditor";
 
 export const ExerciseDraftEditor = withBuffer("ExerciseDraft")(
   React.memo(({ bufferId, buffer, source, params, onChange }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 

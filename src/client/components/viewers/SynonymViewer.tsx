@@ -1,16 +1,16 @@
 import { Link } from "@material-ui/core";
 import { Delete, Dns } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { withEntity } from "../../enhancers/withEntity";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeleteSynonymDialog } from "../dialogs/synonyms/DeleteSynonymDialog";
-import { UserContext } from "../project/Context";
 import { Card, Column, Menu, MenuItem, Property } from "../ui";
 
 export const SynonymViewer = withEntity("Synonym")(
   React.memo(({ entityId: synonymId, entity: synonym }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 

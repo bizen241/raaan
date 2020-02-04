@@ -1,12 +1,12 @@
 import { Typography } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
 import { push } from "connected-react-router";
-import React, { useContext } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { UserContext } from "../../project/Context";
 import { Button, Card } from "../../ui";
 
 export const UploadGroupMemberDialog = createDialog<{
@@ -16,7 +16,7 @@ export const UploadGroupMemberDialog = createDialog<{
   React.memo(({ t }) => t("グループに参加")),
   React.memo(({ groupId, groupInvitationId }) => {
     const dispatch = useDispatch();
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const onUpload = () => {
       dispatch(

@@ -1,13 +1,12 @@
 import { Typography } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
 import { replace } from "connected-react-router";
-import { useContext } from "react";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { actions } from "../../../reducers";
 import { isNumber } from "../../../reducers/buffers";
-import { UserContext } from "../../project/Context";
 import { Button, Card } from "../../ui";
 
 export const UploadSuggestionDialog = createDialog<{
@@ -17,7 +16,7 @@ export const UploadSuggestionDialog = createDialog<{
   React.memo(({ t }) => t("変更を提案する")),
   React.memo(({ suggestionId, exerciseId }) => {
     const dispatch = useDispatch();
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const onUpload = () => {
       dispatch(

@@ -1,11 +1,11 @@
 import { Typography } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { UserContext } from "../../project/Context";
 import { Button, Card } from "../../ui";
 
 export const UploadUserFollowDialog = createDialog<{
@@ -14,7 +14,7 @@ export const UploadUserFollowDialog = createDialog<{
   React.memo(({ t }) => t("ユーザーをフォロー")),
   React.memo(({ targetId, onClose }) => {
     const dispatch = useDispatch();
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const onUpload = () => {
       dispatch(

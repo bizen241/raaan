@@ -1,17 +1,17 @@
 import { Link, TableCell, TableRow, Typography } from "@material-ui/core";
 import { Email, Refresh } from "@material-ui/icons";
-import React, { useContext } from "react";
+import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createEntityList } from "../../../enhancers/createEntityList";
+import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useEntity } from "../../../hooks/useEntity";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { GroupInvitationsDialog } from "../../dialogs/user-follows/GroupInvitationsDialog";
-import { UserContext } from "../../project/Context";
 import { Column, IconButton, Menu, MenuItem } from "../../ui";
 
 export const UserFollowerList = createEntityList("UserFollow")(
   React.memo(({ entity: userFollow, params, onReload }) => {
-    const currentUser = useContext(UserContext);
+    const currentUser = useCurrentUser();
 
     const [isGroupInvitationsDialogOpen, toggleGroupInvitationsDialog] = useToggleState();
 
