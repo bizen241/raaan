@@ -4,11 +4,10 @@ import { Reducer } from "redux";
 import { Actions } from ".";
 import { User, UserAccount, UserConfig } from "../../shared/api/entities";
 import { getCurrentUser } from "../api/client";
-import { guestUser, guestUserAccount, guestUserConfig } from "../components/project/Context";
 import { install } from "../install";
 import { ActionUnion, AsyncAction, createAction } from "./action";
 import { isLocalOnly } from "./api";
-import { cacheActions } from "./cache";
+import { cacheActions, guestUser, guestUserAccount, guestUserConfig } from "./cache";
 
 export enum AppActionType {
   Ready = "app/ready",
