@@ -1,4 +1,3 @@
-import { Style } from "@material-ui/icons";
 import { ConnectedRouter } from "connected-react-router";
 import React, { Suspense } from "react";
 import { Provider } from "react-redux";
@@ -10,6 +9,7 @@ import { Initializer } from "./Initializer";
 import { IntlProvider } from "./IntlProvider";
 import { LoadingApp } from "./LoadingApp";
 import { Router } from "./Router";
+import { ThemeProvider } from "./ThemeProvider";
 
 export const App: React.FunctionComponent = () => {
   const { store, history, persistor } = configureStore();
@@ -20,13 +20,13 @@ export const App: React.FunctionComponent = () => {
         <PersistGate persistor={persistor}>
           <ConnectedRouter history={history}>
             <Suspense fallback={<LoadingApp />}>
-              <Style>
+              <ThemeProvider>
                 <IntlProvider>
                   <Initializer>
                     <Router />
                   </Initializer>
                 </IntlProvider>
-              </Style>
+              </ThemeProvider>
             </Suspense>
           </ConnectedRouter>
         </PersistGate>

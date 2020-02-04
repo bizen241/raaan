@@ -27,7 +27,7 @@
     "lint:prettier": "prettier --check \"src/**/*.{ts,tsx}\"",
     "format:prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "intl": "babel -f .babelrc \"src/client/**/*.{ts,tsx}\"",
-    "ui": "start-storybook",
+    "ui": "start-storybook -s assets",
     "db": "typeorm"
   },
   "dependencies": {

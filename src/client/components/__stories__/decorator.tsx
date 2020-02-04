@@ -1,9 +1,10 @@
 import { DecoratorFn } from "@storybook/react";
 import React from "react";
 import { Provider } from "react-redux";
+import "../../intl";
 import { configureStore } from "../../store";
-import { defaultSettings, SettingsContext } from "../project/Context";
-import { Style } from "../project/Style";
+import { IntlProvider } from "../project/IntlProvider";
+import { ThemeProvider } from "../project/ThemeProvider";
 import { Column } from "../ui";
 
 export const decorator: DecoratorFn = storyFn => {
@@ -11,11 +12,11 @@ export const decorator: DecoratorFn = storyFn => {
 
   return (
     <Provider store={store}>
-      <SettingsContext.Provider value={defaultSettings}>
-        <Style>
+      <ThemeProvider>
+        <IntlProvider>
           <Column p={1}>{storyFn()}</Column>
-        </Style>
-      </SettingsContext.Provider>
+        </IntlProvider>
+      </ThemeProvider>
     </Provider>
   );
 };

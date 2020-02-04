@@ -5,7 +5,7 @@ import { createMuiTheme, makeStyles, MuiThemeProvider } from "@material-ui/core/
 import React, { useEffect, useState } from "react";
 import { useUserSettings } from "../../hooks/useUserSettings";
 
-export const Style = React.memo<{ children: React.ReactNode }>(({ children }) => {
+export const ThemeProvider = React.memo<{ children: React.ReactNode }>(({ children }) => {
   const userSettings = useUserSettings();
   const colorScheme = userSettings["ui.colorScheme"];
 
