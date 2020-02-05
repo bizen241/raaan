@@ -2,6 +2,7 @@ const { resolve } = require("path");
 
 module.exports = {
   stories: ["../src/**/*.stories.tsx"],
+  addons: ["@storybook/addon-knobs/register"],
   webpackFinal: async config => {
     config.module.rules.push({
       test: /\.tsx?$/,
