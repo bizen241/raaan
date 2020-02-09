@@ -3,6 +3,7 @@ import uuid from "uuid/v4";
 import { ExerciseContent, GroupMemberPermission, Permission } from "../../../shared/api/entities";
 import {
   ContestEntity,
+  ExerciseCommentEntity,
   ExerciseDraftEntity,
   ExerciseEntity,
   ExerciseSummaryEntity,
@@ -99,6 +100,28 @@ export const insertExercise = async (
   return {
     exercise,
     exerciseSummary
+  };
+};
+
+export const insertExerciseComment = async (
+  params: {
+    exerciseCommentTarget?: ExerciseEntity;
+    exerciseCommentAuthor?: UserEntity;
+  } = {}
+) => {
+  const manager = getManager();
+
+  const exerciseCommentTarget = params.exerciseCommentTarget || (await insertExercise()).exercise;
+  const exerciseCommentAuthor = params.exerciseCommentAuthor || (await insertUser()).user;
+  const exerciseCommentBody = "";
+
+  const exerciseComment = new ExerciseCommentEntity(exerciseCommentTarget, exerciseCommentAuthor, exerciseCommentBody);
+  await manager.save(exerciseComment);
+
+  return {
+    exerciseComment,
+    exerciseCommentTarget,
+    exerciseCommentAuthor
   };
 };
 

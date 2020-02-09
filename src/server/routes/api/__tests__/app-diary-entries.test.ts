@@ -22,7 +22,7 @@ describe("api > app-diary-entries", () => {
       assert.equal(res.statusCode, 200);
 
       const response = getSearchResult(res);
-      assert(response.entities.AppDiaryEntry[appDiaryEntry.id]);
+      assert.equal(response.count, 1);
     });
   });
 });

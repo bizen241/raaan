@@ -2,7 +2,7 @@ import { getManager } from "typeorm";
 import { createSearchOperation } from "../../api/operation";
 import { ExerciseCommentSummaryEntity } from "../../database/entities";
 
-export const GET = createSearchOperation("ExerciseCommentSummary", "Read", async ({ params }) => {
+export const GET = createSearchOperation("ExerciseCommentSummary", "Guest", async ({ params }) => {
   const { parentId, authorId } = params;
 
   const query = getManager()
