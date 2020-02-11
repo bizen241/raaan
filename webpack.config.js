@@ -22,7 +22,7 @@ const plugins = [
   new CopyPlugin([
     {
       from: join(__dirname, "assets"),
-      ignore: ["*.ejs", "*.svg"]
+      ignore: ["*.ejs"]
     },
     {
       from: join(__dirname, "node_modules/kuromoji/dict"),
