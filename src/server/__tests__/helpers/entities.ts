@@ -4,6 +4,7 @@ import { ExerciseContent, GroupMemberPermission, Permission } from "../../../sha
 import {
   ContestEntity,
   ExerciseCommentEntity,
+  ExerciseCommentSummaryEntity,
   ExerciseDraftEntity,
   ExerciseEntity,
   ExerciseSummaryEntity,
@@ -116,6 +117,7 @@ export const insertExerciseComment = async (
   const exerciseCommentBody = "";
 
   const exerciseComment = new ExerciseCommentEntity(exerciseCommentTarget, exerciseCommentAuthor, exerciseCommentBody);
+  exerciseComment.summary = new ExerciseCommentSummaryEntity();
   await manager.save(exerciseComment);
 
   return {
