@@ -164,6 +164,11 @@ export type EntityObject = EntityTypeToEntity[keyof EntityTypeToEntity];
 
 export type EntityType = keyof EntityTypeToEntity;
 
+/**
+ * @format uuid
+ */
+export type EntityId<T extends EntityType> = string & { __brand: T };
+
 type EntityTypeToObject = { [P in EntityType]: object };
 
 export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
