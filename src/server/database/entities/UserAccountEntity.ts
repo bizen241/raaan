@@ -1,13 +1,13 @@
 import { Column, Entity, JoinColumn, OneToOne, RelationId, Unique } from "typeorm";
-import { AvatarType } from "../../../shared/api/entities";
+import { AvatarType, EntityId } from "../../../shared/api/entities";
 import { AuthProviderName } from "../../../shared/auth";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
 @Entity("user_accounts")
 @Unique(["provider", "accountId"])
-export class UserAccountEntity extends BaseEntityClass {
-  type: "UserAccount" = "UserAccount";
+export class UserAccountEntity extends BaseEntityClass<"UserAccount"> {
+  readonly type = "UserAccount";
 
   @OneToOne(
     () => UserEntity,
@@ -19,7 +19,7 @@ export class UserAccountEntity extends BaseEntityClass {
   @JoinColumn()
   user?: UserEntity;
   @RelationId((account: UserAccountEntity) => account.user)
-  userId!: string;
+  userId!: EntityId<"User">;
 
   @Column()
   provider: AuthProviderName;

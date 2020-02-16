@@ -1,10 +1,11 @@
 import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
+import { EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
 @Entity("user_summaries")
-export class UserSummaryEntity extends BaseEntityClass {
-  type: "UserSummary" = "UserSummary";
+export class UserSummaryEntity extends BaseEntityClass<"UserSummary"> {
+  readonly type = "UserSummary";
 
   @OneToOne(() => UserEntity, {
     onDelete: "CASCADE"
@@ -12,7 +13,7 @@ export class UserSummaryEntity extends BaseEntityClass {
   @JoinColumn()
   user?: UserEntity;
   @RelationId((userSummary: UserSummaryEntity) => userSummary.user)
-  userId!: string;
+  userId!: EntityId<"User">;
 
   @Column()
   followerCount: number = 0;

@@ -1,7 +1,8 @@
-import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { EntityId } from ".";
+import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface UserDiaryEntry extends BaseEntityObject {
-  userId?: UUID;
+export interface UserDiaryEntry extends BaseEntityObject<"UserDiaryEntry"> {
+  userId?: EntityId<"User">;
   date: string;
   submitCount: number;
   typeCount: number;

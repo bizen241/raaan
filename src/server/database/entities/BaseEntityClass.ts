@@ -1,11 +1,11 @@
 import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { EntityType } from "../../../shared/api/entities";
+import { EntityType, EntityId } from "../../../shared/api/entities";
 
-export abstract class BaseEntityClass {
-  abstract type: EntityType;
+export abstract class BaseEntityClass<T extends EntityType> {
+  abstract type: T;
 
   @PrimaryGeneratedColumn("uuid")
-  id!: string;
+  id!: EntityId<T>;
 
   @CreateDateColumn()
   createdAt!: Date;

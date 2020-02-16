@@ -1,13 +1,13 @@
 import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
-import { ExerciseContent, SuggestionState } from "../../../shared/api/entities";
+import { EntityId, ExerciseContent, SuggestionState } from "../../../shared/api/entities";
 import { BaseExerciseClass } from "./BaseExerciseClass";
 import { RevisionEntity } from "./RevisionEntity";
 import { SuggestionSummaryEntity } from "./SuggestionSummaryEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity("suggestions")
-export class SuggestionEntity extends BaseExerciseClass {
-  type: "Suggestion" = "Suggestion";
+export class SuggestionEntity extends BaseExerciseClass<"Suggestion"> {
+  readonly type = "Suggestion";
 
   @OneToOne(
     () => SuggestionSummaryEntity,
@@ -18,21 +18,21 @@ export class SuggestionEntity extends BaseExerciseClass {
   )
   summary?: SuggestionSummaryEntity;
   @RelationId((suggestion: SuggestionEntity) => suggestion.summary)
-  summaryId!: string;
+  summaryId!: EntityId<"SuggestionSummary">;
 
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
   author?: UserEntity;
   @RelationId((suggestion: SuggestionEntity) => suggestion.author)
-  authorId!: string;
+  authorId!: EntityId<"User">;
 
   @ManyToOne(() => RevisionEntity, {
     onDelete: "CASCADE"
   })
   revision?: RevisionEntity;
   @RelationId((suggestion: SuggestionEntity) => suggestion.revision)
-  revisionId!: string;
+  revisionId!: EntityId<"Revision">;
 
   @Column()
   messageSubject: string;

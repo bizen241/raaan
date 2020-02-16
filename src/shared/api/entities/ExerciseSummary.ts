@@ -1,9 +1,10 @@
-import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { EntityId } from ".";
+import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface ExerciseSummary extends BaseEntityObject {
-  authorId: UUID;
+export interface ExerciseSummary extends BaseEntityObject<"ExerciseSummary"> {
+  authorId: EntityId<"User">;
   authorName: string;
-  exerciseId: UUID;
+  exerciseId: EntityId<"Exercise">;
   lang: string;
   title: string;
   tags: string;

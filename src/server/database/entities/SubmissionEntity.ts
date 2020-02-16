@@ -1,26 +1,26 @@
 import { Column, Entity, ManyToOne, RelationId } from "typeorm";
-import { AttemptResult } from "../../../shared/api/entities";
+import { AttemptResult, EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity("submissions")
-export class SubmissionEntity extends BaseEntityClass {
-  type: "Submission" = "Submission";
+export class SubmissionEntity extends BaseEntityClass<"Submission"> {
+  readonly type = "Submission";
 
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
   submitter?: UserEntity;
   @RelationId((submission: SubmissionEntity) => submission.submitter)
-  submitterId!: string;
+  submitterId!: EntityId<"User">;
 
   @ManyToOne(() => ExerciseEntity, {
     onDelete: "CASCADE"
   })
   exercise?: ExerciseEntity;
   @RelationId((submission: SubmissionEntity) => submission.exercise)
-  exerciseId!: string;
+  exerciseId!: EntityId<"Exercise">;
 
   @Column()
   typeCount!: number;

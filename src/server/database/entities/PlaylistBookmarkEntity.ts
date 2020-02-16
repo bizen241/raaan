@@ -1,25 +1,26 @@
 import { Column, Entity, ManyToOne, RelationId } from "typeorm";
+import { EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { PlaylistEntity } from "./PlaylistEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity("playlist_bookmarks")
-export class PlaylistBookmarkEntity extends BaseEntityClass {
-  type: "PlaylistBookmark" = "PlaylistBookmark";
+export class PlaylistBookmarkEntity extends BaseEntityClass<"PlaylistBookmark"> {
+  readonly type = "PlaylistBookmark";
 
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
   user?: UserEntity;
   @RelationId((submission: PlaylistBookmarkEntity) => submission.user)
-  userId!: string;
+  userId!: EntityId<"User">;
 
   @ManyToOne(() => PlaylistEntity, {
     onDelete: "CASCADE"
   })
   playlist?: PlaylistEntity;
   @RelationId((submission: PlaylistBookmarkEntity) => submission.playlist)
-  playlistId!: string;
+  playlistId!: EntityId<"Playlist">;
 
   @Column()
   isPrivate: boolean;

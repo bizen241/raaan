@@ -1,12 +1,13 @@
 import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
+import { EntityId } from "../../../shared/api/entities";
 import { ReportReason, ReportState, ReportTargetType } from "../../../shared/api/entities/Report";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ReportSummaryEntity } from "./ReportSummaryEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity("reports")
-export class ReportEntity extends BaseEntityClass {
-  type: "Report" = "Report";
+export class ReportEntity extends BaseEntityClass<"Report"> {
+  readonly type = "Report";
 
   @OneToOne(
     () => ReportSummaryEntity,
@@ -17,21 +18,21 @@ export class ReportEntity extends BaseEntityClass {
   )
   summary?: ReportSummaryEntity;
   @RelationId((report: ReportEntity) => report.summary)
-  summaryId!: string;
+  summaryId!: EntityId<"ReportSummary">;
 
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
   reporter?: UserEntity;
   @RelationId((report: ReportEntity) => report.reporter)
-  reporterId!: string;
+  reporterId!: EntityId<"User">;
 
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
   defendant?: UserEntity;
   @RelationId((report: ReportEntity) => report.defendant)
-  defendantId!: string;
+  defendantId!: EntityId<"User">;
 
   @Column()
   targetType!: ReportTargetType;

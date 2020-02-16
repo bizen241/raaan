@@ -1,10 +1,7 @@
-/**
- * @format uuid
- */
-export type UUID = string;
+import { EntityId, EntityType } from ".";
 
-export interface BaseEntityObject {
-  id: UUID;
+export interface BaseEntityObject<T extends EntityType> {
+  id: EntityId<T>;
   createdAt: number;
   updatedAt: number;
   fetchedAt: number;

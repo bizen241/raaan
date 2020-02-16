@@ -1,10 +1,11 @@
 import { Column, Entity, OneToOne, RelationId } from "typeorm";
+import { EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { TagSummaryEntity } from "./TagSummaryEntity";
 
 @Entity("tags")
-export class TagEntity extends BaseEntityClass {
-  type: "Tag" = "Tag";
+export class TagEntity extends BaseEntityClass<"Tag"> {
+  readonly type = "Tag";
 
   @OneToOne(
     () => TagSummaryEntity,
@@ -15,7 +16,7 @@ export class TagEntity extends BaseEntityClass {
   )
   summary?: TagSummaryEntity;
   @RelationId((tag: TagEntity) => tag.summary)
-  summaryId!: string;
+  summaryId!: EntityId<"TagSummary">;
 
   @Column({
     unique: true

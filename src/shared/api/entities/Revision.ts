@@ -1,9 +1,9 @@
-import { UUID } from "./BaseEntityObject";
+import { EntityId } from ".";
 import { BaseExerciseObject } from "./BaseExerciseObject";
 
-export interface Revision extends BaseExerciseObject {
-  summaryId: UUID;
-  exerciseId: UUID;
+export interface Revision extends BaseExerciseObject<"Revision"> {
+  summaryId: EntityId<"RevisionSummary">;
+  exerciseId: EntityId<"Exercise">;
   messageSubject: string;
   messageBody: string;
 }

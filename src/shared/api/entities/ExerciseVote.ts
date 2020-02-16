@@ -1,3 +1,10 @@
-import { BaseVoteObject } from "./BaseVoteObject";
+import { EntityId } from ".";
+import { BaseEntityObject } from "./BaseEntityObject";
 
-export type ExerciseVote = BaseVoteObject;
+export interface ExerciseVote extends BaseEntityObject<"ExerciseVote"> {
+  targetId?: EntityId<"Exercise">;
+  targetSummaryId: EntityId<"ExerciseSummary">;
+  voterId?: EntityId<"User">;
+  voterSummaryId: EntityId<"UserSummary">;
+  isUp: boolean;
+}

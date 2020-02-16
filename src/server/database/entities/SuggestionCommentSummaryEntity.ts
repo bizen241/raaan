@@ -1,10 +1,11 @@
 import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
+import { EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { SuggestionCommentEntity } from "./SuggestionCommentEntity";
 
 @Entity("suggestion_comment_summaries")
-export class SuggestionCommentSummaryEntity extends BaseEntityClass {
-  type: "SuggestionCommentSummary" = "SuggestionCommentSummary";
+export class SuggestionCommentSummaryEntity extends BaseEntityClass<"SuggestionCommentSummary"> {
+  readonly type = "SuggestionCommentSummary";
 
   @OneToOne(
     () => SuggestionCommentEntity,
@@ -16,7 +17,7 @@ export class SuggestionCommentSummaryEntity extends BaseEntityClass {
   @JoinColumn()
   parent?: SuggestionCommentEntity;
   @RelationId((suggestionCommentSummary: SuggestionCommentSummaryEntity) => suggestionCommentSummary.parent)
-  parentId!: string;
+  parentId!: EntityId<"SuggestionComment">;
 
   @Column()
   upvoteCount: number = 0;

@@ -1,25 +1,26 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, RelationId } from "typeorm";
+import { EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { PlaylistEntity } from "./PlaylistEntity";
 
 @Entity("playlist_items")
-export class PlaylistItemEntity extends BaseEntityClass {
-  type: "PlaylistItem" = "PlaylistItem";
+export class PlaylistItemEntity extends BaseEntityClass<"PlaylistItem"> {
+  readonly type = "PlaylistItem";
 
   @ManyToOne(() => PlaylistEntity, {
     onDelete: "CASCADE"
   })
   playlist?: PlaylistEntity;
   @RelationId((playlistItem: PlaylistItemEntity) => playlistItem.playlist)
-  playlistId!: string;
+  playlistId!: EntityId<"Playlist">;
 
   @ManyToOne(() => ExerciseEntity, {
     onDelete: "CASCADE"
   })
   exercise?: ExerciseEntity | null;
   @RelationId((playlistItem: PlaylistItemEntity) => playlistItem.exercise)
-  exerciseId!: string;
+  exerciseId!: EntityId<"Exercise">;
 
   @OneToOne(() => PlaylistItemEntity, {
     onDelete: "SET NULL"
@@ -27,7 +28,7 @@ export class PlaylistItemEntity extends BaseEntityClass {
   @JoinColumn()
   next?: PlaylistItemEntity | null;
   @RelationId((playlistItem: PlaylistItemEntity) => playlistItem.next)
-  nextId!: string;
+  nextId!: EntityId<"PlaylistItem">;
 
   @Column()
   memo: string;

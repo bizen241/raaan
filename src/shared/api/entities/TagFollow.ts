@@ -1,3 +1,10 @@
-import { BaseFollowObject } from "./BaseFollowObject";
+import { EntityId } from ".";
+import { BaseEntityObject } from "./BaseEntityObject";
 
-export type TagFollow = BaseFollowObject;
+export interface TagFollow extends BaseEntityObject<"TagFollow"> {
+  targetId?: EntityId<"Tag">;
+  targetSummaryId: EntityId<"TagSummary">;
+  followerId?: EntityId<"User">;
+  followerSummaryId: EntityId<"UserSummary">;
+  checkedAt: number;
+}

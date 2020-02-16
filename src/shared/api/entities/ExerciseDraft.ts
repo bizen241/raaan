@@ -1,10 +1,10 @@
-import { UUID } from "./BaseEntityObject";
+import { EntityId } from ".";
 import { BaseExerciseObject } from "./BaseExerciseObject";
 
-export interface ExerciseDraft extends BaseExerciseObject {
-  exerciseId: UUID;
-  suggestionId?: UUID;
-  revisionId?: UUID;
+export interface ExerciseDraft extends BaseExerciseObject<"ExerciseDraft"> {
+  exerciseId: EntityId<"Exercise">;
+  suggestionId?: EntityId<"Suggestion">;
+  revisionId?: EntityId<"Revision">;
   messageSubject?: string;
   messageBody?: string;
   isMerged: boolean;

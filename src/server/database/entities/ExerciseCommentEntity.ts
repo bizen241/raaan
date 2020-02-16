@@ -1,12 +1,13 @@
-import { Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
-import { BaseCommentClass } from "./BaseCommentClass";
+import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
+import { EntityId } from "../../../shared/api/entities";
+import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseCommentSummaryEntity } from "./ExerciseCommentSummaryEntity";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity("exercise_comments")
-export class ExerciseCommentEntity extends BaseCommentClass<ExerciseEntity> {
-  type: "ExerciseComment" = "ExerciseComment";
+export class ExerciseCommentEntity extends BaseEntityClass<"ExerciseComment"> {
+  readonly type = "ExerciseComment";
 
   @OneToOne(
     () => ExerciseCommentSummaryEntity,
@@ -16,17 +17,31 @@ export class ExerciseCommentEntity extends BaseCommentClass<ExerciseEntity> {
     }
   )
   summary?: ExerciseCommentSummaryEntity;
-  @RelationId((exercise: ExerciseEntity) => exercise.summary)
-  summaryId!: string;
+  @RelationId((exerciseComment: ExerciseCommentEntity) => exerciseComment.summary)
+  summaryId!: EntityId<"ExerciseCommentSummary">;
 
   @ManyToOne(() => ExerciseEntity, {
     onDelete: "CASCADE"
   })
   target?: ExerciseEntity;
+  @RelationId((exerciseComment: ExerciseCommentEntity) => exerciseComment.target)
+  targetId!: EntityId<"Exercise">;
+
+  @ManyToOne(() => UserEntity, {
+    onDelete: "CASCADE"
+  })
+  author?: UserEntity;
+  @RelationId((exerciseComment: ExerciseCommentEntity) => exerciseComment.author)
+  authorId!: EntityId<"User">;
+
+  @Column()
+  body: string;
 
   constructor(target: ExerciseEntity, author: UserEntity, body: string) {
-    super(author, body);
+    super();
 
     this.target = target;
+    this.author = author;
+    this.body = body;
   }
 }

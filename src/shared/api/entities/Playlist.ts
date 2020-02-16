@@ -1,4 +1,5 @@
-import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { EntityId } from ".";
+import { BaseEntityObject } from "./BaseEntityObject";
 
 export type OrderBy =
   | "manual-first"
@@ -10,14 +11,14 @@ export type OrderBy =
   | "count-submitted-asc"
   | "count-submitted-desc";
 
-export interface Playlist extends BaseEntityObject {
-  authorId: UUID;
-  summaryId: UUID;
+export interface Playlist extends BaseEntityObject<"Playlist"> {
+  summaryId: EntityId<"PlaylistSummary">;
+  authorId: EntityId<"User">;
   title: string;
   tags: string[];
   description: string;
   orderBy: OrderBy;
   isPrivate: boolean;
   isLocked: boolean;
-  exerciseId?: UUID;
+  exerciseId?: EntityId<"Exercise">;
 }

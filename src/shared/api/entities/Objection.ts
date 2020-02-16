@@ -1,15 +1,18 @@
-import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { EntityId } from ".";
+import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface Objection extends BaseEntityObject {
-  summaryId: UUID;
-  objectorId: UUID;
+export type ObjectionTargetType = "Exercise" | "Playlist" | "User";
+export type ObjectionState = "pending" | "accepted" | "rejected";
+
+export interface Objection extends BaseEntityObject<"Objection"> {
+  summaryId: EntityId<"ObjectionSummary">;
+  objectorId: EntityId<"User">;
   targetType: ObjectionTargetType;
-  targetId: UUID;
+  /**
+   * @format uuid
+   */
+  targetId: string;
   description: string;
   comment?: string;
   state: ObjectionState;
 }
-
-export type ObjectionTargetType = "Exercise" | "Playlist" | "User";
-
-export type ObjectionState = "pending" | "accepted" | "rejected";

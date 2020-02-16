@@ -1,7 +1,8 @@
-import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { EntityId } from ".";
+import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface TagDiaryEntry extends BaseEntityObject {
-  tagId?: UUID;
+export interface TagDiaryEntry extends BaseEntityObject<"TagDiaryEntry"> {
+  tagId?: EntityId<"Tag">;
   date: string;
   submittedCount: number;
   typedCount: number;

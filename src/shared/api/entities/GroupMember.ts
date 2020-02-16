@@ -1,10 +1,11 @@
-import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { EntityId } from ".";
+import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface GroupMember extends BaseEntityObject {
-  userId?: UUID;
-  groupId?: UUID;
-  groupSummaryId: UUID;
-  userSummaryId: UUID;
+export interface GroupMember extends BaseEntityObject<"GroupMember"> {
+  userId?: EntityId<"User">;
+  userSummaryId: EntityId<"UserSummary">;
+  groupId?: EntityId<"Group">;
+  groupSummaryId: EntityId<"GroupSummary">;
   permission: GroupMemberPermission;
 }
 

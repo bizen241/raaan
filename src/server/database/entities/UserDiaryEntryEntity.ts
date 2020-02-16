@@ -1,17 +1,18 @@
 import { Column, Entity, ManyToOne, RelationId } from "typeorm";
+import { EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
 @Entity("user_diaries")
-export class UserDiaryEntryEntity extends BaseEntityClass {
-  type: "UserDiaryEntry" = "UserDiaryEntry";
+export class UserDiaryEntryEntity extends BaseEntityClass<"UserDiaryEntry"> {
+  readonly type = "UserDiaryEntry";
 
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
   user?: UserEntity;
   @RelationId((userDiaryEntry: UserDiaryEntryEntity) => userDiaryEntry.user)
-  userId!: string;
+  userId!: EntityId<"User">;
 
   @Column("date")
   date: string;

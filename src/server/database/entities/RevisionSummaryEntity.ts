@@ -1,10 +1,11 @@
 import { Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
+import { EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { RevisionEntity } from "./RevisionEntity";
 
 @Entity("revision_summaries")
-export class RevisionSummaryEntity extends BaseEntityClass {
-  type: "RevisionSummary" = "RevisionSummary";
+export class RevisionSummaryEntity extends BaseEntityClass<"RevisionSummary"> {
+  readonly type = "RevisionSummary";
 
   @OneToOne(
     () => RevisionEntity,
@@ -16,5 +17,5 @@ export class RevisionSummaryEntity extends BaseEntityClass {
   @JoinColumn()
   revision?: RevisionEntity;
   @RelationId((revisionSummary: RevisionSummaryEntity) => revisionSummary.revision)
-  revisionId!: string;
+  revisionId!: EntityId<"Revision">;
 }

@@ -1,10 +1,11 @@
 import { AuthProviderName } from "../../auth";
-import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { EntityId } from ".";
+import { BaseEntityObject } from "./BaseEntityObject";
 
 export type AvatarType = "identicon" | "gravatar";
 
-export interface UserAccount extends BaseEntityObject {
-  userId?: UUID;
+export interface UserAccount extends BaseEntityObject<"UserAccount"> {
+  userId?: EntityId<"User">;
   provider: AuthProviderName;
   accountId: string;
   email: string;

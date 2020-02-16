@@ -1,10 +1,11 @@
 import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
+import { EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { TagEntity } from "./TagEntity";
 
 @Entity("tag_summaries")
-export class TagSummaryEntity extends BaseEntityClass {
-  type: "TagSummary" = "TagSummary";
+export class TagSummaryEntity extends BaseEntityClass<"TagSummary"> {
+  readonly type = "TagSummary";
 
   @OneToOne(
     () => TagEntity,
@@ -16,7 +17,7 @@ export class TagSummaryEntity extends BaseEntityClass {
   @JoinColumn()
   tag?: TagEntity;
   @RelationId((tagSummary: TagSummaryEntity) => tagSummary.tag)
-  tagId!: string;
+  tagId!: EntityId<"Tag">;
 
   @Column()
   exerciseCount: number = 0;

@@ -1,12 +1,15 @@
-import { UUID } from "./BaseEntityObject";
+import { EntityId } from ".";
 import { BaseEntityObject } from "./BaseEntityObject";
-import { ObjectionState } from "./Objection";
+import { ObjectionState, ObjectionTargetType } from "./Objection";
 
-export interface ObjectionSummary extends BaseEntityObject {
-  parentId: UUID;
-  objectorId?: UUID;
-  targetType?: UUID;
-  targetId?: UUID;
+export interface ObjectionSummary extends BaseEntityObject<"ObjectionSummary"> {
+  parentId: EntityId<"Objection">;
+  objectorId?: EntityId<"User">;
+  targetType?: ObjectionTargetType;
+  /**
+   * @format uuid
+   */
+  targetId?: string;
   state: ObjectionState;
   commentCount: number;
 }

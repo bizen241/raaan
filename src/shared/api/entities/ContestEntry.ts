@@ -1,8 +1,9 @@
-import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { EntityId } from ".";
+import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface ContestEntry extends BaseEntityObject {
-  contestId: UUID;
-  userSummaryId: UUID;
+export interface ContestEntry extends BaseEntityObject<"ContestEntry"> {
+  contestId: EntityId<"Contest">;
+  userSummaryId: EntityId<"UserSummary">;
   typeCount: number;
   time: number;
   accuracy: number;

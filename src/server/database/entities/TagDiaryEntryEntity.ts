@@ -1,17 +1,18 @@
 import { Column, Entity, ManyToOne, RelationId } from "typeorm";
+import { EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { TagEntity } from "./TagEntity";
 
 @Entity("tag_diaries")
-export class TagDiaryEntryEntity extends BaseEntityClass {
-  type: "TagDiaryEntry" = "TagDiaryEntry";
+export class TagDiaryEntryEntity extends BaseEntityClass<"TagDiaryEntry"> {
+  readonly type = "TagDiaryEntry";
 
   @ManyToOne(() => TagEntity, {
     onDelete: "CASCADE"
   })
   tag?: TagEntity;
   @RelationId((tagDiaryEntry: TagDiaryEntryEntity) => tagDiaryEntry.tag)
-  tagId!: string;
+  tagId!: EntityId<"Tag">;
 
   @Column("date")
   date: string;

@@ -1,7 +1,8 @@
-import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { EntityId } from ".";
+import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface UserSession extends BaseEntityObject {
-  userId: UUID;
+export interface UserSession extends BaseEntityObject<"UserSession"> {
+  userId: EntityId<"User">;
   accessCount: number;
   deviceType: string;
   deviceName: string;

@@ -1,13 +1,13 @@
 import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, OneToOne, RelationId } from "typeorm";
-import { ExerciseContent } from "../../../shared/api/entities";
+import { EntityId, ExerciseContent } from "../../../shared/api/entities";
 import { updateExerciseSummaryTexts } from "../../services/exercise-summaries";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { TagEntity } from "./TagEntity";
 
 @Entity("exercise_summaries")
-export class ExerciseSummaryEntity extends BaseEntityClass {
-  type: "ExerciseSummary" = "ExerciseSummary";
+export class ExerciseSummaryEntity extends BaseEntityClass<"ExerciseSummary"> {
+  readonly type = "ExerciseSummary";
 
   @OneToOne(
     () => ExerciseEntity,
@@ -19,7 +19,7 @@ export class ExerciseSummaryEntity extends BaseEntityClass {
   @JoinColumn()
   exercise?: ExerciseEntity;
   @RelationId((exerciseSummary: ExerciseSummaryEntity) => exerciseSummary.exercise)
-  exerciseId!: string;
+  exerciseId!: EntityId<"Exercise">;
 
   @ManyToMany(() => TagEntity, {
     cascade: ["insert"]

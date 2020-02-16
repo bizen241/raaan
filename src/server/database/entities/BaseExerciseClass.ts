@@ -1,8 +1,8 @@
 import { Column } from "typeorm";
-import { ExerciseContent, Question, Reference } from "../../../shared/api/entities";
+import { EntityType, ExerciseContent, Question, Reference } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 
-export abstract class BaseExerciseClass extends BaseEntityClass {
+export abstract class BaseExerciseClass<T extends EntityType> extends BaseEntityClass<T> {
   @Column()
   lang!: string;
 
@@ -33,7 +33,10 @@ export abstract class BaseExerciseClass extends BaseEntityClass {
   }
 }
 
-export const updateExerciseContent = (entity: BaseExerciseClass, params: Partial<ExerciseContent>) => {
+export const updateExerciseContent = <T extends EntityType>(
+  entity: BaseExerciseClass<T>,
+  params: Partial<ExerciseContent>
+) => {
   entity.lang = params.lang || entity.lang || "en";
   entity.title = params.title || entity.title || "";
   entity.tags = params.tags || entity.tags || [];

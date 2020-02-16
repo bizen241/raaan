@@ -1,9 +1,5 @@
 import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface UserConfig extends BaseEntityObject {
-  settings: Partial<UserSettings>;
-}
-
 export interface UserSettings {
   "ui.lang": Lang;
   "ui.colorScheme": "system" | "dark" | "light";
@@ -11,3 +7,7 @@ export interface UserSettings {
 }
 
 export type Lang = "en" | "ja";
+
+export interface UserConfig extends BaseEntityObject<"UserConfig"> {
+  settings: Partial<UserSettings>;
+}

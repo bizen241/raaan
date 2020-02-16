@@ -1,9 +1,10 @@
-import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { EntityId } from ".";
+import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface PlaylistSummary extends BaseEntityObject {
-  authorId: UUID;
+export interface PlaylistSummary extends BaseEntityObject<"PlaylistSummary"> {
+  authorId: EntityId<"User">;
   authorName: string;
-  playlistId: UUID;
+  playlistId: EntityId<"Playlist">;
   title: string;
   tags: string;
   description: string;

@@ -1,13 +1,13 @@
 import { Column, Entity, OneToOne, RelationId } from "typeorm";
-import { Permission } from "../../../shared/api/entities";
+import { Permission, EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserAccountEntity } from "./UserAccountEntity";
 import { UserConfigEntity } from "./UserConfigEntity";
 import { UserSummaryEntity } from "./UserSummaryEntity";
 
 @Entity("users")
-export class UserEntity extends BaseEntityClass {
-  type: "User" = "User";
+export class UserEntity extends BaseEntityClass<"User"> {
+  readonly type = "User";
 
   @OneToOne(
     () => UserAccountEntity,
@@ -18,7 +18,7 @@ export class UserEntity extends BaseEntityClass {
   )
   account?: UserAccountEntity;
   @RelationId((user: UserEntity) => user.account)
-  accountId!: string;
+  accountId!: EntityId<"UserAccount">;
 
   @OneToOne(
     () => UserConfigEntity,
@@ -29,7 +29,7 @@ export class UserEntity extends BaseEntityClass {
   )
   config?: UserConfigEntity;
   @RelationId((user: UserEntity) => user.config)
-  configId!: string;
+  configId!: EntityId<"UserConfig">;
 
   @OneToOne(
     () => UserSummaryEntity,
@@ -40,7 +40,7 @@ export class UserEntity extends BaseEntityClass {
   )
   summary?: UserSummaryEntity;
   @RelationId((user: UserEntity) => user.summary)
-  summaryId!: string;
+  summaryId!: EntityId<"UserSummary">;
 
   @Column()
   name: string;

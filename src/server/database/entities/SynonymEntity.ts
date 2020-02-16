@@ -2,8 +2,8 @@ import { Column, Entity } from "typeorm";
 import { BaseEntityClass } from "./BaseEntityClass";
 
 @Entity("synonyms")
-export class SynonymEntity extends BaseEntityClass {
-  type: "Synonym" = "Synonym";
+export class SynonymEntity extends BaseEntityClass<"Synonym"> {
+  readonly type = "Synonym";
 
   @Column()
   name: string;

@@ -1,11 +1,11 @@
 import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
-import { UserSettings } from "../../../shared/api/entities";
+import { EntityId, UserSettings } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
 @Entity("user_configs")
-export class UserConfigEntity extends BaseEntityClass {
-  type: "UserConfig" = "UserConfig";
+export class UserConfigEntity extends BaseEntityClass<"UserConfig"> {
+  readonly type = "UserConfig";
 
   @OneToOne(
     () => UserEntity,
@@ -17,7 +17,7 @@ export class UserConfigEntity extends BaseEntityClass {
   @JoinColumn()
   user?: UserEntity;
   @RelationId((config: UserConfigEntity) => config.user)
-  userId!: string;
+  userId!: EntityId<"User">;
 
   @Column("json")
   settings: Partial<UserSettings> = {};

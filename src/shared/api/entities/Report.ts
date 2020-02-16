@@ -1,19 +1,21 @@
-import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { EntityId } from ".";
+import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface Report extends BaseEntityObject {
-  summaryId: UUID;
-  reporterId: UUID;
-  defendantId?: UUID;
+export type ReportTargetType = "Exercise" | "Playlist" | "Synonym" | "Tag" | "User";
+export type ReportReason = "troll" | "copyright" | "sexual";
+export type ReportState = "pending" | "accepted" | "rejected";
+
+export interface Report extends BaseEntityObject<"Report"> {
+  summaryId: EntityId<"ReportSummary">;
+  reporterId: EntityId<"User">;
+  defendantId?: EntityId<"User">;
   targetType: ReportTargetType;
-  targetId: UUID;
+  /**
+   * @format uuid
+   */
+  targetId: string;
   reason: ReportReason;
   description: string;
   state: ReportState;
   comment?: string;
 }
-
-export type ReportTargetType = "Exercise" | "Playlist" | "Synonym" | "Tag" | "User";
-
-export type ReportReason = "troll" | "copyright" | "sexual";
-
-export type ReportState = "pending" | "accepted" | "rejected";

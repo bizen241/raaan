@@ -166,6 +166,7 @@ export type EntityType = keyof EntityTypeToEntity;
 
 /**
  * @format uuid
+ * @TJS-type string
  */
 export type EntityId<T extends EntityType> = string & { __brand: T };
 

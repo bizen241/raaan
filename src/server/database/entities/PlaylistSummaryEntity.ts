@@ -1,11 +1,12 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, RelationId } from "typeorm";
+import { EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { PlaylistEntity } from "./PlaylistEntity";
 import { TagEntity } from "./TagEntity";
 
 @Entity("playlist_summaries")
-export class PlaylistSummaryEntity extends BaseEntityClass {
-  type: "PlaylistSummary" = "PlaylistSummary";
+export class PlaylistSummaryEntity extends BaseEntityClass<"PlaylistSummary"> {
+  readonly type = "PlaylistSummary";
 
   @OneToOne(
     () => PlaylistEntity,
@@ -17,7 +18,7 @@ export class PlaylistSummaryEntity extends BaseEntityClass {
   @JoinColumn()
   playlist?: PlaylistEntity;
   @RelationId((playlistSummary: PlaylistSummaryEntity) => playlistSummary.playlist)
-  playlistId!: string;
+  playlistId!: EntityId<"Playlist">;
 
   @ManyToMany(() => TagEntity, {
     cascade: ["insert"]

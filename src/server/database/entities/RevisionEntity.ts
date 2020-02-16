@@ -1,19 +1,19 @@
 import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
-import { ExerciseContent } from "../../../shared/api/entities";
+import { EntityId, ExerciseContent } from "../../../shared/api/entities";
 import { BaseExerciseClass } from "./BaseExerciseClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { RevisionSummaryEntity } from "./RevisionSummaryEntity";
 
 @Entity("revisions")
-export class RevisionEntity extends BaseExerciseClass {
-  type: "Revision" = "Revision";
+export class RevisionEntity extends BaseExerciseClass<"Revision"> {
+  readonly type = "Revision";
 
   @ManyToOne(() => ExerciseEntity, {
     onDelete: "CASCADE"
   })
   exercise?: ExerciseEntity;
   @RelationId((revision: RevisionEntity) => revision.exercise)
-  exerciseId!: string;
+  exerciseId!: EntityId<"Exercise">;
 
   @OneToOne(
     () => RevisionSummaryEntity,
@@ -24,7 +24,7 @@ export class RevisionEntity extends BaseExerciseClass {
   )
   summary?: RevisionSummaryEntity;
   @RelationId((revision: RevisionEntity) => revision.summary)
-  summaryId!: string;
+  summaryId!: EntityId<"RevisionSummary">;
 
   @Column()
   messageSubject: string;

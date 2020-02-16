@@ -1,9 +1,13 @@
-import { BaseEntityObject, UUID } from "./BaseEntityObject";
+import { EntityId } from ".";
+import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface GroupApplication extends BaseEntityObject {
-  groupId: UUID;
-  applicantId: UUID;
-  groupSummaryId: UUID;
-  applicantSummaryId: UUID;
-  secret?: UUID;
+export interface GroupApplication extends BaseEntityObject<"GroupApplication"> {
+  groupId: EntityId<"Group">;
+  applicantId: EntityId<"GroupApplication">;
+  groupSummaryId: EntityId<"GroupSummary">;
+  applicantSummaryId: EntityId<"UserSummary">;
+  /**
+   * @format uuid
+   */
+  secret?: string;
 }

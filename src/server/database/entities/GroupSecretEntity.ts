@@ -1,10 +1,11 @@
 import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
+import { EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { GroupEntity } from "./GroupEntity";
 
 @Entity("group_secrets")
-export class GroupSecretEntity extends BaseEntityClass {
-  type: "GroupSecret" = "GroupSecret";
+export class GroupSecretEntity extends BaseEntityClass<"GroupSecret"> {
+  readonly type = "GroupSecret";
 
   @OneToOne(
     () => GroupEntity,
@@ -16,7 +17,7 @@ export class GroupSecretEntity extends BaseEntityClass {
   @JoinColumn()
   group?: GroupEntity;
   @RelationId((groupSecret: GroupSecretEntity) => groupSecret.group)
-  groupId!: string;
+  groupId!: EntityId<"Group">;
 
   @Column("uuid")
   value: string;

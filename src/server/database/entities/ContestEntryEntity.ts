@@ -1,26 +1,26 @@
 import { Column, Entity, ManyToOne, RelationId } from "typeorm";
-import { AttemptResult } from "../../../shared/api/entities";
+import { AttemptResult, EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ContestEntity } from "./ContestEntity";
 import { GroupMemberEntity } from "./GroupMemberEntity";
 
 @Entity("contest-entries")
-export class ContestEntryEntity extends BaseEntityClass {
-  type: "ContestEntry" = "ContestEntry";
+export class ContestEntryEntity extends BaseEntityClass<"ContestEntry"> {
+  readonly type = "ContestEntry";
 
   @ManyToOne(() => ContestEntity, {
     onDelete: "CASCADE"
   })
   contest?: ContestEntity;
   @RelationId((contestEntry: ContestEntryEntity) => contestEntry.contest)
-  contestId!: string;
+  contestId!: EntityId<"Contest">;
 
   @ManyToOne(() => GroupMemberEntity, {
     onDelete: "CASCADE"
   })
   participant?: GroupMemberEntity;
   @RelationId((contest: ContestEntryEntity) => contest.participant)
-  participantId!: string;
+  participantId!: EntityId<"GroupMember">;
 
   @Column()
   typeCount!: number;

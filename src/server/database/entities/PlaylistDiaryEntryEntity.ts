@@ -1,17 +1,18 @@
 import { Column, Entity, ManyToOne, RelationId } from "typeorm";
+import { EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { PlaylistEntity } from "./PlaylistEntity";
 
 @Entity("playlist_diaries")
-export class PlaylistDiaryEntryEntity extends BaseEntityClass {
-  type: "PlaylistDiaryEntry" = "PlaylistDiaryEntry";
+export class PlaylistDiaryEntryEntity extends BaseEntityClass<"PlaylistDiaryEntry"> {
+  readonly type = "PlaylistDiaryEntry";
 
   @ManyToOne(() => PlaylistEntity, {
     onDelete: "CASCADE"
   })
   playlist?: PlaylistEntity;
   @RelationId((playlistDiaryEntry: PlaylistDiaryEntryEntity) => playlistDiaryEntry.playlist)
-  playlistId!: string;
+  playlistId!: EntityId<"Playlist">;
 
   @Column("date")
   date: string;

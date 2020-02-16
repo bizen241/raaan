@@ -1,6 +1,5 @@
+import { EntityType } from ".";
 import { BaseEntityObject } from "./BaseEntityObject";
-
-export interface BaseExerciseObject extends BaseEntityObject, ExerciseContent {}
 
 export interface ExerciseContent {
   lang: string;
@@ -27,3 +26,5 @@ export interface Reference {
   licenseName: string;
   licenseUrl: string;
 }
+
+export type BaseExerciseObject<T extends EntityType> = BaseEntityObject<T> & ExerciseContent;

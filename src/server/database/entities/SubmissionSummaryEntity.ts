@@ -1,26 +1,27 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, RelationId } from "typeorm";
+import { EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { ExerciseEntity } from "./ExerciseEntity";
 import { SubmissionEntity } from "./SubmissionEntity";
 import { UserEntity } from "./UserEntity";
 
 @Entity("submission_summaries")
-export class SubmissionSummaryEntity extends BaseEntityClass {
-  type: "SubmissionSummary" = "SubmissionSummary";
+export class SubmissionSummaryEntity extends BaseEntityClass<"SubmissionSummary"> {
+  readonly type = "SubmissionSummary";
 
   @ManyToOne(() => UserEntity, {
     onDelete: "CASCADE"
   })
   submitter?: UserEntity;
   @RelationId((submissionSummary: SubmissionSummaryEntity) => submissionSummary.submitter)
-  submitterId!: string;
+  submitterId!: EntityId<"User">;
 
   @ManyToOne(() => ExerciseEntity, {
     onDelete: "CASCADE"
   })
   exercise?: ExerciseEntity;
   @RelationId((submissionSummary: SubmissionSummaryEntity) => submissionSummary.exercise)
-  exerciseId!: string;
+  exerciseId!: EntityId<"Exercise">;
 
   @OneToOne(() => SubmissionEntity, {
     cascade: true,
@@ -29,7 +30,7 @@ export class SubmissionSummaryEntity extends BaseEntityClass {
   @JoinColumn()
   latest?: SubmissionEntity;
   @RelationId((submissionSummary: SubmissionSummaryEntity) => submissionSummary.latest)
-  latestId!: string;
+  latestId!: EntityId<"Submission">;
 
   @Column()
   submitCount: number = 0;
