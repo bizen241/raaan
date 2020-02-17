@@ -7,12 +7,10 @@ import { EntityManager, getManager, SelectQueryBuilder } from "typeorm";
 import { endpoints } from "../../shared/api/endpoint";
 import { EntityType, Permission } from "../../shared/api/entities";
 import { EntityTypeToParams } from "../../shared/api/request/params";
-import { parseQuery } from "../../shared/api/request/parse";
 import { apiVersion } from "../../shared/api/version";
 import { Entity, UserEntity } from "../database/entities";
 import { getGuestUser } from "../database/setup/guest";
 import { responseFindResult, responseSearchResult } from "./response";
-
 import entityTypeToParamsSchema from "./schema.json";
 
 interface OperationDocument {
@@ -164,7 +162,7 @@ export const createSearchOperation = <T extends EntityType>(
 ) => {
   const operation: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
     const manager = getManager();
-    const params = parseQuery(entityType, req.query);
+    const params = req.query as EntityTypeToParams[T];
 
     const query = await fn({ req, res, currentUser, manager, params });
 
