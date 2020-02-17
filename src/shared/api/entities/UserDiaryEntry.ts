@@ -1,7 +1,7 @@
 import { EntityId } from ".";
 import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface UserDiaryEntry extends BaseEntityObject<"UserDiaryEntry"> {
+export interface UserDiaryEntry extends BaseEntityObject {
   userId?: EntityId<"User">;
   date: string;
   submitCount: number;

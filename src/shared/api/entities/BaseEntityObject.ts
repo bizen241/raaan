@@ -1,7 +1,4 @@
-import { EntityId, EntityType } from ".";
-
-export interface BaseEntityObject<T extends EntityType> {
-  id: EntityId<T>;
+export interface BaseEntityObject {
   createdAt: number;
   updatedAt: number;
   fetchedAt: number;

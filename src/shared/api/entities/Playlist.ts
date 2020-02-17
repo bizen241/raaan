@@ -11,7 +11,7 @@ export type OrderBy =
   | "count-submitted-asc"
   | "count-submitted-desc";
 
-export interface Playlist extends BaseEntityObject<"Playlist"> {
+export interface Playlist extends BaseEntityObject {
   summaryId: EntityId<"PlaylistSummary">;
   authorId: EntityId<"User">;
   title: string;

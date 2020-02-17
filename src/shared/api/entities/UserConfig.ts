@@ -8,6 +8,6 @@ export interface UserSettings {
 
 export type Lang = "en" | "ja";
 
-export interface UserConfig extends BaseEntityObject<"UserConfig"> {
+export interface UserConfig extends BaseEntityObject {
   settings: Partial<UserSettings>;
 }

@@ -5,7 +5,7 @@ export type ReportTargetType = "Exercise" | "Playlist" | "Synonym" | "Tag" | "Us
 export type ReportReason = "troll" | "copyright" | "sexual";
 export type ReportState = "pending" | "accepted" | "rejected";
 
-export interface Report extends BaseEntityObject<"Report"> {
+export interface Report extends BaseEntityObject {
   summaryId: EntityId<"ReportSummary">;
   reporterId: EntityId<"User">;
   defendantId?: EntityId<"User">;

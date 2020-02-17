@@ -7,7 +7,7 @@ export interface AttemptResult {
   accuracy: number;
 }
 
-export interface SubmissionSummary extends BaseEntityObject<"SubmissionSummary"> {
+export interface SubmissionSummary extends BaseEntityObject {
   submitterId: EntityId<"User">;
   exerciseId: EntityId<"Exercise">;
   exerciseSummaryId: EntityId<"ExerciseSummary">;

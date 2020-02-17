@@ -1,7 +1,7 @@
 import { EntityId } from ".";
 import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface UserSession extends BaseEntityObject<"UserSession"> {
+export interface UserSession extends BaseEntityObject {
   userId: EntityId<"User">;
   accessCount: number;
   deviceType: string;

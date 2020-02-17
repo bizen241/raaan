@@ -1,7 +1,7 @@
 import { EntityId } from ".";
 import { BaseExerciseObject } from "./BaseExerciseObject";
 
-export interface ExerciseDraft extends BaseExerciseObject<"ExerciseDraft"> {
+export interface ExerciseDraft extends BaseExerciseObject {
   exerciseId: EntityId<"Exercise">;
   suggestionId?: EntityId<"Suggestion">;
   revisionId?: EntityId<"Revision">;
