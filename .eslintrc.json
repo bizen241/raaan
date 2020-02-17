@@ -48,6 +48,7 @@
     "node/no-extraneous-import": "off",
     "react/display-name": "off",
     "react/prop-types": "off",
+    "react/no-unescaped-entities": "off",
     "jest/expect-expect": "off",
     "jest/no-identical-title": "off",
     "import/no-duplicates": "off",
