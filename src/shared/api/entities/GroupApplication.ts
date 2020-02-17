@@ -3,8 +3,8 @@ import { BaseEntityObject } from "./BaseEntityObject";
 
 export interface GroupApplication extends BaseEntityObject {
   groupId: EntityId<"Group">;
-  applicantId: EntityId<"GroupApplication">;
   groupSummaryId: EntityId<"GroupSummary">;
+  applicantId: EntityId<"User">;
   applicantSummaryId: EntityId<"UserSummary">;
   /**
    * @format uuid

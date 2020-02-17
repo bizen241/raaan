@@ -57,7 +57,6 @@ import {
   UserSessionEntity,
   UserSummaryEntity
 } from "../../database/entities";
-import { BaseEntityClass } from "../../database/entities/BaseEntityClass";
 
 export interface RequestContext {
   sessionId?: string;
@@ -95,8 +94,7 @@ const normalizeEntity = (context: RequestContext, store: EntityStore, entity: En
   normalizers[type](context, store, entity);
 };
 
-const base = ({ id, createdAt, updatedAt }: BaseEntityClass): BaseEntityObject => ({
-  id,
+const base = <T extends Entity>({ createdAt, updatedAt }: T): BaseEntityObject => ({
   createdAt: createdAt.getTime(),
   updatedAt: updatedAt.getTime(),
   fetchedAt: new Date().getTime()
@@ -109,7 +107,7 @@ const normalizeAppDiaryEntry: Normalizer<AppDiaryEntryEntity> = (_, store, entit
 
   store.AppDiaryEntry[id] = {
     ...base(entity),
-    date,
+    date: date.getTime(),
     submittedCount,
     typedCount
   };

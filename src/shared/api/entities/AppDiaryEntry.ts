@@ -1,7 +1,7 @@
 import { BaseEntityObject } from "./BaseEntityObject";
 
 export interface AppDiaryEntry extends BaseEntityObject {
-  date: string;
+  date: number;
   submittedCount: number;
   typedCount: number;
 }

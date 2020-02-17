@@ -4,7 +4,7 @@ import { BaseEntityObject } from "./BaseEntityObject";
 export interface SuggestionComment extends BaseEntityObject {
   summaryId: EntityId<"SuggestionCommentSummary">;
   targetId?: EntityId<"Suggestion">;
-  targetSummaryId: EntityId<"SuggestionSummary">;
+  targetSummaryId?: EntityId<"SuggestionSummary">;
   authorId: EntityId<"User">;
   body: string;
 }
