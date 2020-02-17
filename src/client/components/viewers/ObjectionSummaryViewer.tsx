@@ -11,11 +11,11 @@ import { Card, Menu, MenuItem, Property } from "../ui";
 export const ObjectionSummaryViewer = withEntity("ObjectionSummary")(({ entity: objectionSummary }) => {
   const { state, commentCount } = objectionSummary;
 
-  const currentUser = useCurrentUser();
+  const { currentUserId } = useCurrentUser();
 
   const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-  const isOwn = objectionSummary.objectorId === currentUser.id;
+  const isOwn = objectionSummary.objectorId === currentUserId;
 
   return (
     <Card

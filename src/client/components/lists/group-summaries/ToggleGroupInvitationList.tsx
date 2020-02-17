@@ -1,6 +1,5 @@
 import { Checkbox, TableCell, TableRow, Typography } from "@material-ui/core";
-import { createContext, useCallback, useContext } from "react";
-import React from "react";
+import React, { createContext, useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
@@ -14,7 +13,7 @@ export const FollowerContext = createContext<string | undefined>(undefined);
 export const ToggleGroupInvitationList = createEntityList("GroupSummary")(
   React.memo(({ entity: { groupId, name } }) => {
     const dispatch = useDispatch();
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
     const followerId = useContext(FollowerContext);
 
     const [isRequested, toggleRequestState] = useToggleState();
@@ -23,7 +22,7 @@ export const ToggleGroupInvitationList = createEntityList("GroupSummary")(
       "GroupInvitation",
       {
         targetId: followerId,
-        ownerId: currentUser.id
+        ownerId: currentUserId
       },
       false
     );
@@ -48,7 +47,7 @@ export const ToggleGroupInvitationList = createEntityList("GroupSummary")(
                   "GroupInvitation",
                   {
                     targetId: followerId,
-                    ownerId: currentUser.id
+                    ownerId: currentUserId
                   },
                   uploadResponse
                 )

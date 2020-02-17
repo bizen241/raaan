@@ -5,11 +5,11 @@ import { Page } from "../../project/Page";
 import { PageProps } from "../../project/Router";
 
 export const ReviewPage = React.memo<PageProps>(() => {
-  const currentUser = useCurrentUser();
+  const { currentUserId } = useCurrentUser();
 
   return (
     <Page title="復習">
-      <ReminderList initialParams={{ submitterId: currentUser.id, searchSort: "remindAt", searchOrder: "ASC" }} />
+      <ReminderList initialParams={{ submitterId: currentUserId, searchSort: "remindAt", searchOrder: "ASC" }} />
     </Page>
   );
 });

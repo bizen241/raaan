@@ -6,14 +6,14 @@ import { PageProps } from "../../project/Router";
 import { Column } from "../../ui";
 
 export const UserExerciseDraftsPage = React.memo<PageProps>(() => {
-  const currentUser = useCurrentUser();
+  const { currentUserId } = useCurrentUser();
 
   return (
     <Page title="保存された下書き">
       <Column pb={1}>
         <ExerciseSummaryList
           initialParams={{
-            authorId: currentUser.id,
+            authorId: currentUserId,
             isEditing: true
           }}
         />

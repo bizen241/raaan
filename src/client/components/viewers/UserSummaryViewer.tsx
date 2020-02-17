@@ -8,13 +8,13 @@ import { Card, Menu, MenuItem, Property } from "../ui";
 
 export const UserSummaryViewer = withEntity("UserSummary")(
   React.memo(({ entity: userSummary }) => {
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
 
     const { userId } = userSummary;
 
     const [isGroupInvitationsDialogOpen, toggleGroupInvitationsDialog] = useToggleState();
 
-    const isOwn = userId === currentUser.id;
+    const isOwn = userId === currentUserId;
 
     return (
       <Card

@@ -14,7 +14,7 @@ export const ExerciseDraftUploadEditor = React.memo<{
   params: Params<ExerciseDraft>;
   onChange: (exerciseDraft: Partial<ExerciseDraft>) => void;
 }>(({ bufferId, exercise, params, onChange }) => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const isReadOnly = currentUser.permission === "Read";
   const isLocalOnly = isNumber(bufferId);

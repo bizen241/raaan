@@ -11,7 +11,7 @@ export const PlaylistBookmarkList = createEntityList("PlaylistBookmark", {
   itemHeight: 77
 })(
   React.memo(({ entity: playlistBookmark }) => {
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
 
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
@@ -23,7 +23,7 @@ export const PlaylistBookmarkList = createEntityList("PlaylistBookmark", {
           </Column>
         </TableCell>
         <TableCell padding="checkbox">
-          {playlistBookmark.userId === currentUser.id ? (
+          {playlistBookmark.userId === currentUserId ? (
             <IconButton icon={Delete} onClick={onToggleDeleteDialog} />
           ) : null}
         </TableCell>

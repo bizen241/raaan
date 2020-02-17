@@ -10,7 +10,7 @@ import { ExerciseEditor } from "./ExerciseEditor";
 
 export const ExerciseDraftEditor = withBuffer("ExerciseDraft")(
   React.memo(({ bufferId, buffer, source, params, onChange }) => {
-    const currentUser = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 

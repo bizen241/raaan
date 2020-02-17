@@ -37,10 +37,10 @@ import { Card, Menu, MenuItem, Property, Row } from "../ui";
 
 export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
   React.memo(({ entity: exerciseSummary }) => {
-    const currentUser = useCurrentUser();
+    const { currentUserId, currentUser } = useCurrentUser();
 
     const isOwner = currentUser.permission === "Owner";
-    const isAuthor = exerciseSummary.authorId === currentUser.id;
+    const isAuthor = exerciseSummary.authorId === currentUserId;
 
     const { exerciseId, title, commentCount, isDraft, isPrivate, isLocked } = exerciseSummary;
 
@@ -60,7 +60,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
     const { entities: votes, onReload: onReloadExerciseVotes } = useSearch(
       "ExerciseVote",
       {
-        voterId: currentUser.id,
+        voterId: currentUserId,
         targetId: exerciseId
       },
       !isAuthor
@@ -68,7 +68,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
     const { entities: suggestions, onReload: onReloadSuggestionSummaries } = useSearch(
       "SuggestionSummary",
       {
-        authorId: currentUser.id,
+        authorId: currentUserId,
         exerciseId,
         state: "pending"
       },
@@ -77,7 +77,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
     const { entities: reports, onReload: onReloadReports } = useSearch(
       "ReportSummary",
       {
-        reporterId: currentUser.id,
+        reporterId: currentUserId,
         targetType: "Exercise",
         targetId: exerciseId
       },
@@ -86,7 +86,7 @@ export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
     const { entities: objections, onReload: onReloadObjections } = useSearch(
       "Objection",
       {
-        objectorId: currentUser.id,
+        objectorId: currentUserId,
         targetId: exerciseId
       },
       exerciseSummary.isLocked

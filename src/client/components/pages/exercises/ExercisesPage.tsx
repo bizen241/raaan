@@ -8,14 +8,14 @@ import { PageProps } from "../../project/Router";
 import { Button } from "../../ui";
 
 export const ExercisesPage = React.memo<PageProps>(props => {
-  const currentUser = useCurrentUser();
+  const { currentUserId } = useCurrentUser();
 
   const params = parseParams("ExerciseSummary", props.location.search);
 
   return (
     <Page title="問題集を探す">
-      {params.authorId !== currentUser.id && (
-        <Button icon={<Person />} label="自分の問題集" to={`/users/${currentUser.id}/exercises`} />
+      {params.authorId !== currentUserId && (
+        <Button icon={<Person />} label="自分の問題集" to={`/users/${currentUserId}/exercises`} />
       )}
       <Button icon={<Edit />} label="問題集を作る" to="/exercises/edit" />
       <ExerciseSummaryList

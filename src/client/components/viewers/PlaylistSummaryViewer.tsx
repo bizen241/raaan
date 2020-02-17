@@ -13,7 +13,7 @@ import { Card, Menu, MenuItem, Property, Row } from "../ui";
 
 export const PlaylistSummaryViewer = withEntity("PlaylistSummary")(
   React.memo(({ entity: playlistSummary }) => {
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
 
     const { playlistId } = playlistSummary;
 
@@ -23,7 +23,7 @@ export const PlaylistSummaryViewer = withEntity("PlaylistSummary")(
 
     const { onReload } = useEntity("Playlist", playlistId, false);
 
-    const isAuthor = playlistSummary.authorId === currentUser.id;
+    const isAuthor = playlistSummary.authorId === currentUserId;
 
     return (
       <Card

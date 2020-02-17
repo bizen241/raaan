@@ -8,7 +8,7 @@ export const TagSummaryViewer = React.memo<{
   tag: Tag;
   tagSummary: TagSummary;
 }>(({ tag, tagSummary }) => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const { tagId, name } = tagSummary;
 

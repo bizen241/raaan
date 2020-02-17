@@ -8,9 +8,9 @@ import { Button } from "../../ui";
 export const UserCommunityPage = React.memo<PageProps>(props => {
   const userId = props.match.params.id;
 
-  const currentUser = useCurrentUser();
+  const { currentUserId, currentUser } = useCurrentUser();
 
-  const isOwn = currentUser.id === userId;
+  const isOwn = currentUserId === userId;
   const isOwner = currentUser.permission === "Owner";
 
   const hasPermission = (isOwn && !isOwner) || (!isOwn && isOwner);

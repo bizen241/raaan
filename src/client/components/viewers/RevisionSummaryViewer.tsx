@@ -10,7 +10,7 @@ export const RevisionSummaryViewer = React.memo<{
   revision: Revision;
   revisionSummary: RevisionSummary;
 }>(({ revision }) => {
-  const currentUser = useCurrentUser();
+  const { currentUserId } = useCurrentUser();
 
   const { onReload } = useEntity("Revision", revision.id);
   const { entity: exercise, ...exerciseProps } = useEntity("Exercise", revision.exerciseId);
@@ -19,7 +19,7 @@ export const RevisionSummaryViewer = React.memo<{
   }
 
   const { messageSubject, messageBody } = revision;
-  const isOwn = exercise.authorId === currentUser.id;
+  const isOwn = exercise.authorId === currentUserId;
 
   return (
     <Card

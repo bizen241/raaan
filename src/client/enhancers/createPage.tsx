@@ -18,7 +18,7 @@ export const createPage = () => (
   React.memo<PageProps>(props => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
 
     const { entity: currentUserSummary } = useEntity("UserSummary", currentUser.summaryId);
     const pathname = useSelector((state: RootState) => state.router.location.pathname);

@@ -4,13 +4,13 @@ import { UserGroupInvitationList } from "../../lists/group-invitations/UserGroup
 import { Page } from "../../project/Page";
 
 export const UserGroupInvitationsPage = () => {
-  const currentUser = useCurrentUser();
+  const { currentUserId } = useCurrentUser();
 
   return (
     <Page title="招待一覧">
       <UserGroupInvitationList
         initialParams={{
-          targetId: currentUser.id
+          targetId: currentUserId
         }}
       />
     </Page>

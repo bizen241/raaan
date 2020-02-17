@@ -16,7 +16,7 @@ export const UploadSuggestionDialog = createDialog<{
   React.memo(({ t }) => t("変更を提案する")),
   React.memo(({ suggestionId, exerciseId }) => {
     const dispatch = useDispatch();
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
 
     const onUpload = () => {
       dispatch(
@@ -26,7 +26,7 @@ export const UploadSuggestionDialog = createDialog<{
               actions.cache.add(
                 "SuggestionSummary",
                 {
-                  authorId: currentUser.id,
+                  authorId: currentUserId,
                   exerciseId
                 },
                 uploadResponse

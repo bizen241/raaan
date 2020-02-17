@@ -11,11 +11,11 @@ import { Card, Menu, MenuItem, Property } from "../ui";
 export const ReportSummaryViewer = withEntity("ReportSummary")(({ entity: reportSummary }) => {
   const { reason, state, commentCount } = reportSummary;
 
-  const currentUser = useCurrentUser();
+  const { currentUserId } = useCurrentUser();
 
   const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-  const isOwn = reportSummary.reporterId === currentUser.id;
+  const isOwn = reportSummary.reporterId === currentUserId;
 
   return (
     <Card

@@ -8,7 +8,7 @@ import { Page } from "../../project/Page";
 import { Button } from "../../ui";
 
 export const SecurityPage = React.memo(() => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const [isLogoutDialogOpen, onToggleLogoutDialog] = useToggleState();
   const [isDeleteAccountDialogOpen, onToggleDeleteAccountDialog] = useToggleState();

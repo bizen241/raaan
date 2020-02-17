@@ -10,18 +10,18 @@ import { Button, Column } from "../ui";
 import { UserSummaryViewer } from "./UserSummaryViewer";
 
 export const UserViewer = withEntity("User")(({ entityId: userId, entity: user }) => {
-  const currentUser = useCurrentUser();
+  const { currentUserId } = useCurrentUser();
 
   const [isUploadUserFollowDialogOpen, onToggleUploadUserFollowDialog] = useToggleState();
   const [isDeleteUserFollowDialogOpen, onToggleDeleteUserFollowDialog] = useToggleState();
   const { entities: follows } = useSearch("UserFollow", {
-    followerId: currentUser.id,
+    followerId: currentUserId,
     targetId: userId
   });
   const follow = follows[0];
   const isFollowed = follow !== undefined;
 
-  const isOwn = userId === currentUser.id;
+  const isOwn = userId === currentUserId;
 
   return (
     <Column>

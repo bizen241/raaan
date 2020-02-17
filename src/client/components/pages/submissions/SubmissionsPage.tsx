@@ -7,12 +7,12 @@ import { PageProps } from "../../project/Router";
 import { Button } from "../../ui";
 
 export const SubmissionsPage = React.memo<PageProps>(() => {
-  const currentUser = useCurrentUser();
+  const { currentUserId } = useCurrentUser();
 
   return (
     <Page title="提出履歴">
       <Button color="primary" icon={<HourglassFull />} label="復習" to="/user/submissions/review" />
-      <SubmissionSummaryList title="提出履歴" initialParams={{ submitterId: currentUser.id }} />
+      <SubmissionSummaryList title="提出履歴" initialParams={{ submitterId: currentUserId }} />
     </Page>
   );
 });

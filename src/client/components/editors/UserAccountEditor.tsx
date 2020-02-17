@@ -18,7 +18,7 @@ const selectAvatarTypeOptions: SelectOptions<AvatarType> = {
 
 export const UserAccountEditor = withBuffer("UserAccount")(
   React.memo(({ bufferId, buffer, params, onChange }) => {
-    const currentUser = useCurrentUser();
+    const { currentUser } = useCurrentUser();
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
     const onUpdateAvatar = useCallback((avatar: AvatarType) => {

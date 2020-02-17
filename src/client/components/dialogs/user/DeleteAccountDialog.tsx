@@ -9,7 +9,7 @@ import { Button, Card, TextField } from "../../ui";
 export const DeleteAccountDialog = createDialog<{}>()(
   React.memo(({ t }) => t("アカウントの削除")),
   React.memo(({}) => {
-    const currentUser = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const [userName, setUserName] = useState("");
     const [isFailed, setStatus] = useState(false);

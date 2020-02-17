@@ -10,10 +10,10 @@ import { ObjectionSummaryViewer } from "./ObjectionSummaryViewer";
 export const ObjectionViewer = withEntity("Objection")(({ entity: objection }) => {
   const { description, state } = objection;
 
-  const currentUser = useCurrentUser();
+  const { currentUserId, currentUser } = useCurrentUser();
 
   const isOwner = currentUser.permission === "Owner";
-  const isOwn = objection.objectorId === currentUser.id;
+  const isOwn = objection.objectorId === currentUserId;
 
   if (!isOwn && hasPermission(currentUser, "Admin")) {
     return <PermissionDenied />;

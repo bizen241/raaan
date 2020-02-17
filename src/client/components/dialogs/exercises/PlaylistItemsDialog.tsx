@@ -16,16 +16,16 @@ export const PlaylistItemsDialog = createDialog<{
   React.memo(({ t }) => t("プレイリストに追加")),
   React.memo(({ exerciseId, onClose }) => {
     const dispatch = useDispatch();
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
 
     const [isEditoOpen, onToggleEditor] = useToggleState();
     const [title, setTitle] = useState("新しいプレイリスト");
 
     const { onReload: onReloadPlaylistSummaries } = useSearch("PlaylistSummary", {
-      authorId: currentUser.id
+      authorId: currentUserId
     });
     const { onReload: onReloadPlaylistItems } = useSearch("PlaylistItem", {
-      authorId: currentUser.id,
+      authorId: currentUserId,
       exerciseId
     });
 
@@ -48,7 +48,7 @@ export const PlaylistItemsDialog = createDialog<{
               actions.cache.add(
                 "PlaylistItem",
                 {
-                  authorId: currentUser.id,
+                  authorId: currentUserId,
                   exerciseId
                 },
                 uploadResponse
@@ -67,7 +67,7 @@ export const PlaylistItemsDialog = createDialog<{
         <ExerciseContext.Provider value={exerciseId}>
           <TogglePlaylistItemList
             initialParams={{
-              authorId: currentUser.id
+              authorId: currentUserId
             }}
             onReload={onReloadPlaylistItems}
           />

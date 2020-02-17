@@ -11,7 +11,7 @@ import { Column, IconButton, Menu, MenuItem } from "../../ui";
 
 export const UserFollowerList = createEntityList("UserFollow")(
   React.memo(({ entity: userFollow, params, onReload }) => {
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
 
     const [isGroupInvitationsDialogOpen, toggleGroupInvitationsDialog] = useToggleState();
 
@@ -24,7 +24,7 @@ export const UserFollowerList = createEntityList("UserFollow")(
       );
     }
 
-    const isTarget = currentUser.id === params.targetId;
+    const isTarget = currentUserId === params.targetId;
 
     return (
       <TableRow>

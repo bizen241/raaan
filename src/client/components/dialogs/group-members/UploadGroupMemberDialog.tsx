@@ -16,7 +16,7 @@ export const UploadGroupMemberDialog = createDialog<{
   React.memo(({ t }) => t("グループに参加")),
   React.memo(({ groupId, groupInvitationId }) => {
     const dispatch = useDispatch();
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
 
     const onUpload = () => {
       dispatch(
@@ -25,7 +25,7 @@ export const UploadGroupMemberDialog = createDialog<{
           generateBufferId(),
           {
             groupId,
-            userId: currentUser.id
+            userId: currentUserId
           },
           uploadResponse => {
             dispatch(
@@ -33,7 +33,7 @@ export const UploadGroupMemberDialog = createDialog<{
                 "GroupMember",
                 {
                   groupId,
-                  userId: currentUser.id
+                  userId: currentUserId
                 },
                 uploadResponse
               )

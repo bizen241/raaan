@@ -11,9 +11,9 @@ import { Column, IconButton, Row, Search, Select, TableRow } from "../../ui";
 
 export const ExerciseSummaryList = createEntityList("ExerciseSummary")(
   React.memo(({ entity: exerciseSummary }) => {
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
 
-    const isAuthor = exerciseSummary.authorId === currentUser.id;
+    const isAuthor = exerciseSummary.authorId === currentUserId;
 
     return (
       <TableRow action={isAuthor && <IconButton icon={Edit} to={`/exercises/${exerciseSummary.exerciseId}/edit`} />}>

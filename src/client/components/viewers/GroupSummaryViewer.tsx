@@ -9,13 +9,13 @@ import { Card, Menu, MenuItem, Property } from "../ui";
 
 export const GroupSummaryViewer = withEntity("GroupSummary")(
   React.memo(({ entity: groupSummary }) => {
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
 
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
     const { entities: groupMembers } = useSearch("GroupMember", {
       groupId: groupSummary.groupId,
-      userId: currentUser.id
+      userId: currentUserId
     });
     const groupMember = groupMembers[0];
     const groupMemberPermission = groupMember !== undefined ? groupMember.permission : "guest";

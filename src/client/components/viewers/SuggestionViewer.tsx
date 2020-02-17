@@ -13,7 +13,7 @@ import { SuggestionSummaryViewer } from "./SuggestionSummaryViewer";
 
 export const SuggestionViewer = withEntity("Suggestion")(
   React.memo(({ entity: suggestion }) => {
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
 
     const [isAcceptDialogOpen, onToggleAcceptDialog] = useToggleState();
     const [isRejectDialogOpen, onToggleRejectDialog] = useToggleState();
@@ -24,7 +24,7 @@ export const SuggestionViewer = withEntity("Suggestion")(
       return <Loading {...exerciseProps} />;
     }
 
-    const isTargetAuthor = exercise.authorId === currentUser.id;
+    const isTargetAuthor = exercise.authorId === currentUserId;
     const isPending = suggestion.state === "pending";
 
     return (

@@ -10,11 +10,11 @@ import { Button } from "../../ui";
 export const GroupMembersPage = React.memo<PageProps>(props => {
   const groupId = props.match.params.id;
 
-  const currentUser = useCurrentUser();
+  const { currentUserId } = useCurrentUser();
 
   const { entities: groupMembers } = useSearch("GroupMember", {
     groupId,
-    userId: currentUser.id
+    userId: currentUserId
   });
   const groupMember = groupMembers[0];
   const groupMemberPermission = groupMember !== undefined ? groupMember.permission : "guest";

@@ -6,12 +6,12 @@ import { Page } from "../../project/Page";
 import { Button } from "../../ui";
 
 export const PlaylistsPage = React.memo(() => {
-  const currentUser = useCurrentUser();
+  const { currentUserId } = useCurrentUser();
 
   return (
     <Page title="プレイリストを探す">
-      <Button icon={<Person />} label="自分のプレイリスト" to={`/users/${currentUser.id}/playlists`} />
-      <Button icon={<Bookmarks />} label="ブックマーク" to={`/users/${currentUser.id}/bookmarks`} />
+      <Button icon={<Person />} label="自分のプレイリスト" to={`/users/${currentUserId}/playlists`} />
+      <Button icon={<Bookmarks />} label="ブックマーク" to={`/users/${currentUserId}/bookmarks`} />
       <PlaylistSummaryList
         initialParams={{
           searchLimit: 10,

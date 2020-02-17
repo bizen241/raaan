@@ -18,7 +18,7 @@ export const UploadReportDialog = createDialog<{
   React.memo(({ t }) => t("報告をアップロードする")),
   React.memo(({ reportId, targetId, targetType }) => {
     const dispatch = useDispatch();
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
 
     const onUpload = () => {
       dispatch(
@@ -27,7 +27,7 @@ export const UploadReportDialog = createDialog<{
             actions.cache.add(
               "Report",
               {
-                reporterId: currentUser.id,
+                reporterId: currentUserId,
                 targetType,
                 targetId
               },

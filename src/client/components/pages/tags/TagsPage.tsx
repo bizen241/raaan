@@ -6,7 +6,7 @@ import { Page } from "../../project/Page";
 import { Button } from "../../ui";
 
 export const TagsPage = React.memo(() => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const isOwner = currentUser.permission === "Owner";
 

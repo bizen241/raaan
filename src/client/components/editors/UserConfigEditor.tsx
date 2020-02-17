@@ -32,7 +32,7 @@ const selectColorSchemeOptions: SelectOptions<UserSettings["ui.colorScheme"]> = 
 export const UserConfigEditor = withBuffer("UserConfig")(
   React.memo(({ bufferId, buffer, params, onChange }) => {
     const { t } = useTranslation();
-    const currentUser = useCurrentUser();
+    const { currentUser } = useCurrentUser();
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
     const [settings, setSettings] = useState(params.settings || {});

@@ -34,7 +34,7 @@ const selectReportStateOptions: SelectOptions<ReportState> = {
 
 export const ReportEditor = withBuffer("Report")(
   React.memo(({ bufferType, bufferId, buffer, source, params, onChange }) => {
-    const currentUser = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 

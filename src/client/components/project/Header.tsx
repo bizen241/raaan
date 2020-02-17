@@ -10,7 +10,7 @@ import { Column, IconButton, Menu, MenuItem } from "../ui";
 
 export const Header = React.memo<{ title?: React.ReactNode }>(({ title = "" }) => {
   const dispatch = useDispatch();
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const { entity: currentUserSummary } = useEntity("UserSummary", currentUser.summaryId);
 

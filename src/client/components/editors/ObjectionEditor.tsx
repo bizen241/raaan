@@ -22,7 +22,7 @@ const selectObjectionStateOptions: SelectOptions<ObjectionState> = {
 
 export const ObjectionEditor = withBuffer("Objection")(
   React.memo(({ bufferType, bufferId, buffer, params, onChange }) => {
-    const currentUser = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 

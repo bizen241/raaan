@@ -14,7 +14,7 @@ export const UploadExerciseVoteDialog = createDialog<{
   React.memo(({ t }) => t("投票する")),
   React.memo(({ exerciseId: targetId, onClose }) => {
     const dispatch = useDispatch();
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
 
     const onUpload = (isUp: boolean) => {
       const bufferId = generateBufferId();
@@ -32,7 +32,7 @@ export const UploadExerciseVoteDialog = createDialog<{
               actions.cache.add(
                 "ExerciseVote",
                 {
-                  voterId: currentUser.id,
+                  voterId: currentUserId,
                   targetId
                 },
                 uploadResponse

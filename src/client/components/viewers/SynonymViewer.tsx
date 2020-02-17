@@ -10,7 +10,7 @@ import { Card, Column, Menu, MenuItem, Property } from "../ui";
 
 export const SynonymViewer = withEntity("Synonym")(
   React.memo(({ entityId: synonymId, entity: synonym }) => {
-    const currentUser = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 

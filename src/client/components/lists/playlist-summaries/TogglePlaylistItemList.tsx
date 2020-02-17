@@ -1,6 +1,5 @@
 import { Checkbox, TableCell, TableRow } from "@material-ui/core";
-import { createContext, useCallback, useContext } from "react";
-import React from "react";
+import React, { createContext, useCallback, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
@@ -15,7 +14,7 @@ export const ExerciseContext = createContext<string | undefined>(undefined);
 export const TogglePlaylistItemList = createEntityList("PlaylistSummary")(
   React.memo(({ entity: { playlistId, title } }) => {
     const dispatch = useDispatch();
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
     const exerciseId = useContext(ExerciseContext);
     if (exerciseId === undefined) {
       throw new Error("exerciseId is not defined");
@@ -24,7 +23,7 @@ export const TogglePlaylistItemList = createEntityList("PlaylistSummary")(
     const [isRequested, toggleRequestState] = useToggleState();
 
     const { entities: playlistItems } = useSearch("PlaylistItem", {
-      authorId: currentUser.id,
+      authorId: currentUserId,
       exerciseId
     });
     const foundPlaylistItem = playlistItems.find(playlistItem => playlistItem.playlistId === playlistId);
@@ -46,7 +45,7 @@ export const TogglePlaylistItemList = createEntityList("PlaylistSummary")(
                 actions.cache.add(
                   "PlaylistItem",
                   {
-                    authorId: currentUser.id,
+                    authorId: currentUserId,
                     exerciseId
                   },
                   uploadResponse

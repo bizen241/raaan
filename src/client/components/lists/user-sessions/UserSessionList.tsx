@@ -9,7 +9,7 @@ import { Column, IconButton } from "../../ui";
 
 export const UserSessionList = createEntityList("UserSession", { itemHeight: 77 })(
   React.memo(({ entity: userSession }) => {
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
 
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
@@ -26,7 +26,7 @@ export const UserSessionList = createEntityList("UserSession", { itemHeight: 77 
           </Column>
         </TableCell>
         <TableCell padding="checkbox">
-          {userSession.userId === currentUser.id && !userSession.isCurrent ? (
+          {userSession.userId === currentUserId && !userSession.isCurrent ? (
             <IconButton icon={Delete} onClick={onToggleDeleteDialog} />
           ) : null}
         </TableCell>

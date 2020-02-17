@@ -11,7 +11,7 @@ import { Button } from "../../ui";
 export const TagSynonymsPage = React.memo<PageProps>(props => {
   const tagName = props.match.params.name;
 
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const [isUploadSynonymDialogOpen, onToggleUploadSynonymDialog] = useToggleState();
 

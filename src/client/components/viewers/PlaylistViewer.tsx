@@ -17,14 +17,14 @@ import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 
 export const PlaylistViewer = withEntity("Playlist")(
   React.memo(({ entity: playlist, entityId: playlistId }) => {
-    const currentUser = useCurrentUser();
+    const { currentUserId } = useCurrentUser();
 
     const [isPlaylistItemsDialogOpen, onTogglePlaylistItemsDialog] = useToggleState();
 
     const [isUploadPlaylistBookmarkDialogOpen, onToggleUploadPlaylistBookmarkDialog] = useToggleState();
     const [isDeletePlaylistBookmarkDialogOpen, onToggleDeletePlaylistBookmarkDialog] = useToggleState();
     const { entities: bookmarks } = useSearch("PlaylistBookmark", {
-      userId: currentUser.id,
+      userId: currentUserId,
       playlistId
     });
     const bookmark = bookmarks[0];
@@ -48,7 +48,7 @@ export const PlaylistViewer = withEntity("Playlist")(
       [sortedPlaylistItems]
     );
 
-    const isAuthor = playlist.authorId === currentUser.id;
+    const isAuthor = playlist.authorId === currentUserId;
 
     return (
       <Column>

@@ -12,7 +12,7 @@ import { SubmissionSummaryViewer } from "./SubmissionSummaryViewer";
 
 export const ExerciseViewer = withEntity("Exercise")(
   React.memo(({ entity: exercise }) => {
-    const currentUser = useCurrentUser();
+    const { currentUserId, currentUser } = useCurrentUser();
 
     const [isExercisePlayerOpen, onToggleExercisePlayer] = useToggleState();
     const [isExercisePreviewerOpen, onToggleExercisePreviewer] = useToggleState();
@@ -30,7 +30,7 @@ export const ExerciseViewer = withEntity("Exercise")(
         {!isGuest && (
           <SubmissionSummaryViewer
             params={{
-              submitterId: currentUser.id,
+              submitterId: currentUserId,
               exerciseId: exercise.id
             }}
           />

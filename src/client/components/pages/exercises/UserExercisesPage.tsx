@@ -9,9 +9,9 @@ import { Button } from "../../ui";
 export const UserExercisesPage = React.memo<PageProps>(({ match }) => {
   const userId = match.params.id;
 
-  const currentUser = useCurrentUser();
+  const { currentUserId } = useCurrentUser();
 
-  const isOwn = userId === currentUser.id;
+  const isOwn = userId === currentUserId;
 
   return (
     <Page title={isOwn ? "自分の問題集" : "ユーザーの問題集"}>

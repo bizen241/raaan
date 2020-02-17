@@ -2,7 +2,7 @@ import { push } from "connected-react-router";
 import { HTTPError } from "ky";
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { User, UserAccount, UserConfig } from "../../shared/api/entities";
+import { EntityId, User, UserAccount, UserConfig } from "../../shared/api/entities";
 import { getCurrentUser } from "../api/client";
 import { install } from "../install";
 import { ActionUnion, AsyncAction, createAction } from "./action";
@@ -79,9 +79,9 @@ export const appActions = {
 };
 
 export type AppState = {
-  userId: string;
-  userConfigId: string;
-  userAccountId: string;
+  userId: EntityId<"User">;
+  userConfigId: EntityId<"UserConfig">;
+  userAccountId: EntityId<"UserAccount">;
   isReady: boolean;
   isOnline: boolean;
   hasUpdate: boolean;
