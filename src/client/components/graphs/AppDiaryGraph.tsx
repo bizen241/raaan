@@ -3,7 +3,7 @@ import React, { useMemo, useState } from "react";
 import { useDiary } from "../../hooks/useDiary";
 import { Card, getToday, HeatMap, HeatMapContents, IconButton, Property } from "../ui";
 
-export const AppDiaryGraph: React.FC = () => {
+export const AppDiaryGraph: React.FunctionComponent = () => {
   const [firstDate] = useState(getToday());
   const [selectedDate, selectDate] = useState(firstDate.toString());
 
