@@ -29,6 +29,3 @@ export const updateRelatedEntities = async (params: {
 
   return [submissionSummary, userSummary, userDiaryEntry, exerciseSummary, exerciseDiaryEntry];
 };
-
-export const getSubmittedDateString = ({ createdAt }: SubmissionEntity) =>
-  `${createdAt.getFullYear()}-${createdAt.getMonth() + 1}-${createdAt.getDate()}`;

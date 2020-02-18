@@ -3,7 +3,7 @@ import { BaseEntityObject } from "./BaseEntityObject";
 
 export interface ExerciseDiaryEntry extends BaseEntityObject {
   exerciseId?: EntityId<"Exercise">;
-  date: string;
+  date: number;
   submittedCount: number;
   typedCount: number;
 }

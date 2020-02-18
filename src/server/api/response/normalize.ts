@@ -254,7 +254,7 @@ const normalizeExerciseDiaryEntry: Normalizer<ExerciseDiaryEntryEntity> = (_, st
 
   store.ExerciseDiaryEntry[id] = {
     ...base(entity),
-    date,
+    date: date.getTime(),
     submittedCount,
     typedCount
   };
@@ -563,7 +563,7 @@ const normalizePlaylistDiaryEntry: Normalizer<PlaylistDiaryEntryEntity> = (_, st
 
   store.PlaylistDiaryEntry[id] = {
     ...base(entity),
-    date,
+    date: date.getTime(),
     submittedCount,
     typedCount
   };
@@ -897,7 +897,7 @@ const normalizeTagDiaryEntry: Normalizer<TagDiaryEntryEntity> = (_, store, entit
 
   store.TagDiaryEntry[id] = {
     ...base(entity),
-    date,
+    date: date.getTime(),
     submittedCount,
     typedCount
   };
@@ -984,7 +984,7 @@ const normalizeUserDiaryEntry: Normalizer<UserDiaryEntryEntity> = (_, store, ent
 
   store.UserDiaryEntry[id] = {
     ...base(entity),
-    date,
+    date: date.getTime(),
     submitCount,
     typeCount,
     submittedCount,

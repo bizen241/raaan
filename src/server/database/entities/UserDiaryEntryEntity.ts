@@ -15,7 +15,7 @@ export class UserDiaryEntryEntity extends BaseEntityClass<"UserDiaryEntry"> {
   userId!: EntityId<"User">;
 
   @Column("date")
-  date: string;
+  date: Date;
 
   @Column()
   submitCount: number = 0;
@@ -35,7 +35,7 @@ export class UserDiaryEntryEntity extends BaseEntityClass<"UserDiaryEntry"> {
   @Column()
   editCount: number = 0;
 
-  constructor(user: UserEntity, date: string) {
+  constructor(user: UserEntity, date: Date) {
     super();
 
     this.user = user;

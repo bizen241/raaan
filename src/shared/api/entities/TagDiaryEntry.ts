@@ -3,7 +3,7 @@ import { BaseEntityObject } from "./BaseEntityObject";
 
 export interface TagDiaryEntry extends BaseEntityObject {
   tagId?: EntityId<"Tag">;
-  date: string;
+  date: number;
   submittedCount: number;
   typedCount: number;
 }

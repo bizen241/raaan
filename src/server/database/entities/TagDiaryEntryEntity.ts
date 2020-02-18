@@ -15,7 +15,7 @@ export class TagDiaryEntryEntity extends BaseEntityClass<"TagDiaryEntry"> {
   tagId!: EntityId<"Tag">;
 
   @Column("date")
-  date: string;
+  date: Date;
 
   @Column()
   submittedCount: number = 0;
@@ -23,7 +23,7 @@ export class TagDiaryEntryEntity extends BaseEntityClass<"TagDiaryEntry"> {
   @Column()
   typedCount: number = 0;
 
-  constructor(tag: TagEntity, date: string) {
+  constructor(tag: TagEntity, date: Date) {
     super();
 
     this.tag = tag;

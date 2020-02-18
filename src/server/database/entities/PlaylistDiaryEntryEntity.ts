@@ -15,7 +15,7 @@ export class PlaylistDiaryEntryEntity extends BaseEntityClass<"PlaylistDiaryEntr
   playlistId!: EntityId<"Playlist">;
 
   @Column("date")
-  date: string;
+  date: Date;
 
   @Column()
   submittedCount: number = 0;
@@ -23,7 +23,7 @@ export class PlaylistDiaryEntryEntity extends BaseEntityClass<"PlaylistDiaryEntr
   @Column()
   typedCount: number = 0;
 
-  constructor(playlist: PlaylistEntity, date: string) {
+  constructor(playlist: PlaylistEntity, date: Date) {
     super();
 
     this.playlist = playlist;
