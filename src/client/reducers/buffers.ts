@@ -3,7 +3,7 @@ import { Actions } from ".";
 import { createEntityTypeToObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { ActionUnion, createAction } from "./action";
-import { guestUserConfig } from "./cache";
+import { guestUserConfigId } from "./cache";
 
 export enum BuffersActionType {
   Update = "buffers/update",
@@ -38,7 +38,7 @@ export type BuffersState = {
 export const initialBuffersState: BuffersState = {
   ...createEntityTypeToObject<BuffersState>(),
   UserConfig: {
-    [guestUserConfig.id]: {
+    [guestUserConfigId]: {
       createdAt: Date.now(),
       updatedAt: Date.now()
     }

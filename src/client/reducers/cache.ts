@@ -1,6 +1,8 @@
 import { Reducer } from "redux";
+import uuid from "uuid/v1";
 import {
   createEntityTypeToObject,
+  EntityId,
   EntityObject,
   EntityType,
   EntityTypeToEntity,
@@ -16,17 +18,21 @@ import { stringifyParams } from "../api/request/search";
 import { IdMap, mergeSearchResultStore, SearchResultMap, SearchResultStore } from "../api/response/search";
 import { ActionUnion, createAction } from "./action";
 
+const generateEntityId = <T extends EntityType>() => uuid() as EntityId<T>;
+
+export const guestUserId = generateEntityId<"User">();
+export const guestUserAccountId = generateEntityId<"UserAccount">();
+export const guestUserConfigId = generateEntityId<"UserConfig">();
+
 export const guestUser: User = {
-  id: "1",
   name: "",
   permission: "Guest",
-  summaryId: "",
+  summaryId: generateEntityId<"UserSummary">(),
   createdAt: 0,
   updatedAt: 0,
   fetchedAt: 0
 };
 export const guestUserAccount: UserAccount = {
-  id: "1",
   provider: "github",
   accountId: "",
   email: "guest@example.com",
@@ -36,7 +42,6 @@ export const guestUserAccount: UserAccount = {
   fetchedAt: 0
 };
 export const guestUserConfig: UserConfig = {
-  id: "1",
   settings: {},
   createdAt: 0,
   updatedAt: 0,
@@ -85,13 +90,13 @@ export const initialCacheState: CacheState = {
   get: {
     ...createEntityTypeToObject(),
     User: {
-      [guestUser.id]: guestUser
+      [guestUserId]: guestUser
     },
     UserAccount: {
-      [guestUserAccount.id]: guestUserAccount
+      [guestUserAccountId]: guestUserAccount
     },
     UserConfig: {
-      [guestUserConfig.id]: guestUserConfig
+      [guestUserConfigId]: guestUserConfig
     }
   },
   search: createEntityTypeToObject()
@@ -129,14 +134,20 @@ export const cacheReducer: Reducer<CacheState, CacheActions> = (state = initialC
         (prev, current: EntityObject) => Math.max(prev, current.createdAt),
         0
       );
-      const target: EntityObject = Object.values(response[type]).find(
-        (entity: EntityObject) => entity.createdAt === createdAt
-      );
+      let targetId: string | undefined;
+      Object.entries(response[type]).forEach(([entityId, entity]) => {
+        if (entity.createdAt === createdAt) {
+          targetId = entityId;
+        }
+      });
+      if (targetId === undefined) {
+        return state;
+      }
 
       return {
         get: state.get,
         search: mergeSearchResultStore(state.search, type, params, {
-          ids: [target.id, ...(Object.values(result.ids) as string[])],
+          ids: [targetId, ...(Object.values(result.ids) as string[])],
           entities: {},
           count: result.count + 1
         })
