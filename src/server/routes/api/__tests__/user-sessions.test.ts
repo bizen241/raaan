@@ -1,6 +1,6 @@
 import { strict as assert } from "assert";
 import uuid from "uuid/v4";
-import { UserSession } from "../../../../shared/api/entities";
+import { EntityId, UserSession } from "../../../../shared/api/entities";
 import {
   close,
   connect,
@@ -31,7 +31,7 @@ describe("api > user-sessions", () => {
       const { req, res, next } = await createMocks("Read");
 
       setSearchParams<UserSession>(req, {
-        userId: uuid()
+        userId: uuid() as EntityId<"User">
       });
 
       await GET(req, res, next);

@@ -2,10 +2,8 @@ import { Request, Response } from "express";
 import { HttpError } from "http-errors";
 import { createRequest, createResponse, MockRequest, MockResponse } from "node-mocks-http";
 import { getManager } from "typeorm";
-import { stringifyParams } from "../../../client/api/request/search";
 import { EntityObject, Permission } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
-import { SearchQuery } from "../../../shared/api/request/parse";
 import { EntityStore } from "../../../shared/api/response/get";
 import { insertSession, insertUser } from "./entities";
 
@@ -55,16 +53,7 @@ export const setGetParams = (req: MockRequest<Request>, id: string) => {
 };
 
 export const setSearchParams = <E extends EntityObject>(req: MockRequest<Request>, params: Params<E>) => {
-  const queryString = stringifyParams(params);
-  const urlSearchParams = new URLSearchParams(queryString);
-
-  req.query = [...urlSearchParams.entries()].reduce(
-    (query, [key, value]) => ({
-      ...query,
-      [key]: value
-    }),
-    {} as SearchQuery<E>
-  );
+  req.query = params;
 };
 
 export const setPostParams = <E extends EntityObject>(req: MockRequest<Request>, params: Params<E>) => {
