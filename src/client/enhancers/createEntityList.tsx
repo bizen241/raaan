@@ -1,7 +1,7 @@
 import { Card, CircularProgress, Divider, TableCell, TableRow } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons";
 import React, { useCallback } from "react";
-import { EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
+import { EntityId, EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { Column, IconButton, Row, Table, TablePagination } from "../components/ui";
 import { useSearch } from "../hooks/useSearch";
@@ -16,9 +16,10 @@ interface EntityListProps<E extends EntityObject> {
   initialParams: Params<E>;
 }
 
-interface EntityListItemProps<E extends EntityObject> {
-  entity: E;
-  params: Params<E>;
+interface EntityListItemProps<T extends EntityType> {
+  entityId: EntityId<T>;
+  entity: EntityTypeToEntity[T];
+  params: Params<EntityTypeToEntity[T]>;
   onReload: () => void;
 }
 
@@ -29,19 +30,19 @@ interface EntityListParamsProps<E extends EntityObject> {
 }
 
 export const createEntityList = <T extends EntityType>(entityType: T, options: EntityListOptions = {}) => (
-  ItemComponent: React.ComponentType<EntityListItemProps<EntityTypeToEntity[T]>>,
+  ItemComponent: React.ComponentType<EntityListItemProps<T>>,
   ParamsComponent?: React.ComponentType<EntityListParamsProps<EntityTypeToEntity[T]>>
 ) =>
   React.memo<EntityListProps<EntityTypeToEntity[T]>>(({ initialParams, ...props }) => {
     const { itemHeight = 53 } = options;
 
-    const { entities, params, status, limit, offset, count, onChange, ...searchProps } = useSearch<T>(
+    const { entityIds, entityMap, params, status, limit, offset, count, onChange, ...searchProps } = useSearch<T>(
       entityType,
       initialParams
     );
 
     const isLoading = status !== undefined && status !== 200;
-    const emptyRows = !isLoading && limit - entities.length;
+    const emptyRows = !isLoading && limit - entityIds.length;
 
     const onReload = () => {
       if (props.onReload !== undefined) {
@@ -75,17 +76,22 @@ export const createEntityList = <T extends EntityType>(entityType: T, options: E
               </TableRow>
             )}
             {!isLoading &&
-              entities.map(
-                entity =>
-                  entity && (
-                    <ItemComponent
-                      key={entity.id}
-                      entity={entity as EntityTypeToEntity[T]}
-                      params={params}
-                      onReload={onReload}
-                    />
-                  )
-              )}
+              entityIds.map(entityId => {
+                const entity = entityMap[entityId];
+                if (entity === undefined) {
+                  return null;
+                }
+
+                return (
+                  <ItemComponent
+                    key={entityId}
+                    entityId={entityId}
+                    entity={entity as EntityTypeToEntity[T]}
+                    params={params}
+                    onReload={onReload}
+                  />
+                );
+              })}
             {emptyRows && (
               <TableRow style={{ height: itemHeight * emptyRows }}>
                 <TableCell colSpan={3} />

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { EntityType, EntityTypeToEntity } from "../../shared/api/entities";
+import { EntityId, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { defaultSearchLimit, defaultSearchOffset, Params } from "../../shared/api/request/params";
 import { stringifyParams } from "../api/request/search";
 import { actions, RootState } from "../reducers";
@@ -22,17 +22,17 @@ export const useSearch = <T extends EntityType>(
   const status = statusMap[stringifyParams(params)];
   const result = resultMap[stringifyParams(params, true)];
 
-  const selectedEntities = useMemo(() => {
+  const entityIds = useMemo(() => {
     if (result === undefined) {
       return undefined;
     }
 
-    const entities: Array<EntityTypeToEntity[T]> = [];
-    const entityIds = result.ids;
+    const entityIdArray: string[] = [];
+    const entityIdMap = result.ids;
     const entityCount = Math.min(searchOffset + searchLimit, result.count);
 
     for (let index = searchOffset; index < entityCount; index++) {
-      const entityId = entityIds[index];
+      const entityId = entityIdMap[index];
       if (entityId === undefined) {
         return undefined;
       }
@@ -42,10 +42,10 @@ export const useSearch = <T extends EntityType>(
         return undefined;
       }
 
-      entities.push(entity as EntityTypeToEntity[T]);
+      entityIdArray.push(entityId);
     }
 
-    return entities;
+    return entityIdArray;
   }, [params, result, entityMap]);
 
   useEffect(() => {
@@ -53,18 +53,19 @@ export const useSearch = <T extends EntityType>(
       return;
     }
 
-    if (result === undefined || selectedEntities === undefined) {
+    if (entityIds === undefined) {
       dispatch(actions.api.search(entityType, params));
     }
   }, [params]);
 
   return {
+    entityIds: (entityIds || []) as Array<EntityId<T>>,
+    entityMap,
+    params,
     limit: searchLimit,
     offset: searchOffset,
     count: result !== undefined ? result.count : 0,
-    entities: selectedEntities || [],
-    params,
-    status: status !== undefined ? status.code : selectedEntities !== undefined ? 200 : 102,
+    status: status !== undefined ? status.code : entityIds !== undefined ? 200 : 102,
     onReload: useCallback(() => dispatch(actions.api.search(entityType, params)), [params]),
     onChange: useCallback(
       (changedParams: Params<EntityTypeToEntity[T]>) => setParams(s => ({ ...s, ...changedParams })),
