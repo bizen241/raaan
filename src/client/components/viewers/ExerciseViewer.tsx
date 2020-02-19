@@ -11,7 +11,7 @@ import { ExerciseSummaryViewer } from "./ExerciseSummaryViewer";
 import { SubmissionSummaryViewer } from "./SubmissionSummaryViewer";
 
 export const ExerciseViewer = withEntity("Exercise")(
-  React.memo(({ entity: exercise }) => {
+  React.memo(({ entityId: exerciseId, entity: exercise }) => {
     const { currentUserId, currentUser } = useCurrentUser();
 
     const [isExercisePlayerOpen, onToggleExercisePlayer] = useToggleState();
@@ -27,14 +27,7 @@ export const ExerciseViewer = withEntity("Exercise")(
         {isDraft && <Button icon={<PlayArrow />} label="プレビュー" onClick={onToggleExercisePreviewer} />}
         {!isGuest && <Button icon={<PlaylistAdd />} label="プレイリストに追加" onClick={onTogglePlaylistDialog} />}
         <ExerciseSummaryViewer entityId={exercise.summaryId} />
-        {!isGuest && (
-          <SubmissionSummaryViewer
-            params={{
-              submitterId: currentUserId,
-              exerciseId: exercise.id
-            }}
-          />
-        )}
+        {!isGuest && <SubmissionSummaryViewer submitterId={currentUserId} exerciseId={exerciseId} />}
         <ExercisePlayer exerciseId={exercise.id} isOpen={isExercisePlayerOpen} onClose={onToggleExercisePlayer} />
         <ExercisePreviewer exercise={exercise} isOpen={isExercisePreviewerOpen} onClose={onToggleExercisePreviewer} />
         <PlaylistItemsDialog exerciseId={exercise.id} isOpen={isPlaylistDialogOpen} onClose={onTogglePlaylistDialog} />
