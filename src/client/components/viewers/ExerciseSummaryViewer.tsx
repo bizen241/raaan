@@ -1,4 +1,3 @@
-import { Link } from "@material-ui/core";
 import {
   CloudDownload,
   Delete,
@@ -14,15 +13,12 @@ import {
   SmsFailed,
   WbIncandescent
 } from "@material-ui/icons";
-import React, { useCallback } from "react";
-import { useSelector } from "react-redux";
-import { Link as RouterLink } from "react-router-dom";
-import { withEntity } from "../../enhancers/withEntity";
+import React from "react";
+import { EntityId, Exercise } from "../../../shared/api/entities";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useEntity } from "../../hooks/useEntity";
-import { useSearch } from "../../hooks/useSearch";
+import { useExerciseActions } from "../../hooks/useExerciseActions";
 import { useToggleState } from "../../hooks/useToggleState";
-import { RootState } from "../../reducers";
 import { DeleteExerciseVoteDialog } from "../dialogs/exercise-votes/DeleteExerciseVoteDialog";
 import { UploadExerciseVoteDialog } from "../dialogs/exercise-votes/UploadExerciseVoteDialog";
 import { DeleteExerciseDialog } from "../dialogs/exercises/DeleteExerciseDialog";
@@ -33,258 +29,151 @@ import { UnpublishExerciseDialog } from "../dialogs/exercises/UnpublishExerciseD
 import { ConfirmObjectionDialog } from "../dialogs/objections/ConfirmObjectionDialog";
 import { ConfirmReportDialog } from "../dialogs/reports/ConfirmReportDialog";
 import { ConfirmSuggestionDialog } from "../dialogs/suggestions/ConfirmSuggestionDialog";
-import { Card, Menu, MenuItem, Property, Row } from "../ui";
+import { Tags } from "../project/Tags";
+import { Card, Link, Menu, MenuItem, Property } from "../ui";
 
-export const ExerciseSummaryViewer = withEntity("ExerciseSummary")(
-  React.memo(({ entity: exerciseSummary }) => {
-    const { currentUserId, currentUser } = useCurrentUser();
+export const ExerciseSummaryViewer = React.memo<{
+  exerciseId: EntityId<"Exercise">;
+  exercise: Exercise;
+}>(({ exerciseId, exercise }) => {
+  const { currentUserId, currentUser } = useCurrentUser();
 
-    const isOwner = currentUser.permission === "Owner";
-    const isAuthor = exerciseSummary.authorId === currentUserId;
+  const { entity: exerciseSummary } = useEntity("ExerciseSummary", exercise.summaryId);
+  const { title, commentCount, isDraft, isPrivate, isLocked } = exerciseSummary;
 
-    const { exerciseId, title, commentCount, isDraft, isPrivate, isLocked } = exerciseSummary;
+  const isOwner = currentUser.permission === "Owner";
+  const isAuthor = exerciseSummary.authorId === currentUserId;
 
-    const [isPublishExerciseDialogOpen, onTogglePublishExerciseDialog] = useToggleState();
-    const [isUnpublishExerciseDialogOpen, onToggleUnpublishExerciseDialog] = useToggleState();
-    const [isGroupExercisesDialogOpen, onToggleGroupExercisesDialog] = useToggleState();
-    const [isDeleteExerciseDialogOpen, onToggleDeleteExerciseDialog] = useToggleState();
-    const [isExportDialogOpen, onToggleExportDialog] = useToggleState();
-    const [isUploadVoteDialogOpen, onToggleUploadVoteDialog] = useToggleState();
-    const [isDeleteVoteDialogOpen, onToggleDeleteVoteDialog] = useToggleState();
-    const [isConfirmSuggestionDialogOpen, onToggleConfirmSuggestionDialog] = useToggleState();
-    const [isConfirmReportDialogOpen, onToggleConfirmReportDialog] = useToggleState();
-    const [isConfirmObjectionDialogOpen, onToggleConfirmObjectionDialog] = useToggleState();
+  const [isPublishExerciseDialogOpen, onTogglePublishExerciseDialog] = useToggleState();
+  const [isUnpublishExerciseDialogOpen, onToggleUnpublishExerciseDialog] = useToggleState();
+  const [isGroupExercisesDialogOpen, onToggleGroupExercisesDialog] = useToggleState();
+  const [isDeleteExerciseDialogOpen, onToggleDeleteExerciseDialog] = useToggleState();
+  const [isExportDialogOpen, onToggleExportDialog] = useToggleState();
+  const [isUploadVoteDialogOpen, onToggleUploadVoteDialog] = useToggleState();
+  const [isDeleteVoteDialogOpen, onToggleDeleteVoteDialog] = useToggleState();
+  const [isConfirmSuggestionDialogOpen, onToggleConfirmSuggestionDialog] = useToggleState();
+  const [isConfirmReportDialogOpen, onToggleConfirmReportDialog] = useToggleState();
+  const [isConfirmObjectionDialogOpen, onToggleConfirmObjectionDialog] = useToggleState();
 
-    const { entity: exercise, onReload: onReloadExercise } = useEntity("Exercise", exerciseId, false);
+  const { isFetched, voteId, objectionId, suggestionId, reportId, onReload } = useExerciseActions(exerciseSummary);
 
-    const { entities: votes, onReload: onReloadExerciseVotes } = useSearch(
-      "ExerciseVote",
-      {
-        voterId: currentUserId,
-        targetId: exerciseId
-      },
-      !isAuthor
-    );
-    const { entities: suggestions, onReload: onReloadSuggestionSummaries } = useSearch(
-      "SuggestionSummary",
-      {
-        authorId: currentUserId,
-        exerciseId,
-        state: "pending"
-      },
-      !isAuthor
-    );
-    const { entities: reports, onReload: onReloadReports } = useSearch(
-      "ReportSummary",
-      {
-        reporterId: currentUserId,
-        targetType: "Exercise",
-        targetId: exerciseId
-      },
-      !isAuthor
-    );
-    const { entities: objections, onReload: onReloadObjections } = useSearch(
-      "Objection",
-      {
-        objectorId: currentUserId,
-        targetId: exerciseId
-      },
-      exerciseSummary.isLocked
-    );
-
-    const suggestionBuffers = useSelector((state: RootState) => state.buffers.Suggestion);
-    const objectionBuffers = useSelector((state: RootState) => state.buffers.Objection);
-    const reportBuffers = useSelector((state: RootState) => state.buffers.Report);
-
-    const vote = votes[0];
-    const suggestion = suggestions[0];
-    const report = reports[0];
-    const objection = objections[0];
-
-    const suggestionId =
-      suggestion !== undefined
-        ? suggestion.suggestionId
-        : Object.keys(suggestionBuffers).find(bufferId => {
-            const buffer = suggestionBuffers[bufferId];
-
-            return buffer !== undefined && buffer.exerciseId === exerciseId;
-          });
-    const reportId =
-      report !== undefined
-        ? report.id
-        : Object.keys(reportBuffers).find(bufferId => {
-            const buffer = reportBuffers[bufferId];
-
-            return buffer !== undefined && buffer.targetId === exerciseId;
-          });
-    const objectionId =
-      objection !== undefined
-        ? objection.id
-        : Object.keys(objectionBuffers).find(bufferId => {
-            const buffer = objectionBuffers[bufferId];
-
-            return buffer !== undefined && buffer.targetId === exerciseId;
-          });
-
-    const isVoted = vote !== undefined;
-    const isSuggested = suggestionId !== undefined;
-    const isReported = reportId !== undefined;
-    const isObjected = objectionId !== undefined;
-
-    const onReload = useCallback(() => {
-      onReloadExercise();
-      onReloadExerciseVotes();
-      onReloadSuggestionSummaries();
-      onReloadReports();
-      onReloadObjections();
-    }, []);
-
-    return (
-      <Card
-        icon={<Keyboard />}
-        title={title || "無題"}
-        action={
-          isAuthor ? (
-            <Menu>
-              <MenuItem icon={<Edit />} label="編集する" to={`/exercises/${exerciseId}/edit`} />
-              {!isDraft && <MenuItem icon={<History />} label="編集履歴" to={`/exercises/${exerciseId}/revisions`} />}
-              {!isLocked &&
-                (isPrivate ? (
-                  <MenuItem icon={<Public />} label="公開する" onClick={onTogglePublishExerciseDialog} />
-                ) : (
-                  <MenuItem icon={<Lock />} label="非公開にする" onClick={onToggleUnpublishExerciseDialog} />
-                ))}
-              <MenuItem icon={<Group />} label="グループに公開する" onClick={onToggleGroupExercisesDialog} />
-              {isLocked &&
-                (!isObjected ? (
-                  <MenuItem icon={<SmsFailed />} label="抗議する" onClick={onToggleConfirmObjectionDialog} />
-                ) : (
-                  <MenuItem icon={<SmsFailed />} label="抗議を編集する" to={`/objections/${objectionId}/edit`} />
-                ))}
-              <MenuItem icon={<Delete />} label="削除する" onClick={onToggleDeleteExerciseDialog} />
-              {exercise && <MenuItem icon={<CloudDownload />} label="エクスポート" onClick={onToggleExportDialog} />}
-              <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReload} />
-            </Menu>
-          ) : (
-            <Menu>
-              {!isVoted ? (
+  return (
+    <Card
+      icon={<Keyboard />}
+      title={title || "無題"}
+      action={
+        isAuthor ? (
+          <Menu>
+            <MenuItem icon={<Edit />} label="編集する" to={`/exercises/${exerciseId}/edit`} />
+            {!isDraft && <MenuItem icon={<History />} label="編集履歴" to={`/exercises/${exerciseId}/revisions`} />}
+            {isFetched &&
+              !isLocked &&
+              (isPrivate ? (
+                <MenuItem icon={<Public />} label="公開する" onClick={onTogglePublishExerciseDialog} />
+              ) : (
+                <MenuItem icon={<Lock />} label="非公開にする" onClick={onToggleUnpublishExerciseDialog} />
+              ))}
+            <MenuItem icon={<Group />} label="グループに公開する" onClick={onToggleGroupExercisesDialog} />
+            {isFetched &&
+              isLocked &&
+              (!objectionId ? (
+                <MenuItem icon={<SmsFailed />} label="抗議する" onClick={onToggleConfirmObjectionDialog} />
+              ) : (
+                <MenuItem icon={<SmsFailed />} label="抗議を編集する" to={`/objections/${objectionId}/edit`} />
+              ))}
+            <MenuItem icon={<Delete />} label="削除する" onClick={onToggleDeleteExerciseDialog} />
+            <MenuItem icon={<CloudDownload />} label="エクスポート" onClick={onToggleExportDialog} />
+            <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReload} />
+          </Menu>
+        ) : (
+          <Menu>
+            {isFetched &&
+              (!voteId ? (
                 <MenuItem icon={<HowToVote />} label="投票する" onClick={onToggleUploadVoteDialog} />
               ) : (
                 <MenuItem icon={<HowToVote />} label="投票を取り消す" onClick={onToggleDeleteVoteDialog} />
-              )}
-              {!isSuggested ? (
+              ))}
+            {isFetched &&
+              (!suggestionId ? (
                 <MenuItem icon={<WbIncandescent />} label="提案する" onClick={onToggleConfirmSuggestionDialog} />
               ) : (
                 <MenuItem icon={<WbIncandescent />} label="提案を編集する" to={`/suggestions/${suggestionId}/edit`} />
-              )}
-              {!isOwner &&
-                (!isReported ? (
-                  <MenuItem icon={<ReportProblem />} label="通報する" onClick={onToggleConfirmReportDialog} />
-                ) : (
-                  <MenuItem icon={<ReportProblem />} label="通報を編集する" to={`/reports/${reportId}/edit`} />
-                ))}
-              <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReload} />
-            </Menu>
-          )
-        }
-      >
-        <Property label="提出回数">
-          <Link
-            underline="always"
-            color="textPrimary"
-            component={RouterLink}
-            to={`/exercises/${exerciseSummary.exerciseId}/diary`}
-          >
-            {exerciseSummary.submitCount}
-          </Link>
-        </Property>
-        <Property label="評価">{exerciseSummary.upvoteCount - exerciseSummary.downvoteCount}</Property>
-        {exerciseSummary.tags && (
-          <Property label="タグ">
-            <Row>
-              {exerciseSummary.tags.split(/\s/).map(
-                tag =>
-                  tag && (
-                    <Row key={tag} pr={1}>
-                      <Link underline="always" color="textPrimary" component={RouterLink} to={`/tags/${tag}`}>
-                        {tag}
-                      </Link>
-                    </Row>
-                  )
-              )}
-            </Row>
-          </Property>
-        )}
-        <Property label="作者">
-          <Link underline="always" color="textPrimary" component={RouterLink} to={`/users/${exerciseSummary.authorId}`}>
-            {exerciseSummary.authorName || "名無しさん"}
-          </Link>
-        </Property>
-        <Property label="コメント">
-          <Link
-            underline="always"
-            color="textPrimary"
-            component={RouterLink}
-            to={`/exercises/${exerciseSummary.exerciseId}/comments`}
-          >
-            {commentCount}
-          </Link>
-        </Property>
-        <PublishExerciseDialog
-          exerciseId={exerciseId}
-          isOpen={isPublishExerciseDialogOpen}
-          onClose={onTogglePublishExerciseDialog}
+              ))}
+            {isFetched &&
+              !isOwner &&
+              (!reportId ? (
+                <MenuItem icon={<ReportProblem />} label="通報する" onClick={onToggleConfirmReportDialog} />
+              ) : (
+                <MenuItem icon={<ReportProblem />} label="通報を編集する" to={`/reports/${reportId}/edit`} />
+              ))}
+            <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReload} />
+          </Menu>
+        )
+      }
+    >
+      <Property label="提出回数">
+        <Link to={`/exercises/${exerciseSummary.exerciseId}/diary`} label={exerciseSummary.submitCount} />
+      </Property>
+      <Property label="評価">{exerciseSummary.upvoteCount - exerciseSummary.downvoteCount}</Property>
+      <Property label="タグ">
+        <Tags value={exerciseSummary.tags} />
+      </Property>
+      <Property label="作者">
+        <Link to={`/users/${exerciseSummary.authorId}`} label={exerciseSummary.authorName || "名無しさん"} />
+      </Property>
+      <Property label="コメント">
+        <Link to={`/exercises/${exerciseSummary.exerciseId}/comments`} label={commentCount} />
+      </Property>
+      <PublishExerciseDialog
+        exerciseId={exerciseId}
+        isOpen={isPublishExerciseDialogOpen}
+        onClose={onTogglePublishExerciseDialog}
+      />
+      <UnpublishExerciseDialog
+        exerciseId={exerciseId}
+        isOpen={isUnpublishExerciseDialogOpen}
+        onClose={onToggleUnpublishExerciseDialog}
+      />
+      <GroupExercisesDialog
+        exerciseId={exerciseId}
+        isOpen={isGroupExercisesDialogOpen}
+        onClose={onToggleGroupExercisesDialog}
+      />
+      <DeleteExerciseDialog
+        exerciseId={exerciseId}
+        isOpen={isDeleteExerciseDialogOpen}
+        onClose={onToggleDeleteExerciseDialog}
+      />
+      <UploadExerciseVoteDialog
+        exerciseId={exerciseId}
+        isOpen={isUploadVoteDialogOpen}
+        onClose={onToggleUploadVoteDialog}
+      />
+      {voteId && (
+        <DeleteExerciseVoteDialog
+          exerciseVoteId={voteId}
+          isOpen={isDeleteVoteDialogOpen}
+          onClose={onToggleDeleteVoteDialog}
         />
-        <UnpublishExerciseDialog
-          exerciseId={exerciseId}
-          isOpen={isUnpublishExerciseDialogOpen}
-          onClose={onToggleUnpublishExerciseDialog}
-        />
-        <GroupExercisesDialog
-          exerciseId={exerciseId}
-          isOpen={isGroupExercisesDialogOpen}
-          onClose={onToggleGroupExercisesDialog}
-        />
-        <DeleteExerciseDialog
-          exerciseId={exerciseId}
-          isOpen={isDeleteExerciseDialogOpen}
-          onClose={onToggleDeleteExerciseDialog}
-        />
-        {exercise && (
-          <ExportExerciseDialog exercise={exercise} isOpen={isExportDialogOpen} onClose={onToggleExportDialog} />
-        )}
-        <UploadExerciseVoteDialog
-          exerciseId={exerciseId}
-          isOpen={isUploadVoteDialogOpen}
-          onClose={onToggleUploadVoteDialog}
-        />
-        {vote && (
-          <DeleteExerciseVoteDialog
-            exerciseVoteId={vote.id}
-            isOpen={isDeleteVoteDialogOpen}
-            onClose={onToggleDeleteVoteDialog}
-          />
-        )}
-        {exercise && (
-          <ConfirmSuggestionDialog
-            exercise={exercise}
-            isOpen={isConfirmSuggestionDialogOpen}
-            onClose={onToggleConfirmSuggestionDialog}
-          />
-        )}
-        <ConfirmReportDialog
-          targetType="Exercise"
-          targetId={exerciseId}
-          isOpen={isConfirmReportDialogOpen}
-          onClose={onToggleConfirmReportDialog}
-        />
-        <ConfirmObjectionDialog
-          targetType="Exercise"
-          targetId={exerciseId}
-          isOpen={isConfirmObjectionDialogOpen}
-          onClose={onToggleConfirmObjectionDialog}
-        />
-      </Card>
-    );
-  })
-);
+      )}
+      <ConfirmSuggestionDialog
+        exercise={exercise}
+        isOpen={isConfirmSuggestionDialogOpen}
+        onClose={onToggleConfirmSuggestionDialog}
+      />
+      <ConfirmReportDialog
+        targetType="Exercise"
+        targetId={exerciseId}
+        isOpen={isConfirmReportDialogOpen}
+        onClose={onToggleConfirmReportDialog}
+      />
+      <ConfirmObjectionDialog
+        targetType="Exercise"
+        targetId={exerciseId}
+        isOpen={isConfirmObjectionDialogOpen}
+        onClose={onToggleConfirmObjectionDialog}
+      />
+      <ExportExerciseDialog exercise={exercise} isOpen={isExportDialogOpen} onClose={onToggleExportDialog} />
+    </Card>
+  );
+});

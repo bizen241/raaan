@@ -27,7 +27,7 @@ export const useSearch = <T extends EntityType>(
       return undefined;
     }
 
-    const entityIdArray: string[] = [];
+    const entityIdArray: EntityId<T>[] = [];
     const entityIdMap = result.ids;
     const entityCount = Math.min(searchOffset + searchLimit, result.count);
 
@@ -42,7 +42,7 @@ export const useSearch = <T extends EntityType>(
         return undefined;
       }
 
-      entityIdArray.push(entityId);
+      entityIdArray.push(entityId as EntityId<T>);
     }
 
     return entityIdArray;
@@ -59,7 +59,7 @@ export const useSearch = <T extends EntityType>(
   }, [params]);
 
   return {
-    entityIds: (entityIds || []) as Array<EntityId<T>>,
+    entityIds: entityIds || [],
     entityMap,
     params,
     limit: searchLimit,

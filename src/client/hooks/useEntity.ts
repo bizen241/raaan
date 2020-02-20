@@ -17,8 +17,12 @@ export const useEntity = <T extends EntityType>(entityType: T, entityId: string,
     }
   }, [entityId]);
 
+  if (entity === undefined) {
+    throw new Error();
+  }
+
   return {
-    entity: entity as EntityTypeToEntity[T] | undefined,
+    entity: entity as EntityTypeToEntity[T],
     getStatus: (getStatus && getStatus.code) || 102,
     onReload: useCallback(() => entityId && dispatch(actions.api.get(entityType, entityId)), [])
   };
