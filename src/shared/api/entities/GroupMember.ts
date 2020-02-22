@@ -1,7 +1,7 @@
 import { EntityId } from ".";
 import { BaseEntityObject } from "./BaseEntityObject";
 
-export interface GroupMember extends BaseEntityObject {
+export interface GroupMember extends BaseEntityObject<"GroupMember"> {
   userId?: EntityId<"User">;
   userSummaryId: EntityId<"UserSummary">;
   groupId?: EntityId<"Group">;

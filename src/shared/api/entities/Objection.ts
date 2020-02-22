@@ -4,7 +4,7 @@ import { BaseEntityObject } from "./BaseEntityObject";
 export type ObjectionTargetType = "Exercise" | "Playlist" | "User";
 export type ObjectionState = "pending" | "accepted" | "rejected";
 
-export interface Objection extends BaseEntityObject {
+export interface Objection extends BaseEntityObject<"Objection"> {
   summaryId: EntityId<"ObjectionSummary">;
   objectorId: EntityId<"User">;
   targetType: ObjectionTargetType;

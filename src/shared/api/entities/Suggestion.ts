@@ -3,7 +3,7 @@ import { BaseExerciseObject } from "./BaseExerciseObject";
 
 export type SuggestionState = "pending" | "accepted" | "rejected";
 
-export interface Suggestion extends BaseExerciseObject {
+export interface Suggestion extends BaseExerciseObject<"Suggestion"> {
   summaryId: EntityId<"SuggestionSummary">;
   authorId: EntityId<"User">;
   exerciseId: EntityId<"Exercise">;
