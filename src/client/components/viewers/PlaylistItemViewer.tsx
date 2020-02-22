@@ -1,22 +1,20 @@
-import { Box, Link, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { Delete, PlayArrow, SwapVert } from "@material-ui/icons";
 import React, { useCallback } from "react";
-import { Link as RouterLink } from "react-router-dom";
 import { Playlist, PlaylistItem } from "../../../shared/api/entities";
-import { withEntity } from "../../enhancers/withEntity";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeletePlaylistItemDialog } from "../dialogs/playlist-items/DeletePlaylistItemDialog";
 import { MovePlaylistItemDialog } from "../dialogs/playlist-items/MovePlaylistItemDialog";
-import { Column, IconButton, Menu, MenuItem } from "../ui";
+import { Column, IconButton, Menu, MenuItem, TableRow } from "../ui";
+import { PlaylistItemExerciseSummaryViewer } from "./PlaylistItemExerciseSummaryViewer";
 
 export const PlaylistItemViewer = React.memo<{
   index: number;
   playlistItem: PlaylistItem;
-  playlistId: string;
   playlist: Playlist;
-  playlistItems: PlaylistItem[];
+  sortedPlaylistItems: PlaylistItem[];
   onPlay: (index: number) => void;
-}>(({ index, playlistItem, playlistId, playlist, playlistItems, onPlay }) => {
+}>(({ index, playlistItem, playlist, sortedPlaylistItems, onPlay }) => {
   const { exerciseSummaryId, memo } = playlistItem;
 
   const [isMoveDialogOpen, onToggleMoveDialog] = useToggleState();
@@ -24,26 +22,27 @@ export const PlaylistItemViewer = React.memo<{
 
   return (
     <TableRow>
-      <TableCell>
-        <Column>
-          {exerciseSummaryId && <ExerciseTitleViewer entityId={exerciseSummaryId} />}
-          <Typography>{memo}</Typography>
-        </Column>
-      </TableCell>
-      <TableCell padding="checkbox">
+      <Column flex={1}>
+        {exerciseSummaryId ? (
+          <PlaylistItemExerciseSummaryViewer exerciseSummaryId={exerciseSummaryId} />
+        ) : (
+          <Typography>削除されました</Typography>
+        )}
+        <Typography>{memo}</Typography>
+      </Column>
+      <Column>
         <IconButton icon={PlayArrow} onClick={useCallback(() => onPlay(index), [index])} />
-      </TableCell>
-      <TableCell padding="checkbox">
+      </Column>
+      <Column>
         <Menu>
           <MenuItem icon={<SwapVert />} label="移動" onClick={onToggleMoveDialog} />
           <MenuItem icon={<Delete />} label="削除" onClick={onToggleDeleteDialog} />
         </Menu>
-      </TableCell>
+      </Column>
       <MovePlaylistItemDialog
         playlistItemId={playlistItem.id}
-        playlistId={playlistId}
         playlist={playlist}
-        playlistItems={playlistItems}
+        playlistItems={sortedPlaylistItems}
         isOpen={isMoveDialogOpen}
         onClose={onToggleMoveDialog}
       />
@@ -55,15 +54,3 @@ export const PlaylistItemViewer = React.memo<{
     </TableRow>
   );
 });
-
-const ExerciseTitleViewer = withEntity("ExerciseSummary")(
-  React.memo(({ entity: exerciseSummary }) => {
-    return (
-      <Box>
-        <Link color="textPrimary" component={RouterLink} to={`/exercises/${exerciseSummary.exerciseId}`}>
-          <Typography>{exerciseSummary.title}</Typography>
-        </Link>
-      </Box>
-    );
-  })
-);

@@ -2,7 +2,7 @@ import { Divider, TableCell, TableRow, Typography } from "@material-ui/core";
 import { ArrowForward } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Playlist, PlaylistItem } from "../../../../shared/api/entities";
+import { EntityId, Playlist, PlaylistItem } from "../../../../shared/api/entities";
 import { sortPlaylistItems } from "../../../domain/playlist";
 import { createDialog } from "../../../enhancers/createDialog";
 import { withEntity } from "../../../enhancers/withEntity";
@@ -11,7 +11,6 @@ import { Card, Column, Row, Table } from "../../ui";
 
 export const MovePlaylistItemDialog = createDialog<{
   playlistItemId: string;
-  playlistId: string;
   playlist: Playlist;
   playlistItems: PlaylistItem[];
 }>()(
@@ -19,7 +18,7 @@ export const MovePlaylistItemDialog = createDialog<{
   React.memo(({ playlistItemId, playlist, playlistItems, onClose }) => {
     const dispatch = useDispatch();
 
-    const onSelect = (nextId: string) => {
+    const onSelect = (nextId: EntityId<"PlaylistItem">) => {
       dispatch(
         actions.api.upload(
           "PlaylistItem",
@@ -53,7 +52,7 @@ export const MovePlaylistItemDialog = createDialog<{
 
 const PlaylistItemWithButton = React.memo<{
   playlistItem: PlaylistItem;
-  onSelect: (nextId: string) => void;
+  onSelect: (nextId: EntityId<"PlaylistItem">) => void;
 }>(({ playlistItem, onSelect }) => {
   return (
     <>

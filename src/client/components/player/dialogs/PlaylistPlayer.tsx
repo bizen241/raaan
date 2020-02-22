@@ -7,13 +7,14 @@ import { createPlayerDialog } from "./createPlayerDialog";
 
 export const PlaylistPlayer = createPlayerDialog<{
   playlistItems: PlaylistItem[];
+  startIndex: number;
 }>(
-  React.memo(({ playlistItems, onClose }) => {
+  React.memo(({ playlistItems, startIndex, onClose }) => {
     const [cursor, setCursor] = useState(0);
     const exerciseIds = useMemo(() => {
       const ids: string[] = [];
 
-      playlistItems.forEach(({ exerciseId }) => exerciseId && ids.push(exerciseId));
+      playlistItems.slice(startIndex).forEach(({ exerciseId }) => exerciseId && ids.push(exerciseId));
 
       return ids;
     }, []);

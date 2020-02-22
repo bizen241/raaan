@@ -1,116 +1,83 @@
-import { Card, CardContent, Divider } from "@material-ui/core";
-import { Add, Bookmark, PlayArrow, Refresh } from "@material-ui/icons";
-import React, { useCallback, useMemo, useState } from "react";
-import { PlaylistItem } from "../../../shared/api/entities";
-import { sortPlaylistItems } from "../../domain/playlist";
-import { withEntity } from "../../enhancers/withEntity";
+import { Add, Bookmark, PlayArrow } from "@material-ui/icons";
+import React from "react";
+import { EntityId } from "../../../shared/api/entities";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { useSearch } from "../../hooks/useSearch";
+import { useEntity } from "../../hooks/useEntity";
+import { usePlaylistBookmark } from "../../hooks/usePlaylistBookmark";
+import { usePlaylistItems } from "../../hooks/usePlaylistItems";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeletePlaylistBookmarkDialog } from "../dialogs/playlist-bookmarks/DeletePlaylistBookmarkDialog";
 import { UploadPlaylistBookmarkDialog } from "../dialogs/playlist-bookmarks/UploadPlaylistBookmarkDialog";
 import { PlaylistItemsDialog } from "../dialogs/playlist-items/PlaylistItemsDialog";
 import { PlaylistPlayer } from "../player/dialogs/PlaylistPlayer";
-import { Button, Column, IconButton, Row, Table } from "../ui";
-import { PlaylistItemViewer } from "./PlaylistItemViewer";
+import { Button, Column } from "../ui";
+import { PlaylistItemsViewer } from "./PlaylistItemsViewer";
 import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 
-export const PlaylistViewer = withEntity("Playlist")(
-  React.memo(({ entity: playlist, entityId: playlistId }) => {
-    const { currentUserId } = useCurrentUser();
+export const PlaylistViewer = React.memo<{ playlistId: EntityId<"Playlist"> }>(({ playlistId }) => {
+  const { currentUserId } = useCurrentUser();
 
-    const [isPlaylistItemsDialogOpen, onTogglePlaylistItemsDialog] = useToggleState();
+  const { entity: playlist } = useEntity("Playlist", playlistId);
 
-    const [isUploadPlaylistBookmarkDialogOpen, onToggleUploadPlaylistBookmarkDialog] = useToggleState();
-    const [isDeletePlaylistBookmarkDialogOpen, onToggleDeletePlaylistBookmarkDialog] = useToggleState();
-    const { entities: bookmarks } = useSearch("PlaylistBookmark", {
-      userId: currentUserId,
-      playlistId
-    });
-    const bookmark = bookmarks[0];
-    const isBookmarked = bookmark !== undefined;
+  const [isPlaylistItemsDialogOpen, onTogglePlaylistItemsDialog] = useToggleState();
+  const [isUploadPlaylistBookmarkDialogOpen, onToggleUploadPlaylistBookmarkDialog] = useToggleState();
+  const [isDeletePlaylistBookmarkDialogOpen, onToggleDeletePlaylistBookmarkDialog] = useToggleState();
+  const [isPlaylistPlayerOpen, onTogglePlaylistPlayer] = useToggleState();
 
-    const [isPlaylistPlayerOpen, onTogglePlaylistPlayer] = useToggleState();
-    const [requestedPlaylistItems, requestPlaylistItems] = useState<PlaylistItem[]>([]);
-    const { entities: playlistItems, count, onReload } = useSearch("PlaylistItem", {
-      playlistId
-    });
-    const sortedPlaylistItems = useMemo(() => sortPlaylistItems(playlistItems, playlist.orderBy), [playlistItems]);
-    const onPlay = useCallback(() => {
-      requestPlaylistItems(sortedPlaylistItems);
-      onTogglePlaylistPlayer();
-    }, [sortedPlaylistItems]);
-    const onPartialPlay = useCallback(
-      (startIndex: number) => {
-        requestPlaylistItems(sortedPlaylistItems.slice(startIndex));
-        onTogglePlaylistPlayer();
-      },
-      [sortedPlaylistItems]
-    );
+  const { sortedPlaylistItems, playlistItemCount, onReloadPlaylistItems } = usePlaylistItems(playlistId, playlist);
+  const { playlistBookmarkId } = usePlaylistBookmark(playlistId);
 
-    const isAuthor = playlist.authorId === currentUserId;
+  const isAuthor = playlist.authorId === currentUserId;
 
-    return (
-      <Column>
-        <Button color="primary" icon={<PlayArrow />} label="始める" disabled={count === 0} onClick={onPlay} />
-        {isAuthor ? (
-          <Button icon={<Add />} label="問題集を追加" onClick={onTogglePlaylistItemsDialog} />
-        ) : !isBookmarked ? (
+  return (
+    <Column>
+      <Button
+        color="primary"
+        icon={<PlayArrow />}
+        label="始める"
+        disabled={playlistItemCount === 0}
+        onClick={onTogglePlaylistPlayer}
+      />
+      {isAuthor && <Button icon={<Add />} label="問題集を追加" onClick={onTogglePlaylistItemsDialog} />}
+      {!isAuthor &&
+        (!playlistBookmarkId ? (
           <Button icon={<Bookmark />} label="ブックマークに追加" onClick={onToggleUploadPlaylistBookmarkDialog} />
         ) : (
           <Button icon={<Bookmark />} label="ブックマークを解除" onClick={onToggleDeletePlaylistBookmarkDialog} />
-        )}
-        <Column pb={1}>
-          <PlaylistSummaryViewer entityId={playlist.summaryId} />
-        </Column>
-        <Card>
-          <CardContent>
-            <Column>
-              <Row>
-                <IconButton icon={Refresh} onClick={onReload} />
-              </Row>
-            </Column>
-          </CardContent>
-          <Divider />
-          <Column pb={1}>
-            <Table>
-              {sortedPlaylistItems.map((playlistItem, index) => (
-                <PlaylistItemViewer
-                  key={playlistItem.id}
-                  index={index}
-                  playlistItem={playlistItem}
-                  playlistId={playlistId}
-                  playlist={playlist}
-                  playlistItems={playlistItems}
-                  onPlay={onPartialPlay}
-                />
-              ))}
-            </Table>
-          </Column>
-        </Card>
-        <PlaylistItemsDialog
-          playlistId={playlistId}
-          isOpen={isPlaylistItemsDialogOpen}
-          onClose={onTogglePlaylistItemsDialog}
-        />
-        <UploadPlaylistBookmarkDialog
-          playlistId={playlistId}
-          isOpen={isUploadPlaylistBookmarkDialogOpen}
-          onClose={onToggleUploadPlaylistBookmarkDialog}
-        />
-        {bookmark && (
-          <DeletePlaylistBookmarkDialog
-            playlistBookmarkId={bookmark.id}
-            isOpen={isDeletePlaylistBookmarkDialogOpen}
-            onClose={onToggleDeletePlaylistBookmarkDialog}
-          />
-        )}
-        <PlaylistPlayer
-          playlistItems={requestedPlaylistItems}
-          isOpen={isPlaylistPlayerOpen}
-          onClose={onTogglePlaylistPlayer}
+        ))}
+      <Column pb={1}>
+        <PlaylistSummaryViewer entityId={playlist.summaryId} />
+      </Column>
+      <Column pb={1}>
+        <PlaylistItemsViewer
+          playlist={playlist}
+          sortedPlaylistItems={sortedPlaylistItems}
+          onReload={onReloadPlaylistItems}
         />
       </Column>
-    );
-  })
-);
+      <PlaylistItemsDialog
+        playlistId={playlistId}
+        isOpen={isPlaylistItemsDialogOpen}
+        onClose={onTogglePlaylistItemsDialog}
+      />
+      <UploadPlaylistBookmarkDialog
+        playlistId={playlistId}
+        isOpen={isUploadPlaylistBookmarkDialogOpen}
+        onClose={onToggleUploadPlaylistBookmarkDialog}
+      />
+      {playlistBookmarkId && (
+        <DeletePlaylistBookmarkDialog
+          playlistBookmarkId={playlistBookmarkId}
+          isOpen={isDeletePlaylistBookmarkDialogOpen}
+          onClose={onToggleDeletePlaylistBookmarkDialog}
+        />
+      )}
+      <PlaylistPlayer
+        playlistItems={sortedPlaylistItems}
+        startIndex={0}
+        isOpen={isPlaylistPlayerOpen}
+        onClose={onTogglePlaylistPlayer}
+      />
+    </Column>
+  );
+});
