@@ -7,7 +7,7 @@ import { getCurrentUser } from "../api/client";
 import { install } from "../install";
 import { ActionUnion, AsyncAction, createAction } from "./action";
 import { isLocalOnly } from "./api";
-import { cacheActions, guestUserAccountId, guestUserConfigId, guestUserId } from "./cache";
+import { cacheActions, guestUser, guestUserAccount, guestUserConfig } from "./cache";
 
 export enum AppActionType {
   Ready = "app/ready",
@@ -68,7 +68,7 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
     if (prevUser !== undefined && prevUserAccount !== undefined && prevUserConfig !== undefined) {
       dispatch(appSyncActions.ready(prevUserId, prevUserAccountId, prevUserConfigId));
     } else {
-      dispatch(appSyncActions.ready(guestUserId, guestUserAccountId, guestUserConfigId));
+      dispatch(appSyncActions.ready(guestUser.id, guestUserAccount.id, guestUserConfig.id));
     }
   }
 };
@@ -88,9 +88,9 @@ export type AppState = {
 };
 
 export const initialAppState: AppState = {
-  userId: guestUserId,
-  userConfigId: guestUserConfigId,
-  userAccountId: guestUserAccountId,
+  userId: guestUser.id,
+  userConfigId: guestUserConfig.id,
+  userAccountId: guestUserAccount.id,
   isReady: false,
   isOnline: true,
   hasUpdate: false

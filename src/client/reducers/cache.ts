@@ -20,11 +20,8 @@ import { ActionUnion, createAction } from "./action";
 
 const generateEntityId = <T extends EntityType>() => uuid() as EntityId<T>;
 
-export const guestUserId = generateEntityId<"User">();
-export const guestUserAccountId = generateEntityId<"UserAccount">();
-export const guestUserConfigId = generateEntityId<"UserConfig">();
-
 export const guestUser: User = {
+  id: generateEntityId<"User">(),
   name: "",
   permission: "Guest",
   summaryId: generateEntityId<"UserSummary">(),
@@ -33,6 +30,7 @@ export const guestUser: User = {
   fetchedAt: 0
 };
 export const guestUserAccount: UserAccount = {
+  id: generateEntityId<"UserAccount">(),
   provider: "github",
   accountId: "",
   email: "guest@example.com",
@@ -42,6 +40,7 @@ export const guestUserAccount: UserAccount = {
   fetchedAt: 0
 };
 export const guestUserConfig: UserConfig = {
+  id: generateEntityId<"UserConfig">(),
   settings: {},
   createdAt: 0,
   updatedAt: 0,
@@ -90,13 +89,13 @@ export const initialCacheState: CacheState = {
   get: {
     ...createEntityTypeToObject(),
     User: {
-      [guestUserId]: guestUser
+      [guestUser.id]: guestUser
     },
     UserAccount: {
-      [guestUserAccountId]: guestUserAccount
+      [guestUserAccount.id]: guestUserAccount
     },
     UserConfig: {
-      [guestUserConfigId]: guestUserConfig
+      [guestUserConfig.id]: guestUserConfig
     }
   },
   search: createEntityTypeToObject()
