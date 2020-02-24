@@ -1,7 +1,8 @@
 import { Group, History, Keyboard, PersonAdd, PlaylistPlay } from "@material-ui/icons";
 import React from "react";
-import { withEntity } from "../../enhancers/withEntity";
+import { EntityId } from "../../../shared/api/entities";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { useEntity } from "../../hooks/useEntity";
 import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeleteUserFollowDialog } from "../dialogs/users/DeleteUserFollowDialog";
@@ -9,8 +10,10 @@ import { UploadUserFollowDialog } from "../dialogs/users/UploadUserFollowDialog"
 import { Button, Column } from "../ui";
 import { UserSummaryViewer } from "./UserSummaryViewer";
 
-export const UserViewer = withEntity("User")(({ entityId: userId, entity: user }) => {
+export const UserViewer = React.memo<{ userId: EntityId<"User"> }>(({ userId }) => {
   const { currentUserId } = useCurrentUser();
+
+  const { entity: user } = useEntity("User", userId);
 
   const [isUploadUserFollowDialogOpen, onToggleUploadUserFollowDialog] = useToggleState();
   const [isDeleteUserFollowDialogOpen, onToggleDeleteUserFollowDialog] = useToggleState();

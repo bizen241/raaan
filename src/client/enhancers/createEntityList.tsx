@@ -36,13 +36,13 @@ export const createEntityList = <T extends EntityType>(entityType: T, options: E
   React.memo<EntityListProps<EntityTypeToEntity[T]>>(({ initialParams, ...props }) => {
     const { itemHeight = 53 } = options;
 
-    const { entityIds, entityMap, params, status, limit, offset, count, onChange, ...searchProps } = useSearch<T>(
+    const { entities, params, status, limit, offset, count, onChange, ...searchProps } = useSearch<T>(
       entityType,
       initialParams
     );
 
     const isLoading = status !== undefined && status !== 200;
-    const emptyRows = !isLoading && limit - entityIds.length;
+    const emptyRows = !isLoading && limit - entities.length;
 
     const onReload = () => {
       if (props.onReload !== undefined) {
@@ -76,16 +76,15 @@ export const createEntityList = <T extends EntityType>(entityType: T, options: E
               </TableRow>
             )}
             {!isLoading &&
-              entityIds.map(entityId => {
-                const entity = entityMap[entityId];
+              entities.map(entity => {
                 if (entity === undefined) {
                   return null;
                 }
 
                 return (
                   <ItemComponent
-                    key={entityId}
-                    entityId={entityId}
+                    key={entity.id}
+                    entityId={entity.id as EntityId<T>}
                     entity={entity as EntityTypeToEntity[T]}
                     params={params}
                     onReload={onReload}

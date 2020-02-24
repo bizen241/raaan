@@ -4,14 +4,14 @@ import { Link, Row } from "../ui";
 
 export const Tags = React.memo<{
   value: string | undefined;
-}>(({ tags }) => {
-  if (tags === undefined) {
+}>(({ value }) => {
+  if (value === undefined) {
     return <Typography>タグがありません</Typography>;
   }
 
   return (
     <Row>
-      {tags.split(/\s/).map(
+      {value.split(/\s/).map(
         tag =>
           tag && (
             <Row key={tag} pr={1}>

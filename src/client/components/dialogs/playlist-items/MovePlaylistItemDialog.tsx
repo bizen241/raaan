@@ -39,9 +39,12 @@ export const MovePlaylistItemDialog = createDialog<{
           <Divider />
           <Column pb={1}>
             <Table>
-              {sortedPlaylistItems.map(playlistItem => (
-                <PlaylistItemWithButton key={playlistItem.id} playlistItem={playlistItem} onSelect={onSelect} />
-              ))}
+              {sortedPlaylistItems.map(
+                playlistItem =>
+                  playlistItem && (
+                    <PlaylistItemWithButton key={playlistItem.id} playlistItem={playlistItem} onSelect={onSelect} />
+                  )
+              )}
             </Table>
           </Column>
         </Card>

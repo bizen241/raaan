@@ -10,15 +10,15 @@ export const SubmissionSummaryViewer = React.memo<{
   exerciseId: EntityId<"Exercise">;
   submitterId: EntityId<"User">;
 }>(({ exerciseId, submitterId }) => {
-  const { entityIds, entityMap, status, onReload } = useSearch("SubmissionSummary", {
+  const { entities: submissionSummaries, status, onReload } = useSearch("SubmissionSummary", {
     exerciseId,
     submitterId
   });
   if (status !== 200) {
     return <Loading getStatus={status} onReload={onReload} />;
   }
-  const submissionSummaryId = entityIds[0];
-  const submissionSummary = submissionSummaryId && entityMap[submissionSummaryId];
+
+  const submissionSummary = submissionSummaries[0];
 
   return (
     <Card icon={<Assessment />} title="自分の記録">

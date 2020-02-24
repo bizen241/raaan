@@ -4,7 +4,7 @@ export const sortPlaylistItems = (playlistItems: PlaylistItem[], orderBy: OrderB
   switch (orderBy) {
     case "manual-last":
     case "manual-first": {
-      const last = playlistItems.find(item => item.nextId === undefined);
+      const last = playlistItems.find(playlistItem => playlistItem.nextId === undefined);
       if (last === undefined) {
         return playlistItems;
       }
@@ -13,7 +13,7 @@ export const sortPlaylistItems = (playlistItems: PlaylistItem[], orderBy: OrderB
 
       let current = last;
       for (let i = 0; i < playlistItems.length - 1; i++) {
-        const prev = playlistItems.find(item => item.nextId === current.id);
+        const prev = playlistItems.find(playlistItem => playlistItem.nextId === current.id);
         if (prev === undefined) {
           break;
         }

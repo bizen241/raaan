@@ -21,7 +21,7 @@ export const useDiary = <T extends DiaryEntryType>(
 ) => {
   const [diaryEntries, setDiaryEntries] = useState<DateToDiaryEntry<EntityTypeToEntity[T]>>({});
 
-  const { entityIds, entityMap, count, params, status, onChange, onReload } = useSearch<T>(entityType, {
+  const { entities: fetchedDiaryEntries, count, params, status, onChange, onReload } = useSearch<T>(entityType, {
     ...condition,
     searchLimit: 100,
     searchOffset: 0
@@ -33,18 +33,17 @@ export const useDiary = <T extends DiaryEntryType>(
     }
 
     const additionalContents: DateToDiaryEntry<EntityTypeToEntity[T]> = {};
-    entityIds.forEach(entityId => {
-      const entity = entityMap[entityId];
-      if (entity === undefined) {
+    fetchedDiaryEntries.forEach(diaryEntry => {
+      if (diaryEntry === undefined) {
         return;
       }
 
-      additionalContents[entity.date] = entity as EntityTypeToEntity[T];
+      additionalContents[diaryEntry.date] = diaryEntry as EntityTypeToEntity[T];
     });
 
     setDiaryEntries({ ...diaryEntries, ...additionalContents });
 
-    const lastEntity = entityMap[entityIds.length - 1];
+    const lastEntity = fetchedDiaryEntries[fetchedDiaryEntries.length - 1];
     const isIncompleted =
       Object.keys(diaryEntries).length < count && lastEntity && new Date(lastEntity.date).getTime() > firstDate;
     if (isIncompleted) {
@@ -52,7 +51,7 @@ export const useDiary = <T extends DiaryEntryType>(
         searchOffset: ((params.searchOffset || 0) as number) + 100
       } as Params<EntityTypeToEntity[T]>);
     }
-  }, [entityIds]);
+  }, [fetchedDiaryEntries]);
 
   return {
     diaryEntries,

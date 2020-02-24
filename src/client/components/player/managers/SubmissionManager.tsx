@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Exercise, SubmissionSummary } from "../../../../shared/api/entities";
+import { EntityId, Exercise, SubmissionSummary } from "../../../../shared/api/entities";
 import { QuestionResult, summarizeResults } from "../../../domain/exercise/attempt";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useSearch } from "../../../hooks/useSearch";
@@ -9,7 +9,7 @@ import { AttemptManager } from "./AttemptManager";
 
 export const SubmissionManager = React.memo<{
   exercise: Exercise;
-  contestId?: string;
+  contestId?: EntityId<"Contest">;
   hasNext?: boolean;
   onNext?: () => void;
   onClose: () => void;

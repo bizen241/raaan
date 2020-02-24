@@ -25,7 +25,7 @@ export const PlaylistViewer = React.memo<{ playlistId: EntityId<"Playlist"> }>((
   const [isPlaylistPlayerOpen, onTogglePlaylistPlayer] = useToggleState();
 
   const { sortedPlaylistItems, playlistItemCount, onReloadPlaylistItems } = usePlaylistItems(playlistId, playlist);
-  const { playlistBookmarkId } = usePlaylistBookmark(playlistId);
+  const { playlistBookmark } = usePlaylistBookmark(playlistId);
 
   const isAuthor = playlist.authorId === currentUserId;
 
@@ -40,7 +40,7 @@ export const PlaylistViewer = React.memo<{ playlistId: EntityId<"Playlist"> }>((
       />
       {isAuthor && <Button icon={<Add />} label="問題集を追加" onClick={onTogglePlaylistItemsDialog} />}
       {!isAuthor &&
-        (!playlistBookmarkId ? (
+        (!playlistBookmark ? (
           <Button icon={<Bookmark />} label="ブックマークに追加" onClick={onToggleUploadPlaylistBookmarkDialog} />
         ) : (
           <Button icon={<Bookmark />} label="ブックマークを解除" onClick={onToggleDeletePlaylistBookmarkDialog} />
@@ -65,9 +65,9 @@ export const PlaylistViewer = React.memo<{ playlistId: EntityId<"Playlist"> }>((
         isOpen={isUploadPlaylistBookmarkDialogOpen}
         onClose={onToggleUploadPlaylistBookmarkDialog}
       />
-      {playlistBookmarkId && (
+      {playlistBookmark && (
         <DeletePlaylistBookmarkDialog
-          playlistBookmarkId={playlistBookmarkId}
+          playlistBookmarkId={playlistBookmark.id}
           isOpen={isDeletePlaylistBookmarkDialogOpen}
           onClose={onToggleDeletePlaylistBookmarkDialog}
         />

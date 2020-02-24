@@ -15,6 +15,7 @@ export const usePlaylistItems = (playlistId: EntityId<"Playlist">, playlist: Pla
     sortedPlaylistItems,
     playlistItems,
     playlistItemCount: count,
+    onChangeOrder,
     onReloadPlaylistItems: onReload
   };
 };

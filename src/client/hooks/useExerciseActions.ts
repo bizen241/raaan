@@ -1,7 +1,6 @@
 import { useCallback } from "react";
-import { useSelector } from "react-redux";
 import { ExerciseSummary } from "../../shared/api/entities";
-import { RootState } from "../reducers";
+import { useBuffers } from "./useBuffers";
 import { useCurrentUser } from "./useCurrentUser";
 import { useEntity } from "./useEntity";
 import { useSearch } from "./useSearch";
@@ -13,7 +12,7 @@ export const useExerciseActions = (exerciseSummary: ExerciseSummary) => {
   const isGuest = currentUser.permission === "Guest";
   const isAuthor = authorId === currentUserId;
 
-  const { entityIds: voteIds, status: voteStatus, onReload: onReloadExerciseVotes } = useSearch(
+  const { entities: exerciseVotes, status: exerciseVotesStatus, onReload: onReloadExerciseVotes } = useSearch(
     "ExerciseVote",
     {
       voterId: currentUserId,
@@ -21,7 +20,11 @@ export const useExerciseActions = (exerciseSummary: ExerciseSummary) => {
     },
     !isGuest && !isAuthor
   );
-  const { entityIds: suggestionIds, status: suggestionStatus, onReload: onReloadSuggestionSummaries } = useSearch(
+  const {
+    entities: suggestionSummaries,
+    status: suggestionSummariesStatus,
+    onReload: onReloadSuggestionSummaries
+  } = useSearch(
     "SuggestionSummary",
     {
       authorId: currentUserId,
@@ -30,7 +33,7 @@ export const useExerciseActions = (exerciseSummary: ExerciseSummary) => {
     },
     !isGuest && !isAuthor
   );
-  const { entityIds: reportIds, status: reportStatus, onReload: onReloadReports } = useSearch(
+  const { entities: reportSummaries, status: reportSummariesStatus, onReload: onReloadReportSummaries } = useSearch(
     "ReportSummary",
     {
       reporterId: currentUserId,
@@ -39,8 +42,12 @@ export const useExerciseActions = (exerciseSummary: ExerciseSummary) => {
     },
     !isGuest && !isAuthor
   );
-  const { entityIds: objectionIds, status: objectionStatus, onReload: onReloadObjections } = useSearch(
-    "Objection",
+  const {
+    entities: objectionSummaries,
+    status: objectionSummariesStatus,
+    onReload: onReloadObjectionSummariess
+  } = useSearch(
+    "ObjectionSummary",
     {
       objectorId: currentUserId,
       targetId: exerciseId
@@ -48,32 +55,30 @@ export const useExerciseActions = (exerciseSummary: ExerciseSummary) => {
     exerciseSummary.isLocked
   );
 
-  const suggestionBuffers = useSelector((state: RootState) => state.buffers.Suggestion);
-  const objectionBuffers = useSelector((state: RootState) => state.buffers.Objection);
-  const reportBuffers = useSelector((state: RootState) => state.buffers.Report);
+  const exerciseVote = exerciseVotes[0];
+  const suggestionSummary = suggestionSummaries[0];
+  const reportSummary = reportSummaries[0];
+  const objectionSummary = objectionSummaries[0];
 
-  const voteId = voteIds[0];
-  const suggestionId =
-    suggestionIds[0] ||
-    Object.keys(suggestionBuffers).find(bufferId => {
-      const buffer = suggestionBuffers[bufferId];
+  const { bufferIds: suggestionBufferIds, bufferMap: suggestionBufferMap } = useBuffers("Suggestion");
+  const { bufferIds: reportBufferIds, bufferMap: reportBufferMap } = useBuffers("Report");
+  const { bufferIds: objectionBufferIds, bufferMap: objectionBufferMap } = useBuffers("Objection");
 
-      return buffer !== undefined && buffer.exerciseId === exerciseId;
-    });
-  const reportId =
-    reportIds[0] ||
-    Object.keys(reportBuffers).find(bufferId => {
-      const buffer = reportBuffers[bufferId];
+  const suggestionBufferId = suggestionBufferIds.find(bufferId => {
+    const buffer = suggestionBufferMap[bufferId];
 
-      return buffer !== undefined && buffer.targetId === exerciseId;
-    });
-  const objectionId =
-    objectionIds[0] ||
-    Object.keys(objectionBuffers).find(bufferId => {
-      const buffer = objectionBuffers[bufferId];
+    return buffer && buffer.exerciseId === exerciseId;
+  });
+  const reportBufferId = reportBufferIds.find(bufferId => {
+    const buffer = reportBufferMap[bufferId];
 
-      return buffer !== undefined && buffer.targetId === exerciseId;
-    });
+    return buffer && buffer.targetType === "Exercise" && buffer.targetId === exerciseId;
+  });
+  const objectionBufferId = objectionBufferIds.find(bufferId => {
+    const buffer = objectionBufferMap[bufferId];
+
+    return buffer && buffer.targetType === "Exercise" && buffer.targetId === exerciseId;
+  });
 
   const { onReload: onReloadExercise } = useEntity("Exercise", exerciseId);
 
@@ -81,16 +86,20 @@ export const useExerciseActions = (exerciseSummary: ExerciseSummary) => {
     onReloadExercise();
     onReloadExerciseVotes();
     onReloadSuggestionSummaries();
-    onReloadReports();
-    onReloadObjections();
+    onReloadReportSummaries();
+    onReloadObjectionSummariess();
   }, []);
 
   return {
-    isFetched: voteStatus === 200 && suggestionStatus === 200 && reportStatus === 200 && objectionStatus === 200,
-    voteId,
-    suggestionId,
-    reportId,
-    objectionId,
+    isFetched:
+      exerciseVotesStatus === 200 &&
+      suggestionSummariesStatus === 200 &&
+      reportSummariesStatus === 200 &&
+      objectionSummariesStatus === 200,
+    exerciseVoteId: exerciseVote && exerciseVote.id,
+    suggestionId: suggestionSummary ? suggestionSummary.suggestionId : suggestionBufferId,
+    reportId: reportSummary ? reportSummary.parentId : reportBufferId,
+    objectionId: objectionSummary ? objectionSummary.parentId : objectionBufferId,
     onReload
   };
 };

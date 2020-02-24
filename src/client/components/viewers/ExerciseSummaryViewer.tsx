@@ -55,7 +55,9 @@ export const ExerciseSummaryViewer = React.memo<{
   const [isConfirmReportDialogOpen, onToggleConfirmReportDialog] = useToggleState();
   const [isConfirmObjectionDialogOpen, onToggleConfirmObjectionDialog] = useToggleState();
 
-  const { isFetched, voteId, objectionId, suggestionId, reportId, onReload } = useExerciseActions(exerciseSummary);
+  const { isFetched, exerciseVoteId, objectionId, suggestionId, reportId, onReload } = useExerciseActions(
+    exerciseSummary
+  );
 
   return (
     <Card
@@ -88,7 +90,7 @@ export const ExerciseSummaryViewer = React.memo<{
         ) : (
           <Menu>
             {isFetched &&
-              (!voteId ? (
+              (!exerciseVoteId ? (
                 <MenuItem icon={<HowToVote />} label="投票する" onClick={onToggleUploadVoteDialog} />
               ) : (
                 <MenuItem icon={<HowToVote />} label="投票を取り消す" onClick={onToggleDeleteVoteDialog} />
@@ -149,9 +151,9 @@ export const ExerciseSummaryViewer = React.memo<{
         isOpen={isUploadVoteDialogOpen}
         onClose={onToggleUploadVoteDialog}
       />
-      {voteId && (
+      {exerciseVoteId && (
         <DeleteExerciseVoteDialog
-          exerciseVoteId={voteId}
+          exerciseVoteId={exerciseVoteId}
           isOpen={isDeleteVoteDialogOpen}
           onClose={onToggleDeleteVoteDialog}
         />

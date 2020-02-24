@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { PageProps } from "../components/project/Router";
 import { Column, IconButton, Menu, MenuItem, PageContent, PageHeader, Row } from "../components/ui";
 import { useCurrentUser } from "../hooks/useCurrentUser";
-import { useEntity } from "../hooks/useEntity";
 import { RootState } from "../reducers";
 
 export const createPage = () => (
@@ -20,7 +19,7 @@ export const createPage = () => (
     const { t } = useTranslation();
     const { currentUser } = useCurrentUser();
 
-    const { entity: currentUserSummary } = useEntity("UserSummary", currentUser.summaryId);
+    const currentUserSummary = useSelector((state: RootState) => state.cache.get.UserSummary[currentUser.summaryId]);
     const pathname = useSelector((state: RootState) => state.router.location.pathname);
 
     return (

@@ -5,13 +5,12 @@ import { useSearch } from "./useSearch";
 export const usePlaylistBookmark = (playlistId: EntityId<"Playlist">) => {
   const { currentUserId } = useCurrentUser();
 
-  const { entityIds: bookmarkIds } = useSearch("PlaylistBookmark", {
+  const { entities: playlistBookmarks } = useSearch("PlaylistBookmark", {
     userId: currentUserId,
     playlistId
   });
-  const playlistBookmarkId = bookmarkIds[0] as EntityId<"PlaylistBookmark"> | undefined;
 
   return {
-    playlistBookmarkId
+    playlistBookmark: playlistBookmarks[0]
   };
 };

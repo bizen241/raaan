@@ -14,7 +14,7 @@ export const PlaylistPlayer = createPlayerDialog<{
     const exerciseIds = useMemo(() => {
       const ids: string[] = [];
 
-      playlistItems.slice(startIndex).forEach(({ exerciseId }) => exerciseId && ids.push(exerciseId));
+      playlistItems.slice(startIndex).forEach(playlist => playlist.exerciseId && ids.push(playlist.exerciseId));
 
       return ids;
     }, []);

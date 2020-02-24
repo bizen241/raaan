@@ -27,18 +27,16 @@ export const PlaylistItemsViewer = React.memo<{
     <Card>
       <PlaylistItemsErrorBoundary onReload={onReload}>
         <Table>
-          {sortedPlaylistItems.map((playlistItem, index) => {
-            return (
-              <PlaylistItemViewer
-                key={playlistItem.id}
-                index={index}
-                playlistItem={playlistItem}
-                playlist={playlist}
-                sortedPlaylistItems={sortedPlaylistItems}
-                onPlay={onPartialPlay}
-              />
-            );
-          })}
+          {sortedPlaylistItems.map((playlistItem, index) => (
+            <PlaylistItemViewer
+              key={playlistItem.id}
+              index={index}
+              playlistItem={playlistItem}
+              playlist={playlist}
+              sortedPlaylistItems={sortedPlaylistItems}
+              onPlay={onPartialPlay}
+            />
+          ))}
         </Table>
         <PlaylistPlayer
           playlistItems={sortedPlaylistItems}
