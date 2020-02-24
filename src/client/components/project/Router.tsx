@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { useSelector } from "react-redux";
-import { Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { RootState } from "../../reducers";
 import { AppDiaryPage } from "../pages/app-diary-entries/AppDiaryPage";
 import { AppPage } from "../pages/app/AppPage";
@@ -97,7 +97,7 @@ import { EditUserPage } from "../pages/users/EditUserPage";
 import { UserPage } from "../pages/users/UserPage";
 import { UsersPage } from "../pages/users/UsersPage";
 
-export type PageProps = RouteComponentProps<{ id: string; name: string; secret: string }>;
+export type PathParams = { id: string; name: string; secret: string };
 
 const EditExercisePage = React.lazy(() => import("../pages/exercises/EditExercisePage"));
 const EditPlaylistPage = React.lazy(() => import("../pages/playlists/EditPlaylistPage"));

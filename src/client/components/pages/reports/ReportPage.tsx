@@ -1,14 +1,10 @@
 import React from "react";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
+import { createPage } from "../../../enhancers/createPage";
 import { ReportViewer } from "../../viewers/ReportViewer";
 
-export const ReportPage = React.memo<PageProps>(props => {
-  const reportId = props.match.params.id;
-
-  return (
-    <Page title="報告の詳細">
-      <ReportViewer entityId={reportId} />
-    </Page>
-  );
-});
+export const ReportPage = createPage<"Report">()(
+  React.memo(({ t }) => t("報告の詳細")),
+  React.memo(({ entityId: reportId }) => {
+    return <ReportViewer entityId={reportId} />;
+  })
+);

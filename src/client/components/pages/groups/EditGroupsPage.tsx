@@ -1,12 +1,10 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { GroupBufferList } from "../../lists/groups/GroupBufferList";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const EditGroupsPage = React.memo<PageProps>(() => {
-  return (
-    <Page title="未保存のグループ">
-      <GroupBufferList />
-    </Page>
-  );
-});
+export const EditGroupsPage = createPage()(
+  React.memo(({ t }) => t("未保存のグループ")),
+  React.memo(() => {
+    return <GroupBufferList />;
+  })
+);

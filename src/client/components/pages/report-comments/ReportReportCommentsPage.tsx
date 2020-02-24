@@ -1,7 +1,6 @@
 import { Comment } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { EntityId } from "../../../../shared/api/entities";
 import { createPage } from "../../../enhancers/createPage";
 import { useBuffers } from "../../../hooks/useBuffers";
 import { actions } from "../../../reducers";
@@ -10,11 +9,9 @@ import { ReportCommentEditor } from "../../editors/ReportCommentEditor";
 import { ReportCommentList } from "../../lists/report-comments/ReportCommentList";
 import { Button } from "../../ui";
 
-export const ReportReportCommentsPage = createPage()(
+export const ReportReportCommentsPage = createPage<"Report">()(
   React.memo(({ t }) => t("報告へのコメント")),
-  React.memo(props => {
-    const reportId = props.match.params.id as EntityId<"Report">;
-
+  React.memo(({ entityId: reportId }) => {
     const dispatch = useDispatch();
 
     const { bufferIds: reportCommentBufferIds, bufferMap: reportCommentBufferMap } = useBuffers("ReportComment");

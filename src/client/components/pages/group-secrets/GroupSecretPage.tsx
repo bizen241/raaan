@@ -1,13 +1,13 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { useEntity } from "../../../hooks/useEntity";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 import { GroupSecretViewer } from "../../viewers/GroupSecretViewer";
 
-export const GroupSecretPage = React.memo<PageProps>(props => {
-  const groupId = props.match.params.id;
+export const GroupSecretPage = createPage<"Group">()(
+  React.memo(({ t }) => t("リンクで招待")),
+  React.memo(({ entityId: groupId }) => {
+    const { entity: group } = useEntity("Group", groupId);
 
-  const { entity: group } = useEntity("Group", groupId);
-
-  return <Page title="リンクで招待">{group !== undefined && <GroupSecretViewer entityId={group.secretId} />}</Page>;
-});
+    return <GroupSecretViewer entityId={group.secretId} />;
+  })
+);

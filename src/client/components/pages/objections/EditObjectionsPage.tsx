@@ -1,12 +1,10 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { ObjectionBufferList } from "../../lists/objections/ObjectionBufferList";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const EditObjectionsPage = React.memo<PageProps>(() => {
-  return (
-    <Page title="未保存の抗議">
-      <ObjectionBufferList />
-    </Page>
-  );
-});
+export const EditObjectionsPage = createPage()(
+  React.memo(({ t }) => t("未保存の抗議")),
+  React.memo(() => {
+    return <ObjectionBufferList />;
+  })
+);

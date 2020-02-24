@@ -1,14 +1,10 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { ReportEditor } from "../../editors/ReportEditor";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const EditReportPage = React.memo<PageProps>(({ match }) => {
-  const reportId = match.params.id;
-
-  return (
-    <Page title="報告を編集中">
-      <ReportEditor bufferId={reportId} />
-    </Page>
-  );
-});
+export const EditReportPage = createPage<"Report">()(
+  React.memo(({ t }) => t("報告を編集中")),
+  React.memo(({ entityId: reportId }) => {
+    return <ReportEditor bufferId={reportId} />;
+  })
+);

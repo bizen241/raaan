@@ -1,19 +1,17 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { UserEditor } from "../../editors/UserEditor";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const EditUserPage = React.memo<PageProps>(props => {
-  const userId = props.match.params.id;
+export const EditUserPage = createPage<"User">()(
+  React.memo(({ entityId: userId, t }) => {
+    const { currentUserId } = useCurrentUser();
 
-  const { currentUserId } = useCurrentUser();
+    const isOwn = currentUserId === userId;
 
-  const isOwn = userId === currentUserId;
-
-  return (
-    <Page title={isOwn ? "プロフィールの設定" : "ユーザーの編集"}>
-      <UserEditor bufferId={userId} />
-    </Page>
-  );
-});
+    return isOwn ? t("プロフィールの設定") : t("ユーザーの編集");
+  }),
+  React.memo(({ entityId: userId }) => {
+    return <UserEditor bufferId={userId} />;
+  })
+);

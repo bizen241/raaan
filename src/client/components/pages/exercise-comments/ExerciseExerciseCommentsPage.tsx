@@ -11,16 +11,14 @@ import { ExerciseCommentList } from "../../lists/exercise-comments/ExerciseComme
 import { Loading } from "../../project/Loading";
 import { Button } from "../../ui";
 
-export const ExerciseExerciseCommentsPage = createPage()(
+export const ExerciseExerciseCommentsPage = createPage<"Exercise">()(
   React.memo(({ t }) => t("問題集へのコメント")),
-  React.memo(props => {
-    const exerciseId = props.match.params.id;
-
+  React.memo(({ entityId: exerciseId }) => {
     const dispatch = useDispatch();
 
-    const exerciseCommentBuffers = useBuffers("ExerciseComment");
-    const exerciseCommentId = Object.keys(exerciseCommentBuffers).find(bufferId => {
-      const buffer = exerciseCommentBuffers[bufferId];
+    const { bufferIds: exerciseCommentBufferIds, bufferMap: exerciseCommentBufferMap } = useBuffers("ExerciseComment");
+    const exerciseCommentId = exerciseCommentBufferIds.find(bufferId => {
+      const buffer = exerciseCommentBufferMap[bufferId];
 
       return buffer !== undefined && buffer.targetId === exerciseId;
     });

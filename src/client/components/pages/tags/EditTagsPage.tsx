@@ -1,12 +1,10 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { TagBufferList } from "../../lists/tags/TagBufferList";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const EditTagsPage = React.memo<PageProps>(() => {
-  return (
-    <Page title="未保存のタグ">
-      <TagBufferList />
-    </Page>
-  );
-});
+export const EditTagsPage = createPage()(
+  React.memo(({ t }) => t("未保存のタグ")),
+  React.memo(() => {
+    return <TagBufferList />;
+  })
+);

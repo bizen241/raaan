@@ -5,16 +5,24 @@ import { TFunction } from "i18next";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { PageProps } from "../components/project/Router";
+import { RouteComponentProps } from "react-router";
+import { EntityId, EntityType } from "../../shared/api/entities";
+import { PathParams } from "../components/project/Router";
 import { Column, IconButton, Menu, MenuItem, PageContent, PageHeader, Row } from "../components/ui";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { RootState } from "../reducers";
 
-export const createPage = () => (
-  TitleComponent: React.ComponentType<PageProps & { t: TFunction }>,
-  BodyComponent: React.ComponentType<PageProps & { t: TFunction }>
+type PageProps<T extends EntityType> = {
+  entityId: EntityId<T>;
+  name: string;
+  secret: string;
+};
+
+export const createPage = <T extends EntityType>() => (
+  TitleComponent: React.ComponentType<PageProps<T> & { t: TFunction }>,
+  BodyComponent: React.ComponentType<PageProps<T> & { t: TFunction }>
 ) =>
-  React.memo<PageProps>(props => {
+  React.memo<RouteComponentProps<PathParams>>(props => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const { currentUser } = useCurrentUser();
@@ -22,12 +30,14 @@ export const createPage = () => (
     const currentUserSummary = useSelector((state: RootState) => state.cache.get.UserSummary[currentUser.summaryId]);
     const pathname = useSelector((state: RootState) => state.router.location.pathname);
 
+    const { id: entityId, name, secret } = props.match.params;
+
     return (
       <Column alignItems="center" width="100%" position="absolute" top={0} left={0}>
         <PageHeader>
           <IconButton icon={ArrowBack} onClick={useCallback(() => dispatch(goBack()), [])} />
           <Typography component="span">
-            <TitleComponent {...props} t={t} />
+            <TitleComponent entityId={entityId as EntityId<T>} name={name} secret={secret} t={t} />
           </Typography>
           <Row flex={1} />
           <Menu
@@ -52,7 +62,7 @@ export const createPage = () => (
           </Menu>
         </PageHeader>
         <PageContent>
-          <BodyComponent {...props} t={t} />
+          <BodyComponent entityId={entityId as EntityId<T>} name={name} secret={secret} t={t} />
         </PageContent>
       </Column>
     );

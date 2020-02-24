@@ -1,7 +1,6 @@
 import { Comment } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { EntityId } from "../../../../shared/api/entities";
 import { createPage } from "../../../enhancers/createPage";
 import { useBuffers } from "../../../hooks/useBuffers";
 import { actions } from "../../../reducers";
@@ -10,11 +9,9 @@ import { ObjectionCommentEditor } from "../../editors/ObjectionCommentEditor";
 import { ObjectionCommentList } from "../../lists/objection-comments/ObjectionCommentList";
 import { Button } from "../../ui";
 
-export const ObjectionObjectionCommentsPage = createPage()(
+export const ObjectionObjectionCommentsPage = createPage<"Objection">()(
   React.memo(({ t }) => t("抗議へのコメント")),
-  React.memo(props => {
-    const objectionId = props.match.params.id as EntityId<"Objection">;
-
+  React.memo(({ entityId: objectionId }) => {
     const dispatch = useDispatch();
 
     const { bufferIds: objectionCommentBufferIds, bufferMap: objectionCommentBufferMap } = useBuffers(

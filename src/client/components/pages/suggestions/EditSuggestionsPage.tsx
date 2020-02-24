@@ -1,12 +1,10 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { SuggestionBufferList } from "../../lists/suggestions/SuggestionBufferList";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const EditSuggestionsPage = React.memo<PageProps>(() => {
-  return (
-    <Page title="未保存の提案">
-      <SuggestionBufferList />
-    </Page>
-  );
-});
+export const EditSuggestionsPage = createPage()(
+  React.memo(({ t }) => t("未保存の提案")),
+  React.memo(() => {
+    return <SuggestionBufferList />;
+  })
+);

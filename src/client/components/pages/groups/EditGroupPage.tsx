@@ -1,14 +1,10 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { GroupEditor } from "../../editors/GroupEditor";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const EditGroupPage = React.memo<PageProps>(({ match }) => {
-  const groupId = match.params.id;
-
-  return (
-    <Page title="グループを編集中">
-      <GroupEditor bufferId={groupId} />
-    </Page>
-  );
-});
+export const EditGroupPage = createPage<"Group">()(
+  React.memo(({ t }) => t("グループを編集中")),
+  React.memo(({ entityId: groupId }) => {
+    return <GroupEditor bufferId={groupId} />;
+  })
+);

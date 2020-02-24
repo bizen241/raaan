@@ -1,10 +1,11 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { UserSummaryList } from "../../lists/user-summaries/UserSummaryList";
-import { Page } from "../../project/Page";
 
-export const UsersPage = React.memo(() => {
-  return (
-    <Page title="ユーザーを探す">
+export const UsersPage = createPage()(
+  React.memo(({ t }) => t("ユーザーを探す")),
+  React.memo(() => {
+    return (
       <UserSummaryList
         initialParams={{
           searchLimit: 10,
@@ -12,6 +13,6 @@ export const UsersPage = React.memo(() => {
           searchOrder: "DESC"
         }}
       />
-    </Page>
-  );
-});
+    );
+  })
+);

@@ -1,19 +1,16 @@
 import React from "react";
-import { EntityId } from "../../../../shared/api/entities";
+import { createPage } from "../../../enhancers/createPage";
 import { UserFollowerList } from "../../lists/user-follows/UserFollowerList";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const UserFollowersPage = React.memo<PageProps>(({ match }) => {
-  const userId = match.params.id as EntityId<"User">;
-
-  return (
-    <Page title="ユーザーのフォロワー">
+export const UserFollowersPage = createPage<"User">()(
+  React.memo(({ t }) => t("ユーザーのフォロワー")),
+  React.memo(({ entityId: userId }) => {
+    return (
       <UserFollowerList
         initialParams={{
           targetId: userId
         }}
       />
-    </Page>
-  );
-});
+    );
+  })
+);

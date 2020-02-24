@@ -1,14 +1,10 @@
 import React from "react";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
+import { createPage } from "../../../enhancers/createPage";
 import { ObjectionViewer } from "../../viewers/ObjectionViewer";
 
-export const ObjectionPage = React.memo<PageProps>(props => {
-  const objectionId = props.match.params.id;
-
-  return (
-    <Page title="抗議の詳細">
-      <ObjectionViewer entityId={objectionId} />
-    </Page>
-  );
-});
+export const ObjectionPage = createPage<"Objection">()(
+  React.memo(({ t }) => t("抗議の詳細")),
+  React.memo(({ entityId: objectionId }) => {
+    return <ObjectionViewer entityId={objectionId} />;
+  })
+);

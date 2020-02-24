@@ -1,18 +1,19 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { UserSessionList } from "../../lists/user-sessions/UserSessionList";
-import { Page } from "../../project/Page";
 
-export const UserSessionsPage = () => {
-  const { currentUserId } = useCurrentUser();
+export const UserSessionsPage = createPage()(
+  React.memo(({ t }) => t("セッション一覧")),
+  React.memo(() => {
+    const { currentUserId } = useCurrentUser();
 
-  return (
-    <Page title="セッション一覧">
+    return (
       <UserSessionList
         initialParams={{
           userId: currentUserId
         }}
       />
-    </Page>
-  );
-};
+    );
+  })
+);

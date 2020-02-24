@@ -1,16 +1,10 @@
 import React from "react";
-import { EntityId } from "../../../../shared/api/entities";
+import { createPage } from "../../../enhancers/createPage";
 import { GroupApplicationEditor } from "../../editors/GroupApplicationEditor";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const GroupApplicationPage = React.memo<PageProps>(props => {
-  const groupId = props.match.params.id as EntityId<"Group">;
-  const secret = props.match.params.secret;
-
-  return (
-    <Page title="グループへの参加を申請">
-      <GroupApplicationEditor groupId={groupId} groupSecretValue={secret} />
-    </Page>
-  );
-});
+export const GroupApplicationPage = createPage<"Group">()(
+  React.memo(({ t }) => t("グループへの参加を申請")),
+  React.memo(({ entityId: groupId, secret }) => {
+    return <GroupApplicationEditor groupId={groupId} groupSecretValue={secret} />;
+  })
+);

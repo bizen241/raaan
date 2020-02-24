@@ -1,19 +1,16 @@
 import React from "react";
-import { EntityId } from "../../../../shared/api/entities";
+import { createPage } from "../../../enhancers/createPage";
 import { ReportSummaryList } from "../../lists/report-summaries/ReportSummaryList";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const UserUploadedReportsPage = React.memo<PageProps>(props => {
-  const userId = props.match.params.id as EntityId<"User">;
-
-  return (
-    <Page title="送信した報告">
+export const UserUploadedReportsPage = createPage<"User">()(
+  React.memo(({ t }) => t("送信した報告")),
+  React.memo(({ entityId: userId }) => {
+    return (
       <ReportSummaryList
         initialParams={{
           reporterId: userId
         }}
       />
-    </Page>
-  );
-});
+    );
+  })
+);

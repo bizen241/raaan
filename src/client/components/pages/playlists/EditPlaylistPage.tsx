@@ -1,16 +1,12 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { PlaylistEditor } from "../../editors/PlaylistEditor";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-const EditPlaylistPage = React.memo<PageProps>(({ match }) => {
-  const playlistId = match.params.id;
-
-  return (
-    <Page title="プレイリストを編集中">
-      <PlaylistEditor bufferId={playlistId} />
-    </Page>
-  );
-});
+const EditPlaylistPage = createPage<"Playlist">()(
+  React.memo(({ t }) => t("プレイリストを編集中")),
+  React.memo(({ entityId: playlistId }) => {
+    return <PlaylistEditor bufferId={playlistId} />;
+  })
+);
 
 export default EditPlaylistPage;

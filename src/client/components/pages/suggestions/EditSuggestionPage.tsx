@@ -1,16 +1,12 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { SuggestionEditor } from "../../editors/SuggestionEditor";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-const EditSuggestionPage = React.memo<PageProps>(({ match }) => {
-  const suggestionId = match.params.id;
-
-  return (
-    <Page title="提案を編集中">
-      <SuggestionEditor bufferId={suggestionId} />
-    </Page>
-  );
-});
+const EditSuggestionPage = createPage<"Suggestion">()(
+  React.memo(({ t }) => t("提案を編集中")),
+  React.memo(({ entityId: suggestionId }) => {
+    return <SuggestionEditor bufferId={suggestionId} />;
+  })
+);
 
 export default EditSuggestionPage;

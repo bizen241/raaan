@@ -1,14 +1,10 @@
 import React from "react";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
+import { createPage } from "../../../enhancers/createPage";
 import { SuggestionViewer } from "../../viewers/SuggestionViewer";
 
-export const SuggestionPage = React.memo<PageProps>(props => {
-  const suggestionId = props.match.params.id;
-
-  return (
-    <Page title="提案の詳細">
-      <SuggestionViewer entityId={suggestionId} />
-    </Page>
-  );
-});
+export const SuggestionPage = createPage<"Suggestion">()(
+  React.memo(({ t }) => t("提案の詳細")),
+  React.memo(({ entityId: suggestionId }) => {
+    return <SuggestionViewer entityId={suggestionId} />;
+  })
+);

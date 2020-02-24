@@ -1,18 +1,19 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { UserGroupInvitationList } from "../../lists/group-invitations/UserGroupInvitationList";
-import { Page } from "../../project/Page";
 
-export const UserGroupInvitationsPage = () => {
-  const { currentUserId } = useCurrentUser();
+export const UserGroupInvitationsPage = createPage()(
+  React.memo(({ t }) => t("招待一覧")),
+  React.memo(() => {
+    const { currentUserId } = useCurrentUser();
 
-  return (
-    <Page title="招待一覧">
+    return (
       <UserGroupInvitationList
         initialParams={{
           targetId: currentUserId
         }}
       />
-    </Page>
-  );
-};
+    );
+  })
+);

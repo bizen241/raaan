@@ -1,12 +1,10 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { PlaylistBufferList } from "../../lists/playlists/PlaylistBufferList";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const EditPlaylistsPage = React.memo<PageProps>(() => {
-  return (
-    <Page title="未保存のプレイリスト">
-      <PlaylistBufferList />
-    </Page>
-  );
-});
+export const EditPlaylistsPage = createPage()(
+  React.memo(({ t }) => t("未保存のプレイリスト")),
+  React.memo(() => {
+    return <PlaylistBufferList />;
+  })
+);

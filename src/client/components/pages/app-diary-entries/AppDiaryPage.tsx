@@ -1,12 +1,10 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { AppDiaryGraph } from "../../graphs/AppDiaryGraph";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const AppDiaryPage = React.memo<PageProps>(() => {
-  return (
-    <Page title="アプリの記録">
-      <AppDiaryGraph />
-    </Page>
-  );
-});
+export const AppDiaryPage = createPage()(
+  React.memo(({ t }) => t("アプリの記録")),
+  React.memo(() => {
+    return <AppDiaryGraph />;
+  })
+);

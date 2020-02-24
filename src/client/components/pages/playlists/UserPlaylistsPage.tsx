@@ -1,26 +1,30 @@
 import { Bookmarks, Edit } from "@material-ui/icons";
 import React from "react";
-import { EntityId } from "../../../../shared/api/entities";
+import { createPage } from "../../../enhancers/createPage";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { PlaylistSummaryList } from "../../lists/playlist-summaries/PlaylistSummaryList";
 import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 import { Button, Column } from "../../ui";
 
-export const UserPlaylistsPage = React.memo<PageProps>(({ match }) => {
-  const userId = match.params.id as EntityId<"User">;
+export const UserPlaylistsPage = createPage<"User">()(
+  React.memo(({ entityId: userId, t }) => {
+    const { currentUserId } = useCurrentUser();
+    const isOwn = currentUserId === userId;
 
-  const { currentUserId } = useCurrentUser();
+    return isOwn ? t("自分のプレイリスト") : t("ユーザーのプレイリスト");
+  }),
+  React.memo(({ entityId: userId }) => {
+    const { currentUserId } = useCurrentUser();
+    const isOwn = userId === currentUserId;
 
-  const isOwn = userId === currentUserId;
-
-  return (
-    <Page title={userId === currentUserId ? "自分のプレイリスト" : "ユーザーのプレイリスト"}>
-      {isOwn && <Button icon={<Edit />} label="編集中のプレイリスト" to={`/playlists/edit`} />}
-      {isOwn && <Button icon={<Bookmarks />} label="ブックマーク" to={`/users/${userId}/bookmarks`} />}
-      <Column pb={1}>
-        <PlaylistSummaryList initialParams={{ authorId: userId }} />
-      </Column>
-    </Page>
-  );
-});
+    return (
+      <Page title={userId === currentUserId ? "自分のプレイリスト" : "ユーザーのプレイリスト"}>
+        {isOwn && <Button icon={<Edit />} label="編集中のプレイリスト" to={`/playlists/edit`} />}
+        {isOwn && <Button icon={<Bookmarks />} label="ブックマーク" to={`/users/${userId}/bookmarks`} />}
+        <Column pb={1}>
+          <PlaylistSummaryList initialParams={{ authorId: userId }} />
+        </Column>
+      </Page>
+    );
+  })
+);

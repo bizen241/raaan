@@ -1,19 +1,16 @@
 import React from "react";
-import { EntityId } from "../../../../shared/api/entities";
+import { createPage } from "../../../enhancers/createPage";
 import { ObjectionSummaryList } from "../../lists/objection-summaries/ObjectionSummaryList";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const UserObjectionsPage = React.memo<PageProps>(props => {
-  const userId = props.match.params.id as EntityId<"User">;
-
-  return (
-    <Page title="ユーザーの抗議一覧">
+export const UserObjectionsPage = createPage<"User">()(
+  React.memo(({ t }) => t("ユーザーの抗議一覧")),
+  React.memo(({ entityId: userId }) => {
+    return (
       <ObjectionSummaryList
         initialParams={{
           objectorId: userId
         }}
       />
-    </Page>
-  );
-});
+    );
+  })
+);

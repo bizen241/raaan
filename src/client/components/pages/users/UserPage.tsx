@@ -1,20 +1,16 @@
 import React from "react";
-import { EntityId } from "../../../../shared/api/entities";
+import { createPage } from "../../../enhancers/createPage";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 import { UserViewer } from "../../viewers/UserViewer";
 
-export const UserPage = React.memo<PageProps>(props => {
-  const userId = props.match.params.id as EntityId<"User">;
+export const UserPage = createPage<"User">()(
+  React.memo(({ entityId: userId, t }) => {
+    const { currentUserId } = useCurrentUser();
+    const isOwn = currentUserId === userId;
 
-  const { currentUserId } = useCurrentUser();
-
-  const isOwn = userId === currentUserId;
-
-  return (
-    <Page title={isOwn ? "マイページ" : "ユーザーの詳細"}>
-      <UserViewer userId={userId} />
-    </Page>
-  );
-});
+    return isOwn ? t("マイページ") : t("ユーザーの詳細");
+  }),
+  React.memo(({ entityId: userId }) => {
+    return <UserViewer userId={userId} />;
+  })
+);

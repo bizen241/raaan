@@ -1,14 +1,10 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { TagEditor } from "../../editors/TagEditor";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const EditTagPage = React.memo<PageProps>(({ match }) => {
-  const tagId = match.params.id;
-
-  return (
-    <Page title="タグを編集中">
-      <TagEditor bufferId={tagId} />
-    </Page>
-  );
-});
+export const EditTagPage = createPage<"Tag">()(
+  React.memo(({ t }) => t("タグを編集中")),
+  React.memo(({ entityId: tagId }) => {
+    return <TagEditor bufferId={tagId} />;
+  })
+);

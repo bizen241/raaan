@@ -1,12 +1,10 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { ReportBufferList } from "../../lists/reports/ReportBufferList";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const EditReportsPage = React.memo<PageProps>(() => {
-  return (
-    <Page title="未保存の報告">
-      <ReportBufferList />
-    </Page>
-  );
-});
+export const EditReportsPage = createPage()(
+  React.memo(({ t }) => t("未保存の報告")),
+  React.memo(() => {
+    return <ReportBufferList />;
+  })
+);

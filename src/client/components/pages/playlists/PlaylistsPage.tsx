@@ -1,25 +1,28 @@
 import { Bookmarks, Person } from "@material-ui/icons";
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { PlaylistSummaryList } from "../../lists/playlist-summaries/PlaylistSummaryList";
-import { Page } from "../../project/Page";
 import { Button } from "../../ui";
 
-export const PlaylistsPage = React.memo(() => {
-  const { currentUserId } = useCurrentUser();
+export const PlaylistsPage = createPage()(
+  React.memo(({ t }) => t("プレイリストを探す")),
+  React.memo(() => {
+    const { currentUserId } = useCurrentUser();
 
-  return (
-    <Page title="プレイリストを探す">
-      <Button icon={<Person />} label="自分のプレイリスト" to={`/users/${currentUserId}/playlists`} />
-      <Button icon={<Bookmarks />} label="ブックマーク" to={`/users/${currentUserId}/bookmarks`} />
-      <PlaylistSummaryList
-        initialParams={{
-          searchLimit: 10,
-          searchOffset: 0,
-          searchSort: "createdAt",
-          searchOrder: "DESC"
-        }}
-      />
-    </Page>
-  );
-});
+    return (
+      <>
+        <Button icon={<Person />} label="自分のプレイリスト" to={`/users/${currentUserId}/playlists`} />
+        <Button icon={<Bookmarks />} label="ブックマーク" to={`/users/${currentUserId}/bookmarks`} />
+        <PlaylistSummaryList
+          initialParams={{
+            searchLimit: 10,
+            searchOffset: 0,
+            searchSort: "createdAt",
+            searchOrder: "DESC"
+          }}
+        />
+      </>
+    );
+  })
+);

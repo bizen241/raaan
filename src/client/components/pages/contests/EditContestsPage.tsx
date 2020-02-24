@@ -1,12 +1,10 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { ContestBufferList } from "../../lists/contests/ContestBufferList";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const EditContestsPage = React.memo<PageProps>(() => {
-  return (
-    <Page title="未保存のセッション">
-      <ContestBufferList />
-    </Page>
-  );
-});
+export const EditContestsPage = createPage()(
+  React.memo(({ t }) => t("未保存のセッション")),
+  React.memo(() => {
+    return <ContestBufferList />;
+  })
+);

@@ -1,11 +1,10 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { ReportSummaryList } from "../../lists/report-summaries/ReportSummaryList";
-import { Page } from "../../project/Page";
 
-export const ReportsPage = React.memo(() => {
-  return (
-    <Page title="報告一覧">
-      <ReportSummaryList initialParams={{}} />
-    </Page>
-  );
-});
+export const ReportsPage = createPage()(
+  React.memo(({ t }) => t("報告一覧")),
+  React.memo(() => {
+    return <ReportSummaryList initialParams={{}} />;
+  })
+);

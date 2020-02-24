@@ -1,14 +1,10 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { UserDiaryGraph } from "../../graphs/UserDiaryGraph";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const UserDiaryPage = React.memo<PageProps>(props => {
-  const userId = props.match.params.id;
-
-  return (
-    <Page title="ユーザーの記録">
-      <UserDiaryGraph entityId={userId} />
-    </Page>
-  );
-});
+export const UserDiaryPage = createPage<"User">()(
+  React.memo(({ t }) => t("ユーザーの記録")),
+  React.memo(({ entityId: userId }) => {
+    return <UserDiaryGraph entityId={userId} />;
+  })
+);

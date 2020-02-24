@@ -1,18 +1,16 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { GroupGroupInvitationList } from "../../lists/group-invitations/GroupGroupInvitationList";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const GroupGroupInvitationsPage = React.memo<PageProps>(props => {
-  const groupId = props.match.params.id;
-
-  return (
-    <Page title="招待一覧">
+export const GroupGroupInvitationsPage = createPage<"Group">()(
+  React.memo(({ t }) => t("招待一覧")),
+  React.memo(({ entityId: groupId }) => {
+    return (
       <GroupGroupInvitationList
         initialParams={{
           groupId
         }}
       />
-    </Page>
-  );
-});
+    );
+  })
+);

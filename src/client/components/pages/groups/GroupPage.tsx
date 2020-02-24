@@ -1,14 +1,10 @@
 import React from "react";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
+import { createPage } from "../../../enhancers/createPage";
 import { GroupViewer } from "../../viewers/GroupViewer";
 
-export const GroupPage = React.memo<PageProps>(props => {
-  const groupId = props.match.params.id;
-
-  return (
-    <Page title="グループの詳細">
-      <GroupViewer entityId={groupId} />
-    </Page>
-  );
-});
+export const GroupPage = createPage<"Group">()(
+  React.memo(({ t }) => t("グループの詳細")),
+  React.memo(({ entityId: groupId }) => {
+    return <GroupViewer entityId={groupId} />;
+  })
+);

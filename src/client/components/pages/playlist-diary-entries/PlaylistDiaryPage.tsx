@@ -1,14 +1,10 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { PlaylistDiaryGraph } from "../../graphs/PlaylistDiaryGraph";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-export const PlaylistDiaryPage = React.memo<PageProps>(props => {
-  const playlistId = props.match.params.id;
-
-  return (
-    <Page title="プレイリストの記録">
-      <PlaylistDiaryGraph entityId={playlistId} />
-    </Page>
-  );
-});
+export const PlaylistDiaryPage = createPage<"Playlist">()(
+  React.memo(({ t }) => t("プレイリストの記録")),
+  React.memo(({ entityId: playlistId }) => {
+    return <PlaylistDiaryGraph entityId={playlistId} />;
+  })
+);

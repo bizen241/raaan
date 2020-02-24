@@ -1,23 +1,19 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { withEntity } from "../../../enhancers/withEntity";
 import { isLocalOnly } from "../../../reducers/api";
 import { ExerciseDraftEditor } from "../../editors/ExerciseDraftEditor";
-import { Page } from "../../project/Page";
-import { PageProps } from "../../project/Router";
 
-const EditExercisePage = React.memo<PageProps>(({ match }) => {
-  const bufferId = match.params.id;
-
-  return (
-    <Page title="問題集を編集中">
-      {isLocalOnly(bufferId) ? (
-        <ExerciseDraftEditor bufferId={bufferId} />
-      ) : (
-        <EditExercisePageContent entityId={bufferId} />
-      )}
-    </Page>
-  );
-});
+const EditExercisePage = createPage<"Exercise">()(
+  React.memo(({ t }) => t("問題集を編集中")),
+  React.memo(({ entityId: exerciseBufferId }) => {
+    return isLocalOnly(exerciseBufferId) ? (
+      <ExerciseDraftEditor bufferId={exerciseBufferId} />
+    ) : (
+      <EditExercisePageContent entityId={exerciseBufferId} />
+    );
+  })
+);
 
 const EditExercisePageContent = withEntity("Exercise")(
   React.memo(({ entity: exercise }) => {

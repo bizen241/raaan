@@ -1,11 +1,10 @@
 import React from "react";
+import { createPage } from "../../../enhancers/createPage";
 import { ObjectionSummaryList } from "../../lists/objection-summaries/ObjectionSummaryList";
-import { Page } from "../../project/Page";
 
-export const ObjectionsPage = React.memo(() => {
-  return (
-    <Page title="抗議一覧">
-      <ObjectionSummaryList initialParams={{}} />
-    </Page>
-  );
-});
+export const ObjectionsPage = createPage()(
+  React.memo(({ t }) => t("抗議一覧")),
+  React.memo(() => {
+    return <ObjectionSummaryList initialParams={{}} />;
+  })
+);
