@@ -22,10 +22,10 @@ import { EditContestsPage } from "../pages/contests/EditContestsPage";
 import { GroupContestsPage } from "../pages/contests/GroupContestsPage";
 import { ExerciseExerciseCommentsPage } from "../pages/exercise-comments/ExerciseExerciseCommentsPage";
 import { ExerciseDiaryPage } from "../pages/exercise-diary-entries/ExerciseDiaryPage";
+import { EditExerciseDraftsPage } from "../pages/exercise-drafts/EditExerciseDraftsPage";
 import { UserExerciseDraftsPage } from "../pages/exercise-drafts/UserExerciseDraftsPage";
 import { UserDownVotesPage } from "../pages/exercise-votes/UserDownVotesPage";
 import { UserUpVotesPage } from "../pages/exercise-votes/UserUpVotesPage";
-import { EditExerciseDraftsPage } from "../pages/exercises/EditExercisesPage";
 import { ExercisePage } from "../pages/exercises/ExercisePage";
 import { ExercisesPage } from "../pages/exercises/ExercisesPage";
 import { UserExercisesPage } from "../pages/exercises/UserExercisesPage";
@@ -99,7 +99,7 @@ import { UsersPage } from "../pages/users/UsersPage";
 
 export type PathParams = { id: string; name: string; secret: string };
 
-const EditExerciseDraftPage = React.lazy(() => import("../pages/exercises/EditExercisePage"));
+const EditExerciseDraftPage = React.lazy(() => import("../pages/exercise-drafts/EditExerciseDraftPage"));
 const EditPlaylistPage = React.lazy(() => import("../pages/playlists/EditPlaylistPage"));
 const EditSuggestionPage = React.lazy(() => import("../pages/suggestions/EditSuggestionPage"));
 
