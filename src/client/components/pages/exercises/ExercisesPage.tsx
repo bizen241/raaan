@@ -1,9 +1,10 @@
 import { Edit, Person } from "@material-ui/icons";
 import React from "react";
-import { useLocation } from "react-router";
-import { parseParams } from "../../../api/request/search";
+import { ExerciseSummary } from "../../../../shared/api/entities";
+import { Params } from "../../../../shared/api/request/params";
 import { createPage } from "../../../enhancers/createPage";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
+import { useQuery } from "../../../hooks/useQuery";
 import { ExerciseSummaryList } from "../../lists/exercise-summaries/ExerciseSummaryList";
 import { Button } from "../../ui";
 
@@ -12,8 +13,11 @@ export const ExercisesPage = createPage()(
   React.memo(() => {
     const { currentUserId } = useCurrentUser();
 
-    const location = useLocation();
-    const params = parseParams("ExerciseSummary", location.search);
+    const query = useQuery<ExerciseSummary>();
+    const params: Params<ExerciseSummary> = {
+      tags: query.tags,
+      title: query.title
+    };
 
     return (
       <>
