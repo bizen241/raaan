@@ -3,6 +3,7 @@ import { PersonAdd } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { actions } from "../../../reducers";
@@ -10,8 +11,8 @@ import { generateBufferId } from "../../../reducers/buffers";
 import { Button, Card } from "../../ui";
 
 export const UploadGroupMemberDialog = createDialog<{
-  groupId: string;
-  groupInvitationId: string;
+  groupId: EntityId<"Group">;
+  groupInvitationId: EntityId<"GroupInvitation">;
 }>()(
   React.memo(({ t }) => t("グループに参加")),
   React.memo(({ groupId, groupInvitationId }) => {

@@ -1,7 +1,7 @@
 import { Checkbox, TableCell, TableRow, Typography } from "@material-ui/core";
-import { createContext, useCallback, useContext } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
 import { useSearch } from "../../../hooks/useSearch";
@@ -10,15 +10,14 @@ import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { Column } from "../../ui";
 
-export const GroupContext = createContext<string | undefined>(undefined);
-
-export const ToggleGroupInvitationList = createEntityList("UserFollow")(
-  React.memo(({ entity: { followerSummaryId } }) => {
+export const ToggleGroupInvitationList = createEntityList<
+  "UserFollow",
+  {
+    groupId: EntityId<"Group">;
+  }
+>("UserFollow")(
+  React.memo(({ entity: { followerSummaryId }, groupId }) => {
     const dispatch = useDispatch();
-    const groupId = useContext(GroupContext);
-    if (groupId === undefined) {
-      throw new Error("groupId is not defined");
-    }
 
     const [isRequested, toggleRequestState] = useToggleState();
 

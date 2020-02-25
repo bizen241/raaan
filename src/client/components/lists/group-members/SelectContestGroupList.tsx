@@ -3,7 +3,7 @@ import { Refresh } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { GroupMember } from "../../../../shared/api/entities";
+import { EntityId, GroupMember } from "../../../../shared/api/entities";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useEntity } from "../../../hooks/useEntity";
 import { useSearch } from "../../../hooks/useSearch";
@@ -12,7 +12,7 @@ import { generateBufferId } from "../../../reducers/buffers";
 import { Card, Column, IconButton, Row, Table } from "../../ui";
 
 export const SelectContestGroupList = React.memo<{
-  exerciseId: string;
+  exerciseId: EntityId<"Exercise">;
 }>(({ exerciseId }) => {
   const { currentUserId } = useCurrentUser();
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ export const SelectContestGroupList = React.memo<{
   });
   const selectableGroups = groupMembers.filter(groupMember => groupMember.permission !== "read");
 
-  const onSelect = useCallback((groupId: string) => {
+  const onSelect = useCallback((groupId: EntityId<"Group">) => {
     const bufferId = generateBufferId();
 
     dispatch(
@@ -62,7 +62,7 @@ export const SelectContestGroupList = React.memo<{
 
 const SelectContestGroupListItem = React.memo<{
   groupMember: GroupMember;
-  onSelect: (groupId: string) => void;
+  onSelect: (groupId: EntityId<"Group">) => void;
   onReload: () => void;
 }>(({ groupMember, onSelect, onReload }) => {
   const { entity: groupSummary } = useEntity("GroupSummary", groupMember.groupSummaryId);

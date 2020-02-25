@@ -1,6 +1,5 @@
 import { EntityObject, EntityType, EntityTypeToEntity } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
-import { parseQuery, SearchQuery } from "../../../shared/api/request/parse";
 
 export const stringifyParams = <E extends EntityObject>(params: Params<E>, excludePaginationParams?: boolean) => {
   const urlSearchParams = new URLSearchParams();

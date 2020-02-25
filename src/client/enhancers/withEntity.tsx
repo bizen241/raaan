@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
+import { EntityId, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { useEntity } from "../hooks/useEntity";
 
-interface BaseComponentProps<E extends EntityObject> {
-  entityId: string;
-  entity: E;
+interface BaseComponentProps<T extends EntityType> {
+  entityId: EntityId<T>;
+  entity: EntityTypeToEntity[T];
   onReload: () => void;
 }
 
 export const withEntity = <T extends EntityType>(entityType: T) => (
-  BaseComponent: React.ComponentType<BaseComponentProps<EntityTypeToEntity[T]>>
+  BaseComponent: React.ComponentType<BaseComponentProps<T>>
 ) =>
-  React.memo<{ entityId: string }>(({ entityId }) => {
+  React.memo<{ entityId: EntityId<T> }>(({ entityId }) => {
     const { entity, onReload } = useEntity(entityType, entityId);
     const [cachedEntity, cacheEntity] = useState(entity);
 

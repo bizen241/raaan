@@ -33,16 +33,15 @@ export const GroupApplicationEditor = React.memo<{
     );
   };
 
-  const { entityIds, entityMap, status, onReload } = useSearch("GroupSecret", {
+  const { entities: groupSecrets, status, onReload } = useSearch("GroupSecret", {
     groupId,
     value: groupSecretValue
   });
   if (status !== 200) {
     return <Loading getStatus={status} onReload={onReload} />;
   }
-  const groupSecretId = entityIds[0];
-  const groupSecret = groupSecretId && entityMap[groupSecretId];
 
+  const groupSecret = groupSecrets[0];
   if (groupSecret === undefined || groupSecret.expireAt < Date.now()) {
     return (
       <>

@@ -1,6 +1,7 @@
 import { Add } from "@material-ui/icons";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { actions } from "../../../reducers";
@@ -10,7 +11,7 @@ import { Button, Card, Select, SelectOptions } from "../../ui";
 type UploadType = "public" | "private";
 
 export const UploadPlaylistBookmarkDialog = createDialog<{
-  playlistId: string;
+  playlistId: EntityId<"Playlist">;
 }>()(
   React.memo(({ t }) => t("ブックマークに追加")),
   React.memo(({ playlistId, onClose }) => {

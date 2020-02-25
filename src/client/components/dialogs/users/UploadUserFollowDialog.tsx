@@ -2,6 +2,7 @@ import { Typography } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { actions } from "../../../reducers";
@@ -9,7 +10,7 @@ import { generateBufferId } from "../../../reducers/buffers";
 import { Button, Card } from "../../ui";
 
 export const UploadUserFollowDialog = createDialog<{
-  targetId: string;
+  targetId: EntityId<"User">;
 }>()(
   React.memo(({ t }) => t("ユーザーをフォロー")),
   React.memo(({ targetId, onClose }) => {

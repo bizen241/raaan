@@ -2,13 +2,14 @@ import { Typography } from "@material-ui/core";
 import { ReportProblem } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const UploadSuggestionCommentDialog = createDialog<{
   bufferId: string;
-  targetId: string;
+  targetId: EntityId<"Suggestion">;
 }>()(
   React.memo(({ t }) => t("提案へのコメントをアップロード")),
   React.memo(({ bufferId, targetId, onClose }) => {

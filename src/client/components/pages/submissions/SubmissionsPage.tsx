@@ -13,7 +13,7 @@ export const SubmissionsPage = createPage()(
     return (
       <>
         <Button color="primary" icon={<HourglassFull />} label="復習" to="/user/submissions/review" />
-        <SubmissionSummaryList title="提出履歴" initialParams={{ submitterId: currentUserId }} />
+        <SubmissionSummaryList initialParams={{ submitterId: currentUserId }} />
       </>
     );
   })

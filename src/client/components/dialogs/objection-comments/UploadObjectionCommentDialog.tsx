@@ -2,13 +2,14 @@ import { Typography } from "@material-ui/core";
 import { ReportProblem } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const UploadObjectionCommentDialog = createDialog<{
   bufferId: string;
-  targetId: string;
+  targetId: EntityId<"Objection">;
 }>()(
   React.memo(({ t }) => t("抗議へのコメントをアップロード")),
   React.memo(({ bufferId, targetId, onClose }) => {

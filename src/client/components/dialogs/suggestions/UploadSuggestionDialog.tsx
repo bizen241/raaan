@@ -3,6 +3,7 @@ import { CloudUpload } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { actions } from "../../../reducers";
@@ -10,8 +11,8 @@ import { isNumber } from "../../../reducers/buffers";
 import { Button, Card } from "../../ui";
 
 export const UploadSuggestionDialog = createDialog<{
-  suggestionId: string;
-  exerciseId: string;
+  suggestionId: EntityId<"Suggestion">;
+  exerciseId: EntityId<"Exercise">;
 }>()(
   React.memo(({ t }) => t("変更を提案する")),
   React.memo(({ suggestionId, exerciseId }) => {

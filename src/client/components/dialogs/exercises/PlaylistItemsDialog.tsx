@@ -1,17 +1,18 @@
 import { Add, CloudUpload, PlaylistPlay } from "@material-ui/icons";
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
-import { ExerciseContext, TogglePlaylistItemList } from "../../lists/playlist-summaries/TogglePlaylistItemList";
+import { TogglePlaylistItemList } from "../../lists/playlist-summaries/TogglePlaylistItemList";
 import { Button, Card, TextField } from "../../ui";
 
 export const PlaylistItemsDialog = createDialog<{
-  exerciseId: string;
+  exerciseId: EntityId<"Exercise">;
 }>()(
   React.memo(({ t }) => t("プレイリストに追加")),
   React.memo(({ exerciseId, onClose }) => {
@@ -64,14 +65,13 @@ export const PlaylistItemsDialog = createDialog<{
     return !isEditoOpen ? (
       <>
         <Button icon={<Add />} label="新しいプレイリストを作る" onClick={onToggleEditor} />
-        <ExerciseContext.Provider value={exerciseId}>
-          <TogglePlaylistItemList
-            initialParams={{
-              authorId: currentUserId
-            }}
-            onReload={onReloadPlaylistItems}
-          />
-        </ExerciseContext.Provider>
+        <TogglePlaylistItemList
+          initialParams={{
+            authorId: currentUserId
+          }}
+          exerciseId={exerciseId}
+          onReload={onReloadPlaylistItems}
+        />
       </>
     ) : (
       <>

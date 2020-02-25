@@ -2,15 +2,16 @@ import { Typography } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { Button, Card } from "../../ui";
 
 export const UploadGroupMemberByOwnerDialog = createDialog<{
-  groupId: string;
-  applicantId: string;
-  groupApplicationId: string;
+  groupId: EntityId<"Group">;
+  applicantId: EntityId<"User">;
+  groupApplicationId: EntityId<"GroupApplication">;
 }>()(
   React.memo(({ t }) => t("申請を受理")),
   React.memo(({ groupId, applicantId, groupApplicationId, onClose }) => {

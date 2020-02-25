@@ -1,10 +1,11 @@
 import React from "react";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useSearch } from "../../../hooks/useSearch";
-import { PlaylistContext, TogglePlaylistItemList } from "../../lists/exercise-summaries/TogglePlaylistItemList";
+import { TogglePlaylistItemList } from "../../lists/exercise-summaries/TogglePlaylistItemList";
 
 export const PlaylistItemsDialog = createDialog<{
-  playlistId: string;
+  playlistId: EntityId<"Playlist">;
 }>()(
   React.memo(({ t }) => t("問題集をプレイリストに追加")),
   React.memo(({ playlistId }) => {
@@ -12,12 +13,6 @@ export const PlaylistItemsDialog = createDialog<{
       playlistId
     });
 
-    return (
-      <>
-        <PlaylistContext.Provider value={playlistId}>
-          <TogglePlaylistItemList initialParams={{}} onReload={onReloadPlaylistItems} />
-        </PlaylistContext.Provider>
-      </>
-    );
+    return <TogglePlaylistItemList initialParams={{}} playlistId={playlistId} onReload={onReloadPlaylistItems} />;
   })
 );

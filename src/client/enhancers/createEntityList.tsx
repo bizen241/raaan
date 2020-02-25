@@ -11,7 +11,6 @@ interface EntityListOptions {
 }
 
 interface EntityListProps<E extends EntityObject> {
-  title?: React.ReactNode;
   onReload?: () => void;
   initialParams: Params<E>;
 }
@@ -29,11 +28,14 @@ interface EntityListParamsProps<E extends EntityObject> {
   onChange: (params: Params<E>) => void;
 }
 
-export const createEntityList = <T extends EntityType>(entityType: T, options: EntityListOptions = {}) => (
-  ItemComponent: React.ComponentType<EntityListItemProps<T>>,
+export const createEntityList = <T extends EntityType, P extends {}>(
+  entityType: T,
+  options: EntityListOptions = {}
+) => (
+  ItemComponent: React.ComponentType<EntityListItemProps<T> & P>,
   ParamsComponent?: React.ComponentType<EntityListParamsProps<EntityTypeToEntity[T]>>
 ) =>
-  React.memo<EntityListProps<EntityTypeToEntity[T]>>(({ initialParams, ...props }) => {
+  React.memo<EntityListProps<EntityTypeToEntity[T]> & P>(({ initialParams, onReload, ...props }) => {
     const { itemHeight = 53 } = options;
 
     const { entities, params, status, limit, offset, count, onChange, ...searchProps } = useSearch<T>(
@@ -44,10 +46,11 @@ export const createEntityList = <T extends EntityType>(entityType: T, options: E
     const isLoading = status !== undefined && status !== 200;
     const emptyRows = !isLoading && limit - entities.length;
 
-    const onReload = () => {
-      if (props.onReload !== undefined) {
-        props.onReload();
+    const onReloadList = () => {
+      if (onReload !== undefined) {
+        onReload();
       }
+
       searchProps.onReload();
     };
 
@@ -61,7 +64,7 @@ export const createEntityList = <T extends EntityType>(entityType: T, options: E
                 <IconButton icon={Refresh} onClick={onReload} />
               </Row>
             ) : (
-              <ParamsComponent params={params} onReload={onReload} onChange={onChange} />
+              <ParamsComponent params={params} onReload={onReloadList} onChange={onChange} />
             )}
           </Column>
           <Divider />
@@ -87,7 +90,8 @@ export const createEntityList = <T extends EntityType>(entityType: T, options: E
                     entityId={entity.id as EntityId<T>}
                     entity={entity as EntityTypeToEntity[T]}
                     params={params}
-                    onReload={onReload}
+                    onReload={onReloadList}
+                    {...(props as P)}
                   />
                 );
               })}

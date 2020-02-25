@@ -1,5 +1,5 @@
 import { endpoints } from "../../../shared/api/endpoint";
-import { EntityType, EntityTypeToEntity } from "../../../shared/api/entities";
+import { EntityObject, EntityType, EntityTypeToEntity } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { EntityStore } from "../../../shared/api/response/get";
 import { SearchResponse } from "../../../shared/api/response/search";
@@ -19,7 +19,7 @@ export const getEntity = (entityType: EntityType, entityId: string) => {
 };
 
 export const createEntity = <T extends EntityType>(entityType: T, params: Params<EntityTypeToEntity[T]>) => {
-  return request<Partial<EntityStore>>("post", endpoints[entityType], params);
+  return request<Partial<EntityStore>>("post", endpoints[entityType], params as Params<EntityObject>);
 };
 
 export const updateEntity = <T extends EntityType>(
@@ -27,7 +27,7 @@ export const updateEntity = <T extends EntityType>(
   id: string,
   params: Params<EntityTypeToEntity[T]>
 ) => {
-  return request<Partial<EntityStore>>("patch", `${endpoints[entityType]}/${id}`, params);
+  return request<Partial<EntityStore>>("patch", `${endpoints[entityType]}/${id}`, params as Params<EntityObject>);
 };
 
 export const deleteEntity = (entityType: EntityType, entityId: string) => {

@@ -1,7 +1,7 @@
 import { Checkbox, TableCell, TableRow, Typography } from "@material-ui/core";
-import { createContext, useCallback, useContext } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
 import { useSearch } from "../../../hooks/useSearch";
@@ -9,15 +9,14 @@ import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 
-export const ExerciseContext = createContext<string | undefined>(undefined);
-
-export const ToggleGroupExerciseList = createEntityList("GroupMember")(
-  React.memo(({ entity: { groupSummaryId } }) => {
+export const ToggleGroupExerciseList = createEntityList<
+  "GroupMember",
+  {
+    exerciseId: EntityId<"Exercise">;
+  }
+>("GroupMember")(
+  React.memo(({ entity: { groupSummaryId }, exerciseId }) => {
     const dispatch = useDispatch();
-    const exerciseId = useContext(ExerciseContext);
-    if (exerciseId === undefined) {
-      throw new Error("exerciseId is not defined");
-    }
 
     const [isRequested, toggleRequestState] = useToggleState();
 

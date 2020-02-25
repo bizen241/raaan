@@ -1,6 +1,7 @@
 import { Checkbox, TableCell, TableRow } from "@material-ui/core";
-import React, { createContext, useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useSearch } from "../../../hooks/useSearch";
@@ -9,16 +10,15 @@ import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 import { Column } from "../../ui";
 
-export const ExerciseContext = createContext<string | undefined>(undefined);
-
-export const TogglePlaylistItemList = createEntityList("PlaylistSummary")(
-  React.memo(({ entity: { playlistId, title } }) => {
+export const TogglePlaylistItemList = createEntityList<
+  "PlaylistSummary",
+  {
+    exerciseId: EntityId<"Exercise">;
+  }
+>("PlaylistSummary")(
+  React.memo(({ entity: { playlistId, title }, exerciseId }) => {
     const dispatch = useDispatch();
     const { currentUserId } = useCurrentUser();
-    const exerciseId = useContext(ExerciseContext);
-    if (exerciseId === undefined) {
-      throw new Error("exerciseId is not defined");
-    }
 
     const [isRequested, toggleRequestState] = useToggleState();
 

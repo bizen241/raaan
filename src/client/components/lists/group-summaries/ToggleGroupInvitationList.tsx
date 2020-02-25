@@ -1,6 +1,7 @@
 import { Checkbox, TableCell, TableRow, Typography } from "@material-ui/core";
-import React, { createContext, useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useSearch } from "../../../hooks/useSearch";
@@ -8,13 +9,15 @@ import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
 import { generateBufferId } from "../../../reducers/buffers";
 
-export const FollowerContext = createContext<string | undefined>(undefined);
-
-export const ToggleGroupInvitationList = createEntityList("GroupSummary")(
-  React.memo(({ entity: { groupId, name } }) => {
+export const ToggleGroupInvitationList = createEntityList<
+  "GroupSummary",
+  {
+    followerId: EntityId<"User">;
+  }
+>("GroupSummary")(
+  React.memo(({ entity: { groupId, name }, followerId }) => {
     const dispatch = useDispatch();
     const { currentUserId } = useCurrentUser();
-    const followerId = useContext(FollowerContext);
 
     const [isRequested, toggleRequestState] = useToggleState();
 

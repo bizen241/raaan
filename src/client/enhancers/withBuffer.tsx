@@ -1,25 +1,23 @@
 import { Typography } from "@material-ui/core";
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
+import { EntityId, EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { useEntity } from "../hooks/useEntity";
 import { actions, RootState } from "../reducers";
 import { isLocalOnly } from "../reducers/api";
 
-interface Props<E extends EntityObject> {
+interface Props<T extends EntityType> {
   bufferType: EntityType;
-  bufferId: string;
-  buffer: Params<E> | undefined;
-  source: E | undefined;
-  params: Params<E>;
-  onChange: (updatedParams: Params<E>) => void;
+  bufferId: EntityId<T>;
+  buffer: Params<EntityTypeToEntity[T]> | undefined;
+  source: EntityTypeToEntity[T] | undefined;
+  params: Params<EntityTypeToEntity[T]>;
+  onChange: (updatedParams: Params<EntityTypeToEntity[T]>) => void;
 }
 
-export const withBuffer = <T extends EntityType>(entityType: T) => (
-  BaseComponent: React.ComponentType<Props<EntityTypeToEntity[T]>>
-) =>
-  React.memo<{ bufferId: string }>(({ bufferId }) => {
+export const withBuffer = <T extends EntityType>(entityType: T) => (BaseComponent: React.ComponentType<Props<T>>) =>
+  React.memo<{ bufferId: EntityId<T> }>(({ bufferId }) => {
     const dispatch = useDispatch();
 
     const { entity, getStatus } = useEntity(entityType, bufferId);

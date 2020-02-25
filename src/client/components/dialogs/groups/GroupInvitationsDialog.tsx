@@ -1,11 +1,12 @@
 import React from "react";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useSearch } from "../../../hooks/useSearch";
-import { GroupContext, ToggleGroupInvitationList } from "../../lists/user-follows/ToggleGroupInvitationList";
+import { ToggleGroupInvitationList } from "../../lists/user-follows/ToggleGroupInvitationList";
 
 export const GroupInvitationsDialog = createDialog<{
-  groupId: string;
+  groupId: EntityId<"Group">;
 }>()(
   React.memo(({ t }) => t("フォロワーを招待")),
   React.memo(({ groupId }) => {
@@ -16,16 +17,13 @@ export const GroupInvitationsDialog = createDialog<{
     });
 
     return (
-      <>
-        <GroupContext.Provider value={groupId}>
-          <ToggleGroupInvitationList
-            initialParams={{
-              targetId: currentUserId
-            }}
-            onReload={onReloadGroupInvitations}
-          />
-        </GroupContext.Provider>
-      </>
+      <ToggleGroupInvitationList
+        initialParams={{
+          targetId: currentUserId
+        }}
+        groupId={groupId}
+        onReload={onReloadGroupInvitations}
+      />
     );
   })
 );
