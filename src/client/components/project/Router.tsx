@@ -25,7 +25,7 @@ import { ExerciseDiaryPage } from "../pages/exercise-diary-entries/ExerciseDiary
 import { UserExerciseDraftsPage } from "../pages/exercise-drafts/UserExerciseDraftsPage";
 import { UserDownVotesPage } from "../pages/exercise-votes/UserDownVotesPage";
 import { UserUpVotesPage } from "../pages/exercise-votes/UserUpVotesPage";
-import { EditExercisesPage } from "../pages/exercises/EditExercisesPage";
+import { EditExerciseDraftsPage } from "../pages/exercises/EditExercisesPage";
 import { ExercisePage } from "../pages/exercises/ExercisePage";
 import { ExercisesPage } from "../pages/exercises/ExercisesPage";
 import { UserExercisesPage } from "../pages/exercises/UserExercisesPage";
@@ -99,7 +99,7 @@ import { UsersPage } from "../pages/users/UsersPage";
 
 export type PathParams = { id: string; name: string; secret: string };
 
-const EditExercisePage = React.lazy(() => import("../pages/exercises/EditExercisePage"));
+const EditExerciseDraftPage = React.lazy(() => import("../pages/exercises/EditExercisePage"));
 const EditPlaylistPage = React.lazy(() => import("../pages/playlists/EditPlaylistPage"));
 const EditSuggestionPage = React.lazy(() => import("../pages/suggestions/EditSuggestionPage"));
 
@@ -157,12 +157,13 @@ export const Router = React.memo(() => {
         <Route exact={true} path="/users/:id/diary" component={UserDiaryPage} />
 
         <Route exact={true} path="/exercises" component={ExercisesPage} />
-        <Route exact={true} path="/exercises/edit" component={EditExercisesPage} />
         <Route exact={true} path="/exercises/:id" component={ExercisePage} />
-        <Route exact={true} path="/exercises/:id/edit" component={EditExercisePage} />
         <Route exact={true} path="/exercises/:id/revisions" component={ExerciseRevisionsPage} />
         <Route exact={true} path="/exercises/:id/comments" component={ExerciseExerciseCommentsPage} />
         <Route exact={true} path="/exercises/:id/diary" component={ExerciseDiaryPage} />
+
+        <Route exact={true} path="/exercise-drafts/edit" component={EditExerciseDraftsPage} />
+        <Route exact={true} path="/exercise-drafts/:id/edit" component={EditExerciseDraftPage} />
 
         <Route exact={true} path="/revisions/:id" component={RevisionPage} />
         <Route exact={true} path="/revisions/:id/edit" component={EditRevisionPage} />

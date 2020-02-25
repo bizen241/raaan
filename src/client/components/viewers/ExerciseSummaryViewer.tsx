@@ -66,7 +66,7 @@ export const ExerciseSummaryViewer = React.memo<{
       action={
         isAuthor ? (
           <Menu>
-            <MenuItem icon={<Edit />} label="編集する" to={`/exercises/${exerciseId}/edit`} />
+            <MenuItem icon={<Edit />} label="編集する" to={`/exercise-drafts/${exercise.draftId}/edit`} />
             {!isDraft && <MenuItem icon={<History />} label="編集履歴" to={`/exercises/${exerciseId}/revisions`} />}
             {isFetched &&
               !isLocked &&

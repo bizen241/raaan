@@ -15,7 +15,7 @@ export const ExerciseDraftBufferList = createBufferList("ExerciseDraft")(
       <TableRow>
         <TableCell>
           <Column>
-            <Link color="textPrimary" component={RouterLink} to={`/exercises/${bufferId}/edit`}>
+            <Link color="textPrimary" component={RouterLink} to={`/exercise-drafts/${bufferId}/edit`}>
               <Typography>{buffer.title || (source && source.title) || "無題"}</Typography>
             </Link>
           </Column>

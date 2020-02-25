@@ -9,7 +9,7 @@ import { ImportExerciseDraftDialog } from "../../dialogs/exercise-drafts/ImportE
 import { ExerciseDraftBufferList } from "../../lists/exercise-drafts/ExerciseDraftBufferList";
 import { Button, Column } from "../../ui";
 
-export const EditExercisesPage = createPage()(
+export const EditExerciseDraftsPage = createPage()(
   React.memo(({ t }) => t("未保存の問題集")),
   React.memo(() => {
     const dispatch = useDispatch();
@@ -19,7 +19,7 @@ export const EditExercisesPage = createPage()(
     const onCreate = useCallback(() => {
       const bufferId = generateBufferId();
 
-      dispatch(push(`/exercises/${bufferId}/edit`));
+      dispatch(push(`/exercise-darfts/${bufferId}/edit`));
     }, []);
 
     return (
