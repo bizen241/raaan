@@ -1,7 +1,6 @@
 import { createConnection } from "typeorm";
 import { Env } from "../env";
 import { entities } from "./entities";
-import { migrations } from "./migrations";
 
 export const connect = (env: Env) => {
   const { host, port, username, password, name: database } = env.database;
@@ -14,7 +13,6 @@ export const connect = (env: Env) => {
     password,
     database,
     entities,
-    migrationsRun: true,
-    migrations
+    synchronize: true
   });
 };

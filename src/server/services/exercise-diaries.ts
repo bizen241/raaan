@@ -1,5 +1,6 @@
 import createError from "http-errors";
 import { EntityManager } from "typeorm";
+import { dateToDateString } from "../../shared/api/entities";
 import { ExerciseDiaryEntryEntity, SubmissionEntity } from "../database/entities";
 
 export const updateExerciseDiaryEntrySubmittedCount = async (params: {
@@ -12,13 +13,15 @@ export const updateExerciseDiaryEntrySubmittedCount = async (params: {
     throw createError(500, "submission.exercise is not defined");
   }
 
+  const dateString = dateToDateString(submission.createdAt);
+
   const exerciseDiaryEntry = await manager.findOne(ExerciseDiaryEntryEntity, {
     exerciseId: exercise.id,
-    date: submission.createdAt
+    date: dateString
   });
 
   if (exerciseDiaryEntry === undefined) {
-    const newExerciseDiaryEntry = new ExerciseDiaryEntryEntity(exercise, submission.createdAt);
+    const newExerciseDiaryEntry = new ExerciseDiaryEntryEntity(exercise, dateString);
 
     newExerciseDiaryEntry.submittedCount += 1;
     newExerciseDiaryEntry.typedCount += typeCount;

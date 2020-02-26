@@ -1,5 +1,6 @@
 import createError from "http-errors";
 import { EntityManager } from "typeorm";
+import { dateToDateString } from "../../shared/api/entities";
 import { SubmissionEntity, UserDiaryEntryEntity, UserEntity } from "../database/entities";
 
 export const updateUserDiaryEntrySubmitCount = async (params: {
@@ -9,14 +10,15 @@ export const updateUserDiaryEntrySubmitCount = async (params: {
 }) => {
   const { manager, currentUser, submission } = params;
   const { typeCount } = submission;
+  const dateString = dateToDateString(submission.createdAt);
 
   const userDiaryEntry = await manager.findOne(UserDiaryEntryEntity, {
     userId: currentUser.id,
-    date: submission.createdAt
+    date: dateString
   });
 
   if (userDiaryEntry === undefined) {
-    const newUserDiaryEntry = new UserDiaryEntryEntity(currentUser, submission.createdAt);
+    const newUserDiaryEntry = new UserDiaryEntryEntity(currentUser, dateString);
 
     newUserDiaryEntry.submitCount += 1;
     newUserDiaryEntry.typeCount += typeCount;
@@ -52,14 +54,15 @@ export const updateUserDiaryEntrySubmittedCount = async (params: {
 
   const { author } = submission.exercise;
   const { typeCount } = submission;
+  const dateString = dateToDateString(submission.createdAt);
 
   const userDiaryEntry = await manager.findOne(UserDiaryEntryEntity, {
     userId: author.id,
-    date: submission.createdAt
+    date: dateString
   });
 
   if (userDiaryEntry === undefined) {
-    const newUserDiaryEntry = new UserDiaryEntryEntity(author, submission.createdAt);
+    const newUserDiaryEntry = new UserDiaryEntryEntity(author, dateString);
 
     newUserDiaryEntry.submittedCount += 1;
     newUserDiaryEntry.typedCount += typeCount;

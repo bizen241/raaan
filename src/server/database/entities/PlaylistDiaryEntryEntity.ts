@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, RelationId } from "typeorm";
-import { EntityId } from "../../../shared/api/entities";
+import { DateString, EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { PlaylistEntity } from "./PlaylistEntity";
 
@@ -15,7 +15,7 @@ export class PlaylistDiaryEntryEntity extends BaseEntityClass<"PlaylistDiaryEntr
   playlistId!: EntityId<"Playlist">;
 
   @Column("date")
-  date: Date;
+  date: DateString;
 
   @Column()
   submittedCount: number = 0;
@@ -23,7 +23,7 @@ export class PlaylistDiaryEntryEntity extends BaseEntityClass<"PlaylistDiaryEntr
   @Column()
   typedCount: number = 0;
 
-  constructor(playlist: PlaylistEntity, date: Date) {
+  constructor(playlist: PlaylistEntity, date: DateString) {
     super();
 
     this.playlist = playlist;

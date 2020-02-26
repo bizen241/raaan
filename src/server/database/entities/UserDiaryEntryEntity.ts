@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, RelationId } from "typeorm";
-import { EntityId } from "../../../shared/api/entities";
+import { DateString, EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { UserEntity } from "./UserEntity";
 
@@ -15,7 +15,7 @@ export class UserDiaryEntryEntity extends BaseEntityClass<"UserDiaryEntry"> {
   userId!: EntityId<"User">;
 
   @Column("date")
-  date: Date;
+  date: DateString;
 
   @Column()
   submitCount: number = 0;
@@ -35,7 +35,7 @@ export class UserDiaryEntryEntity extends BaseEntityClass<"UserDiaryEntry"> {
   @Column()
   editCount: number = 0;
 
-  constructor(user: UserEntity, date: Date) {
+  constructor(user: UserEntity, date: DateString) {
     super();
 
     this.user = user;

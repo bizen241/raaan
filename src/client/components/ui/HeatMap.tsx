@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import React, { useCallback } from "react";
+import { dateToDateString } from "../../../shared/api/entities";
 import { Row } from "./Row";
 
 export const getToday = () =>
@@ -31,8 +32,9 @@ export const HeatMap = React.memo<{
             {year.map((_, weekIndex) => (
               <g key={weekIndex} transform={`translate(${weekIndex * 18 + 1}, 1)`}>
                 {week.map((__, dateIndex) => {
-                  const date = firstDate + ((weekIndex + 1) * 7 + dateIndex - 7) * 24 * 60 * 60 * 1000;
-                  const count = contents[date];
+                  const date = new Date(firstDate + ((weekIndex + 1) * 7 + dateIndex - 7) * 24 * 60 * 60 * 1000);
+                  const dateString = dateToDateString(date);
+                  const count = contents[dateString];
 
                   return (
                     <rect

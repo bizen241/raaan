@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, RelationId } from "typeorm";
-import { EntityId } from "../../../shared/api/entities";
+import { DateString, EntityId } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 import { TagEntity } from "./TagEntity";
 
@@ -15,7 +15,7 @@ export class TagDiaryEntryEntity extends BaseEntityClass<"TagDiaryEntry"> {
   tagId!: EntityId<"Tag">;
 
   @Column("date")
-  date: Date;
+  date: DateString;
 
   @Column()
   submittedCount: number = 0;
@@ -23,7 +23,7 @@ export class TagDiaryEntryEntity extends BaseEntityClass<"TagDiaryEntry"> {
   @Column()
   typedCount: number = 0;
 
-  constructor(tag: TagEntity, date: Date) {
+  constructor(tag: TagEntity, date: DateString) {
     super();
 
     this.tag = tag;

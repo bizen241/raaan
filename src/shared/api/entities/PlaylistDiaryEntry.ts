@@ -1,9 +1,8 @@
 import { EntityId } from ".";
-import { BaseEntityObject } from "./BaseEntityObject";
+import { BaseDiaryEntryObject } from "./BaseDiaryEntryObject";
 
-export interface PlaylistDiaryEntry extends BaseEntityObject<"PlaylistDiaryEntry"> {
+export interface PlaylistDiaryEntry extends BaseDiaryEntryObject<"PlaylistDiaryEntry"> {
   playlistId?: EntityId<"Playlist">;
-  date: number;
   submittedCount: number;
   typedCount: number;
 }
