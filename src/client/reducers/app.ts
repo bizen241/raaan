@@ -1,12 +1,10 @@
 import { push } from "connected-react-router";
-import { HTTPError } from "ky";
 import { Reducer } from "redux";
 import { Actions } from ".";
 import { EntityId } from "../../shared/api/entities";
 import { getCurrentUser } from "../api/client";
 import { install } from "../install";
 import { ActionUnion, AsyncAction, createAction } from "./action";
-import { isLocalOnly } from "./api";
 import { cacheActions, guestUser, guestUserAccount, guestUserConfig } from "./cache";
 
 export enum AppActionType {
@@ -54,13 +52,6 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
     dispatch(cacheActions.get(result));
     dispatch(appSyncActions.ready(nextUserId, nextUserAccountId, nextUserConfigId));
   } catch (e) {
-    if (e instanceof HTTPError && e.response.status === 403 && !isLocalOnly(prevUserId)) {
-      localStorage.clear();
-      location.reload();
-
-      return;
-    }
-
     const prevUser = state.cache.get.User[prevUserId];
     const prevUserAccount = state.cache.get.UserAccount[prevUserAccountId];
     const prevUserConfig = state.cache.get.UserConfig[prevUserConfigId];
