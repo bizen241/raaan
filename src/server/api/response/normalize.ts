@@ -108,7 +108,7 @@ const normalizeAppDiaryEntry: Normalizer<AppDiaryEntryEntity> = (_, store, entit
 
   store.AppDiaryEntry[id] = {
     ...base(entity),
-    date: date.getTime(),
+    date,
     submittedCount,
     typedCount
   };

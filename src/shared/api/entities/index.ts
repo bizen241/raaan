@@ -53,6 +53,7 @@ import { UserSummary } from "./UserSummary";
 
 export * from "./AppDiaryEntry";
 export * from "./AppSummary";
+export * from "./BaseDiaryEntryObject";
 export * from "./BaseExerciseObject";
 export * from "./Contest";
 export * from "./ContestEntry";

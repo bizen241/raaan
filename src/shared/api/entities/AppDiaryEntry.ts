@@ -1,7 +1,6 @@
-import { BaseEntityObject } from "./BaseEntityObject";
+import { BaseDiaryEntryObject } from "./BaseDiaryEntryObject";
 
-export interface AppDiaryEntry extends BaseEntityObject<"AppDiaryEntry"> {
-  date: number;
+export interface AppDiaryEntry extends BaseDiaryEntryObject<"AppDiaryEntry"> {
   submittedCount: number;
   typedCount: number;
 }

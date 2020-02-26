@@ -1,4 +1,5 @@
 import { Column, Entity } from "typeorm";
+import { DateString } from "../../../shared/api/entities";
 import { BaseEntityClass } from "./BaseEntityClass";
 
 @Entity("app_diaries")
@@ -6,7 +7,7 @@ export class AppDiaryEntryEntity extends BaseEntityClass<"AppDiaryEntry"> {
   readonly type = "AppDiaryEntry";
 
   @Column("date")
-  date!: Date;
+  date: DateString;
 
   @Column()
   submittedCount: number = 0;
@@ -14,7 +15,7 @@ export class AppDiaryEntryEntity extends BaseEntityClass<"AppDiaryEntry"> {
   @Column()
   typedCount: number = 0;
 
-  constructor(date: Date) {
+  constructor(date: DateString) {
     super();
 
     this.date = date;
