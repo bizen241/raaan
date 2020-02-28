@@ -1,6 +1,6 @@
-import { ActionCreatorsMapObject } from "redux";
+import { ActionCreatorsMapObject, AnyAction } from "redux";
 import { ThunkAction } from "redux-thunk";
-import { Actions, RootState } from ".";
+import { RootState } from ".";
 
 interface Action<T extends string, P> {
   type: T;
@@ -18,4 +18,4 @@ export function createAction<T extends string, P>(type: T, payload?: P) {
 
 export type ActionUnion<T extends ActionCreatorsMapObject> = ReturnType<T[keyof T]>;
 
-export type AsyncAction = ThunkAction<void, RootState, undefined, Actions>;
+export type AsyncAction = ThunkAction<void, RootState, undefined, AnyAction>;

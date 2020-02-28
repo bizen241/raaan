@@ -1,14 +1,7 @@
-import { LOCATION_CHANGE } from "connected-react-router";
 import { HTTPError } from "ky";
 import { Reducer } from "redux";
 import { Actions } from ".";
-import {
-  createEntityTypeToObject,
-  EntityObject,
-  EntityType,
-  EntityTypeToEntity,
-  mergeEntityTypeToObject
-} from "../../shared/api/entities";
+import { createEntityTypeToObject, EntityId, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { EntityStore } from "../../shared/api/response/get";
 import * as api from "../api/client";
@@ -22,85 +15,143 @@ export enum ApiActionType {
 }
 
 export const apiSyncActions = {
-  update: <T extends EntityType>(
-    method: keyof ApiState,
-    type: T,
-    key: string | Params<EntityTypeToEntity[T]>,
-    code: number,
-    response?: Partial<EntityStore>
-  ) => createAction(ApiActionType.Update, { method, type, key, code, response })
+  update: (params: { entityType: EntityType; method: keyof ApiState; key: string; code: number }) =>
+    createAction(ApiActionType.Update, params)
 };
 
 export type ApiActions = ActionUnion<typeof apiSyncActions>;
 
-const getEntity = (type: EntityType, id: string): AsyncAction => async (dispatch, getState) => {
-  const state = getState().api.get[type][id];
-  if (state && state.code === 102) {
-    return;
-  }
-
-  dispatch(apiSyncActions.update("get", type, id, 102));
-
-  try {
-    const response = await api.getEntity(type, id);
-
-    dispatch(cacheActions.get(response));
-    dispatch(apiSyncActions.update("get", type, id, 200, response));
-  } catch (e) {
-    const code = e instanceof HTTPError ? e.response.status : 500;
-
-    dispatch(apiSyncActions.update("get", type, id, code));
-  }
-};
-
-const searchEntity = <T extends EntityType>(type: T, params: Params<EntityTypeToEntity[T]>): AsyncAction => async (
+const getEntity = <T extends EntityType>(entityType: T, entityId: EntityId<T>): AsyncAction => async (
   dispatch,
   getState
 ) => {
-  const state = getState().api.search[type][stringifyParams(params)];
-  if (state && state.code === 102) {
+  const currentCode = getState().api.get[entityType][entityId];
+  if (currentCode === 102) {
     return;
   }
 
-  dispatch(apiSyncActions.update("search", type, params, 102) as Actions);
+  dispatch(
+    apiSyncActions.update({
+      entityType,
+      method: "get",
+      key: entityId,
+      code: 102
+    })
+  );
 
   try {
-    const response = await api.searchEntity(type, params);
+    const response = await api.getEntity(entityType, entityId);
 
-    dispatch(cacheActions.search(type, params, response) as Actions);
-    dispatch(apiSyncActions.update("search", type, params, 200, response.entities) as Actions);
+    dispatch(cacheActions.get(response));
+    dispatch(
+      apiSyncActions.update({
+        entityType,
+        method: "get",
+        key: entityId,
+        code: 200
+      })
+    );
   } catch (e) {
     const code = e instanceof HTTPError ? e.response.status : 500;
 
-    dispatch(apiSyncActions.update("search", type, params, code) as Actions);
+    dispatch(
+      apiSyncActions.update({
+        entityType,
+        method: "get",
+        key: entityId,
+        code
+      })
+    );
+  }
+};
+
+const searchEntity = <T extends EntityType>(
+  entityType: T,
+  entityParams: Params<EntityTypeToEntity[T]>
+): AsyncAction => async (dispatch, getState) => {
+  const key = stringifyParams(entityParams);
+
+  const currentCode = getState().api.search[entityType][key];
+  if (currentCode === 102) {
+    return;
+  }
+
+  dispatch(
+    apiSyncActions.update({
+      entityType,
+      method: "search",
+      key,
+      code: 102
+    })
+  );
+
+  try {
+    const response = await api.searchEntity(entityType, entityParams);
+
+    dispatch(cacheActions.search(entityType, entityParams, response));
+    dispatch(
+      apiSyncActions.update({
+        entityType,
+        method: "search",
+        key,
+        code: 200
+      })
+    );
+  } catch (e) {
+    const code = e instanceof HTTPError ? e.response.status : 500;
+
+    dispatch(
+      apiSyncActions.update({
+        entityType,
+        method: "search",
+        key,
+        code
+      })
+    );
   }
 };
 
 export const isLocalOnly = (id: string) => !isNaN(Number(id));
 
 const uploadEntity = <T extends EntityType>(
-  type: T,
-  id: string,
-  params?: Params<EntityTypeToEntity[T]>,
+  entityType: T,
+  entityId: EntityId<T>,
+  entityParams?: Params<EntityTypeToEntity[T]>,
   onSuccess?: (uploadResponse: EntityStore) => void,
   onFailure?: () => void
 ): AsyncAction => async (dispatch, getState) => {
-  const buffer = getState().buffers[type][id] as Partial<EntityTypeToEntity[T]> | undefined;
-  const target = params || buffer;
+  const entityBuffer = getState().buffers[entityType][entityId] as Params<EntityTypeToEntity[T]> | undefined;
+  const target = entityParams || entityBuffer;
   if (target === undefined) {
     return;
   }
 
-  dispatch(apiSyncActions.update("upload", type, id, 102) as Actions);
+  dispatch(
+    apiSyncActions.update({
+      entityType,
+      method: "upload",
+      key: entityId,
+      code: 102
+    })
+  );
 
   try {
-    const response = isLocalOnly(id) ? await api.createEntity(type, target) : await api.updateEntity(type, id, target);
+    const response = isLocalOnly(entityId)
+      ? await api.createEntity(entityType, target)
+      : await api.updateEntity(entityType, entityId, target);
 
     dispatch(cacheActions.get(response));
-    dispatch(apiSyncActions.update("upload", type, id, 200, response) as Actions);
+    dispatch(
+      apiSyncActions.update({
+        entityType,
+        method: "upload",
+        key: entityId,
+        code: 200
+      })
+    );
 
-    if (params === undefined && buffer !== undefined) {
-      dispatch(buffersActions.delete(type, id));
+    if (entityParams === undefined && entityBuffer !== undefined) {
+      dispatch(buffersActions.delete(entityType, entityId));
     }
 
     if (onSuccess !== undefined) {
@@ -109,7 +160,14 @@ const uploadEntity = <T extends EntityType>(
   } catch (e) {
     const code = e instanceof HTTPError ? e.response.status : 500;
 
-    dispatch(apiSyncActions.update("upload", type, id, code) as Actions);
+    dispatch(
+      apiSyncActions.update({
+        entityType,
+        method: "upload",
+        key: entityId,
+        code
+      })
+    );
 
     if (onFailure !== undefined) {
       onFailure();
@@ -117,31 +175,52 @@ const uploadEntity = <T extends EntityType>(
   }
 };
 
-const deleteEntity = (
-  type: EntityType,
-  id: string,
+const deleteEntity = <T extends EntityType>(
+  entityType: T,
+  entityId: EntityId<T>,
   timeout?: number,
   onSuccess?: () => void,
   onFailure?: () => void
 ): AsyncAction => async dispatch => {
-  dispatch(apiSyncActions.update("delete", type, id, 102));
+  dispatch(
+    apiSyncActions.update({
+      entityType,
+      method: "delete",
+      key: entityId,
+      code: 102
+    })
+  );
 
   try {
-    const response = await api.deleteEntity(type, id);
+    const response = await api.deleteEntity(entityType, entityId);
 
     dispatch(cacheActions.get(response));
-    dispatch(buffersActions.delete(type, id));
-    dispatch(apiSyncActions.update("delete", type, id, 200, response));
+    dispatch(buffersActions.delete(entityType, entityId));
+    dispatch(
+      apiSyncActions.update({
+        entityType,
+        method: "delete",
+        key: entityId,
+        code: 200
+      })
+    );
 
     if (onSuccess !== undefined) {
       onSuccess();
     }
 
-    setTimeout(() => dispatch(cacheActions.purge(type, id)), timeout);
+    setTimeout(() => dispatch(cacheActions.purge(entityType, entityId)), timeout);
   } catch (e) {
     const code = e instanceof HTTPError ? e.response.status : 500;
 
-    dispatch(apiSyncActions.update("delete", type, id, code));
+    dispatch(
+      apiSyncActions.update({
+        entityType,
+        method: "delete",
+        key: entityId,
+        code
+      })
+    );
 
     if (onFailure !== undefined) {
       onFailure();
@@ -159,12 +238,7 @@ export const apiActions = {
 
 type StatusMap = {
   [P in keyof EntityTypeToEntity]: {
-    [key: string]:
-      | {
-          code: number;
-          response?: EntityStore;
-        }
-      | undefined;
+    [key: string]: number | undefined;
   };
 };
 
@@ -185,26 +259,18 @@ export const initialApiState: ApiState = {
 export const apiReducer: Reducer<ApiState, Actions> = (state = initialApiState, action) => {
   switch (action.type) {
     case ApiActionType.Update: {
-      const { method, type, key, code, response } = action.payload;
-
-      const keyString = typeof key === "string" ? key : stringifyParams<EntityObject>(key);
+      const { entityType, method, key, code } = action.payload;
 
       return {
         ...state,
         [method]: {
           ...state[method],
-          [type]: {
-            ...state[method][type],
-            [keyString]: {
-              code,
-              response: response && mergeEntityTypeToObject(response)
-            }
+          [entityType]: {
+            ...state[method][entityType],
+            [key]: code
           }
         }
       };
-    }
-    case LOCATION_CHANGE: {
-      return initialApiState;
     }
     default:
       return state;

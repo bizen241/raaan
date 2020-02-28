@@ -5,28 +5,29 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { PersistConfig, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import thunk from "redux-thunk";
-import { createReducer, RootState } from "../reducers";
+import { createReducer } from "../reducers";
 import { migrate } from "./migrations";
 
-const history = createBrowserHistory();
+export const history = createBrowserHistory();
+const rootReducer = createReducer(history);
 
 const persistConfig: PersistConfig<RootState> = {
   key: "root",
   version: 1,
   storage,
   migrate,
-  blacklist: ["router"],
+  blacklist: ["api", "router"],
   writeFailHandler: () => {
     window.dispatchEvent(new Event("quotaexceeded"));
   }
 };
-const persistedReducer = persistReducer(persistConfig, createReducer(history));
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const enhancer = composeWithDevTools(applyMiddleware(thunk, routerMiddleware(history)));
+const middlewares = [thunk, routerMiddleware(history)];
+const enhancer = composeWithDevTools(applyMiddleware(...middlewares));
 
-export const configureStore = () => {
-  const store = createStore(persistedReducer, enhancer);
-  const persistor = persistStore(store);
+export const store = createStore(persistedReducer, enhancer);
+export const persistor = persistStore(store);
 
-  return { store, history, persistor };
-};
+export type RootState = ReturnType<typeof rootReducer>;
+export type Dispatch = typeof store.dispatch;

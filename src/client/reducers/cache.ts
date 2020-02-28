@@ -1,15 +1,11 @@
 import { Reducer } from "redux";
-import uuid from "uuid/v1";
+import { Actions } from ".";
 import {
   createEntityTypeToObject,
-  EntityId,
   EntityObject,
   EntityType,
   EntityTypeToEntity,
-  mergeEntityTypeToObject,
-  User,
-  UserAccount,
-  UserConfig
+  mergeEntityTypeToObject
 } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { EntityStore } from "../../shared/api/response/get";
@@ -17,35 +13,7 @@ import { SearchResponse } from "../../shared/api/response/search";
 import { stringifyParams } from "../api/request/search";
 import { IdMap, mergeSearchResultStore, SearchResultMap, SearchResultStore } from "../api/response/search";
 import { ActionUnion, createAction } from "./action";
-
-const generateEntityId = <T extends EntityType>() => uuid() as EntityId<T>;
-
-export const guestUser: User = {
-  id: generateEntityId<"User">(),
-  name: "",
-  permission: "Guest",
-  summaryId: generateEntityId<"UserSummary">(),
-  createdAt: 0,
-  updatedAt: 0,
-  fetchedAt: 0
-};
-export const guestUserAccount: UserAccount = {
-  id: generateEntityId<"UserAccount">(),
-  provider: "github",
-  accountId: "",
-  email: "guest@example.com",
-  avatar: "identicon",
-  createdAt: 0,
-  updatedAt: 0,
-  fetchedAt: 0
-};
-export const guestUserConfig: UserConfig = {
-  id: generateEntityId<"UserConfig">(),
-  settings: {},
-  createdAt: 0,
-  updatedAt: 0,
-  fetchedAt: 0
-};
+import { guestUser, guestUserAccount, guestUserConfig } from "./guest";
 
 export enum CacheActionType {
   Get = "cache/get",
@@ -101,7 +69,7 @@ export const initialCacheState: CacheState = {
   search: createEntityTypeToObject()
 };
 
-export const cacheReducer: Reducer<CacheState, CacheActions> = (state = initialCacheState, action) => {
+export const cacheReducer: Reducer<CacheState, Actions> = (state = initialCacheState, action) => {
   switch (action.type) {
     case CacheActionType.Get: {
       const { response } = action.payload;

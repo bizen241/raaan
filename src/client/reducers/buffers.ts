@@ -1,9 +1,9 @@
 import { Reducer } from "redux";
 import { Actions } from ".";
-import { createEntityTypeToObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
+import { createEntityTypeToObject, EntityId, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { ActionUnion, createAction } from "./action";
-import { guestUserConfig } from "./cache";
+import { guestUserConfig } from "./guest";
 
 export enum BuffersActionType {
   Update = "buffers/update",
@@ -11,16 +11,16 @@ export enum BuffersActionType {
 }
 
 export const buffersActions = {
-  update: <T extends EntityType>(type: T, id: string, params: Params<EntityTypeToEntity[T]>) =>
+  update: <T extends EntityType>(entityType: T, entityId: EntityId<T>, params: Params<EntityTypeToEntity[T]>) =>
     createAction(BuffersActionType.Update, {
-      type,
-      id,
+      entityType,
+      entityId,
       params
     }),
-  delete: (type: EntityType, id: string) =>
+  delete: <T extends EntityType>(entityType: T, entityId: EntityId<T>) =>
     createAction(BuffersActionType.Delete, {
-      type,
-      id
+      entityType,
+      entityId
     })
 };
 
@@ -48,17 +48,17 @@ export const initialBuffersState: BuffersState = {
 export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBuffersState, action) => {
   switch (action.type) {
     case BuffersActionType.Update: {
-      const { type, id, params } = action.payload;
-      const buffer = state[type][id] || {
+      const { entityType, entityId, params } = action.payload;
+      const buffer = state[entityType][entityId] || {
         createdAt: Date.now(),
         updatedAt: Date.now()
       };
 
       return {
         ...state,
-        [type]: {
-          ...state[type],
-          [id]: {
+        [entityType]: {
+          ...state[entityType],
+          [entityId]: {
             ...buffer,
             ...params
           }
@@ -66,12 +66,12 @@ export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBu
       };
     }
     case BuffersActionType.Delete: {
-      const { type, id } = action.payload;
-      const { [id]: deleted, ...buffers } = state[type];
+      const { entityType, entityId } = action.payload;
+      const { [entityId]: deleted, ...buffers } = state[entityType];
 
       return {
         ...state,
-        [type]: buffers
+        [entityType]: buffers
       };
     }
     default:

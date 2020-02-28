@@ -5,19 +5,23 @@ import { EntityId } from "../../shared/api/entities";
 import { getCurrentUser } from "../api/client";
 import { install } from "../install";
 import { ActionUnion, AsyncAction, createAction } from "./action";
-import { cacheActions, guestUser, guestUserAccount, guestUserConfig } from "./cache";
+import { cacheActions } from "./cache";
+import { guestUser, guestUserAccount, guestUserConfig } from "./guest";
 
 export enum AppActionType {
   Ready = "app/ready",
   Network = "app/network",
-  UpdateFound = "app/update-found"
+  Update = "app/update"
 }
 
 const appSyncActions = {
-  ready: (userId: EntityId<"User">, userAccountId: EntityId<"UserAccount">, userConfigId: EntityId<"UserConfig">) =>
-    createAction(AppActionType.Ready, { userId, userAccountId, userConfigId }),
-  network: (isOnline: boolean) => createAction(AppActionType.Network, { isOnline }),
-  updateFound: () => createAction(AppActionType.UpdateFound)
+  ready: (params: {
+    userId: EntityId<"User">;
+    userAccountId: EntityId<"UserAccount">;
+    userConfigId: EntityId<"UserConfig">;
+  }) => createAction(AppActionType.Ready, params),
+  network: (isOnline: boolean) => createAction(AppActionType.Network, isOnline),
+  update: () => createAction(AppActionType.Update)
 };
 
 export type AppActions = ActionUnion<typeof appSyncActions>;
@@ -27,7 +31,7 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
   const { userId: prevUserId, userConfigId: prevUserConfigId, userAccountId: prevUserAccountId } = state.app;
 
   if (process.env.NODE_ENV === "production") {
-    install(() => dispatch(appSyncActions.updateFound()));
+    install(() => dispatch(appSyncActions.update()));
   }
 
   window.addEventListener("online", () => dispatch(appSyncActions.network(true)));
@@ -50,16 +54,34 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
     }
 
     dispatch(cacheActions.get(result));
-    dispatch(appSyncActions.ready(nextUserId, nextUserAccountId, nextUserConfigId));
+    dispatch(
+      appSyncActions.ready({
+        userId: nextUserId,
+        userAccountId: nextUserAccountId,
+        userConfigId: nextUserConfigId
+      })
+    );
   } catch (e) {
     const prevUser = state.cache.get.User[prevUserId];
     const prevUserAccount = state.cache.get.UserAccount[prevUserAccountId];
     const prevUserConfig = state.cache.get.UserConfig[prevUserConfigId];
 
     if (prevUser !== undefined && prevUserAccount !== undefined && prevUserConfig !== undefined) {
-      dispatch(appSyncActions.ready(prevUserId, prevUserAccountId, prevUserConfigId));
+      dispatch(
+        appSyncActions.ready({
+          userId: prevUserId,
+          userAccountId: prevUserAccountId,
+          userConfigId: prevUserConfigId
+        })
+      );
     } else {
-      dispatch(appSyncActions.ready(guestUser.id, guestUserAccount.id, guestUserConfig.id));
+      dispatch(
+        appSyncActions.ready({
+          userId: guestUser.id,
+          userAccountId: guestUserAccount.id,
+          userConfigId: guestUserConfig.id
+        })
+      );
     }
   }
 };
@@ -93,7 +115,6 @@ export const appReducer: Reducer<AppState, Actions> = (state = initialAppState, 
       const { userId, userConfigId, userAccountId } = action.payload;
 
       return {
-        ...state,
         userId,
         userConfigId,
         userAccountId,
@@ -103,14 +124,14 @@ export const appReducer: Reducer<AppState, Actions> = (state = initialAppState, 
       };
     }
     case AppActionType.Network: {
-      const { isOnline } = action.payload;
+      const isOnline = action.payload;
 
       return {
         ...state,
         isOnline
       };
     }
-    case AppActionType.UpdateFound: {
+    case AppActionType.Update: {
       return {
         ...state,
         hasUpdate: true

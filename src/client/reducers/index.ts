@@ -1,5 +1,6 @@
 import { connectRouter, RouterAction, RouterState } from "connected-react-router";
 import { History } from "history";
+import { TypedUseSelectorHook, useSelector as useSelectorHook } from "react-redux";
 import { combineReducers } from "redux";
 import { ApiActions, apiActions, apiReducer, ApiState } from "./api";
 import { AppActions, appActions, appReducer, AppState } from "./app";
@@ -13,6 +14,8 @@ export interface RootState {
   cache: CacheState;
   router: RouterState;
 }
+
+export const useSelector: TypedUseSelectorHook<RootState> = useSelectorHook;
 
 export const createReducer = (history: History) =>
   combineReducers({
