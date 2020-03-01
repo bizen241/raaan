@@ -10,7 +10,7 @@ import { actions } from "../../../reducers";
 import { Card, Column, Row, Table } from "../../ui";
 
 export const MovePlaylistItemDialog = createDialog<{
-  playlistItemId: string;
+  playlistItemId: EntityId<"PlaylistItem">;
   playlist: Playlist;
   playlistItems: PlaylistItem[];
 }>()(

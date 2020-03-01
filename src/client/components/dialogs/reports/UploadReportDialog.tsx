@@ -4,14 +4,14 @@ import { replace } from "connected-react-router";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { endpoints } from "../../../../shared/api/endpoint";
-import { ReportTargetType } from "../../../../shared/api/entities";
+import { EntityId, ReportTargetType } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const UploadReportDialog = createDialog<{
-  reportId: string;
+  reportId: EntityId<"Report">;
   targetType: ReportTargetType;
   targetId: string;
 }>()(

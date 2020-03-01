@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { EntityId } from "../../../shared/api/entities";
 import { useSearch } from "../../hooks/useSearch";
 import { actions } from "../../reducers";
-import { generateBufferId } from "../../reducers/buffers";
+import { generateLocalEntityId } from "../../reducers/entity";
 import { Loading } from "../project/Loading";
 import { Button, Card } from "../ui";
 import { GroupSummaryViewer } from "../viewers/GroupSummaryViewer";
@@ -21,7 +21,7 @@ export const GroupApplicationEditor = React.memo<{
     dispatch(
       actions.api.upload(
         "GroupApplication",
-        generateBufferId(),
+        generateLocalEntityId(),
         {
           groupId,
           secret: groupSecretValue

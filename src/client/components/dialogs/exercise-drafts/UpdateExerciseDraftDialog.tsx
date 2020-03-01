@@ -2,7 +2,7 @@ import { CloudUpload } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { ExerciseDraft } from "../../../../shared/api/entities";
+import { EntityId, ExerciseDraft } from "../../../../shared/api/entities";
 import { Params } from "../../../../shared/api/request/params";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useEntity } from "../../../hooks/useEntity";
@@ -12,9 +12,9 @@ import { Loading } from "../../project/Loading";
 import { Button } from "../../ui";
 
 export const UpdateExerciseDraftDialog = createDialog<{
-  exerciseDraftId: string;
+  exerciseDraftId: EntityId<"ExerciseDraft">;
   exerciseDraft: Params<ExerciseDraft>;
-  exerciseId: string;
+  exerciseId: EntityId<"Exercise">;
   onChange: (exerciseDraft: Partial<ExerciseDraft>) => void;
 }>()(
   React.memo(({ t }) => t("問題集をアップロード")),

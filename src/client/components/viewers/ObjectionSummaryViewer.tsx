@@ -42,7 +42,7 @@ export const ObjectionSummaryViewer = withEntity("ObjectionSummary")(({ entity: 
       </Property>
       {isOwn && (
         <DeleteObjectionDialog
-          objectionId={objectionSummary.id}
+          objectionId={objectionSummary.parentId}
           isOpen={isDeleteDialogOpen}
           onClose={onToggleDeleteDialog}
         />

@@ -1,44 +1,47 @@
 import { Card, TableCell, TableRow } from "@material-ui/core";
 import React, { useCallback, useState } from "react";
-import { useSelector } from "react-redux";
-import { EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
+import { EntityId, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { Column, Table, TablePagination } from "../components/ui";
-import { RootState } from "../reducers";
+import { useSelector } from "../reducers";
+import { getBuffer } from "../reducers/buffers";
+import { getEntity } from "../reducers/cache";
 
 interface BufferListProps {
   title?: React.ReactNode;
 }
 
-interface BufferListItemProps<E extends EntityObject> {
-  bufferType: EntityType;
-  bufferId: string;
-  buffer: Params<E>;
-  source: E | undefined;
-  params: Params<E>;
+interface BufferListItemProps<T extends EntityType> {
+  bufferType: T;
+  bufferId: EntityId<T>;
+  buffer: Params<EntityTypeToEntity[T]>;
+  source: EntityTypeToEntity[T] | undefined;
+  params: Params<EntityTypeToEntity[T]>;
 }
 
 export const createBufferList = <T extends EntityType>(entityType: T) => (
-  ListItem: React.ComponentType<BufferListItemProps<EntityTypeToEntity[T]>>
+  ListItem: React.ComponentType<BufferListItemProps<T>>
 ) =>
   React.memo<BufferListProps>(() => {
-    const bufferMap = useSelector((state: RootState) => state.buffers[entityType]);
-    const entityMap = useSelector(
-      (state: RootState) => state.cache.get[entityType] as { [key: string]: EntityTypeToEntity[T] | undefined }
-    );
+    const bufferMap = useSelector(state => state.buffers[entityType]);
+    const entityMap = useSelector(state => state.cache.get[entityType]);
 
     const [limit, setLimit] = useState(10);
     const [offset, setOffset] = useState(0);
 
-    const bufferEntries = Object.entries(bufferMap);
-    const emptyRows = limit - bufferEntries.length;
+    const bufferIds = Object.keys(bufferMap) as EntityId<T>[];
+    const emptyRows = limit - bufferIds.length;
 
     return (
       <Column pb={1}>
         <Card>
           <Table>
-            {bufferEntries.slice(offset, offset + limit).map(([bufferId, buffer]) => {
-              const source = entityMap[bufferId];
+            {bufferIds.slice(offset, offset + limit).map(bufferId => {
+              const buffer = getBuffer(bufferMap, bufferId);
+              const source = getEntity(entityMap, bufferId);
+              if (buffer === undefined) {
+                return null;
+              }
 
               return (
                 <ListItem
@@ -64,7 +67,7 @@ export const createBufferList = <T extends EntityType>(entityType: T) => (
             <TablePagination
               rowsPerPage={limit}
               page={offset / limit}
-              count={bufferEntries.length}
+              count={bufferIds.length}
               onChangePage={useCallback((page: number) => setOffset(page * limit), [limit])}
               onChangeRowsPerPage={useCallback((rowsPerPage: number) => setLimit(rowsPerPage), [])}
             />

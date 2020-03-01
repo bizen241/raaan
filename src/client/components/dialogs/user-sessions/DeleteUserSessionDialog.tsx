@@ -2,12 +2,13 @@ import { Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const DeleteUserSessionDialog = createDialog<{
-  userSessionId: string;
+  userSessionId: EntityId<"UserSession">;
 }>()(
   React.memo(({ t }) => t("セッションの削除")),
   React.memo(({ userSessionId, onClose }) => {

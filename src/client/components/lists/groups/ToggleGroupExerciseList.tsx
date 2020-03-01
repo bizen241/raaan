@@ -7,7 +7,7 @@ import { useEntity } from "../../../hooks/useEntity";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 
 export const ToggleGroupExerciseList = createEntityList<
   "GroupMember",
@@ -35,7 +35,7 @@ export const ToggleGroupExerciseList = createEntityList<
         dispatch(
           actions.api.upload(
             "GroupExercise",
-            generateBufferId(),
+            generateLocalEntityId(),
             {
               groupId,
               exerciseId

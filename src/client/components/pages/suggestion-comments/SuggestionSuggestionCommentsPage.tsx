@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { createPage } from "../../../enhancers/createPage";
 import { useBuffers } from "../../../hooks/useBuffers";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { SuggestionCommentEditor } from "../../editors/SuggestionCommentEditor";
 import { SuggestionCommentList } from "../../lists/suggestion-comments/SuggestionCommentList";
 import { Button } from "../../ui";
@@ -25,7 +25,7 @@ export const SuggestionSuggestionCommentsPage = createPage<"Suggestion">()(
 
     const onComment = () => {
       dispatch(
-        actions.buffers.update("SuggestionComment", generateBufferId(), {
+        actions.buffers.update("SuggestionComment", generateLocalEntityId(), {
           targetId: suggestionId
         })
       );

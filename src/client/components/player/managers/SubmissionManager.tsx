@@ -5,6 +5,7 @@ import { QuestionResult, summarizeResults } from "../../../domain/exercise/attem
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useSearch } from "../../../hooks/useSearch";
 import { actions } from "../../../reducers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { AttemptManager } from "./AttemptManager";
 
 export const SubmissionManager = React.memo<{
@@ -29,7 +30,7 @@ export const SubmissionManager = React.memo<{
     (results: QuestionResult[]) => {
       setPrevSubmissionSummary(submissionSummary);
 
-      const submissionId = Date.now().toString();
+      const submissionId = generateLocalEntityId<"Submission">();
 
       dispatch(
         actions.buffers.update("Submission", submissionId, {

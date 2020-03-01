@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { createPage } from "../../../enhancers/createPage";
 import { useBuffers } from "../../../hooks/useBuffers";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { ReportCommentEditor } from "../../editors/ReportCommentEditor";
 import { ReportCommentList } from "../../lists/report-comments/ReportCommentList";
 import { Button } from "../../ui";
@@ -23,7 +23,7 @@ export const ReportReportCommentsPage = createPage<"Report">()(
 
     const onComment = () => {
       dispatch(
-        actions.buffers.update("ReportComment", generateBufferId(), {
+        actions.buffers.update("ReportComment", generateLocalEntityId(), {
           targetId: reportId
         })
       );

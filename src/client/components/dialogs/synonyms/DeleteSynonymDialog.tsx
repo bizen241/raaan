@@ -3,12 +3,13 @@ import { Delete } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const DeleteSynonymDialog = createDialog<{
-  synonymId: string;
+  synonymId: EntityId<"Synonym">;
   target: string;
 }>()(
   React.memo(({ t }) => t("タグの別名の削除")),

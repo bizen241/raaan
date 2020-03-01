@@ -8,7 +8,7 @@ import { actions, RootState } from "../reducers";
 import { isLocalOnly } from "../reducers/api";
 
 interface Props<T extends EntityType> {
-  bufferType: EntityType;
+  bufferType: T;
   bufferId: EntityId<T>;
   buffer: Params<EntityTypeToEntity[T]> | undefined;
   source: EntityTypeToEntity[T] | undefined;

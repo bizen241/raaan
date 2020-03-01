@@ -2,12 +2,13 @@ import { Typography } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const DeleteExerciseCommentBufferDialog = createDialog<{
-  bufferId: string;
+  bufferId: EntityId<"ExerciseComment">;
 }>()(
   React.memo(({ t }) => t("編集の破棄")),
   React.memo(({ bufferId, onClose }) => {

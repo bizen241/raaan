@@ -7,7 +7,7 @@ import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { Column } from "../../ui";
 
 export const TogglePlaylistItemList = createEntityList<
@@ -35,7 +35,7 @@ export const TogglePlaylistItemList = createEntityList<
         dispatch(
           actions.api.upload(
             "PlaylistItem",
-            generateBufferId(),
+            generateLocalEntityId(),
             {
               playlistId,
               exerciseId

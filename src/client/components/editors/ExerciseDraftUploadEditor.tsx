@@ -1,15 +1,15 @@
 import { Message } from "@material-ui/icons";
 import React, { useCallback, useState } from "react";
-import { Exercise, ExerciseDraft } from "../../../shared/api/entities";
+import { EntityId, Exercise, ExerciseDraft } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { isNumber } from "../../reducers/buffers";
+import { isLocalEntityId } from "../../reducers/entity";
 import { Card, Select, SelectOptions, TextField } from "../ui";
 
 type UploadType = "public" | "private" | "update" | "draft";
 
 export const ExerciseDraftUploadEditor = React.memo<{
-  bufferId: string;
+  bufferId: EntityId<"ExerciseDraft">;
   exercise: Exercise | undefined;
   params: Params<ExerciseDraft>;
   onChange: (exerciseDraft: Partial<ExerciseDraft>) => void;
@@ -17,8 +17,7 @@ export const ExerciseDraftUploadEditor = React.memo<{
   const { currentUser } = useCurrentUser();
 
   const isReadOnly = currentUser.permission === "Read";
-  const isLocalOnly = isNumber(bufferId);
-  const isDraft = isLocalOnly ? true : exercise && exercise.isDraft;
+  const isDraft = isLocalEntityId(bufferId) ? true : exercise && exercise.isDraft;
 
   const [uploadType, setUploadConfig] = useState<UploadType>(!isDraft ? "update" : isReadOnly ? "private" : "public");
 

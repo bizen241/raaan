@@ -4,7 +4,7 @@ import React, { Suspense, useEffect } from "react";
 import { Provider, useDispatch } from "react-redux";
 import "../../intl";
 import { actions, useSelector } from "../../reducers";
-import { guestUserConfig } from "../../reducers/cache";
+import { guestUserConfig } from "../../reducers/guest";
 import { store } from "../../store";
 import { IntlProvider } from "../project/IntlProvider";
 import { LoadingApp } from "../project/LoadingApp";

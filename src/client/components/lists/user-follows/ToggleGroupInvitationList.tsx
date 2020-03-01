@@ -7,7 +7,7 @@ import { useEntity } from "../../../hooks/useEntity";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { Column } from "../../ui";
 
 export const ToggleGroupInvitationList = createEntityList<
@@ -38,7 +38,7 @@ export const ToggleGroupInvitationList = createEntityList<
         dispatch(
           actions.api.upload(
             "GroupInvitation",
-            generateBufferId(),
+            generateLocalEntityId(),
             {
               groupId,
               targetId: followerId

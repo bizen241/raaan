@@ -5,7 +5,7 @@ import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { Button, Card, Select, SelectOptions } from "../../ui";
 
 type UploadType = "public" | "private";
@@ -22,12 +22,10 @@ export const UploadPlaylistBookmarkDialog = createDialog<{
     const [uploadType, setUploadType] = useState<UploadType>(isReadOnly ? "private" : "public");
 
     const onUpload = () => {
-      const bufferId = generateBufferId();
-
       dispatch(
         actions.api.upload(
           "PlaylistBookmark",
-          bufferId,
+          generateLocalEntityId(),
           {
             playlistId,
             isPrivate: uploadType === "private"

@@ -6,7 +6,7 @@ import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { Button, Card } from "../../ui";
 
 export const UploadExerciseVoteDialog = createDialog<{
@@ -18,12 +18,10 @@ export const UploadExerciseVoteDialog = createDialog<{
     const { currentUserId } = useCurrentUser();
 
     const onUpload = (isUp: boolean) => {
-      const bufferId = generateBufferId();
-
       dispatch(
         actions.api.upload(
           "ExerciseVote",
-          bufferId,
+          generateLocalEntityId(),
           {
             targetId,
             isUp

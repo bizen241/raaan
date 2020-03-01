@@ -8,7 +8,7 @@ import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useEntity } from "../../../hooks/useEntity";
 import { useSearch } from "../../../hooks/useSearch";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { Card, Column, IconButton, Row, Table } from "../../ui";
 
 export const SelectContestGroupList = React.memo<{
@@ -23,7 +23,7 @@ export const SelectContestGroupList = React.memo<{
   const selectableGroups = groupMembers.filter(groupMember => groupMember.permission !== "read");
 
   const onSelect = useCallback((groupId: EntityId<"Group">) => {
-    const bufferId = generateBufferId();
+    const bufferId = generateLocalEntityId<"Contest">();
 
     dispatch(
       actions.buffers.update("Contest", bufferId, {

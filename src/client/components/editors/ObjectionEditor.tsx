@@ -62,7 +62,7 @@ export const ObjectionEditor = withBuffer("Objection")(
           </Card>
         )}
         <UploadObjectionDialog
-          reportId={bufferId}
+          objectionId={bufferId}
           targetType={params.targetType}
           targetId={params.targetId}
           isOpen={isUploadDialogOpen}

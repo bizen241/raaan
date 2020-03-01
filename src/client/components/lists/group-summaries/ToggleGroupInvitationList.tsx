@@ -7,7 +7,7 @@ import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 
 export const ToggleGroupInvitationList = createEntityList<
   "GroupSummary",
@@ -39,7 +39,7 @@ export const ToggleGroupInvitationList = createEntityList<
         dispatch(
           actions.api.upload(
             "GroupInvitation",
-            generateBufferId(),
+            generateLocalEntityId(),
             {
               groupId,
               targetId: followerId

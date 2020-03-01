@@ -2,12 +2,13 @@ import { Typography } from "@material-ui/core";
 import { Lock } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const UnpublishPlaylistDialog = createDialog<{
-  playlistId: string;
+  playlistId: EntityId<"Playlist">;
 }>()(
   React.memo(({ t }) => t("プレイリストの公開を終了")),
   React.memo(({ playlistId, onClose }) => {

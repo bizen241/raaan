@@ -2,12 +2,13 @@ import { Typography } from "@material-ui/core";
 import { RemoveCircle } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const RejectGroupInvitationDialog = createDialog<{
-  groupInvitationId: string;
+  groupInvitationId: EntityId<"GroupInvitation">;
 }>()(
   React.memo(({ t }) => t("グループへの参加を辞退")),
   React.memo(({ groupInvitationId, onClose }) => {

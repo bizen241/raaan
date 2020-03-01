@@ -2,12 +2,13 @@ import { Typography } from "@material-ui/core";
 import { Public } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const PublishExerciseDialog = createDialog<{
-  exerciseId: string;
+  exerciseId: EntityId<"Exercise">;
 }>()(
   React.memo(({ t }) => t("問題集を公開")),
   React.memo(({ exerciseId, onClose }) => {

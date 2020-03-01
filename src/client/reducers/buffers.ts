@@ -26,14 +26,14 @@ export const buffersActions = {
 
 export type BuffersActions = ActionUnion<typeof buffersActions>;
 
-export const generateBufferId = () => Date.now().toString();
-export const isNumber = (id: string) => !isNaN(Number(id));
-
 export type BuffersState = {
   [P in keyof EntityTypeToEntity]: {
     [id: string]: Params<EntityTypeToEntity[P]> | undefined;
   };
 };
+
+export const getBuffer = <T extends EntityType>(bufferMap: BuffersState[T], entityId: EntityId<T>) =>
+  bufferMap[entityId] as Params<EntityTypeToEntity[T]>;
 
 export const initialBuffersState: BuffersState = {
   ...createEntityTypeToObject<BuffersState>(),

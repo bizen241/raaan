@@ -3,12 +3,13 @@ import { CloudUpload } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const UploadUserDialog = createDialog<{
-  userId: string;
+  userId: EntityId<"User">;
 }>()(
   React.memo(({ t }) => t("プロフィールをアップロード")),
   React.memo(({ userId: bufferId }) => {

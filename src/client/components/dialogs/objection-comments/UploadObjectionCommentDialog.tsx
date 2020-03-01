@@ -8,7 +8,7 @@ import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const UploadObjectionCommentDialog = createDialog<{
-  bufferId: string;
+  bufferId: EntityId<"ObjectionComment">;
   targetId: EntityId<"Objection">;
 }>()(
   React.memo(({ t }) => t("抗議へのコメントをアップロード")),

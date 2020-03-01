@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { EntityId } from "../../../../shared/api/entities";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { Button, Card } from "../../ui";
 
 export const UploadGroupMemberByOwnerDialog = createDialog<{
@@ -21,7 +21,7 @@ export const UploadGroupMemberByOwnerDialog = createDialog<{
       dispatch(
         actions.api.upload(
           "GroupMember",
-          generateBufferId(),
+          generateLocalEntityId(),
           {
             groupId,
             userId: applicantId

@@ -3,7 +3,7 @@ import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { Button, Card, TextField } from "../../ui";
 
 export const UploadSynonymDialog = createDialog<{
@@ -19,12 +19,10 @@ export const UploadSynonymDialog = createDialog<{
       setName(value);
     }, []);
     const onUploadSynonym = () => {
-      const bufferId = generateBufferId();
-
       dispatch(
         actions.api.upload(
           "Synonym",
-          bufferId,
+          generateLocalEntityId(),
           {
             name,
             target

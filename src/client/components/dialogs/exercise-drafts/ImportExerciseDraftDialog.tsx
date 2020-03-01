@@ -7,7 +7,7 @@ import { ExerciseDraft } from "../../../../shared/api/entities";
 import { Params } from "../../../../shared/api/request/params";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { Button, Card } from "../../ui";
 
 export const ImportExerciseDraftDialog = createDialog<{}>()(
@@ -46,7 +46,7 @@ export const ImportExerciseDraftDialog = createDialog<{}>()(
       }
 
       const exercise: Params<ExerciseDraft> = JSON.parse(fileString);
-      const bufferId = generateBufferId();
+      const bufferId = generateLocalEntityId();
 
       dispatch(actions.buffers.update("ExerciseDraft", bufferId, exercise));
       dispatch(push(`/exercises/${bufferId}/edit`));

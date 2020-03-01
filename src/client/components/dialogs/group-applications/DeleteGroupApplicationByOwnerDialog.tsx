@@ -2,12 +2,13 @@ import { Typography } from "@material-ui/core";
 import { RemoveCircle } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const DeleteGroupApplicationByOwnerDialog = createDialog<{
-  groupApplicationId: string;
+  groupApplicationId: EntityId<"GroupApplication">;
 }>()(
   React.memo(({ t }) => t("申請の拒絶")),
   React.memo(({ groupApplicationId, onClose }) => {

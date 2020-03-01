@@ -3,12 +3,13 @@ import { CloudUpload } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const UploadContestDialog = createDialog<{
-  contestId: string;
+  contestId: EntityId<"Contest">;
 }>()(
   React.memo(({ t }) => t("セッションのアップロード")),
   React.memo(({ contestId: bufferId }) => {

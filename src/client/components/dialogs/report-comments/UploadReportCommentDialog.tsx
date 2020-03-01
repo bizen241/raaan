@@ -8,7 +8,7 @@ import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const UploadReportCommentDialog = createDialog<{
-  bufferId: string;
+  bufferId: EntityId<"ReportComment">;
   targetId: EntityId<"Report">;
 }>()(
   React.memo(({ t }) => t("報告へのコメントをアップロード")),

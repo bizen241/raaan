@@ -6,7 +6,7 @@ import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { Button, Card } from "../../ui";
 
 export const UploadUserFollowDialog = createDialog<{
@@ -21,7 +21,7 @@ export const UploadUserFollowDialog = createDialog<{
       dispatch(
         actions.api.upload(
           "UserFollow",
-          generateBufferId(),
+          generateLocalEntityId(),
           {
             followerId: currentUserId,
             targetId

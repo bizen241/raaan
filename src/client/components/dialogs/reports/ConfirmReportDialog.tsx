@@ -1,13 +1,12 @@
 import { Typography } from "@material-ui/core";
 import { ReportProblem } from "@material-ui/icons";
 import { push } from "connected-react-router";
-import { useCallback } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { ReportTargetType } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { Button, Card } from "../../ui";
 
 export const ConfirmReportDialog = createDialog<{
@@ -19,7 +18,7 @@ export const ConfirmReportDialog = createDialog<{
     const dispatch = useDispatch();
 
     const onCreate = useCallback(() => {
-      const bufferId = generateBufferId();
+      const bufferId = generateLocalEntityId<"Report">();
 
       dispatch(
         actions.buffers.update("Report", bufferId, {

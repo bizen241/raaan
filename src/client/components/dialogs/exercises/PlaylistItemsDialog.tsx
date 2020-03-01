@@ -7,7 +7,7 @@ import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useSearch } from "../../../hooks/useSearch";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { TogglePlaylistItemList } from "../../lists/playlist-summaries/TogglePlaylistItemList";
 import { Button, Card, TextField } from "../../ui";
 
@@ -34,12 +34,10 @@ export const PlaylistItemsDialog = createDialog<{
       setTitle(value);
     }, []);
     const onUploadPlaylist = () => {
-      const bufferId = generateBufferId();
-
       dispatch(
         actions.api.upload(
           "Playlist",
-          bufferId,
+          generateLocalEntityId(),
           {
             title,
             exerciseId

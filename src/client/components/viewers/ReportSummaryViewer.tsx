@@ -42,7 +42,11 @@ export const ReportSummaryViewer = withEntity("ReportSummary")(({ entity: report
         </Link>
       </Property>
       {isOwn && (
-        <DeleteReportDialog reportId={reportSummary.id} isOpen={isDeleteDialogOpen} onClose={onToggleDeleteDialog} />
+        <DeleteReportDialog
+          reportId={reportSummary.parentId}
+          isOpen={isDeleteDialogOpen}
+          onClose={onToggleDeleteDialog}
+        />
       )}
     </Card>
   );

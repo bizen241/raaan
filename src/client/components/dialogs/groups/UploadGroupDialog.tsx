@@ -3,12 +3,13 @@ import { CloudUpload } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const UploadGroupDialog = createDialog<{
-  groupId: string;
+  groupId: EntityId<"Group">;
 }>()(
   React.memo(({ t }) => t("グループをアップロード")),
   React.memo(({ groupId: bufferId }) => {

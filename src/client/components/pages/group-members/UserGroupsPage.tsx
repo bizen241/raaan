@@ -4,7 +4,7 @@ import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { createPage } from "../../../enhancers/createPage";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { UserGroupMemberList } from "../../lists/group-members/UserGroupMemberList";
 import { Button } from "../../ui";
 
@@ -15,7 +15,7 @@ export const UserGroupsPage = createPage()(
     const { currentUserId } = useCurrentUser();
 
     const onCreate = useCallback(() => {
-      const bufferId = generateBufferId();
+      const bufferId = generateLocalEntityId<"Group">();
 
       dispatch(push(`/groups/${bufferId}/edit`));
     }, []);

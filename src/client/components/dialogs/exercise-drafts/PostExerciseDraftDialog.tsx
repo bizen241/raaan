@@ -2,7 +2,7 @@ import { CloudUpload } from "@material-ui/icons";
 import { replace } from "connected-react-router";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { ExerciseDraft } from "../../../../shared/api/entities";
+import { EntityId, ExerciseDraft } from "../../../../shared/api/entities";
 import { Params } from "../../../../shared/api/request/params";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
@@ -10,7 +10,7 @@ import { ExerciseDraftUploadEditor } from "../../editors/ExerciseDraftUploadEdit
 import { Button } from "../../ui";
 
 export const PostExerciseDraftDialog = createDialog<{
-  exerciseDraftId: string;
+  exerciseDraftId: EntityId<"ExerciseDraft">;
   exerciseDraft: Params<ExerciseDraft>;
   onChange: (exerciseDraft: Partial<ExerciseDraft>) => void;
 }>()(

@@ -2,12 +2,13 @@ import { Typography } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const RegenerateGroupSecretDialog = createDialog<{
-  groupSecretId: string;
+  groupSecretId: EntityId<"GroupSecret">;
 }>()(
   React.memo(({ t }) => t("招待用リンクを再生成")),
   React.memo(({ groupSecretId, onClose }) => {

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { PlaylistItem } from "../../../../shared/api/entities";
+import { EntityId, PlaylistItem } from "../../../../shared/api/entities";
 import { useEntity } from "../../../hooks/useEntity";
 import { Loading } from "../../project/Loading";
 import { SubmissionManager } from "../managers/SubmissionManager";
@@ -12,7 +12,7 @@ export const PlaylistPlayer = createPlayerDialog<{
   React.memo(({ playlistItems, startIndex, onClose }) => {
     const [cursor, setCursor] = useState(0);
     const exerciseIds = useMemo(() => {
-      const ids: string[] = [];
+      const ids: EntityId<"Exercise">[] = [];
 
       playlistItems.slice(startIndex).forEach(playlist => playlist.exerciseId && ids.push(playlist.exerciseId));
 

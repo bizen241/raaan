@@ -7,7 +7,7 @@ import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { actions } from "../../../reducers";
-import { isNumber } from "../../../reducers/buffers";
+import { isLocalEntityId } from "../../../reducers/entity";
 import { Button, Card } from "../../ui";
 
 export const UploadSuggestionDialog = createDialog<{
@@ -22,7 +22,7 @@ export const UploadSuggestionDialog = createDialog<{
     const onUpload = () => {
       dispatch(
         actions.api.upload("Suggestion", suggestionId, undefined, uploadResponse => {
-          if (isNumber(suggestionId)) {
+          if (isLocalEntityId(suggestionId)) {
             dispatch(
               actions.cache.add(
                 "SuggestionSummary",

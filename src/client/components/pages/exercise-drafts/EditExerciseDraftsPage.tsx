@@ -4,7 +4,7 @@ import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { createPage } from "../../../enhancers/createPage";
 import { useToggleState } from "../../../hooks/useToggleState";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { ImportExerciseDraftDialog } from "../../dialogs/exercise-drafts/ImportExerciseDraftDialog";
 import { ExerciseDraftBufferList } from "../../lists/exercise-drafts/ExerciseDraftBufferList";
 import { Button, Column } from "../../ui";
@@ -17,7 +17,7 @@ export const EditExerciseDraftsPage = createPage()(
     const [isImportDialogOpen, onToggleImportDialog] = useToggleState();
 
     const onCreate = useCallback(() => {
-      const bufferId = generateBufferId();
+      const bufferId = generateLocalEntityId<"ExerciseDraft">();
 
       dispatch(push(`/exercise-darfts/${bufferId}/edit`));
     }, []);

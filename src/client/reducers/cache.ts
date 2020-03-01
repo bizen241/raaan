@@ -58,6 +58,9 @@ export type CacheState = {
   search: SearchResultStore;
 };
 
+export const getEntity = <T extends EntityType>(entityMap: EntityStore[T], entityId: EntityId<T>) =>
+  entityMap[entityId] as EntityTypeToEntity[T] | undefined;
+
 export const initialCacheState: CacheState = {
   get: {
     ...createEntityTypeToObject(),

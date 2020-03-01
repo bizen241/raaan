@@ -64,7 +64,7 @@ export const useSearch = <T extends EntityType>(
     limit: searchLimit,
     offset: searchOffset,
     count: result !== undefined ? result.count : 0,
-    status: status !== undefined ? status.code : entities !== undefined ? 200 : 102,
+    status: status !== undefined ? status : entities !== undefined ? 200 : 102,
     onReload: useCallback(() => dispatch(actions.api.search(entityType, params)), [params]),
     onChange: useCallback(
       (changedParams: Params<EntityTypeToEntity[T]>) => setParams(s => ({ ...s, ...changedParams })),

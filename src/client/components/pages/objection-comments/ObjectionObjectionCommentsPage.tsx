@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { createPage } from "../../../enhancers/createPage";
 import { useBuffers } from "../../../hooks/useBuffers";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { ObjectionCommentEditor } from "../../editors/ObjectionCommentEditor";
 import { ObjectionCommentList } from "../../lists/objection-comments/ObjectionCommentList";
 import { Button } from "../../ui";
@@ -25,7 +25,7 @@ export const ObjectionObjectionCommentsPage = createPage<"Objection">()(
 
     const onComment = () => {
       dispatch(
-        actions.buffers.update("ObjectionComment", generateBufferId(), {
+        actions.buffers.update("ObjectionComment", generateLocalEntityId(), {
           targetId: objectionId
         })
       );

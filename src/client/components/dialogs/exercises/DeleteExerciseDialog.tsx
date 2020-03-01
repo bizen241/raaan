@@ -3,12 +3,13 @@ import { Delete } from "@material-ui/icons";
 import { goBack } from "connected-react-router";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const DeleteExerciseDialog = createDialog<{
-  exerciseId: string;
+  exerciseId: EntityId<"Exercise">;
 }>()(
   React.memo(({ t }) => t("問題集の削除")),
   React.memo(({ exerciseId }) => {

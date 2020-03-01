@@ -2,12 +2,13 @@ import { Typography } from "@material-ui/core";
 import { RemoveCircle } from "@material-ui/icons";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog, dialogTimeout } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const DeleteUserFollowDialog = createDialog<{
-  userFollowId: string;
+  userFollowId: EntityId<"UserFollow">;
 }>()(
   React.memo(({ t }) => t("ユーザーをフォロー解除")),
   React.memo(({ userFollowId, onClose }) => {

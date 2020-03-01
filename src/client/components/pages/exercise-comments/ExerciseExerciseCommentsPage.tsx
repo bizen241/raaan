@@ -5,7 +5,7 @@ import { createPage } from "../../../enhancers/createPage";
 import { useBuffers } from "../../../hooks/useBuffers";
 import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { ExerciseCommentEditor } from "../../editors/ExerciseCommentEditor";
 import { ExerciseCommentList } from "../../lists/exercise-comments/ExerciseCommentList";
 import { Loading } from "../../project/Loading";
@@ -25,7 +25,7 @@ export const ExerciseExerciseCommentsPage = createPage<"Exercise">()(
 
     const onComment = () => {
       dispatch(
-        actions.buffers.update("ExerciseComment", generateBufferId(), {
+        actions.buffers.update("ExerciseComment", generateLocalEntityId(), {
           targetId: exerciseId
         })
       );

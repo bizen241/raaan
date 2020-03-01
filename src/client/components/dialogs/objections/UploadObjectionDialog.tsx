@@ -4,23 +4,23 @@ import { replace } from "connected-react-router";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { endpoints } from "../../../../shared/api/endpoint";
-import { ObjectionTargetType } from "../../../../shared/api/entities";
+import { EntityId, ObjectionTargetType } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const UploadObjectionDialog = createDialog<{
-  reportId: string;
+  objectionId: EntityId<"Objection">;
   targetType: ObjectionTargetType;
   targetId: string;
 }>()(
   React.memo(({ t }) => t("抗議をアップロード")),
-  React.memo(({ reportId, targetId, targetType }) => {
+  React.memo(({ objectionId, targetId, targetType }) => {
     const dispatch = useDispatch();
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload("Objection", reportId, undefined, uploadResponse => {
+        actions.api.upload("Objection", objectionId, undefined, uploadResponse => {
           dispatch(
             actions.cache.add(
               "Objection",

@@ -8,7 +8,7 @@ import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const UploadSuggestionCommentDialog = createDialog<{
-  bufferId: string;
+  bufferId: EntityId<"SuggestionComment">;
   targetId: EntityId<"Suggestion">;
 }>()(
   React.memo(({ t }) => t("提案へのコメントをアップロード")),

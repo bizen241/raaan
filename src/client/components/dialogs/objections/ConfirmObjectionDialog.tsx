@@ -1,13 +1,12 @@
 import { Typography } from "@material-ui/core";
 import { SmsFailed } from "@material-ui/icons";
 import { push } from "connected-react-router";
-import { useCallback } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { ObjectionTargetType } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
-import { generateBufferId } from "../../../reducers/buffers";
+import { generateLocalEntityId } from "../../../reducers/entity";
 import { Button, Card } from "../../ui";
 
 export const ConfirmObjectionDialog = createDialog<{
@@ -19,7 +18,7 @@ export const ConfirmObjectionDialog = createDialog<{
     const dispatch = useDispatch();
 
     const onCreate = useCallback(() => {
-      const bufferId = generateBufferId();
+      const bufferId = generateLocalEntityId();
 
       dispatch(
         actions.buffers.update("Objection", bufferId, {

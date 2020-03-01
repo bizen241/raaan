@@ -3,12 +3,13 @@ import { CloudUpload } from "@material-ui/icons";
 import { goBack } from "connected-react-router";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { EntityId } from "../../../../shared/api/entities";
 import { createDialog } from "../../../enhancers/createDialog";
 import { actions } from "../../../reducers";
 import { Button, Card } from "../../ui";
 
 export const UploadRevisionDialog = createDialog<{
-  revisionId: string;
+  revisionId: EntityId<"Revision">;
 }>()(
   React.memo(({ t }) => t("編集履歴のアップロード")),
   React.memo(({ revisionId: bufferId }) => {
