@@ -1,5 +1,6 @@
-import { EntityType, EntityTypeToEntity } from "../../../shared/api/entities";
+import { EntityId, EntityType, EntityTypeToEntity } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
+import { EntityStore } from "../../../shared/api/response/get";
 import { SearchResponse } from "../../../shared/api/response/search";
 import { stringifyParams } from "../request/search";
 
@@ -87,5 +88,93 @@ export const mergeSearchResultStore = <T extends EntityType>(
         fetchedAt: Date.now()
       }
     }
+  };
+};
+
+export const findCreatedEntityId = <T extends EntityType>(entityType: T, response: EntityStore) => {
+  let createdAt = 0;
+  let targetId: EntityId<T> | undefined;
+
+  Object.values(response[entityType]).forEach((entity: EntityTypeToEntity[T]) => {
+    if (entity.createdAt > createdAt) {
+      createdAt = entity.createdAt;
+      targetId = entity.id as EntityId<T>;
+    }
+  });
+
+  return targetId;
+};
+
+export const appendToSearchResultMap = <T extends EntityType>(
+  source: SearchResultMap,
+  params: Params<EntityTypeToEntity[T]>,
+  targetId: EntityId<T>
+): SearchResultMap => {
+  const query = stringifyParams(params, true);
+  const result = source[query] || {
+    ids: {},
+    count: 0,
+    fetchedAt: Date.now()
+  };
+
+  const ids: IdMap = {
+    [0]: targetId
+  };
+
+  Object.entries(result.ids).forEach(([indexString, entityId]) => {
+    const index = Number(indexString);
+    ids[index + 1] = entityId;
+  });
+
+  return {
+    ...source,
+    [query]: {
+      ...result,
+      ids,
+      count: result.count + 1
+    }
+  };
+};
+
+export const deleteFromSearchResultMap = <T extends EntityType>(
+  source: SearchResultMap,
+  targetId: EntityId<T>
+): SearchResultMap => {
+  const updated: SearchResultMap = {};
+
+  Object.entries(source).forEach(([query, result]) => {
+    if (result === undefined) {
+      return;
+    }
+
+    const targetIndex = Object.values(result.ids).indexOf(targetId);
+    if (targetIndex === -1) {
+      return;
+    }
+
+    const ids: IdMap = {};
+    Object.entries(result.ids).forEach(([indexString, entityId]) => {
+      if (entityId === targetId) {
+        return;
+      }
+
+      const index = Number(indexString);
+      if (index > targetIndex) {
+        ids[index - 1] = entityId;
+      } else {
+        ids[index] = entityId;
+      }
+    });
+
+    updated[query] = {
+      ...result,
+      ids,
+      count: result.count - 1
+    };
+  });
+
+  return {
+    ...source,
+    ...updated
   };
 };

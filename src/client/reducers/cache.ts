@@ -2,7 +2,7 @@ import { Reducer } from "redux";
 import { Actions } from ".";
 import {
   createEntityTypeToObject,
-  EntityObject,
+  EntityId,
   EntityType,
   EntityTypeToEntity,
   mergeEntityTypeToObject
@@ -10,8 +10,13 @@ import {
 import { Params } from "../../shared/api/request/params";
 import { EntityStore } from "../../shared/api/response/get";
 import { SearchResponse } from "../../shared/api/response/search";
-import { stringifyParams } from "../api/request/search";
-import { IdMap, mergeSearchResultStore, SearchResultMap, SearchResultStore } from "../api/response/search";
+import {
+  appendToSearchResultMap,
+  deleteFromSearchResultMap,
+  findCreatedEntityId,
+  mergeSearchResultStore,
+  SearchResultStore
+} from "../api/response/search";
 import { ActionUnion, createAction } from "./action";
 import { guestUser, guestUserAccount, guestUserConfig } from "./guest";
 
@@ -27,22 +32,22 @@ export const cacheActions = {
     createAction(CacheActionType.Get, {
       response
     }),
-  search: <T extends EntityType>(type: T, params: Params<EntityTypeToEntity[T]>, response: SearchResponse) =>
+  search: <T extends EntityType>(entityType: T, params: Params<EntityTypeToEntity[T]>, response: SearchResponse) =>
     createAction(CacheActionType.Search, {
-      type,
+      entityType,
       params,
       response
     }),
-  add: <T extends EntityType>(type: T, params: Params<EntityTypeToEntity[T]>, response: EntityStore) =>
+  add: <T extends EntityType>(entityType: T, params: Params<EntityTypeToEntity[T]>, response: EntityStore) =>
     createAction(CacheActionType.Add, {
-      type,
+      entityType,
       params,
       response
     }),
-  purge: (type: EntityType | undefined, id: string | undefined) =>
+  purge: <T extends EntityType>(entityType: T | undefined, entityId: EntityId<T> | undefined) =>
     createAction(CacheActionType.Purge, {
-      type,
-      id
+      entityType,
+      entityId
     })
 };
 
@@ -80,108 +85,63 @@ export const cacheReducer: Reducer<CacheState, Actions> = (state = initialCacheS
       };
     }
     case CacheActionType.Search: {
-      const { type, params, response } = action.payload;
+      const { entityType, params, response } = action.payload;
 
       return {
         get: mergeEntityTypeToObject(state.get, response.entities),
-        search: mergeSearchResultStore(state.search, type, params, response)
+        search: mergeSearchResultStore(state.search, entityType, params, response)
       };
     }
     case CacheActionType.Add: {
-      const { type, params, response } = action.payload;
+      const { entityType, params, response } = action.payload;
 
-      const query = stringifyParams<EntityObject>(params, true);
-      const result = state.search[type][query] || {
-        ids: {},
-        count: 0,
-        fetchedAt: Date.now()
-      };
-
-      const createdAt = Object.values(response[type]).reduce(
-        (prev, current: EntityObject) => Math.max(prev, current.createdAt),
-        0
-      );
-      let targetId: string | undefined;
-      Object.entries(response[type]).forEach(([entityId, entity]) => {
-        if (entity.createdAt === createdAt) {
-          targetId = entityId;
-        }
-      });
+      const targetId = findCreatedEntityId(entityType, response);
       if (targetId === undefined) {
         return state;
       }
 
+      const result = appendToSearchResultMap(state.search[entityType], params, targetId);
+
       return {
-        get: state.get,
-        search: mergeSearchResultStore(state.search, type, params, {
-          ids: [targetId, ...(Object.values(result.ids) as string[])],
-          entities: {},
-          count: result.count + 1
-        })
+        ...state,
+        search: {
+          ...state.search,
+          [entityType]: result
+        }
       };
     }
     case CacheActionType.Purge: {
-      const { type, id } = action.payload;
+      const { entityType, entityId } = action.payload;
 
-      if (type === undefined) {
+      if (entityType === undefined) {
         return initialCacheState;
       }
-      if (id === undefined) {
+      if (entityId === undefined) {
         return {
           get: {
             ...state.get,
-            [type]: initialCacheState.get[type]
+            [entityType]: initialCacheState.get[entityType]
           },
           search: {
             ...state.search,
-            [type]: initialCacheState.search[type]
+            [entityType]: initialCacheState.search[entityType]
           }
         };
       }
 
-      const get = { ...state.get[type] };
-      delete get[id];
+      const get = { ...state.get[entityType] };
+      delete get[entityId];
 
-      const search: SearchResultMap = {};
-      Object.entries(state.search[type]).forEach(([key, result]) => {
-        if (result === undefined) {
-          return;
-        }
-
-        const targetIndex = Object.values(result.ids).indexOf(id);
-        if (targetIndex === -1) {
-          search[key] = result;
-        } else {
-          const ids: IdMap = {};
-          Object.entries(result.ids).forEach(([indexString, entityId]) => {
-            if (entityId === id) {
-              return;
-            }
-
-            const index = Number(indexString);
-            if (index > targetIndex) {
-              ids[index - 1] = entityId;
-            } else {
-              ids[index] = entityId;
-            }
-          });
-
-          search[key] = {
-            ...result,
-            ids,
-            count: result.count - 1
-          };
-        }
-      });
+      const result = deleteFromSearchResultMap(state.search[entityType], entityId);
 
       return {
         get: {
           ...state.get,
-          [type]: get
+          [entityType]: get
         },
         search: {
           ...state.search,
-          [type]: search
+          [entityType]: result
         }
       };
     }
