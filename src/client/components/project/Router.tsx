@@ -1,7 +1,5 @@
 import React, { Suspense } from "react";
-import { useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
-import { RootState } from "../../reducers";
 import { AppDiaryPage } from "../pages/app-diary-entries/AppDiaryPage";
 import { AppPage } from "../pages/app/AppPage";
 import { CachePage } from "../pages/app/CachePage";
@@ -103,124 +101,120 @@ const EditExerciseDraftPage = React.lazy(() => import("../pages/exercise-drafts/
 const EditPlaylistPage = React.lazy(() => import("../pages/playlists/EditPlaylistPage"));
 const EditSuggestionPage = React.lazy(() => import("../pages/suggestions/EditSuggestionPage"));
 
-export const Router = React.memo(() => {
-  const location = useSelector((state: RootState) => state.router.location);
+export const Router = () => (
+  <Suspense fallback={<LoadingPage />}>
+    <Switch>
+      <Route exact path="/" component={HomePage} />
 
-  return (
-    <Suspense fallback={<LoadingPage />}>
-      <Switch location={location}>
-        <Route exact={true} path="/" component={HomePage} />
+      <Route exact path="/app" component={AppPage} />
+      <Route exact path="/app/community" component={CommunityPage} />
+      <Route exact path="/app/diary" component={AppDiaryPage} />
+      <Route exact path="/app/version" component={VersionPage} />
+      <Route exact path="/app/cache" component={CachePage} />
+      <Route exact path="/app/dependencies" component={DependenciesPage} />
 
-        <Route exact={true} path="/app" component={AppPage} />
-        <Route exact={true} path="/app/community" component={CommunityPage} />
-        <Route exact={true} path="/app/diary" component={AppDiaryPage} />
-        <Route exact={true} path="/app/version" component={VersionPage} />
-        <Route exact={true} path="/app/cache" component={CachePage} />
-        <Route exact={true} path="/app/dependencies" component={DependenciesPage} />
+      <Route exact path="/user/account" component={UserAccountPage} />
+      <Route exact path="/user/account/edit" component={EditUserAccountPage} />
+      <Route exact path="/user/account/provider" component={UserAccountProviderPage} />
+      <Route exact path="/user/account/provider/edit" component={EditUserAccountProviderPage} />
+      <Route exact path="/user/security" component={SecurityPage} />
+      <Route exact path="/user/security/sessions" component={UserSessionsPage} />
+      <Route exact path="/user/config" component={EditUserConfigPage} />
+      <Route exact path="/user/notifications/messages" component={UserMessagesPage} />
+      <Route exact path="/user/notifications/invitations" component={UserGroupInvitationsPage} />
+      <Route exact path="/user/submissions" component={SubmissionsPage} />
+      <Route exact path="/user/submissions/review" component={ReviewPage} />
+      <Route exact path="/user/drafts" component={UserExerciseDraftsPage} />
 
-        <Route exact={true} path="/user/account" component={UserAccountPage} />
-        <Route exact={true} path="/user/account/edit" component={EditUserAccountPage} />
-        <Route exact={true} path="/user/account/provider" component={UserAccountProviderPage} />
-        <Route exact={true} path="/user/account/provider/edit" component={EditUserAccountProviderPage} />
-        <Route exact={true} path="/user/security" component={SecurityPage} />
-        <Route exact={true} path="/user/security/sessions" component={UserSessionsPage} />
-        <Route exact={true} path="/user/config" component={EditUserConfigPage} />
-        <Route exact={true} path="/user/notifications/messages" component={UserMessagesPage} />
-        <Route exact={true} path="/user/notifications/invitations" component={UserGroupInvitationsPage} />
-        <Route exact={true} path="/user/submissions" component={SubmissionsPage} />
-        <Route exact={true} path="/user/submissions/review" component={ReviewPage} />
-        <Route exact={true} path="/user/drafts" component={UserExerciseDraftsPage} />
+      <Route exact path="/users" component={UsersPage} />
+      <Route exact path="/users/:id" component={UserPage} />
+      <Route exact path="/users/:id/edit" component={EditUserPage} />
+      <Route exact path="/users/:id/exercises" component={UserExercisesPage} />
+      <Route exact path="/users/:id/playlists" component={UserPlaylistsPage} />
+      <Route exact path="/users/:id/bookmarks" component={UserPlaylistBookmarksPage} />
+      <Route exact path="/users/:id/community" component={UserCommunityPage} />
+      <Route exact path="/users/:id/groups" component={UserGroupsPage} />
+      <Route exact path="/users/:id/groups/applications" component={UserGroupApplicationsPage} />
+      <Route exact path="/users/:id/votes" component={UserVotesPage} />
+      <Route exact path="/users/:id/votes/up" component={UserUpVotesPage} />
+      <Route exact path="/users/:id/votes/down" component={UserDownVotesPage} />
+      <Route exact path="/users/:id/reports" component={UserReportsPage} />
+      <Route exact path="/users/:id/reports/uploaded" component={UserUploadedReportsPage} />
+      <Route exact path="/users/:id/reports/received" component={UserReceivedReportsPage} />
+      <Route exact path="/users/:id/objections" component={UserObjectionsPage} />
+      <Route exact path="/users/:id/suggestions" component={UserSuggestionsPage} />
+      <Route exact path="/users/:id/suggestions/uploaded" component={UserUploadedSuggestionsPage} />
+      <Route exact path="/users/:id/suggestions/received" component={UserReceivedSuggestionsPage} />
+      <Route exact path="/users/:id/follow" component={UserFollowPage} />
+      <Route exact path="/users/:id/followers" component={UserFollowersPage} />
+      <Route exact path="/users/:id/following/users" component={FollowingUsersPage} />
+      <Route exact path="/users/:id/following/tags" component={FollowingTagsPage} />
+      <Route exact path="/users/:id/diary" component={UserDiaryPage} />
 
-        <Route exact={true} path="/users" component={UsersPage} />
-        <Route exact={true} path="/users/:id" component={UserPage} />
-        <Route exact={true} path="/users/:id/edit" component={EditUserPage} />
-        <Route exact={true} path="/users/:id/exercises" component={UserExercisesPage} />
-        <Route exact={true} path="/users/:id/playlists" component={UserPlaylistsPage} />
-        <Route exact={true} path="/users/:id/bookmarks" component={UserPlaylistBookmarksPage} />
-        <Route exact={true} path="/users/:id/community" component={UserCommunityPage} />
-        <Route exact={true} path="/users/:id/groups" component={UserGroupsPage} />
-        <Route exact={true} path="/users/:id/groups/applications" component={UserGroupApplicationsPage} />
-        <Route exact={true} path="/users/:id/votes" component={UserVotesPage} />
-        <Route exact={true} path="/users/:id/votes/up" component={UserUpVotesPage} />
-        <Route exact={true} path="/users/:id/votes/down" component={UserDownVotesPage} />
-        <Route exact={true} path="/users/:id/reports" component={UserReportsPage} />
-        <Route exact={true} path="/users/:id/reports/uploaded" component={UserUploadedReportsPage} />
-        <Route exact={true} path="/users/:id/reports/received" component={UserReceivedReportsPage} />
-        <Route exact={true} path="/users/:id/objections" component={UserObjectionsPage} />
-        <Route exact={true} path="/users/:id/suggestions" component={UserSuggestionsPage} />
-        <Route exact={true} path="/users/:id/suggestions/uploaded" component={UserUploadedSuggestionsPage} />
-        <Route exact={true} path="/users/:id/suggestions/received" component={UserReceivedSuggestionsPage} />
-        <Route exact={true} path="/users/:id/follow" component={UserFollowPage} />
-        <Route exact={true} path="/users/:id/followers" component={UserFollowersPage} />
-        <Route exact={true} path="/users/:id/following/users" component={FollowingUsersPage} />
-        <Route exact={true} path="/users/:id/following/tags" component={FollowingTagsPage} />
-        <Route exact={true} path="/users/:id/diary" component={UserDiaryPage} />
+      <Route exact path="/exercises" component={ExercisesPage} />
+      <Route exact path="/exercises/:id" component={ExercisePage} />
+      <Route exact path="/exercises/:id/revisions" component={ExerciseRevisionsPage} />
+      <Route exact path="/exercises/:id/comments" component={ExerciseExerciseCommentsPage} />
+      <Route exact path="/exercises/:id/diary" component={ExerciseDiaryPage} />
 
-        <Route exact={true} path="/exercises" component={ExercisesPage} />
-        <Route exact={true} path="/exercises/:id" component={ExercisePage} />
-        <Route exact={true} path="/exercises/:id/revisions" component={ExerciseRevisionsPage} />
-        <Route exact={true} path="/exercises/:id/comments" component={ExerciseExerciseCommentsPage} />
-        <Route exact={true} path="/exercises/:id/diary" component={ExerciseDiaryPage} />
+      <Route exact path="/exercise-drafts/edit" component={EditExerciseDraftsPage} />
+      <Route exact path="/exercise-drafts/:id/edit" component={EditExerciseDraftPage} />
 
-        <Route exact={true} path="/exercise-drafts/edit" component={EditExerciseDraftsPage} />
-        <Route exact={true} path="/exercise-drafts/:id/edit" component={EditExerciseDraftPage} />
+      <Route exact path="/revisions/:id" component={RevisionPage} />
+      <Route exact path="/revisions/:id/edit" component={EditRevisionPage} />
 
-        <Route exact={true} path="/revisions/:id" component={RevisionPage} />
-        <Route exact={true} path="/revisions/:id/edit" component={EditRevisionPage} />
+      <Route exact path="/suggestions/edit" component={EditSuggestionsPage} />
+      <Route exact path="/suggestions/:id" component={SuggestionPage} />
+      <Route exact path="/suggestions/:id/edit" component={EditSuggestionPage} />
+      <Route exact path="/suggestions/:id/comments" component={SuggestionSuggestionCommentsPage} />
 
-        <Route exact={true} path="/suggestions/edit" component={EditSuggestionsPage} />
-        <Route exact={true} path="/suggestions/:id" component={SuggestionPage} />
-        <Route exact={true} path="/suggestions/:id/edit" component={EditSuggestionPage} />
-        <Route exact={true} path="/suggestions/:id/comments" component={SuggestionSuggestionCommentsPage} />
+      <Route exact path="/playlists" component={PlaylistsPage} />
+      <Route exact path="/playlists/edit" component={EditPlaylistsPage} />
+      <Route exact path="/playlists/:id" component={PlaylistPage} />
+      <Route exact path="/playlists/:id/edit" component={EditPlaylistPage} />
+      <Route exact path="/playlists/:id/diary" component={PlaylistDiaryPage} />
 
-        <Route exact={true} path="/playlists" component={PlaylistsPage} />
-        <Route exact={true} path="/playlists/edit" component={EditPlaylistsPage} />
-        <Route exact={true} path="/playlists/:id" component={PlaylistPage} />
-        <Route exact={true} path="/playlists/:id/edit" component={EditPlaylistPage} />
-        <Route exact={true} path="/playlists/:id/diary" component={PlaylistDiaryPage} />
+      <Route exact path="/tags" component={TagsPage} />
+      <Route exact path="/tags/edit" component={EditTagsPage} />
+      <Route exact path="/tags/:name" component={TagPage} />
+      <Route exact path="/tags/:name/synonyms" component={TagSynonymsPage} />
+      <Route exact path="/tags/:id/edit" component={EditTagPage} />
+      <Route exact path="/tags/:id/followers" component={TagFollowersPage} />
+      <Route exact path="/tags/:id/diary" component={TagDiaryPage} />
 
-        <Route exact={true} path="/tags" component={TagsPage} />
-        <Route exact={true} path="/tags/edit" component={EditTagsPage} />
-        <Route exact={true} path="/tags/:name" component={TagPage} />
-        <Route exact={true} path="/tags/:name/synonyms" component={TagSynonymsPage} />
-        <Route exact={true} path="/tags/:id/edit" component={EditTagPage} />
-        <Route exact={true} path="/tags/:id/followers" component={TagFollowersPage} />
-        <Route exact={true} path="/tags/:id/diary" component={TagDiaryPage} />
+      <Route exact path="/synonyms" component={SynonymsPage} />
+      <Route exact path="/synonyms/:id" component={SynonymPage} />
 
-        <Route exact={true} path="/synonyms" component={SynonymsPage} />
-        <Route exact={true} path="/synonyms/:id" component={SynonymPage} />
+      <Route exact path="/groups" component={GroupsPage} />
+      <Route exact path="/groups/edit" component={EditGroupsPage} />
+      <Route exact path="/groups/:id" component={GroupPage} />
+      <Route exact path="/groups/:id/edit" component={EditGroupPage} />
+      <Route exact path="/groups/:id/exercises" component={GroupExercisesPage} />
+      <Route exact path="/groups/:id/contests" component={GroupContestsPage} />
+      <Route exact path="/groups/:id/members" component={GroupMembersPage} />
+      <Route exact path="/groups/:id/invite" component={GroupInvitePage} />
+      <Route exact path="/groups/:id/invite/link" component={GroupSecretPage} />
+      <Route exact path="/groups/:id/invite/:secret" component={GroupApplicationPage} />
+      <Route exact path="/groups/:id/invitations" component={GroupGroupInvitationsPage} />
+      <Route exact path="/groups/:id/applications" component={GroupGroupApplicationsPage} />
 
-        <Route exact={true} path="/groups" component={GroupsPage} />
-        <Route exact={true} path="/groups/edit" component={EditGroupsPage} />
-        <Route exact={true} path="/groups/:id" component={GroupPage} />
-        <Route exact={true} path="/groups/:id/edit" component={EditGroupPage} />
-        <Route exact={true} path="/groups/:id/exercises" component={GroupExercisesPage} />
-        <Route exact={true} path="/groups/:id/contests" component={GroupContestsPage} />
-        <Route exact={true} path="/groups/:id/members" component={GroupMembersPage} />
-        <Route exact={true} path="/groups/:id/invite" component={GroupInvitePage} />
-        <Route exact={true} path="/groups/:id/invite/link" component={GroupSecretPage} />
-        <Route exact={true} path="/groups/:id/invite/:secret" component={GroupApplicationPage} />
-        <Route exact={true} path="/groups/:id/invitations" component={GroupGroupInvitationsPage} />
-        <Route exact={true} path="/groups/:id/applications" component={GroupGroupApplicationsPage} />
+      <Route exact path="/contests/edit" component={EditContestsPage} />
+      <Route exact path="/contests/:id" component={ContestPage} />
+      <Route exact path="/contests/:id/edit" component={EditContestPage} />
 
-        <Route exact={true} path="/contests/edit" component={EditContestsPage} />
-        <Route exact={true} path="/contests/:id" component={ContestPage} />
-        <Route exact={true} path="/contests/:id/edit" component={EditContestPage} />
+      <Route exact path="/reports" component={ReportsPage} />
+      <Route exact path="/reports/edit" component={EditReportsPage} />
+      <Route exact path="/reports/:id" component={ReportPage} />
+      <Route exact path="/reports/:id/edit" component={EditReportPage} />
+      <Route exact path="/reports/:id/comments" component={ReportReportCommentsPage} />
 
-        <Route exact={true} path="/reports" component={ReportsPage} />
-        <Route exact={true} path="/reports/edit" component={EditReportsPage} />
-        <Route exact={true} path="/reports/:id" component={ReportPage} />
-        <Route exact={true} path="/reports/:id/edit" component={EditReportPage} />
-        <Route exact={true} path="/reports/:id/comments" component={ReportReportCommentsPage} />
+      <Route exact path="/objections" component={ObjectionsPage} />
+      <Route exact path="/objections/edit" component={EditObjectionsPage} />
+      <Route exact path="/objections/:id" component={ObjectionPage} />
+      <Route exact path="/objections/:id/edit" component={EditObjectionPage} />
+      <Route exact path="/objections/:id/comments" component={ObjectionObjectionCommentsPage} />
 
-        <Route exact={true} path="/objections" component={ObjectionsPage} />
-        <Route exact={true} path="/objections/edit" component={EditObjectionsPage} />
-        <Route exact={true} path="/objections/:id" component={ObjectionPage} />
-        <Route exact={true} path="/objections/:id/edit" component={EditObjectionPage} />
-        <Route exact={true} path="/objections/:id/comments" component={ObjectionObjectionCommentsPage} />
-
-        <Route component={NotFoundPage} />
-      </Switch>
-    </Suspense>
-  );
-});
+      <Route component={NotFoundPage} />
+    </Switch>
+  </Suspense>
+);
