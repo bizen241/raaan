@@ -8,7 +8,7 @@ import { Column, IconButton } from "../../ui";
 
 export const UserFollowList = createEntityList("UserFollow")(
   React.memo(({ entity: userFollow, onReload }) => {
-    const { entity: userSummary } = useEntity("UserSummary", userFollow.targetSummaryId, false);
+    const { entity: userSummary } = useEntity("UserSummary", userFollow.targetSummaryId);
     if (userSummary === undefined) {
       return (
         <Column>

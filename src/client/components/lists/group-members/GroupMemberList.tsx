@@ -17,7 +17,7 @@ export const GroupMemberList = createEntityList("GroupMember")(
 
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-    const { entity: userSummary } = useEntity("UserSummary", groupMember.userSummaryId, false);
+    const { entity: userSummary } = useEntity("UserSummary", groupMember.userSummaryId);
 
     const isGroupOwner = permission === "owner";
 

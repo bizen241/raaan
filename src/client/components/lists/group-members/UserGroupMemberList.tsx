@@ -8,7 +8,7 @@ import { Column, IconButton } from "../../ui";
 
 export const UserGroupMemberList = createEntityList("GroupMember")(
   React.memo(({ entity: groupMember, onReload }) => {
-    const { entity: groupSummary } = useEntity("GroupSummary", groupMember.groupSummaryId, false);
+    const { entity: groupSummary } = useEntity("GroupSummary", groupMember.groupSummaryId);
     if (groupSummary === undefined) {
       return (
         <Column>

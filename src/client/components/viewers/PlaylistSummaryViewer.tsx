@@ -21,7 +21,7 @@ export const PlaylistSummaryViewer = withEntity("PlaylistSummary")(
     const [isUnpublishPlaylistDialogOpen, onToggleUnpublishPlaylistDialog] = useToggleState();
     const [isDeletePlaylistDialogOpen, onToggleDeletePlaylistDialog] = useToggleState();
 
-    const { onReload } = useEntity("Playlist", playlistId, false);
+    const { onReload } = useEntity("Playlist", playlistId);
 
     const isAuthor = playlistSummary.authorId === currentUserId;
 

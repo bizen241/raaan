@@ -24,7 +24,7 @@ export const TagViewer = withEntity("Tag")(
     const follow = follows[0];
     const isFollowed = follow !== undefined;
 
-    const { entity: tagSummary, ...tagSummaryProps } = useEntity("TagSummary", tag.summaryId, false);
+    const { entity: tagSummary, ...tagSummaryProps } = useEntity("TagSummary", tag.summaryId);
     if (tagSummary === undefined) {
       return <Loading {...tagSummaryProps} />;
     }

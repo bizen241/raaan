@@ -12,7 +12,7 @@ export const GroupGroupInvitationList = createEntityList("GroupInvitation")(
   React.memo(({ entity: groupInvitation, onReload }) => {
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-    const { entity: userSummary } = useEntity("UserSummary", groupInvitation.targetSummaryId, false);
+    const { entity: userSummary } = useEntity("UserSummary", groupInvitation.targetSummaryId);
     if (userSummary === undefined) {
       return (
         <Column>

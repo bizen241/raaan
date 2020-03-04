@@ -6,7 +6,7 @@ import { Column, Link } from "../ui";
 export const PlaylistItemExerciseSummaryViewer = React.memo<{
   exerciseSummaryId: EntityId<"ExerciseSummary">;
 }>(({ exerciseSummaryId }) => {
-  const { entity: exerciseSummary } = useEntity("ExerciseSummary", exerciseSummaryId, false);
+  const { entity: exerciseSummary } = useEntity("ExerciseSummary", exerciseSummaryId);
 
   return (
     <Column>

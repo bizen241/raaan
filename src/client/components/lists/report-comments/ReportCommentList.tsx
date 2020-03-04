@@ -8,7 +8,7 @@ import { Column, IconButton } from "../../ui";
 
 export const ReportCommentList = createEntityList("ReportComment")(
   React.memo(({ entity: reportComment, onReload }) => {
-    const { entity: authorSummary } = useEntity("UserSummary", reportComment.authorId, false);
+    const { entity: authorSummary } = useEntity("UserSummary", reportComment.authorId);
     if (authorSummary === undefined) {
       return (
         <Column>

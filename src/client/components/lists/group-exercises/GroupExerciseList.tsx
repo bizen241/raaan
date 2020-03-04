@@ -12,7 +12,7 @@ export const GroupExerciseList = createEntityList("GroupExercise")(
   React.memo(({ entity: groupExercise, onReload }) => {
     const [isContestDialogOpen, onToggleContestDialog] = useToggleState();
 
-    const { entity: exerciseSummary } = useEntity("ExerciseSummary", groupExercise.exerciseSummaryId, false);
+    const { entity: exerciseSummary } = useEntity("ExerciseSummary", groupExercise.exerciseSummaryId);
     if (exerciseSummary === undefined) {
       return (
         <Column>

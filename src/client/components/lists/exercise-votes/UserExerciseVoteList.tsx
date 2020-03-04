@@ -11,7 +11,7 @@ export const UserExerciseVoteList = createEntityList("ExerciseVote")(
   React.memo(({ entity: exerciseVote, onReload }) => {
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-    const { entity: exerciseSummary } = useEntity("ExerciseSummary", exerciseVote.targetSummaryId, false);
+    const { entity: exerciseSummary } = useEntity("ExerciseSummary", exerciseVote.targetSummaryId);
     if (exerciseSummary === undefined) {
       return (
         <Column>

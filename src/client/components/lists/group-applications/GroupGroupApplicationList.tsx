@@ -13,7 +13,7 @@ export const GroupGroupApplicationList = createEntityList("GroupApplication")(
     const [isUploadGroupMemberDialogOpen, onToggleUploadGroupMemberDialog] = useToggleState();
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-    const { entity: userSummary } = useEntity("UserSummary", groupApplication.applicantSummaryId, false);
+    const { entity: userSummary } = useEntity("UserSummary", groupApplication.applicantSummaryId);
     if (userSummary === undefined) {
       return (
         <Column>

@@ -10,7 +10,7 @@ export const SuggestionSummaryViewer = withEntity("SuggestionSummary")(
   React.memo(({ entity: suggestionSummary }) => {
     const { suggestionId, state, commentCount } = suggestionSummary;
 
-    const { onReload } = useEntity("Suggestion", suggestionId, false);
+    const { onReload } = useEntity("Suggestion", suggestionId);
 
     return (
       <Card
