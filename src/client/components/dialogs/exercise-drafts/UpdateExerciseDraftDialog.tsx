@@ -8,7 +8,6 @@ import { createDialog } from "../../../enhancers/createDialog";
 import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
 import { ExerciseDraftUploadEditor } from "../../editors/ExerciseDraftUploadEditor";
-import { Loading } from "../../project/Loading";
 import { Button } from "../../ui";
 
 export const UpdateExerciseDraftDialog = createDialog<{
@@ -21,10 +20,7 @@ export const UpdateExerciseDraftDialog = createDialog<{
   React.memo(({ exerciseDraftId, exerciseDraft, exerciseId, onChange }) => {
     const dispatch = useDispatch();
 
-    const { entity: exercise, ...exerciseProps } = useEntity("Exercise", exerciseId);
-    if (exercise === undefined) {
-      return <Loading {...exerciseProps} />;
-    }
+    const { entity: exercise } = useEntity("Exercise", exerciseId);
 
     const onUpload = () => {
       dispatch(

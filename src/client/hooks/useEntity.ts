@@ -9,7 +9,6 @@ export const useEntity = <T extends EntityType>(entityType: T, entityId: EntityI
   const dispatch = useDispatch();
 
   const entityMap = useSelector((state: RootState) => state.cache.get[entityType]);
-  const getStatus = useSelector((state: RootState) => state.api.get[entityType][entityId]);
 
   const entity = getEntity(entityMap, entityId);
   if (entity === undefined) {
@@ -18,7 +17,6 @@ export const useEntity = <T extends EntityType>(entityType: T, entityId: EntityI
 
   return {
     entity,
-    getStatus: getStatus !== undefined ? getStatus : entity !== undefined ? 200 : 102,
     onReload: useCallback(() => entityId && dispatch(actions.api.get(entityType, entityId)), [])
   };
 };

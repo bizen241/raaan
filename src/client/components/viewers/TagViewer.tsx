@@ -7,7 +7,6 @@ import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeleteTagFollowDialog } from "../dialogs/tags/DeleteTagFollowDialog";
 import { UploadTagFollowDialog } from "../dialogs/tags/UploadTagFollowDialog";
-import { Loading } from "../project/Loading";
 import { Button, Column } from "../ui";
 import { TagSummaryViewer } from "./TagSummaryViewer";
 
@@ -24,10 +23,7 @@ export const TagViewer = withEntity("Tag")(
     const follow = follows[0];
     const isFollowed = follow !== undefined;
 
-    const { entity: tagSummary, ...tagSummaryProps } = useEntity("TagSummary", tag.summaryId);
-    if (tagSummary === undefined) {
-      return <Loading {...tagSummaryProps} />;
-    }
+    const { entity: tagSummary } = useEntity("TagSummary", tag.summaryId);
 
     return (
       <Column>

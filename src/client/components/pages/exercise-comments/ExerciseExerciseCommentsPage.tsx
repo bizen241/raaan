@@ -8,7 +8,6 @@ import { actions } from "../../../reducers";
 import { generateLocalEntityId } from "../../../reducers/entity";
 import { ExerciseCommentEditor } from "../../editors/ExerciseCommentEditor";
 import { ExerciseCommentList } from "../../lists/exercise-comments/ExerciseCommentList";
-import { Loading } from "../../project/Loading";
 import { Button } from "../../ui";
 
 export const ExerciseExerciseCommentsPage = createPage<"Exercise">()(
@@ -31,10 +30,7 @@ export const ExerciseExerciseCommentsPage = createPage<"Exercise">()(
       );
     };
 
-    const { entity: exercise, ...exerciseProps } = useEntity("Exercise", exerciseId);
-    if (exercise === undefined) {
-      return <Loading {...exerciseProps} />;
-    }
+    const { entity: exercise } = useEntity("Exercise", exerciseId);
 
     return (
       <>

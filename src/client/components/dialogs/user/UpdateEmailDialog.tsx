@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { createDialog } from "../../../enhancers/createDialog";
 import { useEntity } from "../../../hooks/useEntity";
 import { RootState } from "../../../reducers";
-import { Loading } from "../../project/Loading";
 import { Button, Card } from "../../ui";
 
 export const UpdateEmailDialog = createDialog<{}>()(
@@ -13,10 +12,7 @@ export const UpdateEmailDialog = createDialog<{}>()(
   React.memo(({}) => {
     const userAccountId = useSelector((state: RootState) => state.app.userAccountId);
 
-    const { entity: userAccount, ...userAccountProps } = useEntity("UserAccount", userAccountId);
-    if (userAccount === undefined) {
-      return <Loading {...userAccountProps} />;
-    }
+    const { entity: userAccount } = useEntity("UserAccount", userAccountId);
 
     const { provider } = userAccount;
 

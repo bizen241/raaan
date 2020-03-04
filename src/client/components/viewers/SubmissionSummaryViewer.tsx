@@ -3,20 +3,16 @@ import { Assessment } from "@material-ui/icons";
 import React from "react";
 import { EntityId } from "../../../shared/api/entities";
 import { useSearch } from "../../hooks/useSearch";
-import { Loading } from "../project/Loading";
 import { Card, Column, Property } from "../ui";
 
 export const SubmissionSummaryViewer = React.memo<{
   exerciseId: EntityId<"Exercise">;
   submitterId: EntityId<"User">;
 }>(({ exerciseId, submitterId }) => {
-  const { entities: submissionSummaries, status, onReload } = useSearch("SubmissionSummary", {
+  const { entities: submissionSummaries } = useSearch("SubmissionSummary", {
     exerciseId,
     submitterId
   });
-  if (status !== 200) {
-    return <Loading getStatus={status} onReload={onReload} />;
-  }
 
   const submissionSummary = submissionSummaries[0];
 

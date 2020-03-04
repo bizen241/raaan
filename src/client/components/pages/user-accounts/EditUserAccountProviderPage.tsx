@@ -5,7 +5,6 @@ import { useEntity } from "../../../hooks/useEntity";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { RootState } from "../../../reducers";
 import { ChangeProviderDialog } from "../../dialogs/user/ChangeProviderDialog";
-import { Loading } from "../../project/Loading";
 import { Button } from "../../ui";
 
 export const EditUserAccountProviderPage = createPage()(
@@ -15,10 +14,7 @@ export const EditUserAccountProviderPage = createPage()(
     const [isChangeProviderDialogOpen, onToggleChangeProviderDialog] = useToggleState();
 
     const userAccountId = useSelector((state: RootState) => state.app.userAccountId);
-    const { entity: userAccount, ...userAccountProps } = useEntity("UserAccount", userAccountId);
-    if (userAccount === undefined) {
-      return <Loading {...userAccountProps} />;
-    }
+    const { entity: userAccount } = useEntity("UserAccount", userAccountId);
 
     const { provider } = userAccount;
 

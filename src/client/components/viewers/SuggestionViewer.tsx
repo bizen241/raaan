@@ -7,7 +7,6 @@ import { useToggleState } from "../../hooks/useToggleState";
 import { ConfirmAcceptSuggestionDialog } from "../dialogs/suggestions/ConfirmAcceptSuggestionDialog";
 import { RejectSuggestionDialog } from "../dialogs/suggestions/RejectSuggestionDialog";
 import { ExercisePreviewer } from "../player/dialogs/ExercisePreviewer";
-import { Loading } from "../project/Loading";
 import { Button, Column } from "../ui";
 import { SuggestionSummaryViewer } from "./SuggestionSummaryViewer";
 
@@ -19,10 +18,7 @@ export const SuggestionViewer = withEntity("Suggestion")(
     const [isRejectDialogOpen, onToggleRejectDialog] = useToggleState();
     const [isExercisePreviewerOpen, onToggleExercisePreviewer] = useToggleState();
 
-    const { entity: exercise, ...exerciseProps } = useEntity("Exercise", suggestion.exerciseId);
-    if (exercise === undefined) {
-      return <Loading {...exerciseProps} />;
-    }
+    const { entity: exercise } = useEntity("Exercise", suggestion.exerciseId);
 
     const isTargetAuthor = exercise.authorId === currentUserId;
     const isPending = suggestion.state === "pending";

@@ -3,7 +3,6 @@ import React from "react";
 import { Revision, RevisionSummary } from "../../../shared/api/entities";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useEntity } from "../../hooks/useEntity";
-import { Loading } from "../project/Loading";
 import { Card, Menu, MenuItem, Property } from "../ui";
 
 export const RevisionSummaryViewer = React.memo<{
@@ -13,10 +12,7 @@ export const RevisionSummaryViewer = React.memo<{
   const { currentUserId } = useCurrentUser();
 
   const { onReload } = useEntity("Revision", revision.id);
-  const { entity: exercise, ...exerciseProps } = useEntity("Exercise", revision.exerciseId);
-  if (exercise === undefined) {
-    return <Loading {...exerciseProps} />;
-  }
+  const { entity: exercise } = useEntity("Exercise", revision.exerciseId);
 
   const { messageSubject, messageBody } = revision;
   const isOwn = exercise.authorId === currentUserId;

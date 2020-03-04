@@ -7,7 +7,6 @@ import { EntityId } from "../../../shared/api/entities";
 import { useSearch } from "../../hooks/useSearch";
 import { actions } from "../../reducers";
 import { generateLocalEntityId } from "../../reducers/entity";
-import { Loading } from "../project/Loading";
 import { Button, Card } from "../ui";
 import { GroupSummaryViewer } from "../viewers/GroupSummaryViewer";
 
@@ -33,13 +32,10 @@ export const GroupApplicationEditor = React.memo<{
     );
   };
 
-  const { entities: groupSecrets, status, onReload } = useSearch("GroupSecret", {
+  const { entities: groupSecrets } = useSearch("GroupSecret", {
     groupId,
     value: groupSecretValue
   });
-  if (status !== 200) {
-    return <Loading getStatus={status} onReload={onReload} />;
-  }
 
   const groupSecret = groupSecrets[0];
   if (groupSecret === undefined || groupSecret.expireAt < Date.now()) {

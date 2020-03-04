@@ -1,7 +1,8 @@
-import React, { useMemo, useState } from "react";
+import { CircularProgress } from "@material-ui/core";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
 import { EntityId, PlaylistItem } from "../../../../shared/api/entities";
-import { useEntity } from "../../../hooks/useEntity";
-import { Loading } from "../../project/Loading";
+import { actions, useSelector } from "../../../reducers";
 import { SubmissionManager } from "../managers/SubmissionManager";
 import { createPlayerDialog } from "./createPlayerDialog";
 
@@ -10,6 +11,8 @@ export const PlaylistPlayer = createPlayerDialog<{
   startIndex: number;
 }>(
   React.memo(({ playlistItems, startIndex, onClose }) => {
+    const dispatch = useDispatch();
+
     const [cursor, setCursor] = useState(0);
     const exerciseIds = useMemo(() => {
       const ids: EntityId<"Exercise">[] = [];
@@ -22,20 +25,31 @@ export const PlaylistPlayer = createPlayerDialog<{
     const currentExerciseId = exerciseIds[cursor];
     const nextExerciseId = exerciseIds[cursor + 1];
 
-    const { entity: currentExercise, ...currentExerciseProps } = useEntity("Exercise", currentExerciseId);
-    useEntity("Exercise", nextExerciseId || currentExerciseId);
+    const exerciseMap = useSelector(state => state.cache.get.Exercise);
+    const currentExercise = exerciseMap[currentExerciseId];
+    const nextExercise = exerciseMap[nextExerciseId || currentExerciseId];
 
-    const hasNext = exerciseIds[cursor + 1] !== undefined;
-    const onNext = () => {
-      setCursor(s => s + 1);
-    };
+    const exerciseStatusMap = useSelector(state => state.api.get.Exercise);
+    const currentExerciseStatus = exerciseStatusMap[currentExerciseId];
+
+    useEffect(() => {
+      if (currentExercise === undefined) {
+        dispatch(actions.api.get("Exercise", currentExerciseId));
+      }
+      if (nextExercise === undefined) {
+        dispatch(actions.api.get("Exercise", nextExerciseId));
+      }
+    }, [cursor]);
+
+    const hasNext = nextExerciseId !== undefined;
+    const onNext = useCallback(() => setCursor(s => s + 1), []);
 
     if (currentExercise === undefined) {
-      if (currentExerciseProps.getStatus === 404) {
+      if (currentExerciseStatus === 404) {
         onNext();
       }
 
-      return <Loading {...currentExerciseProps} />;
+      return <CircularProgress />;
     }
 
     return <SubmissionManager exercise={currentExercise} hasNext={hasNext} onNext={onNext} onClose={onClose} />;
