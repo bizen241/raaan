@@ -17,7 +17,7 @@ import React from "react";
 import { EntityId, Exercise } from "../../../shared/api/entities";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useEntity } from "../../hooks/useEntity";
-import { useExerciseActions } from "../../hooks/useExerciseActions";
+import { useSearch } from "../../hooks/useSearch";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeleteExerciseVoteDialog } from "../dialogs/exercise-votes/DeleteExerciseVoteDialog";
 import { UploadExerciseVoteDialog } from "../dialogs/exercise-votes/UploadExerciseVoteDialog";
@@ -37,12 +37,23 @@ export const ExerciseSummaryViewer = React.memo<{
   exercise: Exercise;
 }>(({ exerciseId, exercise }) => {
   const { currentUserId, currentUser } = useCurrentUser();
+  const isOwner = currentUser.permission === "Owner";
+  const isGuest = currentUser.permission === "Guest";
 
+  const { onReload: onReloadExercise } = useEntity("Exercise", exercise.id);
   const { entity: exerciseSummary } = useEntity("ExerciseSummary", exercise.summaryId);
   const { title, commentCount, isDraft, isPrivate, isLocked } = exerciseSummary;
-
-  const isOwner = currentUser.permission === "Owner";
   const isAuthor = exerciseSummary.authorId === currentUserId;
+
+  const { entities: exerciseVotes } = useSearch(
+    "ExerciseVote",
+    {
+      voterId: currentUserId,
+      targetId: exerciseId
+    },
+    !isGuest && !isAuthor
+  );
+  const exerciseVote = exerciseVotes[0];
 
   const [isPublishExerciseDialogOpen, onTogglePublishExerciseDialog] = useToggleState();
   const [isUnpublishExerciseDialogOpen, onToggleUnpublishExerciseDialog] = useToggleState();
@@ -55,10 +66,6 @@ export const ExerciseSummaryViewer = React.memo<{
   const [isConfirmReportDialogOpen, onToggleConfirmReportDialog] = useToggleState();
   const [isConfirmObjectionDialogOpen, onToggleConfirmObjectionDialog] = useToggleState();
 
-  const { isFetched, exerciseVoteId, objectionId, suggestionId, reportId, onReload } = useExerciseActions(
-    exerciseSummary
-  );
-
   return (
     <Card
       icon={<Keyboard />}
@@ -68,47 +75,28 @@ export const ExerciseSummaryViewer = React.memo<{
           <Menu>
             <MenuItem icon={<Edit />} label="編集する" to={`/exercise-drafts/${exercise.draftId}/edit`} />
             {!isDraft && <MenuItem icon={<History />} label="編集履歴" to={`/exercises/${exerciseId}/revisions`} />}
-            {isFetched &&
-              !isLocked &&
+            {!isLocked &&
               (isPrivate ? (
                 <MenuItem icon={<Public />} label="公開する" onClick={onTogglePublishExerciseDialog} />
               ) : (
                 <MenuItem icon={<Lock />} label="非公開にする" onClick={onToggleUnpublishExerciseDialog} />
               ))}
             <MenuItem icon={<Group />} label="グループに公開する" onClick={onToggleGroupExercisesDialog} />
-            {isFetched &&
-              isLocked &&
-              (!objectionId ? (
-                <MenuItem icon={<SmsFailed />} label="抗議する" onClick={onToggleConfirmObjectionDialog} />
-              ) : (
-                <MenuItem icon={<SmsFailed />} label="抗議を編集する" to={`/objections/${objectionId}/edit`} />
-              ))}
+            {!isLocked && <MenuItem icon={<SmsFailed />} label="抗議する" onClick={onToggleConfirmObjectionDialog} />}
             <MenuItem icon={<Delete />} label="削除する" onClick={onToggleDeleteExerciseDialog} />
             <MenuItem icon={<CloudDownload />} label="エクスポート" onClick={onToggleExportDialog} />
-            <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReload} />
+            <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReloadExercise} />
           </Menu>
         ) : (
           <Menu>
-            {isFetched &&
-              (!exerciseVoteId ? (
-                <MenuItem icon={<HowToVote />} label="投票する" onClick={onToggleUploadVoteDialog} />
-              ) : (
-                <MenuItem icon={<HowToVote />} label="投票を取り消す" onClick={onToggleDeleteVoteDialog} />
-              ))}
-            {isFetched &&
-              (!suggestionId ? (
-                <MenuItem icon={<WbIncandescent />} label="提案する" onClick={onToggleConfirmSuggestionDialog} />
-              ) : (
-                <MenuItem icon={<WbIncandescent />} label="提案を編集する" to={`/suggestions/${suggestionId}/edit`} />
-              ))}
-            {isFetched &&
-              !isOwner &&
-              (!reportId ? (
-                <MenuItem icon={<ReportProblem />} label="通報する" onClick={onToggleConfirmReportDialog} />
-              ) : (
-                <MenuItem icon={<ReportProblem />} label="通報を編集する" to={`/reports/${reportId}/edit`} />
-              ))}
-            <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReload} />
+            {!exerciseVote ? (
+              <MenuItem icon={<HowToVote />} label="投票する" onClick={onToggleUploadVoteDialog} />
+            ) : (
+              <MenuItem icon={<HowToVote />} label="投票を取り消す" onClick={onToggleDeleteVoteDialog} />
+            )}
+            {<MenuItem icon={<WbIncandescent />} label="提案する" onClick={onToggleConfirmSuggestionDialog} />}
+            {!isOwner && <MenuItem icon={<ReportProblem />} label="通報する" onClick={onToggleConfirmReportDialog} />}
+            <MenuItem icon={<Refresh />} label="再読み込み" onClick={onReloadExercise} />
           </Menu>
         )
       }
@@ -151,9 +139,9 @@ export const ExerciseSummaryViewer = React.memo<{
         isOpen={isUploadVoteDialogOpen}
         onClose={onToggleUploadVoteDialog}
       />
-      {exerciseVoteId && (
+      {exerciseVote && (
         <DeleteExerciseVoteDialog
-          exerciseVoteId={exerciseVoteId}
+          exerciseVoteId={exerciseVote.id}
           isOpen={isDeleteVoteDialogOpen}
           onClose={onToggleDeleteVoteDialog}
         />
