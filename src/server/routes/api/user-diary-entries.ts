@@ -3,7 +3,7 @@ import { createSearchOperation } from "../../api/operation";
 import { UserDiaryEntryEntity } from "../../database/entities";
 
 export const GET = createSearchOperation("UserDiaryEntry", "Read", async ({ currentUser, manager, params }) => {
-  const { userId } = params;
+  const { targetId: userId } = params;
 
   const isOwn = userId === currentUser.id;
   if (!isOwn) {
