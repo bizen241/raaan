@@ -67,7 +67,8 @@ const getEntity = <T extends EntityType>(entityType: T, entityId: EntityId<T>): 
 
 const searchEntity = <T extends EntityType>(
   entityType: T,
-  entityParams: Params<EntityTypeToEntity[T]>
+  entityParams: Params<EntityTypeToEntity[T]>,
+  onSuccess?: () => void
 ): AsyncAction => async (dispatch, getState) => {
   const key = stringifyParams(entityParams);
 
@@ -97,6 +98,10 @@ const searchEntity = <T extends EntityType>(
         code: 200
       })
     );
+
+    if (onSuccess !== undefined) {
+      onSuccess();
+    }
   } catch (e) {
     const code = e instanceof HTTPError ? e.response.status : 500;
 

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EntityId, EntityType } from "../../shared/api/entities";
-import { EntityError } from "../components/project/PageErrorBoundary";
+import { EntityError } from "../components/boundaries/FetchErrorBoundary";
 import { actions, RootState } from "../reducers";
 import { getEntity } from "../reducers/cache";
 

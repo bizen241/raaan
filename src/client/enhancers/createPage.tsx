@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { EntityId, EntityType } from "../../shared/api/entities";
-import { PageErrorBoundary } from "../components/project/PageErrorBoundary";
+import { FetchErrorBoundary } from "../components/boundaries/FetchErrorBoundary";
 import { Column, IconButton, Menu, MenuItem, PageContent, PageHeader, Row } from "../components/ui";
 import { useCurrentUser } from "../hooks/useCurrentUser";
 import { RootState } from "../reducers";
@@ -66,9 +66,9 @@ export const createPage = <T extends EntityType>() => (
           </Menu>
         </PageHeader>
         <PageContent>
-          <PageErrorBoundary>
+          <FetchErrorBoundary>
             <BodyComponent entityId={entityId as EntityId<T>} name={name} secret={secret} t={t} />
-          </PageErrorBoundary>
+          </FetchErrorBoundary>
         </PageContent>
       </Column>
     );

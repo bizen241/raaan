@@ -22,7 +22,11 @@ export const HomePage = createPage()(
         <Button icon={<Keyboard />} label="問題集" to="/exercises" />
         <Button icon={<PlaylistPlay />} label="プレイリスト" to="/playlists" />
         <Button icon={<LocalOffer />} label="タグ" to="/tags" />
-        <UserDiaryGraph entityId={currentUserId} />
+        <UserDiaryGraph
+          params={{
+            targetId: currentUserId
+          }}
+        />
       </>
     );
   })

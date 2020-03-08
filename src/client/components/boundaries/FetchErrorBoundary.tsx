@@ -1,12 +1,11 @@
 import { CircularProgress, Typography } from "@material-ui/core";
-import { Warning } from "@material-ui/icons";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { EntityId, EntityType, EntityTypeToEntity } from "../../../shared/api/entities";
 import { Params } from "../../../shared/api/request/params";
 import { stringifyParams } from "../../api/request/search";
 import { actions, useSelector } from "../../reducers";
-import { Card, Column } from "../ui";
+import { Column } from "../ui";
 
 export class EntityError<T extends EntityType> extends Error {
   constructor(public entityType: T, public entityId: EntityId<T>) {
@@ -20,54 +19,49 @@ export class SearchError<T extends EntityType> extends Error {
   }
 }
 
-interface PageErrorBoundaryState {
-  hasError: boolean;
-  error?: Error;
+interface FetchErrorBoundaryState {
+  error: Error | undefined;
 }
 
-export class PageErrorBoundary extends React.Component<{}, PageErrorBoundaryState> {
-  static getDerivedStateFromError(e: Error): PageErrorBoundaryState {
+export abstract class FetchErrorBoundary extends React.Component<{}, FetchErrorBoundaryState> {
+  static getDerivedStateFromError(error: Error): FetchErrorBoundaryState {
     return {
-      hasError: true,
-      error: e
+      error
     };
   }
 
   constructor(props: React.Props<{}>) {
     super(props);
 
-    this.state = { hasError: false };
+    this.state = { error: undefined };
   }
 
   onCancel = () => {
-    this.setState({ hasError: false });
+    this.setState({ error: undefined });
   };
 
   render() {
-    const { hasError, error = new Error() } = this.state;
-    if (hasError) {
-      if (error instanceof EntityError) {
-        return <EntityLoader entityType={error.entityType} entityId={error.entityId} onFetched={this.onCancel} />;
-      } else if (error instanceof SearchError) {
-        return <Hoge entityType={error.entityType} params={error.params} onFetched={this.onCancel} />;
-      } else {
-        throw error;
-      }
+    const { error } = this.state;
+    if (error === undefined) {
+      return this.props.children;
+    } else if (error instanceof EntityError) {
+      return <EntityErrorHandler error={error} onFetched={this.onCancel} />;
+    } else if (error instanceof SearchError) {
+      return <SearchErrorHandler error={error} onFetched={this.onCancel} />;
     }
 
-    return this.props.children;
+    throw error;
   }
 }
 
-const EntityLoader = <T extends EntityType>({
-  entityType,
-  entityId,
-  onFetched
-}: {
-  entityType: T;
-  entityId: EntityId<T>;
+interface EntityErrorHandlerProps<T extends EntityType> {
+  error: EntityError<T>;
   onFetched: () => void;
-}) => {
+}
+
+const EntityErrorHandler = <T extends EntityType>({ error, onFetched }: EntityErrorHandlerProps<T>) => {
+  const { entityType, entityId } = error;
+
   const dispatch = useDispatch();
 
   const entity = useSelector(state => state.cache.get[entityType][entityId]);
@@ -83,50 +77,46 @@ const EntityLoader = <T extends EntityType>({
     dispatch(actions.api.get(entityType, entityId));
   }, [entity]);
 
-  if (status === 404) {
-    return (
-      <Card icon={<Warning />} title="404 Not Found">
-        <Typography>見つかりませんでした。</Typography>
-      </Card>
-    );
-  }
-
-  return (
-    <Column justifyContent="center" alignItems="center" flex={1}>
-      <CircularProgress />
-    </Column>
-  );
+  return <StatusRenderer status={status} />;
 };
 
-const Hoge = <T extends EntityType>({
-  entityType,
-  params,
-  onFetched
-}: {
-  entityType: T;
-  params: Params<EntityTypeToEntity[T]>;
+interface SearchErrorHandlerProps<T extends EntityType> {
+  error: SearchError<T>;
   onFetched: () => void;
-}) => {
+}
+
+const SearchErrorHandler = <T extends EntityType>({ error, onFetched }: SearchErrorHandlerProps<T>) => {
+  const { entityType, params } = error;
+
   const dispatch = useDispatch();
 
   const result = useSelector(state => state.cache.search[entityType][stringifyParams(params, true)]);
   const status = useSelector(state => state.api.search[entityType][stringifyParams(params)]);
 
   useEffect(() => {
-    if (result !== undefined) {
-      setTimeout(onFetched, 5000);
-
-      return;
-    }
-
-    dispatch(actions.api.search(entityType, params));
+    dispatch(actions.api.search(entityType, params, onFetched));
   }, [result]);
 
+  return <StatusRenderer status={status} />;
+};
+
+interface StatusRendererProps {
+  status: number | undefined;
+}
+
+const StatusRenderer = ({ status }: StatusRendererProps) => {
   if (status === 403) {
     return (
-      <Card icon={<Warning />} title="404 Not Found">
+      <Column justifyContent="center" flex={1}>
         <Typography>権限がありません。</Typography>
-      </Card>
+      </Column>
+    );
+  }
+  if (status === 404) {
+    return (
+      <Column justifyContent="center" flex={1}>
+        <Typography>見つかりませんでした。</Typography>
+      </Column>
     );
   }
 

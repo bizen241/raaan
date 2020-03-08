@@ -21,17 +21,13 @@ export const useDiary = <T extends DiaryEntryType>(
 ) => {
   const [diaryEntries, setDiaryEntries] = useState<DateToDiaryEntry<EntityTypeToEntity[T]>>({});
 
-  const { entities: fetchedDiaryEntries, count, params, status, onChange, onReload } = useSearch<T>(entityType, {
+  const { entities: fetchedDiaryEntries, count, params, onChange, onReload } = useSearch<T>(entityType, {
     ...condition,
     searchLimit: 100,
     searchOffset: 0
   });
 
   useEffect(() => {
-    if (status !== 200) {
-      return;
-    }
-
     const additionalContents: DateToDiaryEntry<EntityTypeToEntity[T]> = {};
     fetchedDiaryEntries.forEach(diaryEntry => {
       if (diaryEntry === undefined) {

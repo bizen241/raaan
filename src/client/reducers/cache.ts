@@ -10,6 +10,7 @@ import {
 import { Params } from "../../shared/api/request/params";
 import { EntityStore } from "../../shared/api/response/get";
 import { SearchResponse } from "../../shared/api/response/search";
+import { stringifyParams } from "../api/request/search";
 import {
   appendToSearchResultMap,
   deleteFromSearchResultMap,
@@ -44,10 +45,13 @@ export const cacheActions = {
       params,
       response
     }),
-  purge: <T extends EntityType>(entityType: T | undefined, entityId: EntityId<T> | undefined) =>
+  purge: <T extends EntityType>(
+    entityType: T | undefined,
+    key: EntityId<T> | Params<EntityTypeToEntity[T]> | undefined
+  ) =>
     createAction(CacheActionType.Purge, {
       entityType,
-      entityId
+      key
     })
 };
 
@@ -114,12 +118,12 @@ export const cacheReducer: Reducer<CacheState, Actions> = (state = initialCacheS
       };
     }
     case CacheActionType.Purge: {
-      const { entityType, entityId } = action.payload;
+      const { entityType, key } = action.payload;
 
       if (entityType === undefined) {
         return initialCacheState;
       }
-      if (entityId === undefined) {
+      if (key === undefined) {
         return {
           get: {
             ...state.get,
@@ -132,21 +136,36 @@ export const cacheReducer: Reducer<CacheState, Actions> = (state = initialCacheS
         };
       }
 
-      const get = { ...state.get[entityType] };
-      delete get[entityId];
+      if (typeof key === "string") {
+        const get = { ...state.get[entityType] };
+        delete get[key];
 
-      const result = deleteFromSearchResultMap(state.search[entityType], entityId);
+        const result = deleteFromSearchResultMap(state.search[entityType], key);
 
-      return {
-        get: {
-          ...state.get,
-          [entityType]: get
-        },
-        search: {
-          ...state.search,
-          [entityType]: result
-        }
-      };
+        return {
+          get: {
+            ...state.get,
+            [entityType]: get
+          },
+          search: {
+            ...state.search,
+            [entityType]: result
+          }
+        };
+      } else {
+        const search = { ...state.search[entityType] };
+
+        const query = stringifyParams<any>(key);
+        delete search[query];
+
+        return {
+          ...state,
+          search: {
+            ...state.search,
+            [entityType]: search
+          }
+        };
+      }
     }
     default:
       return state;

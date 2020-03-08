@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { defaultSearchLimit, defaultSearchOffset, Params } from "../../shared/api/request/params";
 import { stringifyParams } from "../api/request/search";
-import { SearchError } from "../components/project/PageErrorBoundary";
+import { SearchError } from "../components/boundaries/FetchErrorBoundary";
 import { actions, RootState } from "../reducers";
 
 export const useSearch = <T extends EntityType>(
