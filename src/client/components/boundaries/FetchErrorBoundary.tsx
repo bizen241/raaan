@@ -23,7 +23,7 @@ interface FetchErrorBoundaryState {
   error: Error | undefined;
 }
 
-export abstract class FetchErrorBoundary extends React.Component<{}, FetchErrorBoundaryState> {
+export class FetchErrorBoundary extends React.Component<{}, FetchErrorBoundaryState> {
   static getDerivedStateFromError(error: Error): FetchErrorBoundaryState {
     return {
       error

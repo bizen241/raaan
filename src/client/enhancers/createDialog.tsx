@@ -4,6 +4,7 @@ import { Clear } from "@material-ui/icons";
 import { TFunction } from "i18next";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { FetchErrorBoundary } from "../components/boundaries/FetchErrorBoundary";
 import { Button, DialogContent, DialogHeader } from "../components/ui";
 
 interface DialogOptions {
@@ -39,8 +40,10 @@ export const createDialog = <P extends {}>(_: DialogOptions = {}) => (
           <TitleComponent {...props} t={t} />
         </DialogHeader>
         <DialogContent>
-          <BodyComponent {...props} t={t} />
-          <Button icon={<Clear />} label="キャンセル" onClick={onClose} />
+          <FetchErrorBoundary>
+            <BodyComponent {...props} t={t} />
+            <Button icon={<Clear />} label="キャンセル" onClick={onClose} />
+          </FetchErrorBoundary>
         </DialogContent>
       </Dialog>
     );

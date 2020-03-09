@@ -52,7 +52,31 @@ export const useSearch = <T extends EntityType>(
   }
 
   const onReload = useCallback(() => dispatch(actions.api.search(entityType, params)), [params]);
-  const onChange = useCallback((changed: Params<EntityTypeToEntity[T]>) => setParams(s => ({ ...s, ...changed })), []);
+
+  const onChange = useCallback(
+    (changedParams: Params<EntityTypeToEntity[T]>) =>
+      setParams(prevParams => ({
+        ...prevParams,
+        ...changedParams
+      })),
+    []
+  );
+  const onChangeLimit = useCallback(
+    (limit: number) =>
+      setParams(prevParams => ({
+        ...prevParams,
+        searchLimit: limit
+      })),
+    []
+  );
+  const onChangeOffset = useCallback(
+    (offset: number) =>
+      setParams(prevParams => ({
+        ...prevParams,
+        searchOffset: offset
+      })),
+    []
+  );
 
   return {
     entities: entities || [],
@@ -61,6 +85,8 @@ export const useSearch = <T extends EntityType>(
     offset: searchOffset,
     count: (result && result.count) || 0,
     onReload,
-    onChange
+    onChange,
+    onChangeLimit,
+    onChangeOffset
   };
 };
