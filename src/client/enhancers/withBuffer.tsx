@@ -1,11 +1,9 @@
-import { Typography } from "@material-ui/core";
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EntityId, EntityObject, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { useEntity } from "../hooks/useEntity";
 import { actions, RootState } from "../reducers";
-import { isLocalOnly } from "../reducers/api";
 
 interface Props<T extends EntityType> {
   bufferType: T;
@@ -20,7 +18,7 @@ export const withBuffer = <T extends EntityType>(entityType: T) => (BaseComponen
   React.memo<{ bufferId: EntityId<T> }>(({ bufferId }) => {
     const dispatch = useDispatch();
 
-    const { entity, getStatus } = useEntity(entityType, bufferId);
+    const { entity } = useEntity(entityType, bufferId);
     const buffer = useSelector(
       (state: RootState) => state.buffers[entityType][bufferId] as Params<EntityTypeToEntity[T]> | undefined
     );
@@ -30,10 +28,6 @@ export const withBuffer = <T extends EntityType>(entityType: T) => (BaseComponen
         dispatch(actions.buffers.update(entityType, bufferId, updatedParams)),
       []
     );
-
-    if (entity === undefined && !isLocalOnly(bufferId) && getStatus === 102) {
-      return <Typography>ロード中です</Typography>;
-    }
 
     const params = mergeBuffer(entity, buffer);
 

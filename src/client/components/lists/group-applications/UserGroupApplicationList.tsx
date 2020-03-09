@@ -1,37 +1,27 @@
-import { TableCell, TableRow, Typography } from "@material-ui/core";
-import { Delete, Refresh } from "@material-ui/icons";
+import { Typography } from "@material-ui/core";
+import { Delete } from "@material-ui/icons";
 import React from "react";
 import { createEntityList } from "../../../enhancers/createEntityList";
 import { useEntity } from "../../../hooks/useEntity";
 import { useToggleState } from "../../../hooks/useToggleState";
 import { DeleteGroupApplicationDialog } from "../../dialogs/group-applications/DeleteGroupApplicationDialog";
-import { Column, IconButton, Menu, MenuItem } from "../../ui";
+import { Menu, MenuItem, TableRow } from "../../ui";
 
 export const UserGroupApplicationList = createEntityList("GroupApplication")(
-  React.memo(({ entity: groupApplication, onReload }) => {
+  React.memo(({ entity: groupApplication }) => {
     const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
     const { entity: groupSummary } = useEntity("GroupSummary", groupApplication.groupSummaryId);
-    if (groupSummary === undefined) {
-      return (
-        <Column>
-          <IconButton icon={Refresh} onClick={onReload} />
-        </Column>
-      );
-    }
 
     return (
-      <TableRow hover>
-        <TableCell>
-          <Column>
-            <Typography>{groupSummary && groupSummary.name}</Typography>
-          </Column>
-        </TableCell>
-        <TableCell padding="checkbox">
+      <TableRow
+        action={
           <Menu>
             <MenuItem icon={<Delete />} label="削除" onClick={onToggleDeleteDialog} />
           </Menu>
-        </TableCell>
+        }
+      >
+        <Typography>{groupSummary && groupSummary.name}</Typography>
         <DeleteGroupApplicationDialog
           groupApplicationId={groupApplication.id}
           isOpen={isDeleteDialogOpen}

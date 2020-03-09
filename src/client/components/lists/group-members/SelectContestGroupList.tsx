@@ -1,4 +1,4 @@
-import { Divider, TableCell, TableRow, Typography } from "@material-ui/core";
+import { Divider, Typography } from "@material-ui/core";
 import { Refresh } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import React, { useCallback } from "react";
@@ -9,7 +9,7 @@ import { useEntity } from "../../../hooks/useEntity";
 import { useSearch } from "../../../hooks/useSearch";
 import { actions } from "../../../reducers";
 import { generateLocalEntityId } from "../../../reducers/entity";
-import { Card, Column, IconButton, Row, Table } from "../../ui";
+import { Card, Column, IconButton, Row, Table, TableRow } from "../../ui";
 
 export const SelectContestGroupList = React.memo<{
   exerciseId: EntityId<"Exercise">;
@@ -47,12 +47,7 @@ export const SelectContestGroupList = React.memo<{
       <Column pb={1}>
         <Table>
           {selectableGroups.map(groupMember => (
-            <SelectContestGroupListItem
-              key={groupMember.id}
-              groupMember={groupMember}
-              onSelect={onSelect}
-              onReload={onReload}
-            />
+            <SelectContestGroupListItem key={groupMember.id} groupMember={groupMember} onSelect={onSelect} />
           ))}
         </Table>
       </Column>
@@ -63,24 +58,14 @@ export const SelectContestGroupList = React.memo<{
 const SelectContestGroupListItem = React.memo<{
   groupMember: GroupMember;
   onSelect: (groupId: EntityId<"Group">) => void;
-  onReload: () => void;
-}>(({ groupMember, onSelect, onReload }) => {
+}>(({ groupMember, onSelect }) => {
   const { entity: groupSummary } = useEntity("GroupSummary", groupMember.groupSummaryId);
-  if (groupSummary === undefined) {
-    return (
-      <Column>
-        <IconButton icon={Refresh} onClick={onReload} />
-      </Column>
-    );
-  }
 
   return (
-    <TableRow hover onClick={() => onSelect(groupSummary.groupId)}>
-      <TableCell>
-        <Column>
-          <Typography>{groupSummary.name || "名無しのグループ"}</Typography>
-        </Column>
-      </TableCell>
+    <TableRow>
+      <Column onClick={() => onSelect(groupSummary.groupId)}>
+        <Typography>{groupSummary.name || "名無しのグループ"}</Typography>
+      </Column>
     </TableRow>
   );
 });

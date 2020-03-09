@@ -3,7 +3,6 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { createPage } from "../../../enhancers/createPage";
 import { useBuffers } from "../../../hooks/useBuffers";
-import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
 import { generateLocalEntityId } from "../../../reducers/entity";
 import { ExerciseCommentEditor } from "../../editors/ExerciseCommentEditor";
@@ -29,8 +28,6 @@ export const ExerciseExerciseCommentsPage = createPage<"Exercise">()(
         })
       );
     };
-
-    const { entity: exercise } = useEntity("Exercise", exerciseId);
 
     return (
       <>
