@@ -8,7 +8,7 @@ export const ExerciseDiaryGraph = withEntity("Exercise")(({ entityId: exerciseId
   const [firstDate] = useState(getToday());
   const [selectedDate, selectDate] = useState(firstDate.toString());
 
-  const { diaryEntries, onReload } = useDiary("ExerciseDiaryEntry", firstDate, { exerciseId });
+  const { diaryEntries, onReload } = useDiary("ExerciseDiaryEntry", firstDate, { targetId: exerciseId });
 
   const contents = useMemo(
     () =>

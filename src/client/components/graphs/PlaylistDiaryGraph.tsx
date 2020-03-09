@@ -8,7 +8,7 @@ export const PlaylistDiaryGraph = withEntity("Playlist")(({ entityId: playlistId
   const [firstDate] = useState(getToday());
   const [selectedDate, selectDate] = useState(firstDate.toString());
 
-  const { diaryEntries, onReload } = useDiary("PlaylistDiaryEntry", firstDate, { playlistId });
+  const { diaryEntries, onReload } = useDiary("PlaylistDiaryEntry", firstDate, { targetId: playlistId });
 
   const contents = useMemo(
     () =>

@@ -8,7 +8,7 @@ export const TagDiaryGraph = withEntity("Tag")(({ entityId: tagId }) => {
   const [firstDate] = useState(getToday());
   const [selectedDate, selectDate] = useState(firstDate.toString());
 
-  const { diaryEntries, onReload } = useDiary("TagDiaryEntry", firstDate, { tagId });
+  const { diaryEntries, onReload } = useDiary("TagDiaryEntry", firstDate, { targetId: tagId });
 
   const contents = useMemo(
     () =>
