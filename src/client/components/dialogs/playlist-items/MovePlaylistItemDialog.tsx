@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { EntityId, Playlist, PlaylistItem } from "../../../../shared/api/entities";
 import { sortPlaylistItems } from "../../../domain/playlist";
 import { createDialog } from "../../../enhancers/createDialog";
-import { withEntity } from "../../../enhancers/withEntity";
+import { useEntity } from "../../../hooks/useEntity";
 import { actions } from "../../../reducers";
 import { Card, Column, Row, Table } from "../../ui";
 
@@ -72,9 +72,9 @@ const PlaylistItemWithButton = React.memo<{
       <TableRow>
         <TableCell>
           {playlistItem.exerciseSummaryId !== undefined ? (
-            <ExerciseTitleViewer entityId={playlistItem.exerciseSummaryId} />
+            <ExerciseTitleViewer exerciseSummaryId={playlistItem.exerciseSummaryId} />
           ) : (
-            <div>削除済み</div>
+            <Typography>削除済み</Typography>
           )}
         </TableCell>
       </TableRow>
@@ -82,8 +82,10 @@ const PlaylistItemWithButton = React.memo<{
   );
 });
 
-const ExerciseTitleViewer = withEntity("ExerciseSummary")(
-  React.memo(({ entity: exerciseSummary }) => {
-    return <Typography>{exerciseSummary.title}</Typography>;
-  })
-);
+const ExerciseTitleViewer = React.memo<{
+  exerciseSummaryId: EntityId<"ExerciseSummary">;
+}>(({ exerciseSummaryId }) => {
+  const { entity: exerciseSummary } = useEntity("ExerciseSummary", exerciseSummaryId);
+
+  return <Typography>{exerciseSummary.title}</Typography>;
+});

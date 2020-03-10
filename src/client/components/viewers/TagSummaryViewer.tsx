@@ -1,15 +1,16 @@
 import { Dns, Edit, LocalOffer, Timeline } from "@material-ui/icons";
 import React from "react";
-import { Tag, TagSummary } from "../../../shared/api/entities";
+import { Tag } from "../../../shared/api/entities";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { useEntity } from "../../hooks/useEntity";
 import { Card, Menu, MenuItem, Property } from "../ui";
 
 export const TagSummaryViewer = React.memo<{
   tag: Tag;
-  tagSummary: TagSummary;
-}>(({ tag, tagSummary }) => {
+}>(({ tag }) => {
   const { currentUser } = useCurrentUser();
 
+  const { entity: tagSummary } = useEntity("TagSummary", tag.summaryId);
   const { tagId, name } = tagSummary;
 
   const isOwner = currentUser.permission === "Owner";

@@ -1,35 +1,12 @@
-import { Refresh, Timeline } from "@material-ui/icons";
-import React, { useMemo, useState } from "react";
-import { withEntity } from "../../enhancers/withEntity";
-import { useDiary } from "../../hooks/useDiary";
-import { Card, getToday, HeatMap, HeatMapContents, IconButton, Property } from "../ui";
+import React from "react";
+import { createDiaryGraph } from "../../enhancers/createDiaryGraph";
+import { Property } from "../ui";
 
-export const TagDiaryGraph = withEntity("Tag")(({ entityId: tagId }) => {
-  const [firstDate] = useState(getToday());
-  const [selectedDate, selectDate] = useState(firstDate.toString());
-
-  const { diaryEntries, onReload } = useDiary("TagDiaryEntry", firstDate, { targetId: tagId });
-
-  const contents = useMemo(
-    () =>
-      Object.entries(diaryEntries).reduce((previousValue, [date, diaryEntry]) => {
-        if (diaryEntry === undefined) {
-          return previousValue;
-        }
-
-        return { ...previousValue, [date]: diaryEntry.submittedCount };
-      }, {} as HeatMapContents),
-    [diaryEntries]
-  );
-
-  const selectedDiaryEntry = diaryEntries[selectedDate];
-
+export const TagDiaryGraph = createDiaryGraph("TagDiaryEntry")(({ diaryEntry }) => {
   return (
-    <Card icon={<Timeline />} title="記録" action={<IconButton icon={Refresh} onClick={onReload} />}>
-      <HeatMap firstDate={firstDate} contents={contents} onClick={selectDate} />
-      <Property label="日付">{new Date(Number(selectedDate)).toLocaleDateString()}</Property>
-      <Property label="タイプ数">{(selectedDiaryEntry && selectedDiaryEntry.typedCount) || 0}</Property>
-      <Property label="提出回数">{(selectedDiaryEntry && selectedDiaryEntry.submittedCount) || 0}</Property>
-    </Card>
+    <>
+      <Property label="タイプ数">{(diaryEntry && diaryEntry.typedCount) || 0}</Property>
+      <Property label="提出回数">{(diaryEntry && diaryEntry.submittedCount) || 0}</Property>
+    </>
   );
 });

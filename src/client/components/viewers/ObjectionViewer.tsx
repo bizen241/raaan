@@ -1,13 +1,17 @@
 import { Gavel } from "@material-ui/icons";
 import React from "react";
+import { EntityId } from "../../../shared/api/entities";
 import { hasPermission } from "../../../shared/api/security";
-import { withEntity } from "../../enhancers/withEntity";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { useEntity } from "../../hooks/useEntity";
 import { PermissionDenied } from "../project/PermissionDenied";
 import { Button, Card, Column, Property } from "../ui";
 import { ObjectionSummaryViewer } from "./ObjectionSummaryViewer";
 
-export const ObjectionViewer = withEntity("Objection")(({ entity: objection }) => {
+export const ObjectionViewer = React.memo<{
+  objectionId: EntityId<"Objection">;
+}>(({ objectionId }) => {
+  const { entity: objection } = useEntity("Objection", objectionId);
   const { description, state } = objection;
 
   const { currentUserId, currentUser } = useCurrentUser();
@@ -29,7 +33,7 @@ export const ObjectionViewer = withEntity("Objection")(({ entity: objection }) =
           to={`/objections/${objection.id}/edit`}
         />
       )}
-      <ObjectionSummaryViewer entityId={objection.summaryId} />
+      <ObjectionSummaryViewer objectionSummaryId={objection.summaryId} />
       {description && (
         <Card>
           <Property label="説明">{description}</Property>

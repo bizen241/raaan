@@ -2,13 +2,17 @@ import { Link } from "@material-ui/core";
 import { Delete, SmsFailed } from "@material-ui/icons";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { withEntity } from "../../enhancers/withEntity";
+import { EntityId } from "../../../shared/api/entities";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { useEntity } from "../../hooks/useEntity";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeleteObjectionDialog } from "../dialogs/objections/DeleteObjectionDialog";
 import { Card, Menu, MenuItem, Property } from "../ui";
 
-export const ObjectionSummaryViewer = withEntity("ObjectionSummary")(({ entity: objectionSummary }) => {
+export const ObjectionSummaryViewer = React.memo<{
+  objectionSummaryId: EntityId<"ObjectionSummary">;
+}>(({ objectionSummaryId }) => {
+  const { entity: objectionSummary } = useEntity("ObjectionSummary", objectionSummaryId);
   const { state, commentCount } = objectionSummary;
 
   const { currentUserId } = useCurrentUser();

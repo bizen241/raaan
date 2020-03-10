@@ -52,7 +52,7 @@ export const GroupApplicationEditor = React.memo<{
   return (
     <>
       <Button color="primary" icon={<Send />} label="参加を申請" onClick={onUpload} />
-      <GroupSummaryViewer entityId={groupSecret.groupSummaryId} />
+      <GroupSummaryViewer groupSummaryId={groupSecret.groupSummaryId} />
     </>
   );
 });

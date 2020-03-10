@@ -11,6 +11,6 @@ export const TagPage = createPage()(
     });
     const tag = tags[0];
 
-    return <TagViewer entityId={tag.id} />;
+    return <TagViewer tagId={tag.id} />;
   })
 );

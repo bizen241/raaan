@@ -44,7 +44,7 @@ export const UserViewer = React.memo<{ userId: EntityId<"User"> }>(({ userId }) 
         <Button icon={<PersonAdd />} label="フォロー中" onClick={onToggleDeleteUserFollowDialog} />
       )}
       <Column pb={1}>
-        <UserSummaryViewer entityId={user.summaryId} />
+        <UserSummaryViewer userSummaryId={user.summaryId} />
       </Column>
       <UploadUserFollowDialog
         targetId={userId}

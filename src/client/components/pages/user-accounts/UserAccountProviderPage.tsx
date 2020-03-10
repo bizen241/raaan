@@ -19,7 +19,7 @@ export const UserAccountProviderPage = createPage()(
       <>
         <Button icon={<Email />} label="メールアドレスの更新" onClick={onToggleUpdateEmailDialog} />
         <Button icon={<Lock />} label="プロバイダの変更" to="/user/account/provider/edit" />
-        <UserAccountViewer entityId={currentUserAccountId} />
+        <UserAccountViewer userAccountId={currentUserAccountId} />
         <UpdateEmailDialog isOpen={isUpdateEmailDialogOpen} onClose={onToggleUpdateEmailDialog} />
       </>
     );

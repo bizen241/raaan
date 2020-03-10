@@ -2,13 +2,17 @@ import { Link } from "@material-ui/core";
 import { Delete, Report as ReportIcon } from "@material-ui/icons";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { withEntity } from "../../enhancers/withEntity";
+import { EntityId } from "../../../shared/api/entities";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { useEntity } from "../../hooks/useEntity";
 import { useToggleState } from "../../hooks/useToggleState";
 import { DeleteReportDialog } from "../dialogs/reports/DeleteReportDialog";
 import { Card, Menu, MenuItem, Property } from "../ui";
 
-export const ReportSummaryViewer = withEntity("ReportSummary")(({ entity: reportSummary }) => {
+export const ReportSummaryViewer = React.memo<{
+  reportSummaryId: EntityId<"ReportSummary">;
+}>(({ reportSummaryId }) => {
+  const { entity: reportSummary } = useEntity("ReportSummary", reportSummaryId);
   const { reason, state, commentCount } = reportSummary;
 
   const { currentUserId } = useCurrentUser();

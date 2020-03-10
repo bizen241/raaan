@@ -8,6 +8,6 @@ export const GroupSecretPage = createPage<"Group">()(
   React.memo(({ entityId: groupId }) => {
     const { entity: group } = useEntity("Group", groupId);
 
-    return <GroupSecretViewer entityId={group.secretId} />;
+    return <GroupSecretViewer groupSecretId={group.secretId} />;
   })
 );

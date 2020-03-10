@@ -5,6 +5,6 @@ import { GroupViewer } from "../../viewers/GroupViewer";
 export const GroupPage = createPage<"Group">()(
   React.memo(({ t }) => t("グループの詳細")),
   React.memo(({ entityId: groupId }) => {
-    return <GroupViewer entityId={groupId} />;
+    return <GroupViewer groupId={groupId} />;
   })
 );

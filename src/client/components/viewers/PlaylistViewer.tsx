@@ -46,7 +46,7 @@ export const PlaylistViewer = React.memo<{ playlistId: EntityId<"Playlist"> }>((
           <Button icon={<Bookmark />} label="ブックマークを解除" onClick={onToggleDeletePlaylistBookmarkDialog} />
         ))}
       <Column pb={1}>
-        <PlaylistSummaryViewer entityId={playlist.summaryId} />
+        <PlaylistSummaryViewer playlistSummaryId={playlist.summaryId} />
       </Column>
       <Column pb={1}>
         <PlaylistItemsViewer
