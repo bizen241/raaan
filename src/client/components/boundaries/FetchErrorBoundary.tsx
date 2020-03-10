@@ -19,6 +19,12 @@ export class SearchError<T extends EntityType> extends Error {
   }
 }
 
+export class BufferError<T extends EntityType> extends Error {
+  constructor(public entityType: T, public entityId: EntityId<T>) {
+    super();
+  }
+}
+
 interface FetchErrorBoundaryState {
   error: Error | undefined;
 }
@@ -48,6 +54,8 @@ export class FetchErrorBoundary extends React.Component<{}, FetchErrorBoundarySt
       return <EntityErrorHandler error={error} onFetched={this.onCancel} />;
     } else if (error instanceof SearchError) {
       return <SearchErrorHandler error={error} onFetched={this.onCancel} />;
+    } else if (error instanceof BufferError) {
+      return <BufferErrorHandler error={error} />;
     }
 
     throw error;
@@ -98,6 +106,26 @@ const SearchErrorHandler = <T extends EntityType>({ error, onFetched }: SearchEr
   }, [result]);
 
   return <StatusRenderer status={status} />;
+};
+
+interface BufferErrorHandlerProps<T extends EntityType> {
+  error: BufferError<T>;
+}
+
+const BufferErrorHandler = <T extends EntityType>({ error }: BufferErrorHandlerProps<T>) => {
+  const { entityType, entityId } = error;
+
+  const dispatch = useDispatch();
+
+  const buffer = useSelector(state => state.buffers[entityType][entityId]);
+
+  useEffect(() => {
+    if (buffer !== undefined) {
+      dispatch(actions.buffers.delete(entityType, entityId));
+    }
+  }, []);
+
+  return <StatusRenderer status={404} />;
 };
 
 interface StatusRendererProps {
