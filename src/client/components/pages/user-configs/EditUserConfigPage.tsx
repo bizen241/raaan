@@ -9,6 +9,6 @@ export const EditUserConfigPage = createPage()(
   React.memo(() => {
     const currentUserConfigId = useSelector((state: RootState) => state.app.userConfigId);
 
-    return <UserConfigEditor bufferId={currentUserConfigId} />;
+    return <UserConfigEditor userConfigId={currentUserConfigId} />;
   })
 );

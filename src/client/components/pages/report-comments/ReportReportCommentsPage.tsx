@@ -32,7 +32,7 @@ export const ReportReportCommentsPage = createPage<"Report">()(
     return (
       <>
         {!reportCommentId && <Button icon={<Comment />} label="コメントする" onClick={onComment} />}
-        {reportCommentId && <ReportCommentEditor bufferId={reportCommentId} />}
+        {reportCommentId && <ReportCommentEditor reportCommentId={reportCommentId} />}
         <ReportCommentList
           initialParams={{
             targetId: reportId

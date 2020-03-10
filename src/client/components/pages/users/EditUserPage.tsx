@@ -12,6 +12,6 @@ export const EditUserPage = createPage<"User">()(
     return isOwn ? t("プロフィールの設定") : t("ユーザーの編集");
   }),
   React.memo(({ entityId: userId }) => {
-    return <UserEditor bufferId={userId} />;
+    return <UserEditor userId={userId} />;
   })
 );

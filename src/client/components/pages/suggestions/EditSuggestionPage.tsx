@@ -5,7 +5,7 @@ import { SuggestionEditor } from "../../editors/SuggestionEditor";
 const EditSuggestionPage = createPage<"Suggestion">()(
   React.memo(({ t }) => t("提案を編集中")),
   React.memo(({ entityId: suggestionId }) => {
-    return <SuggestionEditor bufferId={suggestionId} />;
+    return <SuggestionEditor suggestionId={suggestionId} />;
   })
 );
 

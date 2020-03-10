@@ -34,7 +34,7 @@ export const ObjectionObjectionCommentsPage = createPage<"Objection">()(
     return (
       <>
         {!objectionCommentId && <Button icon={<Comment />} label="コメントする" onClick={onComment} />}
-        {objectionCommentId && <ObjectionCommentEditor bufferId={objectionCommentId} />}
+        {objectionCommentId && <ObjectionCommentEditor objectionCommentId={objectionCommentId} />}
         <ObjectionCommentList
           initialParams={{
             targetId: objectionId

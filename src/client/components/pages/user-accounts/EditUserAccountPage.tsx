@@ -9,6 +9,6 @@ export const EditUserAccountPage = createPage()(
   React.memo(() => {
     const currentUserAccountId = useSelector((state: RootState) => state.app.userAccountId);
 
-    return <UserAccountEditor bufferId={currentUserAccountId} />;
+    return <UserAccountEditor userAccountId={currentUserAccountId} />;
   })
 );

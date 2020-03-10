@@ -34,7 +34,7 @@ export const SuggestionSuggestionCommentsPage = createPage<"Suggestion">()(
     return (
       <>
         {suggestionCommentId === undefined && <Button icon={<Comment />} label="コメントする" onClick={onComment} />}
-        {suggestionCommentId !== undefined && <SuggestionCommentEditor bufferId={suggestionCommentId} />}
+        {suggestionCommentId !== undefined && <SuggestionCommentEditor suggestionCommentId={suggestionCommentId} />}
         <SuggestionCommentList
           initialParams={{
             targetId: suggestionId

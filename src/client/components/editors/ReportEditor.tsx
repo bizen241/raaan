@@ -1,11 +1,11 @@
 import { CloudUpload } from "@material-ui/icons";
 import React, { useCallback } from "react";
-import { ReportReason, ReportState } from "../../../shared/api/entities";
-import { withBuffer } from "../../enhancers/withBuffer";
+import { EntityId, ReportReason, ReportState } from "../../../shared/api/entities";
+import { useBuffer } from "../../hooks/useBuffer";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useToggleState } from "../../hooks/useToggleState";
+import { BufferError } from "../boundaries/FetchErrorBoundary";
 import { UploadReportDialog } from "../dialogs/reports/UploadReportDialog";
-import { BrokenBuffer } from "../project/BrokenBuffer";
 import { Button, Card, Column, Select, SelectOptions, TextField } from "../ui";
 
 const selectReportReasonOptions: SelectOptions<ReportReason> = {
@@ -32,57 +32,58 @@ const selectReportStateOptions: SelectOptions<ReportState> = {
   }
 };
 
-export const ReportEditor = withBuffer("Report")(
-  React.memo(({ bufferType, bufferId, buffer, source, params, onChange }) => {
-    const { currentUser } = useCurrentUser();
+export const ReportEditor = React.memo<{
+  reportId: EntityId<"Report">;
+}>(({ reportId }) => {
+  const { currentUser } = useCurrentUser();
 
-    const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
+  const { buffer, source, params, onChange } = useBuffer("Report", reportId);
+  if (params.targetType === undefined || params.targetId === undefined) {
+    throw new BufferError("Report", reportId);
+  }
 
-    const onUpdateReason = useCallback((reason: ReportReason) => onChange({ reason }), []);
-    const onUpdateDescription = useCallback((description: string) => onChange({ description }), []);
-    const onUpdateState = useCallback((state: ReportState) => onChange({ state }), []);
-    const onUpdateComment = useCallback((comment: string) => onChange({ comment }), []);
+  const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
-    if (params.targetType === undefined || params.targetId === undefined) {
-      return <BrokenBuffer bufferType={bufferType} bufferId={bufferId} />;
-    }
+  const onUpdateReason = useCallback((reason: ReportReason) => onChange({ reason }), []);
+  const onUpdateDescription = useCallback((description: string) => onChange({ description }), []);
+  const onUpdateState = useCallback((state: ReportState) => onChange({ state }), []);
+  const onUpdateComment = useCallback((comment: string) => onChange({ comment }), []);
 
-    const canUpload =
-      (source !== undefined && buffer !== undefined) || (buffer !== undefined && buffer.reason !== undefined);
-    const isOwner = currentUser.permission === "Owner";
+  const canUpload =
+    (source !== undefined && buffer !== undefined) || (buffer !== undefined && buffer.reason !== undefined);
+  const isOwner = currentUser.permission === "Owner";
 
-    return (
-      <Column>
-        <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
-        {!isOwner ? (
-          <Card>
-            <Select<ReportReason>
-              label="理由"
-              options={selectReportReasonOptions}
-              defaultValue={params.reason}
-              onChange={onUpdateReason}
-            />
-            <TextField label="説明" multiline defaultValue={params.description || ""} onChange={onUpdateDescription} />
-          </Card>
-        ) : (
-          <Card>
-            <Select<ReportState>
-              label="状態"
-              options={selectReportStateOptions}
-              defaultValue={params.state}
-              onChange={onUpdateState}
-            />
-            <TextField label="コメント" multiline defaultValue={params.comment || ""} onChange={onUpdateComment} />
-          </Card>
-        )}
-        <UploadReportDialog
-          reportId={bufferId}
-          targetType={params.targetType}
-          targetId={params.targetId}
-          isOpen={isUploadDialogOpen}
-          onClose={onToggleUploadDialog}
-        />
-      </Column>
-    );
-  })
-);
+  return (
+    <Column>
+      <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
+      {!isOwner ? (
+        <Card>
+          <Select<ReportReason>
+            label="理由"
+            options={selectReportReasonOptions}
+            defaultValue={params.reason}
+            onChange={onUpdateReason}
+          />
+          <TextField label="説明" multiline defaultValue={params.description || ""} onChange={onUpdateDescription} />
+        </Card>
+      ) : (
+        <Card>
+          <Select<ReportState>
+            label="状態"
+            options={selectReportStateOptions}
+            defaultValue={params.state}
+            onChange={onUpdateState}
+          />
+          <TextField label="コメント" multiline defaultValue={params.comment || ""} onChange={onUpdateComment} />
+        </Card>
+      )}
+      <UploadReportDialog
+        reportId={reportId}
+        targetType={params.targetType}
+        targetId={params.targetId}
+        isOpen={isUploadDialogOpen}
+        onClose={onToggleUploadDialog}
+      />
+    </Column>
+  );
+});

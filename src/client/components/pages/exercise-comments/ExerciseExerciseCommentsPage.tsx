@@ -32,7 +32,7 @@ export const ExerciseExerciseCommentsPage = createPage<"Exercise">()(
     return (
       <>
         {exerciseCommentId === undefined && <Button icon={<Comment />} label="コメントする" onClick={onComment} />}
-        {exerciseCommentId !== undefined && <ExerciseCommentEditor bufferId={exerciseCommentId} />}
+        {exerciseCommentId !== undefined && <ExerciseCommentEditor exerciseCommentId={exerciseCommentId} />}
         <ExerciseCommentList
           initialParams={{
             targetId: exerciseId

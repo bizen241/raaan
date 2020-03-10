@@ -1,8 +1,8 @@
 import { CloudUpload } from "@material-ui/icons";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { UserSettings } from "../../../shared/api/entities";
-import { withBuffer } from "../../enhancers/withBuffer";
+import { EntityId, UserSettings } from "../../../shared/api/entities";
+import { useBuffer } from "../../hooks/useBuffer";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useToggleState } from "../../hooks/useToggleState";
 import { UploadUserConfigDialog } from "../dialogs/user-configs/UploadUserConfigDialog";
@@ -29,49 +29,51 @@ const selectColorSchemeOptions: SelectOptions<UserSettings["ui.colorScheme"]> = 
   }
 };
 
-export const UserConfigEditor = withBuffer("UserConfig")(
-  React.memo(({ bufferId, buffer, params, onChange }) => {
-    const { t } = useTranslation();
-    const { currentUser } = useCurrentUser();
-    const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
+export const UserConfigEditor = React.memo<{
+  userConfigId: EntityId<"UserConfig">;
+}>(({ userConfigId }) => {
+  const { t } = useTranslation();
+  const { currentUser } = useCurrentUser();
 
-    const [settings, setSettings] = useState(params.settings || {});
+  const { buffer, params, onChange } = useBuffer("UserConfig", userConfigId);
+  const [settings, setSettings] = useState(params.settings || {});
 
-    const onChangeSettings = useCallback((key: string, value: string) => {
-      setSettings(previousSettings => {
-        const nextSettings = {
-          ...previousSettings,
-          [key]: value
-        };
+  const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
-        onChange({
-          settings: nextSettings
-        });
-        return nextSettings;
+  const onChangeSettings = useCallback((key: string, value: string) => {
+    setSettings(previousSettings => {
+      const nextSettings = {
+        ...previousSettings,
+        [key]: value
+      };
+
+      onChange({
+        settings: nextSettings
       });
-    }, []);
+      return nextSettings;
+    });
+  }, []);
 
-    const canUpload = buffer !== undefined && currentUser.permission !== "Guest";
+  const canUpload = buffer !== undefined && currentUser.permission !== "Guest";
 
-    return (
-      <Column>
-        <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
-        <Card>
-          <Select<UserSettings["ui.lang"]>
-            label={t("editor.UserConfigEditor.label.language")}
-            options={selectLangOptions}
-            defaultValue={settings["ui.lang"]}
-            onChange={value => onChangeSettings("ui.lang", value)}
-          />
-          <Select<UserSettings["ui.colorScheme"]>
-            label={t("editor.UserConfigEditor.label.theme")}
-            options={selectColorSchemeOptions}
-            defaultValue={settings["ui.colorScheme"]}
-            onChange={value => onChangeSettings("ui.colorScheme", value)}
-          />
-        </Card>
-        <UploadUserConfigDialog userConfigId={bufferId} isOpen={isUploadDialogOpen} onClose={onToggleUploadDialog} />
-      </Column>
-    );
-  })
-);
+  return (
+    <Column>
+      <Button icon={<CloudUpload />} label="アップロード" disabled={!canUpload} onClick={onToggleUploadDialog} />
+      <Card>
+        <Select<UserSettings["ui.lang"]>
+          label={t("editor.UserConfigEditor.label.language")}
+          options={selectLangOptions}
+          defaultValue={settings["ui.lang"]}
+          onChange={value => onChangeSettings("ui.lang", value)}
+        />
+        <Select<UserSettings["ui.colorScheme"]>
+          label={t("editor.UserConfigEditor.label.theme")}
+          options={selectColorSchemeOptions}
+          defaultValue={settings["ui.colorScheme"]}
+          onChange={value => onChangeSettings("ui.colorScheme", value)}
+        />
+      </Card>
+      <UploadUserConfigDialog userConfigId={userConfigId} isOpen={isUploadDialogOpen} onClose={onToggleUploadDialog} />
+    </Column>
+  );
+});

@@ -5,6 +5,6 @@ import { GroupEditor } from "../../editors/GroupEditor";
 export const EditGroupPage = createPage<"Group">()(
   React.memo(({ t }) => t("グループを編集中")),
   React.memo(({ entityId: groupId }) => {
-    return <GroupEditor bufferId={groupId} />;
+    return <GroupEditor groupId={groupId} />;
   })
 );

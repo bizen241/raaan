@@ -4,8 +4,8 @@ import { ExerciseDraftEditor } from "../../editors/ExerciseDraftEditor";
 
 const EditExerciseDraftPage = createPage<"ExerciseDraft">()(
   React.memo(({ t }) => t("問題集を編集中")),
-  React.memo(({ entityId: exerciseBufferId }) => {
-    return <ExerciseDraftEditor bufferId={exerciseBufferId} />;
+  React.memo(({ entityId: exerciseDraftId }) => {
+    return <ExerciseDraftEditor exerciseDraftId={exerciseDraftId} />;
   })
 );
 

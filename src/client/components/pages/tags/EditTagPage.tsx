@@ -5,6 +5,6 @@ import { TagEditor } from "../../editors/TagEditor";
 export const EditTagPage = createPage<"Tag">()(
   React.memo(({ t }) => t("タグを編集中")),
   React.memo(({ entityId: tagId }) => {
-    return <TagEditor bufferId={tagId} />;
+    return <TagEditor tagId={tagId} />;
   })
 );
