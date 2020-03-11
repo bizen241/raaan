@@ -33,7 +33,7 @@ export type BuffersState = {
 };
 
 export const getBuffer = <T extends EntityType>(bufferMap: BuffersState[T], entityId: EntityId<T>) =>
-  bufferMap[entityId] as Params<EntityTypeToEntity[T]>;
+  bufferMap[entityId] as Params<EntityTypeToEntity[T]> | undefined;
 
 export const initialBuffersState: BuffersState = {
   ...createEntityTypeToObject<BuffersState>(),

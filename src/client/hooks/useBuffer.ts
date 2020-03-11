@@ -15,14 +15,11 @@ export const useBuffer = <T extends EntityType>(entityType: T, entityId: EntityI
   const bufferMap = useSelector(state => state.buffers[entityType]);
 
   const entity = getEntity(entityMap, entityId);
-  if (entity === undefined && isLocalEntityId(entityId)) {
+  if (entity === undefined && !isLocalEntityId(entityId)) {
     throw new EntityError(entityType, entityId);
   }
 
   const buffer = getBuffer(bufferMap, entityId);
-  if (buffer === undefined && entity === undefined) {
-    throw new Error();
-  }
 
   const onChange = useCallback(
     (params: Params<EntityTypeToEntity[T]>) => dispatch(actions.buffers.update(entityType, entityId, params)),
