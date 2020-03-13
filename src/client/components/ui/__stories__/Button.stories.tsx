@@ -3,8 +3,7 @@ import { decorator } from "../../__stories__/decorator";
 import { Button } from "../Button";
 
 export default {
-  component: Button,
-  title: "Button",
+  title: "ui/Button",
   decorators: [decorator]
 };
 

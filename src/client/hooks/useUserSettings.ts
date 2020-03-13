@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
 import { Lang, UserSettings } from "../../shared/api/entities";
-import { RootState } from "../reducers";
+import { useSelector } from "../reducers";
 
 const defaultSettings: UserSettings = {
   "ui.lang": navigator.language.slice(0, 2) as Lang,
@@ -10,8 +9,8 @@ const defaultSettings: UserSettings = {
 };
 
 export const useUserSettings = () => {
-  const userConfig = useSelector(({ app, cache }: RootState) => cache.get.UserConfig[app.userConfigId]);
-  const userConfigBuffer = useSelector(({ app, buffers }: RootState) => buffers.UserConfig[app.userConfigId]);
+  const userConfig = useSelector(state => state.cache.get.UserConfig[state.app.userConfigId]);
+  const userConfigBuffer = useSelector(state => state.buffers.UserConfig[state.app.userConfigId]);
   if (userConfig === undefined) {
     throw new Error("userConfig is not defined");
   }
