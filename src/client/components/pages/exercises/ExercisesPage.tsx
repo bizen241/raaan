@@ -11,7 +11,7 @@ import { Button } from "../../ui";
 export const ExercisesPage = createPage()(
   React.memo(({ t }) => t("問題集を探す")),
   React.memo(() => {
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const query = useQuery<ExerciseSummary>();
     const params: Params<ExerciseSummary> = {
@@ -21,8 +21,8 @@ export const ExercisesPage = createPage()(
 
     return (
       <>
-        {params.authorId !== currentUserId && (
-          <Button icon={<Person />} label="自分の問題集" to={`/users/${currentUserId}/exercises`} />
+        {params.authorId !== currentUser.id && (
+          <Button icon={<Person />} label="自分の問題集" to={`/users/${currentUser.id}/exercises`} />
         )}
         <Button icon={<Edit />} label="問題集を作る" to="/exercises/edit" />
         <ExerciseSummaryList

@@ -9,13 +9,13 @@ import { Link, Menu, MenuItem, TableRow } from "../../ui";
 
 export const UserFollowerList = createEntityList("UserFollow")(
   React.memo(({ entity: userFollow, params }) => {
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const [isGroupInvitationsDialogOpen, toggleGroupInvitationsDialog] = useToggleState();
 
     const { entity: userSummary } = useEntity("UserSummary", userFollow.followerSummaryId);
 
-    const isTarget = currentUserId === params.targetId;
+    const isTarget = currentUser.id === params.targetId;
 
     return (
       <TableRow

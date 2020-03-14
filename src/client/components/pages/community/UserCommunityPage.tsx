@@ -6,15 +6,15 @@ import { Button } from "../../ui";
 
 export const UserCommunityPage = createPage<"User">()(
   React.memo(({ entityId: userId, t }) => {
-    const { currentUserId } = useCurrentUser();
-    const isOwn = currentUserId === userId;
+    const { currentUser } = useCurrentUser();
+    const isOwn = currentUser.id === userId;
 
     return isOwn ? t("自分のコミュニティ") : t("ユーザーのコミュニティ");
   }),
   React.memo(({ entityId: userId }) => {
-    const { currentUserId, currentUser } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
-    const isOwn = currentUserId === userId;
+    const isOwn = currentUser.id === userId;
     const isOwner = currentUser.permission === "Owner";
 
     const hasPermission = (isOwn && !isOwner) || (!isOwn && isOwner);

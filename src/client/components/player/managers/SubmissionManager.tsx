@@ -16,10 +16,10 @@ export const SubmissionManager = React.memo<{
   onClose: () => void;
 }>(({ exercise, contestId, hasNext, onNext, onClose }) => {
   const dispatch = useDispatch();
-  const { currentUserId } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const { entities: submissionSummaries } = useSearch("SubmissionSummary", {
-    submitterId: currentUserId,
+    submitterId: currentUser.id,
     exerciseId: exercise.id
   });
   const submissionSummary = submissionSummaries[0];
@@ -45,7 +45,7 @@ export const SubmissionManager = React.memo<{
             actions.cache.add(
               "SubmissionSummary",
               {
-                submitterId: currentUserId,
+                submitterId: currentUser.id,
                 exerciseId: exercise.id
               },
               uploadResponse

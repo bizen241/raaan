@@ -12,7 +12,7 @@ export const UserGroupsPage = createPage()(
   React.memo(({ t }) => t("所属グループ")),
   React.memo(() => {
     const dispatch = useDispatch();
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const onCreate = useCallback(() => {
       const bufferId = generateLocalEntityId<"Group">();
@@ -24,8 +24,8 @@ export const UserGroupsPage = createPage()(
       <>
         <Button icon={<Add />} label="新しいグループを作る" onClick={onCreate} />
         <Button icon={<Edit />} label="編集中のグループ" to={`/groups/edit`} />
-        <Button icon={<Inbox />} label="申請一覧" to={`/users/${currentUserId}/groups/applications`} />
-        <UserGroupMemberList initialParams={{ userId: currentUserId }} />
+        <Button icon={<Inbox />} label="申請一覧" to={`/users/${currentUser.id}/groups/applications`} />
+        <UserGroupMemberList initialParams={{ userId: currentUser.id }} />
       </>
     );
   })

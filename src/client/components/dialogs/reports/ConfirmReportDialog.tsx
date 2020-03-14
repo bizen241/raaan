@@ -18,10 +18,10 @@ export const ConfirmReportDialog = createDialog<{
   React.memo(({ t }) => t("違反を報告する")),
   React.memo(({ targetType, targetId }) => {
     const dispatch = useDispatch();
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const { entities: reportSummaries } = useSearch("ReportSummary", {
-      reporterId: currentUserId,
+      reporterId: currentUser.id,
       targetType: "Exercise",
       targetId: targetId
     });

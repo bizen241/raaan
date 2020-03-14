@@ -3,10 +3,10 @@ import { useCurrentUser } from "./useCurrentUser";
 import { useSearch } from "./useSearch";
 
 export const usePlaylistBookmark = (playlistId: EntityId<"Playlist">) => {
-  const { currentUserId } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const { entities: playlistBookmarks } = useSearch("PlaylistBookmark", {
-    userId: currentUserId,
+    userId: currentUser.id,
     playlistId
   });
 

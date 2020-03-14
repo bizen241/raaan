@@ -15,11 +15,11 @@ export const ObjectionSummaryViewer = React.memo<{
   const { entity: objectionSummary } = useEntity("ObjectionSummary", objectionSummaryId);
   const { state, commentCount } = objectionSummary;
 
-  const { currentUserId } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-  const isOwn = objectionSummary.objectorId === currentUserId;
+  const isOwn = objectionSummary.objectorId === currentUser.id;
 
   return (
     <Card

@@ -18,12 +18,12 @@ export const TogglePlaylistItemList = createEntityList<
 >("PlaylistSummary")(
   React.memo(({ entity: { playlistId, title }, exerciseId }) => {
     const dispatch = useDispatch();
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const [isRequested, toggleRequestState] = useToggleState();
 
     const { entities: playlistItems } = useSearch("PlaylistItem", {
-      authorId: currentUserId,
+      authorId: currentUser.id,
       exerciseId
     });
     const foundPlaylistItem = playlistItems.find(playlistItem => playlistItem.playlistId === playlistId);
@@ -45,7 +45,7 @@ export const TogglePlaylistItemList = createEntityList<
                 actions.cache.add(
                   "PlaylistItem",
                   {
-                    authorId: currentUserId,
+                    authorId: currentUser.id,
                     exerciseId
                   },
                   uploadResponse

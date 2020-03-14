@@ -8,12 +8,12 @@ import { Button } from "../../ui";
 export const PlaylistsPage = createPage()(
   React.memo(({ t }) => t("プレイリストを探す")),
   React.memo(() => {
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     return (
       <>
-        <Button icon={<Person />} label="自分のプレイリスト" to={`/users/${currentUserId}/playlists`} />
-        <Button icon={<Bookmarks />} label="ブックマーク" to={`/users/${currentUserId}/bookmarks`} />
+        <Button icon={<Person />} label="自分のプレイリスト" to={`/users/${currentUser.id}/playlists`} />
+        <Button icon={<Bookmarks />} label="ブックマーク" to={`/users/${currentUser.id}/bookmarks`} />
         <PlaylistSummaryList
           initialParams={{
             searchLimit: 10,

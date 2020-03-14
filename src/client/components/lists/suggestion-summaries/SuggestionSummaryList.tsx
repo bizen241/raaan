@@ -8,7 +8,7 @@ import { Column, IconButton } from "../../ui";
 
 export const SuggestionSummaryList = createEntityList("SuggestionSummary")(
   React.memo(({ entity: suggestionSummary }) => {
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     return (
       <TableRow>
@@ -19,7 +19,7 @@ export const SuggestionSummaryList = createEntityList("SuggestionSummary")(
             </Link>
           </Column>
         </TableCell>
-        {suggestionSummary.authorId === currentUserId ? (
+        {suggestionSummary.authorId === currentUser.id ? (
           <TableCell padding="checkbox">
             <IconButton icon={Edit} to={`/suggestions/${suggestionSummary.suggestionId}/edit`} />
           </TableCell>

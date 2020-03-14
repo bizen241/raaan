@@ -11,7 +11,7 @@ import { Column, IconButton, Row, Search, Select } from "../../ui";
 
 export const PlaylistSummaryList = createEntityList("PlaylistSummary")(
   React.memo(({ entity: playlistSummary }) => {
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     return (
       <TableRow>
@@ -22,7 +22,7 @@ export const PlaylistSummaryList = createEntityList("PlaylistSummary")(
             </Link>
           </Column>
         </TableCell>
-        {playlistSummary.authorId === currentUserId ? (
+        {playlistSummary.authorId === currentUser.id ? (
           <TableCell padding="checkbox">
             <IconButton icon={Edit} to={`/playlists/${playlistSummary.playlistId}/edit`} />
           </TableCell>

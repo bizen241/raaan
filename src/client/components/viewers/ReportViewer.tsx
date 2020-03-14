@@ -14,10 +14,10 @@ export const ReportViewer = React.memo<{
   const { entity: report } = useEntity("Report", reportId);
   const { description, state } = report;
 
-  const { currentUserId, currentUser } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const isOwner = currentUser.permission === "Owner";
-  const isOwn = report.reporterId === currentUserId;
+  const isOwn = report.reporterId === currentUser.id;
 
   if (!isOwn && hasPermission(currentUser, "Admin")) {
     return <PermissionDenied />;

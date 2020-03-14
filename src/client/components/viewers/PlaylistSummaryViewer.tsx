@@ -14,7 +14,7 @@ import { Card, Menu, MenuItem, Property, Row } from "../ui";
 export const PlaylistSummaryViewer = React.memo<{
   playlistSummaryId: EntityId<"PlaylistSummary">;
 }>(({ playlistSummaryId }) => {
-  const { currentUserId } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const { entity: playlistSummary } = useEntity("PlaylistSummary", playlistSummaryId);
   const { playlistId } = playlistSummary;
@@ -25,7 +25,7 @@ export const PlaylistSummaryViewer = React.memo<{
 
   const { onReload } = useEntity("Playlist", playlistId);
 
-  const isAuthor = playlistSummary.authorId === currentUserId;
+  const isAuthor = playlistSummary.authorId === currentUser.id;
 
   return (
     <Card

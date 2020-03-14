@@ -8,12 +8,12 @@ import { Button } from "../../ui";
 export const SubmissionsPage = createPage()(
   React.memo(({ t }) => t("提出履歴")),
   React.memo(() => {
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     return (
       <>
         <Button color="primary" icon={<HourglassFull />} label="復習" to="/user/submissions/review" />
-        <SubmissionSummaryList initialParams={{ submitterId: currentUserId }} />
+        <SubmissionSummaryList initialParams={{ submitterId: currentUser.id }} />
       </>
     );
   })

@@ -36,19 +36,19 @@ export const ExerciseSummaryViewer = React.memo<{
   exerciseId: EntityId<"Exercise">;
   exercise: Exercise;
 }>(({ exerciseId, exercise }) => {
-  const { currentUserId, currentUser } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const isOwner = currentUser.permission === "Owner";
   const isGuest = currentUser.permission === "Guest";
 
   const { onReload: onReloadExercise } = useEntity("Exercise", exercise.id);
   const { entity: exerciseSummary } = useEntity("ExerciseSummary", exercise.summaryId);
   const { title, commentCount, isDraft, isPrivate, isLocked } = exerciseSummary;
-  const isAuthor = exerciseSummary.authorId === currentUserId;
+  const isAuthor = exerciseSummary.authorId === currentUser.id;
 
   const { entities: exerciseVotes } = useSearch(
     "ExerciseVote",
     {
-      voterId: currentUserId,
+      voterId: currentUser.id,
       targetId: exerciseId
     },
     !isGuest && !isAuthor

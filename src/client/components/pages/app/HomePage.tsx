@@ -8,7 +8,7 @@ import { Button } from "../../ui";
 export const HomePage = createPage()(
   React.memo(({ t }) => t("pages.HomePage.title")),
   React.memo(() => {
-    const { currentUserId, currentUser } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const isGuest = currentUser.permission === "Guest";
 
@@ -17,14 +17,14 @@ export const HomePage = createPage()(
         {isGuest ? (
           <Button color="primary" icon={<AccountCircle />} label="ログイン" to="/user/account" />
         ) : (
-          <Button color="primary" icon={<AccountCircle />} label="マイページ" to={`/users/${currentUserId}`} />
+          <Button color="primary" icon={<AccountCircle />} label="マイページ" to={`/users/${currentUser.id}`} />
         )}
         <Button icon={<Keyboard />} label="問題集" to="/exercises" />
         <Button icon={<PlaylistPlay />} label="プレイリスト" to="/playlists" />
         <Button icon={<LocalOffer />} label="タグ" to="/tags" />
         <UserDiaryGraph
           params={{
-            targetId: currentUserId
+            targetId: currentUser.id
           }}
         />
       </>

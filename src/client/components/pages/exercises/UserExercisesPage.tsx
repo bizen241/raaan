@@ -7,14 +7,14 @@ import { Button } from "../../ui";
 
 export const UserExercisesPage = createPage<"User">()(
   React.memo(({ entityId: userId, t }) => {
-    const { currentUserId } = useCurrentUser();
-    const isOwn = currentUserId === userId;
+    const { currentUser } = useCurrentUser();
+    const isOwn = currentUser.id === userId;
 
     return isOwn ? t("自分の問題集") : t("ユーザーの問題集");
   }),
   React.memo(({ entityId: userId }) => {
-    const { currentUserId } = useCurrentUser();
-    const isOwn = userId === currentUserId;
+    const { currentUser } = useCurrentUser();
+    const isOwn = userId === currentUser.id;
 
     return (
       <>

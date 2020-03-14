@@ -8,14 +8,14 @@ import { Button } from "../../ui";
 export const UserMessagesPage = createPage()(
   React.memo(({ t }) => t("通知一覧")),
   React.memo(() => {
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     return (
       <>
         <Button icon={<Email />} label="グループへの招待" to="/user/notifications/invitations" />
         <UserMessageList
           initialParams={{
-            userId: currentUserId
+            userId: currentUser.id
           }}
         />
       </>

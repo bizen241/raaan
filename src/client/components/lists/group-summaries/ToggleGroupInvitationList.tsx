@@ -17,7 +17,7 @@ export const ToggleGroupInvitationList = createEntityList<
 >("GroupSummary")(
   React.memo(({ entity: { groupId, name }, followerId }) => {
     const dispatch = useDispatch();
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const [isRequested, toggleRequestState] = useToggleState();
 
@@ -25,7 +25,7 @@ export const ToggleGroupInvitationList = createEntityList<
       "GroupInvitation",
       {
         targetId: followerId,
-        ownerId: currentUserId
+        ownerId: currentUser.id
       },
       false
     );
@@ -50,7 +50,7 @@ export const ToggleGroupInvitationList = createEntityList<
                   "GroupInvitation",
                   {
                     targetId: followerId,
-                    ownerId: currentUserId
+                    ownerId: currentUser.id
                   },
                   uploadResponse
                 )

@@ -7,14 +7,14 @@ import { Button, Column } from "../../ui";
 
 export const UserPlaylistsPage = createPage<"User">()(
   React.memo(({ entityId: userId, t }) => {
-    const { currentUserId } = useCurrentUser();
-    const isOwn = currentUserId === userId;
+    const { currentUser } = useCurrentUser();
+    const isOwn = currentUser.id === userId;
 
     return isOwn ? t("自分のプレイリスト") : t("ユーザーのプレイリスト");
   }),
   React.memo(({ entityId: userId }) => {
-    const { currentUserId } = useCurrentUser();
-    const isOwn = userId === currentUserId;
+    const { currentUser } = useCurrentUser();
+    const isOwn = userId === currentUser.id;
 
     return (
       <>

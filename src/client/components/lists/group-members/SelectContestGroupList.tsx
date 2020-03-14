@@ -14,11 +14,11 @@ import { Card, Column, IconButton, Row, Table, TableRow } from "../../ui";
 export const SelectContestGroupList = React.memo<{
   exerciseId: EntityId<"Exercise">;
 }>(({ exerciseId }) => {
-  const { currentUserId } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const dispatch = useDispatch();
 
   const { entities: groupMembers, onReload } = useSearch("GroupMember", {
-    userId: currentUserId
+    userId: currentUser.id
   });
   const selectableGroups = groupMembers.filter(groupMember => groupMember.permission !== "read");
 

@@ -7,9 +7,9 @@ import { Button } from "../../ui";
 export const UserSuggestionsPage = createPage<"User">()(
   React.memo(({ t }) => t("提案履歴")),
   React.memo(({ entityId: userId }) => {
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
-    const isOwn = userId === currentUserId;
+    const isOwn = userId === currentUser.id;
 
     return (
       <>

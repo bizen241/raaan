@@ -6,12 +6,12 @@ import { UserGroupInvitationList } from "../../lists/group-invitations/UserGroup
 export const UserGroupInvitationsPage = createPage()(
   React.memo(({ t }) => t("招待一覧")),
   React.memo(() => {
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     return (
       <UserGroupInvitationList
         initialParams={{
-          targetId: currentUserId
+          targetId: currentUser.id
         }}
       />
     );

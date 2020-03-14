@@ -13,7 +13,7 @@ import { TagSummaryViewer } from "./TagSummaryViewer";
 export const TagViewer = React.memo<{
   tagId: EntityId<"Tag">;
 }>(({ tagId }) => {
-  const { currentUserId } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const [isUploadTagFollowDialogOpen, onToggleUploadTagFollowDialog] = useToggleState();
   const [isDeleteTagFollowDialogOpen, onToggleDeleteTagFollowDialog] = useToggleState();
@@ -21,7 +21,7 @@ export const TagViewer = React.memo<{
   const { entity: tag } = useEntity("Tag", tagId);
 
   const { entities: follows } = useSearch("TagFollow", {
-    followerId: currentUserId,
+    followerId: currentUser.id,
     targetId: tag.id
   });
   const follow = follows[0];

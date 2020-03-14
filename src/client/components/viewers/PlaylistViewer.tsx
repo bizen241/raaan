@@ -15,7 +15,7 @@ import { PlaylistItemsViewer } from "./PlaylistItemsViewer";
 import { PlaylistSummaryViewer } from "./PlaylistSummaryViewer";
 
 export const PlaylistViewer = React.memo<{ playlistId: EntityId<"Playlist"> }>(({ playlistId }) => {
-  const { currentUserId } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const { entity: playlist } = useEntity("Playlist", playlistId);
 
@@ -27,7 +27,7 @@ export const PlaylistViewer = React.memo<{ playlistId: EntityId<"Playlist"> }>((
   const { sortedPlaylistItems, playlistItemCount, onReloadPlaylistItems } = usePlaylistItems(playlistId, playlist);
   const { playlistBookmark } = usePlaylistBookmark(playlistId);
 
-  const isAuthor = playlist.authorId === currentUserId;
+  const isAuthor = playlist.authorId === currentUser.id;
 
   return (
     <Column>

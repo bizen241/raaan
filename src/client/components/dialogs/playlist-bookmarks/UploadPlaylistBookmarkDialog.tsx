@@ -16,7 +16,7 @@ export const UploadPlaylistBookmarkDialog = createDialog<{
   React.memo(({ t }) => t("ブックマークに追加")),
   React.memo(({ playlistId, onClose }) => {
     const dispatch = useDispatch();
-    const { currentUserId, currentUser } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
     const isReadOnly = currentUser.permission === "Read";
 
     const [uploadType, setUploadType] = useState<UploadType>(isReadOnly ? "private" : "public");
@@ -35,7 +35,7 @@ export const UploadPlaylistBookmarkDialog = createDialog<{
               actions.cache.add(
                 "PlaylistBookmark",
                 {
-                  userId: currentUserId,
+                  userId: currentUser.id,
                   playlistId
                 },
                 uploadResponse

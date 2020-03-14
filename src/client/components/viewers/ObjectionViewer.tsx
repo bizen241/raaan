@@ -14,10 +14,10 @@ export const ObjectionViewer = React.memo<{
   const { entity: objection } = useEntity("Objection", objectionId);
   const { description, state } = objection;
 
-  const { currentUserId, currentUser } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const isOwner = currentUser.permission === "Owner";
-  const isOwn = objection.objectorId === currentUserId;
+  const isOwn = objection.objectorId === currentUser.id;
 
   if (!isOwn && hasPermission(currentUser, "Admin")) {
     return <PermissionDenied />;

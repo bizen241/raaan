@@ -15,7 +15,7 @@ export const UploadUserFollowDialog = createDialog<{
   React.memo(({ t }) => t("ユーザーをフォロー")),
   React.memo(({ targetId, onClose }) => {
     const dispatch = useDispatch();
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const onUpload = () => {
       dispatch(
@@ -23,7 +23,7 @@ export const UploadUserFollowDialog = createDialog<{
           "UserFollow",
           generateLocalEntityId(),
           {
-            followerId: currentUserId,
+            followerId: currentUser.id,
             targetId
           },
           uploadResponse => {
@@ -31,7 +31,7 @@ export const UploadUserFollowDialog = createDialog<{
               actions.cache.add(
                 "UserFollow",
                 {
-                  followerId: currentUserId,
+                  followerId: currentUser.id,
                   targetId
                 },
                 uploadResponse

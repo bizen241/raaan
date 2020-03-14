@@ -10,7 +10,7 @@ export const GroupExercisesDialog = createDialog<{
 }>()(
   React.memo(({ t }) => t("問題集をグループに公開")),
   React.memo(({ exerciseId }) => {
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const { onReload: onReloadGroupExercises } = useSearch("GroupExercise", {
       exerciseId
@@ -19,7 +19,7 @@ export const GroupExercisesDialog = createDialog<{
     return (
       <ToggleGroupExerciseList
         initialParams={{
-          userId: currentUserId
+          userId: currentUser.id
         }}
         exerciseId={exerciseId}
         onReload={onReloadGroupExercises}

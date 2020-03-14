@@ -6,12 +6,12 @@ import { UserSessionList } from "../../lists/user-sessions/UserSessionList";
 export const UserSessionsPage = createPage()(
   React.memo(({ t }) => t("セッション一覧")),
   React.memo(() => {
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     return (
       <UserSessionList
         initialParams={{
-          userId: currentUserId
+          userId: currentUser.id
         }}
       />
     );

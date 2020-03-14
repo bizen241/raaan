@@ -14,7 +14,7 @@ import { SubmissionSummaryViewer } from "./SubmissionSummaryViewer";
 export const ExerciseViewer = React.memo<{
   exerciseId: EntityId<"Exercise">;
 }>(({ exerciseId }) => {
-  const { currentUserId, currentUser } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const { entity: exercise } = useEntity("Exercise", exerciseId);
 
@@ -31,7 +31,7 @@ export const ExerciseViewer = React.memo<{
       {isDraft && <Button icon={<PlayArrow />} label="プレビュー" onClick={onToggleExercisePreviewer} />}
       {!isGuest && <Button icon={<PlaylistAdd />} label="プレイリストに追加" onClick={onTogglePlaylistDialog} />}
       <ExerciseSummaryViewer exerciseId={exerciseId} exercise={exercise} />
-      {!isGuest && <SubmissionSummaryViewer submitterId={currentUserId} exerciseId={exerciseId} />}
+      {!isGuest && <SubmissionSummaryViewer submitterId={currentUser.id} exerciseId={exerciseId} />}
       <ExercisePlayer exerciseId={exerciseId} isOpen={isExercisePlayerOpen} onClose={onToggleExercisePlayer} />
       <ExercisePreviewer exercise={exercise} isOpen={isExercisePreviewerOpen} onClose={onToggleExercisePreviewer} />
       <PlaylistItemsDialog exerciseId={exerciseId} isOpen={isPlaylistDialogOpen} onClose={onTogglePlaylistDialog} />

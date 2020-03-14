@@ -18,10 +18,10 @@ export const ConfirmObjectionDialog = createDialog<{
   React.memo(({ t }) => t("抗議する")),
   React.memo(({ targetType, targetId }) => {
     const dispatch = useDispatch();
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const { entities: objectionSummaries } = useSearch("ObjectionSummary", {
-      objectorId: currentUserId,
+      objectorId: currentUser.id,
       targetId
     });
     const objectionSummary = objectionSummaries[0];

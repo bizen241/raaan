@@ -11,20 +11,20 @@ import { Button, Column } from "../ui";
 import { UserSummaryViewer } from "./UserSummaryViewer";
 
 export const UserViewer = React.memo<{ userId: EntityId<"User"> }>(({ userId }) => {
-  const { currentUserId } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const { entity: user } = useEntity("User", userId);
 
   const [isUploadUserFollowDialogOpen, onToggleUploadUserFollowDialog] = useToggleState();
   const [isDeleteUserFollowDialogOpen, onToggleDeleteUserFollowDialog] = useToggleState();
   const { entities: follows } = useSearch("UserFollow", {
-    followerId: currentUserId,
+    followerId: currentUser.id,
     targetId: userId
   });
   const follow = follows[0];
   const isFollowed = follow !== undefined;
 
-  const isOwn = userId === currentUserId;
+  const isOwn = userId === currentUser.id;
 
   return (
     <Column>

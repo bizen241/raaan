@@ -5,9 +5,9 @@ import { UserEditor } from "../../editors/UserEditor";
 
 export const EditUserPage = createPage<"User">()(
   React.memo(({ entityId: userId, t }) => {
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
-    const isOwn = currentUserId === userId;
+    const isOwn = currentUser.id === userId;
 
     return isOwn ? t("プロフィールの設定") : t("ユーザーの編集");
   }),

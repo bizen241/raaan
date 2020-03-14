@@ -9,11 +9,11 @@ import { Button } from "../../ui";
 export const GroupMembersPage = createPage<"Group">()(
   React.memo(({ t }) => t("グループのメンバー")),
   React.memo(({ entityId: groupId }) => {
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const { entities: groupMembers } = useSearch("GroupMember", {
       groupId,
-      userId: currentUserId
+      userId: currentUser.id
     });
     const groupMember = groupMembers[0];
     const groupMemberPermission = groupMember !== undefined ? groupMember.permission : "guest";

@@ -10,7 +10,7 @@ export const GroupInvitationsDialog = createDialog<{
 }>()(
   React.memo(({ t }) => t("フォロワーを招待")),
   React.memo(({ groupId }) => {
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const { onReload: onReloadGroupInvitations } = useSearch("GroupInvitation", {
       groupId
@@ -19,7 +19,7 @@ export const GroupInvitationsDialog = createDialog<{
     return (
       <ToggleGroupInvitationList
         initialParams={{
-          targetId: currentUserId
+          targetId: currentUser.id
         }}
         groupId={groupId}
         onReload={onReloadGroupInvitations}

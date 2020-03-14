@@ -10,10 +10,10 @@ import { Button, Card } from "../../ui";
 export const LogoutDialog = createDialog<{}>()(
   React.memo(({ t }) => t("ログアウト")),
   React.memo(({}) => {
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const { entities: userSessions } = useSearch("UserSession", {
-      userId: currentUserId
+      userId: currentUser.id
     });
 
     const [isFailed, setStatus] = useState(false);

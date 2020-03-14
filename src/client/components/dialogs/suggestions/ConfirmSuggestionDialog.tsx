@@ -17,10 +17,10 @@ export const ConfirmSuggestionDialog = createDialog<{
   React.memo(({ t }) => t("変更を提案する")),
   React.memo(({ exercise }) => {
     const dispatch = useDispatch();
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     const { entities: suggestionSummaries } = useSearch("SuggestionSummary", {
-      authorId: currentUserId,
+      authorId: currentUser.id,
       exerciseId: exercise.id,
       state: "pending"
     });

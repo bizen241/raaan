@@ -5,8 +5,8 @@ import { UserViewer } from "../../viewers/UserViewer";
 
 export const UserPage = createPage<"User">()(
   React.memo(({ entityId: userId, t }) => {
-    const { currentUserId } = useCurrentUser();
-    const isOwn = currentUserId === userId;
+    const { currentUser } = useCurrentUser();
+    const isOwn = currentUser.id === userId;
 
     return isOwn ? t("マイページ") : t("ユーザーの詳細");
   }),

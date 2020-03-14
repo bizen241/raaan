@@ -15,11 +15,11 @@ export const ReportSummaryViewer = React.memo<{
   const { entity: reportSummary } = useEntity("ReportSummary", reportSummaryId);
   const { reason, state, commentCount } = reportSummary;
 
-  const { currentUserId } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const [isDeleteDialogOpen, onToggleDeleteDialog] = useToggleState();
 
-  const isOwn = reportSummary.reporterId === currentUserId;
+  const isOwn = reportSummary.reporterId === currentUser.id;
 
   return (
     <Card

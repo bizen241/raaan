@@ -6,12 +6,12 @@ import { ExerciseSummaryList } from "../../lists/exercise-summaries/ExerciseSumm
 export const UserExerciseDraftsPage = createPage()(
   React.memo(({ t }) => t("保存された下書き")),
   React.memo(() => {
-    const { currentUserId } = useCurrentUser();
+    const { currentUser } = useCurrentUser();
 
     return (
       <ExerciseSummaryList
         initialParams={{
-          authorId: currentUserId,
+          authorId: currentUser.id,
           isEditing: true
         }}
       />
