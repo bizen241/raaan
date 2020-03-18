@@ -28,7 +28,7 @@
     "fix:eslint": "eslint --fix --ignore-pattern *.hbs \"src/**/*.{ts,tsx}\"",
     "fix:prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "intl": "babel -f .babelrc \"src/client/**/*.{ts,tsx}\"",
-    "ui": "start-storybook -s assets",
+    "ui": "start-storybook -s dist",
     "db": "typeorm"
   },
   "dependencies": {
