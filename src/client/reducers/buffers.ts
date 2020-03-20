@@ -17,7 +17,7 @@ export const buffersActions = {
       entityId,
       params
     }),
-  delete: <T extends EntityType>(entityType: T, entityId: EntityId<T>) =>
+  delete: <T extends EntityType>(entityType: T | undefined, entityId: EntityId<T> | undefined) =>
     createAction(BuffersActionType.Delete, {
       entityType,
       entityId
@@ -67,6 +67,17 @@ export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBu
     }
     case BuffersActionType.Delete: {
       const { entityType, entityId } = action.payload;
+
+      if (entityType === undefined) {
+        return initialBuffersState;
+      }
+      if (entityId === undefined) {
+        return {
+          ...state,
+          [entityType]: {}
+        };
+      }
+
       const { [entityId]: deleted, ...buffers } = state[entityType];
 
       return {

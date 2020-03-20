@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import "../../../intl";
 import { persistor, store } from "../../../store";
+import { Initializer } from "../../project/Initializer";
 import { IntlProvider } from "../../project/IntlProvider";
 import { LoadingApp } from "../../project/LoadingApp";
 import { ThemeProvider } from "../../project/ThemeProvider";
@@ -16,11 +17,13 @@ export const decorator = (Story: React.FunctionComponent) => (
       <Suspense fallback={<LoadingApp />}>
         <ThemeProvider>
           <IntlProvider>
-            <Knobs />
-            <Entities />
-            <Column p={1}>
-              <Story />
-            </Column>
+            <Initializer>
+              <Knobs />
+              <Entities />
+              <Column p={1}>
+                <Story />
+              </Column>
+            </Initializer>
           </IntlProvider>
         </ThemeProvider>
       </Suspense>
