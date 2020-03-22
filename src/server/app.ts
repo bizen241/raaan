@@ -11,6 +11,7 @@ import { errorHandler } from "./error";
 import { useLimiter } from "./limiter";
 import { authRouter } from "./routes/auth";
 import { shellRouter } from "./routes/shell";
+import { testRouter } from "./routes/test";
 import { useSession } from "./session";
 
 export const createApp = (env: Env, app: express.Express = express()) => {
@@ -42,6 +43,7 @@ export const createApp = (env: Env, app: express.Express = express()) => {
   useApi(env, app);
 
   app.use("/auth", authRouter);
+  app.use("/test", testRouter);
   app.use("/", shellRouter);
 
   app.use(errorHandler);

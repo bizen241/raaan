@@ -1,7 +1,8 @@
 import { getManager } from "typeorm";
 import uuid from "uuid/v4";
-import { ExerciseContent, GroupMemberPermission, Permission } from "../../../shared/api/entities";
+import { dateToDateString, ExerciseContent, GroupMemberPermission, Permission } from "../../../shared/api/entities";
 import {
+  AppDiaryEntryEntity,
   ContestEntity,
   ExerciseCommentEntity,
   ExerciseCommentSummaryEntity,
@@ -21,6 +22,21 @@ import {
   UserSummaryEntity
 } from "../../database/entities";
 import { getTags } from "../../services/tags";
+
+export const insertAppDiaryEntry = async (
+  params: {
+    date?: Date;
+  } = {}
+) => {
+  const manager = getManager();
+
+  const appDiaryEntry = new AppDiaryEntryEntity(dateToDateString(params.date || new Date()));
+  await manager.save(appDiaryEntry);
+
+  return {
+    appDiaryEntry
+  };
+};
 
 export const insertContest = async (
   params: {
