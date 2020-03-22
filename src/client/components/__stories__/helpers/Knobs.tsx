@@ -1,4 +1,4 @@
-import { radios } from "@storybook/addon-knobs";
+import { button, radios } from "@storybook/addon-knobs";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Permission } from "../../../../shared/api/entities";
@@ -41,6 +41,13 @@ export const Knobs = () => {
     },
     currentUser.permission
   );
+
+  button("reset", async () => {
+    await fetch("/test");
+
+    localStorage.clear();
+    location.reload();
+  });
 
   useEffect(() => {
     dispatch(

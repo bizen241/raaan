@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import "../../../intl";
 import { persistor, store } from "../../../store";
+import { FetchErrorBoundary } from "../../boundaries/FetchErrorBoundary";
 import { Initializer } from "../../project/Initializer";
 import { IntlProvider } from "../../project/IntlProvider";
 import { LoadingApp } from "../../project/LoadingApp";
@@ -19,10 +20,13 @@ export const decorator = (Story: React.FunctionComponent) => (
           <IntlProvider>
             <Initializer>
               <Knobs />
-              <Entities />
-              <Column p={1}>
-                <Story />
-              </Column>
+              <Entities>
+                <Column p={1}>
+                  <FetchErrorBoundary>
+                    <Story />
+                  </FetchErrorBoundary>
+                </Column>
+              </Entities>
             </Initializer>
           </IntlProvider>
         </ThemeProvider>
