@@ -7,6 +7,6 @@ export default {
   decorators: [decorator]
 };
 
-export const AppDiaryPage = () => {
+export const AppDiary = () => {
   return <PageStory path="/app/diary" />;
 };
