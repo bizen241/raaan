@@ -1,7 +1,6 @@
 import React from "react";
-import { useEntity } from "../../../../hooks/useEntity";
-import { useSearch } from "../../../../hooks/useSearch";
 import { decorator } from "../../../__stories__/helpers/decorator";
+import { getCacheId } from "../../../__stories__/helpers/Entities";
 import { PageStory } from "../../__stories__/helpers/PageStory";
 
 export default {
@@ -10,10 +9,7 @@ export default {
 };
 
 export const EditExerciseDraft = () => {
-  const { entities } = useSearch("ExerciseSummary", {});
-  const { entity: exercise } = useEntity("Exercise", entities[0].exerciseId);
-
-  return <PageStory path={`/exercise-drafts/${exercise.draftId}/edit`} />;
+  return <PageStory path={`/exercise-drafts/${getCacheId(0)}/edit`} />;
 };
 
 export const EditExerciseDrafts = () => {

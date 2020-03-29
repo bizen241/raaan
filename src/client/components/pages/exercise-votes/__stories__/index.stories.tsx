@@ -1,6 +1,6 @@
 import React from "react";
-import { useEntities } from "../../../../hooks/useEntities";
 import { decorator } from "../../../__stories__/helpers/decorator";
+import { getCacheId } from "../../../__stories__/helpers/Entities";
 import { PageStory } from "../../__stories__/helpers/PageStory";
 
 export default {
@@ -9,13 +9,9 @@ export default {
 };
 
 export const UserDownVotes = () => {
-  const { entityIds: userIds } = useEntities("User");
-
-  return <PageStory path={`/users/${userIds[0]}/votes/down`} />;
+  return <PageStory path={`/users/${getCacheId(0)}/votes/down`} />;
 };
 
 export const UserUpVotes = () => {
-  const { entityIds: userIds } = useEntities("User");
-
-  return <PageStory path={`/users/${userIds[0]}/votes/up`} />;
+  return <PageStory path={`/users/${getCacheId(0)}/votes/up`} />;
 };

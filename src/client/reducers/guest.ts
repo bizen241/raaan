@@ -1,8 +1,9 @@
 import { User, UserAccount, UserConfig } from "../../shared/api/entities";
+import { getCacheId } from "../components/__stories__/helpers/Entities";
 import { generateLocalEntityId } from "./entity";
 
 export const guestUser: User = {
-  id: generateLocalEntityId<"User">(),
+  id: getCacheId(0),
   name: "",
   permission: "Guest",
   summaryId: generateLocalEntityId<"UserSummary">(),
@@ -11,7 +12,7 @@ export const guestUser: User = {
   fetchedAt: 0
 };
 export const guestUserAccount: UserAccount = {
-  id: generateLocalEntityId<"UserAccount">(),
+  id: getCacheId(0),
   provider: "github",
   accountId: "",
   email: "guest@example.com",
@@ -21,7 +22,7 @@ export const guestUserAccount: UserAccount = {
   fetchedAt: 0
 };
 export const guestUserConfig: UserConfig = {
-  id: generateLocalEntityId<"UserConfig">(),
+  id: getCacheId(0),
   settings: {},
   createdAt: 0,
   updatedAt: 0,

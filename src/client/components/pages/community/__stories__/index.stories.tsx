@@ -1,6 +1,6 @@
 import React from "react";
-import { useCurrentUser } from "../../../../hooks/useCurrentUser";
 import { decorator } from "../../../__stories__/helpers/decorator";
+import { getCacheId } from "../../../__stories__/helpers/Entities";
 import { PageStory } from "../../__stories__/helpers/PageStory";
 
 export default {
@@ -13,31 +13,21 @@ export const Community = () => {
 };
 
 export const UserCommunity = () => {
-  const { currentUser } = useCurrentUser();
-
-  return <PageStory path={`/users/${currentUser.id}/community`} />;
+  return <PageStory path={`/users/${getCacheId(0)}/community`} />;
 };
 
 export const UserFollow = () => {
-  const { currentUser } = useCurrentUser();
-
-  return <PageStory path={`/users/${currentUser.id}/follow`} />;
+  return <PageStory path={`/users/${getCacheId(0)}/follow`} />;
 };
 
 export const UserReports = () => {
-  const { currentUser } = useCurrentUser();
-
-  return <PageStory path={`/users/${currentUser.id}/reports`} />;
+  return <PageStory path={`/users/${getCacheId(0)}/reports`} />;
 };
 
 export const UserSuggestions = () => {
-  const { currentUser } = useCurrentUser();
-
-  return <PageStory path={`/users/${currentUser.id}/suggestions`} />;
+  return <PageStory path={`/users/${getCacheId(0)}/suggestions`} />;
 };
 
 export const UserVotes = () => {
-  const { currentUser } = useCurrentUser();
-
-  return <PageStory path={`/users/${currentUser.id}/votes`} />;
+  return <PageStory path={`/users/${getCacheId(0)}/votes`} />;
 };
