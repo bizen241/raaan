@@ -28,9 +28,7 @@
     "fix:eslint": "eslint --fix --ignore-pattern *.hbs \"src/**/*.{ts,tsx}\"",
     "fix:prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "intl": "babel -f .babelrc \"src/client/**/*.{ts,tsx}\"",
-    "ui": "run-p ui:server ui:storybook",
-    "ui:server": "run-p watch:server:*",
-    "ui:storybook": "start-storybook -s dist",
+    "ui": "start-storybook -s dist",
     "db": "typeorm"
   },
   "dependencies": {
