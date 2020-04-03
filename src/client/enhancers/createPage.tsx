@@ -1,11 +1,10 @@
 import { Avatar, Typography } from "@material-ui/core";
 import { ArrowBack, Home, Mail, Person, Settings, Web } from "@material-ui/icons";
-import { goBack } from "connected-react-router";
 import { TFunction } from "i18next";
-import React, { useCallback } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router";
 import { EntityId, EntityType } from "../../shared/api/entities";
 import { FetchErrorBoundary } from "../components/boundaries/FetchErrorBoundary";
 import { Column, IconButton, Menu, MenuItem, PageContent, PageHeader, Row } from "../components/ui";
@@ -23,7 +22,7 @@ export const createPage = <T extends EntityType>() => (
   BodyComponent: React.ComponentType<PageProps<T> & { t: TFunction }>
 ) =>
   React.memo(() => {
-    const dispatch = useDispatch();
+    const history = useHistory();
     const { t } = useTranslation();
     const { currentUser } = useCurrentUser();
 
@@ -39,7 +38,7 @@ export const createPage = <T extends EntityType>() => (
     return (
       <Column alignItems="center" width="100%" minHeight="100%" position="absolute" top={0} left={0}>
         <PageHeader>
-          <IconButton icon={ArrowBack} onClick={useCallback(() => dispatch(goBack()), [])} />
+          <IconButton icon={ArrowBack} onClick={() => history.goBack()} />
           <Typography component="span">
             <TitleComponent entityId={entityId as EntityId<T>} name={name} secret={secret} t={t} />
           </Typography>
