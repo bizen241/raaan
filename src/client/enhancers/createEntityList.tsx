@@ -121,7 +121,7 @@ const EntityListItemsRenderer = <T extends EntityType, P extends {}>({
           return <Renderer key={entity.id} entityId={entity.id} entity={entity} params={params} {...additionalProps} />;
         })}
       </EntityListItemErrorConverter>
-      {emptyRows && (
+      {emptyRows !== 0 && (
         <TableRow style={{ height: itemHeight * emptyRows }}>
           <TableCell colSpan={3} />
         </TableRow>
