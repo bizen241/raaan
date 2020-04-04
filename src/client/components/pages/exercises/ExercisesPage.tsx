@@ -24,7 +24,7 @@ export const ExercisesPage = createPage()(
         {params.authorId !== currentUser.id && (
           <Button icon={<Person />} label="自分の問題集" to={`/users/${currentUser.id}/exercises`} />
         )}
-        <Button icon={<Edit />} label="問題集を作る" to="/exercises/edit" />
+        <Button icon={<Edit />} label="問題集を作る" to="/exercise-drafts/edit" />
         <ExerciseSummaryList
           key={location.search}
           initialParams={{
