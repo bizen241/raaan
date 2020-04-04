@@ -1,10 +1,11 @@
 import { button, radios } from "@storybook/addon-knobs";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { batch, useDispatch } from "react-redux";
 import { Permission } from "../../../../shared/api/entities";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
 import { useUserSettings } from "../../../hooks/useUserSettings";
 import { actions, useSelector } from "../../../reducers";
+import { guestUser, guestUserAccount, guestUserConfig } from "../../../reducers/guest";
 
 export const Knobs = () => {
   const dispatch = useDispatch();
@@ -43,10 +44,29 @@ export const Knobs = () => {
   );
 
   button("reset", async () => {
-    await fetch("/test");
-
-    localStorage.clear();
-    location.reload();
+    batch(() => {
+      dispatch(actions.cache.purge(undefined, undefined));
+      dispatch(
+        actions.cache.get({
+          User: {
+            [guestUser.id]: guestUser
+          },
+          UserAccount: {
+            [guestUserAccount.id]: guestUserAccount
+          },
+          UserConfig: {
+            [guestUserConfig.id]: guestUserConfig
+          }
+        })
+      );
+      dispatch(
+        actions.app.ready({
+          userId: guestUser.id,
+          userAccountId: guestUserAccount.id,
+          userConfigId: guestUserConfig.id
+        })
+      );
+    });
   });
 
   useEffect(() => {
