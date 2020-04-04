@@ -1,12 +1,11 @@
 import { User, UserAccount, UserConfig } from "../../shared/api/entities";
 import { getCacheId } from "../components/__stories__/helpers/Entities";
-import { generateLocalEntityId } from "./entity";
 
 export const guestUser: User = {
   id: getCacheId(0),
   name: "",
   permission: "Guest",
-  summaryId: generateLocalEntityId<"UserSummary">(),
+  summaryId: getCacheId(0),
   createdAt: 0,
   updatedAt: 0,
   fetchedAt: 0
