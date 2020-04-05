@@ -57,7 +57,7 @@ export const createBufferList = <T extends EntityType>(entityType: T) => (
                 />
               );
             })}
-            {emptyRows && (
+            {emptyRows !== 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
                 <TableCell colSpan={3} />
               </TableRow>
