@@ -60,6 +60,9 @@ const casheSearchResult = <T extends EntityType>(
     entities: {}
   });
 };
+const addBuffer = <T extends EntityType>(entityType: T, index: number, params: Params<EntityTypeToEntity[T]>) => {
+  return actions.buffers.update(entityType, id(index), params);
+};
 
 export const cacheEntities = (dispatch: Dispatch) => {
   const store = createStore();
@@ -67,6 +70,9 @@ export const cacheEntities = (dispatch: Dispatch) => {
   cacheAppDiaryEntries(store, dispatch);
   cacheContests(store, dispatch);
   cacheExercises(store, dispatch);
+  cacheExerciseDiaryEntries(store, dispatch);
+  cacheExerciseComments(store, dispatch);
+  cacheExerciseVotes(store, dispatch);
   cacheGroups(store, dispatch);
   cacheUsers(store, dispatch);
   cacheUserDiaryEntries(store, dispatch);
@@ -86,6 +92,7 @@ const cacheContests = (store: EntityStore, dispatch: Dispatch) => {
   const count = 10;
 
   indexes(count).map(i => cacheContest(store, i));
+  indexes(count).map(i => dispatch(addBuffer("Contest", i, {})));
 
   dispatch(
     casheSearchResult("Contest", count, {
@@ -98,11 +105,61 @@ const cacheExercises = (store: EntityStore, dispatch: Dispatch) => {
   const count = 10;
 
   indexes(count).map(i => cacheExercise(store, i));
+  indexes(count).map(i => dispatch(addBuffer("ExerciseDraft", i, {})));
 
   dispatch(
     casheSearchResult("ExerciseSummary", count, {
       searchSort: "createdAt",
       searchOrder: "DESC"
+    })
+  );
+  dispatch(
+    casheSearchResult("ExerciseSummary", count, {
+      authorId: id(0),
+      isEditing: true
+    })
+  );
+};
+
+const cacheExerciseDiaryEntries = (store: EntityStore, dispatch: Dispatch) => {
+  const count = 365;
+
+  indexes(count).map(i => cacheExerciseDiaryEntry(store, i));
+
+  dispatch(
+    casheSearchResult("ExerciseDiaryEntry", count, {
+      targetId: id(0)
+    })
+  );
+};
+
+const cacheExerciseComments = (store: EntityStore, dispatch: Dispatch) => {
+  const count = 10;
+
+  indexes(count).map(i => cacheExerciseComment(store, i));
+
+  dispatch(
+    casheSearchResult("ExerciseComment", count, {
+      targetId: id(0)
+    })
+  );
+};
+
+const cacheExerciseVotes = (store: EntityStore, dispatch: Dispatch) => {
+  const count = 10;
+
+  indexes(count).map(i => cacheExerciseVote(store, i));
+
+  dispatch(
+    casheSearchResult("ExerciseVote", count, {
+      voterId: id(0),
+      isUp: true
+    })
+  );
+  dispatch(
+    casheSearchResult("ExerciseVote", count, {
+      voterId: id(0),
+      isUp: false
     })
   );
 };
@@ -220,6 +277,47 @@ const cacheExercise = (store: EntityStore, index: number) => {
   };
 };
 
+const cacheExerciseDiaryEntry = (store: EntityStore, index: number) => {
+  store.ExerciseDiaryEntry[id(index)] = {
+    ...base(id(index)),
+    date: dateToDateString(new Date(Date.now() - index * 24 * 60 * 60 * 1000)),
+    submittedCount: 0,
+    typedCount: 0
+  };
+
+  store.ExerciseCommentSummary[id(index)] = {
+    ...base(id(index)),
+    parentId: id(index),
+    upvoteCount: 0,
+    downvoteCount: 0
+  };
+};
+
+const cacheExerciseComment = (store: EntityStore, index: number) => {
+  store.ExerciseComment[id(index)] = {
+    ...base(id(index)),
+    summaryId: id(index),
+    authorId: id(index),
+    body: `ExerciseComment No.${index}`
+  };
+
+  store.ExerciseCommentSummary[id(index)] = {
+    ...base(id(index)),
+    parentId: id(index),
+    upvoteCount: 0,
+    downvoteCount: 0
+  };
+};
+
+const cacheExerciseVote = (store: EntityStore, index: number) => {
+  store.ExerciseVote[id(index)] = {
+    ...base(id(index)),
+    targetSummaryId: id(index),
+    voterSummaryId: id(index),
+    isUp: true
+  };
+};
+
 const cacheGroup = (store: EntityStore, index: number) => {
   store.Group[id(index)] = {
     ...base(id(index)),
@@ -255,11 +353,11 @@ const cacheUser = (store: EntityStore, index: number) => {
   };
 };
 
-const cacheUserDiaryEntry = (store: EntityStore, i: number) => {
-  store.UserDiaryEntry[id(i)] = {
-    ...base(id(i)),
+const cacheUserDiaryEntry = (store: EntityStore, index: number) => {
+  store.UserDiaryEntry[id(index)] = {
+    ...base(id(index)),
     targetId: id(0),
-    date: dateToDateString(new Date(Date.now() - i * 24 * 60 * 60 * 1000)),
+    date: dateToDateString(new Date(Date.now() - index * 24 * 60 * 60 * 1000)),
     typedCount: 1,
     typeCount: 0,
     submittedCount: 1,
