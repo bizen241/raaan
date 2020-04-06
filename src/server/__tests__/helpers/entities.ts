@@ -17,6 +17,7 @@ import {
   RevisionSummaryEntity,
   UserAccountEntity,
   UserConfigEntity,
+  UserDiaryEntryEntity,
   UserEntity,
   UserSessionEntity,
   UserSummaryEntity
@@ -247,5 +248,29 @@ export const insertUser = async (
     account,
     config,
     user
+  };
+};
+
+export const insertUserDiaryEntry = async (
+  params: {
+    user?: UserEntity;
+    date?: Date;
+  } = {}
+) => {
+  const manager = getManager();
+
+  const user =
+    params.user ||
+    (
+      await insertUser({
+        userPermission: "Write"
+      })
+    ).user;
+
+  const userDiaryEntry = new UserDiaryEntryEntity(user, dateToDateString(params.date || new Date()));
+  await manager.save(userDiaryEntry);
+
+  return {
+    userDiaryEntry
   };
 };
