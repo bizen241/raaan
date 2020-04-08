@@ -1,5 +1,4 @@
-import { Dialog, makeStyles, Slide } from "@material-ui/core";
-import { TransitionProps } from "@material-ui/core/transitions/transition";
+import { Dialog, makeStyles, Slide, SlideProps } from "@material-ui/core";
 import { Clear } from "@material-ui/icons";
 import { TFunction } from "i18next";
 import React from "react";
@@ -57,6 +56,8 @@ const useStyles = makeStyles(theme => ({
 
 export const dialogTimeout = 500;
 
-export const DialogTransition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
-  <Slide direction="up" ref={ref} timeout={{ enter: dialogTimeout, exit: dialogTimeout }} {...props} />
+export const DialogTransition = React.forwardRef<unknown, SlideProps>(({ children, ...props }, ref) => (
+  <Slide direction="up" ref={ref} timeout={{ enter: dialogTimeout, exit: dialogTimeout }} {...props}>
+    {children}
+  </Slide>
 ));
