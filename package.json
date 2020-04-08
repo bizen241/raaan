@@ -80,7 +80,7 @@
     "@babel/preset-react": "7.9.4",
     "@babel/preset-typescript": "7.9.0",
     "@storybook/addon-knobs": "5.3.18",
-    "@storybook/react": "5.3.10",
+    "@storybook/react": "5.3.18",
     "@types/body-parser": "1.17.1",
     "@types/compression": "1.0.1",
     "@types/cookie": "0.3.3",
