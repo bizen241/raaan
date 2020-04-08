@@ -32,7 +32,7 @@
     "db": "typeorm"
   },
   "dependencies": {
-    "@material-ui/core": "4.8.2",
+    "@material-ui/core": "4.9.9",
     "@material-ui/icons": "4.5.1",
     "body-parser": "1.19.0",
     "compression": "1.7.4",
