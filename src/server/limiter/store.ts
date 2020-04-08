@@ -71,4 +71,8 @@ export class RateLimitStore implements Store {
   async resetKey(key: string) {
     await getManager().delete(RateLimitEntity, key);
   }
+
+  async resetAll() {
+    await getManager().clear(RateLimitEntity);
+  }
 }
