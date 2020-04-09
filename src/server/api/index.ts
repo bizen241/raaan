@@ -28,7 +28,7 @@ export const useApi = (env: Env, app: Express) => {
     app.use(
       "/api/docs/ui",
       swagger.serve,
-      swagger.setup(null, {
+      swagger.setup(undefined, {
         swaggerUrl: "/api/docs",
         swaggerOptions: {
           tagsSorter: "alpha"
