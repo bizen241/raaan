@@ -1,5 +1,6 @@
 import { strict as assert } from "assert";
-import uuid from "uuid/v4";
+import { v4 as uuid } from "uuid";
+import { ExerciseEntity } from "../../../../database/entities";
 import {
   close,
   connect,
@@ -11,7 +12,6 @@ import {
   setGetParams,
   setPatchParams
 } from "../../../../__tests__/helpers";
-import { ExerciseEntity } from "../../../../database/entities";
 import { DELETE, GET, PATCH } from "../{id}";
 
 describe("api > exercises > {id}", () => {

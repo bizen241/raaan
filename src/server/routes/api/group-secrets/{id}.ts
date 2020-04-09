@@ -1,5 +1,5 @@
 import createError from "http-errors";
-import uuid from "uuid/v4";
+import { v4 as uuid } from "uuid";
 import { createGetOperation, createPatchOperation } from "../../../api/operation";
 import { GroupSecretEntity } from "../../../database/entities";
 

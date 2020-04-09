@@ -1,5 +1,5 @@
 import { strict as assert } from "assert";
-import uuid from "uuid/v4";
+import { v4 as uuid } from "uuid";
 import { EntityId, UserSession } from "../../../../shared/api/entities";
 import {
   close,

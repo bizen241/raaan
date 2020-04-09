@@ -1,5 +1,5 @@
 import { getManager } from "typeorm";
-import uuid from "uuid/v4";
+import { v4 as uuid } from "uuid";
 import { dateToDateString, ExerciseContent, GroupMemberPermission, Permission } from "../../../shared/api/entities";
 import {
   AppDiaryEntryEntity,

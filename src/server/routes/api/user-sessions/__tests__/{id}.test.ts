@@ -1,5 +1,6 @@
 import { strict as assert } from "assert";
-import uuid from "uuid/v4";
+import { v4 as uuid } from "uuid";
+import { UserSessionEntity } from "../../../../database/entities";
 import {
   close,
   connect,
@@ -9,7 +10,6 @@ import {
   reset,
   setDeleteParams
 } from "../../../../__tests__/helpers";
-import { UserSessionEntity } from "../../../../database/entities";
 import { DELETE } from "../{id}";
 
 describe("api > user-sessions > {id}", () => {

@@ -1,6 +1,6 @@
 import { Express } from "express";
 import session from "express-session";
-import uuid from "uuid/v4";
+import { v4 as uuid } from "uuid";
 import { Env } from "../env";
 import SessionStore from "./store";
 
