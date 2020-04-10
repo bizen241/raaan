@@ -59,7 +59,7 @@ if (!isDevelopment) {
         "/index.html": "./src/server/views/index.hbs"
       },
       navigateFallback: "/index.html",
-      navigateFallbackBlacklist: [/^\/api/, /^\/auth/, /^\/logout/]
+      navigateFallbackDenylist: [/^\/api/, /^\/auth/, /^\/logout/]
     })
   );
 }
