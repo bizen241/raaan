@@ -50,7 +50,7 @@
     "helmet": "3.22.0",
     "history": "4.10.1",
     "http-errors": "1.7.3",
-    "i18next": "19.0.3",
+    "i18next": "19.4.1",
     "i18next-xhr-backend": "3.2.2",
     "kuromoji": "0.1.2",
     "ky": "0.16.1",
