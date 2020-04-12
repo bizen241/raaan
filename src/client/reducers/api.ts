@@ -1,4 +1,4 @@
-import { HTTPError } from "ky";
+import ky from "ky";
 import { Reducer } from "redux";
 import { Actions } from ".";
 import { createEntityTypeToObject, EntityId, EntityType, EntityTypeToEntity } from "../../shared/api/entities";
@@ -52,7 +52,7 @@ const getEntity = <T extends EntityType>(entityType: T, entityId: EntityId<T>): 
       })
     );
   } catch (e) {
-    const code = e instanceof HTTPError ? e.response.status : 500;
+    const code = e instanceof ky.HTTPError ? e.response.status : 500;
 
     dispatch(
       apiSyncActions.update({
@@ -103,7 +103,7 @@ const searchEntity = <T extends EntityType>(
       onSuccess();
     }
   } catch (e) {
-    const code = e instanceof HTTPError ? e.response.status : 500;
+    const code = e instanceof ky.HTTPError ? e.response.status : 500;
 
     dispatch(
       apiSyncActions.update({
@@ -163,7 +163,7 @@ const uploadEntity = <T extends EntityType>(
       onSuccess({ ...createEntityTypeToObject(), ...response });
     }
   } catch (e) {
-    const code = e instanceof HTTPError ? e.response.status : 500;
+    const code = e instanceof ky.HTTPError ? e.response.status : 500;
 
     dispatch(
       apiSyncActions.update({
@@ -216,7 +216,7 @@ const deleteEntity = <T extends EntityType>(
 
     setTimeout(() => dispatch(cacheActions.purge(entityType, entityId)), timeout);
   } catch (e) {
-    const code = e instanceof HTTPError ? e.response.status : 500;
+    const code = e instanceof ky.HTTPError ? e.response.status : 500;
 
     dispatch(
       apiSyncActions.update({
