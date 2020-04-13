@@ -23,7 +23,7 @@ export const createReducer = (history: History) =>
     app: appReducer,
     buffers: buffersReducer,
     cache: cacheReducer,
-    router: connectRouter(history)
+    router: connectRouter(history),
   });
 
 export type Actions = ApiActions | AppActions | BuffersActions | CacheActions | RouterAction;
@@ -32,5 +32,5 @@ export const actions = {
   api: apiActions,
   app: appActions,
   buffers: buffersActions,
-  cache: cacheActions
+  cache: cacheActions,
 };

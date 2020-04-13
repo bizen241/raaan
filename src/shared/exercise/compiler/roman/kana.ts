@@ -11,7 +11,7 @@ const isKatakana = (char: string) => /[\u30a1-\u30f6]/.test(char);
 const isKana = (char: string) => isHiragana(char) || isKatakana(char);
 
 export const convertKatakanaToHiragana = (target: string) =>
-  target.replace(/[\u30a1-\u30f6]/g, matched => String.fromCharCode(matched.charCodeAt(0) - 0x60));
+  target.replace(/[\u30a1-\u30f6]/g, (matched) => String.fromCharCode(matched.charCodeAt(0) - 0x60));
 
 export const compileKana = (source: string): CompiledChunk => {
   const firstChar = source[0];
@@ -25,7 +25,7 @@ export const compileKana = (source: string): CompiledChunk => {
 
   return {
     kana: firstChar,
-    candidates: [lowercase]
+    candidates: [lowercase],
   };
 };
 
@@ -43,15 +43,15 @@ const compileHiragana = (source: string): CompiledChunk => {
       const firstRomans = singleHiraganaToRomans[firstChar];
       const secondRomans = singleHiraganaToRomans[secondChar];
 
-      firstRomans.forEach(firstRoman => {
-        secondRomans.forEach(secondRoman => {
+      firstRomans.forEach((firstRoman) => {
+        secondRomans.forEach((secondRoman) => {
           candidates.push(`${firstRoman}${secondRoman}`);
         });
       });
 
       return {
         kana: pairChar,
-        candidates
+        candidates,
       };
     } else if (isYoon(source)) {
       return compileYoon(source);
@@ -64,7 +64,7 @@ const compileHiragana = (source: string): CompiledChunk => {
 
   return {
     kana: firstChar,
-    candidates: singleHiraganaToRomans[firstChar]
+    candidates: singleHiraganaToRomans[firstChar],
   };
 };
 
@@ -80,15 +80,15 @@ const compileYoon = (source: string): CompiledChunk => {
 
   const candidates = [`${firstRomans[0][0]}y${secondRomans[0][2]}`];
 
-  firstRomans.forEach(firstRoman => {
-    secondRomans.forEach(secondRoman => {
+  firstRomans.forEach((firstRoman) => {
+    secondRomans.forEach((secondRoman) => {
       candidates.push(`${firstRoman}${secondRoman}`);
     });
   });
 
   return {
     kana: `${firstChar}${secondChar}`,
-    candidates
+    candidates,
   };
 };
 
@@ -100,17 +100,17 @@ const compileSokuon = (source: string): CompiledChunk => {
 
   const candidates: string[] = [];
 
-  compiledSecondChar.candidates.forEach(secondRoman => {
+  compiledSecondChar.candidates.forEach((secondRoman) => {
     candidates.push(`${secondRoman[0]}${secondRoman}`);
 
-    firstRomans.forEach(firstRoman => {
+    firstRomans.forEach((firstRoman) => {
       candidates.push(`${firstRoman}${secondRoman}`);
     });
   });
 
   return {
     kana: `${source[0]}${compiledSecondChar.kana}`,
-    candidates
+    candidates,
   };
 };
 
@@ -125,7 +125,7 @@ const compileHatuon = (source: string): CompiledChunk => {
   const canAbbr = !"あいうえお".includes(secondChar) && !"ny".includes(secondRomans[0][0]);
   const canUseM = "mbp".includes(secondRomans[0][0]);
 
-  compiledSecondChar.candidates.forEach(secondRoman => {
+  compiledSecondChar.candidates.forEach((secondRoman) => {
     candidates.push(`nn${secondRoman}`);
 
     if (canAbbr) {
@@ -138,6 +138,6 @@ const compileHatuon = (source: string): CompiledChunk => {
 
   return {
     kana: `${source[0]}${compiledSecondChar.kana}`,
-    candidates
+    candidates,
   };
 };

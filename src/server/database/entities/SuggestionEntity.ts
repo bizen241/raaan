@@ -9,26 +9,22 @@ import { UserEntity } from "./UserEntity";
 export class SuggestionEntity extends BaseExerciseClass<"Suggestion"> {
   readonly type = "Suggestion";
 
-  @OneToOne(
-    () => SuggestionSummaryEntity,
-    suggestionSummary => suggestionSummary.suggestion,
-    {
-      cascade: ["insert"]
-    }
-  )
+  @OneToOne(() => SuggestionSummaryEntity, (suggestionSummary) => suggestionSummary.suggestion, {
+    cascade: ["insert"],
+  })
   summary?: SuggestionSummaryEntity;
   @RelationId((suggestion: SuggestionEntity) => suggestion.summary)
   summaryId!: EntityId<"SuggestionSummary">;
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   author?: UserEntity;
   @RelationId((suggestion: SuggestionEntity) => suggestion.author)
   authorId!: EntityId<"User">;
 
   @ManyToOne(() => RevisionEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   revision?: RevisionEntity;
   @RelationId((suggestion: SuggestionEntity) => suggestion.revision)

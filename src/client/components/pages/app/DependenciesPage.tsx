@@ -14,14 +14,14 @@ export const DependenciesPage = createPage()(
 
     useEffect(() => {
       fetch("/licenses.json")
-        .then(value => value.json())
+        .then((value) => value.json())
         .then(setDependencies);
     }, []);
 
     return (
       <Card padding={false}>
         <Table>
-          {dependencies.map(dependency => (
+          {dependencies.map((dependency) => (
             <TableRow key={dependency.name}>
               <TableCell>
                 <Typography>{dependency.name}</Typography>

@@ -7,7 +7,7 @@ export const TagPage = createPage()(
   React.memo(({ t }) => t("タグの詳細")),
   React.memo(({ name: tagName }) => {
     const { entities: tags } = useSearch("Tag", {
-      name: tagName
+      name: tagName,
     });
     const tag = tags[0];
 

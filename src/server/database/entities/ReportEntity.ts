@@ -9,26 +9,22 @@ import { UserEntity } from "./UserEntity";
 export class ReportEntity extends BaseEntityClass<"Report"> {
   readonly type = "Report";
 
-  @OneToOne(
-    () => ReportSummaryEntity,
-    reportSummary => reportSummary.parent,
-    {
-      cascade: ["insert"]
-    }
-  )
+  @OneToOne(() => ReportSummaryEntity, (reportSummary) => reportSummary.parent, {
+    cascade: ["insert"],
+  })
   summary?: ReportSummaryEntity;
   @RelationId((report: ReportEntity) => report.summary)
   summaryId!: EntityId<"ReportSummary">;
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   reporter?: UserEntity;
   @RelationId((report: ReportEntity) => report.reporter)
   reporterId!: EntityId<"User">;
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   defendant?: UserEntity;
   @RelationId((report: ReportEntity) => report.defendant)

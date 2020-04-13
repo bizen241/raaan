@@ -8,7 +8,7 @@ import {
   insertSession,
   insertUser,
   reset,
-  setDeleteParams
+  setDeleteParams,
 } from "../../../../__tests__/helpers";
 import { DELETE } from "../{id}";
 
@@ -31,10 +31,10 @@ describe("api > user-sessions > {id}", () => {
       const { req, res, next } = await createMocks("Read");
 
       const { user } = await insertUser({
-        userPermission: "Read"
+        userPermission: "Read",
       });
       const { session } = await insertSession({
-        sessionUser: user
+        sessionUser: user,
       });
 
       setDeleteParams(req, session.id);
@@ -47,7 +47,7 @@ describe("api > user-sessions > {id}", () => {
       const { req, res, next, manager, user } = await createMocks("Read");
 
       const { session } = await insertSession({
-        sessionUser: user
+        sessionUser: user,
       });
 
       setDeleteParams(req, session.id);

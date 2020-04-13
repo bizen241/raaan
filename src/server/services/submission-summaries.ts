@@ -17,7 +17,7 @@ export const updateSubmissionSummarySubmitCount = async (params: {
     SubmissionSummaryEntity,
     {
       submitter: currentUser,
-      exercise
+      exercise,
     },
     { relations: ["exercise", "latest"] }
   );

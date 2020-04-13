@@ -13,13 +13,13 @@ export const GroupExercisesDialog = createDialog<{
     const { currentUser } = useCurrentUser();
 
     const { onReload: onReloadGroupExercises } = useSearch("GroupExercise", {
-      exerciseId
+      exerciseId,
     });
 
     return (
       <ToggleGroupExerciseList
         initialParams={{
-          userId: currentUser.id
+          userId: currentUser.id,
         }}
         exerciseId={exerciseId}
         onReload={onReloadGroupExercises}

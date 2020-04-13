@@ -14,7 +14,7 @@ export const Select = <T extends string | number>({
   label,
   defaultValue,
   onChange,
-  options
+  options,
 }: {
   label: React.ReactNode;
   defaultValue: T | undefined;

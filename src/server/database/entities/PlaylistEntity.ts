@@ -10,19 +10,15 @@ export class PlaylistEntity extends BaseEntityClass<"Playlist"> {
   readonly type = "Playlist";
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   author?: UserEntity;
   @RelationId((playlist: PlaylistEntity) => playlist.author)
   authorId!: EntityId<"User">;
 
-  @OneToOne(
-    () => PlaylistSummaryEntity,
-    playlistSummary => playlistSummary.playlist,
-    {
-      cascade: ["insert"]
-    }
-  )
+  @OneToOne(() => PlaylistSummaryEntity, (playlistSummary) => playlistSummary.playlist, {
+    cascade: ["insert"],
+  })
   summary?: PlaylistSummaryEntity;
   @RelationId((playlist: PlaylistEntity) => playlist.summary)
   summaryId!: EntityId<"PlaylistSummary">;

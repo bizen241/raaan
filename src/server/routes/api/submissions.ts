@@ -11,7 +11,7 @@ export const POST = createPostOperation("Submission", "Read", async ({ currentUs
   }
 
   const exercise = await manager.findOne(ExerciseEntity, exerciseId, {
-    relations: ["author", "summary", "latest", "draft"]
+    relations: ["author", "summary", "latest", "draft"],
   });
   if (exercise === undefined) {
     throw createError(400);
@@ -28,14 +28,14 @@ export const POST = createPostOperation("Submission", "Read", async ({ currentUs
     new SubmissionEntity(currentUser, exercise, {
       typeCount,
       time,
-      accuracy
+      accuracy,
     })
   );
 
   const updatedEntities = await updateRelatedEntities({
     manager,
     currentUser,
-    submission
+    submission,
   });
 
   if (contestId !== undefined) {
@@ -43,7 +43,7 @@ export const POST = createPostOperation("Submission", "Read", async ({ currentUs
       manager,
       currentUser,
       submission,
-      contestId
+      contestId,
     });
 
     updatedEntities.push(contestEntry);

@@ -17,7 +17,7 @@ export const UploadGroupDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload("Group", bufferId, undefined, uploadResponse => {
+        actions.api.upload("Group", bufferId, undefined, (uploadResponse) => {
           const groupId = Object.keys(uploadResponse.Group)[0];
 
           dispatch(replace(`/groups/${groupId}`));

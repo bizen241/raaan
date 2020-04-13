@@ -24,7 +24,7 @@ export const HomePage = createPage()(
         <Button icon={<LocalOffer />} label="タグ" to="/tags" />
         <UserDiaryGraph
           params={{
-            targetId: currentUser.id
+            targetId: currentUser.id,
           }}
         />
       </>

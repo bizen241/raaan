@@ -16,7 +16,7 @@ export const connect = async () => {
     password,
     database,
     entities,
-    synchronize: true
+    synchronize: true,
   });
 };
 

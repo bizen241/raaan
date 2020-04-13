@@ -24,15 +24,15 @@ export const UploadUserFollowDialog = createDialog<{
           generateLocalEntityId(),
           {
             followerId: currentUser.id,
-            targetId
+            targetId,
           },
-          uploadResponse => {
+          (uploadResponse) => {
             dispatch(
               actions.cache.add(
                 "UserFollow",
                 {
                   followerId: currentUser.id,
-                  targetId
+                  targetId,
                 },
                 uploadResponse
               )

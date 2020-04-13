@@ -32,7 +32,7 @@ export const POST = createPostOperation("ExerciseVote", "Write", async ({ curren
   const { targetId, isUp = true } = params;
 
   const target = await manager.findOne(ExerciseEntity, targetId, {
-    relations: ["author", "summary", "summary.tags", "draft"]
+    relations: ["author", "summary", "summary.tags", "draft"],
   });
   if (target === undefined) {
     throw createError(404);

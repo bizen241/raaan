@@ -28,15 +28,15 @@ export const UploadPlaylistBookmarkDialog = createDialog<{
           generateLocalEntityId(),
           {
             playlistId,
-            isPrivate: uploadType === "private"
+            isPrivate: uploadType === "private",
           },
-          uploadResponse => {
+          (uploadResponse) => {
             dispatch(
               actions.cache.add(
                 "PlaylistBookmark",
                 {
                   userId: currentUser.id,
-                  playlistId
+                  playlistId,
                 },
                 uploadResponse
               )
@@ -51,11 +51,11 @@ export const UploadPlaylistBookmarkDialog = createDialog<{
     const selectUploadTypeOptions: SelectOptions<UploadType> = {
       public: {
         label: "公開",
-        disabled: isReadOnly
+        disabled: isReadOnly,
       },
       private: {
-        label: "非公開"
-      }
+        label: "非公開",
+      },
     };
 
     return (
@@ -65,7 +65,7 @@ export const UploadPlaylistBookmarkDialog = createDialog<{
             label="設定"
             options={selectUploadTypeOptions}
             defaultValue={uploadType}
-            onChange={value => setUploadType(value)}
+            onChange={(value) => setUploadType(value)}
           />
         </Card>
         <Button icon={<Add />} label="ブックマークに追加する" onClick={() => onUpload()} />

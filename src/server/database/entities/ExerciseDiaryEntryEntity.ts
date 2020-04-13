@@ -8,7 +8,7 @@ export class ExerciseDiaryEntryEntity extends BaseEntityClass<"ExerciseDiaryEntr
   readonly type = "ExerciseDiaryEntry";
 
   @ManyToOne(() => ExerciseEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   exercise?: ExerciseEntity;
   @RelationId((exerciseDiaryEntry: ExerciseDiaryEntryEntity) => exerciseDiaryEntry.exercise)

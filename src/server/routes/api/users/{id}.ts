@@ -4,7 +4,7 @@ import { UserEntity } from "../../../database/entities";
 
 export const GET = createGetOperation("User", "Guest", async ({ manager, id }) => {
   const user = await manager.findOne(UserEntity, id, {
-    relations: ["summary"]
+    relations: ["summary"],
   });
   if (user === undefined) {
     throw createError(404);

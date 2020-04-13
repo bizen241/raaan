@@ -5,6 +5,6 @@ export const errorHandler: express.ErrorRequestHandler = (error: HttpError, _, r
   res.status(error.status || 500);
   res.json({
     status: error.status || 500,
-    message: error.message
+    message: error.message,
   });
 };

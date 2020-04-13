@@ -13,7 +13,7 @@ export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
 
     return {
       hasError: true,
-      error: e
+      error: e,
     };
   }
 

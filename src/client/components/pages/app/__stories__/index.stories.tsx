@@ -4,7 +4,7 @@ import { PageStory } from "../../__stories__/helpers/PageStory";
 
 export default {
   title: "components/pages/app",
-  decorators: [decorator]
+  decorators: [decorator],
 };
 
 export const App = () => {

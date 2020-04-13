@@ -8,7 +8,7 @@ export const UserPlaylistBookmarksPage = createPage<"User">()(
     return (
       <PlaylistBookmarkList
         initialParams={{
-          userId
+          userId,
         }}
       />
     );

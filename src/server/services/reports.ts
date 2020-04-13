@@ -7,14 +7,14 @@ import {
   ReportEntity,
   SynonymEntity,
   TagEntity,
-  UserEntity
+  UserEntity,
 } from "../database/entities";
 
 export const getDefendant = async (manager: EntityManager, targetType: ReportTargetType, targetId: string) => {
   switch (targetType) {
     case "Exercise": {
       const exercise = await manager.findOne(ExerciseEntity, targetId, {
-        relations: ["author"]
+        relations: ["author"],
       });
       if (exercise === undefined || exercise.author === undefined) {
         throw createError(400);
@@ -24,7 +24,7 @@ export const getDefendant = async (manager: EntityManager, targetType: ReportTar
     }
     case "Playlist": {
       const playlist = await manager.findOne(PlaylistEntity, targetId, {
-        relations: ["author"]
+        relations: ["author"],
       });
       if (playlist === undefined || playlist.author === undefined) {
         throw createError(400);
@@ -39,7 +39,7 @@ export const getDefendant = async (manager: EntityManager, targetType: ReportTar
       }
 
       const owner = await manager.findOne(UserEntity, {
-        permission: "Owner"
+        permission: "Owner",
       });
       if (owner === undefined) {
         throw createError(500);
@@ -54,7 +54,7 @@ export const getDefendant = async (manager: EntityManager, targetType: ReportTar
       }
 
       const owner = await manager.findOne(UserEntity, {
-        permission: "Owner"
+        permission: "Owner",
       });
       if (owner === undefined) {
         throw createError(500);

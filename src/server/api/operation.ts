@@ -31,19 +31,19 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
       name: "X-Requested-With",
       schema: {
         type: "string",
-        default: "Fetch"
+        default: "Fetch",
       },
-      required: true
+      required: true,
     },
     {
       in: "header",
       name: "X-Api-Version",
       schema: {
         type: "string",
-        default: apiVersion.toString()
+        default: apiVersion.toString(),
       },
-      required: true
-    }
+      required: true,
+    },
   ];
 
   if (hasId) {
@@ -52,8 +52,8 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
       name: "id",
       schema: {
         type: "string",
-        format: "uuid"
-      }
+        format: "uuid",
+      },
     });
   }
 
@@ -61,7 +61,7 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
     parameters.push({
       in: "query",
       name: "query",
-      schema: entityTypeToParamsSchema[entityType] as OpenAPIV3.SchemaObject
+      schema: entityTypeToParamsSchema[entityType] as OpenAPIV3.SchemaObject,
     });
   }
 
@@ -69,20 +69,20 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
     ? {
         content: {
           "application/json": {
-            schema: entityTypeToParamsSchema[entityType] as OpenAPIV3.SchemaObject
-          }
+            schema: entityTypeToParamsSchema[entityType] as OpenAPIV3.SchemaObject,
+          },
         },
-        required: true
+        required: true,
       }
     : undefined;
 
   const responses: OpenAPIV3.ResponsesObject = {
     200: {
-      $ref: "#/components/responses/Response"
+      $ref: "#/components/responses/Response",
     },
     default: {
-      $ref: "#/components/responses/Error"
-    }
+      $ref: "#/components/responses/Error",
+    },
   };
 
   return {
@@ -93,9 +93,9 @@ export const createOperationDoc = (document: OperationDocument): OpenAPIV3.Opera
     responses,
     security: [
       {
-        [permission]: []
-      }
-    ]
+        [permission]: [],
+      },
+    ],
   };
 };
 
@@ -145,7 +145,7 @@ export const createGetOperation = (entityType: EntityType, permission: Permissio
   operation.apiDoc = createOperationDoc({
     entityType,
     permission,
-    hasId: true
+    hasId: true,
   });
 
   return operation;
@@ -179,7 +179,7 @@ export const createSearchOperation = <T extends EntityType>(
   operation.apiDoc = createOperationDoc({
     entityType,
     permission,
-    hasQuery: true
+    hasQuery: true,
   });
 
   return operation;
@@ -195,7 +195,7 @@ export const createPostOperation = <T extends EntityType>(
   fn: PostOperationFunction<T>
 ) => {
   const operation: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
-    await getManager().transaction(async manager => {
+    await getManager().transaction(async (manager) => {
       const params = req.body;
 
       const entities = await fn({ req, res, currentUser, manager, params });
@@ -207,7 +207,7 @@ export const createPostOperation = <T extends EntityType>(
   operation.apiDoc = createOperationDoc({
     entityType,
     permission,
-    hasBody: true
+    hasBody: true,
   });
 
   return operation;
@@ -223,7 +223,7 @@ export const createPatchOperation = <T extends EntityType>(
   fn: PatchOperationFunction<T>
 ) => {
   const operation: OperationFunction = errorBoundary(async (req, res, _, currentUser) => {
-    await getManager().transaction(async manager => {
+    await getManager().transaction(async (manager) => {
       const id = req.params.id;
       const params = req.body;
 
@@ -237,7 +237,7 @@ export const createPatchOperation = <T extends EntityType>(
     entityType,
     permission,
     hasId: true,
-    hasBody: true
+    hasBody: true,
   });
 
   return operation;
@@ -258,7 +258,7 @@ export const createDeleteOperation = (entityType: EntityType, permission: Permis
   operation.apiDoc = createOperationDoc({
     entityType,
     permission,
-    hasId: true
+    hasId: true,
   });
 
   return operation;

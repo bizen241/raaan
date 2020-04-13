@@ -8,23 +8,19 @@ import { TagEntity } from "./TagEntity";
 export class PlaylistSummaryEntity extends BaseEntityClass<"PlaylistSummary"> {
   readonly type = "PlaylistSummary";
 
-  @OneToOne(
-    () => PlaylistEntity,
-    playlist => playlist.summary,
-    {
-      onDelete: "CASCADE"
-    }
-  )
+  @OneToOne(() => PlaylistEntity, (playlist) => playlist.summary, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn()
   playlist?: PlaylistEntity;
   @RelationId((playlistSummary: PlaylistSummaryEntity) => playlistSummary.playlist)
   playlistId!: EntityId<"Playlist">;
 
   @ManyToMany(() => TagEntity, {
-    cascade: ["insert"]
+    cascade: ["insert"],
   })
   @JoinTable({
-    name: "playlists_tags"
+    name: "playlists_tags",
   })
   tags?: TagEntity[];
 

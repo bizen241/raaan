@@ -12,7 +12,7 @@ export type RubyLine = RubyChunk[];
 export const compileToRubyLine = (sourceLine: string) => {
   const rubyLine: RubyLine = [];
 
-  sourceLine.split(maskTerminator).forEach(chunk => {
+  sourceLine.split(maskTerminator).forEach((chunk) => {
     const [normal, masked] = chunk.split(maskAnchor);
 
     if (normal.length > 0) {
@@ -33,14 +33,14 @@ const compileToRubyChunks = (sourceChunk: string, isMasked: boolean) => {
     .replace(rubyWithAnchorRegExp, annotationWithAnchor)
     .replace(rubyWithoutAnchorRegExp, annotationWithAnchor)
     .split(annotationTerminator)
-    .forEach(chunk => {
+    .forEach((chunk) => {
       const [unrubiedText, rubiedText] = chunk.split(annotationAnchor);
 
       if (unrubiedText.length > 0) {
         rubyLine.push(
-          ...unrubiedText.split("").map(char => ({
+          ...unrubiedText.split("").map((char) => ({
             kanji: char,
-            isMasked
+            isMasked,
           }))
         );
       }
@@ -50,7 +50,7 @@ const compileToRubyChunks = (sourceChunk: string, isMasked: boolean) => {
         rubyLine.push({
           kanji: parentText,
           ruby: rubyText,
-          isMasked
+          isMasked,
         });
       }
     });

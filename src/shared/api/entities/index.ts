@@ -226,7 +226,7 @@ export const createEntityTypeToObject = <T extends EntityTypeToObject>() => {
     UserFollow: {},
     UserMessage: {},
     UserSession: {},
-    UserSummary: {}
+    UserSummary: {},
   };
 
   return entityTypeToObject as T;
@@ -238,10 +238,10 @@ export const mergeEntityTypeToObject = <T extends EntityTypeToObject>(
 ): T => {
   const merged: T = createEntityTypeToObject();
 
-  (Object.keys(merged) as EntityType[]).forEach(entityType => {
+  (Object.keys(merged) as EntityType[]).forEach((entityType) => {
     merged[entityType] = {
       ...target[entityType],
-      ...source[entityType]
+      ...source[entityType],
     };
   });
 

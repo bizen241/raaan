@@ -11,7 +11,7 @@ import { guestUser, guestUserAccount, guestUserConfig } from "./guest";
 export enum AppActionType {
   Ready = "app/ready",
   Network = "app/network",
-  Update = "app/update"
+  Update = "app/update",
 }
 
 const appSyncActions = {
@@ -21,7 +21,7 @@ const appSyncActions = {
     userConfigId: EntityId<"UserConfig">;
   }) => createAction(AppActionType.Ready, params),
   network: (isOnline: boolean) => createAction(AppActionType.Network, isOnline),
-  update: () => createAction(AppActionType.Update)
+  update: () => createAction(AppActionType.Update),
 };
 
 export type AppActions = ActionUnion<typeof appSyncActions>;
@@ -58,7 +58,7 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
       appSyncActions.ready({
         userId: nextUserId,
         userAccountId: nextUserAccountId,
-        userConfigId: nextUserConfigId
+        userConfigId: nextUserConfigId,
       })
     );
   } catch (e) {
@@ -71,7 +71,7 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
         appSyncActions.ready({
           userId: prevUserId,
           userAccountId: prevUserAccountId,
-          userConfigId: prevUserConfigId
+          userConfigId: prevUserConfigId,
         })
       );
     } else {
@@ -79,7 +79,7 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
         appSyncActions.ready({
           userId: guestUser.id,
           userAccountId: guestUserAccount.id,
-          userConfigId: guestUserConfig.id
+          userConfigId: guestUserConfig.id,
         })
       );
     }
@@ -88,7 +88,7 @@ const initialize = (): AsyncAction => async (dispatch, getState) => {
 
 export const appActions = {
   ...appSyncActions,
-  initialize
+  initialize,
 };
 
 export type AppState = {
@@ -106,7 +106,7 @@ export const initialAppState: AppState = {
   userAccountId: guestUserAccount.id,
   isReady: false,
   isOnline: true,
-  hasUpdate: false
+  hasUpdate: false,
 };
 
 export const appReducer: Reducer<AppState, Actions> = (state = initialAppState, action) => {
@@ -120,7 +120,7 @@ export const appReducer: Reducer<AppState, Actions> = (state = initialAppState, 
         userAccountId,
         isReady: true,
         isOnline: navigator.onLine,
-        hasUpdate: false
+        hasUpdate: false,
       };
     }
     case AppActionType.Network: {
@@ -128,13 +128,13 @@ export const appReducer: Reducer<AppState, Actions> = (state = initialAppState, 
 
       return {
         ...state,
-        isOnline
+        isOnline,
       };
     }
     case AppActionType.Update: {
       return {
         ...state,
-        hasUpdate: true
+        hasUpdate: true,
       };
     }
     default:

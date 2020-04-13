@@ -26,7 +26,7 @@ export const ConfirmRevertDialog = createDialog<{
           description: revision.description,
           questions: revision.questions,
           messageSubject: "",
-          revisionId: revision.id
+          revisionId: revision.id,
         })
       );
       dispatch(push(`/exercises/${exercise.draftId}/edit`));

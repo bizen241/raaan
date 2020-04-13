@@ -9,26 +9,22 @@ import { UserEntity } from "./UserEntity";
 export class ExerciseCommentEntity extends BaseEntityClass<"ExerciseComment"> {
   readonly type = "ExerciseComment";
 
-  @OneToOne(
-    () => ExerciseCommentSummaryEntity,
-    exerciseCommentSummary => exerciseCommentSummary.parent,
-    {
-      cascade: true
-    }
-  )
+  @OneToOne(() => ExerciseCommentSummaryEntity, (exerciseCommentSummary) => exerciseCommentSummary.parent, {
+    cascade: true,
+  })
   summary?: ExerciseCommentSummaryEntity;
   @RelationId((exerciseComment: ExerciseCommentEntity) => exerciseComment.summary)
   summaryId!: EntityId<"ExerciseCommentSummary">;
 
   @ManyToOne(() => ExerciseEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   target?: ExerciseEntity;
   @RelationId((exerciseComment: ExerciseCommentEntity) => exerciseComment.target)
   targetId!: EntityId<"Exercise">;
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   author?: UserEntity;
   @RelationId((exerciseComment: ExerciseCommentEntity) => exerciseComment.author)

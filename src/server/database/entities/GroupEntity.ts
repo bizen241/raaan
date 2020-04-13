@@ -10,30 +10,22 @@ export class GroupEntity extends BaseEntityClass<"Group"> {
   readonly type = "Group";
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   owner?: UserEntity;
   @RelationId((group: GroupEntity) => group.owner)
   ownerId!: EntityId<"User">;
 
-  @OneToOne(
-    () => GroupSummaryEntity,
-    groupSummary => groupSummary.group,
-    {
-      cascade: true
-    }
-  )
+  @OneToOne(() => GroupSummaryEntity, (groupSummary) => groupSummary.group, {
+    cascade: true,
+  })
   summary?: GroupSummaryEntity;
   @RelationId((group: GroupEntity) => group.summary)
   summaryId!: EntityId<"GroupSummary">;
 
-  @OneToOne(
-    () => GroupSecretEntity,
-    groupSecret => groupSecret.group,
-    {
-      cascade: true
-    }
-  )
+  @OneToOne(() => GroupSecretEntity, (groupSecret) => groupSecret.group, {
+    cascade: true,
+  })
   secret?: GroupSecretEntity;
   @RelationId((group: GroupEntity) => group.secret)
   secretId!: EntityId<"GroupSecret">;

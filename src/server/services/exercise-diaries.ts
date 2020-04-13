@@ -17,7 +17,7 @@ export const updateExerciseDiaryEntrySubmittedCount = async (params: {
 
   const exerciseDiaryEntry = await manager.findOne(ExerciseDiaryEntryEntity, {
     exerciseId: exercise.id,
-    date: dateString
+    date: dateString,
   });
 
   if (exerciseDiaryEntry === undefined) {

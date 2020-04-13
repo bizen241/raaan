@@ -4,7 +4,7 @@ import { PlaylistItemEntity } from "../../../database/entities";
 
 export const PATCH = createPatchOperation("PlaylistItem", "Read", async ({ currentUser, manager, id, params }) => {
   const playlistItem = await manager.findOne(PlaylistItemEntity, id, {
-    relations: ["playlist", "next", "exercise"]
+    relations: ["playlist", "next", "exercise"],
   });
   if (playlistItem === undefined) {
     throw createError(404);
@@ -36,10 +36,10 @@ export const PATCH = createPatchOperation("PlaylistItem", "Read", async ({ curre
   const oldPrevItem = await manager.findOne(PlaylistItemEntity, {
     where: {
       next: {
-        id: playlistItem.id
-      }
+        id: playlistItem.id,
+      },
     },
-    relations: ["exercise"]
+    relations: ["exercise"],
   });
   if (oldPrevItem !== undefined) {
     oldPrevItem.next = oldNextItem;
@@ -51,10 +51,10 @@ export const PATCH = createPatchOperation("PlaylistItem", "Read", async ({ curre
   const newPrevItem = await manager.findOne(PlaylistItemEntity, {
     where: {
       next: {
-        id: params.nextId
-      }
+        id: params.nextId,
+      },
     },
-    relations: ["exercise"]
+    relations: ["exercise"],
   });
   if (newPrevItem !== undefined) {
     newPrevItem.next = playlistItem;
@@ -67,7 +67,7 @@ export const PATCH = createPatchOperation("PlaylistItem", "Read", async ({ curre
     playlistItem.next = null;
   } else {
     const newNextItem = await manager.findOne(PlaylistItemEntity, params.nextId, {
-      relations: ["exercise"]
+      relations: ["exercise"],
     });
     if (newNextItem === undefined) {
       throw createError(400);
@@ -84,7 +84,7 @@ export const PATCH = createPatchOperation("PlaylistItem", "Read", async ({ curre
 
 export const DELETE = createDeleteOperation("PlaylistItem", "Read", async ({ currentUser, manager, id }) => {
   const playlistItem = await manager.findOne(PlaylistItemEntity, id, {
-    relations: ["playlist", "playlist.author", "next"]
+    relations: ["playlist", "playlist.author", "next"],
   });
   if (playlistItem === undefined) {
     throw createError(404);

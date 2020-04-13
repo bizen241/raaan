@@ -60,7 +60,7 @@ export const PlaylistSummaryViewer = React.memo<{
         <Property label="タグ">
           <Row>
             {playlistSummary.tags.split(/\s/).map(
-              tag =>
+              (tag) =>
                 tag && (
                   <Row key={tag} pr={1}>
                     <Link underline="always" color="textPrimary" component={RouterLink} to={`/tags/${tag}`}>

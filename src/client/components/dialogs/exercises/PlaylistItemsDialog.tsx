@@ -23,11 +23,11 @@ export const PlaylistItemsDialog = createDialog<{
     const [title, setTitle] = useState("新しいプレイリスト");
 
     const { onReload: onReloadPlaylistSummaries } = useSearch("PlaylistSummary", {
-      authorId: currentUser.id
+      authorId: currentUser.id,
     });
     const { onReload: onReloadPlaylistItems } = useSearch("PlaylistItem", {
       authorId: currentUser.id,
-      exerciseId
+      exerciseId,
     });
 
     const onUpdateTitle = useCallback((value: string) => {
@@ -40,15 +40,15 @@ export const PlaylistItemsDialog = createDialog<{
           generateLocalEntityId(),
           {
             title,
-            exerciseId
+            exerciseId,
           },
-          uploadResponse => {
+          (uploadResponse) => {
             dispatch(
               actions.cache.add(
                 "PlaylistItem",
                 {
                   authorId: currentUser.id,
-                  exerciseId
+                  exerciseId,
                 },
                 uploadResponse
               )
@@ -65,7 +65,7 @@ export const PlaylistItemsDialog = createDialog<{
         <Button icon={<Add />} label="新しいプレイリストを作る" onClick={onToggleEditor} />
         <TogglePlaylistItemList
           initialParams={{
-            authorId: currentUser.id
+            authorId: currentUser.id,
           }}
           exerciseId={exerciseId}
           onReload={onReloadPlaylistItems}

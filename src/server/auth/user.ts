@@ -25,19 +25,19 @@ export const saveUser = async (user: UserEntity | undefined, params: AuthParams)
     UserAccountEntity,
     {
       provider,
-      accountId
+      accountId,
     },
     {
-      relations: ["user"]
+      relations: ["user"],
     }
   );
   const sameEmailAccount = await manager.findOne(
     UserAccountEntity,
     {
-      email: params.email
+      email: params.email,
     },
     {
-      relations: ["user"]
+      relations: ["user"],
     }
   );
 
@@ -57,11 +57,11 @@ export const saveUser = async (user: UserEntity | undefined, params: AuthParams)
     UserAccountEntity,
     {
       user: {
-        id: user.id
-      }
+        id: user.id,
+      },
     },
     {
-      relations: ["user"]
+      relations: ["user"],
     }
   );
   if (currentAccount === undefined) {
@@ -104,7 +104,7 @@ const updateAccount = async (
     throw createError(500);
   }
 
-  await getManager().transaction(async manager => {
+  await getManager().transaction(async (manager) => {
     const isEmailUpdated = account.email !== email;
 
     if (isLoggedin) {
@@ -121,7 +121,7 @@ const updateAccount = async (
 
     if (isEmailUpdated) {
       await manager.update(UserSummaryEntity, user.summaryId, {
-        emailHash: ""
+        emailHash: "",
       });
     }
   });

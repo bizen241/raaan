@@ -24,7 +24,7 @@ export const MovePlaylistItemDialog = createDialog<{
           "PlaylistItem",
           playlistItemId,
           {
-            nextId
+            nextId,
           },
           onClose
         )
@@ -40,7 +40,7 @@ export const MovePlaylistItemDialog = createDialog<{
           <Column pb={1}>
             <Table>
               {sortedPlaylistItems.map(
-                playlistItem =>
+                (playlistItem) =>
                   playlistItem && (
                     <PlaylistItemWithButton key={playlistItem.id} playlistItem={playlistItem} onSelect={onSelect} />
                   )

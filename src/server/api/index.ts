@@ -14,14 +14,14 @@ export const useApi = (env: Env, app: Express) => {
     app,
     docsPath: "/docs",
     consumesMiddleware: {
-      "application/json": bodyParser.json()
+      "application/json": bodyParser.json(),
     },
     errorMiddleware: (err, _, res, __) => {
       res.status(err.status).json(err);
     },
     paths: resolve(process.cwd(), "out/server/routes/api"),
     pathsIgnore: /__tests__/,
-    securityHandlers
+    securityHandlers,
   });
 
   if (env.server.host === "localhost") {
@@ -31,8 +31,8 @@ export const useApi = (env: Env, app: Express) => {
       swagger.setup(undefined, {
         swaggerUrl: "/api/docs",
         swaggerOptions: {
-          tagsSorter: "alpha"
-        }
+          tagsSorter: "alpha",
+        },
       })
     );
   }

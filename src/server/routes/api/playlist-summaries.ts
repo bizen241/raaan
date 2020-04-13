@@ -15,7 +15,7 @@ export const GET = createSearchOperation("PlaylistSummary", "Guest", async ({ cu
   }
   if (tags !== undefined) {
     query.innerJoinAndSelect("playlistSummary.tags", "searchTags", "searchTags.name IN (:...tags)", {
-      tags: tags.split(/\s/)
+      tags: tags.split(/\s/),
     });
   }
 

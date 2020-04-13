@@ -7,19 +7,15 @@ import { TagSummaryEntity } from "./TagSummaryEntity";
 export class TagEntity extends BaseEntityClass<"Tag"> {
   readonly type = "Tag";
 
-  @OneToOne(
-    () => TagSummaryEntity,
-    tagSummary => tagSummary.tag,
-    {
-      cascade: ["insert"]
-    }
-  )
+  @OneToOne(() => TagSummaryEntity, (tagSummary) => tagSummary.tag, {
+    cascade: ["insert"],
+  })
   summary?: TagSummaryEntity;
   @RelationId((tag: TagEntity) => tag.summary)
   summaryId!: EntityId<"TagSummary">;
 
   @Column({
-    unique: true
+    unique: true,
   })
   name!: string;
 

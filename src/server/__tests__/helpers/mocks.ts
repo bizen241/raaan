@@ -13,10 +13,10 @@ export const createMocks = async (permission: Permission) => {
   const res = createResponse();
 
   const { account, config, user } = await insertUser({
-    userPermission: permission
+    userPermission: permission,
   });
   const { session } = await insertSession({
-    sessionUser: user
+    sessionUser: user,
   });
 
   req.user = user;
@@ -35,7 +35,7 @@ export const createMocks = async (permission: Permission) => {
     user,
     account,
     config,
-    session
+    session,
   };
 };
 

@@ -8,7 +8,7 @@ export class UserSummaryEntity extends BaseEntityClass<"UserSummary"> {
   readonly type = "UserSummary";
 
   @OneToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   @JoinColumn()
   user?: UserEntity;

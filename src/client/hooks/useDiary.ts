@@ -24,12 +24,12 @@ export const useDiary = <T extends DiaryEntryType>(
   const { entities: fetchedDiaryEntries, count, params, onChange, onReload } = useSearch<T>(entityType, {
     ...condition,
     searchLimit: 100,
-    searchOffset: 0
+    searchOffset: 0,
   });
 
   useEffect(() => {
     const additionalContents: DateToDiaryEntry<EntityTypeToEntity[T]> = {};
-    fetchedDiaryEntries.forEach(diaryEntry => {
+    fetchedDiaryEntries.forEach((diaryEntry) => {
       if (diaryEntry === undefined) {
         return;
       }
@@ -44,13 +44,13 @@ export const useDiary = <T extends DiaryEntryType>(
       Object.keys(diaryEntries).length < count && lastEntity && new Date(lastEntity.date).getTime() > firstDate;
     if (isIncompleted) {
       onChange({
-        searchOffset: ((params.searchOffset || 0) as number) + 100
+        searchOffset: ((params.searchOffset || 0) as number) + 100,
       } as Params<EntityTypeToEntity[T]>);
     }
   }, [fetchedDiaryEntries]);
 
   return {
     diaryEntries,
-    onReload: useCallback(() => onReload(), [])
+    onReload: useCallback(() => onReload(), []),
   };
 };

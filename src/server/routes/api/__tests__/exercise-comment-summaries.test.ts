@@ -7,7 +7,7 @@ import {
   getSearchResult,
   insertExerciseComment,
   reset,
-  setSearchParams
+  setSearchParams,
 } from "../../../__tests__/helpers";
 import { GET } from "../exercise-comment-summaries";
 

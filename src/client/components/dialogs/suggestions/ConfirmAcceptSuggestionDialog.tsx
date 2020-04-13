@@ -26,7 +26,7 @@ export const ConfirmAcceptSuggestionDialog = createDialog<{
           description: suggestion.description,
           questions: suggestion.questions,
           messageSubject: "",
-          suggestionId: suggestion.id
+          suggestionId: suggestion.id,
         })
       );
       dispatch(push(`/exercises/${exercise.draftId}/edit`));

@@ -22,12 +22,12 @@ export const ConfirmObjectionDialog = createDialog<{
 
     const { entities: objectionSummaries } = useSearch("ObjectionSummary", {
       objectorId: currentUser.id,
-      targetId
+      targetId,
     });
     const objectionSummary = objectionSummaries[0];
 
     const { bufferIds: objectionBufferIds, bufferMap: objectionBufferMap } = useBuffers("Objection");
-    const objectionBufferId = objectionBufferIds.find(bufferId => {
+    const objectionBufferId = objectionBufferIds.find((bufferId) => {
       const buffer = objectionBufferMap[bufferId];
 
       return buffer && buffer.targetType === "Exercise" && buffer.targetId === targetId;
@@ -45,7 +45,7 @@ export const ConfirmObjectionDialog = createDialog<{
       dispatch(
         actions.buffers.update("Objection", bufferId, {
           targetType,
-          targetId
+          targetId,
         })
       );
       dispatch(push(`/objections/${bufferId}/edit`));

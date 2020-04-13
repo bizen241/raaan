@@ -6,18 +6,18 @@ export const createApiDoc = (_: Env): OpenAPIV3.Document => ({
   openapi: "3.0.2",
   info: {
     title: "Raan",
-    version: "0.0.0"
+    version: "0.0.0",
   },
   servers: [
     {
-      url: "/api"
-    }
+      url: "/api",
+    },
   ],
   paths: {},
   components: {
     responses,
-    securitySchemes
-  }
+    securitySchemes,
+  },
 });
 
 const responses: OpenAPIV3.ComponentsObject["responses"] = {
@@ -26,19 +26,19 @@ const responses: OpenAPIV3.ComponentsObject["responses"] = {
     content: {
       "application/json": {
         schema: {
-          type: "object"
-        }
-      }
-    }
+          type: "object",
+        },
+      },
+    },
   },
   Error: {
     description: "error",
     content: {
       "application/json": {
         schema: {
-          type: "object"
-        }
-      }
-    }
-  }
+          type: "object",
+        },
+      },
+    },
+  },
 };

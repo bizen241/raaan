@@ -7,13 +7,13 @@ export const getMinMaxTypeCount = (questions: Question[] = []) => {
   let maxTypeCount = 0;
   let minTypeCount = 0;
 
-  compiledQuestions.forEach(question => {
-    question.roman.forEach(romanLine => {
-      romanLine.forEach(romanChunk => {
+  compiledQuestions.forEach((question) => {
+    question.roman.forEach((romanLine) => {
+      romanLine.forEach((romanChunk) => {
         let maxChunkTypeCount = 0;
         let minChunkTypeCount = 0;
 
-        romanChunk.candidates.forEach(candidate => {
+        romanChunk.candidates.forEach((candidate) => {
           const candidateLength = candidate.length;
 
           if (candidateLength > maxChunkTypeCount) {
@@ -32,7 +32,7 @@ export const getMinMaxTypeCount = (questions: Question[] = []) => {
 
   return {
     maxTypeCount,
-    minTypeCount
+    minTypeCount,
   };
 };
 

@@ -21,14 +21,14 @@ export const UploadSuggestionDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload("Suggestion", suggestionId, undefined, uploadResponse => {
+        actions.api.upload("Suggestion", suggestionId, undefined, (uploadResponse) => {
           if (isLocalEntityId(suggestionId)) {
             dispatch(
               actions.cache.add(
                 "SuggestionSummary",
                 {
                   authorId: currentUser.id,
-                  exerciseId
+                  exerciseId,
                 },
                 uploadResponse
               )

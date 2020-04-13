@@ -24,7 +24,7 @@ export const QuestionManager: React.FunctionComponent<{
     totalTime: 0,
     startedAt: 0,
     isSuspended: true,
-    isFinished: false
+    isFinished: false,
   });
   const { typedLines, typos, totalTime, startedAt, isSuspended, isFinished } = state;
 
@@ -37,7 +37,7 @@ export const QuestionManager: React.FunctionComponent<{
       setState({
         ...state,
         isSuspended: true,
-        totalTime: totalTime + (Date.now() - startedAt)
+        totalTime: totalTime + (Date.now() - startedAt),
       });
     };
 
@@ -49,14 +49,14 @@ export const QuestionManager: React.FunctionComponent<{
       onFinish({
         totalTime: startedAt === 0 ? 0 : totalTime + (Date.now() - startedAt),
         typos,
-        typedLines
+        typedLines,
       });
 
       return;
     }
 
     const onKeyDown = (e: KeyboardEvent) => {
-      setState(previousState => getNextState(previousState, question, e));
+      setState((previousState) => getNextState(previousState, question, e));
     };
 
     document.addEventListener("keydown", onKeyDown);
@@ -68,7 +68,7 @@ export const QuestionManager: React.FunctionComponent<{
     onFinish({
       totalTime: 0,
       typos,
-      typedLines
+      typedLines,
     });
 
     return null;
@@ -92,7 +92,7 @@ const getNextState = (
 
   const nextTimeState = {
     startedAt: isSuspended ? Date.now() : startedAt,
-    isSuspended: false
+    isSuspended: false,
   };
 
   const currentLineIndex = typedLines.length - 1;
@@ -107,26 +107,26 @@ const getNextState = (
   const currentCharIndex = typedChunk.length;
 
   const isWaitingEnter =
-    typedLine.length === currentLine.length && currentChunk.candidates.some(candidate => candidate === typedChunk);
+    typedLine.length === currentLine.length && currentChunk.candidates.some((candidate) => candidate === typedChunk);
 
   if (isWaitingEnter) {
     if (key === "Enter") {
       return {
         ...previousState,
         ...nextTimeState,
-        typedLines: [...typedLines, [""]]
+        typedLines: [...typedLines, [""]],
       };
     } else {
       return {
         ...previousState,
-        ...nextTimeState
+        ...nextTimeState,
       };
     }
   }
 
   const nextTypedChunk = `${typedChunk}${key}`;
   const nextCandidates = currentChunk.candidates.filter(
-    candidate => candidate.slice(0, currentCharIndex + 1) === nextTypedChunk
+    (candidate) => candidate.slice(0, currentCharIndex + 1) === nextTypedChunk
   );
   const hasTypo = nextCandidates.length === 0;
 
@@ -134,7 +134,7 @@ const getNextState = (
     return {
       ...previousState,
       ...nextTimeState,
-      hasTypo: true
+      hasTypo: true,
     };
   }
 
@@ -144,12 +144,12 @@ const getNextState = (
         {
           key,
           lineIndex: currentLineIndex,
-          charIndex: currentCharIndex
-        }
+          charIndex: currentCharIndex,
+        },
       ]
     : typos;
 
-  const isCurrentChunkFinished = nextCandidates.some(candidate => candidate.length === nextTypedChunk.length);
+  const isCurrentChunkFinished = nextCandidates.some((candidate) => candidate.length === nextTypedChunk.length);
   const isCurrentLineFinished = isCurrentChunkFinished && currentLine.length === currentChunkIndex + 1;
   const isCurrentQuestionFinished = isCurrentLineFinished && romanLines.length === currentLineIndex + 1;
 
@@ -165,6 +165,6 @@ const getNextState = (
     typedLines: nextTypedLines,
     typos: nextTypos,
     hasTypo: false,
-    isFinished: isCurrentQuestionFinished
+    isFinished: isCurrentQuestionFinished,
   };
 };

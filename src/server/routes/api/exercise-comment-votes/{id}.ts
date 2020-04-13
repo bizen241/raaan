@@ -4,7 +4,7 @@ import { ExerciseCommentVoteEntity } from "../../../database/entities";
 
 export const DELETE = createDeleteOperation("ExerciseCommentVote", "Read", async ({ currentUser, manager, id }) => {
   const exerciseCommentVote = await manager.findOne(ExerciseCommentVoteEntity, id, {
-    relations: ["target", "target.summary"]
+    relations: ["target", "target.summary"],
   });
   if (exerciseCommentVote === undefined) {
     throw createError(404);

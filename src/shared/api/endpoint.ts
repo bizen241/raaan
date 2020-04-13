@@ -52,5 +52,5 @@ export const endpoints: { [P in EntityType]: string } = {
   UserFollow: "user-follows",
   UserMessage: "user-messages",
   UserSession: "user-sessions",
-  UserSummary: "user-summaries"
+  UserSummary: "user-summaries",
 };

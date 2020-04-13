@@ -8,7 +8,7 @@ export const guestUser: User = {
   summaryId: getCacheId(0),
   createdAt: 0,
   updatedAt: 0,
-  fetchedAt: 0
+  fetchedAt: 0,
 };
 export const guestUserAccount: UserAccount = {
   id: getCacheId(0),
@@ -18,12 +18,12 @@ export const guestUserAccount: UserAccount = {
   avatar: "identicon",
   createdAt: 0,
   updatedAt: 0,
-  fetchedAt: 0
+  fetchedAt: 0,
 };
 export const guestUserConfig: UserConfig = {
   id: getCacheId(0),
   settings: {},
   createdAt: 0,
   updatedAt: 0,
-  fetchedAt: 0
+  fetchedAt: 0,
 };

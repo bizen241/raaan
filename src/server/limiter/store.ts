@@ -16,7 +16,7 @@ export class RateLimitStore implements Store {
 
     this.clearExpiredTimeout = setTimeout(async () => {
       await getManager().delete(RateLimitEntity, {
-        expireAt: LessThan(new Date(Date.now() - 60 * 60 * 1000))
+        expireAt: LessThan(new Date(Date.now() - 60 * 60 * 1000)),
       });
 
       this.clearExpired();

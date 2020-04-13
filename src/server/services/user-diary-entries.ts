@@ -14,7 +14,7 @@ export const updateUserDiaryEntrySubmitCount = async (params: {
 
   const userDiaryEntry = await manager.findOne(UserDiaryEntryEntity, {
     userId: currentUser.id,
-    date: dateString
+    date: dateString,
   });
 
   if (userDiaryEntry === undefined) {
@@ -58,7 +58,7 @@ export const updateUserDiaryEntrySubmittedCount = async (params: {
 
   const userDiaryEntry = await manager.findOne(UserDiaryEntryEntity, {
     userId: author.id,
-    date: dateString
+    date: dateString,
   });
 
   if (userDiaryEntry === undefined) {

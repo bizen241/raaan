@@ -2,8 +2,8 @@ import { useMemo } from "react";
 import { useSelector } from "../reducers";
 
 export const useCurrentUser = () => {
-  const currentUser = useSelector(state => state.cache.get.User[state.app.userId]);
-  const currentUserBuffer = useSelector(state => state.buffers.User[state.app.userId]);
+  const currentUser = useSelector((state) => state.cache.get.User[state.app.userId]);
+  const currentUserBuffer = useSelector((state) => state.buffers.User[state.app.userId]);
   if (currentUser === undefined) {
     throw new Error("user is not defined");
   }
@@ -12,9 +12,9 @@ export const useCurrentUser = () => {
     currentUser: useMemo(
       () => ({
         ...currentUser,
-        ...currentUserBuffer
+        ...currentUserBuffer,
       }),
       [currentUser, currentUserBuffer]
-    )
+    ),
   };
 };

@@ -33,7 +33,7 @@ export const CachePage = createPage()(
         />
         <Card padding={false}>
           <Table>
-            {entityTypes.map(entityType => (
+            {entityTypes.map((entityType) => (
               <TableRow key={entityType}>
                 <TableCell>
                   <Typography>{entityType}</Typography>

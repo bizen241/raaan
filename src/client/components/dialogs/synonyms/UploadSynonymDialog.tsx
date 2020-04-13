@@ -25,7 +25,7 @@ export const UploadSynonymDialog = createDialog<{
           generateLocalEntityId(),
           {
             name,
-            target
+            target,
           },
           () => {
             onClose();

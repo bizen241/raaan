@@ -11,7 +11,7 @@ import {
   insertGroupMember,
   reset,
   setPostParams,
-  setSearchParams
+  setSearchParams,
 } from "../../../__tests__/helpers";
 import { GET, POST } from "../contests";
 
@@ -33,14 +33,14 @@ describe("api > contests", () => {
 
       const { group } = await insertGroupMember({
         groupMemberUser: user,
-        groupMemberPermission: "read"
+        groupMemberPermission: "read",
       });
       const { contest } = await insertContest({
-        contestGroup: group
+        contestGroup: group,
       });
 
       setSearchParams<Contest>(req, {
-        groupId: group.id
+        groupId: group.id,
       });
 
       await GET(req, res, next);
@@ -64,7 +64,7 @@ describe("api > contests", () => {
 
       const { group, groupMember } = await insertGroupMember({
         groupMemberUser: user,
-        groupMemberPermission: "write"
+        groupMemberPermission: "write",
       });
       const { exercise } = await insertExercise();
 
@@ -74,7 +74,7 @@ describe("api > contests", () => {
         groupId: group.id,
         exerciseId: exercise.id,
         startAt: Date.now(),
-        finishAt: Date.now() + 1000 * 60 * 60
+        finishAt: Date.now() + 1000 * 60 * 60,
       });
 
       await POST(req, res, next);
@@ -86,7 +86,7 @@ describe("api > contests", () => {
 
       const { group } = await insertGroupMember({
         groupMemberUser: user,
-        groupMemberPermission: "write"
+        groupMemberPermission: "write",
       });
       const { exercise } = await insertExercise();
 
@@ -96,7 +96,7 @@ describe("api > contests", () => {
         groupId: group.id,
         exerciseId: exercise.id,
         startAt: Date.now(),
-        finishAt: Date.now() + 1000 * 60 * 60
+        finishAt: Date.now() + 1000 * 60 * 60,
       });
 
       await POST(req, res, next);
@@ -108,7 +108,7 @@ describe("api > contests", () => {
 
       const { group } = await insertGroupMember({
         groupMemberUser: user,
-        groupMemberPermission: "write"
+        groupMemberPermission: "write",
       });
       const { exercise } = await insertExercise();
 
@@ -116,7 +116,7 @@ describe("api > contests", () => {
         groupId: group.id,
         exerciseId: exercise.id,
         startAt: Date.now(),
-        finishAt: Date.now() + 1000 * 60 * 60
+        finishAt: Date.now() + 1000 * 60 * 60,
       });
 
       await POST(req, res, next);

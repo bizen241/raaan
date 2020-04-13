@@ -9,14 +9,14 @@ export class ContestEntryEntity extends BaseEntityClass<"ContestEntry"> {
   readonly type = "ContestEntry";
 
   @ManyToOne(() => ContestEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   contest?: ContestEntity;
   @RelationId((contestEntry: ContestEntryEntity) => contestEntry.contest)
   contestId!: EntityId<"Contest">;
 
   @ManyToOne(() => GroupMemberEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   participant?: GroupMemberEntity;
   @RelationId((contest: ContestEntryEntity) => contest.participant)

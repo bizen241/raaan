@@ -20,7 +20,7 @@ import {
   UserDiaryEntryEntity,
   UserEntity,
   UserSessionEntity,
-  UserSummaryEntity
+  UserSummaryEntity,
 } from "../../database/entities";
 import { getTags } from "../../services/tags";
 
@@ -35,7 +35,7 @@ export const insertAppDiaryEntry = async (
   await manager.save(appDiaryEntry);
 
   return {
-    appDiaryEntry
+    appDiaryEntry,
   };
 };
 
@@ -58,7 +58,7 @@ export const insertContest = async (
   await manager.save(contest);
 
   return {
-    contest
+    contest,
   };
 };
 
@@ -77,7 +77,7 @@ export const insertExercise = async (
     params.exerciseAuthor ||
     (
       await insertUser({
-        userPermission: "Write"
+        userPermission: "Write",
       })
     ).user;
 
@@ -88,7 +88,7 @@ export const insertExercise = async (
     description: "",
     questions: [],
     references: [],
-    isRandom: true
+    isRandom: true,
   };
 
   const isMerged = params.exerciseIsMerged !== undefined ? params.exerciseIsMerged : true;
@@ -117,7 +117,7 @@ export const insertExercise = async (
 
   return {
     exercise,
-    exerciseSummary
+    exerciseSummary,
   };
 };
 
@@ -140,7 +140,7 @@ export const insertExerciseComment = async (
   return {
     exerciseComment,
     exerciseCommentTarget,
-    exerciseCommentAuthor
+    exerciseCommentAuthor,
   };
 };
 
@@ -160,7 +160,7 @@ export const insertGroup = async (
     params.groupOwner ||
     (
       await insertUser({
-        userPermission: groupOwnerPermission
+        userPermission: groupOwnerPermission,
       })
     ).user;
   const groupName = params.groupName || "";
@@ -171,7 +171,7 @@ export const insertGroup = async (
   await manager.save(group);
 
   return {
-    group
+    group,
   };
 };
 
@@ -195,7 +195,7 @@ export const insertGroupMember = async (
   return {
     group: groupMemberGroup,
     user: groupMemberUser,
-    groupMember
+    groupMember,
   };
 };
 
@@ -216,17 +216,17 @@ export const insertSession = async (
       originalMaxAge: null,
       httpOnly: true,
       sameSite: "strict",
-      secure: false
+      secure: false,
     },
     passport: {
-      user: sessionUser.id
-    }
+      user: sessionUser.id,
+    },
   };
 
   await manager.save(session);
 
   return {
-    session
+    session,
   };
 };
 
@@ -247,7 +247,7 @@ export const insertUser = async (
   return {
     account,
     config,
-    user
+    user,
   };
 };
 
@@ -263,7 +263,7 @@ export const insertUserDiaryEntry = async (
     params.user ||
     (
       await insertUser({
-        userPermission: "Write"
+        userPermission: "Write",
       })
     ).user;
 
@@ -271,6 +271,6 @@ export const insertUserDiaryEntry = async (
   await manager.save(userDiaryEntry);
 
   return {
-    userDiaryEntry
+    userDiaryEntry,
   };
 };

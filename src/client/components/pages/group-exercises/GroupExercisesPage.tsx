@@ -16,7 +16,7 @@ export const GroupExercisesPage = createPage<"Group">()(
         <Button icon={<Add />} label="問題集を追加" onClick={toggleGroupExercisesDialog} />
         <GroupExerciseList
           initialParams={{
-            groupId
+            groupId,
           }}
         />
         <GroupExercisesDialog

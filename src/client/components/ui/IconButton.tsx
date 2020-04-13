@@ -15,10 +15,10 @@ export const IconButton = React.memo<{
     to !== undefined
       ? {
           to,
-          component: Link
+          component: Link,
         }
       : {
-          href
+          href,
         };
 
   return (

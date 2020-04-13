@@ -8,7 +8,7 @@ export const UserReceivedSuggestionsPage = createPage<"User">()(
     return (
       <SuggestionSummaryList
         initialParams={{
-          exerciseAuthorId: userId
+          exerciseAuthorId: userId,
         }}
       />
     );

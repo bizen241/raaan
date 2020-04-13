@@ -8,7 +8,7 @@ export const GroupGroupInvitationsPage = createPage<"Group">()(
     return (
       <GroupGroupInvitationList
         initialParams={{
-          groupId
+          groupId,
         }}
       />
     );

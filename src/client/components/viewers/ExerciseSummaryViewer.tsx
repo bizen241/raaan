@@ -11,7 +11,7 @@ import {
   Refresh,
   ReportProblem,
   SmsFailed,
-  WbIncandescent
+  WbIncandescent,
 } from "@material-ui/icons";
 import React from "react";
 import { EntityId, Exercise } from "../../../shared/api/entities";
@@ -49,7 +49,7 @@ export const ExerciseSummaryViewer = React.memo<{
     "ExerciseVote",
     {
       voterId: currentUser.id,
-      targetId: exerciseId
+      targetId: exerciseId,
     },
     !isGuest && !isAuthor
   );

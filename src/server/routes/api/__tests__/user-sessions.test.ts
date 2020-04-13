@@ -8,7 +8,7 @@ import {
   getSearchResult,
   insertSession,
   reset,
-  setSearchParams
+  setSearchParams,
 } from "../../../__tests__/helpers";
 import { GET } from "../user-sessions";
 
@@ -31,7 +31,7 @@ describe("api > user-sessions", () => {
       const { req, res, next } = await createMocks("Read");
 
       setSearchParams<UserSession>(req, {
-        userId: uuid() as EntityId<"User">
+        userId: uuid() as EntityId<"User">,
       });
 
       await GET(req, res, next);
@@ -42,11 +42,11 @@ describe("api > user-sessions", () => {
       const { req, res, next, user } = await createMocks("Read");
 
       const { session } = await insertSession({
-        sessionUser: user
+        sessionUser: user,
       });
 
       setSearchParams<UserSession>(req, {
-        userId: user.id
+        userId: user.id,
       });
 
       await GET(req, res, next);

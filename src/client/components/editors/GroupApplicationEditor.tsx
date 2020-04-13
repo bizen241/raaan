@@ -23,7 +23,7 @@ export const GroupApplicationEditor = React.memo<{
         generateLocalEntityId(),
         {
           groupId,
-          secret: groupSecretValue
+          secret: groupSecretValue,
         },
         () => {
           dispatch(replace("/user/group-applications"));
@@ -34,7 +34,7 @@ export const GroupApplicationEditor = React.memo<{
 
   const { entities: groupSecrets } = useSearch("GroupSecret", {
     groupId,
-    value: groupSecretValue
+    value: groupSecretValue,
   });
 
   const groupSecret = groupSecrets[0];

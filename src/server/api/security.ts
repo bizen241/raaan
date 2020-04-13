@@ -7,7 +7,7 @@ import { hasPermission } from "../../shared/api/security";
 const securityScheme: OpenAPIV3.ApiKeySecurityScheme = {
   type: "apiKey",
   name: "sid",
-  in: "cookie"
+  in: "cookie",
 };
 
 export const securitySchemes: { [P in Permission]: OpenAPIV3.SecuritySchemeObject } = {
@@ -15,10 +15,10 @@ export const securitySchemes: { [P in Permission]: OpenAPIV3.SecuritySchemeObjec
   Admin: securityScheme,
   Write: securityScheme,
   Read: securityScheme,
-  Guest: securityScheme
+  Guest: securityScheme,
 };
 
-const createSecurityHandler = (permission: Permission): SecurityHandler => req => {
+const createSecurityHandler = (permission: Permission): SecurityHandler => (req) => {
   if (hasPermission(req.user, permission)) {
     return true;
   } else {
@@ -31,5 +31,5 @@ export const securityHandlers: { [P in Permission]: SecurityHandler } = {
   Admin: createSecurityHandler("Admin"),
   Write: createSecurityHandler("Write"),
   Read: createSecurityHandler("Read"),
-  Guest: createSecurityHandler("Guest")
+  Guest: createSecurityHandler("Guest"),
 };

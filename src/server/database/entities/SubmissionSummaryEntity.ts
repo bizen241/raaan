@@ -10,14 +10,14 @@ export class SubmissionSummaryEntity extends BaseEntityClass<"SubmissionSummary"
   readonly type = "SubmissionSummary";
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   submitter?: UserEntity;
   @RelationId((submissionSummary: SubmissionSummaryEntity) => submissionSummary.submitter)
   submitterId!: EntityId<"User">;
 
   @ManyToOne(() => ExerciseEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   exercise?: ExerciseEntity;
   @RelationId((submissionSummary: SubmissionSummaryEntity) => submissionSummary.exercise)
@@ -25,7 +25,7 @@ export class SubmissionSummaryEntity extends BaseEntityClass<"SubmissionSummary"
 
   @OneToOne(() => SubmissionEntity, {
     cascade: true,
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   @JoinColumn()
   latest?: SubmissionEntity;

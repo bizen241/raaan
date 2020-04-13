@@ -54,13 +54,13 @@ const getDiffIcon = (diff: number | undefined) => {
 const useSpeedStyles = makeStyles(() => ({
   icon: {
     fontSize: "3vmax",
-    paddingRight: "8px"
+    paddingRight: "8px",
   },
   speed: {
     fontSize: "4vmax",
-    paddingRight: "8px"
+    paddingRight: "8px",
   },
   unit: {
-    fontSize: "3vmax"
-  }
+    fontSize: "3vmax",
+  },
 }));

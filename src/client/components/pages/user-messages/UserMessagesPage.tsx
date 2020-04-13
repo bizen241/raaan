@@ -15,7 +15,7 @@ export const UserMessagesPage = createPage()(
         <Button icon={<Email />} label="グループへの招待" to="/user/notifications/invitations" />
         <UserMessageList
           initialParams={{
-            userId: currentUser.id
+            userId: currentUser.id,
           }}
         />
       </>

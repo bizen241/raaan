@@ -20,7 +20,7 @@ export const RejectSuggestionDialog = createDialog<{
           "Suggestion",
           suggestionId,
           {
-            state: "rejected"
+            state: "rejected",
           },
           onClose
         )

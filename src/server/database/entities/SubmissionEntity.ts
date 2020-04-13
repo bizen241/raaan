@@ -9,14 +9,14 @@ export class SubmissionEntity extends BaseEntityClass<"Submission"> {
   readonly type = "Submission";
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   submitter?: UserEntity;
   @RelationId((submission: SubmissionEntity) => submission.submitter)
   submitterId!: EntityId<"User">;
 
   @ManyToOne(() => ExerciseEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   exercise?: ExerciseEntity;
   @RelationId((submission: SubmissionEntity) => submission.exercise)

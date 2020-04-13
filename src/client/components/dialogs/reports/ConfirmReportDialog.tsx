@@ -23,12 +23,12 @@ export const ConfirmReportDialog = createDialog<{
     const { entities: reportSummaries } = useSearch("ReportSummary", {
       reporterId: currentUser.id,
       targetType: "Exercise",
-      targetId: targetId
+      targetId: targetId,
     });
     const reportSummary = reportSummaries[0];
 
     const { bufferIds: reportBufferIds, bufferMap: reportBufferMap } = useBuffers("Report");
-    const reportBufferId = reportBufferIds.find(bufferId => {
+    const reportBufferId = reportBufferIds.find((bufferId) => {
       const buffer = reportBufferMap[bufferId];
 
       return buffer && buffer.targetType === "Exercise" && buffer.targetId === targetId;
@@ -46,7 +46,7 @@ export const ConfirmReportDialog = createDialog<{
       dispatch(
         actions.buffers.update("Report", bufferId, {
           targetType,
-          targetId
+          targetId,
         })
       );
       dispatch(push(`/reports/${bufferId}/edit`));

@@ -21,10 +21,10 @@ export const Button = React.memo<{
     to !== undefined
       ? {
           to,
-          component: Link
+          component: Link,
         }
       : {
-          href
+          href,
         };
 
   return (
@@ -43,9 +43,9 @@ export const useButtonStyles = makeStyles(() => ({
   button: {
     paddingTop: "16px",
     paddingBottom: "16px",
-    justifyContent: "left"
+    justifyContent: "left",
   },
   label: {
-    marginLeft: "16px"
-  }
+    marginLeft: "16px",
+  },
 }));

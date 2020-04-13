@@ -19,7 +19,7 @@ export const createDialog = <P extends {}>(_: DialogOptions = {}) => (
   TitleComponent: React.ComponentType<DialogProps & P & { t: TFunction }>,
   BodyComponent: React.ComponentType<DialogProps & P & { t: TFunction }>
 ) =>
-  React.memo<DialogProps & P>(props => {
+  React.memo<DialogProps & P>((props) => {
     const { isOpen, onClose } = props;
 
     const classes = useStyles();
@@ -28,7 +28,7 @@ export const createDialog = <P extends {}>(_: DialogOptions = {}) => (
     return (
       <Dialog
         classes={{
-          paper: classes.dialog
+          paper: classes.dialog,
         }}
         fullScreen
         open={isOpen}
@@ -48,10 +48,10 @@ export const createDialog = <P extends {}>(_: DialogOptions = {}) => (
     );
   });
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   dialog: {
-    backgroundColor: theme.palette.background.default
-  }
+    backgroundColor: theme.palette.background.default,
+  },
 }));
 
 export const dialogTimeout = 500;

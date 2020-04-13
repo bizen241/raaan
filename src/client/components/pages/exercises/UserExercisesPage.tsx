@@ -21,7 +21,7 @@ export const UserExercisesPage = createPage<"User">()(
         {isOwn && <Button icon={<Edit />} label="編集中の問題集" to="/exercises/edit" />}
         <ExerciseSummaryList
           initialParams={{
-            authorId: userId
+            authorId: userId,
           }}
         />
       </>

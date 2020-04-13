@@ -7,7 +7,7 @@ import {
   annotationWithAnchor,
   annotationWithoutAnchor,
   rubyWithAnchorRegExp,
-  rubyWithoutAnchorRegExp
+  rubyWithoutAnchorRegExp,
 } from "../../../../shared/exercise/compiler/ruby";
 import { rubyAnchor, rubySeparator, rubyTerminator } from "../../../../shared/exercise/ruby/characters";
 
@@ -77,6 +77,6 @@ const useHighlightStyles = makeStyles(() => ({
     whiteSpace: "pre-wrap",
     wordWrap: "break-word",
     letterSpacing: "initial",
-    pointerEvents: "none"
-  }
+    pointerEvents: "none",
+  },
 }));

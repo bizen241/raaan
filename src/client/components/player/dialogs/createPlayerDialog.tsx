@@ -6,7 +6,7 @@ import { useToggleState } from "../../../hooks/useToggleState";
 import { DialogHeader, IconButton } from "../../ui";
 
 export const createPlayerDialog = <P extends {}>(Content: React.ComponentType<DialogProps & P>) =>
-  React.memo<DialogProps & P>(props => {
+  React.memo<DialogProps & P>((props) => {
     const classes = useStyles();
 
     const [isConfigPanelOpen, onToggleConfigPanel] = useToggleState();
@@ -14,7 +14,7 @@ export const createPlayerDialog = <P extends {}>(Content: React.ComponentType<Di
     return (
       <Dialog
         classes={{
-          paper: classes.dialog
+          paper: classes.dialog,
         }}
         fullScreen
         open={props.isOpen}
@@ -34,8 +34,8 @@ export const createPlayerDialog = <P extends {}>(Content: React.ComponentType<Di
     );
   });
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   dialog: {
-    backgroundColor: theme.palette.background.default
-  }
+    backgroundColor: theme.palette.background.default,
+  },
 }));

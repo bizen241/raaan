@@ -11,8 +11,8 @@ import { isLocalEntityId } from "../reducers/entity";
 export const useBuffer = <T extends EntityType>(entityType: T, entityId: EntityId<T>) => {
   const dispatch = useDispatch();
 
-  const entityMap = useSelector(state => state.cache.get[entityType]);
-  const bufferMap = useSelector(state => state.buffers[entityType]);
+  const entityMap = useSelector((state) => state.cache.get[entityType]);
+  const bufferMap = useSelector((state) => state.buffers[entityType]);
 
   const entity = getEntity(entityMap, entityId);
   if (entity === undefined && !isLocalEntityId(entityId)) {
@@ -30,11 +30,11 @@ export const useBuffer = <T extends EntityType>(entityType: T, entityId: EntityI
     buffer,
     source: entity,
     params: mergeBuffer(entity, buffer),
-    onChange
+    onChange,
   };
 };
 
 const mergeBuffer = <E extends EntityObject>(source: E | undefined, buffer: Params<E> | undefined = {}): Params<E> => ({
   ...source,
-  ...buffer
+  ...buffer,
 });

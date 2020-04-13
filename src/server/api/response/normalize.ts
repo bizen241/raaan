@@ -55,7 +55,7 @@ import {
   UserFollowEntity,
   UserMessageEntity,
   UserSessionEntity,
-  UserSummaryEntity
+  UserSummaryEntity,
 } from "../../database/entities";
 
 export interface RequestContext {
@@ -65,11 +65,11 @@ export interface RequestContext {
 export const normalizeEntities = (context: RequestContext, entities: Entity[]) => {
   const store: EntityStore = createEntityTypeToObject();
 
-  entities.forEach(entity => {
+  entities.forEach((entity) => {
     normalizeEntity(context, store, entity);
   });
 
-  (Object.keys(store) as EntityType[]).forEach(entityType => {
+  (Object.keys(store) as EntityType[]).forEach((entityType) => {
     const count = Object.values(store[entityType]).length;
 
     if (count === 0) {
@@ -98,7 +98,7 @@ const base = <T extends Entity>({ id, createdAt, updatedAt }: T): BaseEntityObje
   id,
   createdAt: createdAt.getTime(),
   updatedAt: updatedAt.getTime(),
-  fetchedAt: new Date().getTime()
+  fetchedAt: new Date().getTime(),
 });
 
 type Normalizer<E> = (context: RequestContext, store: EntityStore, entity: E) => void;
@@ -110,7 +110,7 @@ const normalizeAppDiaryEntry: Normalizer<AppDiaryEntryEntity> = (_, store, entit
     ...base(entity),
     date,
     submittedCount,
-    typedCount
+    typedCount,
   };
 };
 
@@ -120,7 +120,7 @@ const normalizeAppSummary: Normalizer<AppSummaryEntity> = (_, store, entity) => 
   store.AppSummary[id] = {
     ...base(entity),
     submittedCount,
-    typedCount
+    typedCount,
   };
 };
 
@@ -132,7 +132,7 @@ const normalizeContest: Normalizer<ContestEntity> = (_, store, entity) => {
     exerciseId,
     title,
     startAt: startAt.getTime(),
-    finishAt: finishAt.getTime()
+    finishAt: finishAt.getTime(),
   };
 };
 
@@ -151,7 +151,7 @@ const normalizeContestEntry: Normalizer<ContestEntryEntity> = (context, store, e
     userSummaryId: participant.user.summaryId,
     typeCount,
     time,
-    accuracy
+    accuracy,
   };
 
   normalizeEntity(context, store, contest);
@@ -170,7 +170,7 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) =
     draftId,
     isDraft,
     isLocked,
-    isPrivate
+    isPrivate,
   } = entity;
   if (summary === undefined) {
     throw createError(500, "exercise.summary is not defined");
@@ -200,7 +200,7 @@ const normalizeExercise: Normalizer<ExerciseEntity> = (context, store, entity) =
     isDraft,
     isRandom,
     isLocked,
-    isPrivate
+    isPrivate,
   };
 
   summary.exercise = entity;
@@ -216,7 +216,7 @@ const normalizeExerciseComment: Normalizer<ExerciseCommentEntity> = (context, st
     ...base(entity),
     summaryId,
     authorId,
-    body
+    body,
   };
 
   normalizeEntity(context, store, summary);
@@ -229,7 +229,7 @@ const normalizeExerciseCommentSummary: Normalizer<ExerciseCommentSummaryEntity> 
     ...base(entity),
     parentId,
     upvoteCount,
-    downvoteCount
+    downvoteCount,
   };
 };
 
@@ -246,7 +246,7 @@ const normalizeExerciseCommentVote: Normalizer<ExerciseCommentVoteEntity> = (_, 
     ...base(entity),
     targetSummaryId: target.summaryId,
     voterSummaryId: voter.summaryId,
-    isUp
+    isUp,
   };
 };
 
@@ -257,7 +257,7 @@ const normalizeExerciseDiaryEntry: Normalizer<ExerciseDiaryEntryEntity> = (_, st
     ...base(entity),
     date,
     submittedCount,
-    typedCount
+    typedCount,
   };
 };
 
@@ -274,7 +274,7 @@ const normalizeExerciseDraft: Normalizer<ExerciseDraftEntity> = (_, store, entit
     questions,
     references,
     isRandom,
-    isMerged
+    isMerged,
   };
 };
 
@@ -287,7 +287,7 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (_, store, e
     upvoteCount,
     downvoteCount,
     commentCount,
-    submittedCount: submitCount
+    submittedCount: submitCount,
   } = entity;
   if (exercise === undefined) {
     throw createError(500, "exerciseSummary.exercise is not defined");
@@ -313,7 +313,7 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (_, store, e
     exerciseId,
     lang,
     title,
-    tags: tags.map(tag => tag.name).join(" "),
+    tags: tags.map((tag) => tag.name).join(" "),
     description,
     upvoteCount,
     downvoteCount,
@@ -322,7 +322,7 @@ const normalizeExerciseSummary: Normalizer<ExerciseSummaryEntity> = (_, store, e
     isDraft,
     isEditing: !draft.isMerged,
     isPrivate,
-    isLocked
+    isLocked,
   };
 };
 
@@ -339,7 +339,7 @@ const normalizeExerciseVote: Normalizer<ExerciseVoteEntity> = (_, store, entity)
     ...base(entity),
     targetSummaryId: target.summaryId,
     voterSummaryId: voter.summaryId,
-    isUp
+    isUp,
   };
 };
 
@@ -351,7 +351,7 @@ const normalizeGroup: Normalizer<GroupEntity> = (_, store, entity) => {
     summaryId,
     secretId,
     name,
-    description
+    description,
   };
 };
 
@@ -366,7 +366,7 @@ const normalizeGroupApplication: Normalizer<GroupApplicationEntity> = (context, 
     groupId,
     groupSummaryId: group.summaryId,
     applicantId,
-    applicantSummaryId: applicant.summaryId
+    applicantSummaryId: applicant.summaryId,
   };
 
   if (group.summary !== undefined && applicant.summary !== undefined) {
@@ -388,7 +388,7 @@ const normalizeGroupExercise: Normalizer<GroupExerciseEntity> = (_, store, entit
     ...base(entity),
     groupId,
     exerciseId,
-    exerciseSummaryId: exercise.summaryId
+    exerciseSummaryId: exercise.summaryId,
   };
 };
 
@@ -402,7 +402,7 @@ const normalizeGroupInvitation: Normalizer<GroupInvitationEntity> = (context, st
     ...base(entity),
     groupId,
     groupSummaryId: group.summaryId,
-    targetSummaryId: target.summaryId
+    targetSummaryId: target.summaryId,
   };
 
   if (group.summary !== undefined) {
@@ -424,7 +424,7 @@ const normalizeGroupMember: Normalizer<GroupMemberEntity> = (context, store, ent
     groupSummaryId: group.summaryId,
     userId,
     userSummaryId: user.summaryId,
-    permission
+    permission,
   };
 
   if (group.summary !== undefined) {
@@ -445,7 +445,7 @@ const normalizeGroupSecret: Normalizer<GroupSecretEntity> = (_, store, entity) =
     groupId,
     groupSummaryId: group.summaryId,
     value,
-    expireAt: expireAt.getTime()
+    expireAt: expireAt.getTime(),
   };
 };
 
@@ -461,7 +461,7 @@ const normalizeGroupSummary: Normalizer<GroupSummaryEntity> = (_, store, entity)
     ...base(entity),
     groupId,
     name,
-    description
+    description,
   };
 };
 
@@ -478,7 +478,7 @@ const normalizeObjection: Normalizer<ObjectionEntity> = (context, store, entity)
     targetType,
     targetId,
     description,
-    state
+    state,
   };
 
   summary.parent = entity;
@@ -498,7 +498,7 @@ const normalizeObjectionComment: Normalizer<ObjectionCommentEntity> = (context, 
   store.ObjectionComment[id] = {
     ...base(entity),
     authorId,
-    body
+    body,
   };
 
   normalizeEntity(context, store, author.summary);
@@ -516,7 +516,7 @@ const normalizeObjectionSummary: Normalizer<ObjectionSummaryEntity> = (_, store,
     ...base(entity),
     parentId,
     state,
-    commentCount
+    commentCount,
   };
 };
 
@@ -535,7 +535,7 @@ const normalizePlaylist: Normalizer<PlaylistEntity> = (context, store, entity) =
     description,
     orderBy,
     isPrivate,
-    isLocked
+    isLocked,
   };
 
   summary.playlist = entity;
@@ -549,7 +549,7 @@ const normalizePlaylistBookmark: Normalizer<PlaylistBookmarkEntity> = (context, 
   store.PlaylistBookmark[id] = {
     ...base(entity),
     playlistId,
-    isPrivate
+    isPrivate,
   };
 
   if (playlist !== undefined && playlist.summary !== undefined) {
@@ -566,7 +566,7 @@ const normalizePlaylistDiaryEntry: Normalizer<PlaylistDiaryEntryEntity> = (_, st
     ...base(entity),
     date,
     submittedCount,
-    typedCount
+    typedCount,
   };
 };
 
@@ -582,7 +582,7 @@ const normalizePlaylistItem: Normalizer<PlaylistItemEntity> = (context, store, e
     exerciseSummaryId: exercise != null ? exercise.summaryId : undefined,
     playlistId,
     nextId,
-    memo
+    memo,
   };
 
   if (exercise != null && exercise.summary !== undefined) {
@@ -609,12 +609,12 @@ const normalizePlaylistSummary: Normalizer<PlaylistSummaryEntity> = (_, store, e
     authorName: author.name,
     playlistId,
     title,
-    tags: tags.map(tag => tag.name).join(" "),
+    tags: tags.map((tag) => tag.name).join(" "),
     description,
     itemCount,
     submittedCount,
     typedCount,
-    isPrivate
+    isPrivate,
   };
 };
 
@@ -632,7 +632,7 @@ const normalizeReport: Normalizer<ReportEntity> = (context, store, entity) => {
     targetId,
     reason,
     description,
-    state
+    state,
   };
 
   summary.parent = entity;
@@ -652,7 +652,7 @@ const normalizeReportComment: Normalizer<ReportCommentEntity> = (context, store,
   store.ReportComment[id] = {
     ...base(entity),
     authorId,
-    body
+    body,
   };
 
   normalizeEntity(context, store, author.summary);
@@ -671,7 +671,7 @@ const normalizeReportSummary: Normalizer<ReportSummaryEntity> = (_, store, entit
     parentId,
     reason,
     state,
-    commentCount
+    commentCount,
   };
 };
 
@@ -688,7 +688,7 @@ const normalizeRevision: Normalizer<RevisionEntity> = (_, store, entity) => {
     description,
     questions,
     references,
-    isRandom
+    isRandom,
   } = entity;
 
   store.Revision[id] = {
@@ -703,7 +703,7 @@ const normalizeRevision: Normalizer<RevisionEntity> = (_, store, entity) => {
     description,
     questions,
     references,
-    isRandom
+    isRandom,
   };
 };
 
@@ -716,7 +716,7 @@ const normalizeRevisionSummary: Normalizer<RevisionSummaryEntity> = (_, store, e
   store.RevisionSummary[id] = {
     ...base(entity),
     revisionId,
-    messageSubject: revision.messageSubject
+    messageSubject: revision.messageSubject,
   };
 };
 
@@ -729,7 +729,7 @@ const normalizeSubmission: Normalizer<SubmissionEntity> = (_, store, entity) => 
     exerciseId,
     typeCount,
     time,
-    accuracy
+    accuracy,
   };
 };
 
@@ -750,12 +750,12 @@ const normalizeSubmissionSummary: Normalizer<SubmissionSummaryEntity> = (context
     latest: {
       typeCount: latest.typeCount,
       time: latest.time,
-      accuracy: latest.accuracy
+      accuracy: latest.accuracy,
     },
     submitCount,
     typeCount,
     isRepeating,
-    remindAt: remindAt.getTime()
+    remindAt: remindAt.getTime(),
   };
 
   if (exercise.summary !== undefined) {
@@ -782,7 +782,7 @@ const normalizeSuggestion: Normalizer<SuggestionEntity> = (context, store, entit
     description,
     questions,
     references,
-    isRandom
+    isRandom,
   } = entity;
   if (summary === undefined) {
     throw createError(500, "suggestion.summary is not defined");
@@ -806,7 +806,7 @@ const normalizeSuggestion: Normalizer<SuggestionEntity> = (context, store, entit
     description,
     questions,
     references,
-    isRandom
+    isRandom,
   };
 
   summary.suggestion = entity;
@@ -821,7 +821,7 @@ const normalizeSuggestionComment: Normalizer<SuggestionCommentEntity> = (context
     ...base(entity),
     summaryId,
     authorId,
-    body
+    body,
   };
 
   normalizeEntity(context, store, summary);
@@ -834,7 +834,7 @@ const normalizeSuggestionCommentSummary: Normalizer<SuggestionCommentSummaryEnti
     ...base(entity),
     parentId,
     upvoteCount,
-    downvoteCount
+    downvoteCount,
   };
 };
 
@@ -851,7 +851,7 @@ const normalizeSuggestionCommentVote: Normalizer<SuggestionCommentVoteEntity> = 
     ...base(entity),
     targetSummaryId: target.summaryId,
     voterSummaryId: voter.summaryId,
-    isUp
+    isUp,
   };
 };
 
@@ -868,7 +868,7 @@ const normalizeSuggestionSummary: Normalizer<SuggestionSummaryEntity> = (_, stor
     suggestionId,
     messageSubject,
     state,
-    commentCount
+    commentCount,
   };
 };
 
@@ -878,7 +878,7 @@ const normalizeSynonym: Normalizer<SynonymEntity> = (_, store, entity) => {
   store.Synonym[id] = {
     ...base(entity),
     name,
-    target
+    target,
   };
 };
 
@@ -889,7 +889,7 @@ const normalizeTag: Normalizer<TagEntity> = (_, store, entity) => {
     ...base(entity),
     summaryId,
     name,
-    description
+    description,
   };
 };
 
@@ -900,7 +900,7 @@ const normalizeTagDiaryEntry: Normalizer<TagDiaryEntryEntity> = (_, store, entit
     ...base(entity),
     date,
     submittedCount,
-    typedCount
+    typedCount,
   };
 };
 
@@ -914,7 +914,7 @@ const normalizeTagFollow: Normalizer<TagFollowEntity> = (context, store, entity)
     ...base(entity),
     followerSummaryId: follower.summaryId,
     targetSummaryId: target.summaryId,
-    checkedAt: checkedAt.getTime()
+    checkedAt: checkedAt.getTime(),
   };
 
   normalizeEntity(context, store, follower.summary);
@@ -933,7 +933,7 @@ const normalizeTagSummary: Normalizer<TagSummaryEntity> = (_, store, entity) => 
     name: tag.name,
     description: tag.description.slice(0, 100),
     exerciseCount,
-    playlistCount
+    playlistCount,
   };
 };
 
@@ -947,7 +947,7 @@ const normalizeUser: Normalizer<UserEntity> = (context, store, entity) => {
     ...base(entity),
     name,
     permission,
-    summaryId
+    summaryId,
   };
 
   summary.user = entity;
@@ -965,7 +965,7 @@ const normalizeUserAccount: Normalizer<UserAccountEntity> = (context, store, ent
     provider,
     accountId,
     email,
-    avatar
+    avatar,
   };
 
   normalizeEntity(context, store, user);
@@ -976,7 +976,7 @@ const normalizeUserConfig: Normalizer<UserConfigEntity> = (_, store, entity) => 
 
   store.UserConfig[id] = {
     ...base(entity),
-    settings
+    settings,
   };
 };
 
@@ -991,7 +991,7 @@ const normalizeUserDiaryEntry: Normalizer<UserDiaryEntryEntity> = (_, store, ent
     submittedCount,
     typedCount,
     createCount,
-    editCount
+    editCount,
   };
 };
 
@@ -1005,7 +1005,7 @@ const normalizeUserFollow: Normalizer<UserFollowEntity> = (context, store, entit
     ...base(entity),
     followerSummaryId: follower.summaryId,
     targetSummaryId: target.summaryId,
-    checkedAt: checkedAt.getTime()
+    checkedAt: checkedAt.getTime(),
   };
 
   if (follower.summary !== undefined && target.summary !== undefined) {
@@ -1022,7 +1022,7 @@ const normalizeUserMessage: Normalizer<UserMessageEntity> = (_, store, entity) =
 
   store.UserMessage[id] = {
     ...base(entity),
-    body
+    body,
   };
 };
 
@@ -1037,7 +1037,7 @@ const normalizeUserSession: Normalizer<UserSessionEntity> = (context, store, ent
     deviceName,
     os,
     browser,
-    isCurrent: entity.sessionId === context.sessionId
+    isCurrent: entity.sessionId === context.sessionId,
   };
 
   normalizeEntity(context, store, user);
@@ -1055,7 +1055,7 @@ const normalizeUserSummary: Normalizer<UserSummaryEntity> = (_, store, entity) =
     name: user.name,
     submitCount,
     typeCount,
-    emailHash
+    emailHash,
   };
 };
 
@@ -1111,5 +1111,5 @@ const normalizers: { [T in EntityType]: Normalizer<any> } = {
   UserFollow: normalizeUserFollow,
   UserMessage: normalizeUserMessage,
   UserSession: normalizeUserSession,
-  UserSummary: normalizeUserSummary
+  UserSummary: normalizeUserSummary,
 };

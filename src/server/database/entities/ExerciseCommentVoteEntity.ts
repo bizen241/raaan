@@ -9,14 +9,14 @@ export class ExerciseCommentVoteEntity extends BaseEntityClass<"ExerciseCommentV
   readonly type = "ExerciseCommentVote";
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   voter?: UserEntity;
   @RelationId((exerciseCommentVote: ExerciseCommentVoteEntity) => exerciseCommentVote.voter)
   voterId!: EntityId<"User">;
 
   @ManyToOne(() => ExerciseCommentEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   target?: ExerciseCommentEntity;
   @RelationId((exerciseCommentVote: ExerciseCommentVoteEntity) => exerciseCommentVote.target)

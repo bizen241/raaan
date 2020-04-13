@@ -9,7 +9,7 @@ export const createGitHubStrategy = (clientId: string, clientSecret: string) => 
       callbackURL: "/auth/github/callback",
       passReqToCallback: true,
       state: true,
-      scope: "user:email"
+      scope: "user:email",
     },
     createVerifier("github")
   );

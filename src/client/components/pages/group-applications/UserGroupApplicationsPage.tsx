@@ -8,7 +8,7 @@ export const UserGroupApplicationsPage = createPage<"User">()(
     return (
       <UserGroupApplicationList
         initialParams={{
-          applicantId: userId
+          applicantId: userId,
         }}
       />
     );

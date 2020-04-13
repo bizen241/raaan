@@ -7,7 +7,7 @@ import { guestUserConfig } from "./guest";
 
 export enum BuffersActionType {
   Update = "buffers/update",
-  Delete = "buffers/delete"
+  Delete = "buffers/delete",
 }
 
 export const buffersActions = {
@@ -15,13 +15,13 @@ export const buffersActions = {
     createAction(BuffersActionType.Update, {
       entityType,
       entityId,
-      params
+      params,
     }),
   delete: <T extends EntityType>(entityType: T | undefined, entityId: EntityId<T> | undefined) =>
     createAction(BuffersActionType.Delete, {
       entityType,
-      entityId
-    })
+      entityId,
+    }),
 };
 
 export type BuffersActions = ActionUnion<typeof buffersActions>;
@@ -40,9 +40,9 @@ export const initialBuffersState: BuffersState = {
   UserConfig: {
     [guestUserConfig.id]: {
       createdAt: Date.now(),
-      updatedAt: Date.now()
-    }
-  }
+      updatedAt: Date.now(),
+    },
+  },
 };
 
 export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBuffersState, action) => {
@@ -51,7 +51,7 @@ export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBu
       const { entityType, entityId, params } = action.payload;
       const buffer = state[entityType][entityId] || {
         createdAt: Date.now(),
-        updatedAt: Date.now()
+        updatedAt: Date.now(),
       };
 
       return {
@@ -60,9 +60,9 @@ export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBu
           ...state[entityType],
           [entityId]: {
             ...buffer,
-            ...params
-          }
-        }
+            ...params,
+          },
+        },
       };
     }
     case BuffersActionType.Delete: {
@@ -74,7 +74,7 @@ export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBu
       if (entityId === undefined) {
         return {
           ...state,
-          [entityType]: {}
+          [entityType]: {},
         };
       }
 
@@ -82,7 +82,7 @@ export const buffersReducer: Reducer<BuffersState, Actions> = (state = initialBu
 
       return {
         ...state,
-        [entityType]: buffers
+        [entityType]: buffers,
       };
     }
     default:

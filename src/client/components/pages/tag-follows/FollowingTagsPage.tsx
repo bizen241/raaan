@@ -8,7 +8,7 @@ export const FollowingTagsPage = createPage<"User">()(
     return (
       <TagFollowList
         initialParams={{
-          followerId: userId
+          followerId: userId,
         }}
       />
     );

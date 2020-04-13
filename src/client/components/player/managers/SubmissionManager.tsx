@@ -20,7 +20,7 @@ export const SubmissionManager = React.memo<{
 
   const { entities: submissionSummaries } = useSearch("SubmissionSummary", {
     submitterId: currentUser.id,
-    exerciseId: exercise.id
+    exerciseId: exercise.id,
   });
   const submissionSummary = submissionSummaries[0];
 
@@ -36,17 +36,17 @@ export const SubmissionManager = React.memo<{
         actions.buffers.update("Submission", submissionId, {
           exerciseId: exercise.id,
           contestId,
-          ...summarizeResults(results)
+          ...summarizeResults(results),
         })
       );
       dispatch(
-        actions.api.upload("Submission", submissionId, undefined, uploadResponse => {
+        actions.api.upload("Submission", submissionId, undefined, (uploadResponse) => {
           dispatch(
             actions.cache.add(
               "SubmissionSummary",
               {
                 submitterId: currentUser.id,
-                exerciseId: exercise.id
+                exerciseId: exercise.id,
               },
               uploadResponse
             )

@@ -9,26 +9,22 @@ import { UserEntity } from "./UserEntity";
 export class SuggestionCommentEntity extends BaseEntityClass<"SuggestionComment"> {
   readonly type = "SuggestionComment";
 
-  @OneToOne(
-    () => SuggestionCommentSummaryEntity,
-    suggestionCommentSummary => suggestionCommentSummary.parent,
-    {
-      cascade: true
-    }
-  )
+  @OneToOne(() => SuggestionCommentSummaryEntity, (suggestionCommentSummary) => suggestionCommentSummary.parent, {
+    cascade: true,
+  })
   summary?: SuggestionCommentSummaryEntity;
   @RelationId((suggestionComment: SuggestionCommentEntity) => suggestionComment.summary)
   summaryId!: EntityId<"SuggestionCommentSummary">;
 
   @ManyToOne(() => SuggestionEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   target?: SuggestionEntity;
   @RelationId((suggestionComment: SuggestionCommentEntity) => suggestionComment.target)
   targetId!: EntityId<"Exercise">;
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   author?: UserEntity;
   @RelationId((suggestionComment: SuggestionCommentEntity) => suggestionComment.author)

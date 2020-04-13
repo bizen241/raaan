@@ -6,7 +6,7 @@ import { getTags } from "../../../services/tags";
 
 export const GET = createGetOperation("Playlist", "Guest", async ({ currentUser, manager, id }) => {
   const playlist = await manager.findOne(PlaylistEntity, id, {
-    relations: ["summary", "author"]
+    relations: ["summary", "author"],
   });
   if (playlist === undefined) {
     throw createError(404);
@@ -22,7 +22,7 @@ export const GET = createGetOperation("Playlist", "Guest", async ({ currentUser,
 
 export const PATCH = createPatchOperation("Playlist", "Read", async ({ currentUser, manager, id, params }) => {
   const playlist = await manager.findOne(PlaylistEntity, id, {
-    relations: ["author", "summary", "summary.tags"]
+    relations: ["author", "summary", "summary.tags"],
   });
   if (playlist === undefined) {
     throw createError(404);

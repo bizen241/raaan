@@ -9,23 +9,19 @@ import { TagEntity } from "./TagEntity";
 export class ExerciseSummaryEntity extends BaseEntityClass<"ExerciseSummary"> {
   readonly type = "ExerciseSummary";
 
-  @OneToOne(
-    () => ExerciseEntity,
-    exercise => exercise.summary,
-    {
-      onDelete: "CASCADE"
-    }
-  )
+  @OneToOne(() => ExerciseEntity, (exercise) => exercise.summary, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn()
   exercise?: ExerciseEntity;
   @RelationId((exerciseSummary: ExerciseSummaryEntity) => exerciseSummary.exercise)
   exerciseId!: EntityId<"Exercise">;
 
   @ManyToMany(() => TagEntity, {
-    cascade: ["insert"]
+    cascade: ["insert"],
   })
   @JoinTable({
-    name: "exercises_tags"
+    name: "exercises_tags",
   })
   tags?: TagEntity[];
 

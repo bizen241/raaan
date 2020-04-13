@@ -12,7 +12,7 @@ export const QuestionsEditor = React.memo<{
   const [questions, updateQuestions] = useState(props.questions);
 
   const onInsertQuestion = useCallback((index: number) => {
-    updateQuestions(previousQuestions => {
+    updateQuestions((previousQuestions) => {
       const id = previousQuestions.reduce((maxId, question) => Math.max(question.id, maxId), 0) + 1;
 
       const nextQuestions: Question[] = [
@@ -22,9 +22,9 @@ export const QuestionsEditor = React.memo<{
           lang: "ja",
           format: "plain",
           value: "",
-          comment: ""
+          comment: "",
         },
-        ...previousQuestions.slice(index + 1)
+        ...previousQuestions.slice(index + 1),
       ];
 
       onChange(nextQuestions);
@@ -32,14 +32,14 @@ export const QuestionsEditor = React.memo<{
     });
   }, []);
   const onUpdateQuestion = useCallback((index: number, updatedProps: Partial<Question>) => {
-    updateQuestions(previousQuestions => {
+    updateQuestions((previousQuestions) => {
       const nextQuestions = [
         ...previousQuestions.slice(0, index),
         {
           ...previousQuestions[index],
-          ...updatedProps
+          ...updatedProps,
         } as Question,
-        ...previousQuestions.slice(index + 1)
+        ...previousQuestions.slice(index + 1),
       ];
 
       onChange(nextQuestions);
@@ -47,7 +47,7 @@ export const QuestionsEditor = React.memo<{
     });
   }, []);
   const onDeleteQuestion = useCallback((index: number) => {
-    updateQuestions(previousQuestions => {
+    updateQuestions((previousQuestions) => {
       const nextQuestions = [...previousQuestions.slice(0, index), ...previousQuestions.slice(index + 1)];
 
       onChange(nextQuestions);

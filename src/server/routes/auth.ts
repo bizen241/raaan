@@ -17,7 +17,7 @@ authRouter.get("/:provider", async (req, res, next) => {
   }
 
   const session = await getManager().findOne(UserSessionEntity, {
-    sessionId: req.sessionID
+    sessionId: req.sessionID,
   });
 
   if (session === undefined) {
@@ -36,7 +36,7 @@ authRouter.get("/:provider/callback", (req, res, next) => {
   passport.authenticate(
     provider,
     {
-      failureRedirect: "/"
+      failureRedirect: "/",
     },
     async (authError: Error | null, user: UserEntity | false, reason?: AuthStrategyFailureReason) => {
       if (authError != null || req.session === undefined) {
@@ -78,7 +78,7 @@ const login = async (req: Request, res: Response, next: NextFunction, user: User
     deviceType: deviceType || "desktop",
     deviceName: vendor !== undefined && model !== undefined ? `${vendor} ${model.slice(0, 100)}` : "",
     os: os.name || "",
-    browser: browser.name || ""
+    browser: browser.name || "",
   });
 
   await getManager().save(newUserSession);

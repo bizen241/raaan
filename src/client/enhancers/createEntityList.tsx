@@ -101,7 +101,7 @@ const EntityListItemsRenderer = <T extends EntityType, P extends {}>({
   params,
   component: Renderer,
   additionalProps,
-  options
+  options,
 }: EntityListItemsRendererProps<T, P>) => {
   const { entities, limit, onChange } = useSearch<T>(entityType, params);
 
@@ -113,7 +113,7 @@ const EntityListItemsRenderer = <T extends EntityType, P extends {}>({
   return (
     <>
       <EntityListItemErrorConverter entityType={entityType} params={params}>
-        {entities.map(entity => {
+        {entities.map((entity) => {
           if (entity === undefined) {
             return null;
           }
@@ -145,7 +145,7 @@ class EntityListItemErrorConverter<T extends EntityType> extends React.Component
 > {
   static getDerivedStateFromError(error: Error): EntityListItemErrorConverterState {
     return {
-      error
+      error,
     };
   }
 

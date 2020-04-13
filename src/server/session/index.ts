@@ -11,11 +11,11 @@ export const useSession = (env: Env, app: Express) => {
       secret: env.session.secret,
       cookie: {
         sameSite: "lax",
-        secure: env.server.host === "localhost" ? false : true
+        secure: env.server.host === "localhost" ? false : true,
       },
       genid: () => uuid(),
       resave: false,
-      saveUninitialized: false
+      saveUninitialized: false,
     })
   );
 };

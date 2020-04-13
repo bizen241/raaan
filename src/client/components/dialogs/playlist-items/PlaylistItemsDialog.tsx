@@ -10,7 +10,7 @@ export const PlaylistItemsDialog = createDialog<{
   React.memo(({ t }) => t("問題集をプレイリストに追加")),
   React.memo(({ playlistId }) => {
     const { onReload: onReloadPlaylistItems } = useSearch("PlaylistItem", {
-      playlistId
+      playlistId,
     });
 
     return <TogglePlaylistItemList initialParams={{}} playlistId={playlistId} onReload={onReloadPlaylistItems} />;

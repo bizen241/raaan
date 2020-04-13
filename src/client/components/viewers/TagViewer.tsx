@@ -22,7 +22,7 @@ export const TagViewer = React.memo<{
 
   const { entities: follows } = useSearch("TagFollow", {
     followerId: currentUser.id,
-    targetId: tag.id
+    targetId: tag.id,
   });
   const follow = follows[0];
   const isFollowed = follow !== undefined;

@@ -11,7 +11,7 @@ const permissionMap: { [P in Permission]: Permission[] } = {
   Admin,
   Write,
   Read,
-  Guest
+  Guest,
 };
 
 export const hasPermission = (user: { permission: Permission } | undefined, permission: Permission) => {

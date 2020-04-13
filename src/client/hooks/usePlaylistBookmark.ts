@@ -7,10 +7,10 @@ export const usePlaylistBookmark = (playlistId: EntityId<"Playlist">) => {
 
   const { entities: playlistBookmarks } = useSearch("PlaylistBookmark", {
     userId: currentUser.id,
-    playlistId
+    playlistId,
   });
 
   return {
-    playlistBookmark: playlistBookmarks[0]
+    playlistBookmark: playlistBookmarks[0],
   };
 };

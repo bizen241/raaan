@@ -7,13 +7,9 @@ import { ObjectionEntity } from "./ObjectionEntity";
 export class ObjectionSummaryEntity extends BaseEntityClass<"ObjectionSummary"> {
   readonly type = "ObjectionSummary";
 
-  @OneToOne(
-    () => ObjectionEntity,
-    objection => objection.summary,
-    {
-      onDelete: "CASCADE"
-    }
-  )
+  @OneToOne(() => ObjectionEntity, (objection) => objection.summary, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn()
   parent?: ObjectionEntity;
   @RelationId((objectionSummary: ObjectionSummaryEntity) => objectionSummary.parent)

@@ -214,6 +214,6 @@ export const entities = [
     UserFollow: UserFollowEntity,
     UserMessage: UserMessageEntity,
     UserSession: UserSessionEntity,
-    UserSummary: UserSummaryEntity
-  } as { [P in EntityType]: Function })
+    UserSummary: UserSummaryEntity,
+  } as { [P in EntityType]: Function }),
 ];

@@ -8,7 +8,7 @@ import {
   insertExercise,
   insertUser,
   reset,
-  setSearchParams
+  setSearchParams,
 } from "../../../__tests__/helpers";
 import { UserEntity } from "../../../database/entities";
 import { GET } from "../exercise-summaries";
@@ -23,14 +23,14 @@ describe("api > exercise-summaries", () => {
 
     beforeEach(async () => {
       const { user } = await insertUser({
-        userPermission: "Write"
+        userPermission: "Write",
       });
       author = user;
 
       await insertExercise({
         exerciseAuthor: author,
         exerciseTitle: "correct title",
-        exerciseTags: ["correct"]
+        exerciseTags: ["correct"],
       });
     });
 
@@ -38,7 +38,7 @@ describe("api > exercise-summaries", () => {
       const { req, res, next } = await createMocks("Guest");
 
       setSearchParams<ExerciseSummary>(req, {
-        authorId: author.id
+        authorId: author.id,
       });
 
       await GET(req, res, next);
@@ -54,7 +54,7 @@ describe("api > exercise-summaries", () => {
       const { user } = await insertUser();
 
       setSearchParams<ExerciseSummary>(req, {
-        authorId: user.id
+        authorId: user.id,
       });
 
       await GET(req, res, next);
@@ -68,7 +68,7 @@ describe("api > exercise-summaries", () => {
       const { req, res, next } = await createMocks("Guest");
 
       setSearchParams<ExerciseSummary>(req, {
-        tags: "correct"
+        tags: "correct",
       });
 
       await GET(req, res, next);
@@ -82,7 +82,7 @@ describe("api > exercise-summaries", () => {
       const { req, res, next } = await createMocks("Guest");
 
       setSearchParams<ExerciseSummary>(req, {
-        tags: "wrong"
+        tags: "wrong",
       });
 
       await GET(req, res, next);
@@ -96,7 +96,7 @@ describe("api > exercise-summaries", () => {
       const { req, res, next } = await createMocks("Guest");
 
       setSearchParams<ExerciseSummary>(req, {
-        title: "correct"
+        title: "correct",
       });
 
       await GET(req, res, next);
@@ -110,7 +110,7 @@ describe("api > exercise-summaries", () => {
       const { req, res, next } = await createMocks("Guest");
 
       setSearchParams<ExerciseSummary>(req, {
-        title: "wrong"
+        title: "wrong",
       });
 
       await GET(req, res, next);
@@ -125,12 +125,12 @@ describe("api > exercise-summaries", () => {
 
       await insertExercise({
         exerciseAuthor: user,
-        exerciseIsMerged: false
+        exerciseIsMerged: false,
       });
 
       setSearchParams<ExerciseSummary>(req, {
         authorId: user.id,
-        isEditing: true
+        isEditing: true,
       });
 
       await GET(req, res, next);

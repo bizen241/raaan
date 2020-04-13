@@ -8,7 +8,7 @@ export const ExerciseDiaryPage = createPage<"Exercise">()(
     return (
       <ExerciseDiaryGraph
         params={{
-          targetId: exerciseId
+          targetId: exerciseId,
         }}
       />
     );

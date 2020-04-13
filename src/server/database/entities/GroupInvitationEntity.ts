@@ -9,7 +9,7 @@ export class GroupInvitationEntity extends BaseEntityClass<"GroupInvitation"> {
   readonly type = "GroupInvitation";
 
   @ManyToOne(() => GroupEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   group?: GroupEntity;
   @RelationId((groupInvitation: GroupInvitationEntity) => groupInvitation.group)

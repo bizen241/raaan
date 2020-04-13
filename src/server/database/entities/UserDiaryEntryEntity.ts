@@ -8,7 +8,7 @@ export class UserDiaryEntryEntity extends BaseEntityClass<"UserDiaryEntry"> {
   readonly type = "UserDiaryEntry";
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   user?: UserEntity;
   @RelationId((userDiaryEntry: UserDiaryEntryEntity) => userDiaryEntry.user)

@@ -13,7 +13,7 @@ export const GroupContestsPage = createPage<"Group">()(
         <Button icon={<Edit />} label="編集中のセッション" to="/contests/edit" />
         <ContestList
           initialParams={{
-            groupId
+            groupId,
           }}
         />
       </>

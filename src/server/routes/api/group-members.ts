@@ -35,11 +35,11 @@ export const POST = createPostOperation("GroupMember", "Read", async ({ currentU
   if (currentUser.id !== group.ownerId) {
     const groupInvitation = await manager.findOne(GroupInvitationEntity, {
       group: {
-        id: groupId
+        id: groupId,
       },
       target: {
-        id: currentUser.id
-      }
+        id: currentUser.id,
+      },
     });
     if (groupInvitation === undefined) {
       throw createError(403);
@@ -59,13 +59,13 @@ export const POST = createPostOperation("GroupMember", "Read", async ({ currentU
     const groupApplication = await manager.findOne(GroupApplicationEntity, {
       where: {
         group: {
-          id: groupId
+          id: groupId,
         },
         applicant: {
-          id: userId
-        }
+          id: userId,
+        },
       },
-      relations: ["applicant"]
+      relations: ["applicant"],
     });
     if (groupApplication === undefined) {
       throw createError(403);

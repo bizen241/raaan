@@ -17,7 +17,7 @@ export const SuggestionSuggestionCommentsPage = createPage<"Suggestion">()(
     const { bufferIds: suggestionCommentBufferIds, bufferMap: suggestionCommentBufferMap } = useBuffers(
       "SuggestionComment"
     );
-    const suggestionCommentId = suggestionCommentBufferIds.find(bufferId => {
+    const suggestionCommentId = suggestionCommentBufferIds.find((bufferId) => {
       const buffer = suggestionCommentBufferMap[bufferId];
 
       return buffer !== undefined && buffer.targetId === suggestionId;
@@ -26,7 +26,7 @@ export const SuggestionSuggestionCommentsPage = createPage<"Suggestion">()(
     const onComment = () => {
       dispatch(
         actions.buffers.update("SuggestionComment", generateLocalEntityId(), {
-          targetId: suggestionId
+          targetId: suggestionId,
         })
       );
     };
@@ -37,7 +37,7 @@ export const SuggestionSuggestionCommentsPage = createPage<"Suggestion">()(
         {suggestionCommentId !== undefined && <SuggestionCommentEditor suggestionCommentId={suggestionCommentId} />}
         <SuggestionCommentList
           initialParams={{
-            targetId: suggestionId
+            targetId: suggestionId,
           }}
         />
       </>

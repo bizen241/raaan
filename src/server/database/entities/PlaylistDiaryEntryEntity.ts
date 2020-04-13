@@ -8,7 +8,7 @@ export class PlaylistDiaryEntryEntity extends BaseEntityClass<"PlaylistDiaryEntr
   readonly type = "PlaylistDiaryEntry";
 
   @ManyToOne(() => PlaylistEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   playlist?: PlaylistEntity;
   @RelationId((playlistDiaryEntry: PlaylistDiaryEntryEntity) => playlistDiaryEntry.playlist)

@@ -55,25 +55,25 @@ export const useSearch = <T extends EntityType>(
 
   const onChange = useCallback(
     (changedParams: Params<EntityTypeToEntity[T]>) =>
-      setParams(prevParams => ({
+      setParams((prevParams) => ({
         ...prevParams,
-        ...changedParams
+        ...changedParams,
       })),
     []
   );
   const onChangeLimit = useCallback(
     (limit: number) =>
-      setParams(prevParams => ({
+      setParams((prevParams) => ({
         ...prevParams,
-        searchLimit: limit
+        searchLimit: limit,
       })),
     []
   );
   const onChangeOffset = useCallback(
     (offset: number) =>
-      setParams(prevParams => ({
+      setParams((prevParams) => ({
         ...prevParams,
-        searchOffset: offset
+        searchOffset: offset,
       })),
     []
   );
@@ -87,6 +87,6 @@ export const useSearch = <T extends EntityType>(
     onReload,
     onChange,
     onChangeLimit,
-    onChangeOffset
+    onChangeOffset,
   };
 };

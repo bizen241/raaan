@@ -9,14 +9,14 @@ export class ObjectionCommentEntity extends BaseEntityClass<"ObjectionComment"> 
   readonly type = "ObjectionComment";
 
   @ManyToOne(() => ObjectionEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   target?: ObjectionEntity;
   @RelationId((objectionComment: ObjectionCommentEntity) => objectionComment.target)
   targetId!: EntityId<"Objection">;
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   author?: UserEntity;
   @RelationId((objectionComment: ObjectionCommentEntity) => objectionComment.author)

@@ -4,7 +4,7 @@ import { rubySeparator, rubyTerminator } from "../../../../shared/exercise/ruby/
 
 export const createRubiedTextFromTokens = (tokens: IpadicFeatures[]) =>
   tokens
-    .map(token => {
+    .map((token) => {
       const { surface_form: rawSurfaceForm, reading: rawReading } = token;
       if (rawReading === undefined) {
         return rawSurfaceForm;

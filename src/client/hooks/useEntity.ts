@@ -17,6 +17,6 @@ export const useEntity = <T extends EntityType>(entityType: T, entityId: EntityI
 
   return {
     entity,
-    onReload: useCallback(() => entityId && dispatch(actions.api.get(entityType, entityId)), [])
+    onReload: useCallback(() => entityId && dispatch(actions.api.get(entityType, entityId)), []),
   };
 };

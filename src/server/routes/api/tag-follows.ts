@@ -26,7 +26,7 @@ export const POST = createPostOperation("TagFollow", "Read", async ({ currentUse
   const { targetId } = params;
 
   const target = await manager.findOne(TagEntity, targetId, {
-    relations: ["summary"]
+    relations: ["summary"],
   });
   if (target === undefined) {
     throw createError(404);

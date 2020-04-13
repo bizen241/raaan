@@ -24,9 +24,10 @@ export const ToggleGroupExerciseList = createEntityList<
     const groupId = groupSummary && groupSummary.groupId;
 
     const { entities: groupExercises } = useSearch("GroupExercise", {
-      exerciseId
+      exerciseId,
     });
-    const foundGroupExercise = groupSummary && groupExercises.find(groupExercise => groupExercise.groupId === groupId);
+    const foundGroupExercise =
+      groupSummary && groupExercises.find((groupExercise) => groupExercise.groupId === groupId);
 
     const onClick = useCallback(() => {
       toggleRequestState();
@@ -38,14 +39,14 @@ export const ToggleGroupExerciseList = createEntityList<
             generateLocalEntityId(),
             {
               groupId,
-              exerciseId
+              exerciseId,
             },
-            uploadResponse => {
+            (uploadResponse) => {
               dispatch(
                 actions.cache.add(
                   "GroupExercise",
                   {
-                    exerciseId
+                    exerciseId,
                   },
                   uploadResponse
                 )

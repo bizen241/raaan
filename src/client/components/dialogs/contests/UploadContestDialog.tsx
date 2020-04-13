@@ -17,7 +17,7 @@ export const UploadContestDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload("Contest", bufferId, undefined, uploadResponse => {
+        actions.api.upload("Contest", bufferId, undefined, (uploadResponse) => {
           const contestId = Object.keys(uploadResponse.Contest)[0];
 
           dispatch(replace(`/contests/${contestId}`));

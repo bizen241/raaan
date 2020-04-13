@@ -10,7 +10,7 @@ export const ExerciseRevisionsPage = createPage<"Exercise">()(
         initialParams={{
           exerciseId,
           searchSort: "createdAt",
-          searchOrder: "DESC"
+          searchOrder: "DESC",
         }}
       />
     );

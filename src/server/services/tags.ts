@@ -14,13 +14,13 @@ export const getTags = async (
 
   const addedTags: TagEntity[] = [];
   await Promise.all(
-    nextTagNames.map(async tagName => {
-      if (!prevTags.some(prevTag => prevTag.name === tagName)) {
+    nextTagNames.map(async (tagName) => {
+      if (!prevTags.some((prevTag) => prevTag.name === tagName)) {
         let addedTag = await manager.findOne(TagEntity, {
           where: {
-            name: tagName
+            name: tagName,
           },
-          relations: ["summary"]
+          relations: ["summary"],
         });
 
         if (addedTag === undefined) {
@@ -47,7 +47,7 @@ export const getTags = async (
   );
 
   const deletedTags: TagEntity[] = [];
-  prevTags.forEach(prevTag => {
+  prevTags.forEach((prevTag) => {
     if (!nextTagNames.includes(prevTag.name)) {
       const deletedTag = prevTag;
       if (deletedTag.summary === undefined) {
@@ -74,5 +74,5 @@ export const getTags = async (
 };
 
 const normalizeTags = (tags: string[] = []) => {
-  return [...new Set(tags)].filter(tag => tag.length > 0).slice(0, 5);
+  return [...new Set(tags)].filter((tag) => tag.length > 0).slice(0, 5);
 };

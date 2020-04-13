@@ -11,7 +11,7 @@ export const startServer = async (env: Env) => {
   await setGuestUser();
   await setOwnerUser(env);
 
-  return new Promise<Server>(resolve => {
+  return new Promise<Server>((resolve) => {
     const { port } = env.server;
 
     const server = createApp(env).listen(port, () => {

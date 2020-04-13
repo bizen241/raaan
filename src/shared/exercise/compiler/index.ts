@@ -10,22 +10,22 @@ export interface CompiledQuestion {
 export const compileQuestions = (questions: Question[]) => {
   const compiledQuestions: CompiledQuestion[] = [];
 
-  questions.forEach(question => {
+  questions.forEach((question) => {
     const sourceLines = question.value.trim().split("\n");
 
     const rubyLines: RubyLine[] = [];
-    sourceLines.forEach(sourceLine => {
+    sourceLines.forEach((sourceLine) => {
       rubyLines.push(compileToRubyLine(sourceLine));
     });
 
     const romanLines: RomanLine[] = [];
-    rubyLines.forEach(rubyLine => {
+    rubyLines.forEach((rubyLine) => {
       romanLines.push(compileToRomanLine(rubyLine));
     });
 
     compiledQuestions.push({
       ruby: rubyLines,
-      roman: romanLines
+      roman: romanLines,
     });
   });
 

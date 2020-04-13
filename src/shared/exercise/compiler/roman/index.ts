@@ -53,7 +53,7 @@ export const compileToRomanLine = (rubyLine: RubyLine) => {
       kana,
       pointer,
       candidates,
-      isMasked
+      isMasked,
     });
   }
 

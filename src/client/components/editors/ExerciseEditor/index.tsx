@@ -9,7 +9,7 @@ import { QuestionsEditor } from "./QuestionsEditor";
 export const ExerciseEditor = React.memo<{
   params: Partial<ExerciseContent>;
   onChange: (exercise: Partial<ExerciseContent>) => void;
-}>(props => {
+}>((props) => {
   const { params, onChange } = props;
 
   const [isExercisePreviewerOpen, onToggleExercisePreviewer] = useToggleState();
@@ -30,7 +30,7 @@ export const ExerciseEditor = React.memo<{
         exercise={{
           title: params.title,
           tags: params.tags,
-          questions: params.questions
+          questions: params.questions,
         }}
         isOpen={isExercisePreviewerOpen}
         onClose={onToggleExercisePreviewer}

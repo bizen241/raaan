@@ -9,14 +9,14 @@ export class ReportCommentEntity extends BaseEntityClass<"ReportComment"> {
   readonly type = "ReportComment";
 
   @ManyToOne(() => ReportEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   target?: ReportEntity;
   @RelationId((reportComment: ReportCommentEntity) => reportComment.target)
   targetId!: EntityId<"Report">;
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   author?: UserEntity;
   @RelationId((reportComment: ReportCommentEntity) => reportComment.author)

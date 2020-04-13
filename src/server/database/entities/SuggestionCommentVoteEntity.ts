@@ -9,14 +9,14 @@ export class SuggestionCommentVoteEntity extends BaseEntityClass<"SuggestionComm
   readonly type = "SuggestionCommentVote";
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   voter?: UserEntity;
   @RelationId((suggestionCommentVote: SuggestionCommentVoteEntity) => suggestionCommentVote.voter)
   voterId!: EntityId<"User">;
 
   @ManyToOne(() => SuggestionCommentEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   target?: SuggestionCommentEntity;
   @RelationId((suggestionCommentVote: SuggestionCommentVoteEntity) => suggestionCommentVote.target)

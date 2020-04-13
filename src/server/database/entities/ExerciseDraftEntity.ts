@@ -7,13 +7,9 @@ import { ExerciseEntity } from "./ExerciseEntity";
 export class ExerciseDraftEntity extends BaseExerciseClass<"ExerciseDraft"> {
   readonly type = "ExerciseDraft";
 
-  @OneToOne(
-    () => ExerciseEntity,
-    exercise => exercise.draft,
-    {
-      onDelete: "CASCADE"
-    }
-  )
+  @OneToOne(() => ExerciseEntity, (exercise) => exercise.draft, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn()
   exercise?: ExerciseEntity;
   @RelationId((exerciseDraft: ExerciseDraftEntity) => exerciseDraft.exercise)

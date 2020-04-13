@@ -8,7 +8,7 @@ export const GroupGroupApplicationsPage = createPage<"Group">()(
     return (
       <GroupGroupApplicationList
         initialParams={{
-          groupId
+          groupId,
         }}
       />
     );

@@ -9,14 +9,14 @@ export class PlaylistBookmarkEntity extends BaseEntityClass<"PlaylistBookmark"> 
   readonly type = "PlaylistBookmark";
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   user?: UserEntity;
   @RelationId((submission: PlaylistBookmarkEntity) => submission.user)
   userId!: EntityId<"User">;
 
   @ManyToOne(() => PlaylistEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   playlist?: PlaylistEntity;
   @RelationId((submission: PlaylistBookmarkEntity) => submission.playlist)

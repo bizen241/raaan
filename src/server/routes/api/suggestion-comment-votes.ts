@@ -6,7 +6,7 @@ export const POST = createPostOperation("SuggestionCommentVote", "Write", async 
   const { targetId, isUp = true } = params;
 
   const target = await manager.findOne(SuggestionCommentEntity, targetId, {
-    relations: ["summary", "author"]
+    relations: ["summary", "author"],
   });
   if (target === undefined) {
     throw createError(404);

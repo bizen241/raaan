@@ -8,7 +8,7 @@ export const UserObjectionsPage = createPage<"User">()(
     return (
       <ObjectionSummaryList
         initialParams={{
-          objectorId: userId
+          objectorId: userId,
         }}
       />
     );

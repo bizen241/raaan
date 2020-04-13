@@ -5,7 +5,7 @@ import { UserAccountEntity } from "../../../database/entities";
 
 export const PATCH = createPatchOperation("UserAccount", "Read", async ({ currentUser, manager, id, params }) => {
   const userAccount = await manager.findOne(UserAccountEntity, id, {
-    relations: ["user", "user.summary"]
+    relations: ["user", "user.summary"],
   });
   if (userAccount === undefined) {
     throw createError(404);

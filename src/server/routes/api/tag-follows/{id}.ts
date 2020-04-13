@@ -4,7 +4,7 @@ import { TagFollowEntity } from "../../../database/entities";
 
 export const DELETE = createDeleteOperation("TagFollow", "Read", async ({ currentUser, manager, id }) => {
   const tagFollow = await manager.findOne(TagFollowEntity, id, {
-    relations: ["target", "target.summary"]
+    relations: ["target", "target.summary"],
   });
   if (tagFollow === undefined) {
     throw createError(404);

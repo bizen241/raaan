@@ -4,7 +4,7 @@ import { GroupEntity } from "../../../database/entities";
 
 export const GET = createGetOperation("Group", "Read", async ({ manager, id }) => {
   const group = await manager.findOne(GroupEntity, id, {
-    relations: ["owner"]
+    relations: ["owner"],
   });
   if (group === undefined) {
     throw createError(404);

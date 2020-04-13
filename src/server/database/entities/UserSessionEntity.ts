@@ -8,7 +8,7 @@ export class UserSessionEntity extends BaseEntityClass<"UserSession"> {
   readonly type = "UserSession";
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   user?: UserEntity;
   @RelationId((userSession: UserSessionEntity) => userSession.user)
@@ -16,7 +16,7 @@ export class UserSessionEntity extends BaseEntityClass<"UserSession"> {
 
   @Column({
     type: "uuid",
-    unique: true
+    unique: true,
   })
   sessionId: string;
 

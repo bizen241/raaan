@@ -20,7 +20,7 @@ export const PublishExerciseDialog = createDialog<{
           "Exercise",
           exerciseId,
           {
-            isPrivate: false
+            isPrivate: false,
           },
           onClose
         )

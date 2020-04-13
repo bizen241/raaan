@@ -17,12 +17,12 @@ export const UploadExerciseCommentDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload("ExerciseComment", bufferId, undefined, uploadResponse => {
+        actions.api.upload("ExerciseComment", bufferId, undefined, (uploadResponse) => {
           dispatch(
             actions.cache.add(
               "ExerciseComment",
               {
-                targetId
+                targetId,
               },
               uploadResponse
             )

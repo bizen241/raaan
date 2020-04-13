@@ -11,7 +11,7 @@ export const updateUserSummarySubmitCount = async (params: {
   const { typeCount } = submission;
 
   const userSummary = await manager.findOne(UserSummaryEntity, currentUser.summaryId, {
-    relations: ["user"]
+    relations: ["user"],
   });
   if (userSummary === undefined) {
     throw createError(500);

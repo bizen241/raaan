@@ -9,7 +9,7 @@ export class PlaylistItemEntity extends BaseEntityClass<"PlaylistItem"> {
   readonly type = "PlaylistItem";
 
   @ManyToOne(() => PlaylistEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   playlist?: PlaylistEntity;
   @RelationId((playlistItem: PlaylistItemEntity) => playlistItem.playlist)
@@ -21,7 +21,7 @@ export class PlaylistItemEntity extends BaseEntityClass<"PlaylistItem"> {
   exerciseId!: EntityId<"Exercise">;
 
   @OneToOne(() => PlaylistItemEntity, {
-    onDelete: "SET NULL"
+    onDelete: "SET NULL",
   })
   @JoinColumn()
   next?: PlaylistItemEntity | null;

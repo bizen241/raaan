@@ -7,13 +7,9 @@ import { GroupEntity } from "./GroupEntity";
 export class GroupSummaryEntity extends BaseEntityClass<"GroupSummary"> {
   readonly type = "GroupSummary";
 
-  @OneToOne(
-    () => GroupEntity,
-    group => group.summary,
-    {
-      onDelete: "CASCADE"
-    }
-  )
+  @OneToOne(() => GroupEntity, (group) => group.summary, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn()
   group?: GroupEntity;
   @RelationId((groupSummary: GroupSummaryEntity) => groupSummary.group)

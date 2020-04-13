@@ -9,14 +9,14 @@ export class GroupMemberEntity extends BaseEntityClass<"GroupMember"> {
   readonly type = "GroupMember";
 
   @ManyToOne(() => GroupEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   group?: GroupEntity;
   @RelationId((groupMember: GroupMemberEntity) => groupMember.group)
   groupId!: EntityId<"Group">;
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   user?: UserEntity;
   @RelationId((groupMember: GroupMemberEntity) => groupMember.user)

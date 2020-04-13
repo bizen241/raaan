@@ -22,14 +22,14 @@ export const UploadReportDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload("Report", reportId, undefined, uploadResponse => {
+        actions.api.upload("Report", reportId, undefined, (uploadResponse) => {
           dispatch(
             actions.cache.add(
               "Report",
               {
                 reporterId: currentUser.id,
                 targetType,
-                targetId
+                targetId,
               },
               uploadResponse
             )

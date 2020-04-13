@@ -25,10 +25,10 @@ export const ToggleGroupInvitationList = createEntityList<
     const followerId = userSummary && userSummary.userId;
 
     const { entities: groupInvitations } = useSearch("GroupInvitation", {
-      groupId
+      groupId,
     });
     const foundGroupInvitation = groupInvitations.find(
-      groupInvitation => groupInvitation.targetSummaryId === followerSummaryId
+      (groupInvitation) => groupInvitation.targetSummaryId === followerSummaryId
     );
 
     const onClick = useCallback(() => {
@@ -41,14 +41,14 @@ export const ToggleGroupInvitationList = createEntityList<
             generateLocalEntityId(),
             {
               groupId,
-              targetId: followerId
+              targetId: followerId,
             },
-            uploadResponse => {
+            (uploadResponse) => {
               dispatch(
                 actions.cache.add(
                   "GroupInvitation",
                   {
-                    groupId
+                    groupId,
                   },
                   uploadResponse
                 )

@@ -17,7 +17,7 @@ export const UploadUserDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload("User", bufferId, undefined, uploadResponse => {
+        actions.api.upload("User", bufferId, undefined, (uploadResponse) => {
           const userId = Object.keys(uploadResponse.User)[0];
 
           dispatch(replace(`/users/${userId}`));

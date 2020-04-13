@@ -11,12 +11,12 @@ import { buffersActions } from "./buffers";
 import { cacheActions } from "./cache";
 
 export enum ApiActionType {
-  Update = "api/update"
+  Update = "api/update",
 }
 
 export const apiSyncActions = {
   update: (params: { entityType: EntityType; method: keyof ApiState; key: string; code: number }) =>
-    createAction(ApiActionType.Update, params)
+    createAction(ApiActionType.Update, params),
 };
 
 export type ApiActions = ActionUnion<typeof apiSyncActions>;
@@ -35,7 +35,7 @@ const getEntity = <T extends EntityType>(entityType: T, entityId: EntityId<T>): 
       entityType,
       method: "get",
       key: entityId,
-      code: 102
+      code: 102,
     })
   );
 
@@ -48,7 +48,7 @@ const getEntity = <T extends EntityType>(entityType: T, entityId: EntityId<T>): 
         entityType,
         method: "get",
         key: entityId,
-        code: 200
+        code: 200,
       })
     );
   } catch (e) {
@@ -59,7 +59,7 @@ const getEntity = <T extends EntityType>(entityType: T, entityId: EntityId<T>): 
         entityType,
         method: "get",
         key: entityId,
-        code
+        code,
       })
     );
   }
@@ -82,7 +82,7 @@ const searchEntity = <T extends EntityType>(
       entityType,
       method: "search",
       key,
-      code: 102
+      code: 102,
     })
   );
 
@@ -95,7 +95,7 @@ const searchEntity = <T extends EntityType>(
         entityType,
         method: "search",
         key,
-        code: 200
+        code: 200,
       })
     );
 
@@ -110,7 +110,7 @@ const searchEntity = <T extends EntityType>(
         entityType,
         method: "search",
         key,
-        code
+        code,
       })
     );
   }
@@ -136,7 +136,7 @@ const uploadEntity = <T extends EntityType>(
       entityType,
       method: "upload",
       key: entityId,
-      code: 102
+      code: 102,
     })
   );
 
@@ -151,7 +151,7 @@ const uploadEntity = <T extends EntityType>(
         entityType,
         method: "upload",
         key: entityId,
-        code: 200
+        code: 200,
       })
     );
 
@@ -170,7 +170,7 @@ const uploadEntity = <T extends EntityType>(
         entityType,
         method: "upload",
         key: entityId,
-        code
+        code,
       })
     );
 
@@ -186,13 +186,13 @@ const deleteEntity = <T extends EntityType>(
   timeout?: number,
   onSuccess?: () => void,
   onFailure?: () => void
-): AsyncAction => async dispatch => {
+): AsyncAction => async (dispatch) => {
   dispatch(
     apiSyncActions.update({
       entityType,
       method: "delete",
       key: entityId,
-      code: 102
+      code: 102,
     })
   );
 
@@ -206,7 +206,7 @@ const deleteEntity = <T extends EntityType>(
         entityType,
         method: "delete",
         key: entityId,
-        code: 200
+        code: 200,
       })
     );
 
@@ -223,7 +223,7 @@ const deleteEntity = <T extends EntityType>(
         entityType,
         method: "delete",
         key: entityId,
-        code
+        code,
       })
     );
 
@@ -238,7 +238,7 @@ export const apiActions = {
   get: getEntity,
   search: searchEntity,
   upload: uploadEntity,
-  delete: deleteEntity
+  delete: deleteEntity,
 };
 
 type StatusMap = {
@@ -258,7 +258,7 @@ export const initialApiState: ApiState = {
   get: createEntityTypeToObject(),
   search: createEntityTypeToObject(),
   upload: createEntityTypeToObject(),
-  delete: createEntityTypeToObject()
+  delete: createEntityTypeToObject(),
 };
 
 export const apiReducer: Reducer<ApiState, Actions> = (state = initialApiState, action) => {
@@ -272,9 +272,9 @@ export const apiReducer: Reducer<ApiState, Actions> = (state = initialApiState, 
           ...state[method],
           [entityType]: {
             ...state[method][entityType],
-            [key]: code
-          }
-        }
+            [key]: code,
+          },
+        },
       };
     }
     default:

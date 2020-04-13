@@ -11,7 +11,7 @@ export const UserGroupInvitationsPage = createPage()(
     return (
       <UserGroupInvitationList
         initialParams={{
-          targetId: currentUser.id
+          targetId: currentUser.id,
         }}
       />
     );

@@ -40,10 +40,10 @@ export const TablePagination = React.memo<{
           10: { label: "10" },
           25: { label: "25" },
           50: { label: "50" },
-          100: { label: "100" }
+          100: { label: "100" },
         }}
         defaultValue={rowsPerPage as RowsPerPage}
-        onChange={value => onChangeRowsPerPage(value)}
+        onChange={(value) => onChangeRowsPerPage(value)}
       />
     </Column>
   );

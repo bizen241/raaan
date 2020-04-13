@@ -32,7 +32,7 @@ export const QuestionEditor = React.memo<{
 
     toggleRubyState(true);
 
-    addRuby(textFieldRef.current.value, result => {
+    addRuby(textFieldRef.current.value, (result) => {
       if (textFieldRef.current !== null) {
         onUpdate(questionIndex, { value: result });
       }
@@ -80,8 +80,8 @@ export const QuestionEditor = React.memo<{
           className={textFieldClasses.textField}
           InputProps={{
             classes: {
-              inputMultiline: textFieldClasses.inputMultiline
-            }
+              inputMultiline: textFieldClasses.inputMultiline,
+            },
           }}
           onCompositionStart={useCallback(() => toggleCompositionState(true), [])}
           onCompositionEnd={useCallback(() => toggleCompositionState(false), [])}
@@ -103,14 +103,14 @@ export const QuestionEditor = React.memo<{
   );
 });
 
-const useTextFieldStyles = makeStyles<Theme, { isCompositing: boolean }>(theme => ({
+const useTextFieldStyles = makeStyles<Theme, { isCompositing: boolean }>((theme) => ({
   textField: {
     position: "relative",
-    zIndex: 2
+    zIndex: 2,
   },
-  inputMultiline: props => ({
+  inputMultiline: (props) => ({
     backgroundColor: "transparent",
     caretColor: theme.palette.type === "light" ? "black" : "white",
-    color: props.isCompositing ? "inherit" : "transparent"
-  })
+    color: props.isCompositing ? "inherit" : "transparent",
+  }),
 }));

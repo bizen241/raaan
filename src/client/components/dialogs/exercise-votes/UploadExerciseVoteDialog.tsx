@@ -24,15 +24,15 @@ export const UploadExerciseVoteDialog = createDialog<{
           generateLocalEntityId(),
           {
             targetId,
-            isUp
+            isUp,
           },
-          uploadResponse => {
+          (uploadResponse) => {
             dispatch(
               actions.cache.add(
                 "ExerciseVote",
                 {
                   voterId: currentUser.id,
-                  targetId
+                  targetId,
                 },
                 uploadResponse
               )

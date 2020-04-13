@@ -4,7 +4,7 @@ import { decorator } from "../../__stories__/helpers/decorator";
 
 export default {
   title: "components/ui",
-  decorators: [decorator]
+  decorators: [decorator],
 };
 
 export const Button = () => {

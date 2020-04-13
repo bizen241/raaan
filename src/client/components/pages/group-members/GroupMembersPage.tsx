@@ -13,7 +13,7 @@ export const GroupMembersPage = createPage<"Group">()(
 
     const { entities: groupMembers } = useSearch("GroupMember", {
       groupId,
-      userId: currentUser.id
+      userId: currentUser.id,
     });
     const groupMember = groupMembers[0];
     const groupMemberPermission = groupMember !== undefined ? groupMember.permission : "guest";

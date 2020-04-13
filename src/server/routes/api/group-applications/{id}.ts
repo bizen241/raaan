@@ -4,7 +4,7 @@ import { GroupApplicationEntity } from "../../../database/entities";
 
 export const DELETE = createDeleteOperation("GroupApplication", "Read", async ({ currentUser, manager, id }) => {
   const groupApplication = await manager.findOne(GroupApplicationEntity, id, {
-    relations: ["group"]
+    relations: ["group"],
   });
   if (groupApplication === undefined) {
     throw createError(404);

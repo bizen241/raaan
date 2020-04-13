@@ -6,7 +6,7 @@ import {
   ContestEntryEntity,
   GroupMemberEntity,
   SubmissionEntity,
-  UserEntity
+  UserEntity,
 } from "../database/entities";
 
 export const updateContestEntry = async (params: {
@@ -24,11 +24,11 @@ export const updateContestEntry = async (params: {
 
   const groupMember = await manager.findOne(GroupMemberEntity, {
     group: {
-      id: contest.groupId
+      id: contest.groupId,
     },
     user: {
-      id: currentUser.id
-    }
+      id: currentUser.id,
+    },
   });
   if (groupMember === undefined) {
     throw createError(403);
@@ -37,20 +37,20 @@ export const updateContestEntry = async (params: {
   const contestEntry = await manager.findOne(ContestEntryEntity, {
     where: {
       contest: {
-        id: contestId
+        id: contestId,
       },
       participant: {
-        id: groupMember.id
-      }
+        id: groupMember.id,
+      },
     },
-    relations: ["participant", "participant.user"]
+    relations: ["participant", "participant.user"],
   });
 
   if (contestEntry === undefined) {
     const newContestEntry = new ContestEntryEntity(contest, groupMember, {
       accuracy: submission.accuracy,
       time: submission.time,
-      typeCount: submission.typeCount
+      typeCount: submission.typeCount,
     });
 
     await manager.save(newContestEntry);
@@ -60,12 +60,12 @@ export const updateContestEntry = async (params: {
     const prevScore = getScore({
       accuracy: contestEntry.accuracy,
       time: contestEntry.time,
-      typeCount: contestEntry.typeCount
+      typeCount: contestEntry.typeCount,
     });
     const nextScore = getScore({
       accuracy: submission.accuracy,
       time: submission.time,
-      typeCount: submission.typeCount
+      typeCount: submission.typeCount,
     });
 
     if (nextScore > prevScore) {

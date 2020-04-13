@@ -19,7 +19,7 @@ const persistConfig: PersistConfig<RootState> = {
   blacklist: ["api", "router"],
   writeFailHandler: () => {
     window.dispatchEvent(new Event("quotaexceeded"));
-  }
+  },
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

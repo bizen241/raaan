@@ -24,15 +24,15 @@ export const UploadGroupMemberByOwnerDialog = createDialog<{
           generateLocalEntityId(),
           {
             groupId,
-            userId: applicantId
+            userId: applicantId,
           },
-          uploadResponse => {
+          (uploadResponse) => {
             dispatch(
               actions.cache.add(
                 "GroupMember",
                 {
                   groupId,
-                  userId: applicantId
+                  userId: applicantId,
                 },
                 uploadResponse
               )

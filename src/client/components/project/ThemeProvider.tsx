@@ -33,15 +33,15 @@ export const ThemeProvider = React.memo<{ children: React.ReactNode }>(({ childr
       type: isDarkMode ? "dark" : "light",
       background: {
         default: isDarkMode ? "#121212" : "#f5f5f5",
-        paper: isDarkMode ? "#1e1e1e" : "#fff"
+        paper: isDarkMode ? "#1e1e1e" : "#fff",
       },
       primary: teal,
       secondary: isDarkMode
         ? grey
         : {
-            main: "#e0e0e0"
-          }
-    }
+            main: "#e0e0e0",
+          },
+    },
   });
 
   useStyles();
@@ -57,7 +57,7 @@ export const ThemeProvider = React.memo<{ children: React.ReactNode }>(({ childr
 const useStyles = makeStyles({
   "@global": {
     ".MuiTableCell-root.MuiTableCell-footer.MuiTablePagination-root": {
-      border: "none"
-    }
-  }
+      border: "none",
+    },
+  },
 });

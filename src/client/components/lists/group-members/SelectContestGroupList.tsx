@@ -18,9 +18,9 @@ export const SelectContestGroupList = React.memo<{
   const dispatch = useDispatch();
 
   const { entities: groupMembers, onReload } = useSearch("GroupMember", {
-    userId: currentUser.id
+    userId: currentUser.id,
   });
-  const selectableGroups = groupMembers.filter(groupMember => groupMember.permission !== "read");
+  const selectableGroups = groupMembers.filter((groupMember) => groupMember.permission !== "read");
 
   const onSelect = useCallback((groupId: EntityId<"Group">) => {
     const bufferId = generateLocalEntityId<"Contest">();
@@ -30,7 +30,7 @@ export const SelectContestGroupList = React.memo<{
         groupId,
         exerciseId,
         startAt: Date.now(),
-        finishAt: Date.now() + 1000 * 60 * 60
+        finishAt: Date.now() + 1000 * 60 * 60,
       })
     );
     dispatch(push(`/contests/${bufferId}/edit`));
@@ -46,7 +46,7 @@ export const SelectContestGroupList = React.memo<{
       <Divider />
       <Column pb={1}>
         <Table>
-          {selectableGroups.map(groupMember => (
+          {selectableGroups.map((groupMember) => (
             <SelectContestGroupListItem key={groupMember.id} groupMember={groupMember} onSelect={onSelect} />
           ))}
         </Table>

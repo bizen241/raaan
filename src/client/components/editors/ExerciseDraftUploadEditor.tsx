@@ -24,7 +24,7 @@ export const ExerciseDraftUploadEditor = React.memo<{
   const onUpdateUploadType = useCallback((nextUploadType: UploadType) => {
     onChange({
       isMerged: nextUploadType === "draft" ? false : undefined,
-      isPrivate: nextUploadType === "public" ? false : undefined
+      isPrivate: nextUploadType === "public" ? false : undefined,
     });
     setUploadConfig(nextUploadType);
   }, []);
@@ -35,19 +35,19 @@ export const ExerciseDraftUploadEditor = React.memo<{
     public: {
       label: "公開",
       disabled: isReadOnly,
-      hidden: !isDraft
+      hidden: !isDraft,
     },
     private: {
       label: "非公開",
-      hidden: !isDraft
+      hidden: !isDraft,
     },
     update: {
       label: "更新",
-      hidden: isDraft
+      hidden: isDraft,
     },
     draft: {
-      label: "下書き"
-    }
+      label: "下書き",
+    },
   };
 
   return (

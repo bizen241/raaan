@@ -32,7 +32,7 @@ interface FetchErrorBoundaryState {
 export class FetchErrorBoundary extends React.Component<{}, FetchErrorBoundaryState> {
   static getDerivedStateFromError(error: Error): FetchErrorBoundaryState {
     return {
-      error
+      error,
     };
   }
 
@@ -72,8 +72,8 @@ const EntityErrorHandler = <T extends EntityType>({ error, onFetched }: EntityEr
 
   const dispatch = useDispatch();
 
-  const entity = useSelector(state => state.cache.get[entityType][entityId]);
-  const status = useSelector(state => state.api.get[entityType][entityId]);
+  const entity = useSelector((state) => state.cache.get[entityType][entityId]);
+  const status = useSelector((state) => state.api.get[entityType][entityId]);
 
   useEffect(() => {
     if (entity !== undefined) {
@@ -98,8 +98,8 @@ const SearchErrorHandler = <T extends EntityType>({ error, onFetched }: SearchEr
 
   const dispatch = useDispatch();
 
-  const result = useSelector(state => state.cache.search[entityType][stringifyParams(params, true)]);
-  const status = useSelector(state => state.api.search[entityType][stringifyParams(params)]);
+  const result = useSelector((state) => state.cache.search[entityType][stringifyParams(params, true)]);
+  const status = useSelector((state) => state.api.search[entityType][stringifyParams(params)]);
 
   useEffect(() => {
     dispatch(actions.api.search(entityType, params, onFetched));
@@ -117,7 +117,7 @@ const BufferErrorHandler = <T extends EntityType>({ error }: BufferErrorHandlerP
 
   const dispatch = useDispatch();
 
-  const buffer = useSelector(state => state.buffers[entityType][entityId]);
+  const buffer = useSelector((state) => state.buffers[entityType][entityId]);
 
   useEffect(() => {
     if (buffer !== undefined) {

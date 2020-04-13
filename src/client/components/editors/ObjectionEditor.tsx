@@ -10,14 +10,14 @@ import { Button, Card, Column, Select, SelectOptions, TextField } from "../ui";
 
 const selectObjectionStateOptions: SelectOptions<ObjectionState> = {
   pending: {
-    label: "保留"
+    label: "保留",
   },
   accepted: {
-    label: "承認"
+    label: "承認",
   },
   rejected: {
-    label: "却下"
-  }
+    label: "却下",
+  },
 };
 
 export const ObjectionEditor = React.memo<{

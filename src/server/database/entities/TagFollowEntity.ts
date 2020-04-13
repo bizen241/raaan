@@ -9,14 +9,14 @@ export class TagFollowEntity extends BaseEntityClass<"TagFollow"> {
   readonly type = "TagFollow";
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   follower?: UserEntity;
   @RelationId((tagFollow: TagFollowEntity) => tagFollow.follower)
   followerId!: EntityId<"User">;
 
   @ManyToOne(() => TagEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   target?: TagEntity;
   @RelationId((tagFollow: TagFollowEntity) => tagFollow.target)

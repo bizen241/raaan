@@ -19,7 +19,7 @@ export const UserViewer = React.memo<{ userId: EntityId<"User"> }>(({ userId }) 
   const [isDeleteUserFollowDialogOpen, onToggleDeleteUserFollowDialog] = useToggleState();
   const { entities: follows } = useSearch("UserFollow", {
     followerId: currentUser.id,
-    targetId: userId
+    targetId: userId,
   });
   const follow = follows[0];
   const isFollowed = follow !== undefined;

@@ -9,7 +9,7 @@ export const createGoogleStrategy = (clientId: string, clientSecret: string) => 
       callbackURL: "/auth/google/callback",
       passReqToCallback: true,
       state: true,
-      scope: "email"
+      scope: "email",
     },
     createVerifier("google")
   );

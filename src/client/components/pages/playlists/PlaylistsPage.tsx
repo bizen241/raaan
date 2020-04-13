@@ -19,7 +19,7 @@ export const PlaylistsPage = createPage()(
             searchLimit: 10,
             searchOffset: 0,
             searchSort: "createdAt",
-            searchOrder: "DESC"
+            searchOrder: "DESC",
           }}
         />
       </>

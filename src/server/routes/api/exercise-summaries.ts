@@ -17,7 +17,7 @@ export const GET = createSearchOperation("ExerciseSummary", "Guest", async ({ cu
   }
   if (tags !== undefined) {
     query.innerJoinAndSelect("exerciseSummary.tags", "searchTags", "searchTags.name IN (:...tags)", {
-      tags: tags.split(/\s/)
+      tags: tags.split(/\s/),
     });
   }
   if (title !== undefined) {

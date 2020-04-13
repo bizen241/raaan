@@ -9,7 +9,7 @@ export const UserReceivedReportsPage = createPage<"User">()(
       <ReportSummaryList
         initialParams={{
           targetType: "User",
-          targetId: userId
+          targetId: userId,
         }}
       />
     );

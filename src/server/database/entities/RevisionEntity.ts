@@ -9,19 +9,15 @@ export class RevisionEntity extends BaseExerciseClass<"Revision"> {
   readonly type = "Revision";
 
   @ManyToOne(() => ExerciseEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   exercise?: ExerciseEntity;
   @RelationId((revision: RevisionEntity) => revision.exercise)
   exerciseId!: EntityId<"Exercise">;
 
-  @OneToOne(
-    () => RevisionSummaryEntity,
-    revisionSummary => revisionSummary.revision,
-    {
-      cascade: ["insert"]
-    }
-  )
+  @OneToOne(() => RevisionSummaryEntity, (revisionSummary) => revisionSummary.revision, {
+    cascade: ["insert"],
+  })
   summary?: RevisionSummaryEntity;
   @RelationId((revision: RevisionEntity) => revision.summary)
   summaryId!: EntityId<"RevisionSummary">;

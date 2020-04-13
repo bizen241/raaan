@@ -23,8 +23,8 @@ export const createBufferList = <T extends EntityType>(entityType: T) => (
   ListItem: React.ComponentType<BufferListItemProps<T>>
 ) =>
   React.memo<BufferListProps>(() => {
-    const bufferMap = useSelector(state => state.buffers[entityType]);
-    const entityMap = useSelector(state => state.cache.get[entityType]);
+    const bufferMap = useSelector((state) => state.buffers[entityType]);
+    const entityMap = useSelector((state) => state.cache.get[entityType]);
 
     const [limit, setLimit] = useState(10);
     const [offset, setOffset] = useState(0);
@@ -36,7 +36,7 @@ export const createBufferList = <T extends EntityType>(entityType: T) => (
       <Column pb={1}>
         <Card>
           <Table>
-            {bufferIds.slice(offset, offset + limit).map(bufferId => {
+            {bufferIds.slice(offset, offset + limit).map((bufferId) => {
               const buffer = getBuffer(bufferMap, bufferId);
               const source = getEntity(entityMap, bufferId);
               if (buffer === undefined) {
@@ -52,7 +52,7 @@ export const createBufferList = <T extends EntityType>(entityType: T) => (
                   source={source}
                   params={{
                     ...source,
-                    ...buffer
+                    ...buffer,
                   }}
                 />
               );

@@ -8,14 +8,14 @@ export class UserFollowEntity extends BaseEntityClass<"UserFollow"> {
   readonly type = "UserFollow";
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   follower?: UserEntity;
   @RelationId((userFollow: UserFollowEntity) => userFollow.follower)
   followerId!: EntityId<"User">;
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   target?: UserEntity;
   @RelationId((userFollow: UserFollowEntity) => userFollow.target)

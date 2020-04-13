@@ -10,23 +10,23 @@ import { Button, Card, Column, Select, SelectOptions } from "../ui";
 
 const selectLangOptions: SelectOptions<UserSettings["ui.lang"]> = {
   en: {
-    label: "en"
+    label: "en",
   },
   ja: {
-    label: "ja"
-  }
+    label: "ja",
+  },
 };
 
 const selectColorSchemeOptions: SelectOptions<UserSettings["ui.colorScheme"]> = {
   system: {
-    label: "system"
+    label: "system",
   },
   dark: {
-    label: "dark"
+    label: "dark",
   },
   light: {
-    label: "light"
-  }
+    label: "light",
+  },
 };
 
 export const UserConfigEditor = React.memo<{
@@ -41,14 +41,14 @@ export const UserConfigEditor = React.memo<{
   const [isUploadDialogOpen, onToggleUploadDialog] = useToggleState();
 
   const onChangeSettings = useCallback((key: string, value: string) => {
-    setSettings(previousSettings => {
+    setSettings((previousSettings) => {
       const nextSettings = {
         ...previousSettings,
-        [key]: value
+        [key]: value,
       };
 
       onChange({
-        settings: nextSettings
+        settings: nextSettings,
       });
       return nextSettings;
     });
@@ -64,13 +64,13 @@ export const UserConfigEditor = React.memo<{
           label={t("editor.UserConfigEditor.label.language")}
           options={selectLangOptions}
           defaultValue={settings["ui.lang"]}
-          onChange={value => onChangeSettings("ui.lang", value)}
+          onChange={(value) => onChangeSettings("ui.lang", value)}
         />
         <Select<UserSettings["ui.colorScheme"]>
           label={t("editor.UserConfigEditor.label.theme")}
           options={selectColorSchemeOptions}
           defaultValue={settings["ui.colorScheme"]}
-          onChange={value => onChangeSettings("ui.colorScheme", value)}
+          onChange={(value) => onChangeSettings("ui.colorScheme", value)}
         />
       </Card>
       <UploadUserConfigDialog userConfigId={userConfigId} isOpen={isUploadDialogOpen} onClose={onToggleUploadDialog} />

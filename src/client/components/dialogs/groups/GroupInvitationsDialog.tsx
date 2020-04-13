@@ -13,13 +13,13 @@ export const GroupInvitationsDialog = createDialog<{
     const { currentUser } = useCurrentUser();
 
     const { onReload: onReloadGroupInvitations } = useSearch("GroupInvitation", {
-      groupId
+      groupId,
     });
 
     return (
       <ToggleGroupInvitationList
         initialParams={{
-          targetId: currentUser.id
+          targetId: currentUser.id,
         }}
         groupId={groupId}
         onReload={onReloadGroupInvitations}

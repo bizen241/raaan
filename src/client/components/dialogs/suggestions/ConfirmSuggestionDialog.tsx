@@ -22,12 +22,12 @@ export const ConfirmSuggestionDialog = createDialog<{
     const { entities: suggestionSummaries } = useSearch("SuggestionSummary", {
       authorId: currentUser.id,
       exerciseId: exercise.id,
-      state: "pending"
+      state: "pending",
     });
     const suggestionSummary = suggestionSummaries[0];
 
     const { bufferIds: suggestionBufferIds, bufferMap: suggestionBufferMap } = useBuffers("Suggestion");
-    const suggestionBufferId = suggestionBufferIds.find(bufferId => {
+    const suggestionBufferId = suggestionBufferIds.find((bufferId) => {
       const buffer = suggestionBufferMap[bufferId];
 
       return buffer && buffer.exerciseId === exercise.id;
@@ -49,7 +49,7 @@ export const ConfirmSuggestionDialog = createDialog<{
           description: exercise.description,
           questions: exercise.questions,
           exerciseId: exercise.id,
-          revisionId: exercise.latestId
+          revisionId: exercise.latestId,
         })
       );
       dispatch(push(`/suggestions/${bufferId}/edit`));

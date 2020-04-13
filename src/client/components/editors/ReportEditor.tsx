@@ -10,26 +10,26 @@ import { Button, Card, Column, Select, SelectOptions, TextField } from "../ui";
 
 const selectReportReasonOptions: SelectOptions<ReportReason> = {
   copyright: {
-    label: "著作権の侵害"
+    label: "著作権の侵害",
   },
   sexual: {
-    label: "性的な内容"
+    label: "性的な内容",
   },
   troll: {
-    label: "荒らし行為"
-  }
+    label: "荒らし行為",
+  },
 };
 
 const selectReportStateOptions: SelectOptions<ReportState> = {
   pending: {
-    label: "保留"
+    label: "保留",
   },
   accepted: {
-    label: "承認"
+    label: "承認",
   },
   rejected: {
-    label: "却下"
-  }
+    label: "却下",
+  },
 };
 
 export const ReportEditor = React.memo<{

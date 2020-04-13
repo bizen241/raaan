@@ -22,7 +22,7 @@ export interface QuestionResult {
 export const createAttempt = (questions: Question[]): Attempt => ({
   questions: compileQuestions(questions),
   plan: createPlan(questions),
-  results: []
+  results: [],
 });
 
 export const createPlan = (questions: Question[]) => {
@@ -41,7 +41,8 @@ export const summarizeResults = (results: QuestionResult[]): AttemptResult => {
   const time = results.reduce((totalTime, result) => totalTime + result.totalTime, 1);
 
   const typeCount = results.reduce(
-    (totalTypeCount, result) => totalTypeCount + result.typedLines.map(typedLine => typedLine.join("")).join("").length,
+    (totalTypeCount, result) =>
+      totalTypeCount + result.typedLines.map((typedLine) => typedLine.join("")).join("").length,
     0
   );
 
@@ -51,6 +52,6 @@ export const summarizeResults = (results: QuestionResult[]): AttemptResult => {
   return {
     time,
     typeCount,
-    accuracy
+    accuracy,
   };
 };

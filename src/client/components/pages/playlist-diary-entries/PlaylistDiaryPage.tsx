@@ -8,7 +8,7 @@ export const PlaylistDiaryPage = createPage<"Playlist">()(
     return (
       <PlaylistDiaryGraph
         params={{
-          targetId: playlistId
+          targetId: playlistId,
         }}
       />
     );

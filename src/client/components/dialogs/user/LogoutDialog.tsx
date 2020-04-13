@@ -13,14 +13,14 @@ export const LogoutDialog = createDialog<{}>()(
     const { currentUser } = useCurrentUser();
 
     const { entities: userSessions } = useSearch("UserSession", {
-      userId: currentUser.id
+      userId: currentUser.id,
     });
 
     const [isFailed, setStatus] = useState(false);
 
     const onLogout = useCallback(async () => {
       try {
-        const currentSession = userSessions.find(userSession => userSession.isCurrent);
+        const currentSession = userSessions.find((userSession) => userSession.isCurrent);
         if (currentSession === undefined) {
           return setStatus(true);
         }

@@ -8,7 +8,7 @@ import { DeletePlaylistBookmarkDialog } from "../../dialogs/playlist-bookmarks/D
 import { Column, IconButton } from "../../ui";
 
 export const PlaylistBookmarkList = createEntityList("PlaylistBookmark", {
-  itemHeight: 77
+  itemHeight: 77,
 })(
   React.memo(({ entity: playlistBookmark }) => {
     const { currentUser } = useCurrentUser();

@@ -8,7 +8,7 @@ export const UserFollowersPage = createPage<"User">()(
     return (
       <UserFollowerList
         initialParams={{
-          targetId: userId
+          targetId: userId,
         }}
       />
     );

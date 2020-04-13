@@ -61,11 +61,11 @@ export const HeatMap = React.memo<{
 const year = [...new Array(52).keys()];
 const week = [...new Array(7).keys()];
 
-const useHeatMapStyles = makeStyles(theme => ({
+const useHeatMapStyles = makeStyles((theme) => ({
   heatMapBlankItem: {
-    fill: theme.palette.type === "light" ? theme.palette.grey[200] : theme.palette.grey[800]
+    fill: theme.palette.type === "light" ? theme.palette.grey[200] : theme.palette.grey[800],
   },
   heatMapBusyItem: {
-    fill: theme.palette.primary.main
-  }
+    fill: theme.palette.primary.main,
+  },
 }));

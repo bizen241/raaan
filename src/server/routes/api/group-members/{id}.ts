@@ -4,7 +4,7 @@ import { GroupMemberEntity } from "../../../database/entities";
 
 export const DELETE = createDeleteOperation("GroupInvitation", "Read", async ({ currentUser, manager, id }) => {
   const groupMember = await manager.findOne(GroupMemberEntity, id, {
-    relations: ["group"]
+    relations: ["group"],
   });
   if (groupMember === undefined) {
     throw createError(404);

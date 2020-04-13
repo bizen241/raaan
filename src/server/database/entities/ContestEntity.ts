@@ -9,14 +9,14 @@ export class ContestEntity extends BaseEntityClass<"Contest"> {
   readonly type = "Contest";
 
   @ManyToOne(() => GroupEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   group?: GroupEntity;
   @RelationId((contest: ContestEntity) => contest.group)
   groupId!: EntityId<"Group">;
 
   @ManyToOne(() => ExerciseEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   exercise?: ExerciseEntity;
   @RelationId((contest: ContestEntity) => contest.exercise)

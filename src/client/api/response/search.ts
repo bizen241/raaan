@@ -57,7 +57,7 @@ const mergeIds = (target: SearchResult, response: SearchResponse, offset: number
 
   return {
     ...oldIds,
-    ...newIds
+    ...newIds,
   };
 };
 
@@ -73,7 +73,7 @@ export const mergeSearchResultStore = <T extends EntityType>(
   const target = searchResultMap[searchQueryString] || {
     ids: {},
     count: 0,
-    fetchedAt: Date.now()
+    fetchedAt: Date.now(),
   };
 
   const { searchOffset = 0 } = params;
@@ -85,9 +85,9 @@ export const mergeSearchResultStore = <T extends EntityType>(
       [searchQueryString]: {
         ids: mergeIds(target, response, searchOffset),
         count: response.count,
-        fetchedAt: Date.now()
-      }
-    }
+        fetchedAt: Date.now(),
+      },
+    },
   };
 };
 
@@ -114,11 +114,11 @@ export const appendToSearchResultMap = <T extends EntityType>(
   const result = source[query] || {
     ids: {},
     count: 0,
-    fetchedAt: Date.now()
+    fetchedAt: Date.now(),
   };
 
   const ids: IdMap = {
-    [0]: targetId
+    [0]: targetId,
   };
 
   Object.entries(result.ids).forEach(([indexString, entityId]) => {
@@ -131,8 +131,8 @@ export const appendToSearchResultMap = <T extends EntityType>(
     [query]: {
       ...result,
       ids,
-      count: result.count + 1
-    }
+      count: result.count + 1,
+    },
   };
 };
 
@@ -169,12 +169,12 @@ export const deleteFromSearchResultMap = <T extends EntityType>(
     updated[query] = {
       ...result,
       ids,
-      count: result.count - 1
+      count: result.count - 1,
     };
   });
 
   return {
     ...source,
-    ...updated
+    ...updated,
   };
 };

@@ -24,7 +24,7 @@ export const Search = React.memo<{
             <InputAdornment position="end">
               <IconButton icon={SearchIcon} edge="end" onClick={onSearch} />
             </InputAdornment>
-          )
+          ),
         }}
       />
     </Column>

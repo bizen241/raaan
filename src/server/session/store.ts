@@ -12,7 +12,7 @@ export default class SessionStore extends Store {
 
     try {
       const session = await manager.findOne(UserSessionEntity, {
-        sessionId
+        sessionId,
       });
 
       if (session !== undefined) {
@@ -32,10 +32,10 @@ export default class SessionStore extends Store {
       await manager.update(
         UserSessionEntity,
         {
-          sessionId
+          sessionId,
         },
         {
-          data
+          data,
         }
       );
 
@@ -54,7 +54,7 @@ export default class SessionStore extends Store {
 
     try {
       await manager.delete(UserSessionEntity, {
-        sessionId
+        sessionId,
       });
 
       if (callback !== undefined) {

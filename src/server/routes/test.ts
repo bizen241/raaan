@@ -22,12 +22,12 @@ testRouter.get("/", async (_, res, next) => {
   const users = await manager.find(UserEntity);
 
   await Promise.all(
-    users.map(async user => {
+    users.map(async (user) => {
       await Promise.all(
         [...Array(10).keys()].map(async (_, index) => {
           await insertUserDiaryEntry({
             user,
-            date: new Date(Date.now() - index * 24 * 60 * 60 * 1000)
+            date: new Date(Date.now() - index * 24 * 60 * 60 * 1000),
           });
         })
       );

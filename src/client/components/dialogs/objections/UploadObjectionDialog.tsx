@@ -20,13 +20,13 @@ export const UploadObjectionDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload("Objection", objectionId, undefined, uploadResponse => {
+        actions.api.upload("Objection", objectionId, undefined, (uploadResponse) => {
           dispatch(
             actions.cache.add(
               "Objection",
               {
                 targetType,
-                targetId
+                targetId,
               },
               uploadResponse
             )

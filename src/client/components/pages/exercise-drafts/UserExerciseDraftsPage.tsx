@@ -12,7 +12,7 @@ export const UserExerciseDraftsPage = createPage()(
       <ExerciseSummaryList
         initialParams={{
           authorId: currentUser.id,
-          isEditing: true
+          isEditing: true,
         }}
       />
     );

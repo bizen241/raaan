@@ -7,13 +7,9 @@ import { RevisionEntity } from "./RevisionEntity";
 export class RevisionSummaryEntity extends BaseEntityClass<"RevisionSummary"> {
   readonly type = "RevisionSummary";
 
-  @OneToOne(
-    () => RevisionEntity,
-    revision => revision.summary,
-    {
-      onDelete: "CASCADE"
-    }
-  )
+  @OneToOne(() => RevisionEntity, (revision) => revision.summary, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn()
   revision?: RevisionEntity;
   @RelationId((revisionSummary: RevisionSummaryEntity) => revisionSummary.revision)

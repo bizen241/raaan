@@ -8,7 +8,7 @@ export const UserUploadedReportsPage = createPage<"User">()(
     return (
       <ReportSummaryList
         initialParams={{
-          reporterId: userId
+          reporterId: userId,
         }}
       />
     );

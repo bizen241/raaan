@@ -17,7 +17,7 @@ export const ObjectionObjectionCommentsPage = createPage<"Objection">()(
     const { bufferIds: objectionCommentBufferIds, bufferMap: objectionCommentBufferMap } = useBuffers(
       "ObjectionComment"
     );
-    const objectionCommentId = objectionCommentBufferIds.find(bufferId => {
+    const objectionCommentId = objectionCommentBufferIds.find((bufferId) => {
       const buffer = objectionCommentBufferMap[bufferId];
 
       return buffer !== undefined && buffer.targetId === objectionId;
@@ -26,7 +26,7 @@ export const ObjectionObjectionCommentsPage = createPage<"Objection">()(
     const onComment = () => {
       dispatch(
         actions.buffers.update("ObjectionComment", generateLocalEntityId(), {
-          targetId: objectionId
+          targetId: objectionId,
         })
       );
     };
@@ -37,7 +37,7 @@ export const ObjectionObjectionCommentsPage = createPage<"Objection">()(
         {objectionCommentId && <ObjectionCommentEditor objectionCommentId={objectionCommentId} />}
         <ObjectionCommentList
           initialParams={{
-            targetId: objectionId
+            targetId: objectionId,
           }}
         />
       </>

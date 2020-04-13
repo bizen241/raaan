@@ -20,7 +20,7 @@ export const RevokeGroupSecretDialog = createDialog<{
           "GroupSecret",
           groupSecretId,
           {
-            expireAt: Date.now() - 1000 * 60 * 60
+            expireAt: Date.now() - 1000 * 60 * 60,
           },
           onClose
         )

@@ -16,7 +16,7 @@ export const ExercisesPage = createPage()(
     const query = useQuery<ExerciseSummary>();
     const params: Params<ExerciseSummary> = {
       tags: query.tags,
-      title: query.title
+      title: query.title,
     };
 
     return (
@@ -32,7 +32,7 @@ export const ExercisesPage = createPage()(
             searchOffset: 0,
             searchSort: "createdAt",
             searchOrder: "DESC",
-            ...params
+            ...params,
           }}
         />
       </>

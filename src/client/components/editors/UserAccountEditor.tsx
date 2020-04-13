@@ -9,11 +9,11 @@ import { Button, Card, Column, Select, SelectOptions } from "../ui";
 
 const selectAvatarTypeOptions: SelectOptions<AvatarType> = {
   identicon: {
-    label: "identicon"
+    label: "identicon",
   },
   gravatar: {
-    label: "gravatar"
-  }
+    label: "gravatar",
+  },
 };
 
 export const UserAccountEditor = React.memo<{

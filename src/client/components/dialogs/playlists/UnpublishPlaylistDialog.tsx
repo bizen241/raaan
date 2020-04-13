@@ -20,7 +20,7 @@ export const UnpublishPlaylistDialog = createDialog<{
           "Playlist",
           playlistId,
           {
-            isPrivate: true
+            isPrivate: true,
           },
           onClose
         )

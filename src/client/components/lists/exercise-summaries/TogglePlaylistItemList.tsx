@@ -21,9 +21,9 @@ export const TogglePlaylistItemList = createEntityList<
     const [isRequested, toggleRequestState] = useToggleState();
 
     const { entities: playlistItems } = useSearch("PlaylistItem", {
-      playlistId
+      playlistId,
     });
-    const foundPlaylistItem = playlistItems.find(playlistItem => playlistItem.exerciseId === exerciseId);
+    const foundPlaylistItem = playlistItems.find((playlistItem) => playlistItem.exerciseId === exerciseId);
 
     const onClick = useCallback(() => {
       toggleRequestState();
@@ -35,14 +35,14 @@ export const TogglePlaylistItemList = createEntityList<
             generateLocalEntityId(),
             {
               playlistId,
-              exerciseId
+              exerciseId,
             },
-            uploadResponse => {
+            (uploadResponse) => {
               dispatch(
                 actions.cache.add(
                   "PlaylistItem",
                   {
-                    playlistId
+                    playlistId,
                   },
                   uploadResponse
                 )

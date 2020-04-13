@@ -82,7 +82,7 @@ export const singleHiraganaToRomans: { [key: string]: string[] } = {
   ゃ: ["xya", "lya"],
   ゅ: ["xyu", "lyu"],
   ょ: ["xyo", "lyo"],
-  ゎ: ["xwa", "lwa"]
+  ゎ: ["xwa", "lwa"],
 };
 
 export const pairHiraganaToRomans: { [key: string]: string[] | undefined } = {
@@ -132,5 +132,5 @@ export const pairHiraganaToRomans: { [key: string]: string[] | undefined } = {
   でぃ: ["dhi"],
   でゅ: ["dhu"],
   どぅ: ["dwu"],
-  どぉ: ["dwo"]
+  どぉ: ["dwo"],
 };

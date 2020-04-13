@@ -10,7 +10,7 @@ export const UsersPage = createPage()(
         initialParams={{
           searchLimit: 10,
           searchOffset: 0,
-          searchOrder: "DESC"
+          searchOrder: "DESC",
         }}
       />
     );

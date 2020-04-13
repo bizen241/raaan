@@ -23,10 +23,10 @@ export const AttemptManager = React.memo<{
   const onFinishQuestion = useCallback(
     (result: QuestionResult) =>
       updateAttempt(
-        s =>
+        (s) =>
           s && {
             ...s,
-            results: [...s.results, result]
+            results: [...s.results, result],
           }
       ),
     []
@@ -34,10 +34,10 @@ export const AttemptManager = React.memo<{
   const onReplayExercise = useCallback(
     () =>
       updateAttempt(
-        s =>
+        (s) =>
           s && {
             ...s,
-            results: []
+            results: [],
           }
       ),
     []

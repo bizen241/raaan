@@ -9,7 +9,9 @@ export const Menu: React.FunctionComponent<{
 
   return (
     <div>
-      <IconButton onClick={useCallback(e => setAnchorElement(e.currentTarget), [])}>{icon || <MoreVert />}</IconButton>
+      <IconButton onClick={useCallback((e) => setAnchorElement(e.currentTarget), [])}>
+        {icon || <MoreVert />}
+      </IconButton>
       <MuiMenu
         anchorEl={anchorElement}
         open={Boolean(anchorElement)}

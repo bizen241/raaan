@@ -5,7 +5,7 @@ import { GroupSecretEntity } from "../../../database/entities";
 
 export const GET = createGetOperation("GroupSecret", "Read", async ({ currentUser, manager, id }) => {
   const groupSecret = await manager.findOne(GroupSecretEntity, id, {
-    relations: ["group"]
+    relations: ["group"],
   });
   if (groupSecret === undefined) {
     throw createError(404);
@@ -29,7 +29,7 @@ export const PATCH = createPatchOperation("GroupSecret", "Read", async ({ curren
   }
 
   const groupSecret = await manager.findOne(GroupSecretEntity, id, {
-    relations: ["group"]
+    relations: ["group"],
   });
   if (groupSecret === undefined) {
     throw createError(404);

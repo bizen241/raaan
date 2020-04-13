@@ -63,8 +63,8 @@ export const POST = createPostOperation("PlaylistItem", "Read", async ({ current
 
   const playlistItems = await manager.find(PlaylistItemEntity, {
     playlist: {
-      id: playlistId
-    }
+      id: playlistId,
+    },
   });
 
   await manager.save(newPlaylistItem);
@@ -73,7 +73,7 @@ export const POST = createPostOperation("PlaylistItem", "Read", async ({ current
     return [newPlaylistItem];
   }
 
-  const lastPlaylistItem = playlistItems.find(playlistItem => playlistItem.nextId === undefined);
+  const lastPlaylistItem = playlistItems.find((playlistItem) => playlistItem.nextId === undefined);
   if (lastPlaylistItem === undefined) {
     throw createError(500);
   }
@@ -82,10 +82,10 @@ export const POST = createPostOperation("PlaylistItem", "Read", async ({ current
   await manager.save(lastPlaylistItem);
 
   const savedPlaylistItem = await manager.findOne(PlaylistItemEntity, newPlaylistItem.id, {
-    relations: ["exercise"]
+    relations: ["exercise"],
   });
   const updatedPlaylistItem = await manager.findOne(PlaylistItemEntity, lastPlaylistItem.id, {
-    relations: ["exercise"]
+    relations: ["exercise"],
   });
   if (savedPlaylistItem === undefined || updatedPlaylistItem === undefined) {
     throw createError(500);

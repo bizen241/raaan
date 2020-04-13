@@ -8,7 +8,7 @@ export class TagDiaryEntryEntity extends BaseEntityClass<"TagDiaryEntry"> {
   readonly type = "TagDiaryEntry";
 
   @ManyToOne(() => TagEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   tag?: TagEntity;
   @RelationId((tagDiaryEntry: TagDiaryEntryEntity) => tagDiaryEntry.tag)

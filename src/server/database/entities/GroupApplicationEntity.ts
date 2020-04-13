@@ -9,7 +9,7 @@ export class GroupApplicationEntity extends BaseEntityClass<"GroupApplication"> 
   readonly type = "GroupApplication";
 
   @ManyToOne(() => GroupEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   group?: GroupEntity;
   @RelationId((groupApplication: GroupApplicationEntity) => groupApplication.group)

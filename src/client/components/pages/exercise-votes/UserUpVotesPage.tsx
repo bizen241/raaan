@@ -9,7 +9,7 @@ export const UserUpVotesPage = createPage<"User">()(
       <UserExerciseVoteList
         initialParams={{
           voterId: userId,
-          isUp: true
+          isUp: true,
         }}
       />
     );

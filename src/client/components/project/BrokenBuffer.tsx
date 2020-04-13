@@ -7,7 +7,7 @@ import { Button } from "../ui";
 
 export const BrokenBuffer = <T extends EntityType>({
   bufferType,
-  bufferId
+  bufferId,
 }: {
   bufferType: T;
   bufferId: EntityId<T>;

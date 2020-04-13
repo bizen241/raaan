@@ -7,7 +7,7 @@ import {
   getSearchResult,
   insertUser,
   reset,
-  setSearchParams
+  setSearchParams,
 } from "../../../__tests__/helpers";
 import { GET } from "../user-summaries";
 

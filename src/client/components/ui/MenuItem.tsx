@@ -21,10 +21,10 @@ export const MenuItem = React.forwardRef<
     to !== undefined
       ? {
           to,
-          component: Link
+          component: Link,
         }
       : {
-          href
+          href,
         };
 
   return (
@@ -41,6 +41,6 @@ const useMenuItemStyles = makeStyles(() => ({
   label: {
     minWidth: "100px",
     marginLeft: "8px",
-    padding: "4px 0"
-  }
+    padding: "4px 0",
+  },
 }));

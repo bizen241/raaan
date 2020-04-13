@@ -12,7 +12,7 @@ export const checkObjectionTarget = async (
   switch (targetType) {
     case "Exercise": {
       const exercise = await manager.findOne(ExerciseEntity, targetId, {
-        relations: ["author"]
+        relations: ["author"],
       });
       if (exercise === undefined) {
         throw createError(400);
@@ -25,7 +25,7 @@ export const checkObjectionTarget = async (
     }
     case "Playlist": {
       const playlist = await manager.findOne(PlaylistEntity, targetId, {
-        relations: ["author"]
+        relations: ["author"],
       });
       if (playlist === undefined) {
         throw createError(400);

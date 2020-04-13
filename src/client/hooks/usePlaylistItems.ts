@@ -7,7 +7,7 @@ export const usePlaylistItems = (playlistId: EntityId<"Playlist">, playlist: Pla
   const [orderBy, onChangeOrder] = useState(playlist.orderBy);
 
   const { entities: playlistItems, count, onReload } = useSearch("PlaylistItem", {
-    playlistId
+    playlistId,
   });
   const sortedPlaylistItems = useMemo(() => sortPlaylistItems(playlistItems, orderBy), [playlistItems, orderBy]);
 
@@ -16,6 +16,6 @@ export const usePlaylistItems = (playlistId: EntityId<"Playlist">, playlist: Pla
     playlistItems,
     playlistItemCount: count,
     onChangeOrder,
-    onReloadPlaylistItems: onReload
+    onReloadPlaylistItems: onReload,
   };
 };

@@ -12,9 +12,9 @@ export const request = async <T>(method: Method, path: string, body?: Params<Ent
     credentials: "include",
     headers: {
       "X-Requested-With": "Fetch",
-      "X-Api-Version": apiVersion.toString()
+      "X-Api-Version": apiVersion.toString(),
     },
-    json: body
+    json: body,
   });
 
   const serverApiVersion = Number(response.headers.get("X-Api-Version"));

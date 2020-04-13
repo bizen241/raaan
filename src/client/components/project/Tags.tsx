@@ -12,7 +12,7 @@ export const Tags = React.memo<{
   return (
     <Row>
       {value.split(/\s/).map(
-        tag =>
+        (tag) =>
           tag && (
             <Row key={tag} pr={1}>
               <Link to={`/tags/${tag}`} label={tag} />

@@ -13,13 +13,13 @@ export const Knobs = () => {
   const { currentUser } = useCurrentUser();
   const userSettings = useUserSettings();
 
-  const userConfigId = useSelector(state => state.app.userConfigId);
+  const userConfigId = useSelector((state) => state.app.userConfigId);
 
   const theme = radios(
     "theme",
     {
       dark: "dark",
-      light: "light"
+      light: "light",
     },
     "light"
   );
@@ -27,7 +27,7 @@ export const Knobs = () => {
     "lang",
     {
       en: "en",
-      ja: "ja"
+      ja: "ja",
     },
     "en"
   );
@@ -38,7 +38,7 @@ export const Knobs = () => {
       Admin: "Admin",
       Write: "Write",
       Read: "Read",
-      Guest: "Guest"
+      Guest: "Guest",
     },
     currentUser.permission
   );
@@ -49,21 +49,21 @@ export const Knobs = () => {
       dispatch(
         actions.cache.get({
           User: {
-            [guestUser.id]: guestUser
+            [guestUser.id]: guestUser,
           },
           UserAccount: {
-            [guestUserAccount.id]: guestUserAccount
+            [guestUserAccount.id]: guestUserAccount,
           },
           UserConfig: {
-            [guestUserConfig.id]: guestUserConfig
-          }
+            [guestUserConfig.id]: guestUserConfig,
+          },
         })
       );
       dispatch(
         actions.app.ready({
           userId: guestUser.id,
           userAccountId: guestUserAccount.id,
-          userConfigId: guestUserConfig.id
+          userConfigId: guestUserConfig.id,
         })
       );
     });
@@ -74,8 +74,8 @@ export const Knobs = () => {
       actions.buffers.update("UserConfig", userConfigId, {
         settings: {
           ...userSettings,
-          "ui.colorScheme": theme
-        }
+          "ui.colorScheme": theme,
+        },
       })
     );
   }, [theme]);
@@ -84,15 +84,15 @@ export const Knobs = () => {
       actions.buffers.update("UserConfig", userConfigId, {
         settings: {
           ...userSettings,
-          "ui.lang": lang
-        }
+          "ui.lang": lang,
+        },
       })
     );
   }, [lang]);
   useEffect(() => {
     dispatch(
       actions.buffers.update("User", currentUser.id, {
-        permission
+        permission,
       })
     );
   }, [permission]);

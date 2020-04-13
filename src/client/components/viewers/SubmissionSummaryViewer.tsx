@@ -11,7 +11,7 @@ export const SubmissionSummaryViewer = React.memo<{
 }>(({ exerciseId, submitterId }) => {
   const { entities: submissionSummaries } = useSearch("SubmissionSummary", {
     exerciseId,
-    submitterId
+    submitterId,
   });
 
   const submissionSummary = submissionSummaries[0];

@@ -24,15 +24,15 @@ export const UploadTagFollowDialog = createDialog<{
           generateLocalEntityId(),
           {
             followerId: currentUser.id,
-            targetId
+            targetId,
           },
-          uploadResponse => {
+          (uploadResponse) => {
             dispatch(
               actions.cache.add(
                 "TagFollow",
                 {
                   followerId: currentUser.id,
-                  targetId
+                  targetId,
                 },
                 uploadResponse
               )

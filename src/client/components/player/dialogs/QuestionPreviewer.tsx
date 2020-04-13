@@ -9,7 +9,7 @@ export const QuestionPreviewer = createPlayerDialog<{
   React.memo(({ question, onClose }) => {
     const exercise = useMemo(
       () => ({
-        questions: [question]
+        questions: [question],
       }),
       [question]
     );

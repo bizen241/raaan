@@ -5,7 +5,7 @@ import {
   annotationWithAnchor,
   isKanjiOnly,
   rubyWithAnchorRegExp,
-  rubyWithoutAnchorRegExp
+  rubyWithoutAnchorRegExp,
 } from "../../../../shared/exercise/compiler/ruby";
 import { rubyAnchor, rubySeparator, rubyTerminator } from "../../../../shared/exercise/ruby/characters";
 import { createRubiedTextFromTokens } from "./token";
@@ -18,7 +18,7 @@ export const addRuby = async (inputText: string, callback: (outputText: string) 
     .replace(rubyWithAnchorRegExp, annotationWithAnchor)
     .replace(rubyWithoutAnchorRegExp, annotationWithAnchor)
     .split(annotationTerminator)
-    .map(chunk => {
+    .map((chunk) => {
       const [unrubiedText, rubiedText] = chunk.split(annotationAnchor);
 
       const tokens = tokenizer.tokenize(removeSpecialCharacters(unrubiedText));
@@ -42,7 +42,4 @@ export const addRuby = async (inputText: string, callback: (outputText: string) 
 };
 
 const removeSpecialCharacters = (inputText: string) =>
-  inputText
-    .replace(rubyAnchor, "")
-    .replace(rubySeparator, "")
-    .replace(rubyTerminator, "");
+  inputText.replace(rubyAnchor, "").replace(rubySeparator, "").replace(rubyTerminator, "");

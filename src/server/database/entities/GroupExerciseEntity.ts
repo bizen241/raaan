@@ -9,14 +9,14 @@ export class GroupExerciseEntity extends BaseEntityClass<"GroupExercise"> {
   readonly type = "GroupExercise";
 
   @ManyToOne(() => GroupEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   group?: GroupEntity;
   @RelationId((groupExercise: GroupExerciseEntity) => groupExercise.group)
   groupId!: EntityId<"Group">;
 
   @ManyToOne(() => ExerciseEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   exercise?: ExerciseEntity;
   @RelationId((groupExercise: GroupExerciseEntity) => groupExercise.exercise)

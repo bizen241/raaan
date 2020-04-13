@@ -20,7 +20,7 @@ export const PublishPlaylistDialog = createDialog<{
           "Playlist",
           playlistId,
           {
-            isPrivate: false
+            isPrivate: false,
           },
           onClose
         )

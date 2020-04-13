@@ -5,7 +5,7 @@ import {
   EntityId,
   EntityType,
   EntityTypeToEntity,
-  mergeEntityTypeToObject
+  mergeEntityTypeToObject,
 } from "../../shared/api/entities";
 import { Params } from "../../shared/api/request/params";
 import { EntityStore } from "../../shared/api/response/get";
@@ -16,7 +16,7 @@ import {
   deleteFromSearchResultMap,
   findCreatedEntityId,
   mergeSearchResultStore,
-  SearchResultStore
+  SearchResultStore,
 } from "../api/response/search";
 import { ActionUnion, createAction } from "./action";
 import { guestUser, guestUserAccount, guestUserConfig } from "./guest";
@@ -25,25 +25,25 @@ export enum CacheActionType {
   Get = "cache/get",
   Search = "cache/search",
   Add = "cache/add",
-  Purge = "cache/purge"
+  Purge = "cache/purge",
 }
 
 export const cacheActions = {
   get: (response: Partial<EntityStore>) =>
     createAction(CacheActionType.Get, {
-      response
+      response,
     }),
   search: <T extends EntityType>(entityType: T, params: Params<EntityTypeToEntity[T]>, response: SearchResponse) =>
     createAction(CacheActionType.Search, {
       entityType,
       params,
-      response
+      response,
     }),
   add: <T extends EntityType>(entityType: T, params: Params<EntityTypeToEntity[T]>, response: EntityStore) =>
     createAction(CacheActionType.Add, {
       entityType,
       params,
-      response
+      response,
     }),
   purge: <T extends EntityType>(
     entityType: T | undefined,
@@ -51,8 +51,8 @@ export const cacheActions = {
   ) =>
     createAction(CacheActionType.Purge, {
       entityType,
-      key
-    })
+      key,
+    }),
 };
 
 export type CacheActions = ActionUnion<typeof cacheActions>;
@@ -69,16 +69,16 @@ export const initialCacheState: CacheState = {
   get: {
     ...createEntityTypeToObject(),
     User: {
-      [guestUser.id]: guestUser
+      [guestUser.id]: guestUser,
     },
     UserAccount: {
-      [guestUserAccount.id]: guestUserAccount
+      [guestUserAccount.id]: guestUserAccount,
     },
     UserConfig: {
-      [guestUserConfig.id]: guestUserConfig
-    }
+      [guestUserConfig.id]: guestUserConfig,
+    },
   },
-  search: createEntityTypeToObject()
+  search: createEntityTypeToObject(),
 };
 
 export const cacheReducer: Reducer<CacheState, Actions> = (state = initialCacheState, action) => {
@@ -88,7 +88,7 @@ export const cacheReducer: Reducer<CacheState, Actions> = (state = initialCacheS
 
       return {
         ...state,
-        get: mergeEntityTypeToObject(state.get, response)
+        get: mergeEntityTypeToObject(state.get, response),
       };
     }
     case CacheActionType.Search: {
@@ -96,7 +96,7 @@ export const cacheReducer: Reducer<CacheState, Actions> = (state = initialCacheS
 
       return {
         get: mergeEntityTypeToObject(state.get, response.entities),
-        search: mergeSearchResultStore(state.search, entityType, params, response)
+        search: mergeSearchResultStore(state.search, entityType, params, response),
       };
     }
     case CacheActionType.Add: {
@@ -113,8 +113,8 @@ export const cacheReducer: Reducer<CacheState, Actions> = (state = initialCacheS
         ...state,
         search: {
           ...state.search,
-          [entityType]: result
-        }
+          [entityType]: result,
+        },
       };
     }
     case CacheActionType.Purge: {
@@ -127,12 +127,12 @@ export const cacheReducer: Reducer<CacheState, Actions> = (state = initialCacheS
         return {
           get: {
             ...state.get,
-            [entityType]: initialCacheState.get[entityType]
+            [entityType]: initialCacheState.get[entityType],
           },
           search: {
             ...state.search,
-            [entityType]: initialCacheState.search[entityType]
-          }
+            [entityType]: initialCacheState.search[entityType],
+          },
         };
       }
 
@@ -145,12 +145,12 @@ export const cacheReducer: Reducer<CacheState, Actions> = (state = initialCacheS
         return {
           get: {
             ...state.get,
-            [entityType]: get
+            [entityType]: get,
           },
           search: {
             ...state.search,
-            [entityType]: result
-          }
+            [entityType]: result,
+          },
         };
       } else {
         const search = { ...state.search[entityType] };
@@ -162,8 +162,8 @@ export const cacheReducer: Reducer<CacheState, Actions> = (state = initialCacheS
           ...state,
           search: {
             ...state.search,
-            [entityType]: search
-          }
+            [entityType]: search,
+          },
         };
       }
     }

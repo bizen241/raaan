@@ -15,7 +15,7 @@ export const ExerciseExerciseCommentsPage = createPage<"Exercise">()(
     const dispatch = useDispatch();
 
     const { bufferIds: exerciseCommentBufferIds, bufferMap: exerciseCommentBufferMap } = useBuffers("ExerciseComment");
-    const exerciseCommentId = exerciseCommentBufferIds.find(bufferId => {
+    const exerciseCommentId = exerciseCommentBufferIds.find((bufferId) => {
       const buffer = exerciseCommentBufferMap[bufferId];
 
       return buffer !== undefined && buffer.targetId === exerciseId;
@@ -24,7 +24,7 @@ export const ExerciseExerciseCommentsPage = createPage<"Exercise">()(
     const onComment = () => {
       dispatch(
         actions.buffers.update("ExerciseComment", generateLocalEntityId(), {
-          targetId: exerciseId
+          targetId: exerciseId,
         })
       );
     };
@@ -35,7 +35,7 @@ export const ExerciseExerciseCommentsPage = createPage<"Exercise">()(
         {exerciseCommentId !== undefined && <ExerciseCommentEditor exerciseCommentId={exerciseCommentId} />}
         <ExerciseCommentList
           initialParams={{
-            targetId: exerciseId
+            targetId: exerciseId,
           }}
         />
       </>

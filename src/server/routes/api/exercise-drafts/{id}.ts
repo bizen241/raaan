@@ -7,7 +7,7 @@ import { getTags } from "../../../services/tags";
 
 export const GET = createGetOperation("ExerciseDraft", "Read", async ({ currentUser, manager, id }) => {
   const exerciseDraft = await manager.findOne(ExerciseDraftEntity, id, {
-    relations: ["exercise"]
+    relations: ["exercise"],
   });
   if (exerciseDraft === undefined) {
     throw createError(404);
@@ -33,7 +33,7 @@ export const PATCH = createPatchOperation("ExerciseDraft", "Read", async ({ curr
   }
 
   const exercise = await manager.findOne(ExerciseEntity, exerciseDraft.exerciseId, {
-    relations: ["author", "author.summary", "summary", "summary.tags", "summary.tags.summary", "latest", "draft"]
+    relations: ["author", "author.summary", "summary", "summary.tags", "summary.tags.summary", "latest", "draft"],
   });
   if (exercise === undefined) {
     throw createError(404);
@@ -58,7 +58,7 @@ export const PATCH = createPatchOperation("ExerciseDraft", "Read", async ({ curr
     if (exercise.isDraft) {
       updateExerciseContent(exercise.latest, {
         ...exercise.draft,
-        ...params
+        ...params,
       });
       await manager.save(exercise.latest);
     } else {
@@ -68,7 +68,7 @@ export const PATCH = createPatchOperation("ExerciseDraft", "Read", async ({ curr
         exercise,
         {
           ...exercise.draft,
-          ...params
+          ...params,
         },
         params.messageSubject || "",
         params.messageBody || "",

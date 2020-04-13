@@ -23,14 +23,14 @@ export const createVerifier = (provider: AuthProviderName): Verifier => async (
       provider,
       accountId: id,
       name: username || "",
-      email: email.value
+      email: email.value,
     });
 
     done(null, user);
   } catch (e) {
     if (e instanceof AuthError) {
       done(null, false, {
-        provider: e.provider
+        provider: e.provider,
       });
     } else {
       done(e);

@@ -10,19 +10,15 @@ import { UserEntity } from "./UserEntity";
 export class ExerciseEntity extends BaseEntityClass<"Exercise"> {
   readonly type = "Exercise";
 
-  @OneToOne(
-    () => ExerciseSummaryEntity,
-    exerciseSummary => exerciseSummary.exercise,
-    {
-      cascade: true
-    }
-  )
+  @OneToOne(() => ExerciseSummaryEntity, (exerciseSummary) => exerciseSummary.exercise, {
+    cascade: true,
+  })
   summary?: ExerciseSummaryEntity;
   @RelationId((exercise: ExerciseEntity) => exercise.summary)
   summaryId!: EntityId<"ExerciseSummary">;
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   author?: UserEntity;
   @RelationId((exercise: ExerciseEntity) => exercise.author)
@@ -30,20 +26,16 @@ export class ExerciseEntity extends BaseEntityClass<"Exercise"> {
 
   @OneToOne(() => RevisionEntity, {
     cascade: true,
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   @JoinColumn()
   latest?: RevisionEntity;
   @RelationId((exercise: ExerciseEntity) => exercise.latest)
   latestId!: EntityId<"Revision">;
 
-  @OneToOne(
-    () => ExerciseDraftEntity,
-    exerciseDraft => exerciseDraft.exercise,
-    {
-      cascade: true
-    }
-  )
+  @OneToOne(() => ExerciseDraftEntity, (exerciseDraft) => exerciseDraft.exercise, {
+    cascade: true,
+  })
   draft?: ExerciseDraftEntity;
   @RelationId((exercise: ExerciseEntity) => exercise.draft)
   draftId!: EntityId<"ExerciseDraft">;

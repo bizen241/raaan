@@ -7,13 +7,9 @@ import { SuggestionEntity } from "./SuggestionEntity";
 export class SuggestionSummaryEntity extends BaseEntityClass<"SuggestionSummary"> {
   readonly type = "SuggestionSummary";
 
-  @OneToOne(
-    () => SuggestionEntity,
-    suggestion => suggestion.summary,
-    {
-      onDelete: "CASCADE"
-    }
-  )
+  @OneToOne(() => SuggestionEntity, (suggestion) => suggestion.summary, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn()
   suggestion?: SuggestionEntity;
   @RelationId((suggestionSummary: SuggestionSummaryEntity) => suggestionSummary.suggestion)

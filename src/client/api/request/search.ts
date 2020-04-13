@@ -6,7 +6,7 @@ export const stringifyParams = <E extends EntityObject>(params: Params<E>, exclu
 
   const keys = Object.keys(params) as Array<keyof Params<E>>;
 
-  keys.forEach(key => {
+  keys.forEach((key) => {
     const value = params[key];
     if (value === undefined) {
       return;

@@ -29,7 +29,7 @@ export const POST = createPostOperation("UserFollow", "Read", async ({ currentUs
   }
 
   const target = await manager.findOne(UserEntity, targetId, {
-    relations: ["summary"]
+    relations: ["summary"],
   });
   if (target === undefined) {
     throw createError(404);

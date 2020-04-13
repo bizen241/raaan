@@ -16,7 +16,7 @@ export const ExportExerciseDialog = createDialog<{
       const source: Partial<Exercise> = {
         title,
         tags,
-        questions
+        questions,
       };
       const blob = new Blob([JSON.stringify(source, null, 2)], { type: "application/json" });
 

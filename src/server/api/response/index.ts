@@ -11,9 +11,9 @@ export const responseFindResult = (req: Request, res: Response, ...entities: Ent
 
 export const responseSearchResult = (req: Request, res: Response, entities: Entity[], count: number) => {
   const searchResult: SearchResponse = {
-    ids: entities.map(entity => entity.id),
+    ids: entities.map((entity) => entity.id),
     entities: normalizeEntities({ sessionId: req.sessionID }, entities),
-    count
+    count,
   };
 
   res.status(200).json(searchResult);

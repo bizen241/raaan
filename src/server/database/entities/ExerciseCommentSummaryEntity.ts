@@ -7,13 +7,9 @@ import { ExerciseCommentEntity } from "./ExerciseCommentEntity";
 export class ExerciseCommentSummaryEntity extends BaseEntityClass<"ExerciseCommentSummary"> {
   readonly type = "ExerciseCommentSummary";
 
-  @OneToOne(
-    () => ExerciseCommentEntity,
-    exerciseComment => exerciseComment.summary,
-    {
-      onDelete: "CASCADE"
-    }
-  )
+  @OneToOne(() => ExerciseCommentEntity, (exerciseComment) => exerciseComment.summary, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn()
   parent?: ExerciseCommentEntity;
   @RelationId((exerciseCommentSummary: ExerciseCommentSummaryEntity) => exerciseCommentSummary.parent)

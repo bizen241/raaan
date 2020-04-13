@@ -15,7 +15,7 @@ export const ReportReportCommentsPage = createPage<"Report">()(
     const dispatch = useDispatch();
 
     const { bufferIds: reportCommentBufferIds, bufferMap: reportCommentBufferMap } = useBuffers("ReportComment");
-    const reportCommentId = reportCommentBufferIds.find(bufferId => {
+    const reportCommentId = reportCommentBufferIds.find((bufferId) => {
       const buffer = reportCommentBufferMap[bufferId];
 
       return buffer !== undefined && buffer.targetId === reportId;
@@ -24,7 +24,7 @@ export const ReportReportCommentsPage = createPage<"Report">()(
     const onComment = () => {
       dispatch(
         actions.buffers.update("ReportComment", generateLocalEntityId(), {
-          targetId: reportId
+          targetId: reportId,
         })
       );
     };
@@ -35,7 +35,7 @@ export const ReportReportCommentsPage = createPage<"Report">()(
         {reportCommentId && <ReportCommentEditor reportCommentId={reportCommentId} />}
         <ReportCommentList
           initialParams={{
-            targetId: reportId
+            targetId: reportId,
           }}
         />
       </>

@@ -8,7 +8,7 @@ export class UserMessageEntity extends BaseEntityClass<"UserMessage"> {
   readonly type = "UserMessage";
 
   @ManyToOne(() => UserEntity, {
-    onDelete: "CASCADE"
+    onDelete: "CASCADE",
   })
   @JoinColumn()
   user?: UserEntity;

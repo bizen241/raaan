@@ -10,7 +10,7 @@ import {
   reset,
   setDeleteParams,
   setGetParams,
-  setPatchParams
+  setPatchParams,
 } from "../../../../__tests__/helpers";
 import { DELETE, GET, PATCH } from "../{id}";
 
@@ -33,7 +33,7 @@ describe("api > exercises > {id}", () => {
       const { req, res, next } = await createMocks("Guest");
 
       const { exercise } = await insertExercise({
-        exerciseIsPrivate: true
+        exerciseIsPrivate: true,
       });
 
       setGetParams(req, exercise.id);
@@ -46,7 +46,7 @@ describe("api > exercises > {id}", () => {
       const { req, res, next, user } = await createMocks("Guest");
 
       const { exercise } = await insertExercise({
-        exerciseAuthor: user
+        exerciseAuthor: user,
       });
 
       setGetParams(req, exercise.id);
@@ -84,11 +84,11 @@ describe("api > exercises > {id}", () => {
       const { req, res, next, user } = await createMocks("Read");
 
       const { exercise } = await insertExercise({
-        exerciseAuthor: user
+        exerciseAuthor: user,
       });
 
       setPatchParams(req, exercise.id, {
-        isPrivate: false
+        isPrivate: false,
       });
 
       await PATCH(req, res, next);
@@ -101,7 +101,7 @@ describe("api > exercises > {id}", () => {
       const { exercise } = await insertExercise();
 
       setPatchParams(req, exercise.id, {
-        isLocked: true
+        isLocked: true,
       });
 
       await PATCH(req, res, next);
@@ -134,7 +134,7 @@ describe("api > exercises > {id}", () => {
       const { req, res, next, manager, user } = await createMocks("Read");
 
       const { exercise } = await insertExercise({
-        exerciseAuthor: user
+        exerciseAuthor: user,
       });
 
       setDeleteParams(req, exercise.id);

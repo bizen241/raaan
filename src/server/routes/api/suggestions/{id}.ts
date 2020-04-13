@@ -5,7 +5,7 @@ import { updateExerciseContent } from "../../../database/entities/BaseExerciseCl
 
 export const GET = createGetOperation("Suggestion", "Read", async ({ manager, id }) => {
   const suggestion = await manager.findOne(SuggestionEntity, id, {
-    relations: ["summary", "revision"]
+    relations: ["summary", "revision"],
   });
   if (suggestion === undefined) {
     throw createError(404);
@@ -16,7 +16,7 @@ export const GET = createGetOperation("Suggestion", "Read", async ({ manager, id
 
 export const PATCH = createPatchOperation("Suggestion", "Write", async ({ currentUser, manager, id, params }) => {
   const suggestion = await manager.findOne(SuggestionEntity, id, {
-    relations: ["summary", "revision", "revision.exercise"]
+    relations: ["summary", "revision", "revision.exercise"],
   });
   if (suggestion === undefined) {
     throw createError(404);

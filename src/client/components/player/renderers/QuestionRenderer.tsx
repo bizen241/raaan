@@ -24,16 +24,16 @@ export const QuestionRenderer = React.memo<{
 
   const currentCharIndex = typedChunk.length;
 
-  const isRoman = useMemo(() => currentRomanLine.some(romanChunk => romanChunk.kana !== romanChunk.candidates[0]), [
-    currentLineIndex
+  const isRoman = useMemo(() => currentRomanLine.some((romanChunk) => romanChunk.kana !== romanChunk.candidates[0]), [
+    currentLineIndex,
   ]);
 
   const currentCandidates = currentRomanChunk.candidates.filter(
-    candidate => candidate.slice(0, currentCharIndex) === typedChunk
+    (candidate) => candidate.slice(0, currentCharIndex) === typedChunk
   );
   const isCurrentLineFinished =
     currentRomanLine.length === currentRomanChunkIndex + 1 &&
-    currentCandidates.some(candidate => candidate === typedChunk);
+    currentCandidates.some((candidate) => candidate === typedChunk);
 
   const currentRubyLine = rubyLines[currentLineIndex];
   const currentRubyChunkIndex = isCurrentLineFinished ? currentRubyLine.length : currentRomanChunk.pointer;
@@ -116,68 +116,68 @@ export const QuestionRenderer = React.memo<{
   );
 });
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   outerWrapper: {
     height: "100%",
-    overflowY: "hidden"
+    overflowY: "hidden",
   },
   middleWrapper: {
     height: "100%",
     width: "100%",
     maxWidth: "2000px",
-    overflowY: "hidden"
+    overflowY: "hidden",
   },
   innerWrapper: {
-    overflow: "hidden"
+    overflow: "hidden",
   },
   typedLinesOuter: {
     position: "relative",
     minHeight: "40%",
     overflow: "hidden",
     fontSize: "3vmax",
-    color: theme.palette.text.disabled
+    color: theme.palette.text.disabled,
   },
   typedLinesInner: {
     position: "absolute",
     bottom: 0,
     left: 0,
     flex: 1,
-    overflow: "hidden"
+    overflow: "hidden",
   },
   typedStringOuter: {
     flexShrink: 0,
     maxWidth: "50%",
     overflow: "hidden",
-    color: theme.palette.text.disabled
+    color: theme.palette.text.disabled,
   },
   typedStringInner: {
     float: "right",
     overflow: "hidden",
-    whiteSpace: "pre"
+    whiteSpace: "pre",
   },
   untypedString: {
     overflow: "hidden",
-    whiteSpace: "pre"
+    whiteSpace: "pre",
   },
   untypedLines: {
     fontSize: "3vmax",
-    color: theme.palette.text.disabled
+    color: theme.palette.text.disabled,
   },
   currentRubyLine: {
     height: "2em",
     fontSize: "4vmax",
-    lineHeight: "2.5em"
+    lineHeight: "2.5em",
   },
   currentRomanLine: {
     fontSize: "4vmax",
     lineHeight: "1.5em",
-    paddingBottom: "0.5em"
+    paddingBottom: "0.5em",
   },
   mask: {
     color: "transparent",
     backgroundColor: theme.palette.text.disabled,
     borderBottomStyle: "solid",
     borderBottomWidth: "3px",
-    borderBottomColor: theme.palette.text.primary
-  }
+    borderBottomColor: theme.palette.text.primary,
+  },
 }));

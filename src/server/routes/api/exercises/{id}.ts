@@ -5,7 +5,7 @@ import { ExerciseEntity } from "../../../database/entities";
 
 export const GET = createGetOperation("Exercise", "Guest", async ({ currentUser, manager, id }) => {
   const exercise = await manager.findOne(ExerciseEntity, id, {
-    relations: ["summary", "summary.tags", "author", "author.summary", "latest", "draft"]
+    relations: ["summary", "summary.tags", "author", "author.summary", "latest", "draft"],
   });
   if (exercise === undefined) {
     throw createError(404);
@@ -20,7 +20,7 @@ export const GET = createGetOperation("Exercise", "Guest", async ({ currentUser,
 
 export const PATCH = createPatchOperation("Exercise", "Read", async ({ currentUser, manager, id, params }) => {
   const exercise = await manager.findOne(ExerciseEntity, id, {
-    relations: ["summary", "summary.tags", "author", "author.summary", "latest", "draft"]
+    relations: ["summary", "summary.tags", "author", "author.summary", "latest", "draft"],
   });
   if (exercise === undefined) {
     throw createError(404);

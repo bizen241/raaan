@@ -20,7 +20,7 @@ export const PostExerciseDraftDialog = createDialog<{
 
     const onUpload = () => {
       dispatch(
-        actions.api.upload("ExerciseDraft", exerciseDraftId, undefined, uploadResponse => {
+        actions.api.upload("ExerciseDraft", exerciseDraftId, undefined, (uploadResponse) => {
           const newExerciseId = Object.keys(uploadResponse.Exercise)[0];
 
           dispatch(replace(`/exercises/${newExerciseId}`));

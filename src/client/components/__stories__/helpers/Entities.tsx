@@ -7,7 +7,7 @@ import {
   EntityId,
   EntityType,
   EntityTypeToEntity,
-  ExerciseContent
+  ExerciseContent,
 } from "../../../../shared/api/entities";
 import { Params } from "../../../../shared/api/request/params";
 import { EntityStore } from "../../../../shared/api/response/get";
@@ -40,7 +40,7 @@ const base = <T extends EntityType>(id: EntityId<T>) => ({
   id,
   createdAt: Date.now(),
   updatedAt: Date.now(),
-  fetchedAt: Date.now()
+  fetchedAt: Date.now(),
 });
 
 const createStore = () => createEntityTypeToObject<EntityStore>();
@@ -52,12 +52,12 @@ const casheSearchResult = <T extends EntityType>(
   count: number,
   params: Params<EntityTypeToEntity[T]>
 ) => {
-  const ids = indexes(count).map(i => getCacheId(i));
+  const ids = indexes(count).map((i) => getCacheId(i));
 
   return actions.cache.search(entityType, params, {
     ids,
     count: ids.length,
-    entities: {}
+    entities: {},
   });
 };
 const addBuffer = <T extends EntityType>(entityType: T, index: number, params: Params<EntityTypeToEntity[T]>) => {
@@ -83,7 +83,7 @@ export const cacheEntities = (dispatch: Dispatch) => {
 const cacheAppDiaryEntries = (store: EntityStore, dispatch: Dispatch) => {
   const count = 365;
 
-  indexes(count).map(i => cacheAppDiaryEntry(store, i));
+  indexes(count).map((i) => cacheAppDiaryEntry(store, i));
 
   dispatch(casheSearchResult("AppDiaryEntry", count, {}));
 };
@@ -91,12 +91,12 @@ const cacheAppDiaryEntries = (store: EntityStore, dispatch: Dispatch) => {
 const cacheContests = (store: EntityStore, dispatch: Dispatch) => {
   const count = 10;
 
-  indexes(count).map(i => cacheContest(store, i));
-  indexes(count).map(i => dispatch(addBuffer("Contest", i, {})));
+  indexes(count).map((i) => cacheContest(store, i));
+  indexes(count).map((i) => dispatch(addBuffer("Contest", i, {})));
 
   dispatch(
     casheSearchResult("Contest", count, {
-      groupId: id(0)
+      groupId: id(0),
     })
   );
 };
@@ -104,19 +104,19 @@ const cacheContests = (store: EntityStore, dispatch: Dispatch) => {
 const cacheExercises = (store: EntityStore, dispatch: Dispatch) => {
   const count = 10;
 
-  indexes(count).map(i => cacheExercise(store, i));
-  indexes(count).map(i => dispatch(addBuffer("ExerciseDraft", i, {})));
+  indexes(count).map((i) => cacheExercise(store, i));
+  indexes(count).map((i) => dispatch(addBuffer("ExerciseDraft", i, {})));
 
   dispatch(
     casheSearchResult("ExerciseSummary", count, {
       searchSort: "createdAt",
-      searchOrder: "DESC"
+      searchOrder: "DESC",
     })
   );
   dispatch(
     casheSearchResult("ExerciseSummary", count, {
       authorId: id(0),
-      isEditing: true
+      isEditing: true,
     })
   );
 };
@@ -124,11 +124,11 @@ const cacheExercises = (store: EntityStore, dispatch: Dispatch) => {
 const cacheExerciseDiaryEntries = (store: EntityStore, dispatch: Dispatch) => {
   const count = 365;
 
-  indexes(count).map(i => cacheExerciseDiaryEntry(store, i));
+  indexes(count).map((i) => cacheExerciseDiaryEntry(store, i));
 
   dispatch(
     casheSearchResult("ExerciseDiaryEntry", count, {
-      targetId: id(0)
+      targetId: id(0),
     })
   );
 };
@@ -136,11 +136,11 @@ const cacheExerciseDiaryEntries = (store: EntityStore, dispatch: Dispatch) => {
 const cacheExerciseComments = (store: EntityStore, dispatch: Dispatch) => {
   const count = 10;
 
-  indexes(count).map(i => cacheExerciseComment(store, i));
+  indexes(count).map((i) => cacheExerciseComment(store, i));
 
   dispatch(
     casheSearchResult("ExerciseComment", count, {
-      targetId: id(0)
+      targetId: id(0),
     })
   );
 };
@@ -148,18 +148,18 @@ const cacheExerciseComments = (store: EntityStore, dispatch: Dispatch) => {
 const cacheExerciseVotes = (store: EntityStore, dispatch: Dispatch) => {
   const count = 10;
 
-  indexes(count).map(i => cacheExerciseVote(store, i));
+  indexes(count).map((i) => cacheExerciseVote(store, i));
 
   dispatch(
     casheSearchResult("ExerciseVote", count, {
       voterId: id(0),
-      isUp: true
+      isUp: true,
     })
   );
   dispatch(
     casheSearchResult("ExerciseVote", count, {
       voterId: id(0),
-      isUp: false
+      isUp: false,
     })
   );
 };
@@ -167,7 +167,7 @@ const cacheExerciseVotes = (store: EntityStore, dispatch: Dispatch) => {
 const cacheGroups = (store: EntityStore, dispatch: Dispatch) => {
   const count = 10;
 
-  indexes(count).map(i => cacheGroup(store, i));
+  indexes(count).map((i) => cacheGroup(store, i));
 
   dispatch(casheSearchResult("GroupSummary", count, {}));
 };
@@ -175,7 +175,7 @@ const cacheGroups = (store: EntityStore, dispatch: Dispatch) => {
 const cacheUsers = (store: EntityStore, dispatch: Dispatch) => {
   const count = 10;
 
-  indexes(count).map(i => cacheUser(store, i));
+  indexes(count).map((i) => cacheUser(store, i));
 
   dispatch(casheSearchResult("UserSummary", count, {}));
 };
@@ -183,11 +183,11 @@ const cacheUsers = (store: EntityStore, dispatch: Dispatch) => {
 const cacheUserDiaryEntries = (store: EntityStore, dispatch: Dispatch) => {
   const count = 365;
 
-  indexes(count).map(i => cacheUserDiaryEntry(store, i));
+  indexes(count).map((i) => cacheUserDiaryEntry(store, i));
 
   dispatch(
     casheSearchResult("UserDiaryEntry", count, {
-      targetId: id(0)
+      targetId: id(0),
     })
   );
 };
@@ -197,7 +197,7 @@ const cacheAppDiaryEntry = (store: EntityStore, i: number) => {
     ...base(id(i)),
     date: dateToDateString(new Date(Date.now() - i * 24 * 60 * 60 * 1000)),
     typedCount: 1,
-    submittedCount: 1
+    submittedCount: 1,
   };
 };
 
@@ -208,7 +208,7 @@ const cacheContest = (store: EntityStore, i: number) => {
     exerciseId: id(i),
     title: `Contest No.${i}`,
     startAt: Date.now(),
-    finishAt: Date.now()
+    finishAt: Date.now(),
   };
 };
 
@@ -220,7 +220,7 @@ const cacheExercise = (store: EntityStore, index: number) => {
     description: "description",
     questions: [],
     references: [],
-    isRandom: true
+    isRandom: true,
   };
 
   store.Exercise[id(index)] = {
@@ -232,7 +232,7 @@ const cacheExercise = (store: EntityStore, index: number) => {
     draftId: id(index),
     isDraft: false,
     isLocked: false,
-    isPrivate: false
+    isPrivate: false,
   };
 
   store.ExerciseSummary[id(index)] = {
@@ -251,14 +251,14 @@ const cacheExercise = (store: EntityStore, index: number) => {
     isDraft: false,
     isEditing: true,
     isPrivate: false,
-    isLocked: true
+    isLocked: true,
   };
 
   store.ExerciseDraft[id(index)] = {
     ...base(id(index)),
     ...exerciseContent,
     exerciseId: id(index),
-    isMerged: false
+    isMerged: false,
   };
 
   store.Revision[id(index)] = {
@@ -267,13 +267,13 @@ const cacheExercise = (store: EntityStore, index: number) => {
     summaryId: id(index),
     exerciseId: id(index),
     messageSubject: "subject",
-    messageBody: "body"
+    messageBody: "body",
   };
 
   store.RevisionSummary[id(index)] = {
     ...base(id(index)),
     revisionId: id(index),
-    messageSubject: "subject"
+    messageSubject: "subject",
   };
 };
 
@@ -282,14 +282,14 @@ const cacheExerciseDiaryEntry = (store: EntityStore, index: number) => {
     ...base(id(index)),
     date: dateToDateString(new Date(Date.now() - index * 24 * 60 * 60 * 1000)),
     submittedCount: 0,
-    typedCount: 0
+    typedCount: 0,
   };
 
   store.ExerciseCommentSummary[id(index)] = {
     ...base(id(index)),
     parentId: id(index),
     upvoteCount: 0,
-    downvoteCount: 0
+    downvoteCount: 0,
   };
 };
 
@@ -298,14 +298,14 @@ const cacheExerciseComment = (store: EntityStore, index: number) => {
     ...base(id(index)),
     summaryId: id(index),
     authorId: id(index),
-    body: `ExerciseComment No.${index}`
+    body: `ExerciseComment No.${index}`,
   };
 
   store.ExerciseCommentSummary[id(index)] = {
     ...base(id(index)),
     parentId: id(index),
     upvoteCount: 0,
-    downvoteCount: 0
+    downvoteCount: 0,
   };
 };
 
@@ -314,7 +314,7 @@ const cacheExerciseVote = (store: EntityStore, index: number) => {
     ...base(id(index)),
     targetSummaryId: id(index),
     voterSummaryId: id(index),
-    isUp: true
+    isUp: true,
   };
 };
 
@@ -324,14 +324,14 @@ const cacheGroup = (store: EntityStore, index: number) => {
     summaryId: id(index),
     secretId: id(index),
     name: `Group No.${index}`,
-    description: "description"
+    description: "description",
   };
 
   store.GroupSummary[id(index)] = {
     ...base(id(index)),
     groupId: id(index),
     name: `Group No.${index}`,
-    description: "description"
+    description: "description",
   };
 };
 
@@ -340,7 +340,7 @@ const cacheUser = (store: EntityStore, index: number) => {
     ...base(id(index)),
     summaryId: id(index),
     name: `User No.${index}`,
-    permission: "Write"
+    permission: "Write",
   };
 
   store.UserSummary[id(index)] = {
@@ -349,7 +349,7 @@ const cacheUser = (store: EntityStore, index: number) => {
     name: `User No.${index}`,
     submitCount: 0,
     typeCount: 0,
-    emailHash: ""
+    emailHash: "",
   };
 };
 
@@ -363,6 +363,6 @@ const cacheUserDiaryEntry = (store: EntityStore, index: number) => {
     submittedCount: 1,
     submitCount: 0,
     createCount: 0,
-    editCount: 0
+    editCount: 0,
   };
 };

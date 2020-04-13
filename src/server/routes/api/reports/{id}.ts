@@ -6,7 +6,7 @@ import { lockReportTarget } from "../../../services/reports";
 
 export const GET = createGetOperation("Report", "Read", async ({ manager, id }) => {
   const report = await manager.findOne(ReportEntity, id, {
-    relations: ["summary"]
+    relations: ["summary"],
   });
   if (report === undefined) {
     throw createError(404);

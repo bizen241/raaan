@@ -5,7 +5,7 @@ import { PageStory } from "../../__stories__/helpers/PageStory";
 
 export default {
   title: "components/pages/community",
-  decorators: [decorator]
+  decorators: [decorator],
 };
 
 export const Community = () => {

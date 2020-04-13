@@ -6,7 +6,7 @@ import { unlockObjectionTarget } from "../../../services/objections";
 
 export const GET = createGetOperation("Objection", "Read", async ({ currentUser, manager, id }) => {
   const objection = await manager.findOne(ObjectionEntity, id, {
-    relations: ["summary"]
+    relations: ["summary"],
   });
   if (objection === undefined) {
     throw createError(404);

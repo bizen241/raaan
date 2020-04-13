@@ -18,7 +18,7 @@ export class PlaylistItemsErrorBoundary extends React.Component<
   static getDerivedStateFromError(e: Error): PlaylistItemsErrorBoundaryState {
     return {
       hasError: true,
-      error: e
+      error: e,
     };
   }
 

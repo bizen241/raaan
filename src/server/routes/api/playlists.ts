@@ -24,7 +24,7 @@ export const POST = createPostOperation("Playlist", "Read", async ({ currentUser
   await manager.save(playlistItem);
 
   const savedPlaylist = await manager.findOne(PlaylistEntity, exercise.id, {
-    relations: ["summary", "author"]
+    relations: ["summary", "author"],
   });
   if (savedPlaylist === undefined) {
     throw createError(500);

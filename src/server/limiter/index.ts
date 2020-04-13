@@ -11,5 +11,5 @@ const windowMs = 15 * 60 * 1000;
 
 const limiter = rateLimit({
   store: new RateLimitStore(max, windowMs),
-  max
+  max,
 });

@@ -13,6 +13,6 @@ export const connect = (env: Env) => {
     password,
     database,
     entities,
-    synchronize: true
+    synchronize: true,
   });
 };

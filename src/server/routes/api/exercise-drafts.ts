@@ -6,7 +6,7 @@ import {
   ExerciseEntity,
   ExerciseSummaryEntity,
   RevisionEntity,
-  RevisionSummaryEntity
+  RevisionSummaryEntity,
 } from "../../database/entities";
 import { getTags } from "../../services/tags";
 
@@ -47,7 +47,7 @@ export const POST = createPostOperation("ExerciseDraft", "Read", async ({ curren
   await manager.save(exercise);
 
   const savedExercise = await manager.findOne(ExerciseEntity, exercise.id, {
-    relations: ["author", "author.summary", "summary", "summary.tags", "latest", "draft"]
+    relations: ["author", "author.summary", "summary", "summary.tags", "latest", "draft"],
   });
   if (savedExercise === undefined) {
     throw createError(500, "savedExercise is not defined");

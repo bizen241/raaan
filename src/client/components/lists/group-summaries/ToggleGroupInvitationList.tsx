@@ -25,12 +25,12 @@ export const ToggleGroupInvitationList = createEntityList<
       "GroupInvitation",
       {
         targetId: followerId,
-        ownerId: currentUser.id
+        ownerId: currentUser.id,
       },
       false
     );
 
-    const foundGroupInvitation = followerInvitations.find(groupInvitation => groupInvitation.groupId === groupId);
+    const foundGroupInvitation = followerInvitations.find((groupInvitation) => groupInvitation.groupId === groupId);
 
     const onClick = useCallback(() => {
       toggleRequestState();
@@ -42,15 +42,15 @@ export const ToggleGroupInvitationList = createEntityList<
             generateLocalEntityId(),
             {
               groupId,
-              targetId: followerId
+              targetId: followerId,
             },
-            uploadResponse => {
+            (uploadResponse) => {
               dispatch(
                 actions.cache.add(
                   "GroupInvitation",
                   {
                     targetId: followerId,
-                    ownerId: currentUser.id
+                    ownerId: currentUser.id,
                   },
                   uploadResponse
                 )

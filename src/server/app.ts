@@ -20,12 +20,12 @@ export const createApp = (env: Env, app: express.Express = express()) => {
       contentSecurityPolicy: {
         reportOnly: true,
         directives: {
-          reportTo: env.report.csp
-        }
+          reportTo: env.report.csp,
+        },
       },
       expectCt: {
-        reportUri: env.report.expectCt
-      }
+        reportUri: env.report.expectCt,
+      },
     })
   );
 

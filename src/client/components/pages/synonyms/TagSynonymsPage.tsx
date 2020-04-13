@@ -21,7 +21,7 @@ export const TagSynonymsPage = createPage()(
         {isOwner && <Button icon={<Add />} label="新しい別名を作る" onClick={onToggleUploadSynonymDialog} />}
         <SynonymList
           initialParams={{
-            target: tagName
+            target: tagName,
           }}
         />
         <UploadSynonymDialog

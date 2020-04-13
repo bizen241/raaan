@@ -11,7 +11,7 @@ export const UserSessionsPage = createPage()(
     return (
       <UserSessionList
         initialParams={{
-          userId: currentUser.id
+          userId: currentUser.id,
         }}
       />
     );

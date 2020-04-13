@@ -18,7 +18,7 @@ export const GroupSummaryViewer = React.memo<{
   const { entity: groupSummary } = useEntity("GroupSummary", groupSummaryId);
   const { entities: groupMembers } = useSearch("GroupMember", {
     groupId: groupSummary.groupId,
-    userId: currentUser.id
+    userId: currentUser.id,
   });
   const groupMember = groupMembers[0];
   const groupMemberPermission = groupMember !== undefined ? groupMember.permission : "guest";

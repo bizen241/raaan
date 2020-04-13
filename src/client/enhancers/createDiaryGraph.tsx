@@ -49,7 +49,7 @@ interface DiaryGraphRendererProps<T extends DiaryEntryType> {
 const DiaryGraphRenderer = <T extends DiaryEntryType>({
   entityType,
   params,
-  component: Renderer
+  component: Renderer,
 }: DiaryGraphRendererProps<T>) => {
   const [firstDate] = useState(getToday());
   const [selectedDate, selectDate] = useState(firstDate.toString());

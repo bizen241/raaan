@@ -39,27 +39,27 @@ export const ExerciseSummaryList = createEntityList("ExerciseSummary")(
               label="並び順"
               options={{
                 createdAt: {
-                  label: "作成日時"
-                }
+                  label: "作成日時",
+                },
               }}
               defaultValue="createdAt"
-              onChange={value => onChange({ searchSort: value })}
+              onChange={(value) => onChange({ searchSort: value })}
             />
             <Select<SearchTarget>
               label="検索対象"
               options={{
                 title: {
-                  label: "タイトル"
+                  label: "タイトル",
                 },
                 tags: {
-                  label: "タグ"
-                }
+                  label: "タグ",
+                },
               }}
               defaultValue={searchTarget}
-              onChange={value =>
+              onChange={(value) =>
                 onChange({
                   [searchTarget]: undefined,
-                  [value]: searchText
+                  [value]: searchText,
                 })
               }
             />

@@ -8,7 +8,7 @@ export const TagDiaryPage = createPage<"Tag">()(
     return (
       <TagDiaryGraph
         params={{
-          targetId: tagId
+          targetId: tagId,
         }}
       />
     );

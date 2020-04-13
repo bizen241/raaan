@@ -17,8 +17,8 @@ const renderShell = (
     og: {
       url: properties ? properties.url : "",
       title: properties ? properties.title : "Raan",
-      description: properties ? properties.description : "Typing App"
-    }
+      description: properties ? properties.description : "Typing App",
+    },
   });
 
 export const shellRouter = Router();
@@ -27,7 +27,7 @@ shellRouter.get("/exercises/:id", async (req, res) => {
   const id = req.params.id;
 
   const exercise = await getManager().findOne(ExerciseEntity, id, {
-    relations: ["latest"]
+    relations: ["latest"],
   });
   if (exercise === undefined || exercise.latest === undefined) {
     renderShell(req, res);
@@ -38,7 +38,7 @@ shellRouter.get("/exercises/:id", async (req, res) => {
   renderShell(req, res, {
     url: `/exercises/${id}`,
     title: exercise.latest.title,
-    description: exercise.latest.description
+    description: exercise.latest.description,
   });
 });
 

@@ -7,6 +7,6 @@ export const useBuffers = <T extends EntityType>(entityType: T) => {
 
   return {
     bufferIds: Object.keys(bufferMap) as EntityId<T>[],
-    bufferMap
+    bufferMap,
   };
 };
