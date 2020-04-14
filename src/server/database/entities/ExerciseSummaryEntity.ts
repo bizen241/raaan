@@ -25,15 +25,15 @@ export class ExerciseSummaryEntity extends BaseEntityClass<"ExerciseSummary"> {
   })
   tags?: TagEntity[];
 
-  @Index({ fulltext: true })
+  @Index({ fulltext: true, parser: "ngram" })
   @Column()
   text!: string;
 
-  @Index({ fulltext: true })
+  @Index({ fulltext: true, parser: "ngram" })
   @Column()
   title!: string;
 
-  @Index({ fulltext: true })
+  @Index({ fulltext: true, parser: "ngram" })
   @Column()
   questions!: string;
 
