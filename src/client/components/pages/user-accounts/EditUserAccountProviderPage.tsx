@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { AuthProviderName } from "../../../../shared/auth";
 import { createPage } from "../../../enhancers/createPage";
 import { useEntity } from "../../../hooks/useEntity";
 import { useToggleState } from "../../../hooks/useToggleState";
@@ -10,7 +11,7 @@ import { Button } from "../../ui";
 export const EditUserAccountProviderPage = createPage()(
   React.memo(({ t }) => t("プロバイダの変更")),
   React.memo(() => {
-    const [requestedProvider, setProvider] = useState();
+    const [requestedProvider, setProvider] = useState<AuthProviderName>("github");
     const [isChangeProviderDialogOpen, onToggleChangeProviderDialog] = useToggleState();
 
     const userAccountId = useSelector((state: RootState) => state.app.userAccountId);
