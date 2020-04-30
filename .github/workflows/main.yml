@@ -12,6 +12,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
+      - name: Start MySQL
+        run: sudo systemctl start mysql
       - name: Init Database
         run: |
           mysql -h127.0.0.1 -uroot -proot --execute='CREATE DATABASE IF NOT EXISTS test;'
