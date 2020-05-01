@@ -17,21 +17,21 @@ const isDevelopment = mode === "development";
 const plugins = [
   new HtmlPlugin({
     template: join(__dirname, "assets/index.ejs"),
-    filename: join(__dirname, isDevelopment ? "dist/index.html" : "src/server/views/index.hbs")
+    filename: join(__dirname, isDevelopment ? "dist/index.html" : "src/server/views/index.hbs"),
   }),
   new CopyPlugin([
     {
       from: join(__dirname, "assets"),
-      ignore: ["*.ejs"]
+      ignore: ["*.ejs"],
     },
     {
       from: join(__dirname, "node_modules/kuromoji/dict"),
-      to: join(__dirname, "dist/dict")
-    }
+      to: join(__dirname, "dist/dict"),
+    },
   ]),
   new LicensePlugin({
     outputFilename: "licenses.json",
-    renderLicenses: modules =>
+    renderLicenses: (modules) =>
       modules.length === 0
         ? ""
         : JSON.stringify(
@@ -40,12 +40,12 @@ const plugins = [
               version: packageJson.version,
               url: packageJson.homepage,
               licenseId,
-              licenseText
+              licenseText,
             })),
             null,
             2
-          )
-  })
+          ),
+  }),
 ];
 
 if (!isDevelopment) {
@@ -55,11 +55,6 @@ if (!isDevelopment) {
       clientsClaim: true,
       skipWaiting: true,
       exclude: [/\.png$/, /\.txt$/, /\.gz$/, /\.hbs$/],
-      templatedUrls: {
-        "/index.html": "./src/server/views/index.hbs"
-      },
-      navigateFallback: "/index.html",
-      navigateFallbackDenylist: [/^\/api/, /^\/auth/, /^\/logout/]
     })
   );
 }
@@ -72,11 +67,11 @@ const webpackDevServerConfiguration = {
   proxy: [
     {
       context: ["/api", "/auth", "/logout"],
-      target: "http://localhost:3000"
-    }
+      target: "http://localhost:3000",
+    },
   ],
   host: "0.0.0.0",
-  port: 8080
+  port: 8080,
 };
 
 /**
@@ -86,16 +81,16 @@ const webpackConfiguration = {
   mode,
   devtool: isDevelopment ? "source-map" : undefined,
   entry: {
-    index: join(__dirname, "src/client/index.ts")
+    index: join(__dirname, "src/client/index.ts"),
   },
   output: {
     filename: "[name].[chunkhash].js",
     chunkFilename: "[name].[chunkhash].js",
     path: join(__dirname, "dist"),
-    publicPath: "/"
+    publicPath: "/",
   },
   resolve: {
-    extensions: [".js", ".ts", ".tsx"]
+    extensions: [".js", ".ts", ".tsx"],
   },
   module: {
     rules: [
@@ -106,15 +101,15 @@ const webpackConfiguration = {
             loader: "ts-loader",
             options: {
               transpileOnly: true,
-              configFile: join(__dirname, "config/tsconfig.client.json")
-            }
-          }
-        ]
-      }
-    ]
+              configFile: join(__dirname, "config/tsconfig.client.json"),
+            },
+          },
+        ],
+      },
+    ],
   },
   plugins,
-  devServer: webpackDevServerConfiguration
+  devServer: webpackDevServerConfiguration,
 };
 
 module.exports = webpackConfiguration;
