@@ -6,6 +6,7 @@ const defaultSettings: UserSettings = {
   "ui.lang": navigator.language.slice(0, 2) as Lang,
   "ui.colorScheme": "system",
   "ui.avatar": "gravatar",
+  "ui.accentColor": "purple",
 };
 
 export const useUserSettings = () => {

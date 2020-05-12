@@ -1,6 +1,5 @@
 import { CssBaseline } from "@material-ui/core";
-import grey from "@material-ui/core/colors/grey";
-import teal from "@material-ui/core/colors/teal";
+import * as colors from "@material-ui/core/colors";
 import { createMuiTheme, makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
 import { useUserSettings } from "../../hooks/useUserSettings";
@@ -8,6 +7,7 @@ import { useUserSettings } from "../../hooks/useUserSettings";
 export const ThemeProvider = React.memo<{ children: React.ReactNode }>(({ children }) => {
   const userSettings = useUserSettings();
   const colorScheme = userSettings["ui.colorScheme"];
+  const accentColor = userSettings["ui.accentColor"];
 
   const [isDarkMode, setMode] = useState(false);
 
@@ -35,9 +35,9 @@ export const ThemeProvider = React.memo<{ children: React.ReactNode }>(({ childr
         default: isDarkMode ? "#121212" : "#f5f5f5",
         paper: isDarkMode ? "#1e1e1e" : "#fff",
       },
-      primary: teal,
+      primary: colors[accentColor],
       secondary: isDarkMode
-        ? grey
+        ? colors.grey
         : {
             main: "#e0e0e0",
           },

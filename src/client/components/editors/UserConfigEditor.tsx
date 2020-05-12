@@ -29,6 +29,18 @@ const selectColorSchemeOptions: SelectOptions<UserSettings["ui.colorScheme"]> = 
   },
 };
 
+const selectAccentColorOptions: SelectOptions<UserSettings["ui.accentColor"]> = {
+  red: {
+    label: "red",
+  },
+  pink: {
+    label: "pink",
+  },
+  purple: {
+    label: "purple",
+  },
+};
+
 export const UserConfigEditor = React.memo<{
   userConfigId: EntityId<"UserConfig">;
 }>(({ userConfigId }) => {
@@ -71,6 +83,12 @@ export const UserConfigEditor = React.memo<{
           options={selectColorSchemeOptions}
           defaultValue={settings["ui.colorScheme"]}
           onChange={(value) => onChangeSettings("ui.colorScheme", value)}
+        />
+        <Select<UserSettings["ui.accentColor"]>
+          label={t("editor.UserConfigEditor.label.theme")}
+          options={selectAccentColorOptions}
+          defaultValue={settings["ui.accentColor"]}
+          onChange={(value) => onChangeSettings("ui.accentColor", value)}
         />
       </Card>
       <UploadUserConfigDialog userConfigId={userConfigId} isOpen={isUploadDialogOpen} onClose={onToggleUploadDialog} />
