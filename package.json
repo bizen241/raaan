@@ -141,7 +141,7 @@
     "workbox-webpack-plugin": "5.1.2"
   },
   "engines": {
-    "node": "14.x"
+    "node": "15.x"
   },
   "private": true
 }
