@@ -1,9 +1,3 @@
-# Raan
+# express-openapi-app
 
-[![GitHub Actions status](https://github.com/bizen241/raan/workflows/Main/badge.svg)](https://github.com/bizen241/raan)
-
-Raan is a learning management system.
-
-## License
-
-MIT
+[![GitHub Actions status](https://github.com/bizen241/express-openapi-app/workflows/Main/badge.svg)](https://github.com/bizen241/express-openapi-app)

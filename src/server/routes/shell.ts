@@ -16,7 +16,7 @@ const renderShell = (
     origin: req.get("host"),
     og: {
       url: properties ? properties.url : "",
-      title: properties ? properties.title : "Raan",
+      title: properties ? properties.title : "express-openapi-app",
       description: properties ? properties.description : "Typing App",
     },
   });

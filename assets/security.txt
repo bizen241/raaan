@@ -1,1 +1,1 @@
-Contact: https://raan.app/bugs
+Contact: https://github.com/bizen241/express-openapi-app/issues

@@ -5,7 +5,7 @@ import { securitySchemes } from "./security";
 export const createApiDoc = (_: Env): OpenAPIV3.Document => ({
   openapi: "3.0.2",
   info: {
-    title: "Raan",
+    title: "express-openapi-app",
     version: "0.0.0",
   },
   servers: [
